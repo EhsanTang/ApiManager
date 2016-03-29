@@ -1,0 +1,44 @@
+<div class="r0 p10 pt10 col-xs-12" ng-controller="detailCtrl">
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-12 p0">
+	<form ng-submit="submitForm('roleInfo/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<tr>
+				<td class="tc w100">角色名</td>
+				<td class="tc" colspan="3">
+					<input class="form-control" type="hidden" ng-model="model.roleId">
+					<input  class="form-control"  type="text" ng-model="model.roleName" placeholder="数据类型--模块--菜单/管理">
+				</td>
+			</tr>
+			<tr>
+				<td class="tc">权限</td>
+				<td class="tc w200" colspan="3">
+					<div class="input-group">
+						<input  class="form-control"  id="auth" type="text" ng-model="model.auth" readonly placeholder="请点击“选择”选择权限">
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,300,460,'false','auth','AUTH','',model.auth)">
+						选择</div>
+					</div>
+				</td>
+			</tr>
+			<!--<tr id="roleModuleId" ng-hide="needHiddenModule(model.type);">
+				<td class="tc">模块</td>
+				<td class="tc w200" colspan="3">
+					<div class="input-group">
+						<input  class="form-control"  id="moduleId" type="text" ng-model="model.moduleId" readonly placeholder="用户菜单配置、用户管理、角色管理不需要选择数据类型">
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,220,320,'true','moduleId','ALLMODULE','',model.moduleId);">
+						选择</div>
+					</div>
+				</td>
+				
+			</tr>-->
+	</table>
+	<button type="submit" class="btn btn-success fr">提交</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

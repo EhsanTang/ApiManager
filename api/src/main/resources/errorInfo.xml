@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="biyaoErrors" class="cn.crap.framework.BiyaoErrors" scope="singleton">
+		<property name="errMsgs">
+			<map>
+				<entry key="000001" value="系统未知错误" />
+				<entry key="000002" value="重复的errorCode" />
+				<entry key="000003" value="权限不足，操作失败！" />
+				<entry key="000004" value="重复的接口url地址！" />
+				<entry key="000005" value="接口url不能为空！" />
+			</map>
+		</property>
+	</bean>
+</beans>

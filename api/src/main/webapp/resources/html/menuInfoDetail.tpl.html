@@ -1,0 +1,65 @@
+<div class="r0 p10 pt10 col-xs-12" ng-controller="detailCtrl">
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-12 p0">
+	<form ng-submit="submitForm('menuInfo/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<tr>
+				<td class="tc">父菜单</td>
+				<td class="tc w200" colspan="3">
+					<input class="form-control" type="hidden" ng-model="model.menuId">
+					<div class="input-group">
+						<input  class="form-control"  id="parentId" type="text" ng-model="model.parentId" readonly>
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,220,320,'true','parentId','MENU','',model.parentId,'&key=0');">
+						选择</div>
+					</div>
+				</td>
+				
+			</tr>
+			<tr>
+				<td class="tc">类型</td>
+				<td class="tc w300">
+					<div class="input-group">
+						<input  class="form-control"  id="type" type="text" ng-model="model.type" readonly placeholder="请点击“选择”按钮选择类型">
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,220,320,'true','type','MENUTYPE','',model.type);">
+						选择</div>
+					</div>
+				</td>
+				<td class="tc">名称</td>
+				<td class="tc"><input  class="form-control"  type="text" ng-model="model.menuName"></td>
+			</tr>
+			<tr>
+				<td class="tc">链接</td>
+				<td class="tc" colspan="3">
+					<div class="input-group w">
+						<textarea  class="form-control no-resize" id="menuUrl" ng-model="model.menuUrl" rows="3"
+						placeholder="请点击“选择地址”按钮选择链接地址，亦可手动输入链接"></textarea>
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,300,460,'true','menuUrl','MENURUL','','','&key=0');">
+						选择地址
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc" rowspan="2">图标or备注</td>
+				<td class="tc" colspan="3">
+					<textarea class="form-control no-resize" ng-model="model.iconRemark" rows="3"
+					placeholder='图片格式：<i class="iconfont">&xxxxx;</i>'></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc p0" colspan="3">
+					<div class="BGEEE p10" ng-bind-html="model.iconRemark|trustHtml"></div>
+				</td>
+			</tr>
+			
+	</table>
+	<button type="submit" class="btn btn-success fr">提交</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

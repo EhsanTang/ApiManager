@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h" ng-controller="menuCtrl">
+<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h" ng-controller="lefMenuCtrl">
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
 					<c:set var="sessionAdminRoleIds" value=",${sessionAdminRoleIds},"></c:set>
@@ -19,34 +19,34 @@
 							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse in">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/menuInfo/list/0/无">菜单管理</a>
+									<a class="menu-a" target="_self" href="index.do#/menu/list/0/无">菜单管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/interfaceInfo/list/0/无">模块&接口管理</a>
+									<a class="menu-a" target="_self" href="index.do#/interface/list/0/无">模块&接口管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/userInfo/list">用户管理</a>
+									<a class="menu-a" target="_self" href="index.do#/user/list">用户管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/roleInfo/list">角色管理</a>
+									<a class="menu-a" target="_self" href="index.do#/role/list">角色管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/errorInfo/list">错误码管理</a>
+									<a class="menu-a" target="_self" href="index.do#/error/list">错误码管理</a>
 								</div>
 							</div>
 						</div>
 					</c:if>
 					
 					<div class="panel panel-info no-radius b0 mt0" ng-repeat="item in menus">
-						<div class="panel-heading BG999 no-radius" data-parent="#accordion" ng-if="canSeeMenu(item.menuInfo.menuId,item.menuInfo.type);">
-							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menuInfo.menuId}}">
-								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menuInfo.iconRemark|trustHtml">
-								</div> <span class="hidden-xs">{{item.menuInfo.menuName}}</span> <span
-								class="badge pull-right">{{item.subMenuInfo.length}}</span>
+						<div class="panel-heading BG999 no-radius" data-parent="#accordion" ng-if="canSeeMenu(item.menu.menuId,item.menu.type);">
+							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menu.menuId}}">
+								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml">
+								</div> <span class="hidden-xs">{{item.menu.menuName}}</span> <span
+								class="badge pull-right">{{item.subMenu.length}}</span>
 							</div>
 						</div>
-						<div id="panel{{item.menuInfo.menuId}}" class="panel-collapse BGEEE collapse" ng-if="canSeeMenu(item.menuInfo.menuId,item.menuInfo.type);">
-							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenuInfo">
+						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse" ng-if="canSeeMenu(item.menu.menuId,item.menu.type);">
+							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
 								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}">{{subItem.menuName}}</a>
 							</div>
 						</div>

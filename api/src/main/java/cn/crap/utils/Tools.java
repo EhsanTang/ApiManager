@@ -156,7 +156,6 @@ public class Tools {
 				throw new Exception("配置有误，"+key+"不存在");
 			}
 		}
-		
 	}
 	private static HashMap<String,String> settings= new HashMap<String,String>();
 	public static String getConf(String key) throws Exception{

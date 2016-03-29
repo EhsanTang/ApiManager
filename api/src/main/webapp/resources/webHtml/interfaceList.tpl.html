@@ -1,0 +1,84 @@
+<div class="r0 p20 pt0 col-xs-12" ng-controller="interfaceCtrl">
+<ol class="breadcrumb">
+  <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
+  <li class="active"><a ng-href="web.do#webInterface/list/{{$stateParams.moduleId}}/{{$stateParams.moduleName}}">模块：{{$stateParams.moduleName}}</a></li>
+</ol>
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-6 f16 fb p0 mb5">搜索接口</div>
+<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
+		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
+			<i class="iconfont">&#xe602;</i>&nbsp;查询
+		</button>
+		<div class="form-group w200 fr">
+			<label class="sr-only" for="">名称</label>
+			<div class="input-group">
+				<div class="input-group-addon">名称</div>
+				<input type="text" class="form-control input-xs dis-in-blo w120"
+					placeholder="名称" id="interfaceName" ng-model="$stateParams.searchinterfaceName">
+			</div>
+		</div>
+		<div class="form-group w300 fr mr10">
+			<label class="sr-only" for="">URL</label>
+			<div class="input-group">
+				<div class="input-group-addon">URL</div>
+				<input type="text" class="form-control input-xs dis-in-blo w120"
+					placeholder="URL" id="url" ng-model="$stateParams.searchUrl">
+			</div>
+		</div>
+		<div class="cb"></div>
+</div>
+
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.modules.length>0">模块列表</div>
+<div class="col-xs-12 p0" ng-if="list.modules.length>0">
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">模块名称</th>
+				<th class="w300 tc">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list.modules" class="h40 lh40">
+				<td class="tc lh40">{{item.moduleName}}</td>
+				<td class="tc lh40">
+					<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webInterface/list/{{item.moduleId}}/{{item.moduleName}}"> 
+						<i class="iconfont f12">&#xe60f;&nbsp;查看接口</i>
+					</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+</div>
+
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.interfaces.length>0">接口列表</div>
+<div class="col-xs-12 p0" ng-if="list.interfaces.length>0">
+	<table class="table table-bordered">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">名称</th>
+				<th class="tc">模块名</th>
+				<th class="w200 tc">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list.interfaces">
+				<td class="tc">{{item.interfaceName}}</td>
+				<td class="tc">{{item.moduleName}}</td>
+				<td class="tc">
+				<a class="f12 text-primary mr10 cursor"
+					ng-href="web.do#/webInterfaceDetail/{{$stateParams.moduleId}}/{{$stateParams.moduleName}}/{{item.id}}"> <i class="iconfont f12">&#xe60a;&nbsp;详情</i>
+				</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

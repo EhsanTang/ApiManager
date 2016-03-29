@@ -8,79 +8,79 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/webInterfaceInfo/list/0/接口列表');
-	$stateProvider.state('menuInfoList', {
-		url : '/menuInfo/list/:parentId/:menuName',
+	$urlRouterProvider.otherwise('/webInterface/list/0/接口列表');
+	$stateProvider.state('menuList', {
+		url : '/menu/list/:parentId/:menuName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/menuInfoList.tpl.html'
+				templateUrl : 'resources/html/menuList.tpl.html'
 			},
-			'page@menuInfoList' : {
+			'page@menuList' : {
 				templateUrl : 'resources/html/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/menuInfoDetail.tpl.html';
+					return 'resources/html/menuDetail.tpl.html';
 				}
 			}
 		}
-	}).state('interfaceInfoList', {
-		url : '/interfaceInfo/list/:moduleId/:moduleName',
+	}).state('interfaceList', {
+		url : '/interface/list/:moduleId/:moduleName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/interfaceInfoList.tpl.html'
+				templateUrl : 'resources/html/interfaceList.tpl.html'
 			},
-			'page@interfaceInfoList' : {
+			'page@interfaceList' : {
 				templateUrl : 'resources/html/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/interfaceInfoDetail.tpl.html';
+					return 'resources/html/interfaceDetail.tpl.html';
 				}
 			}
 		}
-	}).state('userInfoList', {
-		url : '/userInfo/list',
+	}).state('userList', {
+		url : '/user/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/userInfoList.tpl.html'
+				templateUrl : 'resources/html/userList.tpl.html'
 			},
-			'page@userInfoList' : {
+			'page@userList' : {
 				templateUrl : 'resources/html/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/userInfoDetail.tpl.html';
+					return 'resources/html/userDetail.tpl.html';
 				}
 			}
 		}
-	}).state('roleInfoList', {
-		url : '/roleInfo/list',
+	}).state('roleList', {
+		url : '/role/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/roleInfoList.tpl.html'
+				templateUrl : 'resources/html/roleList.tpl.html'
 			},
-			'page@roleInfoList' : {
+			'page@roleList' : {
 				templateUrl : 'resources/html/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/roleInfoDetail.tpl.html';
+					return 'resources/html/roleDetail.tpl.html';
 				}
 			}
 		}
-	}).state('errorInfoList', {
-		url : '/errorInfo/list',
+	}).state('errorList', {
+		url : '/error/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/errorInfoList.tpl.html'
+				templateUrl : 'resources/html/errorList.tpl.html'
 			},
-			'page@errorInfoList' : {
+			'page@errorList' : {
 				templateUrl : 'resources/html/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/errorInfoDetail.tpl.html';
+					return 'resources/html/errorDetail.tpl.html';
 				}
 			}
 		}
@@ -88,19 +88,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/webError/list/:moduleId',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/errorInfoList.tpl.html'
+				templateUrl : 'resources/webHtml/errorList.tpl.html'
 			},
 			'page@webError' : {
 				templateUrl : 'resources/webHtml/page.tpl.html'
 			}
 		}
-	}).state('webInterfaceInfoCtrl', {
-		url : '/webInterfaceInfo/list/:moduleId/:moduleName',
+	}).state('webInterfaceCtrl', {
+		url : '/webInterface/list/:moduleId/:moduleName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/interfaceInfoList.tpl.html'
+				templateUrl : 'resources/webHtml/interfaceList.tpl.html'
 			},
-			'page@webInterfaceInfoCtrl' : {
+			'page@webInterfaceCtrl' : {
 				templateUrl : 'resources/webHtml/page.tpl.html'
 			}
 		}
@@ -108,7 +108,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/webInterfaceDetail/:moduleId/:moduleName/:id',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/interfaceInfoDetail.tpl.html'
+				templateUrl : 'resources/webHtml/interfaceDetail.tpl.html'
 			}
 		}
 	})

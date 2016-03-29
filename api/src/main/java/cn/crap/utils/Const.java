@@ -16,4 +16,9 @@ public class Const {
 	public static final String AUTH_MODULE = "MODULE_"+MODULEID;
 	public static final String AUTH_ROLE = "ROLE";
 	public static final String SEPARATOR = "SEPARATOR";
+	
+	//常量
+	public static final String COOKIE_USERNAME = "cookieUserName";
+	public static final String COOKIE_PASSWORD = "cookiePassword";
+	public static final String COOKIE_REMBER_PWD = "cookieRemberPwd";
 }

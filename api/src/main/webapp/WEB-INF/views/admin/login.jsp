@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +31,23 @@
 						</div>
 						<div class="form-group mt20">
 								<label  class="sr-only">密码</label>
-								<input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="密码（6-20个字符）">
+								<input type="password" class="form-control" id="userPassword" value="${password}" name="userPassword" placeholder="密码（6-20个字符）">
 						</div>
+						
 						<div class="form-group mt30">
 							<button type="submit" class="btn btn-block btn-success">登入<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
+						</div>
+						
+						<div class="form-group mb0 f12 C555 tr" id="remberPwd">
+							<div class="btn-group fr" data-toggle="buttons">
+  								<label class="btn btn-default btn-xs <c:if test="${remberPwd!='NO'}">active</c:if>">
+   			 						<input type="radio" name="remberPwd" value="YES" <c:if test="${remberPwd!='NO'}">checked</c:if>> YES
+  								</label>
+  								<label class="btn btn-default btn-xs <c:if test="${remberPwd=='NO'}">active</c:if>">
+    								<input type="radio" name="remberPwd" value="NO" <c:if test="${remberPwd=='NO'}">checked</c:if>> NO
+  								</label>
+							</div>
+							<div class="fr lab">记住密码?</div>
 						</div>
 					</form>
 				</div>

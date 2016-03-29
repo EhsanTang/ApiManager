@@ -1,7 +1,7 @@
 body{
 	font-size:12px;
-	word-break:break-all; /*鏀寔IE锛宑hrome锛孎F涓嶆敮鎸�*/
-	word-wrap:break-word;/*鏀寔IE锛宑hrome锛孎F*/
+	word-break:break-all; 
+	word-wrap:break-word;
 	background-color:#DDD;
 }
 table{
@@ -12,6 +12,17 @@ table{
 html,body{
     height: 100%;
     width: 100%;
+}
+/************登录********************/
+#remberPwd .lab{
+	padding-top:3px;
+	margin-right:10px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#remberPwd .active{
+	color:#fff;
+	background-color:#6f5499;
+  	border-color: #563d7c;
 }
 /************添加参数*****************/
 #editParamTable input{

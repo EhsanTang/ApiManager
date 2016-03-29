@@ -11,9 +11,9 @@ mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams
 	 
 });
 /**************************左边菜单栏***************************/
-mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('lefMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.menu = function() {
-		var params = "iUrl=menuInfo/menu.do|iLoading=FLOAT";
+		var params = "iUrl=menu/menu.do|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {
 			httpSuccess(result,'iLoading=FLOAT','0')
 			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
@@ -36,9 +36,9 @@ mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $st
 	$scope.menu();
 });
 /**************************菜单列表****************************/
-mainModule.controller('menuInfoCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=menuInfo/list.do|iLoading=FLOAT|iParams=";
+		var params = "iUrl=menu/list.do|iLoading=FLOAT|iParams=";
 		if($("#menuName").val()!=null&&$("#menuName").val()!=''){
 			params += "&menuName=" + $("#menuName").val();
 			$stateParams.searchMenuName=$("#menuName").val();
@@ -50,9 +50,9 @@ mainModule.controller('menuInfoCtrl', function($rootScope,$scope, $http, $state,
     $scope.getData();
 });
 /**************************用户列表****************************/
-mainModule.controller('userInfoCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=userInfo/list.do|iLoading=FLOAT|iParams=";
+		var params = "iUrl=user/list.do|iLoading=FLOAT|iParams=";
 		if($("#trueName").val()!=null&&$("#trueName").val()!=''){
 			params += "&trueName=" + $("#trueName").val();
 			$stateParams.searchUserName=$("#trueName").val();
@@ -62,9 +62,9 @@ mainModule.controller('userInfoCtrl', function($rootScope,$scope, $http, $state,
     $scope.getData();
 });
 /**************************角色列表****************************/
-mainModule.controller('roleInfoCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=roleInfo/list.do|iLoading=FLOAT|iParams=";
+		var params = "iUrl=role/list.do|iLoading=FLOAT|iParams=";
 		if($("#roleName").val()!=null&&$("#roleName").val()!=''){
 			params += "&roleName=" + $("#roleName").val();
 			$stateParams.searchRoleName=$("#roleName").val();
@@ -75,9 +75,9 @@ mainModule.controller('roleInfoCtrl', function($rootScope,$scope, $http, $state,
 });
 
 /**************************错误码列表****************************/
-mainModule.controller('errorInfoCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=errorInfo/list.do|iLoading=FLOAT|iParams=";
+		var params = "iUrl=error/list.do|iLoading=FLOAT|iParams=";
 		if($("#searchMsg").val()!=null&&$("#searchMsg").val()!=''){
 			params += "&errorMsg=" + $("#searchMsg").val();
 			$stateParams.searchMsg=$("#searchMsg").val();
@@ -98,7 +98,7 @@ mainModule.controller('errorInfoCtrl', function($rootScope,$scope, $http, $state
     $scope.getData();
 });
 /**************************后端、前段接口列表****************************/
-mainModule.controller('interfaceInfoCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
 		var params = "";
 		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
@@ -112,7 +112,7 @@ mainModule.controller('interfaceInfoCtrl', function($rootScope,$scope, $http, $s
 		if(params==""){
 			params +="&moduleId="+ $stateParams.moduleId;
 		}
-		params = "iUrl=interfaceInfo/list.do|iLoading=FLOAT|iParams="+params;
+		params = "iUrl=interface/list.do|iLoading=FLOAT|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -146,7 +146,7 @@ mainModule.controller('interfaceInfoCtrl', function($rootScope,$scope, $http, $s
 /**************************前段接口详情:不需要打开模态框，所以不能调用getBaseData()****************************/
 mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function() {
-		var params = "iUrl=interfaceInfo/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
+		var params = "iUrl=interface/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
 		httpService.callHttpMethod($http,params).success(function(result) {
 			httpSuccess(result,'iLoading=FLOAT')
 			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){

@@ -10,7 +10,6 @@ public class MyCookie {
 	
 	public static void deleteCookie(String key, HttpServletRequest request, HttpServletResponse response){
 		Cookie[] allCookie= request.getCookies();
-		
 		if(allCookie!=null&&allCookie.length!=0)
 		 {
 		     for(int i=0;i<allCookie.length;i++)
@@ -22,7 +21,6 @@ public class MyCookie {
 		        	  allCookie[i].setMaxAge(0);
 		        	  response.addCookie(allCookie[i]);
 		          }
-		         
 		      }
 		 }
 	}
@@ -36,12 +34,11 @@ public class MyCookie {
 		myCookie.setMaxAge(60*60*24*7);
 		response.addCookie(myCookie);
 	}
-	public static String getCookie(String key,HttpServletRequest request, HttpServletResponse response){
-		return getCookie(key,false,request,response);
+	public static String getCookie(String key,HttpServletRequest request){
+		return getCookie(key,false,request);
 	}
-	public static String getCookie(String key,boolean jiami, HttpServletRequest request, HttpServletResponse response){
+	public static String getCookie(String key,boolean jiami, HttpServletRequest request){
 		Cookie allCookie[]= request.getCookies();
-
 		if(allCookie!=null&&allCookie.length!=0)
 		 {
 		     for(int i=0;i<allCookie.length;i++)
@@ -61,17 +58,17 @@ public class MyCookie {
 		 }
 		return "";
 	}
-	public static Long getIdFromCookie(String idName,HttpServletRequest request, HttpServletResponse response){
-		try{
-		String params = MyCookie.getCookie("params", request, response);
-			for(String param:params.split("&")){
-				if(param.split("=")[0].equals(idName)){
-					return Long.parseLong(param.split("=")[1]);
-				}
-			}
-		}catch(Exception e){
-			return null;
-		}
-		return null;
-	}
+//	public static Long getIdFromCookie(String idName,HttpServletRequest request, HttpServletResponse response){
+//		try{
+//		String params = MyCookie.getCookie("params", request, response);
+//			for(String param:params.split("&")){
+//				if(param.split("=")[0].equals(idName)){
+//					return Long.parseLong(param.split("=")[1]);
+//				}
+//			}
+//		}catch(Exception e){
+//			return null;
+//		}
+//		return null;
+//	}
 }

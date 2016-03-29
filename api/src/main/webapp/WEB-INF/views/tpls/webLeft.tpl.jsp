@@ -6,13 +6,14 @@
 						<div class="panel-heading BGBBB no-radius" data-parent="#accordion" ng-if="item.menu.type=='FRONT'">
 							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menu.menuId}}">
 								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml">
-								</div> <span class="hidden-xs">{{item.menu.menuName}}</span> <span
-								class="badge pull-right">{{item.subMenu.length}}</span>
+								</div>
+								 	<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
+								 	<span class="badge pull-right" ng-bind="item.subMenu.length"></span>
 							</div>
 						</div>
 						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse in" ng-if="item.menu.type=='FRONT'">
 							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
-								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}">{{subItem.menuName}}</a>
+								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
 							</div>
 						</div>
 					</div>

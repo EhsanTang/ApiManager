@@ -112,7 +112,7 @@ public class IndexController extends BaseController{
 		return "admin/login";
 	}
 	@RequestMapping(value = "pick.do")
-	public String pickOut(String code, String key, String type, String radio, String def, String tag) throws Exception {
+	public String pickOut(String code, String key, String type, String radio, String def, String tag,String tagShow) throws Exception {
 		List<Pick> picks = new ArrayList<Pick>();
 		menuService.pick(picks, radio, code, key);
 		request.setAttribute("radio", radio);
@@ -121,6 +121,8 @@ public class IndexController extends BaseController{
 		request.setAttribute("def", def);
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
 		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
+		request.setAttribute("tagShow", tagShow);
+		
 		return "admin/pick";
 	}
 }

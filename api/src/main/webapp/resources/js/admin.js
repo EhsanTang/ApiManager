@@ -146,6 +146,53 @@ function checkText(obj, oldNavigateText, span,checkBox, length) {
 		}
 	}
 }
+//pick 确认
+function setPick(iCallBack,iCallBackParam) {
+	var tagId = document.getElementById('tag').value;
+	var radio = document.getElementById('radio').value;
+	var tagShow = document.getElementById('tagShow').value;
+	var length = document.getElementsByName('cid').length;
+	var checkBox = "";
+	var checkBoxName = "";
+	for ( var i = 0; i < length; i++) {
+		if (radio == 'true') {
+			if (document.getElementsByName('cid')[i].checked == true) {
+				if($("#"+tagShow).length>0){
+					document.getElementById(tagId).value = $(".cidName")[i].textContent;
+					$("#"+tagShow).val(document.getElementsByName('cid')[i].value);
+				}else{
+					document.getElementById(tagId).value = document.getElementsByName('cid')[i].value;
+				}
+				break;
+			}
+		} else {
+			if (document.getElementsByName('cid')[i].checked == true) {
+				checkBox = checkBox + document.getElementsByName('cid')[i].value + ',';
+				checkBoxName = checkBoxName +  $(".cidName")[i].textContent + ',';
+			}
+		}
+	}
+	if (radio == 'false'){
+		if($("#"+tagShow).length>0){
+			$("#"+tagShow).val(checkBox);
+			document.getElementById(tagId).value = checkBoxName;
+		}else{
+			document.getElementById(tagId).value = checkBox;
+		}
+	}
+	//回调函数
+			var iCallBack=iCallBack;
+			var iCallBackParam=iCallBackParam;
+			if(iCallBack){
+				if (iCallBackParam) {
+					iCallBack(iCallBackParam);
+				} else {
+					iCallBack();
+				}
+			}
+	//关闭对话框
+	iClose('lookUp');
+}
 /***************选中显示菜单权限则回调隐藏模块****************/
 //待删除
 function needHiddenModule(){

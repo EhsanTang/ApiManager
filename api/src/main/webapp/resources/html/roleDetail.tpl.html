@@ -16,9 +16,10 @@
 			<tr>
 				<td class="tc">权限</td>
 				<td class="tc w200" colspan="3">
+					<input class="form-control" type="hidden" id="auth" ng-model="model.auth">
 					<div class="input-group">
-						<input  class="form-control"  id="auth" type="text" ng-model="model.auth" readonly placeholder="请点击“选择”选择权限">
-						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,300,460,'false','auth','AUTH','',model.auth)">
+						<input  class="form-control"  id="authName" type="text" value="{{model.authName}}" readonly placeholder="请点击“选择”选择权限">
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPickByName('mywidth=300|myheight=460|radio=false|tagShow=auth|tag=authName|code=AUTH|def='+model.auth,$event)">
 						选择</div>
 					</div>
 				</td>

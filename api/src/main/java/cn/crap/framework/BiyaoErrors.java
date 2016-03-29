@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * 蹇呰鐨勯敊璇俊鎭�
- * @author liuhui
  *
  */
 @Component

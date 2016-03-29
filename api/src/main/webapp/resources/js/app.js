@@ -11,17 +11,37 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	$rootScope.pick = [];
-	$rootScope.loadPick = function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
+	
+	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
+		var mywidth = getValue(params,'mywidth');
+		var myheight = getValue(params,'myheight');
+		var radio = getValue(params,'radio');
+		var tag = getValue(params,'tag');
+		var code = getValue(params,'code');
+		var type = getValue(params,'type');
+		var iparams = getValue(params,'params');
+		var showType = getValue(params,'showType');
+		var def = getValue(params,'def');
+		var tagShow = getValue(params,'tagShow');
+		$rootScope.loadPick(event,mywidth,myheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagShow);
+	}
+	$rootScope.loadPick = function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagShow) { 
 		/***********加载选择对话框********************/
 		if(!params)
 			params='';
-		if(showType!=0&&!showType)
-			showType=5;
+		if(showType!='0'){
+			if(!showType||showType=='')
+				showType=5;
+		}
+			
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
 		callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
-				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&def="+def+params,iCallBack,iCallBackParam);
+				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagShow="+tagShow+"&def="+def+params,iCallBack,iCallBackParam);
 		//将需要手动同步的model.key记录到数组
-		$rootScope.pick.push(tag);
+		if(tagShow)
+			$rootScope.pick.push(tagShow);
+		else
+			$rootScope.pick.push(tag);
 		lookUp('lookUp', event, myheight, mywidth ,showType,tag);
 		showMessage('lookUp','false',false,-1);
 	}

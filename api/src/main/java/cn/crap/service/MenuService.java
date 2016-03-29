@@ -136,6 +136,7 @@ public class MenuService extends
 						status.getName());
 				picks.add(pick);
 			}
+			break;
 		case "TRUEORFALSE":// 枚举true or false
 			for (TrueOrFalse status : TrueOrFalse.values()) {
 				pick = new Pick(status.getName(), status.name());

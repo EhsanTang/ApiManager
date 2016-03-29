@@ -404,8 +404,8 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 			}
 	    }
 	    if (lLeft < 0) lLeft = 5;
-	    if ((lLeft + lWidth) > $(window).width()) lLeft = $(window).width() - lWidth - 20;
-	    if ((lTop + lHeight) > $(window).height()) lTop =  $(window).height() - lHeight - 70;
+	    if ((lLeft + lWidth*1) > $(window).width()) lLeft = $(window).width() - lWidth - 20;
+	    if ((lTop + lHeight*1) > $(window).height()) lTop =  $(window).height() - lHeight - 70;
 
 	    lObj.style.height = lHeight + 'px';
 	    lObj.style.width = lWidth + 'px';

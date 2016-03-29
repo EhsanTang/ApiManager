@@ -17,43 +17,11 @@
 			$("#pickTip").html(navigateText);
 			$("#pickTip").css("display","none");
 		}
-		function setPick() {
-			var tagId = document.getElementById('tag').value;
-			var radio = document.getElementById('radio').value;
-			var length = document.getElementsByName('cid').length;
-			var checkBox = "";
-			for ( var i = 0; i < length; i++) {
-				if (radio == 'true') {
-					if (document.getElementsByName('cid')[i].checked == true) {
-						document.getElementById(tagId).value = document.getElementsByName('cid')[i].value;
-						break;
-					}
-				} else {
-					if (document.getElementsByName('cid')[i].checked == true) {
-						checkBox = checkBox
-								+ document.getElementsByName('cid')[i].value
-								+ ',';
-					}
-				}
-			}
-			if (radio == 'false')
-				document.getElementById(tagId).value = checkBox;
-			//回调函数
-					var iCallBack=${iCallBack};
-					var iCallBackParam='${iCallBackParam}';
-					if(iCallBack){
-						if (iCallBackParam) {
-							iCallBack(iCallBackParam);
-						} else {
-							iCallBack();
-						}
-					}
-			//关闭对话框
-			iClose('lookUp');
-		}
+		var iCallBack = ${iCallBack};
+		var iCallBackParam = '${iCallBackParam}';
 		document.onkeydown = function(event) {
 			if (event.keyCode == 13) {
-				setPick();
+				setPick(iCallBack,iCallBackParam);
 			}
 		}
 		if(hasLoad==0){
@@ -73,11 +41,9 @@
 				<div class="separator">${item.name}</div>
 			</c:if>
 			<c:if test="${item.value!='SEPARATOR'}">
-				<div class="p5 tl cursor <c:if test="${def==item.value}">pickActive</c:if>" id="d_${item.id}"
-					onclick="pickCheck('${item.id}','true');">
-					<input id="${item.id}" type="radio"
-						<c:if test="${def==item.value}">checked</c:if> disabled name="cid"
-						value="${item.value}"> &nbsp;&nbsp; <span>${item.name}</span>
+				<div class="p5 tl cursor <c:if test="${def==item.value}">pickActive</c:if>" id="d_${item.id}" onclick="pickCheck('${item.id}','true');">
+					<input id="${item.id}" type="radio" <c:if test="${def==item.value}">checked</c:if> disabled name="cid" value="${item.value}"> 
+					&nbsp;&nbsp; <span class="cidName">${item.name}</span>
 				</div>
 			</c:if>
 		</c:forEach>
@@ -95,7 +61,7 @@
 				<input id="${item.id}" type="checkbox" name="cid" disabled
 					<c:if test="${fn:contains(def,value)}">checked</c:if>
 					value="${item.value}"> &nbsp;&nbsp; 
-					<span>${item.name}</span>
+					<span class="cidName">${item.name}</span>
 				<br>
 			</div>
 			</c:if>
@@ -105,6 +71,9 @@
 <div class="fr w border-t ml10 tr pt10 form-group">
 	<input type="hidden" id="radio" value="${radio}" /> <input
 		type="hidden" id="tag" value="${tag}" />
+		<input
+		type="hidden" id="tagShow" value="${tagShow}" />
+		
 	<button type="button" class="btn btn-info form-control"
-		onclick="setPick()">选择</button>
+		onclick="setPick(${iCallBack},'${iCallBackParam}')">选择</button>
 </div>

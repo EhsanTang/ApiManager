@@ -10,7 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.crap.framework.base.BaseModel;
-import cn.crap.inter.IErrorService;
+import cn.crap.inter.service.IErrorService;
 
 /**
  * @author lizhiyong

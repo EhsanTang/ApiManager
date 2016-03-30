@@ -4,17 +4,17 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import cn.crap.framework.base.GenericDao;
-import cn.crap.framework.base.GenericServiceImpl;
-import cn.crap.inter.IUserService;
+import cn.crap.framework.base.IBaseDao;
+import cn.crap.framework.base.BaseService;
+import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 
 @Service
-public class UserService extends GenericServiceImpl<User, String>
+public class UserService extends BaseService<User>
 		implements IUserService {
 
 	@Resource(name="userDao")
-	public void setDao(GenericDao<User, String> dao) {
+	public void setDao(IBaseDao<User> dao) {
 		super.setDao(dao);
 	}
 }

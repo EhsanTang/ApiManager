@@ -7,7 +7,14 @@ import java.util.Map;
 
 
 
+
+
+import javax.annotation.Resource;
+
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -18,16 +25,24 @@ import cn.crap.utils.Tools;
  * 
  */
 @SuppressWarnings("unchecked")
-public class GenericDaoImpl<T extends BaseModel, M extends Serializable>
-		extends SuperDaoImpl implements GenericDao<T, M> {
+public class BaseDao<T extends BaseModel> extends HibernateDaoSupport implements IBaseDao<T> {
 
-	public GenericDao<T, M> genericDao;
+	
+	public final HibernateTemplate getHibernateTemplateSuper(){
+		return super.getHibernateTemplate();
+	}
+	@Resource
+	public final void setSessionFactorySuper(SessionFactory sessionFactory){
+		super.setSessionFactory(sessionFactory);
+	}
+	
+	public IBaseDao<T> genericDao;
 	
 	Class<T> entity;
 
 	String entityName;
 
-	public GenericDaoImpl() {
+	public BaseDao() {
 		this.entity = (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
 		this.entityName = entity.getName();
@@ -45,7 +60,7 @@ public class GenericDaoImpl<T extends BaseModel, M extends Serializable>
 		return list;
 	}
 
-	public void deleteByPK(M id) {
+	public void deleteByPK(String id) {
 		getHibernateTemplateSuper().delete(get(id));
 	}
 
@@ -57,7 +72,7 @@ public class GenericDaoImpl<T extends BaseModel, M extends Serializable>
 		getHibernateTemplateSuper().deleteAll(list);
 	}
 
-	public T get(M m) {
+	public T get(String m) {
 		return (T) getHibernateTemplateSuper().get(entity, m);
 	}
 

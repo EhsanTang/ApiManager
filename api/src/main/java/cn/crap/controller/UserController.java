@@ -15,9 +15,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.IMenuService;
-import cn.crap.inter.IRoleService;
-import cn.crap.inter.IUserService;
+import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IRoleService;
+import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
@@ -77,7 +77,7 @@ public class UserController extends BaseController<User>{
 		String auths = user.getAuth();
 		if(auths !=null && !auths.equals("")){
 			List<Pick> picks = new ArrayList<Pick>();
-			menuService.pick(picks, "", "AUTH", "");
+			menuService.pick(picks, "", "AUTH", "","");
 			StringBuilder sb = new StringBuilder();
 			for(Pick pick:picks){
 				for(String auth:auths.split(",")){

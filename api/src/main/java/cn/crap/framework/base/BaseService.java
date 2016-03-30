@@ -12,11 +12,11 @@ import cn.crap.utils.Tools;
  * @author lizhiyong
  * 
  */
-public class GenericServiceImpl<T extends BaseModel, M extends Serializable> implements GenericService<T, M> {
-	private GenericDao<T,M> dao;
+public class BaseService<T extends BaseModel> implements IBaseService<T> {
+	private IBaseDao<T> dao;
 
 	@Resource
-	public void setDao(GenericDao<T,M> dao) {
+	public void setDao(IBaseDao<T> dao) {
 		this.dao = dao;
 	}
 
@@ -42,7 +42,7 @@ public class GenericServiceImpl<T extends BaseModel, M extends Serializable> imp
 	/**
 	 * 根据主键删除
 	 * */
-	public void deleteByPK(M id){
+	public void deleteByPK(String id){
 		dao.deleteByPK(id);
 	}
 
@@ -63,7 +63,7 @@ public class GenericServiceImpl<T extends BaseModel, M extends Serializable> imp
 	/**
 	 * 根据主键获取对象
 	 * */
-	public T get(M id){
+	public T get(String id){
 		return dao.get(id);
 	}
 

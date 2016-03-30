@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.crap.framework.Pick;
-import cn.crap.framework.base.GenericDao;
-import cn.crap.framework.base.GenericServiceImpl;
-import cn.crap.inter.IErrorService;
-import cn.crap.inter.IMenuService;
-import cn.crap.inter.IModuleService;
-import cn.crap.inter.IRoleService;
-import cn.crap.inter.IUserService;
+import cn.crap.framework.base.IBaseDao;
+import cn.crap.framework.base.BaseService;
+import cn.crap.inter.service.IErrorService;
+import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IRoleService;
+import cn.crap.inter.service.IUserService;
 import cn.crap.model.Error;
 import cn.crap.model.Menu;
 import cn.crap.model.Module;
@@ -29,7 +29,7 @@ import cn.crap.utils.TrueOrFalse;
 
 @Service
 public class MenuService extends
-		GenericServiceImpl<Menu, String> implements IMenuService {
+		BaseService<Menu> implements IMenuService {
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
@@ -40,11 +40,12 @@ public class MenuService extends
 	private IUserService userService;
 
 	@Resource(name = "menuDao")
-	public void setDao(GenericDao<Menu, String> dao) {
+	public void setDao(IBaseDao<Menu> dao) {
 		super.setDao(dao);
 	}
 
-	public void pick(List<Pick> picks, String radio, String code, String key) {
+	@Override
+	public String pick(List<Pick> picks, String radio, String code, String key, String def) {
 		Pick pick = null;
 		if (radio.equals("true")) {
 			pick = new Pick("pick_null", "", "------请选择-----");
@@ -214,6 +215,33 @@ public class MenuService extends
 			}
 			break;
 		}
+		/***********************组装字符串***************************/
+		if(!radio.equals("")){
+			StringBuilder pickContent = new StringBuilder();
+			String separator = "<div class='separator'>%s</div>";
+			String radioDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s','true');\">"+
+					"<input id='%s' type='radio' %s disabled name='cid' value='%s'> "+
+					"&nbsp;&nbsp; <span class='cidName'>%s</span></div>";
+			String checkBoxDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s');\">"+
+					"<input id='%s' type='checkbox' %s disabled name='cid' value='%s'>"+
+					"&nbsp;&nbsp; <span class='cidName'>%s</span><br></div>";
+				
+				for(Pick p:picks){
+					if(p.getValue().equals(Const.SEPARATOR)){
+						pickContent.append(String.format(separator, p.getName()));
+					}else{
+						if(radio.equals("true")){
+							pickContent.append(String.format(radioDiv, def.equals(p.getValue())?" pickActive":"", p.getId(), p.getId(),p.getId(),
+									def.equals(p.getValue())?"checked":"", p.getValue(),p.getName()));
+						}else{
+							pickContent.append(String.format(checkBoxDiv,(","+def).indexOf(","+p.getName()+",")>=0?" pickActive":"",p.getId(),p.getId(),p.getId(),
+									(","+def).indexOf(","+p.getName()+",")>=0?"checked":"",p.getValue(),p.getName()));
+						}
+					}
+				}
+			return pickContent.toString();
+		}
+		return "";
 	}
 
 }

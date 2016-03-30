@@ -1,0 +1,34 @@
+﻿<div class="r0 p10 pt10 col-xs-12" ng-controller="settingCtrl">
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-12 p0">
+	<form ng-submit="submitForm('setting/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<tr>
+				<td class="tc w80">key</td>
+				<td class="tc w200">
+						<input class="form-control" type="hidden" ng-model="model.id">
+						<input  class="form-control" type="text" ng-model="model.key">
+				</td>
+				
+			</tr>
+			<tr>
+				<td class="tc">value</td>
+				<td class="tc"><input  class="form-control"  type="text" ng-model="model.value"></td>
+			</tr>
+			<tr>
+				<td class="tc">备注</td>
+				<td class="tc">
+					<textarea  class="form-control no-resize" ng-model="model.remark" rows="6" placeholder="备注信息"></textarea>
+				</td>
+			</tr>
+	</table>
+	<button type="submit" class="btn btn-success fr">提交</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

@@ -7,18 +7,18 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import cn.crap.framework.Pick;
-import cn.crap.framework.base.GenericDao;
-import cn.crap.framework.base.GenericServiceImpl;
-import cn.crap.inter.IModuleService;
+import cn.crap.framework.base.IBaseDao;
+import cn.crap.framework.base.BaseService;
+import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Module;
 import cn.crap.utils.Tools;
 
 @Service
-public class ModuleService extends GenericServiceImpl<Module, String>
+public class ModuleService extends BaseService<Module>
 		implements IModuleService {
 
 	@Resource(name="moduleDao")
-	public void setDao(GenericDao<Module, String> dao) {
+	public void setDao(IBaseDao<Module> dao) {
 		super.setDao(dao);
 	}
 	@Override

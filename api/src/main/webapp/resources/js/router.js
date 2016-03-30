@@ -39,6 +39,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('settingList', {
+		url : '/setting/list',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/settingList.tpl.html'
+			},
+			'page@settingList' : {
+				templateUrl : 'resources/html/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/settingDetail.tpl.html';
+				}
+			}
+		}
 	}).state('userList', {
 		url : '/user/list',
 		views : {

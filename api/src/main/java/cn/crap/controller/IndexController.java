@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.IErrorService;
-import cn.crap.inter.IMenuService;
-import cn.crap.inter.IModuleService;
-import cn.crap.inter.IRoleService;
-import cn.crap.inter.IUserService;
+import cn.crap.inter.service.IErrorService;
+import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IRoleService;
+import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
@@ -114,7 +114,7 @@ public class IndexController extends BaseController{
 	@RequestMapping(value = "pick.do")
 	public String pickOut(String code, String key, String type, String radio, String def, String tag,String tagShow) throws Exception {
 		List<Pick> picks = new ArrayList<Pick>();
-		menuService.pick(picks, radio, code, key);
+		String pickContent = menuService.pick(picks, radio, code, key,def);
 		request.setAttribute("radio", radio);
 		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);
@@ -122,6 +122,7 @@ public class IndexController extends BaseController{
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
 		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
 		request.setAttribute("tagShow", tagShow);
+		request.setAttribute("pickContent", pickContent);
 		
 		return "admin/pick";
 	}

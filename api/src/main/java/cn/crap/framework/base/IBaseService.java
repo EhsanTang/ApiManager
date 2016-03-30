@@ -9,7 +9,7 @@ import cn.crap.utils.Page;
  * @author lizhiyong
  * 
  */
-public interface GenericService<T extends BaseModel, M extends Serializable> {
+public interface IBaseService<T extends BaseModel> {
 
 	/**
 	 * 保存对象
@@ -25,7 +25,7 @@ public interface GenericService<T extends BaseModel, M extends Serializable> {
 	/**
 	 * 根据主键删除
 	 * */
-	public void deleteByPK(M id);
+	public void deleteByPK(String id);
 
 	/**
 	 * 根据示例对象删除
@@ -40,7 +40,7 @@ public interface GenericService<T extends BaseModel, M extends Serializable> {
 	/**
 	 * 根据主键获取对象
 	 * */
-	public T get(M id);
+	public T get(String id);
 
 	/**
 	 * 根据示例对象获取对象列表

@@ -61,6 +61,18 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
     };
     $scope.getData();
 });
+/**************************系统设置列表****************************/
+mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=setting/list.do|iLoading=FLOAT|iParams=";
+		if($("#searchRemark").val()!=null&&$("#searchRemark").val()!=''){
+			params += "&remark=" + $("#searchRemark").val();
+			$stateParams.searchRemark=$("#searchRemark").val();
+		}
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {

@@ -15,7 +15,7 @@ import cn.crap.dto.MenuDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.IMenuService;
+import cn.crap.inter.service.IMenuService;
 import cn.crap.model.Menu;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;

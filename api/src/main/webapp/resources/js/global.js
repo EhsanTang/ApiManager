@@ -2,12 +2,28 @@
 String.prototype.trim = function () {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
+
+//回顶部
 $("#go_top").click(function (){
 	$("html, body").animate({ scrollTop: 0 }, 400);
 });
+
+//将指定id的控件滚动到浏览器顶部，如：接口详情页目录
 function scrollToId(id){
 	$("html, body").animate({ scrollTop: $("#"+id).offset().top }, 400);
 }
+
+/**
+ * 替换字符串中自定的字符
+ * @param originalStr 原字符串
+ * @param oldStr 待替换的字符串
+ * @param newStr 替换后的字符串
+ */
+function replaceAll(originalStr,oldStr,newStr){
+	var regExp = new RegExp(oldStr,"gm");
+	return originalStr.replace(regExp,newStr)
+}
+
 /***********启用bootstrap提示*********************/
 $(function () {
 	  $('[data-toggle="tooltip"]').tooltip();

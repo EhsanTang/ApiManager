@@ -15,8 +15,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.IMenuService;
-import cn.crap.inter.IRoleService;
+import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IRoleService;
 import cn.crap.model.Role;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -55,7 +55,7 @@ public class RoleController extends BaseController<Role>{
 		String auths = role.getAuth();
 		if(auths !=null && !auths.equals("")){
 			List<Pick> picks = new ArrayList<Pick>();
-			menuService.pick(picks, "", "AUTH", "");
+			menuService.pick(picks, "", "AUTH", "","");
 			StringBuilder sb = new StringBuilder();
 			for(Pick pick:picks){
 				for(String auth:auths.split(",")){
@@ -64,7 +64,7 @@ public class RoleController extends BaseController<Role>{
 					}
 				}
 			}
-			role.setAuthName(sb.toString());
+			role.setAuthName(sb.toString().replaceAll("-", "").replaceAll(" ", ""));
 		}else{
 			role.setAuthName("");
 		}

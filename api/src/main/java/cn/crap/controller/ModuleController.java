@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.BiyaoBizException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.IModuleService;
+import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;

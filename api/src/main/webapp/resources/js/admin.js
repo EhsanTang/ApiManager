@@ -147,21 +147,18 @@ function checkText(obj, oldNavigateText, span,checkBox, length) {
 	}
 }
 //pick 确认
-function setPick(iCallBack,iCallBackParam) {
-	var tagId = document.getElementById('tag').value;
-	var radio = document.getElementById('radio').value;
-	var tagShow = document.getElementById('tagShow').value;
+function setPick() {
 	var length = document.getElementsByName('cid').length;
 	var checkBox = "";
 	var checkBoxName = "";
 	for ( var i = 0; i < length; i++) {
-		if (radio == 'true') {
+		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
-				if($("#"+tagShow).length>0){
-					document.getElementById(tagId).value = $(".cidName")[i].textContent;
-					$("#"+tagShow).val(document.getElementsByName('cid')[i].value);
+				if($("#"+pickTagShow).length>0){
+					document.getElementById(pickTag).value = $(".cidName")[i].textContent;
+					$("#"+pickTagShow).val(document.getElementsByName('cid')[i].value);
 				}else{
-					document.getElementById(tagId).value = document.getElementsByName('cid')[i].value;
+					document.getElementById(pickTag).value = document.getElementsByName('cid')[i].value;
 				}
 				break;
 			}
@@ -172,22 +169,22 @@ function setPick(iCallBack,iCallBackParam) {
 			}
 		}
 	}
-	if (radio == 'false'){
-		if($("#"+tagShow).length>0){
-			$("#"+tagShow).val(checkBox);
-			document.getElementById(tagId).value = checkBoxName;
+	if (pickRadio == 'false'){
+		if($("#"+pickTagShow).length>0){
+			$("#"+pickTagShow).val(checkBox);
+			checkBoxName= replaceAll(checkBoxName,"-","");
+			checkBoxName=replaceAll(checkBoxName," ","");
+			document.getElementById(pickTag).value = checkBoxName;
 		}else{
-			document.getElementById(tagId).value = checkBox;
+			document.getElementById(pickTag).value = checkBox;
 		}
 	}
 	//回调函数
-			var iCallBack=iCallBack;
-			var iCallBackParam=iCallBackParam;
-			if(iCallBack){
-				if (iCallBackParam) {
-					iCallBack(iCallBackParam);
+			if(pickCallBack){
+				if (pickCallBackParam) {
+					pickCallBack(pickCallBackParam);
 				} else {
-					iCallBack();
+					pickCallBack();
 				}
 			}
 	//关闭对话框

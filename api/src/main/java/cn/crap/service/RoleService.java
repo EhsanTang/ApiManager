@@ -6,22 +6,22 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.crap.framework.base.GenericDao;
-import cn.crap.framework.base.GenericServiceImpl;
-import cn.crap.inter.IModuleService;
-import cn.crap.inter.IRoleService;
+import cn.crap.framework.base.IBaseDao;
+import cn.crap.framework.base.BaseService;
+import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IRoleService;
 import cn.crap.model.Module;
 import cn.crap.model.Role;
 import cn.crap.utils.DataType;
 import cn.crap.utils.Tools;
 
 @Service
-public class RoleService extends GenericServiceImpl<Role, String>
+public class RoleService extends BaseService<Role>
 		implements IRoleService {
 	@Autowired
 	private IModuleService moduleService;
 	@Resource(name="roleDao")
-	public void setDao(GenericDao<Role, String> dao) {
+	public void setDao(IBaseDao<Role> dao) {
 		super.setDao(dao);
 	}
 	@Override

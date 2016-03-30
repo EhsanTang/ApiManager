@@ -163,14 +163,20 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.getDate = function(str){
 		return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
-	$rootScope.checkJson = function(id){
-		var result= format($("#"+id).val());
+	
+	$rootScope.setValueForModel = function(id,transform){
+		alert(transform);
+		var result= $("#"+id).val();
+		if(transform){
+			result = format(result);
+		}
 		if(result){
 			if(id=="falseExam"){
 				$rootScope.model.falseExam = result;
-			}
-			if(id=="trueExam"){
+			}else if(id=="trueExam"){
 				$rootScope.model.trueExam = result;
+			}if(id=="settingValue"){
+				$rootScope.model.value = result;
 			}
 		}
 	}

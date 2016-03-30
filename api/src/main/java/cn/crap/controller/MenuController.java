@@ -24,7 +24,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends BaseController<Menu>{
+public class MenuController extends BaseController{
 
 	@Autowired
 	IMenuService menuService;

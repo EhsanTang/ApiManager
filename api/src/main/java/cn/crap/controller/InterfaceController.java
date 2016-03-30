@@ -30,7 +30,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/interface")
-public class InterfaceController extends BaseController<Interface> {
+public class InterfaceController extends BaseController {
 
 	@Autowired
 	private IInterfaceService interfaceService;

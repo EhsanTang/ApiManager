@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController<Role>{
+public class RoleController extends BaseController{
 
 	@Autowired
 	private IRoleService roleService;

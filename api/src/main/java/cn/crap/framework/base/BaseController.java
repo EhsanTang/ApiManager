@@ -1,11 +1,14 @@
 package cn.crap.framework.base;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,12 +24,14 @@ import cn.crap.utils.Page;
 
 
 @Scope("prototype")
-public class BaseController<T extends BaseModel> {
+public class BaseController {
 	protected Page page= new Page(15);
 	protected Map<String,Object> map;
 	protected Map<String,Object> returnMap = new HashMap<String,Object>();
 	@Autowired
 	protected HttpServletRequest request;
+	@Autowired
+	protected HttpServletResponse response;
 
 	/**
 	 * @return
@@ -58,8 +63,7 @@ public class BaseController<T extends BaseModel> {
 		return requestParams;
 	}
 	
-	 @RequestMapping("/error.do")
-	 @ExceptionHandler  
+	@ExceptionHandler({ Exception.class })
 	 @ResponseBody  
      public JsonResult expHandler(HttpServletRequest request, Exception ex) {  
         if(ex instanceof BiyaoBizException) {  
@@ -70,13 +74,19 @@ public class BaseController<T extends BaseModel> {
         }  
     }  
 	 
-	 @RequestMapping("/loginCheckFail.do")
-	 @ResponseBody  
-     public JsonResult loginCheckFail() {  
-		 BiyaoBizException ex = new BiyaoBizException("0000001");
-         return new JsonResult((BiyaoBizException)ex);
-    }  
-
+	 protected void printMsg(String message){
+			response.setHeader("Content-Type" , "text/html");
+			response.setCharacterEncoding("utf-8");
+			try {
+				PrintWriter out = response.getWriter();
+				out.write(message);
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	 
 	 protected void handleBindingValidation(BindingResult bindingResult) throws BiyaoBizException{
 	        if(bindingResult.hasErrors()){
 	            List<ObjectError> list = bindingResult.getAllErrors();

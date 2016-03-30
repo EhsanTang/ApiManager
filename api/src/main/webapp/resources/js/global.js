@@ -104,8 +104,8 @@ function initDatePicker2(id){
  * @param size
  * @returns {Boolean}
  */
-function uploadImg(id,size){
-	 if(!iLength(id,1,-1,"尚未选着图片，不允许上传")){
+function uploadImage(id,size,form){
+	 if(!iLength(id,1,-1,"未选着图片，上传失败")){
 		return false;
 	 }
      var fileSize =document.getElementById(id).files[0].size;
@@ -116,22 +116,36 @@ function uploadImg(id,size){
 	lookUp('lookUp',event,100,350,0); 
 	$("#lookUpContent").html("上传中，请稍后...");
 	showMessage('lookUp', 'false', false, -1);
-	return true;
+	form.submit();
 }
-function uploadImgCallBack(msg, cover) {
+function uploadImgCallBack(msg, url) {
 	if (msg.indexOf("[OK]") >= 0) {
-		$("#image").attr("src", cover + "");
+		$("#image").attr("src", url + "");
 		$("#image").removeClass("ndis");
-		$('#select-path').html("<span class='text-success fb pl5'><i class=\"iconfont\">&#xe60d;</i>&nbsp;&nbsp;上传成功</div>");
 		showMessage('lookUp', 'false', false, 0);
-		if (cover!= undefined) {
-			$("#imageReturn").val(cover);
+		if (url!= undefined) {
+			//修改setting中的value
+			getRootScope().model.value=url;
 		}
 	}else {
-		$("#lookUpContent").html(err1 + "&nbsp; " + cover + "" + err2);
+		$("#lookUpContent").html(err1 + "&nbsp; " + url + "" + err2);
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
+/*************************js调用anjularjs****************/
+function getRootScope(){
+	var injector = angular.injector(["ng", "app"]);
+	var rootScope = injector.get("$rootScope");
+	return rootScope;
+}
+
+
+
+
+
+
+
+
 function addCookieToParams(key,value){
 	var params = $.cookie('params');
 	params= addParams(params, key , value);

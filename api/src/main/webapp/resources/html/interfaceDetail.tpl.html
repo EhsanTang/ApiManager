@@ -159,7 +159,7 @@ payplatform=PC"></textarea>
 				<tr>
 					<td class="tc">
 						正确返回示例<br>
-						<input type="button" class="btn btn-default btn-sm" value="格式化数据" ng-click="checkJson('trueExam')">
+						<input type="button" class="btn btn-default btn-sm" value="格式化数据" ng-click="setValueForModel('trueExam',true)">
 					</td>
 					<td class="tc">
 					<textarea class="form-control no-resize" id="trueExam"
@@ -179,7 +179,7 @@ payplatform=PC"></textarea>
 		}'></textarea>
 					</td>
 					<td class="tc">错误返回示例<br>
-						<input type="button" class="btn btn-default btn-sm" value="格式化数据" ng-click="checkJson('falseExam')"></td>
+						<input type="button" class="btn btn-default btn-sm" value="格式化数据" ng-click="setValueForModel('falseExam',true)"></td>
 					<td class="tc"><textarea class="form-control no-resize" id="falseExam"
 							ng-model="model.falseExam" rows="10"
 							placeholder='请用标准json结构

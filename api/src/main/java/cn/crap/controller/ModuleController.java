@@ -19,7 +19,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/module")
-public class ModuleController extends BaseController<Module>{
+public class ModuleController extends BaseController{
 
 	@Autowired
 	private IModuleService moduleService;

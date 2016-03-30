@@ -23,7 +23,8 @@
 	<context:annotation-config />
 	<mvc:annotation-driven/>
 	<context:component-scan base-package="cn.crap" />
-
+	<!-- 业务错误码 -->
+	<import resource="errorInfo.xml" />
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -94,7 +95,8 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+ 	<!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	<aop:config>
 		<aop:pointcut id="bussinessService"
 			expression="execution(public * cn.crap..*.*(..))" />
@@ -109,7 +111,4 @@
 		<tx:method name="*" propagation="REQUIRED"/>
 		</tx:attributes>
 	</tx:advice>
-	
-	<!-- 业务错误码 -->
-	<import resource="errorInfo.xml" />
 </beans>

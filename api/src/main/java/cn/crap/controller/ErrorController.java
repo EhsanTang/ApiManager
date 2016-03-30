@@ -23,7 +23,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/error")
-public class ErrorController extends BaseController<Error>{
+public class ErrorController extends BaseController{
 
 	@Autowired
 	private IErrorService errorService;

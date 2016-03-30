@@ -27,7 +27,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController<User>{
+public class UserController extends BaseController{
 
 	@Autowired
 	private IUserService userService;

@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
@@ -157,13 +159,17 @@ public class Tools {
 			}
 		}
 	}
-	private static HashMap<String,String> settings= new HashMap<String,String>();
-	public static String getConf(String key) throws Exception{
-		String value = settings.get(key);
-		if(value==null){
-			value = getConf(key,null);
-			settings.put(key, value);
-		}
-		return value;
+	public static String getServicePath(HttpServletRequest request){
+		return request.getSession().getServletContext().getRealPath("/")+"/";
 	}
+	public static String getChar(int num){
+		String md="123456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ789abcd";
+		Random random = new Random();
+		String temp="";
+		for(int i=0;i<num;i++){
+			temp=temp+md.charAt(random.nextInt(50));
+		}
+		return temp;
+	}
+	private static HashMap<String,String> settings= new HashMap<String,String>();
 }

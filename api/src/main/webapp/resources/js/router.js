@@ -50,7 +50,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/settingDetail.tpl.html';
+					return 'resources/html/settingImgDetail.tpl.html';
 				}
 			}
 		}

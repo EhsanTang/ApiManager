@@ -12,7 +12,8 @@
 					<input class="form-control" type="hidden" ng-model="model.menuId">
 					<div class="input-group">
 						<input  class="form-control"  id="parentId" type="text" ng-model="model.parentId" readonly>
-						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,220,320,'true','parentId','MENU','',model.parentId,'&key=0');">
+						<div class="input-group-addon cursor btn-purple"
+						 ng-click="loadPick($event,220,320,'true','parentId','MENU','',model.parentId,'&key=0');">
 						选择</div>
 					</div>
 				</td>
@@ -22,8 +23,9 @@
 				<td class="tc">类型</td>
 				<td class="tc w300">
 					<div class="input-group">
-						<input  class="form-control"  id="type" type="text" ng-model="model.type" readonly placeholder="请点击“选择”按钮选择类型">
-						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,220,320,'true','type','MENUTYPE','',model.type);">
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" readonly placeholder="请点击“选择”按钮选择类型">
+						<div class="input-group-addon cursor btn-purple" 
+						ng-click="loadPickByName('mywidth=220|myheight=320|tagName=typeName|tag=type|code=MENUTYPE|def='+model.type,$event)">
 						选择</div>
 					</div>
 				</td>

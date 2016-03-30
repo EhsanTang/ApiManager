@@ -77,7 +77,7 @@ function getParamFromTable(tableId) {
 	json += "]";
 	return json;
 }
-/*****************pick控件搜索****************/
+/** ***************pick控件搜索*************** */
 var navigateText = "";
 var deep = 0;
 var select = 0;
@@ -85,37 +85,38 @@ var hasLoad = 0;
 function keyMonitor() {
 	hasLoad = 1;
 	var lookUp = document.getElementById('lookUp');
-	$(document).keydown(function(event) {
-		try {
-			if(event.keyCode == 8 && lookUp.style.display == 'block'){
-				if(navigateText.length>=1){
-					navigateText = navigateText.substring(0, navigateText.length-1)
+	$(document).keydown(
+			function(event) {
+				try {
+					if (event.keyCode == 8 && lookUp.style.display == 'block') {
+						if (navigateText.length >= 1) {
+							navigateText = navigateText.substring(0,
+									navigateText.length - 1)
+						}
+						if (navigateText.length == 0) {
+							$("#pickTip").css("display", "none");
+						}
+						var tHandler = "pickScroll('" + navigateText + "')";
+						setTimeout(tHandler, 500);
+						return false;// return false表示该事件不再往下传递
+					} else if (event.keyCode != 13) {
+						navigateText += String.fromCharCode(event.keyCode);
+						if (lookUp.style.display != 'block')
+							navigateText = "";
+						var tHandler = "pickScroll('" + navigateText + "')";
+						setTimeout(tHandler, 500);
+					}
+				} catch (e) {
+					alert(e);
 				}
-				if(navigateText.length==0){
-					$("#pickTip").css("display","none");
-				}
-				var tHandler = "pickScroll('" + navigateText + "')";
-				setTimeout(tHandler, 500);
-				return false;//return false表示该事件不再往下传递
-			}
-			else if (event.keyCode != 13) {
-				navigateText += String.fromCharCode(event.keyCode);
-				if(lookUp.style.display != 'block')
-					navigateText = "";
-				var tHandler = "pickScroll('" + navigateText + "')";
-				setTimeout(tHandler, 500);
-			}
-		} catch (e) {
-			alert(e);
-		}
-	});
+			});
 }
 function pickScroll(oldNavigateText) {
 	$("#pickTip").html(navigateText);
-	if(navigateText.length>0){
-		$("#pickTip").css("display","block");
+	if (navigateText.length > 0) {
+		$("#pickTip").css("display", "block");
 	}
-	if(oldNavigateText != navigateText){
+	if (oldNavigateText != navigateText) {
 		return;
 	}
 	deep = oldNavigateText.length;
@@ -131,11 +132,11 @@ function pickScroll(oldNavigateText) {
 		});
 	}
 }
-function checkText(obj, oldNavigateText, span,checkBox, length) {
+function checkText(obj, oldNavigateText, span, checkBox, length) {
 	if (span.text().substring(length - 1, length).toUpperCase() == oldNavigateText
 			.substring(length - 1, length)) {
 		if (length < deep) {
-			checkText(obj, oldNavigateText, span,checkBox, length + 1);
+			checkText(obj, oldNavigateText, span, checkBox, length + 1);
 		} else {
 			var container = $('#lookUpContent'), scrollTo = span;
 			container.scrollTop(scrollTo.offset().top - container.offset().top
@@ -146,56 +147,57 @@ function checkText(obj, oldNavigateText, span,checkBox, length) {
 		}
 	}
 }
-//pick 确认
+// pick 确认
 function setPick() {
 	var length = document.getElementsByName('cid').length;
-	var checkBox = "";
+	var checkBoxValue = "";
 	var checkBoxName = "";
-	for ( var i = 0; i < length; i++) {
+	var rootScope = getRootScope();
+	for (var i = 0; i < length; i++) {
 		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
-				if($("#"+pickTagShow).length>0){
-					document.getElementById(pickTag).value = $(".cidName")[i].textContent;
-					$("#"+pickTagShow).val(document.getElementsByName('cid')[i].value);
-				}else{
-					document.getElementById(pickTag).value = document.getElementsByName('cid')[i].value;
-				}
+				rootScope.$apply(function() {
+					if(pickTagName)
+						rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+					rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
+				});
 				break;
 			}
 		} else {
 			if (document.getElementsByName('cid')[i].checked == true) {
-				checkBox = checkBox + document.getElementsByName('cid')[i].value + ',';
-				checkBoxName = checkBoxName +  $(".cidName")[i].textContent + ',';
+				checkBoxValue = checkBoxValue + document.getElementsByName('cid')[i].value + ',';
+				checkBoxName = checkBoxName + $(".cidName")[i].textContent + ',';
 			}
 		}
 	}
-	if (pickRadio == 'false'){
-		if($("#"+pickTagShow).length>0){
-			$("#"+pickTagShow).val(checkBox);
-			checkBoxName= replaceAll(checkBoxName,"-","");
-			checkBoxName=replaceAll(checkBoxName," ","");
-			document.getElementById(pickTag).value = checkBoxName;
-		}else{
-			document.getElementById(pickTag).value = checkBox;
-		}
-	}
-	//回调函数
-			if(pickCallBack){
-				if (pickCallBackParam) {
-					pickCallBack(pickCallBackParam);
-				} else {
-					pickCallBack();
+	if (pickRadio == 'false') {
+			rootScope.$apply(function() {
+				rootScope.model[pickTag] = checkBoxValue;
+				if(pickTagName){
+					checkBoxName = replaceAll(checkBoxName, "-", "");
+					checkBoxName = replaceAll(checkBoxName, " ", "");
+					rootScope.model[pickTagName] = checkBoxName;
 				}
-			}
-	//关闭对话框
+			});
+	}
+	// 回调函数
+	if (pickCallBack) {
+		if (pickCallBackParam) {
+			pickCallBack(pickCallBackParam);
+		} else {
+			pickCallBack();
+		}
+	}
+	// 关闭对话框
 	iClose('lookUp');
 }
-/***************选中显示菜单权限则回调隐藏模块****************/
-//待删除
-function needHiddenModule(){
-	if($("#type").val()=="SHOWMENU"||$("#type").val()=="USER"||$("#type").val()=="MENU"||$("#type").val()=="ROLE"){
+/** *************选中显示菜单权限则回调隐藏模块*************** */
+// 待删除
+function needHiddenModule() {
+	if ($("#type").val() == "SHOWMENU" || $("#type").val() == "USER"
+			|| $("#type").val() == "MENU" || $("#type").val() == "ROLE") {
 		iClose("roleModuleId");
-	}else{
+	} else {
 		iShow("roleModuleId");
 	}
 }

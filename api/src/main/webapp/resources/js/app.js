@@ -22,10 +22,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var iparams = getValue(params,'params');
 		var showType = getValue(params,'showType');
 		var def = getValue(params,'def');
-		var tagShow = getValue(params,'tagShow');
-		$rootScope.loadPick(event,mywidth,myheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagShow);
+		var tagName = getValue(params,'tagName');
+		$rootScope.loadPick(event,mywidth,myheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName);
 	}
-	$rootScope.loadPick = function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagShow) { 
+	$rootScope.loadPick = function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName) { 
 		/***********加载选择对话框********************/
 		if(!params)
 			params='';
@@ -36,13 +36,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
 		callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
-				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagShow="+tagShow+"&def="+def+params,iCallBack,iCallBackParam);
-		//将需要手动同步的model.key记录到数组
-		if(tagShow)
-			$rootScope.pick.push(tagShow);
+				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
+		if(tagName)
+			lookUp('lookUp', event, myheight, mywidth ,showType,tagName);
 		else
-			$rootScope.pick.push(tag);
-		lookUp('lookUp', event, myheight, mywidth ,showType,tag);
+			lookUp('lookUp', event, myheight, mywidth ,showType,tag);
 		showMessage('lookUp','false',false,-1);
 	}
 	$rootScope.getBaseData = function($scope,$http,params,page) {
@@ -93,31 +91,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			});
 	    }
 	};
-//	$rootScope.search = function(iurl){
-//		var params = "iUrl="+iurl+"|iLoading=FLOAT|iPost=POST|iParams=&"+$.param($rootScope.searchModel);
-//		params += "&currentPage=1";
-//		httpService.callHttpMethod($http,params).success(function(result) {
-//			httpSuccess(result,'iLoading=FLOAT','0')
-//			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-//				 $rootScope.error = result.replace('[ERROR]', '');
-//				 $rootScope.list = null;
-//			 }else{
-//				 $rootScope.list = result.data.list;
-//				 $rootScope.page = result.page;
-//				 $rootScope.searchModel = result.data.model;
-//			 }
-//		});
-//	};
+
 	$rootScope.submitForm = function(iurl){
-		/*
-		 * 模型双向绑定，但是pick选择的数据无法绑定
-		 * 同步通过value="" 赋值的model.key
-		 */
-		for(var i=0;i<$rootScope.pick.length;i++){
-			var key = $rootScope.pick[i];
-			$rootScope.model[key] = $("#"+key).val();
-		}
-		$rootScope.pick = [];
 		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
 			httpSuccess(result,'iLoading=PROPUPFLOAT')

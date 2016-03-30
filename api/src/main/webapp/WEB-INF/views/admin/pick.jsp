@@ -19,7 +19,7 @@
 		var pickCallBackParam = '${iCallBackParam}';
 		var pickRadio ="${radio}";
 		var pickTag = "${tag}";
-		var pickTagShow = "${tagShow}";
+		var pickTagName = "${tagName}";
 		document.onkeydown = function(event) {
 			if (event.keyCode == 13) {
 				setPick();

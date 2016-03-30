@@ -28,6 +28,7 @@ import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 
@@ -115,7 +116,10 @@ public class IndexController extends BaseController{
 		return "admin/login";
 	}
 	@RequestMapping(value = "pick.do")
-	public String pickOut(String code, String key, String type, String radio, String def, String tag,String tagShow) throws Exception {
+	public String pickOut(String code, String key, String type,@RequestParam(defaultValue="true") String radio, String def, String tag,String tagName) throws Exception {
+		if(MyString.isEmpty(radio)){
+			radio = "true";
+		}
 		List<Pick> picks = new ArrayList<Pick>();
 		String pickContent = menuService.pick(picks, radio, code, key,def);
 		request.setAttribute("radio", radio);
@@ -124,7 +128,7 @@ public class IndexController extends BaseController{
 		request.setAttribute("def", def);
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
 		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
-		request.setAttribute("tagShow", tagShow);
+		request.setAttribute("tagName", tagName);
 		request.setAttribute("pickContent", pickContent);
 		
 		return "admin/pick";

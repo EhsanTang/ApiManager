@@ -52,22 +52,6 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ROLE)
 	public JsonResult addOrUpdate(@ModelAttribute Role role){
-		String auths = role.getAuth();
-		if(auths !=null && !auths.equals("")){
-			List<Pick> picks = new ArrayList<Pick>();
-			menuService.pick(picks, "", "AUTH", "","");
-			StringBuilder sb = new StringBuilder();
-			for(Pick pick:picks){
-				for(String auth:auths.split(",")){
-					if(pick.getValue().equals(auth)){
-						sb.append(pick.getName()+"，");
-					}
-				}
-			}
-			role.setAuthName(sb.toString().replaceAll("-", "").replaceAll(" ", ""));
-		}else{
-			role.setAuthName("");
-		}
 		if(!MyString.isEmpty(role.getRoleId())){
 			roleService.update(role);
 		}else{

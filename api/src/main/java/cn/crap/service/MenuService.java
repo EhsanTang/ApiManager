@@ -234,8 +234,8 @@ public class MenuService extends
 							pickContent.append(String.format(radioDiv, def.equals(p.getValue())?" pickActive":"", p.getId(), p.getId(),p.getId(),
 									def.equals(p.getValue())?"checked":"", p.getValue(),p.getName()));
 						}else{
-							pickContent.append(String.format(checkBoxDiv,(","+def).indexOf(","+p.getName()+",")>=0?" pickActive":"",p.getId(),p.getId(),p.getId(),
-									(","+def).indexOf(","+p.getName()+",")>=0?"checked":"",p.getValue(),p.getName()));
+							pickContent.append(String.format(checkBoxDiv,(","+def).indexOf(","+p.getValue()+",")>=0?" pickActive":"",p.getId(),p.getId(),p.getId(),
+									(","+def).indexOf(","+p.getValue()+",")>=0?"checked":"",p.getValue(),p.getName()));
 						}
 					}
 				}

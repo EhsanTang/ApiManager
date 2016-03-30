@@ -5,14 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.MenuType;
+import cn.crap.utils.MyString;
 
 
 /**
- * @author lizhiyong
  * @date 2016-01-06
  */
 @Entity
@@ -44,7 +46,13 @@ public class Menu extends BaseModel{
 	private String iconRemark;
 	private String type;
 
-
+	@Transient
+	public String getTypeName(){
+		if(!MyString.isEmpty(type))
+			return MenuType.valueOf(type).getName();
+		return "";
+	}
+	
 	@Id
 	@GeneratedValue(generator="Generator")
 	@Column(name="menuId")

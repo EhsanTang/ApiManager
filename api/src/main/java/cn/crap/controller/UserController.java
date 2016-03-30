@@ -58,38 +58,6 @@ public class UserController extends BaseController{
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult addOrUpdate(@ModelAttribute User user){
 		try{
-		String roleIds = user.getRoleId();
-		if (roleIds != null&&!roleIds.equals("")) {
-			roleIds = Tools.getIdsFromField(roleIds);
-			map = Tools.getMap("roleId|in", "'0'," + roleIds);
-			List<Role> roles = roleService.findByMap(map, null,null);
-			StringBuilder sb = new StringBuilder();
-			for(Role role:roles){
-				sb.append(","+role.getRoleName());
-			}
-			if(roleIds.indexOf(Const.SUPER)>=0){
-				sb.append(","+Const.SUPER);
-			}
-			user.setRoleName(sb.toString().replaceFirst(",", ""));
-		}else{
-			user.setRoleName("");
-		}
-		String auths = user.getAuth();
-		if(auths !=null && !auths.equals("")){
-			List<Pick> picks = new ArrayList<Pick>();
-			menuService.pick(picks, "", "AUTH", "","");
-			StringBuilder sb = new StringBuilder();
-			for(Pick pick:picks){
-				for(String auth:auths.split(",")){
-					if(pick.getValue().equals(auth)){
-						sb.append(pick.getName()+"，");
-					}
-				}
-			}
-			user.setAuthName(sb.toString());
-		}else{
-			user.setAuthName("");
-		}
 		if(!MyString.isEmpty(user.getUserId())){
 			userService.update(user);
 		}else{

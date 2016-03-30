@@ -125,18 +125,20 @@ function uploadImgCallBack(msg, url) {
 		showMessage('lookUp', 'false', false, 0);
 		if (url!= undefined) {
 			//修改setting中的value
-			getRootScope().model.value=url;
+			var rootScope = getRootScope();
+			rootScope.$apply(function () {          
+			    rootScope.model.value = url;
+			});
 		}
 	}else {
 		$("#lookUpContent").html(err1 + "&nbsp; " + url + "" + err2);
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
-/*************************js调用anjularjs****************/
+/*************************js调用anjularjs 获取$rootScope****************/
 function getRootScope(){
-	var injector = angular.injector(["ng", "app"]);
-	var rootScope = injector.get("$rootScope");
-	return rootScope;
+	var $body = angular.element(document.body);
+	return $body.scope().$root;
 }
 
 

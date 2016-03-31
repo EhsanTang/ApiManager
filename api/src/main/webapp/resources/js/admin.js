@@ -1,4 +1,4 @@
-function addOneParam(name, necessary, type, remark, rowNum, tableId) {
+function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
 		rowNum = mydate.getMilliseconds();
@@ -22,6 +22,16 @@ function addOneParam(name, necessary, type, remark, rowNum, tableId) {
 								+ "<td><input class='form-control' type='text' name='type' value='"
 								+ type
 								+ "' placeholder=\"类型：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='parameterType' id='parameterType"
+								+ rowNum
+								+ "' value='"
+								+ parameterType
+								+ "'"
+								+ "onclick=\"loadPick(event,200,250,'true','parameterType"
+								+ rowNum
+								+ "','PARAMETERTYPE','','"
+								+ parameterType
+								+ "','',5);\" placeholder=\"参数类型：请求头/参数\"></td>"
 								+ "<td><input class='form-control' type='text' name='remark' value='"
 								+ remark
 								+ "'></td>"
@@ -157,8 +167,11 @@ function setPick() {
 		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
 				rootScope.$apply(function() {
-					if(pickTagName)
+					if(pickTagName){
+						$("#"+pickTagName).val(document.getElementsByName('cidName')[i].value);
 						rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+					}
+					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
 					rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
 				});
 				break;
@@ -171,11 +184,14 @@ function setPick() {
 		}
 	}
 	if (pickRadio == 'false') {
+			//同时跟新控件的值和模型的值，有些控件没有使用模型，如接口参数
 			rootScope.$apply(function() {
+				$("#"+pickTag).val(checkBoxValue);
 				rootScope.model[pickTag] = checkBoxValue;
 				if(pickTagName){
 					checkBoxName = replaceAll(checkBoxName, "-", "");
 					checkBoxName = replaceAll(checkBoxName, " ", "");
+					$("#"+pickTagName).val(checkBoxName);
 					rootScope.model[pickTagName] = checkBoxName;
 				}
 			});

@@ -140,7 +140,7 @@ mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state
 	    	var i=0;
 	    	$.each(params, function (n, value) {
 	    		i++;
-	    		addOneParam(value.name,value.necessary,value.type,value.remark,i,tableId)
+	    		addOneParam(value.name,value.necessary,value.type,value.parameterType,value.remark,i,tableId)
 	        });  
     	}
 		$("#"+editerId).removeClass('none');

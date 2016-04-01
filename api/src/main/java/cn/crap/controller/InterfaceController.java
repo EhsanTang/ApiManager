@@ -91,8 +91,7 @@ public class InterfaceController extends BaseController {
 		interFace.setUrl(interFace.getUrl().trim());
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
-			errorIds = Tools.getIdsFromField(errorIds);
-			map = Tools.getMap("errorCode|in", "'0'," + errorIds);
+			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
 			Module module = moduleService.get(interFace
 					.getModuleId());

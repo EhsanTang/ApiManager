@@ -2,6 +2,7 @@ package cn.crap.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -88,10 +89,8 @@ public class MenuController extends BaseController{
 	public JsonResult menu( ){
 		map = Tools.getMap("parentId","0");
 		List<Menu> menus = menuService.findByMap(map,null,null);
-		StringBuilder parentIds = new StringBuilder("'0'");
-		menus.forEach(e->parentIds.append(",'"+e.getMenuId()+"'"));
 		map.clear();
-		map.put("parentId|in", parentIds.toString());
+		map.put("parentId|in", menus.stream().map(e->e.getMenuId()).collect(Collectors.toList()));
 		List<Menu> subMenus = menuService.findByMap(map,null,null);
 		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
 		for(Menu menu:menus){

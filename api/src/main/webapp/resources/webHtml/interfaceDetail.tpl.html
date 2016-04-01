@@ -46,27 +46,35 @@
 		{{model.method}}
 		
 		<div id="2_3">2.3 请求头说明</div>
-		<table class="table table-bordered">
-		<thead>
-			<tr class="BGEEE C000">
-				<th class="tc">名称</th>
-				<th class="tc">是否必须</th>
-				<th class="tc">类型</th>
-				<th class="tc w300">备注</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in params" ng-if="item.parameterType=='HEADER'">
-				<td class="tc fb C000">{{item.name}}</td>
-				<td class="tc C000">{{item.necessary}}</td>
-				<td class="tc C000">{{item.type}}</td>
-				<td class="tc C000">{{item.remark}}</td>
-			</tr>
-		</tbody>
+		<span ng-if="params!=null&&!hasRequestHeader(params,'HEADER')" >
+			无
+		</span>
+		<table class="table table-bordered" ng-if="params!=null&&hasRequestHeader(params,'HEADER')" >
+			<thead>
+				<tr class="BGEEE C000">
+					<th class="tc">名称</th>
+					<th class="tc">是否必须</th>
+					<th class="tc">类型</th>
+					<th class="tc w300">备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in params" ng-if="item.parameterType=='HEADER'">
+					<td class="tc fb C000">{{item.name}}</td>
+					<td class="tc C000">{{item.necessary}}</td>
+					<td class="tc C000">{{item.type}}</td>
+					<td class="tc C000">{{item.remark}}</td>
+				</tr>
+			</tbody>
 		</table>
 		
 		<div id="2_4">2.4 输入参数说明</div>
-		<table class="table table-bordered">
+		<!-- 如果不判断params!=null,当params还没加载成功,hasRequestHeader就会被调用导致报错 -->
+		<span ng-if="params!=null&&!hasRequestHeader(params,'PARAMETER')" >
+			无
+		</span>
+		
+		<table class="table table-bordered" ng-if="params!=null&&hasRequestHeader(params,'PARAMETER')" >
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
@@ -76,7 +84,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in params" ng-if="item.parameterType!='HEADER'">
+			<tr ng-repeat="item in params">
 				<td class="tc fb C000">{{item.name}}</td>
 				<td class="tc C000">{{item.necessary}}</td>
 				<td class="tc C000">{{item.type}}</td>

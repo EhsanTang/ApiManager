@@ -398,11 +398,12 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 			}else if(onMouse==4){
 				lTop = e.clientY;
 		    	lLeft = e.clientX;
-			}else if(onMouse==5){
-				lTop = $("#"+positionId).offset().top+$("#"+positionId).outerHeight()-1;
-		    	lLeft = $("#"+positionId).offset().left-1;
 			}
 	    }
+	    if(onMouse==5){
+			lTop = $("#"+positionId).offset().top+$("#"+positionId).outerHeight()-1;
+	    	lLeft = $("#"+positionId).offset().left-1;
+		}
 	    if (lLeft < 0) lLeft = 5;
 	    if ((lLeft + lWidth*1) > $(window).width()) lLeft = $(window).width() - lWidth - 20;
 	    if ((lTop + lHeight*1) > $(window).height()) lTop =  $(window).height() - lHeight - 70;

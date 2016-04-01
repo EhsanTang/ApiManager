@@ -86,7 +86,7 @@ public class InterfaceController extends BaseController {
 	@AuthPassport(authority=Const.AUTH_INTERFACE)
 	public JsonResult addOrUpdate(
 			@ModelAttribute Interface interFace) {
-		if(interFace.getUrl()==null||interFace.getUrl().trim().equals(""))
+		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new BiyaoBizException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
 		String errorIds = interFace.getErrorList();

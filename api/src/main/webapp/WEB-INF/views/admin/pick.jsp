@@ -5,11 +5,12 @@
 				$("#"+id).prop("checked", false);
 				$("#d_"+id).removeClass("pickActive");
 			} else {
-				if(isRadio=='true'){
-					$("#pickContent div").removeClass("pickActive")
-				}
 				$("#"+id).prop("checked", true);
 				$("#d_"+id).addClass("pickActive");
+				if(isRadio=='true'){
+					$("#pickContent div").removeClass("pickActive")
+					setPick();
+				}
 			}
 			navigateText = "";
 			$("#pickTip").html(navigateText);

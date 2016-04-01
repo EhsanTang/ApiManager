@@ -172,5 +172,15 @@ mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $htt
 			 }
 		});
     };
+    $scope.hasRequestHeader = function(params,type){
+    	if(params.length>0){
+    		for (var i=0;i<params.length;i++){
+    	         if(type==params[i].parameterType){
+    	        	 return true;
+    	         }
+    	    }
+    	}
+    	return false;
+    }
     $scope.getData();
 });

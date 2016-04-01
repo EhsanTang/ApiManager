@@ -14,7 +14,7 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 								+ "' value='"
 								+ necessary
 								+ "'"
-								+ "onclick=\"loadPick(event,200,250,'true','necessary"
+								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
 								+ rowNum
 								+ "','TRUEORFALSE','','"
 								+ necessary
@@ -27,7 +27,7 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 								+ "' value='"
 								+ parameterType
 								+ "'"
-								+ "onclick=\"loadPick(event,200,250,'true','parameterType"
+								+ "onfocus=\"loadPick(event,200,250,'true','parameterType"
 								+ rowNum
 								+ "','PARAMETERTYPE','','"
 								+ parameterType
@@ -103,7 +103,7 @@ function keyMonitor() {
 							navigateText = navigateText.substring(0,
 									navigateText.length - 1)
 						}
-						if (navigateText.length == 0) {
+						if (navigateText.trim().length == 0) {
 							$("#pickTip").css("display", "none");
 						}
 						var tHandler = "pickScroll('" + navigateText + "')";
@@ -113,6 +113,7 @@ function keyMonitor() {
 						navigateText += String.fromCharCode(event.keyCode);
 						if (lookUp.style.display != 'block')
 							navigateText = "";
+						navigateText = navigateText.trim();
 						var tHandler = "pickScroll('" + navigateText + "')";
 						setTimeout(tHandler, 500);
 					}
@@ -123,7 +124,7 @@ function keyMonitor() {
 }
 function pickScroll(oldNavigateText) {
 	$("#pickTip").html(navigateText);
-	if (navigateText.length > 0) {
+	if (navigateText.trim().length > 0) {
 		$("#pickTip").css("display", "block");
 	}
 	if (oldNavigateText != navigateText) {

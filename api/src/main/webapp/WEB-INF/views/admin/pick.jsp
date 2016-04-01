@@ -1,5 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <script type="text/javascript">
+	var pickCallBack = ${iCallBack};
+	var pickCallBackParam = '${iCallBackParam}';
+	var pickRadio ="${radio}";
+	var pickTag = "${tag}";
+	var pickTagName = "${tagName}";
 		function pickCheck(id,isRadio) {
 			if ($("#"+id).is(':checked')) {
 				$("#"+id).prop("checked", false);
@@ -16,11 +21,6 @@
 			$("#pickTip").html(navigateText);
 			$("#pickTip").css("display","none");
 		}
-		var pickCallBack = ${iCallBack};
-		var pickCallBackParam = '${iCallBackParam}';
-		var pickRadio ="${radio}";
-		var pickTag = "${tag}";
-		var pickTagName = "${tagName}";
 		document.onkeydown = function(event) {
 			if (event.keyCode == 13) {
 				setPick();

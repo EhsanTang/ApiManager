@@ -128,7 +128,7 @@ public class IndexController extends BaseController{
 		request.setAttribute("def", def);
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
 		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
-		request.setAttribute("tagName", tagName);
+		request.setAttribute("tagName",tagName);
 		request.setAttribute("pickContent", pickContent);
 		
 		return "admin/pick";

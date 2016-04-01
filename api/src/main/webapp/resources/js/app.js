@@ -29,6 +29,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		/***********加载选择对话框********************/
 		if(!params)
 			params='';
+		if(!tagName)
+			tagName='';
 		if(showType!='0'){
 			if(!showType||showType=='')
 				showType=5;

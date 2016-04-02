@@ -19,12 +19,13 @@
   			<p class="cursor" onclick="scrollToId('2')">2  接口调用说明</p>
   			<p class="cursor pl20" onclick="scrollToId('2_1')">2.1 URL</p>
   			<p class="cursor pl20" onclick="scrollToId('2_2')">2.2 HTTP请求方式</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_3')">2.3  输入参数说明</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_4')">2.4  请求示例</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_3')">2.3  请求头说明</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_4')">2.4  输入参数说明</p>
   			<p class="cursor pl20" onclick="scrollToId('2_5')">2.5  请求示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_6')">2.6  正确返回示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_7')">2.7  错误返回示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_8')">2.8  错误码</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_6')">2.6  返回参数说明</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_7')">2.7  正确返回示例</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_8')">2.8  错误返回示例</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_9')">2.9  错误码</p>
 		</blockquote>
 		<div class="fb f18" id="1">1 功能说明</div>
 		<div id="1_1">1.1 接口名</div>
@@ -44,14 +45,42 @@
 		<div id="2_2">2.2 HTTP请求方式</div>
 		{{model.method}}
 		
-		<div id="2_3">2.3 输入参数说明</div>
-		<table class="table table-bordered">
+		<div id="2_3">2.3 请求头说明</div>
+		<span ng-if="params!=null&&!hasRequestHeader(params,'HEADER')" >
+			无
+		</span>
+		<table class="table table-bordered" ng-if="params!=null&&hasRequestHeader(params,'HEADER')" >
+			<thead>
+				<tr class="BGEEE C000">
+					<th class="tc">名称</th>
+					<th class="tc">是否必须</th>
+					<th class="tc">类型</th>
+					<th class="tc w300">备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in params" ng-if="item.parameterType=='HEADER'">
+					<td class="tc fb C000">{{item.name}}</td>
+					<td class="tc C000">{{item.necessary}}</td>
+					<td class="tc C000">{{item.type}}</td>
+					<td class="tc C000">{{item.remark}}</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div id="2_4">2.4 输入参数说明</div>
+		<!-- 如果不判断params!=null,当params还没加载成功,hasRequestHeader就会被调用导致报错 -->
+		<span ng-if="params!=null&&!hasRequestHeader(params,'PARAMETER')" >
+			无
+		</span>
+		
+		<table class="table table-bordered" ng-if="params!=null&&hasRequestHeader(params,'PARAMETER')" >
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
 				<th class="tc">是否必须</th>
 				<th class="tc">类型</th>
-				<th class="tc">备注</th>
+				<th class="tc w300">备注</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,18 +93,18 @@
 		</tbody>
 		</table>
 		
-		<div id="2_4">2.4 请求示例</div>
+		<div id="2_5">2.5 请求示例</div>
 		<div class="code">
 			<pre>{{model.requestExam}}</pre>
 		</div>
 		
-		<div id="2_5">2.5 返回参数说明</div>
+		<div id="2_6">2.6 返回参数说明</div>
 		<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
 				<th class="tc">类型</th>
-				<th class="tc">备注</th>
+				<th class="tc w300">备注</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,17 +116,17 @@
 		</tbody>
 		</table>
 		
-		<div id="2_6">2.6 正确返回示例</div>
+		<div id="2_7">2.7 正确返回示例</div>
 		<div class="code">
 			<pre>{{model.trueExam}}</pre>
 		</div>
 		
-		<div id="2_7">2.7 错误返回示例</div>
+		<div id="2_8">2.8 错误返回示例</div>
 		<div class="code">
 			<pre>{{model.falseExam}}</pre>
 		</div>
 		
-		<div id="2_8">2.8 错误码</div>
+		<div id="2_9">2.9 错误码</div>
 		<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE C000">

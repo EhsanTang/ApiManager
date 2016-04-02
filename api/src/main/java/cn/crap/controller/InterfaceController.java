@@ -86,13 +86,12 @@ public class InterfaceController extends BaseController {
 	@AuthPassport(authority=Const.AUTH_INTERFACE)
 	public JsonResult addOrUpdate(
 			@ModelAttribute Interface interFace) {
-		if(interFace.getUrl()==null||interFace.getUrl().trim().equals(""))
+		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new BiyaoBizException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
-			errorIds = Tools.getIdsFromField(errorIds);
-			map = Tools.getMap("errorCode|in", "'0'," + errorIds);
+			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
 			Module module = moduleService.get(interFace
 					.getModuleId());

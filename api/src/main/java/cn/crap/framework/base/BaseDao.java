@@ -26,7 +26,6 @@ import cn.crap.utils.Tools;
  */
 @SuppressWarnings("unchecked")
 public class BaseDao<T extends BaseModel> extends HibernateDaoSupport implements IBaseDao<T> {
-
 	
 	public final HibernateTemplate getHibernateTemplateSuper(){
 		return super.getHibernateTemplate();
@@ -100,7 +99,7 @@ public class BaseDao<T extends BaseModel> extends HibernateDaoSupport implements
 	public List<T> findByMap(Map<String, Object> map,
 			Page pageBean, String order) {
 		String conditions = Tools.getHql(map);
-		String hql = "from "+entity.getSimpleName() + conditions + (MyString.isEmpty(order) ? "" : " order by " + order);
+		String hql = "from "+entity.getSimpleName() + conditions + (MyString.isEmpty(order) ? " order by createTime desc" : " order by " + order);
 		Query query = getHibernateTemplateSuper().getSessionFactory().getCurrentSession()
 				.createQuery(hql);
 		if(pageBean!=null){

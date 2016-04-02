@@ -59,10 +59,6 @@ public class Interface extends BaseModel{
 	 * */
 	private String falseExam;
 	/**
-	 * status(是否可用;0不可用；1可用)
-	 * */
-	private Integer status;
-	/**
 	 * moduleId(所属模块ID)
 	 * */
 	private String moduleId;
@@ -167,15 +163,6 @@ public class Interface extends BaseModel{
 
 	public void setFalseExam(String falseExam) {
 		this.falseExam = falseExam;
-	}
-
-	@Column(name="status")
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 	@Column(name="moduleId")

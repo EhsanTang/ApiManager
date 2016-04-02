@@ -2,6 +2,8 @@ package cn.crap.utils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +25,8 @@ public class Tools {
 	 * @param roleName
 	 * @return
 	 */
-	public static String getIdsFromField(String ids) {
-		ids = ids.trim();
-		if (!ids.startsWith(","))
-			ids = "," + ids;
-		if (!ids.endsWith(","))
-			ids = ids + ",";
-		ids = ids.replace(",", "','");
-		ids = ids.substring(2, ids.length() - 2);
-		return ids;
+	public static List<String> getIdsFromField(String ids) {
+		return Arrays.asList(ids.split(","));
 	}
 	/**
 	 * 查询是否拥有权限
@@ -57,34 +52,31 @@ public class Tools {
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (int i = 0; i < params.length; i = i + 2) {
-			if (params[i + 1] != null&& !params[i + 1].toString().trim().equals("")&& !params[i + 1].toString().trim().equals("null"))
+			if (!MyString.isEmpty(params[i + 1]))
 				map.put(params[i].toString(), params[i + 1]);
 		}
 		return map;
 
 	}
+	//查询需要添加过滤器status>-1
 	public static String getHql(Map<String, Object> map) {
 		StringBuffer hql = new StringBuffer();
 		if (map == null || map.size() == 0) {
-			return " where 1=1 ";
+			return " where status>-1 ";
 		}
-		if (map.size() > 0) {
-			hql.append(" where ");
+		hql.append(" where ");
+		if (!map.containsKey("status")) {
+			hql.append(" status>-1 and ");
 		}
 		List<String> removes = new ArrayList<String>();
 		for (Entry<String, Object> entry : map.entrySet()) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
-			if (value == null || value.toString().trim().equals("")
-					|| value.toString().trim().equals("null")) {
-				removes.add(key);
-				continue;
-			}
 			if (key.indexOf("|") > 0) {
 				String[] keys = key.split("\\|");
+				keys[0] = keys[0].replaceAll("\\.", "_");
 				if (keys[1].equals("in")) {
-					hql.append(keys[0] + " in (" + value.toString() + ") and ");
-					removes.add(key);
+					hql.append(keys[0] + " in (:" + keys[0].replaceAll("\\.", "_") + ") and ");
 				} else if (keys[1].equals(Const.NULL)) {
 					hql.append(keys[0] + " =null and ");
 					removes.add(key);
@@ -97,8 +89,7 @@ public class Tools {
 								+ "%' and ");
 					removes.add(key);
 				} else {
-					hql.append(keys[0] + " " + keys[1] + ":"
-							+ keys[0].replaceAll("\\.", "_") + " and ");
+					hql.append(keys[0] + " " + keys[1] + ":"+ keys[0]+ " and ");
 				}
 			} else
 				hql.append(key + "=:" + key.replaceAll("\\.", "_") + " and ");
@@ -133,6 +124,8 @@ public class Tools {
 				query.setInteger(key, Integer.parseInt(value.toString()));
 			} else if (value instanceof String) {
 				query.setString(key, value.toString());
+			}else if(value instanceof List){
+				query.setParameterList(key,(List<?>) value); 
 			} else {
 				query.setParameter(key, value);
 			}

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.crap.framework.Pick;
-import cn.crap.framework.base.IBaseDao;
 import cn.crap.framework.base.BaseService;
+import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IModuleService;
@@ -23,6 +23,7 @@ import cn.crap.utils.Const;
 import cn.crap.utils.DataType;
 import cn.crap.utils.InterfaceStatus;
 import cn.crap.utils.MenuType;
+import cn.crap.utils.ParameterType;
 import cn.crap.utils.RequestMethod;
 import cn.crap.utils.SettingType;
 import cn.crap.utils.Tools;
@@ -117,6 +118,12 @@ public class MenuService extends
 		case "INTERFACESTATUS":// 枚举 接口状态
 			for (InterfaceStatus status : InterfaceStatus.values()) {
 				pick = new Pick(status.getName(), status.name());
+				picks.add(pick);
+			}
+			break;
+		case "PARAMETERTYPE":// 请求参数类型
+			for (ParameterType param : ParameterType.values()) {
+				pick = new Pick(param.name(), param.getName());
 				picks.add(pick);
 			}
 			break;

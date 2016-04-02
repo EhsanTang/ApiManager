@@ -5,14 +5,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>必要|API登陆</title>
+<link href="${ICON}" rel="shortcut icon" type="image/x-icon" />
+<link href="${ICON}" rel="icon" type="image/x-icon" />
+<link href="${ICON}" rel="shortcut" type="image/x-icon" />
+<title>${TITLE}</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-<link href="resources/css/base-min.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/login.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/admin.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="BGEEE">
 	<div class="container">
@@ -21,7 +24,7 @@
 			<div class="col-sm-12 col-lg-4 p50 shadow panel panel-default r5 bt-5">
 					<div id="warnMessage" class="text-error mb15 mt10"></div>
 					<blockquote>
-  						<p class="pl10">必要|API接口管理系统</p>
+  						<p class="pl10">${TITLE}</p>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
 					<form class="form-horizontal p15 mt10" role="form" method="post" action="login.do" onsubmit="return loginValidate();" id="login_form">

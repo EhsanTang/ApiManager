@@ -47,10 +47,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'page@settingList' : {
 				templateUrl : 'resources/html/page.tpl.html'
-			},
-			'detail' : {
+			}
+		}
+	}).state('settingDetail', {
+		url : '/setting/detail/:type/:id',
+		views : {
+			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/settingImgDetail.tpl.html';
+					return 'resources/html/setting'+$stateParems.type+'Detail.tpl.html';
 				}
 			}
 		}

@@ -17,7 +17,16 @@
        		org.springframework.web.context.ContextLoaderListener  
     	</listener-class>  
 	</listener> 
-	
+	<listener>  
+        <listener-class>  
+            org.springframework.web.context.request.RequestContextListener  
+        </listener-class>  
+</listener>  
+<listener>  
+        <listener-class>  
+           cn.crap.utils.MyListener
+        </listener-class>  
+</listener>  
 	<!-- 转码处理 -->
 	<filter>
 	    <filter-name>CharactorEncodingFilter</filter-name>

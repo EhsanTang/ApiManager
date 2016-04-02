@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 	var pickCallBack = ${iCallBack};
 	var pickCallBackParam = '${iCallBackParam}';
@@ -39,6 +40,8 @@
 <div id="pickContent">
 	${pickContent}
 </div>
+<c:if test="${radio!='true'}">
 <div class="fr w border-t ml10 tr pt10 form-group">
 	<button type="button" class="btn btn-info form-control" onclick="setPick()">选择</button>
 </div>
+</c:if>

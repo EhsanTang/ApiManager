@@ -73,6 +73,22 @@ mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, 
     };
     $scope.getData();
 });
+mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function() {
+		var params = "iLoading=FLOAT|iUrl=setting/detail.do?id="+$stateParams.id;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			httpSuccess(result,'iLoading=FLOAT')
+			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = result.replace('[ERROR]', '');
+				 $rootScope.model = null;
+			 }else{
+				 $rootScope.model = result.data;
+			 }
+		});
+    };
+    $scope.getData();
+});
+
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {

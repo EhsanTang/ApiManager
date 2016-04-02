@@ -1,4 +1,5 @@
-function addOneParam(name, necessary, type, remark, rowNum, tableId) {
+
+function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
 		rowNum = mydate.getMilliseconds();
@@ -14,7 +15,7 @@ function addOneParam(name, necessary, type, remark, rowNum, tableId) {
 								+ "' value='"
 								+ necessary
 								+ "'"
-								+ "onclick=\"loadPick(event,200,250,'true','necessary"
+								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
 								+ rowNum
 								+ "','TRUEORFALSE','','"
 								+ necessary
@@ -22,6 +23,16 @@ function addOneParam(name, necessary, type, remark, rowNum, tableId) {
 								+ "<td><input class='form-control' type='text' name='type' value='"
 								+ type
 								+ "' placeholder=\"类型：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='parameterType' id='parameterType"
+								+ rowNum
+								+ "' value='"
+								+ parameterType
+								+ "'"
+								+ "onfocus=\"loadPick(event,200,250,'true','parameterType"
+								+ rowNum
+								+ "','PARAMETERTYPE','','"
+								+ parameterType
+								+ "','',5);\" placeholder=\"参数类型：请求头/参数\"></td>"
 								+ "<td><input class='form-control' type='text' name='remark' value='"
 								+ remark
 								+ "'></td>"
@@ -93,7 +104,7 @@ function keyMonitor() {
 							navigateText = navigateText.substring(0,
 									navigateText.length - 1)
 						}
-						if (navigateText.length == 0) {
+						if (navigateText.trim().length == 0) {
 							$("#pickTip").css("display", "none");
 						}
 						var tHandler = "pickScroll('" + navigateText + "')";
@@ -103,6 +114,7 @@ function keyMonitor() {
 						navigateText += String.fromCharCode(event.keyCode);
 						if (lookUp.style.display != 'block')
 							navigateText = "";
+						navigateText = navigateText.trim();
 						var tHandler = "pickScroll('" + navigateText + "')";
 						setTimeout(tHandler, 500);
 					}
@@ -113,7 +125,7 @@ function keyMonitor() {
 }
 function pickScroll(oldNavigateText) {
 	$("#pickTip").html(navigateText);
-	if (navigateText.length > 0) {
+	if (navigateText.trim().length > 0) {
 		$("#pickTip").css("display", "block");
 	}
 	if (oldNavigateText != navigateText) {
@@ -157,8 +169,11 @@ function setPick() {
 		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
 				rootScope.$apply(function() {
-					if(pickTagName)
+					if(pickTagName){
+						$("#"+pickTagName).val($(".cidName")[i].textContent);
 						rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+					}
+					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
 					rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
 				});
 				break;
@@ -171,11 +186,14 @@ function setPick() {
 		}
 	}
 	if (pickRadio == 'false') {
+			//同时跟新控件的值和模型的值，有些控件没有使用模型，如接口参数
 			rootScope.$apply(function() {
+				$("#"+pickTag).val(checkBoxValue);
 				rootScope.model[pickTag] = checkBoxValue;
 				if(pickTagName){
 					checkBoxName = replaceAll(checkBoxName, "-", "");
 					checkBoxName = replaceAll(checkBoxName, " ", "");
+					$("#"+pickTagName).val(checkBoxName);
 					rootScope.model[pickTagName] = checkBoxName;
 				}
 			});

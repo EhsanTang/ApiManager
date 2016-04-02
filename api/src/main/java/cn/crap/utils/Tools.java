@@ -11,12 +11,19 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.SpringContextHolder;
 
 
 public class Tools {
@@ -131,27 +138,27 @@ public class Tools {
 			}
 		}
 	}
-	public static String getConf(String key, String fileName) throws Exception{
-		return getConf(key,fileName,null);
-	}
-	public static String getConf(String key, String fileName, String def) throws Exception{
-		if(fileName == null)
-			fileName = "/jdbc.properties";
-		InputStream in = Tools.class.getResourceAsStream(fileName);
-		Properties prop = new Properties();
-		try {
-			prop.load(in);
-			return prop.getProperty(key).trim();
-		} catch (Exception e) {
-			System.out.println("配置有误，params config have error,"+key+" not exist.");
-			if(def!=null){
-				return def;
-			}else{
-				e.printStackTrace();
-				throw new Exception("配置有误，"+key+"不存在");
-			}
-		}
-	}
+//	public static String getConf(String key, String fileName) throws Exception{
+//		return getConf(key,fileName,null);
+//	}
+//	public static String getConf(String key, String fileName, String def) throws Exception{
+//		if(fileName == null)
+//			fileName = "/jdbc.properties";
+//		InputStream in = Tools.class.getResourceAsStream(fileName);
+//		Properties prop = new Properties();
+//		try {
+//			prop.load(in);
+//			return prop.getProperty(key).trim();
+//		} catch (Exception e) {
+//			System.out.println("配置有误，params config have error,"+key+" not exist.");
+//			if(def!=null){
+//				return def;
+//			}else{
+//				e.printStackTrace();
+//				throw new Exception("配置有误，"+key+"不存在");
+//			}
+//		}
+//	}
 	public static String getServicePath(HttpServletRequest request){
 		return request.getSession().getServletContext().getRealPath("/")+"/";
 	}
@@ -164,5 +171,17 @@ public class Tools {
 		}
 		return temp;
 	}
-	private static HashMap<String,String> settings= new HashMap<String,String>();
+	public static HttpServletResponse getResponse(){
+		HttpServletResponse response=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();;
+		response.setContentType( "text/html" );
+		response.setCharacterEncoding( "UTF-8" );
+		return response;
+	}
+	public static HttpServletRequest getRequest(){
+		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();  
+	}
+	public static ServletContext getServletContext(){
+		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();  
+        return webApplicationContext.getServletContext(); 
+	}
 }

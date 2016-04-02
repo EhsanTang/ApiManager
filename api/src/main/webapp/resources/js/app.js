@@ -13,8 +13,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.pick = [];
 	
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
-		var mywidth = getValue(params,'mywidth');
-		var myheight = getValue(params,'myheight');
+		var iwidth = getValue(params,'iwidth');
+		var iheight = getValue(params,'iheight');
 		var radio = getValue(params,'radio');
 		var tag = getValue(params,'tag');
 		var code = getValue(params,'code');
@@ -23,9 +23,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var showType = getValue(params,'showType');
 		var def = getValue(params,'def');
 		var tagName = getValue(params,'tagName');
-		$rootScope.loadPick(event,mywidth,myheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName);
+		$rootScope.loadPick(event,iwidth,iheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName);
 	}
-	$rootScope.loadPick = function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName) { 
+	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName) { 
 		/***********加载选择对话框********************/
 		if(!params)
 			params='';
@@ -40,9 +40,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
 		if(tagName)
-			lookUp('lookUp', event, myheight, mywidth ,showType,tagName);
+			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);
 		else
-			lookUp('lookUp', event, myheight, mywidth ,showType,tag);
+			lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 		showMessage('lookUp','false',false,-1);
 	}
 	$rootScope.getBaseData = function($scope,$http,params,page) {

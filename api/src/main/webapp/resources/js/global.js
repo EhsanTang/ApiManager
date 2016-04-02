@@ -44,7 +44,7 @@ function closeModeal(){
 	$(".modal-header>.close").click();
 }
 
-function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
+function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
 	/***********加载选择对话框********************/
 	if(!params)
 		params='';
@@ -53,7 +53,7 @@ function loadPick(event,mywidth,myheight,radio,tag,code,type,def,params,showType
 	//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
 	callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
 			+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&def="+def+params,iCallBack,iCallBackParam);
-	lookUp('lookUp', event, myheight, mywidth ,showType,tag);
+	lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 	showMessage('lookUp','false',false,-1);
 }
 

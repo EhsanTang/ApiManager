@@ -16,6 +16,7 @@ import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Setting;
 import cn.crap.model.Module;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -70,6 +71,7 @@ public class SettingController extends BaseController{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		Cache.setSetting(setting);
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/delete.do")

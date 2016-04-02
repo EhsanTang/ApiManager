@@ -5,15 +5,12 @@
 <html lang="en" ng-app="app">
 <head>
 <meta charset="UTF-8">
-<title>必要|API接口文档</title>
+<title>${TITLE}</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="http://static.biyao.com/pc/favicon.ico" rel="shortcut icon"
-	type="image/x-icon" />
-<link href="http://static.biyao.com/pc/favicon.ico" rel="icon"
-	type="image/x-icon" />
-<link href="resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-<link href="resources/images/favicon.ico" rel="icon" type="image/x-icon" />
+<link href="${ICON}" rel="shortcut icon" type="image/x-icon" />
+<link href="${ICON}" rel="icon" type="image/x-icon" />
+<link href="${ICON}" rel="shortcut" type="image/x-icon" />
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/kediter/themes/default/default.css" rel="stylesheet" type="text/css" />

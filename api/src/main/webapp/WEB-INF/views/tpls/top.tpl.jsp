@@ -13,7 +13,7 @@
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand pt10" href="web.do" target="_blank">
-					<img class="h30" src="resources/images/logo.png" />
+					<img class="h30" src="${LOGO}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">

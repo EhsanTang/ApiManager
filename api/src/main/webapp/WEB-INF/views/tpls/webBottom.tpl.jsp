@@ -8,11 +8,11 @@
 	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="http://www.biyao.com/help/8.html">加入必要</a>
+	    				<a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
 	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="http://www.biyao.com/help/9.html">联系我们</a>
+	    				<a target="_blank" href="http://api.crap.cn">联系我们</a>
 	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">

@@ -1,5 +1,7 @@
 package cn.crap.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -46,7 +48,14 @@ public class SettingController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Setting setting){
-		setting= settingService.get(setting.getId());
+		if(!MyString.isEmpty(setting.getId())){
+			setting = settingService.get(setting.getId());
+		}else if(!MyString.isEmpty(setting.getKey())){
+			List<Setting> settings= settingService.findByMap(Tools.getMap("key",setting.getKey()),null,null);
+			if(settings.size()>0){
+				setting = settings.get(0);
+			}
+		}
 		if(setting==null){
 			setting=new Setting();
 		}

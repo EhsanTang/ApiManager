@@ -1,0 +1,15 @@
+<div class="r0 p20 pt0 col-xs-12" ng-controller="settingDetailCtrl">
+<ol class="breadcrumb">
+  <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
+  <li>{{model.value}}</li>
+</ol>
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-12 p0 f12 lh26">
+		<div class="f14 mt-3 fl mr10" ng-bind-html="model.remark|trustHtml"></div>
+</div>
+</div>
+<div class="cb"></div>
+

@@ -1,4 +1,4 @@
-body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td
+body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,input,textarea,th,td
 {margin:0;padding:0;font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
 .fm{font-family: Tahoma,"\5b8b\4f53",Arial,Helvetica,Arial,sans-serif;}
 .roman {font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
@@ -27,7 +27,6 @@ img {
 .ofy-a{overflow-y:auto;}
 .ofx-h{overflow:hidden;}
 small{font-size:12px}
-ul,ol{list-style:none}
 .sup{vertical-align:text-top}
 .sub{vertical-align:text-bottom}
 
@@ -176,7 +175,8 @@ table{border-collapse:collapse;border-spacing:0}
 .maw400 {max-width:400px;}
 
 .mah {max-height:100%;}
-.mah40 {max-height:40px;}
+.mah40 {max-height:40px!important;}
+.mah50 {max-height:50px!important;}
 .mah100{ max-height:100px;}
 .mah200{ max-height:200px;}
 .mah300{ max-height:300px;}.mah400{ max-height:400px;}

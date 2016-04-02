@@ -8,7 +8,12 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/webInterface/list/0/接口列表');
+	if($("#sessionAuth").length>0){
+		$urlRouterProvider.otherwise('/webSetting/detail/ADMINHELP');
+	}else{
+		$urlRouterProvider.otherwise('/webSetting/detail/HELP');
+	}
+	
 	$stateProvider.state('menuList', {
 		url : '/menu/list/:parentId/:menuName',
 		views : {
@@ -54,7 +59,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/setting'+$stateParems.type+'Detail.tpl.html';
+					return 'resources/html/settingDetail_'+$stateParems.type+'.tpl.html';
+				}
+			}
+		}
+	}).state('webSettingDetail', {
+		url : '/webSetting/detail/:key',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/settingDetail.tpl.html';
 				}
 			}
 		}

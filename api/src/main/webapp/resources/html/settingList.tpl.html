@@ -36,7 +36,7 @@
 			<tr class="BGEEE">
 				<th class="tc w100">key</th>
 				<th class="tc">value</th>
-				<th class="tc w50">类型</th>
+				<th class="tc w100">类型</th>
 				<th class="tc">备注</th>
 				<th class="w300 tc">操作</th>
 			</tr>
@@ -46,7 +46,9 @@
 				<td class="tc">{{item.key}}</td>
 				<td class="tc">{{item.value}}</td>
 				<th class="tc">{{item.typeName}}</th>
-				<td class="tc">{{item.remark}}</td>
+				<td class="tc">
+					<div class="mah50 of-h" ng-bind-html="item.remark|trustHtml"></div>
+				</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('SETTING','');"
 					ng-href="#/setting/detail/{{item.type}}/{{item.id}}">

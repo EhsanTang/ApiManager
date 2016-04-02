@@ -13,7 +13,6 @@
 <link href="${ICON}" rel="shortcut" type="image/x-icon" />
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/framework/kediter/themes/default/default.css" rel="stylesheet" type="text/css" />
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
@@ -48,11 +47,13 @@ font-family: Tahoma,"SimSun"!important;
     <script src="resources/js/controllers.js?v=2010"></script>
     <script src="resources/js/filters.js"></script>
     
+    <script src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>
+    <script src='resources/framework/textAngular-1.5.0/textAngular-sanitize.min.js'></script>
+    <script src='resources/framework/textAngular-1.5.0/textAngular.min.js'></script>
+    
     <script src="resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script>
-	<script src="resources/framework/kediter/kindeditor-min.js"></script>
-	<script src="resources/framework/kediter/lang/zh_CN.js"></script>
     <script src="resources/js/validateAndRefresh.js?v=200"></script>
     <script src="resources/js/core.js?v=200"></script>
 	<script src="resources/js/global.js?v=200"></script>

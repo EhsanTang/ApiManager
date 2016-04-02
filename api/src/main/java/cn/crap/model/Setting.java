@@ -5,10 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.MenuType;
+import cn.crap.utils.MyString;
+import cn.crap.utils.SettingType;
 
 
 /**
@@ -23,6 +27,7 @@ public class Setting extends BaseModel{
 	private String key;
 	private String value;
 	private String remark;
+	private String type;
 	
 	@Id
 	@GeneratedValue(generator="Generator")
@@ -40,6 +45,14 @@ public class Setting extends BaseModel{
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
+	@Column(name="type")
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	@Column(name="value")
 	public String getValue() {
 		return value;
@@ -53,5 +66,11 @@ public class Setting extends BaseModel{
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	@Transient
+	public String getTypeName(){
+		if(!MyString.isEmpty(type))
+			return SettingType.valueOf(type).getName();
+		return "";
 	}
 }

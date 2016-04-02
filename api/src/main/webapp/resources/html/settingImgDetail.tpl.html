@@ -21,6 +21,17 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tc">类型</td>
+					<td class="tc">
+						<div class="input-group">
+							<input  class="form-control"  id="typeName" type="text" value="{{model.typeName}}" readonly placeholder="请点击“选择”选择权限">
+							<div class="input-group-addon cursor btn-purple" 
+								ng-click="loadPickByName('mywidth=300|myheight=360|radio=true|tagName=typeName|tag=type|code=SETTINGTYPE|def='+model.type,$event)">
+							选择</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
 					<td class="tc">备注</td>
 					<td class="tc"><textarea class="form-control no-resize"
 							ng-model="model.remark" rows="6" placeholder="备注信息"></textarea></td>
@@ -29,14 +40,14 @@
 					<td>上传图片</td>
 					<td>
 						<div class="col-xs-6 p0">
-							<div class="C999 file fl mr20" title="点击选择图片" onclick="$('#uploadImg').click();">
-								<i class="iconfont f60">&#xe613;</i>
+							<div class="C999 file fl mr20 cursor"  title="点击选择图片" onclick="$('#uploadImg').click();">
+								<i class="iconfont f60 main-color">&#xe619;</i>
 							</div>
 							<span class="ndis">
 								<input type="file" name="img" onchange="uploadImage('uploadImg',2048,settingForm)" id="uploadImg"/>
 							</span>
 						</div>
-						<div class="col-xs-6 p0">
+						<div class="col-xs-6 p0 maw400 mah400">
 							<img src="{{model.value}}" id="image" ng-show="model.value!=''">
 						</div>
 					</td>

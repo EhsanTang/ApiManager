@@ -18,8 +18,9 @@
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/kediter/themes/default/default.css" rel="stylesheet" type="text/css" />
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-<link href="resources/css/base-min.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/admin.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/global.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<%@include file="../tpls/top.tpl.jsp"%>
@@ -55,7 +56,7 @@
     <script src="resources/js/validateAndRefresh.js?v=200"></script>
     <script src="resources/js/core.js?v=200"></script>
 	<script src="resources/js/global.js?v=200"></script>
-	<script src="resources/js/admin.js?v=200"></script>
+	<script src="resources/js/crapApi.js?v=200"></script>
 	<script src="resources/js/checkJson.js?v=200"></script>
 	
 	<!-- 提示窗口 -->

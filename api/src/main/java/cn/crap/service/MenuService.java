@@ -24,6 +24,7 @@ import cn.crap.utils.DataType;
 import cn.crap.utils.InterfaceStatus;
 import cn.crap.utils.MenuType;
 import cn.crap.utils.RequestMethod;
+import cn.crap.utils.SettingType;
 import cn.crap.utils.Tools;
 import cn.crap.utils.TrueOrFalse;
 
@@ -121,6 +122,12 @@ public class MenuService extends
 			break;
 		case "MENUTYPE":// 枚举 接口状态
 			for (MenuType type : MenuType.values()) {
+				pick = new Pick(type.name(), type.getName());
+				picks.add(pick);
+			}
+			break;
+		case "SETTINGTYPE":// 枚举 设置类型
+			for (SettingType type : SettingType.values()) {
 				pick = new Pick(type.name(), type.getName());
 				picks.add(pick);
 			}

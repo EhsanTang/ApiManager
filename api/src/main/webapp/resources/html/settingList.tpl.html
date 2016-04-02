@@ -34,8 +34,9 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc">key</th>
+				<th class="tc w100">key</th>
 				<th class="tc">value</th>
+				<th class="tc">类型</th>
 				<th class="tc">备注</th>
 				<th class="w300 tc">操作</th>
 			</tr>
@@ -44,6 +45,7 @@
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.key}}</td>
 				<td class="tc">{{item.value}}</td>
+				<th class="tc">{{item.typeName}}</th>
 				<td class="tc">{{item.remark}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('SETTING','');"

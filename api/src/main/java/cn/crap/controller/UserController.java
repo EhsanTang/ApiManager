@@ -21,6 +21,7 @@ import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
+import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -50,6 +51,7 @@ public class UserController extends BaseController{
 		if(user==null){
 			user=new User();
 		}
+		user.setPassword("");
 		return new JsonResult(1,user);
 	}
 	
@@ -57,8 +59,15 @@ public class UserController extends BaseController{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult addOrUpdate(@ModelAttribute User user){
+		if(!MyString.isEmpty(user.getPassword())){
+			user.setPassword(MD5.encrytMD5(user.getPassword()));
+		}
 		try{
 		if(!MyString.isEmpty(user.getUserId())){
+			User temp = userService.get(user.getUserId());
+			if(MyString.isEmpty(user.getPassword())){
+				user.setPassword(temp.getPassword());
+			}
 			userService.update(user);
 		}else{
 			user.setUserId(null);

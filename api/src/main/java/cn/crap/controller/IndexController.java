@@ -27,6 +27,7 @@ import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
+import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -61,10 +62,11 @@ public class IndexController extends BaseController{
 		try {
 			User user = new User();
 			user.setUserName(userName);
+			user.setStatus(Byte.valueOf("1"));
 			List<User> users = userService.findByExample(user);
 			if(users.size()>0){
 				user = users.get(0);
-				if(userName.equals(user.getUserName())&&userPassword.equals(user.getPassword())){
+				if(userName.equals(user.getUserName())&&MD5.encrytMD5(userPassword).equals(user.getPassword())){
 					request.setAttribute("userName", userName);
 					request.getSession().setAttribute(Const.SESSION_ADMIN, userName);
 					StringBuilder sb = new StringBuilder(","+user.getAuth()+",");
@@ -82,7 +84,7 @@ public class IndexController extends BaseController{
 					MyCookie.addCookie(Const.COOKIE_USERNAME, userName, response);
 					MyCookie.addCookie(Const.COOKIE_REMBER_PWD, remberPwd, response);
 					if(remberPwd.equals("YES")){
-						MyCookie.addCookie(Const.COOKIE_PASSWORD, userPassword, response);
+						MyCookie.addCookie(Const.COOKIE_PASSWORD, userPassword, true, response);
 					}else{
 						MyCookie.deleteCookie(Const.COOKIE_PASSWORD, request, response);
 					}
@@ -101,7 +103,7 @@ public class IndexController extends BaseController{
 		request.getSession().invalidate();
 		request.setAttribute("tipMessage", "退出成功！");
 		request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
-		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, request));
+		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
 		return "admin/login";
 	}
@@ -111,7 +113,7 @@ public class IndexController extends BaseController{
 	@RequestMapping({"/preLogin.do"})
 	public String preLogin(HttpServletResponse response) {
 		request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
-		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, request));
+		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
 		return "admin/login";
 	}

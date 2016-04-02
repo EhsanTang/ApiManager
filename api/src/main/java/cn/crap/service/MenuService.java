@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.Pick;
 import cn.crap.framework.base.BaseService;
@@ -47,6 +48,7 @@ public class MenuService extends
 	}
 
 	@Override
+	@Transactional
 	public String pick(List<Pick> picks, String radio, String code, String key, String def) {
 		Pick pick = null;
 		if (radio.equals("true")) {

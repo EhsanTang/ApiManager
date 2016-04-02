@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.framework.base.BaseService;
@@ -25,6 +26,7 @@ public class RoleService extends BaseService<Role>
 		super.setDao(dao);
 	}
 	@Override
+	@Transactional
 	public void getAuthFromRole(StringBuilder sb, Role role){
 		sb.append(role.getAuth()+",");
 		for(String auth:role.getAuth().split(",")){
@@ -35,6 +37,7 @@ public class RoleService extends BaseService<Role>
 			}
 		}
 	}
+	@Transactional
 	private void getSubAuth(DataType dataType,StringBuilder sb,String parentId){
 		for(Module module :moduleService.findByMap(Tools.getMap("parentId",parentId), null, null)){
 			sb.append(dataType.name()+"_"+module.getModuleId()+",");

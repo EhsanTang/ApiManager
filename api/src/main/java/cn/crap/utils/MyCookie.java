@@ -28,8 +28,11 @@ public class MyCookie {
 		addCookie(key,value,false, response);
 	}
 	public static void addCookie(String key,String value,boolean jiami, HttpServletResponse response){
-		if(jiami) 
+		if(jiami){
+			value = Aes.encrypt(value);
+		}else{
 			value =new String(new Base64().encode(value.getBytes()));
+		}
 		Cookie myCookie=new Cookie(key,value);
 		myCookie.setMaxAge(60*60*24*7);
 		response.addCookie(myCookie);
@@ -49,9 +52,9 @@ public class MyCookie {
 					  if(allCookie[i].getValue()==null)
 						  return "";
 					  else if(jiami)
-						  return new String(new Base64().decode(allCookie[i].getValue()));
+						return Aes.desEncrypt(allCookie[i].getValue());
 					  else
-						  return allCookie[i].getValue();
+						  return new String(new Base64().decode(allCookie[i].getValue()));
 		          }
 		         
 		      }

@@ -22,4 +22,7 @@ public class Const {
 	public static final String COOKIE_USERNAME = "cookieUserName";
 	public static final String COOKIE_PASSWORD = "cookiePassword";
 	public static final String COOKIE_REMBER_PWD = "cookieRemberPwd";
+	
+	//系统设置
+	public static final String SETTING_SECRETKEY = "SECRETKEY";
 }

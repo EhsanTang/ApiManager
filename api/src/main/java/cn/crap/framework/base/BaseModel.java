@@ -1,8 +1,10 @@
 package cn.crap.framework.base;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
-public class BaseModel{
+@MappedSuperclass
+public abstract class BaseModel{
 	protected String createTime;
 	/**
 	 * -1:删除，0:不可用，1:可用

@@ -90,7 +90,11 @@ public class MenuController extends BaseController{
 		map = Tools.getMap("parentId","0");
 		List<Menu> menus = menuService.findByMap(map,null,null);
 		map.clear();
-		map.put("parentId|in", menus.stream().map(e->e.getMenuId()).collect(Collectors.toList()));
+		List<String> menuIds = new ArrayList<String>();
+		for(Menu menu:menus){
+			menuIds.add(menu.getMenuId());
+		}
+		map.put("parentId|in", menuIds);
 		List<Menu> subMenus = menuService.findByMap(map,null,null);
 		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
 		for(Menu menu:menus){

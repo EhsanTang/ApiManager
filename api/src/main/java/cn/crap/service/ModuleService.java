@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.Pick;
 import cn.crap.framework.base.IBaseDao;
@@ -22,6 +23,7 @@ public class ModuleService extends BaseService<Module>
 		super.setDao(dao);
 	}
 	@Override
+	@Transactional
 	public void getModulePick(List<Pick> picks,String idPre,String parentId,String deep,String value,String suffix){
 		Pick pick = null;
 		for (Module m : findByMap(Tools.getMap("parentId",parentId), null,null)) {

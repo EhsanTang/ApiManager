@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class IndexController extends BaseController{
 	private IRoleService roleService;
 	@Autowired
 	private IUserService userService;
-	
+	private Logger log = Logger.getLogger(getClass());
 	@AuthPassport
 	@RequestMapping({"/index.do" })
 	public String showHomePage() throws Exception {
@@ -100,11 +101,16 @@ public class IndexController extends BaseController{
 	}
 	@RequestMapping({ "/loginOut.do"})
 	public String loginOut() throws IOException {
+		try{
 		request.getSession().invalidate();
 		request.setAttribute("tipMessage", "退出成功！");
 		request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
 		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error(e.getMessage());
+		}
 		return "admin/login";
 	}
 	/**
@@ -112,9 +118,14 @@ public class IndexController extends BaseController{
 	 */
 	@RequestMapping({"/preLogin.do"})
 	public String preLogin(HttpServletResponse response) {
-		request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
-		request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
-		request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+		try{
+			request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
+			request.setAttribute("password", MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
+			request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error(e.getMessage());
+		}
 		return "admin/login";
 	}
 	@RequestMapping(value = "pick.do")

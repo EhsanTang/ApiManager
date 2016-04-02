@@ -57,7 +57,6 @@ public class SettingController extends BaseController{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ERROR)
 	public JsonResult addOrUpdate(@ModelAttribute Setting setting){
-		try{
 			if(!MyString.isEmpty(setting.getId())){
 				settingService.update(setting);
 			}else{
@@ -68,9 +67,6 @@ public class SettingController extends BaseController{
 					return new JsonResult(new BiyaoBizException("000006"));
 				}
 			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 		Cache.setSetting(setting);
 		return new JsonResult(1,setting);
 	}

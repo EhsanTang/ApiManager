@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
@@ -32,7 +33,7 @@ public class BaseController {
 	protected HttpServletRequest request;
 	@Autowired
 	protected HttpServletResponse response;
-
+	private Logger log = Logger.getLogger(getClass());
 	/**
 	 * @return
 	 */
@@ -69,6 +70,7 @@ public class BaseController {
         if(ex instanceof BiyaoBizException) {  
             return new JsonResult((BiyaoBizException)ex);
         } else {  
+        	log.error(ex.getMessage());
         	ex.printStackTrace();
         	return new JsonResult(new BiyaoBizException("000001",ex.getMessage()));
         }  

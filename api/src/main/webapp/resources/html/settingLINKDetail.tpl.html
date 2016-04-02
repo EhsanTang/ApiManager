@@ -2,11 +2,7 @@
 	<button type="button" class="btn btn-danger btn-xs" ng-if="error">
 		<span class="glyphicon glyphicon-remove"></span> {{error}}
 	</button>
-<div class="col-xs-6 f16 fb p0 mb5">系统设置详情【{{model.key}}】</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
-</div>
-	<div class="col-xs-12 p0 bt1 pt20">
+	<div class="col-xs-12 p0">
 	<form id="editArticleShare" enctype="multipart/form-data" name="settingForm"
 			target="hiddenFrame" action="file/upload.do?isEditor=false"
 			method="post">
@@ -52,7 +48,7 @@
 							</span>
 						</div>
 						<div class="col-xs-6 p0 maw400 mah400">
-							<img src="{{model.value}}" class="main-bg" id="image" ng-show="model.value!=''">
+							<img src="{{model.value}}" id="image" ng-show="model.value!=''">
 						</div>
 					</td>
 				</tr>

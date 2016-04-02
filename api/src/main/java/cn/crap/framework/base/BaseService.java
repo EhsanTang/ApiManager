@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -24,6 +25,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * 保存对象
 	 * */
 	public T save(T model){
+		model.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		dao.save(model);
 		return model;
 	}

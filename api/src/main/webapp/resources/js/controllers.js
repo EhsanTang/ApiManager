@@ -175,6 +175,7 @@ mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state
 mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function() {
 		var params = "iUrl=interface/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
+		params +="&password="+unescape($.base64.decode($.cookie('password')));
 		httpService.callHttpMethod($http,params).success(function(result) {
 			httpSuccess(result,'iLoading=FLOAT')
 			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){

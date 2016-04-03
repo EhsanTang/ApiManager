@@ -80,8 +80,14 @@ public class InterfaceController extends BaseController {
 	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute Interface interFace) {
+	public JsonResult webDetail(@ModelAttribute Interface interFace,String password) {
 		interFace = interfaceService.get(interFace.getId());
+		Module module = moduleService.get(interFace.getModuleId());
+		if(!MyString.isEmpty(module.getPassword())){
+			if(MyString.isEmpty(password)||!password.equals(module.getPassword())){
+				return new JsonResult(new BiyaoBizException("000007"));
+			}
+		}
 		return new JsonResult(1, interFace);
 	}
 

@@ -2,7 +2,7 @@
 应用接口管理，后台开发语言为java，主要技术：anjularjs、bootstrap、springMVC、hibernate、maven
 Application Programming Interface
 
-演示地址：http://api.crap.cn
+演示地址：http://api.crap.cn  或者 http://api2.crap.cn
 账号：super 123456 （请勿修改密码，谢谢）
 游客私有模块访问密码：123
 QQ技术交流群：254450938

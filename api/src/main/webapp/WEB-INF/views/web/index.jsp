@@ -36,6 +36,7 @@ font-family: Tahoma,"SimSun"!important;
 	<%@include file="../tpls/webBottom.tpl.jsp"%>
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
 	
 	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
 	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
@@ -63,6 +64,26 @@ font-family: Tahoma,"SimSun"!important;
 <div id="lookUp" class="look-up shadow">
 	<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
 	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
+</div>
+<div class="imodal modal fade" id="myModal" role="dialog"
+	aria-label="myModalLabel" aria-hidden="true">
+	<div id="modal-dialog" class="modal-dialog modal-lg w400">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body" id="modal-body">
+				<input  class="form-control"  id="password" type="text" placeholder="请输入访问密码">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn btn-purple" data-dismiss="modal" onclick="sendPassword()">确认</button>
+			</div>
+		</div>
+	</div>
 </div>
 <div id="float" class="folat">
 		<div class="sk-wave">

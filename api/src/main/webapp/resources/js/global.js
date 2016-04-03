@@ -56,47 +56,12 @@ function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,i
 	lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 	showMessage('lookUp','false',false,-1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function initDatePicker(id){
-	if($('#'+id)){
-		$('#'+id).datetimepicker({
-			language:  'zh-CN',
-	        weekStart: 1,
-			autoclose: 1,
-			startView: 2,
-			minView: 2,
-			forceParse: 0,
-		    format: 'yyyy-mm-dd'
-		});
-	}
+/************输入接口访问密码***********/
+function sendPassword(){
+	$.cookie('password', $.base64.encode(escape($("#password").val())));
+	location.reload();
 }
-function initDatePicker2(id){
-	if($('#'+id)){
-		$('#'+id).datetimepicker({
-			language:  'zh-CN',
-	        weekStart: 1,
-			autoclose: 1,
-			startView: 2,
-			minView: 1,
-			forceParse: 0,
-		    format: 'yyyy-mm-dd hh'
-		});
-	}
-}
+
 /**
  * size 单位为kb
  * @param event
@@ -135,6 +100,16 @@ function uploadImgCallBack(msg, url) {
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
+/**
+ * 图片id 验证码输入框id
+ */
+function changeimg(imgId,inputId){
+	document.getElementById(imgId).src='getImgCode.do?'+Math.random(); 
+	try{
+		document.getElementById(inputId).focus();
+	}catch(ex){}
+	return false;
+}
 /*************************js调用anjularjs 获取$rootScope****************/
 function getRootScope(){
 	var $body = angular.element(document.body);
@@ -144,9 +119,32 @@ function getRootScope(){
 
 
 
-
-
-
+function initDatePicker(id){
+	if($('#'+id)){
+		$('#'+id).datetimepicker({
+			language:  'zh-CN',
+	        weekStart: 1,
+			autoclose: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0,
+		    format: 'yyyy-mm-dd'
+		});
+	}
+}
+function initDatePicker2(id){
+	if($('#'+id)){
+		$('#'+id).datetimepicker({
+			language:  'zh-CN',
+	        weekStart: 1,
+			autoclose: 1,
+			startView: 2,
+			minView: 1,
+			forceParse: 0,
+		    format: 'yyyy-mm-dd hh'
+		});
+	}
+}
 
 function addCookieToParams(key,value){
 	var params = $.cookie('params');
@@ -172,16 +170,6 @@ function clearForm(id,nots){
 	.removeAttr('selected');  
 }
 
-/**
- * 图片id 验证码输入框id
- */
-function changeimg(imgId,inputId){
-	document.getElementById(imgId).src='getImgCode.do?'+Math.random(); 
-	try{
-		document.getElementById(inputId).focus();
-	}catch(ex){}
-	return false;
-}
 
 /**
  * 单选

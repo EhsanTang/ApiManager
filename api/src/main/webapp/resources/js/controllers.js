@@ -125,7 +125,7 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
     };
     $scope.getData();
 });
-/**************************后端、前段接口列表****************************/
+/**************************后端接口列表****************************/
 mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
 		var params = "";
@@ -198,5 +198,25 @@ mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $htt
     	}
     	return false;
     }
+    $scope.getData();
+});
+mainModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "";
+		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
+			params += "&interfaceName=" + $("#interfaceName").val();
+			$stateParams.searchMenuName=$("#interfaceName").val();
+		}
+		if($("#url").val()!=null&&$("#url").val()!=''){
+			params += "&url=" + $("#url").val();
+			$stateParams.searchUrl=$("#url").val();
+		}
+		if(params==""){
+			params +="&moduleId="+ $stateParams.moduleId;
+		}
+		params +="&password="+unescape($.base64.decode($.cookie('password')));
+		params = "iUrl=interface/webList.do|iLoading=FLOAT|iParams="+params;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
     $scope.getData();
 });

@@ -1,6 +1,7 @@
 package cn.crap.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
@@ -25,6 +26,7 @@ import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
@@ -41,27 +43,16 @@ public class InterfaceController extends BaseController {
 
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage) {
-		page.setCurrentPage(currentPage);
-		map = Tools.getMap("moduleId", interFace.getModuleId(),
-				"interfaceName|like", interFace.getInterfaceName(),"url|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
-		List<Interface> interfaces = interfaceService.findByMap(
-				map, page, null);
-		map.clear();
-		List<Module> modules = null;
-		// 搜索接口时，module为空
-		if (interFace.getModuleId() != null) {
-			map = Tools.getMap("parentId", interFace.getModuleId());
-			modules = moduleService.findByMap(map, null, null);
-		}
-		map.put("interfaces", interfaces);
-		map.put("modules", modules);
-		return new JsonResult(1, map, page);
+		return interfaceService.getInterfaceList(page, map, interFace, currentPage);
 	}
+
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult detail(@ModelAttribute Interface interFace,
 			String currentId) {
 		interFace = interfaceService.get(interFace.getId());
@@ -73,7 +64,20 @@ public class InterfaceController extends BaseController {
 		}
 		return new JsonResult(1, interFace);
 	}
+	@RequestMapping("/webList.do")
+	@ResponseBody
+	public JsonResult webList(@ModelAttribute Interface interFace,
+			@RequestParam(defaultValue = "1") Integer currentPage,String password) {
+		Module module = moduleService.get(interFace.getModuleId());
+		if(!MyString.isEmpty(module.getPassword())){
+			if(MyString.isEmpty(password)||!password.equals(module.getPassword())){
+				return new JsonResult(new BiyaoBizException("000007"));
+			}
+		}
+		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
+	}
 
+	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute Interface interFace) {

@@ -11,27 +11,14 @@ import org.hibernate.annotations.GenericGenerator;
 import cn.crap.framework.base.BaseModel;
 
 
-/**
- * @author lizhiyong
- * @date 2016-01-06
- */
 @Entity
 @Table(name="module")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Module extends BaseModel{
-	/**
-	 * moduleId(所属模块ID)
-	 * */
 	private String moduleId;
-	/**
-	 * moduleName(所属模块名称)
-	 * */
 	private String moduleName;
-	/**
-	 * parentId(父级节点ID)
-	 * */
 	private String parentId;
-
+	private String password;
 
 	@Id
 	@GeneratedValue(generator="Generator")
@@ -42,6 +29,15 @@ public class Module extends BaseModel{
 
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
+	}
+	
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Column(name="moduleName")

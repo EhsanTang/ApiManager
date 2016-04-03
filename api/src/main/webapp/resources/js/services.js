@@ -45,7 +45,11 @@ function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
 }
 function httpSuccess(data, iLoading, tipTime) {
 	if(data.success==0){
-		data = "[ERROR]"+data.error.message;
+		if(data.error.code="000007"){
+			openModal("请输入访问密码","500");
+		}else{
+			data = "[ERROR]"+data.error.message;
+		}
 	}
 	else if (isJson(data)) {
 		data = "[OK]";

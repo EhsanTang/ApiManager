@@ -41,7 +41,6 @@ mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $st
 		var params = "iUrl=menu/list.do|iLoading=FLOAT|iParams=";
 		if($("#menuName").val()!=null&&$("#menuName").val()!=''){
 			params += "&menuName=" + $("#menuName").val();
-			$stateParams.searchMenuName=$("#menuName").val();
 		}else{
 			params +="&parentId="+ $stateParams.parentId;
 		}
@@ -55,7 +54,6 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
 		var params = "iUrl=user/list.do|iLoading=FLOAT|iParams=";
 		if($("#trueName").val()!=null&&$("#trueName").val()!=''){
 			params += "&trueName=" + $("#trueName").val();
-			$stateParams.searchUserName=$("#trueName").val();
 		}
 		$rootScope.getBaseData($scope,$http,params,page);
     };
@@ -67,7 +65,6 @@ mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, 
 		var params = "iUrl=setting/list.do|iLoading=FLOAT|iParams=";
 		if($("#searchRemark").val()!=null&&$("#searchRemark").val()!=''){
 			params += "&remark=" + $("#searchRemark").val();
-			$stateParams.searchRemark=$("#searchRemark").val();
 		}
 		$rootScope.getBaseData($scope,$http,params,page);
     };
@@ -95,7 +92,6 @@ mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
 		var params = "iUrl=role/list.do|iLoading=FLOAT|iParams=";
 		if($("#roleName").val()!=null&&$("#roleName").val()!=''){
 			params += "&roleName=" + $("#roleName").val();
-			$stateParams.searchRoleName=$("#roleName").val();
 		}
 		$rootScope.getBaseData($scope,$http,params,page);
     };
@@ -108,15 +104,12 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
 		var params = "iUrl=error/list.do|iLoading=FLOAT|iParams=";
 		if($("#searchMsg").val()!=null&&$("#searchMsg").val()!=''){
 			params += "&errorMsg=" + $("#searchMsg").val();
-			$stateParams.searchMsg=$("#searchMsg").val();
 		}
 		if($("#searchCode").val()!=null&&$("#searchCode").val()!=''){
 			params += "&errorCode=" + $("#searchCode").val();
-			$stateParams.searchCode=$("#searchCode").val();
 		}
 		if($("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=''){
 			params += "&moduleId=" + $("#searchModuleId").val();
-			$stateParams.searchModuleId=$("#searchModuleId").val();
 		}else if($stateParams.moduleId){
 			$stateParams.searchModuleId=$stateParams.moduleId;
 			params += "&moduleId=" + $stateParams.moduleId;
@@ -131,11 +124,9 @@ mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state
 		var params = "";
 		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
 			params += "&interfaceName=" + $("#interfaceName").val();
-			$stateParams.searchMenuName=$("#interfaceName").val();
 		}
 		if($("#url").val()!=null&&$("#url").val()!=''){
 			params += "&url=" + $("#url").val();
-			$stateParams.searchUrl=$("#url").val();
 		}
 		if(params==""){
 			params +="&moduleId="+ $stateParams.moduleId;

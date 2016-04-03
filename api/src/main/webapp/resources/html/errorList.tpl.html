@@ -17,7 +17,7 @@
 			<div class="input-group">
 				<div class="input-group-addon">Code</div>
 				<input type="text" class="form-control input-xs dis-in-blo"
-					placeholder="Code" id="searchCode" ng-model="$stateParams.searchCode">
+					placeholder="Code" id="searchCode">
 			</div>
 		</div>
 		<div class="form-group w200 fr mr10">
@@ -25,17 +25,16 @@
 			<div class="input-group">
 				<div class="input-group-addon">Msg</div>
 				<input type="text" class="form-control input-xs dis-in-blo w120"
-					placeholder="Msg" id="searchMsg" ng-model="$stateParams.searchMsg">
+					placeholder="Msg" id="searchMsg">
 			</div>
 		</div>
 		<div class="form-group w200 fr mr10">
+			<input type="hidden" class="form-control dis-in-blo w120" id="searchModuleId">
 			<label class="sr-only" for="">模块</label>
 			<div class="input-group">
 				<div class="input-group-addon">模块</div>
-				<input type="text" class="form-control dis-in-blo w120"
-					placeholder="模块ID" id="searchModuleId" ng-model="$stateParams.searchModuleId">
-				<div class="input-group-addon" 
-				ng-click="loadPick($event,220,320,'true','searchModuleId','TOPMODULE','',$stateParams.searchModuleId);">选择</div>
+				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选着模块" id="searchModuleName"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=searchModuleName|tag=searchModuleId|code=TOPMODULE|def='+model.$stateParams.searchModuleId,$event);">
 			</div>
 		</div>
 		<div class="cb"></div>

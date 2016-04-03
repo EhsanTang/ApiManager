@@ -122,7 +122,7 @@ public class InterfaceController extends BaseController {
 			JSONObject obj = null;
 			for(int i=0;i<json.size();i++){  
 				obj = (JSONObject) json.get(i);
-		        if(obj.getString("parameterType").equals(ParameterType.HEADER.name())){
+		        if(obj.containsKey("parameterType")&&obj.getString("parameterType").equals(ParameterType.HEADER.name())){
 		        	headers.append("\t"+obj.getString("name")+"=xxxx\r\n");
 		        }else{
 		        	params.append("\t"+obj.getString("name")+"=xxxx\r\n");

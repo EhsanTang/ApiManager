@@ -22,7 +22,7 @@
 									<a class="menu-a" target="_self" href="index.do#/menu/list/0/无">菜单管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/interface/list/0/无">模块&接口管理</a>
+									<a class="menu-a" target="_self" href="index.do#/interface/list/0/无">项目&模块&接口管理</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="index.do#/user/list">用户管理</a>

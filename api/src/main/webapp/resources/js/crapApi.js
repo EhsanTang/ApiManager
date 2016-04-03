@@ -171,10 +171,12 @@ function setPick() {
 				rootScope.$apply(function() {
 					if(pickTagName){
 						$("#"+pickTagName).val($(".cidName")[i].textContent);
-						rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+						if(rootScope.model)
+							rootScope.model[pickTagName] = $(".cidName")[i].textContent;
 					}
 					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
-					rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
+					if(rootScope.model)
+						rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
 				});
 				break;
 			}

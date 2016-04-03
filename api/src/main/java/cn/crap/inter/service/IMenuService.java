@@ -8,9 +8,6 @@ import cn.crap.model.Menu;
 
 public interface IMenuService extends IBaseService<Menu>{
 
-
-
-	String pick(List<Pick> picks, String radio, String code, String key,
-			String def);
+	String pick(List<Pick> picks, String radio, String code, String key, String def, String notNull);
 
 }

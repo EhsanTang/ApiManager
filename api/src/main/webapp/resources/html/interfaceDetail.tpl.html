@@ -7,21 +7,8 @@
 			ng-if="model.parentId!=null">
 			<table class="table table-bordered">
 				<tr>
-					<td class="tc">父模块</td>
-					<td class="tc w200" colspan="3"><input class="form-control"
-						type="hidden" ng-model="model.moduleId">
-						<div class="input-group">
-							<input class="form-control" id="parentId" type="text"
-								ng-model="model.parentId">
-							<div class="input-group-addon cursor"
-								ng-click="loadPick($event,220,320,'true','parentId','TOPMODULE','',model.parentId,'&key=0');">
-								选择</div>
-						</div></td>
-
-				</tr>
-				<tr>
 					<td class="tc">名称</td>
-					<td class="tc" colspan="3"><input class="form-control"
+					<td class="tc" colspan="3"><input class="form-control" required
 						type="text" ng-model="model.moduleName"></td>
 				</tr>
 				<tr>

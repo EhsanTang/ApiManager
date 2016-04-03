@@ -17,28 +17,29 @@
 			<div class="input-group">
 				<div class="input-group-addon">备注</div>
 				<input type="text" class="form-control input-xs dis-in-blo w120"
-					placeholder="备注" id="searchRemark" ng-model="$stateParams.searchRemark">
+					placeholder="备注" id="searchRemark">
 			</div>
 		</div>
 		<div class="cb"></div>
 </div>
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">系统设置列表</div>
-<div class="col-xs-9 mt20 p0 mb10 f14 tr">
+<!-- div class="col-xs-9 mt20 p0 mb10 f14 tr">
 	<a type="button" class="btn btn-success btn-sm cursor" 
 		ng-href="#/setting/detail/TEXT/0">
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
 	</a>
 </div>
+ -->
 
 <div class="col-xs-12 p0">
 	<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE">
 				<th class="tc w100">key</th>
-				<th class="tc">value</th>
-				<th class="tc w100">类型</th>
+				<th class="tc w100">value</th>
+				<th class="tc w200">类型</th>
 				<th class="tc">备注</th>
-				<th class="w300 tc">操作</th>
+				<th class="w200 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,9 +55,10 @@
 					ng-href="#/setting/detail/{{item.type}}/{{item.id}}">
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('ERROR',item.moduleId);"
+				<!-- <a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('ERROR',item.moduleId);"
 					ng-click="del('setting/delete.do?id='+item.id,item.key)">
 					<i class="iconfont f12">&#xe60e;删除</i>
+				-->
 				</a>
 				</td>
 			</tr>

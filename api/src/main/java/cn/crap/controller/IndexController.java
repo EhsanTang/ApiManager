@@ -143,13 +143,25 @@ public class IndexController extends BaseController{
 		}
 		return "admin/login";
 	}
+	/**
+	 * 
+	 * @param code 需要显示的pick code
+	 * @param key 可选参数：根据具体情况定义，如当为模块是，key代表父id
+	 * @param radio 是否为单选
+	 * @param def 默认值
+	 * @param tag 保存选中结果的id
+	 * @param tagName 显示名称的输入框id
+	 * @param notNull 是否可以为空：当为单选，且notNull=false是，则可以选着为空
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "pick.do")
-	public String pickOut(String code, String key, String type,@RequestParam(defaultValue="true") String radio, String def, String tag,String tagName) throws Exception {
+	public String pickOut(String code, String key,@RequestParam(defaultValue="true") String radio, String def, String tag,String tagName, String notNull) throws Exception {
 		if(MyString.isEmpty(radio)){
 			radio = "true";
 		}
 		List<Pick> picks = new ArrayList<Pick>();
-		String pickContent = menuService.pick(picks, radio, code, key,def);
+		String pickContent = menuService.pick(picks, radio, code, key,def, notNull);
 		request.setAttribute("radio", radio);
 		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);

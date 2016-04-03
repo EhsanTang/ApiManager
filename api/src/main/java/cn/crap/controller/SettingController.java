@@ -64,7 +64,7 @@ public class SettingController extends BaseController{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ERROR)
+	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult addOrUpdate(@ModelAttribute Setting setting){
 			if(!MyString.isEmpty(setting.getId())){
 				settingService.update(setting);
@@ -83,7 +83,7 @@ public class SettingController extends BaseController{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Setting setting) throws BiyaoBizException{
 		setting = settingService.get(setting.getId());
-		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(),"");
+		Tools.hasAuth(Const.AUTH_SETTING, request.getSession(),"");
 		settingService.delete(setting);
 		return new JsonResult(1,null);
 	}

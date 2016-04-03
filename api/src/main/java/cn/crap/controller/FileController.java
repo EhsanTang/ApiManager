@@ -18,7 +18,7 @@ import cn.crap.utils.Tools;
 public class FileController extends BaseController {
 	private HashMap<String, String> extMap = new HashMap<String, String>();
 	public FileController(){
-		extMap.put("image", ",gif,jpg,jpeg,png,bmp,");
+		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");
 		//extMap.put("file", ",doc,docx,xls,xlsx,ppt,pdf,htm,html,txt,zip,rar,gz,bz2,");	
 	}
 	@RequestMapping(value="/file/upload.do")

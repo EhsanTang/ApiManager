@@ -10,8 +10,7 @@
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="hidden" ng-model="model.id"> 
-						<input class="form-control" type="text" ng-model="model.key">
+						<input class="form-control" type="text" ng-model="model.key" readonly>
 					</td>
 				</tr>
 				<tr>
@@ -23,13 +22,7 @@
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc">
-						<div class="input-group">
-							<input  class="form-control"  id="typeName" type="text" value="{{model.typeName}}" readonly placeholder="请点击“选择”选择权限">
-							<div class="input-group-addon cursor btn-purple" 
-								ng-click="loadPickByName('iwidth=200|iheight=250|radio=true|tagName=typeName|tag=type|code=SETTINGTYPE|def='+model.type,$event)">
-							选择</div>
-						</div>
-					</td>
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>					</td>
 				</tr>
 				<tr>
 					<td class="tc">备注</td>

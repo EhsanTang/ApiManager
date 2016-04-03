@@ -54,7 +54,7 @@
 			<props>
 				<!-- org.hibernate.dialect.SQLServerDialect -->
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<!-- 配置数据源 -->
 				<prop key="hibernate.c3p0.max_size">50</prop>
 				<prop key="hibernate.c3p0.min_size">5</prop>

@@ -24,6 +24,7 @@ import cn.crap.utils.Const;
 import cn.crap.utils.DataType;
 import cn.crap.utils.InterfaceStatus;
 import cn.crap.utils.MenuType;
+import cn.crap.utils.MyString;
 import cn.crap.utils.ParameterType;
 import cn.crap.utils.RequestMethod;
 import cn.crap.utils.SettingType;
@@ -49,16 +50,14 @@ public class MenuService extends
 
 	@Override
 	@Transactional
-	public String pick(List<Pick> picks, String radio, String code, String key, String def) {
+	public String pick(List<Pick> picks, String radio, String code, String key, String def,String notNull) {
 		Pick pick = null;
-		if (radio.equals("true")) {
-			pick = new Pick("pick_null", "", "------请选择-----");
+		if (radio.equals("true")&&!MyString.isEmpty(notNull)&&notNull.equals("false")) {
+			pick = new Pick("pick_null", "", "");
 			picks.add(pick);
 		}
 		switch (code) {
 		case "MENU":
-			pick = new Pick("0", "顶级类");
-			picks.add(pick);
 			for (Menu m : findByMap(Tools.getMap("parentId", "0"),
 					null, null)) {
 				pick = new Pick(m.getMenuId(), m.getMenuName());
@@ -66,6 +65,8 @@ public class MenuService extends
 			}
 			break;
 		case "AUTH":
+			pick = new Pick(DataType.MODULE.name()+"_0", "项目管理");
+			picks.add(pick);
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
@@ -83,13 +84,15 @@ public class MenuService extends
 				picks.add(pick);
 			}
 			// 分割线
-			pick = new Pick(Const.SEPARATOR, "用户、菜单、角色管理");
+			pick = new Pick(Const.SEPARATOR, "用户、菜单、角色、系统设置管理");
 			picks.add(pick);
 			pick = new Pick(DataType.USER.name(), "用户管理");
 			picks.add(pick);
 			pick = new Pick(DataType.ROLE.name(), "角色管理");
 			picks.add(pick);
 			pick = new Pick(DataType.MENU.name(), "菜单管理");
+			picks.add(pick);
+			pick = new Pick(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "我的菜单");
@@ -109,8 +112,6 @@ public class MenuService extends
 			}
 			break;
 		case "TOPMODULE":// 顶级模块
-			pick = new Pick("0", "顶级类");
-			picks.add(pick);
 			for (Module m : moduleService.findByMap(
 					Tools.getMap("parentId", "0"), null, null)) {
 				pick = new Pick(m.getModuleId(), m.getModuleName());
@@ -209,6 +210,9 @@ public class MenuService extends
 			picks.add(pick);
 			// 后端菜单管理
 			pick = new Pick("h_m_0", "index.do#/menu/list/0/无", "菜单列表");
+			picks.add(pick);
+			// 后端系统设置
+			pick = new Pick("h_s_0", "index.do#/setting/list", "系统设置列表");
 			picks.add(pick);
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "后台模块");

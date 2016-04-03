@@ -59,6 +59,7 @@ function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,i
 /************输入接口访问密码***********/
 function sendPassword(){
 	$.cookie('password', $.base64.encode(escape($("#password").val())));
+	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
 	location.reload();
 }
 

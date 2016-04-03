@@ -46,7 +46,7 @@ function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
 function httpSuccess(data, iLoading, tipTime) {
 	if(data.success==0){
 		if(data.error.code="000007"){
-			openModal("请输入访问密码","500");
+			openModal("请输入访问密码","300");
 		}else{
 			data = "[ERROR]"+data.error.message;
 		}

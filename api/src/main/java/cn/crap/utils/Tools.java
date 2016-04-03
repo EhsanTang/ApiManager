@@ -23,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.JsonResult;
 import cn.crap.framework.SpringContextHolder;
 
 
@@ -50,6 +51,20 @@ public class Tools {
 			return true;
 		}else{
 			throw new BiyaoBizException("000003");
+		}
+	}
+	/**********************模块访问密码
+	 * @throws BiyaoBizException ***************************/
+	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws BiyaoBizException{
+		if(!MyString.isEmpty(modulePassword)){
+			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
+				if(MyString.isEmpty(visitCode)||!visitCode.equals(request.getSession().getAttribute(Const.SESSION_OLD_IMG_CODE).toString())){
+					throw new BiyaoBizException("000007");
+				}
+			}
+			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
+				throw new BiyaoBizException("000007");
+			}
 		}
 	}
 	/**********************构造查询语句****************************/

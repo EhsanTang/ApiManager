@@ -35,7 +35,7 @@
 						</div>
 						<c:if test="${applicationScope.VERIFICATIONCODE=='true'}">
 							<div class="input-wrapper">
-								<input type="text" class="" id="verificationCode" name="verificationCode"  placeholder="验证码" required>
+								<input type="text" class="" id="verificationCode" name="verificationCode"  placeholder="图形验证码" required>
 								
 								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
 									<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"

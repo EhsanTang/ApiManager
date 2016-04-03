@@ -23,8 +23,10 @@ import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -67,27 +69,19 @@ public class InterfaceController extends BaseController {
 	@RequestMapping("/webList.do")
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
-			@RequestParam(defaultValue = "1") Integer currentPage,String password) {
+			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws BiyaoBizException {
 		Module module = moduleService.get(interFace.getModuleId());
-		if(!MyString.isEmpty(module.getPassword())){
-			if(MyString.isEmpty(password)||!password.equals(module.getPassword())){
-				return new JsonResult(new BiyaoBizException("000007"));
-			}
-		}
+		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
 	}
 
 	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute Interface interFace,String password) {
+	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws BiyaoBizException {
 		interFace = interfaceService.get(interFace.getId());
 		Module module = moduleService.get(interFace.getModuleId());
-		if(!MyString.isEmpty(module.getPassword())){
-			if(MyString.isEmpty(password)||!password.equals(module.getPassword())){
-				return new JsonResult(new BiyaoBizException("000007"));
-			}
-		}
+		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		return new JsonResult(1, interFace);
 	}
 

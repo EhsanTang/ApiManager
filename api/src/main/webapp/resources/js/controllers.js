@@ -176,6 +176,7 @@ mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $htt
 	$scope.getData = function() {
 		var params = "iUrl=interface/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
 		params +="&password="+unescape($.base64.decode($.cookie('password')));
+		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
 		httpService.callHttpMethod($http,params).success(function(result) {
 			httpSuccess(result,'iLoading=FLOAT')
 			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
@@ -216,6 +217,7 @@ mainModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $st
 			params +="&moduleId="+ $stateParams.moduleId;
 		}
 		params +="&password="+unescape($.base64.decode($.cookie('password')));
+		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
 		params = "iUrl=interface/webList.do|iLoading=FLOAT|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };

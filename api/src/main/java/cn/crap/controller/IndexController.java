@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,12 +164,13 @@ public class IndexController extends BaseController{
 	@RequestMapping("getImgCode.do")
 	@ResponseBody
 	public void getImgvcode() throws IOException{
+		HttpSession session = request.getSession();
 		// 设置response，输出图片客户端不缓存
 		response.setDateHeader("Expires", 0);
 		response.addHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
-		
+		session.setAttribute(Const.SESSION_OLD_IMG_CODE, session.getAttribute(Const.SESSION_IMG_CODE));
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
 		request.getSession().setAttribute(Const.SESSION_IMG_CODE, vservice.getCode());

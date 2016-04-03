@@ -76,8 +76,19 @@ font-family: Tahoma,"SimSun"!important;
 				</button>
 				<h4 class="modal-title"></h4>
 			</div>
-			<div class="modal-body" id="modal-body">
-				<input  class="form-control"  id="password" type="text" placeholder="请输入访问密码">
+			<div class="modal-body p30" id="modal-body">
+					<div class="input-wrapper">
+						<input id="password" type="text" placeholder="请输入访问密码">
+					</div>
+					<c:if test="${applicationScope.VISITCODE=='true'}">
+								<div class="input-wrapper">
+									<input type="text" id="visitCode" placeholder="图形验证码">
+									<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
+										<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"
+	  									 src="getImgCode.do">
+									</div>
+								</div>
+					</c:if>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn btn-purple" data-dismiss="modal" onclick="sendPassword()">确认</button>

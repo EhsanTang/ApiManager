@@ -14,10 +14,9 @@
 <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/login.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="BGEEE">
+<body class="BGF5">
 	<div class="container">
 		<div class="row p0 m0 mt100  r5">
 			<div class="visible-lg-block col-lg-4"></div>
@@ -28,15 +27,22 @@
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
 					<form class="form-horizontal p15 mt10" role="form" method="post" action="login.do" onsubmit="return loginValidate();" id="login_form">
-						<div class="form-group">
-								<label  class="sr-only">账号</label>
-							    <input type="text" class="form-control" id="userName" name="userName" value="${userName}" placeholder="用户名">
+						<div class="input-wrapper">
+							    <input type="text" class="" id="userName" name="userName" value="${userName}" placeholder="用户名" required>
 						</div>
-						<div class="form-group mt20">
-								<label  class="sr-only">密码</label>
-								<input type="password" class="form-control" id="userPassword" value="${password}" name="userPassword" placeholder="密码（6-20个字符）">
+						<div class="input-wrapper">
+								<input type="password"  id="userPassword" value="${password}" name="userPassword" placeholder="密码（不少于6位）" required>
 						</div>
-						
+						<c:if test="${applicationScope.VERIFICATIONCODE=='true'}">
+							<div class="input-wrapper">
+								<input type="text" class="" id="verificationCode" name="verificationCode"  placeholder="验证码" required>
+								
+								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
+									<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"
+  									 src="getImgCode.do">
+								</div>
+							</div>
+						</c:if>
 						<div class="form-group mt30">
 							<button type="submit" class="btn btn-block btn-success">登入<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
 						</div>

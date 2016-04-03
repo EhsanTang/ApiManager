@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -27,11 +28,13 @@ import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.User;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
+import cn.crap.utils.ValidateCodeService;
 
 
 @Scope("prototype")
@@ -59,8 +62,17 @@ public class IndexController extends BaseController{
 		return "web/index";
 	}
 	@RequestMapping({ "/login.do"})
-	public String login(HttpServletResponse response,@RequestParam String userPassword,@RequestParam String userName,@RequestParam(defaultValue="YES") String remberPwd) throws IOException {
+	public String login(@RequestParam String userPassword,@RequestParam String userName,@RequestParam(defaultValue="YES") String remberPwd
+			,String verificationCode) throws IOException {
 		try {
+			if(Cache.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")){
+				if(MyString.isEmpty(verificationCode)||!verificationCode.equals(request.getSession().getAttribute(Const.SESSION_IMG_CODE).toString())){
+					request.setAttribute("tipMessage", "验证码输入有误");
+					request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+					request.setAttribute("userName", userName);
+					return "admin/login";
+				}
+			}
 			User user = new User();
 			user.setUserName(userName);
 			user.setStatus(Byte.valueOf("1"));
@@ -92,11 +104,13 @@ public class IndexController extends BaseController{
 					response.sendRedirect("index.do");
 					return "admin/index";
 			}
-			}
+		}
+			request.setAttribute("tipMessage", "账号或密码有误");
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
+			request.setAttribute("tipMessage", e.getMessage());
 		}
-		request.setAttribute("tipMessage", "账号或密码有误");
 		return "admin/login";
 	}
 	@RequestMapping({ "/loginOut.do"})
@@ -145,5 +159,24 @@ public class IndexController extends BaseController{
 		request.setAttribute("pickContent", pickContent);
 		
 		return "admin/pick";
+	}
+	@RequestMapping("getImgCode.do")
+	@ResponseBody
+	public void getImgvcode() throws IOException{
+		// 设置response，输出图片客户端不缓存
+		response.setDateHeader("Expires", 0);
+		response.addHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
+		response.setContentType("image/jpeg");
+		
+		ServletOutputStream out = response.getOutputStream();
+		ValidateCodeService vservice = new ValidateCodeService();
+		request.getSession().setAttribute(Const.SESSION_IMG_CODE, vservice.getCode());
+		try {
+	    	vservice.write(out);
+			out.flush();
+		}finally {
+			out.close();
+		}
 	}
 }

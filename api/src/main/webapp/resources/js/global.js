@@ -176,7 +176,7 @@ function clearForm(id,nots){
  * 图片id 验证码输入框id
  */
 function changeimg(imgId,inputId){
-	document.getElementById(imgId).src='authImg.img?'+Math.random(); 
+	document.getElementById(imgId).src='getImgCode.do?'+Math.random(); 
 	try{
 		document.getElementById(inputId).focus();
 	}catch(ex){}

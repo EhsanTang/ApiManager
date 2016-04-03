@@ -24,6 +24,37 @@ html,body{
 	background-color:#6f5499;
   	border-color: #563d7c;
 }
+.input-wrapper{
+	position: relative;
+    border-bottom: 1px solid #eee;
+    margin-left:-15px;
+    margin-right:-15px;
+}
+.input-wrapper:first-child {
+    border-top: 1px solid #eee;
+}
+.input-wrapper input {
+    padding: 15px 8px;
+    height: 48px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 18px;
+    color: #787878;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+.input-wrapper .imgCode{
+	position: absolute;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    margin: auto;
+    height: 30px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+}
 /************添加参数*****************/
 #editParamTable input{
     border: 1px solid #DDD;

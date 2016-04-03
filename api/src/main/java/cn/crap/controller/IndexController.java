@@ -66,11 +66,11 @@ public class IndexController extends BaseController{
 	public String login(@RequestParam String userPassword,@RequestParam String userName,@RequestParam(defaultValue="YES") String remberPwd
 			,String verificationCode) throws IOException {
 		try {
+			request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+			request.setAttribute("userName", userName);
 			if(Cache.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")){
 				if(MyString.isEmpty(verificationCode)||!verificationCode.equals(request.getSession().getAttribute(Const.SESSION_IMG_CODE).toString())){
 					request.setAttribute("tipMessage", "验证码输入有误");
-					request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
-					request.setAttribute("userName", userName);
 					return "admin/login";
 				}
 			}

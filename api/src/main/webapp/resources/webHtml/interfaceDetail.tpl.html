@@ -32,7 +32,7 @@
 		{{model.interfaceName}}
 		
 		<div id="1_2">1.2 接口说明</div>
-		{{model.remark}}
+		<span ng-bind-html="model.remark|trustHtml"></span>
 		
 		<div id="1_3">1.3 接口状态</div>
 		<span ng-if="model.status==1">可用</span>

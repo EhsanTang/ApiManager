@@ -1,13 +1,4 @@
-﻿    <style>
-    .ta-editor {
-        min-height: 300px;
-        height: auto;
-        overflow: auto;
-        font-family: inherit;
-        font-size: 100%;
-    }
-    </style>
-<div class="r0 p10 pt10 col-xs-12" ng-controller="settingDetailCtrl">
+﻿<div class="r0 p10 pt10 col-xs-12" ng-controller="settingDetailCtrl">
 	<button type="button" class="btn btn-danger btn-xs" ng-if="error">
 		<span class="glyphicon glyphicon-remove"></span> {{error}}
 	</button>
@@ -43,7 +34,7 @@
 				<tr>
 					<td class="tc">备注</td>
 					<td class="tc">
-       					 <div text-angular="text-angular" class="tl p10" name="remark" ng-model="model.remark" ta-disabled='disabled'></div>
+       					 <div text-angular="text-angular" class="tl p10" name="remark" ng-model="model.remark"></div>
 					</td>
 				</tr>
 			</table>

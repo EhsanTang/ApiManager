@@ -40,11 +40,9 @@
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w80">接口名称</td>
-					<td class="tc w400"><input class="form-control" type="hidden"
-						ng-model="model.id"> <input class="form-control"
-						type="hidden" ng-model="model.moduleId"> <input
-						class="form-control" type="text" ng-model="model.interfaceName"
-						placeholder="示例：获取订单列表接口"></td>
+					<td class="tc w400">
+					<input class="form-control" type="text" ng-model="model.interfaceName"
+						placeholder="示例：获取订单列表接口" required></td>
 					<td class="tc w80">模块名</td>
 					<td class="tc"><input class="form-control" type="text"
 						ng-model="model.moduleName" readonly></td>
@@ -52,7 +50,7 @@
 				<tr>
 					<td class="tc">URL</td>
 					<td class="tc" colspan="3"><input class="form-control"
-						type="text" ng-model="model.url"
+						type="text" ng-model="model.url" required
 						placeholder="示例：http://api.biyao.com/CustomerOrder/GetMyOrderList">
 					</td>
 				</tr>
@@ -152,16 +150,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">请求示例</td>
-					<td class="tc"><textarea class="form-control no-resize tl" ng-model="model.requestExam" rows="6"
-							placeholder="http://api.biyao.com/CustomerOrder/GetMyOrderList?
-uid=1211&
-orderStatus=1&
-payplatform=PC"></textarea>
-					</td>
 					<td class="tc">接口说明</td>
-					<td class="tc"><textarea class="form-control no-resize"
-							ng-model="model.remark" rows="6" placeholder="尽量描述清楚接口功能"></textarea></td>
+					<td class="tc" colspan="3"><div text-angular="text-angular" class="tl" ng-model="model.remark"></div></td>
 				</tr>
 				<tr>
 					<td class="tc">

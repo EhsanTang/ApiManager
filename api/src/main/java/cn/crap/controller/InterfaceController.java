@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -29,6 +30,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.ParameterType;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
@@ -112,7 +114,23 @@ public class InterfaceController extends BaseController {
 		interFace.setUpdateBy("userName："+request.getSession().getAttribute(Const.SESSION_ADMIN).toString()+" | trueName："+
 				request.getSession().getAttribute(Const.SESSION_ADMIN_TRUENAME).toString());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));
-		
+		interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
+		if(!MyString.isEmpty(interFace.getParam())){
+			JSONArray json = JSONArray.fromObject(interFace.getParam());
+			StringBuilder headers = new StringBuilder("请求头:\r\n");
+			StringBuilder params = new StringBuilder("请求参数:\r\n");
+			JSONObject obj = null;
+			for(int i=0;i<json.size();i++){  
+				obj = (JSONObject) json.get(i);
+		        if(obj.getString("parameterType").equals(ParameterType.HEADER.name())){
+		        	headers.append("\t"+obj.getString("name")+"=xxxx\r\n");
+		        }else{
+		        	params.append("\t"+obj.getString("name")+"=xxxx\r\n");
+		        }
+		    }  
+			interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
+			
+		}
 		if (!MyString.isEmpty(interFace.getId())) {
 			interfaceService.update(interFace);
 		} else {

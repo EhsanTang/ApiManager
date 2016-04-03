@@ -4,24 +4,19 @@
 	<div class="col-xs-12 f14 p0 mb5 h100 tc mt20">
 	    		<ul class="dis-in-tab"> 
 	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="http://www.biyao.com/minisite/ljby">关于必要</a>
+	    				<a target="_blank">邮箱：EhsanTang@163.com</a>
 	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
+	    				<a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub地址</a>
 	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="http://api.crap.cn">联系我们</a>
+	    				<a target="_blank" href="http://api.crap.cn">演示地址</a>
 	    				<span class="bg_line"></span>
 	    			</li>
-	    			<li class="dis-in-tab mr20">
-	    				<a target="_blank" href="http://weibo.com/biyaoshangcheng">官方微博</a>
-	    				<span class="bg_line"></span>
-	    			</li>
-	    			
 	    		</ul>
-	    		<p class="mt20 ">◎BIYAO.COM 2015 版权所有 <a class="col_999" href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备13088531号</a><br>   			
+	    		<p class="mt20 ">◎API.CRAP.CN 2016 版权所有  			
 				</p>
 	</div>
 </div>

@@ -8,6 +8,9 @@
 <title>${TITLE}</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="keywords"
+	content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
+<meta name="description" content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）" />
 <link href="${ICON}" rel="shortcut icon" type="image/x-icon" />
 <link href="${ICON}" rel="icon" type="image/x-icon" />
 <link href="${ICON}" rel="shortcut" type="image/x-icon" />

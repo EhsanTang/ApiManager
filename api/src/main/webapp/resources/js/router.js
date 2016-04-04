@@ -72,6 +72,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('webWebPageList', {
+		url : '/webWebPage/list/:type',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/webPageList_'+$stateParems.type+'.tpl.html';
+				}
+			},
+			'page@webWebPageList' : {
+				templateUrl : 'resources/webHtml/page.tpl.html'
+			}
+		}
+	}).state('webWebPageDetail', {
+		url : '/webWebPage/detail/:type/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
+				}
+			}
+		}
 	}).state('userList', {
 		url : '/user/list',
 		views : {

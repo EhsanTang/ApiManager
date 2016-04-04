@@ -182,9 +182,7 @@ public class MenuService extends
 			break;
 		case "MENURUL":// 前段菜单显示模块url
 			// 分割线
-			pick = new Pick();
-			pick.setName("前端错误码");
-			pick.setValue(Const.SEPARATOR);
+			pick = new Pick(Const.SEPARATOR,"前端错误码");
 			picks.add(pick);
 			String preUrl = "web.do#/webError/list/";
 			for (Module m : moduleService.findByMap(
@@ -194,13 +192,17 @@ public class MenuService extends
 				picks.add(pick);
 			}
 			// 分割线
-			pick = new Pick();
-			pick.setName("前端模块");
-			pick.setValue(Const.SEPARATOR);
+			pick = new Pick(Const.SEPARATOR, "前端模块");
 			picks.add(pick);
 			preUrl = "web.do#/webInterface/list/";
 			moduleService.getModulePick(picks, "w_", "0", "",preUrl+"moduleId/moduleName");
-			
+			pick = new Pick(Const.SEPARATOR, "前端数据字典");
+			picks.add(pick);
+			preUrl = "web.do#/webWebPage/list/";
+			for (WebPageType webPage : WebPageType.values()) {
+				pick = new Pick(webPage.name(), preUrl+webPage.name(), webPage.getName());
+				picks.add(pick);
+			}
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "后台");
 			picks.add(pick);

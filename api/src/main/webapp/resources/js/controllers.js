@@ -59,8 +59,27 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************WebPage列表****************************/
 mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val();
+		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val()
+		+"&name="+$("#searchName").val();;
 		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+mainModule.controller('webPagetDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function() {
+		var params = "iLoading=FLOAT|iUrl=webPage/detail.do?id="+$stateParams.id;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			httpSuccess(result,'iLoading=FLOAT')
+			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = result.replace('[ERROR]', '');
+				 $rootScope.model = null;
+			 }else{
+				 $rootScope.model = result.data;
+				 if($rootScope.model.content!=''){
+					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
+			     }
+			 }
+		});
     };
     $scope.getData();
 });

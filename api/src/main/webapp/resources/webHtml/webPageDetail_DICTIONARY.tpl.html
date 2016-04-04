@@ -1,0 +1,37 @@
+<div class="r0 p20 pt0 col-xs-12" ng-controller="webPagetDetailCtrl">
+	<ol class="breadcrumb">
+		<li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
+		<li>表：{{model.name}}</li>
+	</ol>
+	<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span> {{error}}
+	</button>
+	<div class="col-xs-12 p0 f12 mt20 mb20">
+		<blockquote>
+  			<p>&nbsp;&nbsp;{{model.brief}}</p>
+		</blockquote>
+	</div>
+	<table class="table table-bordered f14 C555 mb5">
+		<thead>
+			<tr class="btn-purple">
+				<th class="w150">字段</th>
+				<th  class="w100">类型</th>
+				<th  class="w100">空</th>
+				<th  class="w150">默认</th>
+				<th>注释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in dictionary">
+				<td>{{item.name}}</td>
+				<td>{{item.type}}</td>
+				<td>{{item.notNull}}</td>
+				<td>{{item.def}}</td>
+				<td>{{item.remark}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+<div class="cb"></div>
+

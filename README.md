@@ -1,6 +1,5 @@
 # CrapApi
-应用接口管理，后台开发语言为java，主要技术：anjularjs、bootstrap、springMVC、hibernate、maven
-Application Programming Interface
+一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）
 
 演示地址：http://api.crap.cn  或者 http://api2.crap.cn
 账号：super 123456 （请勿修改密码，谢谢）

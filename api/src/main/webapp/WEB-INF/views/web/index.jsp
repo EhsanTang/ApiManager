@@ -17,6 +17,8 @@
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/global.css" rel="stylesheet" type="text/css" />
+<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 	body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td{
 font-family: Tahoma,"SimSun"!important;	

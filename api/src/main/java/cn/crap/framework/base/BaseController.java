@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.utils.Page;
 
@@ -67,12 +67,12 @@ public class BaseController {
 	@ExceptionHandler({ Exception.class })
 	 @ResponseBody  
      public JsonResult expHandler(HttpServletRequest request, Exception ex) {  
-        if(ex instanceof BiyaoBizException) {  
-            return new JsonResult((BiyaoBizException)ex);
+        if(ex instanceof MyException) {  
+            return new JsonResult((MyException)ex);
         } else {  
         	log.error(ex.getMessage());
         	ex.printStackTrace();
-        	return new JsonResult(new BiyaoBizException("000001",ex.getMessage()));
+        	return new JsonResult(new MyException("000001",ex.getMessage()));
         }  
     }  
 	 
@@ -89,14 +89,14 @@ public class BaseController {
 			}
 		}
 	 
-	 protected void handleBindingValidation(BindingResult bindingResult) throws BiyaoBizException{
+	 protected void handleBindingValidation(BindingResult bindingResult) throws MyException{
 	        if(bindingResult.hasErrors()){
 	            List<ObjectError> list = bindingResult.getAllErrors();
 	            StringBuilder msg= new StringBuilder();
 	            for(ObjectError error:list){
 	            	msg.append(error.getDefaultMessage()+";");
 	            }
-	            throw new BiyaoBizException("0",msg.toString());
+	            throw new MyException("0",msg.toString());
 	        }
 	    }
 	 protected Object getParam(String key, String def) {

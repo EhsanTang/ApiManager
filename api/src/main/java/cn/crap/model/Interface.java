@@ -5,23 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cn.crap.framework.base.BaseModel;
-import cn.crap.inter.service.IErrorService;
 
-/**
- * @author lizhiyong
- * @date 2016-01-06
- */
 @Entity
 @Table(name="interface")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Interface extends BaseModel{
-	@Autowired
-	private IErrorService errorInfoService;
 	/**
 	 * id(主键)
 	 * */

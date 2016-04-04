@@ -11,18 +11,10 @@ import org.hibernate.annotations.GenericGenerator;
 import cn.crap.framework.base.BaseModel;
 
 
-/**
- * @author lizhiyong
- * @date 2016-01-06
- */
 @Entity
 @Table(name="user")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class User extends BaseModel{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5200208514946795238L;
 	/**
 	 * userId(用户ID)
 	 * */

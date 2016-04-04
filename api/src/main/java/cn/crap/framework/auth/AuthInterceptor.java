@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
@@ -37,7 +37,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             	if(session.getAttribute(Const.SESSION_ADMIN_AUTH)!=null){
             		return Tools.hasAuth(authPassport.authority(), session, moduleId);
             	}else{
-            		throw new BiyaoBizException("000003");
+            		throw new MyException("000003");
             	}
             }else if(session.getAttribute(Const.SESSION_ADMIN)!=null){
             	return true;

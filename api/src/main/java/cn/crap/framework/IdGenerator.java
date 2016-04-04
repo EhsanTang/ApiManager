@@ -7,11 +7,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-
-/**
- * @author lizhiyong
- *
- */
 public class IdGenerator implements IdentifierGenerator{
 
 	public Serializable generate(SessionImplementor arg0, Object arg1)

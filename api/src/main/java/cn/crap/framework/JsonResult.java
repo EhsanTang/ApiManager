@@ -9,9 +9,12 @@ import cn.crap.utils.Page;
 public class JsonResult implements Serializable {
 	private static final long serialVersionUID = 7553249056983455065L;
 	private Page page;
+	private Integer success;
+	private Object data;
+	private  ErrorMessage error;
 	@Autowired
-	private BiyaoErrors biyaoErrors;
-	
+	private ErrorInfos errorInfos;
+
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;
 		this.success = success;
@@ -30,21 +33,15 @@ public class JsonResult implements Serializable {
 		this.success = success;
 	}
 
-	public JsonResult(BiyaoBizException exception){
+	public JsonResult(MyException exception){
 		this.data = null;
 		this.success = 0;
-		
-		BiyaoErrors errors = SpringContextHolder.getBean("biyaoErrors", BiyaoErrors.class);
 		String errorCode = exception.getMessage();
-		String errorMsg =  errors.getMessage(errorCode);
-		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention()),exception.getMsgExtention()));
+		String errorMsg =  errorInfos.getMessage(errorCode);
+		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention())));
 	}
 	
 	
-	private Integer success;
-	private Object data;
-	private  ErrorMessage error;
-
 	public Integer getSuccess() {
 		return success;
 	}
@@ -79,14 +76,9 @@ public class JsonResult implements Serializable {
 	
 }
 
-class ErrorMessage implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8519677473220335082L;
+class ErrorMessage{
 	private String code;
 	private String message;
-	private Object data;
 	public String getCode() {
 		return code;
 	}
@@ -99,21 +91,9 @@ class ErrorMessage implements Serializable{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Object getData() {
-		return data;
-	}
-	public void setData(Object data) {
-		this.data = data;
-	}
 	
 	public ErrorMessage(String code,String message){
 		this.setCode(code);
 		this.setMessage(message);
 	}
-	public ErrorMessage(String code,String message,Object data){
-		this.setCode(code);
-		this.setMessage(message);
-		this.setData(data);
-	}
-	
 }

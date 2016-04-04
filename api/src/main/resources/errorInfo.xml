@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 <beans>
-	<bean id="biyaoErrors" class="cn.crap.framework.BiyaoErrors" scope="singleton">
+	<bean id="errorInfos" class="cn.crap.framework.ErrorInfos" scope="singleton">
 		<property name="errMsgs">
 			<map>
 				<entry key="000001" value="系统未知错误" />

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class BiyaoErrors {
+public class ErrorInfos {
 	
 	private Map<String, String> errMsgs;
 
@@ -21,9 +21,6 @@ public class BiyaoErrors {
 		this.errMsgs = errMsgs;
 	}
 
-	/**
-	 * @娉ㄦ硶璇存槑:浠ap琛岃繑鍥為敊璇俊鎭強缂栫爜
-	 **/
 	public Map<String, String> getErrMap(String code) {
 		Map<String, String> returnMap = new HashMap<String, String>();
 		if (errMsgs.get(code) != null) {
@@ -33,16 +30,9 @@ public class BiyaoErrors {
 		return returnMap;
 	}
 	
-	/**
-	 * @娉ㄦ硶璇存槑:浠ap琛岃繑鍥為敊璇俊鎭強缂栫爜
-	 **/
 	public String getMessage(String code) {
 		return errMsgs.get(code);
 	}
-
-	/**
-	 * @娉ㄦ硶璇存槑:浠ap琛岃繑鍥為敊璇俊鎭強缂栫爜
-	 **/
 	public Map<String, String> getErrMap(String code, String msg) {
 		Map<String, String> returnMap = new HashMap<String, String>();
 		if (errMsgs.get(code) != null) {

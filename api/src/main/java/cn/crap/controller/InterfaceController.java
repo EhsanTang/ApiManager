@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -71,7 +71,7 @@ public class InterfaceController extends BaseController {
 	@RequestMapping("/webList.do")
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
-			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws BiyaoBizException {
+			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException {
 		Module module = moduleService.get(interFace.getModuleId());
 		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
@@ -80,7 +80,7 @@ public class InterfaceController extends BaseController {
 	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws BiyaoBizException {
+	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		Module module = moduleService.get(interFace.getModuleId());
 		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
@@ -93,7 +93,7 @@ public class InterfaceController extends BaseController {
 	public JsonResult addOrUpdate(
 			@ModelAttribute Interface interFace) {
 		if(MyString.isEmpty(interFace.getUrl()))
-			return new JsonResult(new BiyaoBizException("000005"));
+			return new JsonResult(new MyException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
@@ -138,7 +138,7 @@ public class InterfaceController extends BaseController {
 			Interface example = new Interface();
 			example.setUrl(interFace.getUrl());
 			if(interfaceService.findByExample(example).size()>0){
-				return new JsonResult(new BiyaoBizException("000004"));
+				return new JsonResult(new MyException("000004"));
 			}
 			interfaceService.save(interFace);
 		}
@@ -147,7 +147,7 @@ public class InterfaceController extends BaseController {
 
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Interface interFace) throws BiyaoBizException {
+	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
 		interfaceService.delete(interFace);

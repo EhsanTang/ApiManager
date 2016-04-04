@@ -6,19 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
-
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.MenuType;
 import cn.crap.utils.MyString;
 import cn.crap.utils.SettingType;
 
-
-/**
- * @author lizhiyong
- * @date 2016-01-06
- */
 @Entity
 @Table(name="setting")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")

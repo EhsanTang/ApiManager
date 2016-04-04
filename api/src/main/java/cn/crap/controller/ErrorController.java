@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -69,7 +69,7 @@ public class ErrorController extends BaseController{
 				if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"moduleId",error.getModuleId()))==0){
 					errorService.save(error);
 				}else{
-					return new JsonResult(new BiyaoBizException("000002"));
+					return new JsonResult(new MyException("000002"));
 				}
 			}
 		}catch(Exception e){
@@ -79,7 +79,7 @@ public class ErrorController extends BaseController{
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Error error) throws BiyaoBizException{
+	public JsonResult delete(@ModelAttribute Error error) throws MyException{
 		error = errorService.get(error.getErrorId());
 		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(), error.getModuleId());
 		errorService.delete(error);

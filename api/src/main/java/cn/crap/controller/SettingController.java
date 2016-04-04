@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -73,7 +73,7 @@ public class SettingController extends BaseController{
 				if(settingService.getCount(Tools.getMap("key",setting.getKey()))==0){
 					settingService.save(setting);
 				}else{
-					return new JsonResult(new BiyaoBizException("000006"));
+					return new JsonResult(new MyException("000006"));
 				}
 			}
 		Cache.setSetting(setting);
@@ -81,7 +81,7 @@ public class SettingController extends BaseController{
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Setting setting) throws BiyaoBizException{
+	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
 		setting = settingService.get(setting.getId());
 		Tools.hasAuth(Const.AUTH_SETTING, request.getSession(),"");
 		settingService.delete(setting);

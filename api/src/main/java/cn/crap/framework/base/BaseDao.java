@@ -21,10 +21,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-/**
- * @author lizhiyong
- * 
- */
 @SuppressWarnings("unchecked")
 public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	@Resource

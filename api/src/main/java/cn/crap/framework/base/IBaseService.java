@@ -1,14 +1,9 @@
 package cn.crap.framework.base;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
 import cn.crap.utils.Page;
-/**
- * @author lizhiyong
- * 
- */
+
 public interface IBaseService<T extends BaseModel> {
 
 	/**

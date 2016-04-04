@@ -10,11 +10,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
 
-
-/**
- * @author lizhiyong
- * @date 2016-01-06
- */
 @Entity
 @Table(name="error")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")

@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import cn.crap.framework.BiyaoBizException;
+import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.SpringContextHolder;
 
@@ -40,7 +40,7 @@ public class Tools {
 	 * 查询是否拥有权限
 	 */
 	public static boolean hasAuth(String authPassport, HttpSession session,
-			String moduleId) throws BiyaoBizException {
+			String moduleId) throws MyException {
 		String authority = session.getAttribute(Const.SESSION_ADMIN_AUTH).toString();
 		String roleIds = session.getAttribute(Const.SESSION_ADMIN_ROLEIDS).toString();
 		if((","+roleIds).indexOf(","+Const.SUPER+",")>=0){
@@ -50,20 +50,20 @@ public class Tools {
 		if(authority.indexOf(","+needAuth+",")>=0){
 			return true;
 		}else{
-			throw new BiyaoBizException("000003");
+			throw new MyException("000003");
 		}
 	}
 	/**********************模块访问密码***************************/
-	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws BiyaoBizException{
+	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
 		Object oldImgCode = request.getSession().getAttribute(Const.SESSION_OLD_IMG_CODE);
 		if(!MyString.isEmpty(modulePassword)){
 			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				if(MyString.isEmpty(visitCode)||oldImgCode==null||!visitCode.equals(oldImgCode.toString())){
-					throw new BiyaoBizException("000007");
+					throw new MyException("000007");
 				}
 			}
 			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
-				throw new BiyaoBizException("000007");
+				throw new MyException("000007");
 			}
 		}
 	}

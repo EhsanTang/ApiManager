@@ -1,8 +1,9 @@
-<div class="r0 p10 pt10 col-xs-12" ng-controller="interfaceCtrl">
-	<button type="button" class="btn btn-danger btn-xs" ng-if="error">
-		<span class="glyphicon glyphicon-remove"></span> {{error}}
-	</button>
-	<div class="col-xs-12 p0">
+<div class="r0 p10 pt0 col-xs-12" ng-controller="interfaceCtrl">
+<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+		<span class="glyphicon glyphicon-remove"></span>
+		{{error}}
+</button>
+<div class="col-xs-12 p0 mt10">
 		<form ng-submit="submitForm('module/addOrUpdate.do')"
 			ng-if="model.parentId!=null">
 			<table class="table table-bordered">
@@ -75,7 +76,7 @@
 										<th>类型</th>
 										<th>参数来源</th>
 										<th>备注</th>
-										<th>操作</th>
+										<th class="w50">操作</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -109,7 +110,7 @@
 										<th>名称</th>
 										<th>类型</th>
 										<th>备注</th>
-										<th>操作</th>
+										<th class="w50">操作</th>
 									</tr>
 								</thead>
 								<tbody>

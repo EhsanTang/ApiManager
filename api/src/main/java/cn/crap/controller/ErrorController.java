@@ -23,7 +23,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/error")
-public class ErrorController extends BaseController{
+public class ErrorController extends BaseController<Error>{
 
 	@Autowired
 	private IErrorService errorService;
@@ -44,13 +44,13 @@ public class ErrorController extends BaseController{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Error error,String currentId){
-		error= errorService.get(error.getErrorId());
-		if(error==null){
-			error=new Error();
-			error.setModuleId(currentId);
+	public JsonResult detail(@ModelAttribute Error error){
+		model= errorService.get(error.getErrorId());
+		if(model==null){
+			model=new Error();
+			model.setModuleId(error.getModuleId());
 		}
-		return new JsonResult(1,error);
+		return new JsonResult(1,model);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

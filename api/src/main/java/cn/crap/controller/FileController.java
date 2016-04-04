@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.crap.framework.base.BaseController;
+import cn.crap.model.User;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
-public class FileController extends BaseController {
+public class FileController extends BaseController <User>{
 	private HashMap<String, String> extMap = new HashMap<String, String>();
 	public FileController(){
 		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");

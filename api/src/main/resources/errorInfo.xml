@@ -11,6 +11,7 @@
 				<entry key="000005" value="接口url不能为空！" />
 				<entry key="000006" value="重复的key！" />
 				<entry key="000007" value="请输入访问密码" />
+				<entry key="000008" value="数据类型有误" />
 			</map>
 		</property>
 	</bean>

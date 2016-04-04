@@ -26,7 +26,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/setting")
-public class SettingController extends BaseController{
+public class SettingController extends BaseController<Setting>{
 
 	@Autowired
 	private ISettingService settingService;

@@ -28,7 +28,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController{
+public class UserController extends BaseController<User>{
 
 	@Autowired
 	private IUserService userService;
@@ -46,7 +46,7 @@ public class UserController extends BaseController{
 	}
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute User user,String currentId){
+	public JsonResult detail(@ModelAttribute User user){
 		user= userService.get(user.getUserId());
 		if(user==null){
 			user=new User();

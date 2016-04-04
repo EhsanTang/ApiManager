@@ -19,20 +19,20 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/module")
-public class ModuleController extends BaseController{
+public class ModuleController extends BaseController<Module>{
 
 	@Autowired
 	private IModuleService moduleService;
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Module module,String currentId){
-		module= moduleService.get(module.getModuleId());
-		if(module==null){
-			module=new Module();
-			module.setParentId(currentId);
+	public JsonResult detail(@ModelAttribute Module module){
+		model= moduleService.get(module.getModuleId());
+		if(model==null){
+			model=new Module();
+			model.setParentId(module.getParentId());
 		}
-		return new JsonResult(1,module);
+		return new JsonResult(1,model);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

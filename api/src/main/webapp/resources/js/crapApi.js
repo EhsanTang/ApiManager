@@ -1,4 +1,4 @@
-
+/*****************接口添加参数**************/
 function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
@@ -54,6 +54,24 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 								+ "</tr>");
 	}
 }
+/****************添加数据字典****************/
+function addOneField(name, type, notNull,def, remark, rowNum) {
+	if (!rowNum || rowNum == '') {
+		var mydate = new Date();
+		rowNum = mydate.getMilliseconds();
+	}
+		$("#content")
+				.append("<tr>"
+						+"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
+						+"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
+						+"<td><input class='form-control' type='text' name='notNull' value='"+ notNull + "' placeholder=\"是否可为空\"></td>"
+						+"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
+						+"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
+						+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
+						+"</tr>");
+}
+
+/****************End****************/
 function deleteOneParam(nowTr) {
 	$(nowTr).parent().parent().remove();
 }

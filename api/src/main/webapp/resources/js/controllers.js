@@ -51,10 +51,15 @@ mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************用户列表****************************/
 mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/list.do|iLoading=FLOAT|iParams=";
-		if($("#trueName").val()!=null&&$("#trueName").val()!=''){
-			params += "&trueName=" + $("#trueName").val();
-		}
+		var params = "iUrl=user/list.do|iLoading=FLOAT|iParams=&trueName=" + $("#trueName").val();
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**************************WebPage列表****************************/
+mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val();
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -62,10 +67,7 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=setting/list.do|iLoading=FLOAT|iParams=";
-		if($("#searchRemark").val()!=null&&$("#searchRemark").val()!=''){
-			params += "&remark=" + $("#searchRemark").val();
-		}
+		var params = "iUrl=setting/list.do|iLoading=FLOAT|iParams=&remark=" + $("#searchRemark").val();;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -89,10 +91,7 @@ mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=role/list.do|iLoading=FLOAT|iParams=";
-		if($("#roleName").val()!=null&&$("#roleName").val()!=''){
-			params += "&roleName=" + $("#roleName").val();
-		}
+		var params = "iUrl=role/list.do|iLoading=FLOAT|iParams=&roleName=" + $("#roleName").val();;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -101,13 +100,7 @@ mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************错误码列表****************************/
 mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=error/list.do|iLoading=FLOAT|iParams=";
-		if($("#searchMsg").val()!=null&&$("#searchMsg").val()!=''){
-			params += "&errorMsg=" + $("#searchMsg").val();
-		}
-		if($("#searchCode").val()!=null&&$("#searchCode").val()!=''){
-			params += "&errorCode=" + $("#searchCode").val();
-		}
+		var params = "iUrl=error/list.do|iLoading=FLOAT|iParams=&errorMsg=" + $("#searchMsg").val()+"&errorCode=" + $("#searchCode").val();
 		if($("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=''){
 			params += "&moduleId=" + $("#searchModuleId").val();
 		}else if($stateParams.moduleId){

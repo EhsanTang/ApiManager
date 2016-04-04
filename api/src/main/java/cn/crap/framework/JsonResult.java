@@ -2,7 +2,10 @@ package cn.crap.framework;
 
 import java.io.Serializable;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import cn.crap.utils.Page;
 
@@ -13,7 +16,10 @@ public class JsonResult implements Serializable {
 	private Object data;
 	private  ErrorMessage error;
 	@Autowired
-	private ErrorInfos errorInfos;
+	private static ErrorInfos errorInfos;
+	static{
+		errorInfos = SpringContextHolder.getBean("errorInfos", ErrorInfos.class);
+	}
 
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;

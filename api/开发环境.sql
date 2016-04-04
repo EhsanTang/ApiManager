@@ -235,6 +235,21 @@ INSERT INTO `user` VALUES ('206a1218-5c81-48af-b8e4-25864ad5e929','test','123456
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+CREATE TABLE `api`.`webpage` (
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `brief` VARCHAR(200) NULL,
+  `content` TEXT NOT NULL,
+  `click` INT NOT NULL DEFAULT 0,
+  `type` VARCHAR(20) NOT NULL DEFAULT 'PAGE',
+  `status` TINYINT NOT NULL DEFAULT 1,
+  `createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `api`.`webpage` 
+ADD COLUMN `moduleId` VARCHAR(50) NULL AFTER `createTime`;
+
 --
 -- Dumping routines for database 'api'
 --

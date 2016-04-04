@@ -14,17 +14,9 @@ import cn.crap.framework.base.BaseModel;
 @Table(name="error")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Error extends BaseModel{
-	/**
-	 * errorId(主键)
-	 * */
+
 	private String errorId;
-	/**
-	 * errorCode(错误码编码)
-	 * */
 	private String errorCode;
-	/**
-	 * errorMsg(错误码描述)
-	 * */
 	private String errorMsg;
 	private String moduleId;
 	private String moduleName;

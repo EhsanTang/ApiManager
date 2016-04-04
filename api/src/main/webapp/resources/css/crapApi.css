@@ -56,7 +56,7 @@ html,body{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input{
+#editParamTable input,#content input,#editResponseParamTable input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;

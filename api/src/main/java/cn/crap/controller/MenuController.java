@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends BaseController{
+public class MenuController extends BaseController<Menu>{
 
 	@Autowired
 	IMenuService menuService;
@@ -43,13 +43,13 @@ public class MenuController extends BaseController{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Menu menu,String currentId){
-		menu= menuService.get(menu.getMenuId());
-		if(menu==null){
-			menu=new Menu();
-			menu.setParentId(currentId);
+	public JsonResult detail(@ModelAttribute Menu menu){
+		model= menuService.get(menu.getMenuId());
+		if(model==null){
+			model=new Menu();
+			model.setParentId(menu.getParentId());
 		}
-		return new JsonResult(1,menu);
+		return new JsonResult(1,model);
 	}
 	
 	/**

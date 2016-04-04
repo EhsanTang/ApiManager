@@ -40,7 +40,7 @@ import cn.crap.utils.ValidateCodeService;
 
 @Scope("prototype")
 @Controller
-public class IndexController extends BaseController{
+public class IndexController extends BaseController<User>{
 	@Autowired
 	IMenuService menuService;
 	@Autowired

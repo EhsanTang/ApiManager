@@ -49,9 +49,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		if(page) $scope.currentPage = page;
 		if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT','0')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT','0')
+			if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.list = null;
 			 }else{
 				 $rootScope.list = result.data;
@@ -59,18 +59,19 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			 }
 		});
     };
-	$rootScope.detail = function(title,iwidth,iurl,currentId) {
+	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {
 			openModal(title,iwidth);
 			var params = "iUrl="+iurl+"|iLoading=FLOAT";
-			if(currentId)
-				params += "|iParams=&currentId="+currentId;
+			if(iParams)
+				params += "|iParams="+iParams;
 			httpService.callHttpMethod($http,params).success(function(result) {
-				httpSuccess(result,'iLoading=FLOAT')
-				if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-					 $rootScope.error = result.replace('[ERROR]', '');
+				var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+					 $rootScope.error = isSuccess.replace('[ERROR]', '');
 					 $rootScope.model = null;
 				 }else{
 					 $rootScope.model = result.data;
+					 callBack();
 				 }
 			});
 	};
@@ -78,10 +79,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		title = title? title:"确认要删除'"+id+"'？";
 		if (confirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
-			httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpService.callHttpMethod($http,params).success(function(result) {
 				httpSuccess(result,'iLoading=PROPUP')
-				if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-					 $rootScope.error = result.replace('[ERROR]', '');
+				if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+					 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 }else{
 					 /**
 					  * 回调刷新当前页面数据
@@ -94,12 +95,15 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	    }
 	};
 
-	$rootScope.submitForm = function(iurl){
+	$rootScope.submitForm = function(iurl,callBack){
+		if(callBack){
+			callBack();
+		}
 		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=PROPUPFLOAT')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
+			if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else if(result.success==1){
 				 $rootScope.model = result.data;
@@ -128,21 +132,32 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 		return false;
 	}
-	//待删除
-	$rootScope.needHiddenModule = function (dataType){
-		iShow("roleModuleId");
-		if(dataType=="SHOWMENU"||dataType=="USER"||dataType=="MENU"||dataType=="ROLE"){
-			return true;
-		}else{
-			return false;
-		}
-	}
+	
 	$rootScope.getDate = function(str){
 		return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
-	
+	/**
+	 * 提交数据字典时将表格数据转换为json
+	 */
+	$rootScope.preAddDictionary = function(){
+		var content = getParamFromTable("content");
+		$rootScope.model.content = content;
+	}
+	$rootScope.getFields = function() {
+	    	var content = "";
+	    	if($rootScope.model.content!=''){
+	    		content = eval("("+$rootScope.model.content+")");
+	    	}
+	    	$("#content").find("tbody").find("tr").remove();
+	    	if(content!=null&&content!=""){
+		    	var i=0;
+		    	$.each(content, function (n, value) {
+		    		i++;
+		    		addOneField(value.name, value.type, value.notNull,value.def, value.remark, value.rowNum);
+		        });  
+	    	}
+	    };
 	$rootScope.setValueForModel = function(id,transform){
-		alert(transform);
 		var result= $("#"+id).val();
 		if(transform){
 			result = format(result);

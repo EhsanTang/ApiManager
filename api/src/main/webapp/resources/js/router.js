@@ -87,6 +87,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('webPageList', {
+		url : '/webPage/list/:type',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/webPageList.tpl.html'
+			},
+			'page@webPageList' : {
+				templateUrl : 'resources/html/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/webPageDetail.tpl.html';
+				}
+			}
+		}
 	}).state('roleList', {
 		url : '/role/list',
 		views : {

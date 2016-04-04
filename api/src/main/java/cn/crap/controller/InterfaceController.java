@@ -36,7 +36,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/interface")
-public class InterfaceController extends BaseController {
+public class InterfaceController extends BaseController<Interface>{
 
 	@Autowired
 	private IInterfaceService interfaceService;
@@ -57,16 +57,15 @@ public class InterfaceController extends BaseController {
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Interface interFace,
-			String currentId) {
-		interFace = interfaceService.get(interFace.getId());
-		if (interFace == null) {
-			interFace = new Interface();
-			interFace.setModuleId(currentId);
-			interFace.setModuleName(moduleService.get(currentId)
+	public JsonResult detail(@ModelAttribute Interface interFace) {
+		model = interfaceService.get(interFace.getId());
+		if (model == null) {
+			model = new Interface();
+			model.setModuleId(interFace.getModuleId());
+			model.setModuleName(moduleService.get(interFace.getModuleId())
 					.getModuleName());
 		}
-		return new JsonResult(1, interFace);
+		return new JsonResult(1, model);
 	}
 	@RequestMapping("/webList.do")
 	@ResponseBody

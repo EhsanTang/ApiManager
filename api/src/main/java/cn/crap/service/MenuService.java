@@ -15,7 +15,6 @@ import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.IUserService;
 import cn.crap.model.Error;
 import cn.crap.model.Menu;
 import cn.crap.model.Module;
@@ -30,6 +29,7 @@ import cn.crap.utils.RequestMethod;
 import cn.crap.utils.SettingType;
 import cn.crap.utils.Tools;
 import cn.crap.utils.TrueOrFalse;
+import cn.crap.utils.WebPageType;
 
 @Service
 public class MenuService extends
@@ -40,8 +40,6 @@ public class MenuService extends
 	private IErrorService errorService;
 	@Autowired
 	private IRoleService roleService;
-	@Autowired
-	private IUserService userService;
 
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
@@ -124,6 +122,13 @@ public class MenuService extends
 				picks.add(pick);
 			}
 			break;
+		case "WEBPAGETYPE":// 枚举 webPage
+			for (WebPageType type : WebPageType.values()) {
+				pick = new Pick(type.name(), type.getName());
+				picks.add(pick);
+			}
+			break;
+
 		case "PARAMETERTYPE":// 请求参数类型
 			for (ParameterType param : ParameterType.values()) {
 				pick = new Pick(param.name(), param.getName());

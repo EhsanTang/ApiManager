@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController{
+public class RoleController extends BaseController<Role>{
 
 	@Autowired
 	private IRoleService roleService;
@@ -41,11 +41,11 @@ public class RoleController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Role role){
-		role= roleService.get(role.getRoleId());
-		if(role==null){
-			role=new Role();
+		model= roleService.get(role.getRoleId());
+		if(model==null){
+			model=new Role();
 		}
-		return new JsonResult(1,role);
+		return new JsonResult(1,model);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

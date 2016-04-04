@@ -25,7 +25,7 @@ import cn.crap.utils.Page;
 
 
 @Scope("prototype")
-public class BaseController {
+public class BaseController<T extends BaseModel> {
 	protected Page page= new Page(15);
 	protected Map<String,Object> map;
 	protected Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -34,6 +34,7 @@ public class BaseController {
 	@Autowired
 	protected HttpServletResponse response;
 	private Logger log = Logger.getLogger(getClass());
+	protected T model;
 	/**
 	 * @return
 	 */
@@ -64,7 +65,7 @@ public class BaseController {
 		return requestParams;
 	}
 	
-	@ExceptionHandler({ Exception.class })
+	 @ExceptionHandler({ Exception.class })
 	 @ResponseBody  
      public JsonResult expHandler(HttpServletRequest request, Exception ex) {  
         if(ex instanceof MyException) {  

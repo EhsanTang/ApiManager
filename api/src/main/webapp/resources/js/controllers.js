@@ -147,6 +147,20 @@ mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
+});
+mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+    $scope.getRequestExam = function(editerId,targetId,item,tableId) {
+    	var params = "iUrl=interface/getRequestExam.do|iLoading=FLOAT|iParams=&"+$.param($rootScope.model);
+		httpService.callHttpMethod($http,params).success(function(result) {
+			httpSuccess(result,'iLoading=FLOAT')
+			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
+				$scope.error = result.replace('[ERROR]', '');
+				$scope.model = null;
+			 }else{
+				 $rootScope.model.requestExam = result.data.requestExam;
+			 }
+		});
+    };
     $scope.editerParam = function(editerId,targetId,item,tableId) {
     	var params = "";
     	if(tableId=='editParamTable'&&item.param!=''){

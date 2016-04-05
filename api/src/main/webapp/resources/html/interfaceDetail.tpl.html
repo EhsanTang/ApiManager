@@ -1,4 +1,4 @@
-<div class="r0 p10 pt0 col-xs-12" ng-controller="interfaceCtrl">
+<div class="r0 p10 pt0 col-xs-12" ng-controller="interfaceDetailCtrl">
 <button type="button" class="btn btn-danger btn-xs" ng-if="error">
 		<span class="glyphicon glyphicon-remove"></span>
 		{{error}}
@@ -178,14 +178,27 @@
 		}'></textarea></td>
 				</tr>
 				<tr>
+					<td class="tc">请求示例<br>
+					<input type="button" class="btn btn-default btn-sm" value="自动生成" ng-click="getRequestExam()">
+					</td>
+					<td class="tc">
+						<textarea class="form-control no-resize"
+							ng-model="model.requestExam" rows="5" placeholder='示例：
+请求地址：
+	http://api.biyao.com
+请求参数：
+	name=xxx
+请求头：
+	uid=xxx'></textarea>
+					</td>
 					<td class="tc">错误列表</td>
-					<td class="tc" colspan="3">
+					<td class="tc">
 						<div class="input-group w">
 							<textarea class="form-control no-resize" id="errorList" 
 							placeholder="请点击“选择”按钮选择错误码
 键盘输入可快速定位错误码
 退格键可删除输入"
-								ng-model="model.errorList" rows="3" readonly></textarea>
+								ng-model="model.errorList" rows="5" readonly></textarea>
 							<div class="input-group-addon cursor btn-purple"
 								ng-click="loadPick($event,300,400,'false','errorList','ERRORCODE','',model.errorList,'&key='+model.moduleId,0);">
 								选择</div>

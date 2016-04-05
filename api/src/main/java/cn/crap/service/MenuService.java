@@ -93,6 +93,14 @@ public class MenuService extends
 			pick = new Pick(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
 			// 分割线
+			pick = new Pick(Const.SEPARATOR, "数据字典管理");
+			picks.add(pick);
+			for (Module m : moduleService.findByMap(
+					Tools.getMap("parentId", "0"), null, null)) {
+				pick = new Pick("w_d_"+m.getModuleId(),DataType.DICTIONARY.name()+"_"+m.getModuleId(), m.getModuleName());
+				picks.add(pick);
+			}
+			// 分割线
 			pick = new Pick(Const.SEPARATOR, "我的菜单");
 			picks.add(pick);
 			for (Menu m : findByMap(
@@ -221,6 +229,13 @@ public class MenuService extends
 			// 后端系统设置
 			pick = new Pick("h_s_0", "index.do#/setting/list", "系统设置列表");
 			picks.add(pick);
+			pick = new Pick(Const.SEPARATOR, "后台数据字典");
+			picks.add(pick);
+			preUrl = "index.do#/webPage/list/";
+			for (WebPageType webPage : WebPageType.values()) {
+				pick = new Pick("h_"+webPage.name(), preUrl+webPage.name(), webPage.getName());
+				picks.add(pick);
+			}
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "后台模块");
 			picks.add(pick);

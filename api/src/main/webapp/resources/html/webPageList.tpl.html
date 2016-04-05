@@ -5,7 +5,7 @@
 			{{error}}
 	</button>
 </div>
-<div class="col-xs-6 f16 fb p0 mb5">WebPage管理</div>
+<div class="col-xs-6 f16 fb p0 mb5">数据字典管理</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
 	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
@@ -25,7 +25,7 @@
 		</div>
 		<div class="cb"></div>
 </div>
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">WebPage列表</div>
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">数据字典列表</div>
 <div class="col-xs-9 mt20 p0 mb10 f14 tr">
 	<a type="button" class="btn btn-success btn-sm cursor" 
 		ng-click="detail('新增WebPage',1000,'webPage/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type,getFields);"> 
@@ -37,22 +37,26 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc">名称</th>
+				<th class="tc w200">名称</th>
 				<th class="tc">简介</th>
-				<th class="w300 tc">操作</th>
+				<th class="tc w200">项目</th>
+				<th class="w200 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.name}}</td>
 				<td class="tc">{{item.brief}}</td>
+				<td class="tc">{{item.moduleName}}</td>
 				<td class="tc">
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('WEBPAGE',item.moduleId);"
-					ng-click="detail('编辑【'+item.name+'】',1000,'webPage/detail.do?id='+item.id,'',getFields)"
-					data-toggle="tooltip" data-placement="top"
-					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation(item.type,item.moduleId);"
+					ng-click="detail('编辑【'+item.name+'】',1000,'webPage/detail.do?id='+item.id,'',getFields)"> 
+					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('WEBPAGE',item.moduleId);"
+				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webWebPage/detail/{{item.type}}/{{item.id}}" target="_blank"> 
+					<i class="iconfont f12">&#xe60a;预览</i>
+				</a>
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation(item.type,item.moduleId);"
 					ng-click="del('webPage/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>

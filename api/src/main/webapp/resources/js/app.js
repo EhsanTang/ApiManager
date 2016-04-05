@@ -49,11 +49,12 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		if(page) $scope.currentPage = page;
 		if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT','0')
-			if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.list = null;
 			 }else{
+				 $rootScope.error = null;
 				 $rootScope.list = result.data;
 				 $rootScope.page = result.page;
 			 }
@@ -71,6 +72,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 $rootScope.model = null;
 				 }else{
 					 $rootScope.model = result.data;
+					 $rootScope.error = null;
 					 if(callBack)
 						 callBack();
 				 }
@@ -84,14 +86,15 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		title = title? title:"确认要删除'"+id+"'？";
 		if (confirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
-			var isSuccess = httpService.callHttpMethod($http,params).success(function(result) {
-				httpSuccess(result,'iLoading=PROPUP')
-				if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+			httpService.callHttpMethod($http,params).success(function(result) {
+				var isSuccess = httpSuccess(result,'iLoading=PROPUP')
+				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 					 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 }else{
 					 /**
 					  * 回调刷新当前页面数据
 					  */
+					 $rootScope.error = null;
 					 $timeout(function() {
 						 $("#refresh").click();
 	                 })
@@ -107,10 +110,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
-			if(!isJson(result)&&isSuccess.indexOf('[ERROR]') >= 0){
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else if(result.success==1){
+				 $rootScope.error = null;
 				 $rootScope.model = result.data;
 				 /**
 				  * 回调刷新当前页面数据

@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
 import cn.crap.utils.WebPageType;
 
@@ -31,6 +32,16 @@ public class WebPage extends BaseModel{
 			return WebPageType.valueOf(type).getName();
 		return "";
 	}
+	@Transient
+	public String getModuleName(){
+		if(!MyString.isEmpty(moduleId)){
+			Module module = Cache.getModule(moduleId);
+			if(module!=null)
+				return module.getModuleName();
+		}
+		return "";
+	}
+	
 	@Id
 	@GeneratedValue(generator="Generator")
 	@Column(name="id")

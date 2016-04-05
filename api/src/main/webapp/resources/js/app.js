@@ -71,10 +71,15 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 $rootScope.model = null;
 				 }else{
 					 $rootScope.model = result.data;
-					 callBack();
+					 if(callBack)
+						 callBack();
 				 }
 			});
 	};
+	//点击详情回调，清除编辑缓存页面的table
+	$rootScope.initEditInterFace = function (){
+		goJsonPage('eparam','param','responseEparam','responseParam');
+	}
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除'"+id+"'？";
 		if (confirm(title)) {

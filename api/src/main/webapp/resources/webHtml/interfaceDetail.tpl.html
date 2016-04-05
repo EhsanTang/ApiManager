@@ -99,7 +99,8 @@
 		</div>
 		
 		<div id="2_6">2.6 返回参数说明</div>
-		<table class="table table-bordered">
+		<span ng-if="responseParams.length==0">无</span>
+		<table class="table table-bordered" ng-if="responseParams.length>0">
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
@@ -127,7 +128,8 @@
 		</div>
 		
 		<div id="2_9">2.9 错误码</div>
-		<table class="table table-bordered">
+		<span ng-if="errors.length==0">无</span>
+		<table class="table table-bordered" ng-if="errors.length>0">
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc w200">Code</th>

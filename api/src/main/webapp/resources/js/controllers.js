@@ -15,11 +15,12 @@ mainModule.controller('lefMenuCtrl', function($rootScope,$scope, $http, $state, 
 	$scope.menu = function() {
 		var params = "iUrl=menu/menu.do|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT','0')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				$scope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				$scope.menus = null;
 			 }else{
+				$rootScope.error = null;
 				$scope.menus = result.data;
 			 }
 		});
@@ -67,13 +68,16 @@ mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, 
 });
 mainModule.controller('webPagetDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function() {
-		var params = "iLoading=FLOAT|iUrl=webPage/detail.do?id="+$stateParams.id;
+		var params = "iLoading=FLOAT|iUrl=webPage/webDetail.do?id="+$stateParams.id;
+		params +="&password="+unescape($.base64.decode($.cookie('password')));
+		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else{
+				 $rootScope.error = null;
 				 $rootScope.model = result.data;
 				 if($rootScope.model.content!=''){
 					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
@@ -95,11 +99,12 @@ mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 	$scope.getData = function() {
 		var params = "iLoading=FLOAT|iUrl=setting/detail.do?id="+$stateParams.id+"&key="+$stateParams.key;
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else{
+				 $rootScope.error = null;
 				 $rootScope.model = result.data;
 			 }
 		});
@@ -152,11 +157,12 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     $scope.getRequestExam = function(editerId,targetId,item,tableId) {
     	var params = "iUrl=interface/getRequestExam.do|iLoading=FLOAT|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				$scope.error = result.replace('[ERROR]', '');
-				$scope.model = null;
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.model = null;
 			 }else{
+				 $rootScope.error = null;
 				 $rootScope.model.requestExam = result.data.requestExam;
 			 }
 		});
@@ -195,11 +201,12 @@ mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $htt
 		params +="&password="+unescape($.base64.decode($.cookie('password')));
 		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
 		httpService.callHttpMethod($http,params).success(function(result) {
-			httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)&&result.indexOf('[ERROR]') >= 0){
-				$scope.error = result.replace('[ERROR]', '');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				$scope.model = null;
 			 }else{
+				 $rootScope.error = null;
 				 $scope.model = result.data;
 				 $scope.errors = eval("("+result.data.errors+")");
 				 $scope.params = eval("("+result.data.param+")");

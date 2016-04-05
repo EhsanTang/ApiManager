@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.IWebPageService;
+import cn.crap.model.Module;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -21,7 +23,8 @@ import cn.crap.utils.WebPageType;
 @Controller
 @RequestMapping("/webPage")
 public class WebPageController extends BaseController<WebPage>{
-
+	@Autowired
+	private IModuleService moduleService;
 	@Autowired
 	private IWebPageService webPageService;
 
@@ -44,7 +47,14 @@ public class WebPageController extends BaseController<WebPage>{
 		}
 		return new JsonResult(1,model);
 	}
-	
+	@RequestMapping("/webDetail.do")
+	@ResponseBody
+	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
+		model= webPageService.get(webPage.getId());
+		Module module = moduleService.get(model.getModuleId());
+		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		return new JsonResult(1,model);
+	}
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException{

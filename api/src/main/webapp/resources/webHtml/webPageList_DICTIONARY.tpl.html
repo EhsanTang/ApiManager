@@ -3,10 +3,12 @@
   <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
   <li class="active">数据字典列表</li>
 </ol>
-<button type="button" class="btn btn-danger btn-xs" ng-if="error">
-		<span class="glyphicon glyphicon-remove"></span>
-		{{error}}
-</button>
+<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
+	<button type="button" class="btn btn-danger btn-xs">
+			<span class="glyphicon glyphicon-remove"></span>
+			{{error}}
+	</button>
+</div>
 <div class="col-xs-6 f16 fb p0 mb5">查询</div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
@@ -22,10 +24,10 @@
 		</div>
 		<div class="form-group w200 fr mr10">
 			<input type="hidden" class="form-control dis-in-blo w120" id="searchModuleId">
-			<label class="sr-only" for="">模块</label>
+			<label class="sr-only" for="">项目</label>
 			<div class="input-group">
-				<div class="input-group-addon">模块</div>
-				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选着模块" id="searchModuleName"
+				<div class="input-group-addon">项目</div>
+				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选着项目" id="searchModuleName"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=searchModuleName|tag=searchModuleId|code=TOPMODULE|def='+model.$stateParams.searchModuleId,$event);">
 			</div>
 		</div>
@@ -41,14 +43,14 @@
 			<tr class="BGEEE">
 				<th class="tc w200">name</th>
 				<th class="tc">简介</th>
-				<th class="tc w150">项目</th>
+				<th class="tc w200">项目</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td class="tc"><a ng-href="web.do#/webWebPage/detail/{{item.type}}/{{item.id}}">{{item.name}}</a></td>
 				<td class="tc">{{item.brief}}</td>
-				<td class="tc">{{item.moduleId}}</td>
+				<td class="tc">{{item.moduleName}}</td>
 			</tr>
 
 		</tbody>

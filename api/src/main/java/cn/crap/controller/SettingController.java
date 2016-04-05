@@ -76,7 +76,7 @@ public class SettingController extends BaseController<Setting>{
 					return new JsonResult(new MyException("000006"));
 				}
 			}
-		Cache.setSetting(setting);
+		Cache.setSetting(setting,Tools.getServletContext());
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/delete.do")

@@ -4,12 +4,6 @@
   <li><a ng-href="web.do#webInterface/list/{{$stateParams.moduleId}}/{{$stateParams.moduleName}}">模块：{{$stateParams.moduleName}}</a></li>
   <li class="active">接口：{{model.interfaceName}}</li>
 </ol>
-<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs break-word">
-			<span class="glyphicon glyphicon-remove"></span>
-			<span ng-bind="error"></span>
-	</button>
-</div>
 <div class="col-xs-12 p0 f12 lh26 interface-detail">
 		<div class="bb1 fb f20 pb10 C000 mt0 tr">{{model.url}}</div>
 		<blockquote>

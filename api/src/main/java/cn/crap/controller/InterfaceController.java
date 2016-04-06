@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
@@ -48,14 +49,14 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
-			@RequestParam(defaultValue = "1") Integer currentPage) {
+			@RequestParam(defaultValue = "1") Integer currentPage){
 		return interfaceService.getInterfaceList(page, map, interFace, currentPage);
 	}
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Interface interFace) {
+	public JsonResult detail(@ModelAttribute Interface interFace) throws Exception {
 		model = interfaceService.get(interFace.getId());
 		if (model == null) {
 			model = new Interface();
@@ -77,7 +78,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/webList.do")
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
-			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException {
+			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
 		Module module = moduleService.get(interFace.getModuleId());
 		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);

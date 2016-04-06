@@ -1,3 +1,16 @@
+/****************密码访问*****************/
+$(".error").click(function(){
+	var msg = $(this).find(".errorMsg").textContent;
+	if(msg.indexOf("[000007]")>=0){
+		changeDisplay('password','errorMsg');
+	}else{
+		$("#errorMsg").html(msg);
+		changeDisplay('errorMsg','password');
+	}
+	openModal("请输入访问密码","300");
+	changeimg('imgCode','verificationCode');
+});
+
 /*****************接口添加参数**************/
 function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {

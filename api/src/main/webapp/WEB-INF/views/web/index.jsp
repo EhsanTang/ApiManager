@@ -33,7 +33,13 @@ font-family: Tahoma,"SimSun"!important;
 	<div class="container p0">
 		<div class="row min-h p0 m0">
 				<%@include file="../tpls/webLeft.tpl.jsp"%>
-				<div class="col-xs-9 col-sm-10 p0 BGFFF m0 p10 pt0 r5">
+				<div class="col-xs-9 col-sm-10 p0 BGFFF m0 p10 pt0 r5 error">
+					<div class="col-xs-12 f16 fb p20 pt0 mb5" ng-if="error">
+						<button type="button" class="btn btn-danger btn-xs break-word">
+							<span class="glyphicon glyphicon-remove"></span>
+							<span class="errorMsg" ng-bind="error"></span>
+						</button>
+					</div>
 					<div ui-view="main"></div>
 				</div>
 		</div>

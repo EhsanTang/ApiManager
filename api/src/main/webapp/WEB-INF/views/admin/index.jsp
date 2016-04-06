@@ -31,6 +31,12 @@
 				<%@include file="../tpls/left.tpl.jsp"%>
 				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
 					<div class="BGFFF m20 BGFFF p10 r5">
+						<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
+							<button type="button" class="btn btn-danger btn-xs break-word">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span ng-bind="error"></span>
+							</button>
+						</div>
 						<div ui-view="main"></div>
 					</div>
 				</div>
@@ -83,6 +89,10 @@
 				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body" id="modal-body">
+				<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
+					<span class="glyphicon glyphicon-remove"></span>
+					<span ng-bind="error"></span>
+				</button>
 				<div ui-view="detail"></div>
 			</div>
 		</div>

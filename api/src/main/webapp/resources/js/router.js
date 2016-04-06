@@ -13,7 +13,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}else{
 		$urlRouterProvider.otherwise('/webSetting/detail/HELP');
 	}
-	
+	/*********************后台*******************/
 	$stateProvider.state('menuList', {
 		url : '/menu/list/:parentId/:menuName',
 		views : {
@@ -60,36 +60,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/settingDetail_'+$stateParems.type+'.tpl.html';
-				}
-			}
-		}
-	}).state('webSettingDetail', {
-		url : '/webSetting/detail/:key',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/webHtml/settingDetail.tpl.html';
-				}
-			}
-		}
-	}).state('webWebPageList', {
-		url : '/webWebPage/list/:type',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/webHtml/webPageList_'+$stateParems.type+'.tpl.html';
-				}
-			},
-			'page@webWebPageList' : {
-				templateUrl : 'resources/webHtml/page.tpl.html'
-			}
-		}
-	}).state('webWebPageDetail', {
-		url : '/webWebPage/detail/:type/:id',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
 			}
 		}
@@ -153,6 +123,41 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	})
+	/*********************前端*******************/
+	$stateProvider.state('webSettingDetail', {
+		url : '/webSetting/detail/:key',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/settingDetail.tpl.html';
+				}
+			}
+		}
+	}).state('webWebPageList', {
+		url : '/webWebPage/list/:type',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/webPageList_'+$stateParems.type+'.tpl.html';
+				}
+			},'page@webWebPageList' : {
+				templateUrl : 'resources/webHtml/page.tpl.html'
+			},'password@webWebPageList' : {
+				templateUrl : 'resources/webHtml/password.tpl.html'
+			}
+		}
+	}).state('webWebPageDetail', {
+		url : '/webWebPage/detail/:type/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
+				}
+			},'password@webWebPageDetail' : {
+				templateUrl : 'resources/webHtml/password.tpl.html'
+			}
+		}
 	}).state('webError', {
 		url : '/webError/list/:moduleId',
 		views : {
@@ -171,6 +176,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'page@webInterfaceCtrl' : {
 				templateUrl : 'resources/webHtml/page.tpl.html'
+			},'password@webInterfaceCtrl' : {
+				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	}).state('webInterfaceDetailCtrl', {
@@ -178,6 +185,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' : {
 				templateUrl : 'resources/webHtml/interfaceDetail.tpl.html'
+			},'password@webInterfaceDetailCtrl' : {
+				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	})

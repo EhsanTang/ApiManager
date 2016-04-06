@@ -1,6 +1,5 @@
 /**
- * 主module
- * @type {[type]}
+ * 后台controller
  */
 var mainModule = angular.module("mainModule", []);
 //以html形式输出
@@ -66,27 +65,6 @@ mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, 
     };
     $scope.getData();
 });
-mainModule.controller('webPagetDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function() {
-		var params = "iLoading=FLOAT|iUrl=webPage/webDetail.do?id="+$stateParams.id;
-		params +="&password="+unescape($.base64.decode($.cookie('password')));
-		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
-			 }else{
-				 $rootScope.error = null;
-				 $rootScope.model = result.data;
-				 if($rootScope.model.content!=''){
-					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
-			     }
-			 }
-		});
-    };
-    $scope.getData();
-});
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
@@ -95,23 +73,6 @@ mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, 
     };
     $scope.getData();
 });
-mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function() {
-		var params = "iLoading=FLOAT|iUrl=setting/detail.do?id="+$stateParams.id+"&key="+$stateParams.key;
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
-			 }else{
-				 $rootScope.error = null;
-				 $rootScope.model = result.data;
-			 }
-		});
-    };
-    $scope.getData();
-});
-
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
@@ -193,57 +154,4 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     	$("#"+editerId).addClass('none');
 		$("#"+targetId).removeClass('none');
     };
-});
-/**************************前段接口详情:不需要打开模态框，所以不能调用getBaseData()****************************/
-mainModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function() {
-		var params = "iUrl=interface/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
-		params +="&password="+unescape($.base64.decode($.cookie('password')));
-		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				$scope.model = null;
-			 }else{
-				 $rootScope.error = null;
-				 $scope.model = result.data;
-				 $scope.errors = eval("("+result.data.errors+")");
-				 $scope.params = eval("("+result.data.param+")");
-				 $scope.responseParams = eval("("+result.data.responseParam+")");
-			 }
-		});
-    };
-    $scope.hasRequestHeader = function(params,type){
-    	if(params.length>0){
-    		for (var i=0;i<params.length;i++){
-    	         if(type==params[i].parameterType){
-    	        	 return true;
-    	         }
-    	    }
-    	}
-    	return false;
-    }
-    $scope.getData();
-});
-mainModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "";
-		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
-			params += "&interfaceName=" + $("#interfaceName").val();
-			$stateParams.searchMenuName=$("#interfaceName").val();
-		}
-		if($("#url").val()!=null&&$("#url").val()!=''){
-			params += "&url=" + $("#url").val();
-			$stateParams.searchUrl=$("#url").val();
-		}
-		if(params==""){
-			params +="&moduleId="+ $stateParams.moduleId;
-		}
-		params +="&password="+unescape($.base64.decode($.cookie('password')));
-		params +="&visitCode="+unescape($.base64.decode($.cookie('visitCode')));
-		params = "iUrl=interface/webList.do|iLoading=FLOAT|iParams="+params;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
 });

@@ -1,7 +1,7 @@
 <div class="r0 p10 pt0 col-xs-12" ng-controller="settingDetailCtrl">
-<button type="button" class="btn btn-danger btn-xs" ng-if="error">
+<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
 		<span class="glyphicon glyphicon-remove"></span>
-		{{error}}
+		<span ng-bind="error"></span>
 </button>
 <div class="col-xs-12 p0 mt10">
 	<form id="editArticleShare" enctype="multipart/form-data" name="settingForm"
@@ -21,21 +21,21 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">绫诲瀷</td>
+					<td class="tc">类型</td>
 					<td class="tc">
-						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="鐐瑰嚮杈撳叆妗嗛�夋嫨绫诲瀷" readonly>
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">澶囨敞</td>
+					<td class="tc">备注</td>
 					<td class="tc"><textarea class="form-control no-resize"
-							ng-model="model.remark" rows="6" placeholder="澶囨敞淇℃伅"></textarea></td>
+							ng-model="model.remark" rows="6" placeholder="备注信息"></textarea></td>
 				</tr>
 				<tr>
-					<td>涓婁紶鍥剧墖</td>
+					<td>上传图片</td>
 					<td>
 						<div class="col-xs-6 p0">
-							<div class="C999 file fl mr20 cursor"  title="鐐瑰嚮閫夋嫨鍥剧墖" onclick="$('#uploadImg').click();">
+							<div class="C999 file fl mr20 cursor"  title="点击选择图片" onclick="$('#uploadImg').click();">
 								<i class="iconfont f60 main-color">&#xe619;</i>
 							</div>
 							<span class="ndis">
@@ -48,7 +48,7 @@
 					</td>
 				</tr>
 			</table>
-			<button type="button" ng-click="submitForm('setting/addOrUpdate.do')" class="btn btn-success fr">鎻愪氦</button>
+			<button type="button" ng-click="submitForm('setting/addOrUpdate.do')" class="btn btn-success fr">提交</button>
 		</form>
 
 	</div>

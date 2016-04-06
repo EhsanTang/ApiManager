@@ -4,6 +4,11 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,in
 .roman {font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
 .transition{transition: all 0.2s ease-in-out;-moz-transition: all 0.2s ease-in-out;-webkit-transition: all 0.2s ease-in-out;}
 .cursor{cursor:pointer;}
+.break-word{
+	 word-break:break-all;
+	 word-wrap:break-word;
+	 white-space: normal!important;
+}
 .b0{border:0px!important;}
 .b1{border: 1px solid #DDD;}
 .dashed{border:1px dashed #DDD;}
@@ -185,11 +190,11 @@ table{border-collapse:collapse;border-spacing:0}
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1459867002_5304244.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1459867002_5304244.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1459867002_5304244.woff') format('woff'), /* chrome„ÄÅfirefox */
-  url('//at.alicdn.com/t/font_1459867002_5304244.ttf') format('truetype'), /* chrome„ÄÅfirefox„ÄÅopera„ÄÅSafari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1459867002_5304244.svg#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1459914437_0038764.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1459914437_0038764.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1459914437_0038764.woff') format('woff'), /* chrome°¢firefox */
+  url('//at.alicdn.com/t/font_1459914437_0038764.ttf') format('truetype'), /* chrome°¢firefox°¢opera°¢Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1459914437_0038764.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
                                      
 .iconfont {

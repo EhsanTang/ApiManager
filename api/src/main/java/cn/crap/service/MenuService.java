@@ -251,7 +251,7 @@ public class MenuService extends
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			for (Module m : moduleService
-					.findByHql("from ModuleModel m where m.moduleId not in (select m2.parentId from ModuleModel m2)")) {
+					.findByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)")) {
 				pick = new Pick(m.getModuleId(), m.getModuleName());
 				picks.add(pick);
 			}

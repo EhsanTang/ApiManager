@@ -1,8 +1,8 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="interfaceCtrl">
 <div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs">
+	<button type="button" class="btn btn-danger btn-xs break-word">
 			<span class="glyphicon glyphicon-remove"></span>
-			{{error}}
+			<span ng-bind="error"></span>
 	</button>
 </div>
 <div class="col-xs-6 f16 fb p0 mb5" ng-if="$stateParams.moduleId!='0'">模块&接口管理</div>
@@ -92,7 +92,7 @@
 				<th class="tc">模块名</th>
 				<th class="tc">最后修改人</th>
 				<th class="tc">最后修改时间</th>
-				<th class="w200 tc">操作</th>
+				<th class="w300 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -105,6 +105,10 @@
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('INTERFACE',$stateParams.moduleId)"
 					ng-click="detail('编辑【'+item.interfaceName+'】',1100,'interface/detail.do?id='+item.id,'',initEditInterFace)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('INTERFACE',$stateParams.moduleId)"
+					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'interface/detail.do?id='+item.id,'',copyInterface)"> 
+					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webInterfaceDetail/{{item.moduleId}}/{{item.moduleName}}/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>

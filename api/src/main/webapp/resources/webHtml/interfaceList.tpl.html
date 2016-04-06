@@ -4,9 +4,9 @@
   <li class="active"><a ng-href="web.do#webInterface/list/{{$stateParams.moduleId}}/{{$stateParams.moduleName}}">模块：{{$stateParams.moduleName}}</a></li>
 </ol>
 <div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs">
+	<button type="button" class="btn btn-danger btn-xs break-word">
 			<span class="glyphicon glyphicon-remove"></span>
-			{{error}}
+			<span ng-bind="error"></span>
 	</button>
 </div>
 <div class="col-xs-6 f16 fb p0 mb5">搜索接口</div>
@@ -81,6 +81,7 @@
 	</table>
 	<div ui-view="page"></div>
 </div>
+<div ui-view="password"></div>
 </div>
 <div class="cb"></div>
 

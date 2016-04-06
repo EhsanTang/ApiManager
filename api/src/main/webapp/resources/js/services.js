@@ -47,6 +47,7 @@ function httpSuccess(data, iLoading, tipTime) {
 	if(data.success==0){
 		if(data.error.code=="000007"){
 			openModal("请输入访问密码","300");
+			changeimg('imgCode','verificationCode');
 			data = "[ERROR]请输入访问密码";
 		}else{
 			data = "[ERROR]"+data.error.message;

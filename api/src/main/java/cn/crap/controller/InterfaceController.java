@@ -52,7 +52,6 @@ public class InterfaceController extends BaseController<Interface>{
 		return interfaceService.getInterfaceList(page, map, interFace, currentPage);
 	}
 
-
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
@@ -61,10 +60,19 @@ public class InterfaceController extends BaseController<Interface>{
 		if (model == null) {
 			model = new Interface();
 			model.setModuleId(interFace.getModuleId());
-			model.setModuleName(moduleService.get(interFace.getModuleId())
-					.getModuleName());
 		}
 		return new JsonResult(1, model);
+	}
+	@RequestMapping("/copy.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException {
+		if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
+			throw new MyException("000004");
+		}
+		interFace.setId(null);
+		interfaceService.save(interFace);
+		return new JsonResult(1, interFace);
 	}
 	@RequestMapping("/webList.do")
 	@ResponseBody
@@ -80,8 +88,12 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
-		Module module = moduleService.get(interFace.getModuleId());
-		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		if(interFace!=null){
+			Module module = moduleService.get(interFace.getModuleId());
+			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		}else{
+			interFace = new Interface();
+		}
 		return new JsonResult(1, interFace);
 	}
 	@RequestMapping("/getRequestExam.do")
@@ -147,9 +159,7 @@ public class InterfaceController extends BaseController<Interface>{
 			interfaceService.update(interFace);
 		} else {
 			interFace.setId(null);
-			Interface example = new Interface();
-			example.setUrl(interFace.getUrl());
-			if(interfaceService.findByExample(example).size()>0){
+			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interfaceService.save(interFace);

@@ -1,12 +1,12 @@
-<div class="r0 p20 pt0 col-xs-12" ng-controller="webPagetDetailCtrl">
+<div class="r0 p20 pt0 col-xs-12" ng-controller="webPageDetailCtrl">
 	<ol class="breadcrumb">
 		<li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
 		<li>表：{{model.name}}</li>
 	</ol>
 	<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs">
+	<button type="button" class="btn btn-danger btn-xs break-word">
 			<span class="glyphicon glyphicon-remove"></span>
-			{{error}}
+			<span ng-bind="error"></span>
 	</button>
 </div>
 	<div class="col-xs-12 p0 f12 mt20 mb20">
@@ -34,7 +34,7 @@
 			</tr>
 		</tbody>
 	</table>
-
+<div ui-view="password"></div>
 </div>
 <div class="cb"></div>
 

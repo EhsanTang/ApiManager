@@ -51,6 +51,7 @@ font-family: Tahoma,"SimSun"!important;
 	<script src="resources/js/router.js"></script>
     <script src="resources/js/animations.js"></script>
     <script src="resources/js/controllers.js?v=2010"></script>
+    <script src="resources/js/webControllers.js?v=2010"></script>
     <script src="resources/js/filters.js"></script>
     
     <script src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>
@@ -69,37 +70,6 @@ font-family: Tahoma,"SimSun"!important;
 <div id="lookUp" class="look-up shadow">
 	<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
 	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
-</div>
-<div class="imodal modal fade" id="myModal" role="dialog"
-	aria-label="myModalLabel" aria-hidden="true">
-	<div id="modal-dialog" class="modal-dialog modal-lg w400">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
-				<h4 class="modal-title"></h4>
-			</div>
-			<div class="modal-body p30" id="modal-body">
-					<div class="input-wrapper">
-						<input id="password" type="text" placeholder="请输入访问密码">
-					</div>
-					<c:if test="${applicationScope.VISITCODE=='true'}">
-								<div class="input-wrapper">
-									<input type="text" id="visitCode" placeholder="图形验证码">
-									<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
-										<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"
-	  									 src="getImgCode.do">
-									</div>
-								</div>
-					</c:if>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn btn-purple" data-dismiss="modal" onclick="sendPassword()">确认</button>
-			</div>
-		</div>
-	</div>
 </div>
 <div id="float" class="folat">
 		<div class="sk-wave">

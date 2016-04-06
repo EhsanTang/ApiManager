@@ -52,17 +52,28 @@ public class IndexController extends BaseController<User>{
 	@Autowired
 	private IUserService userService;
 	private Logger log = Logger.getLogger(getClass());
+	/**
+	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变，
+	 * 会导致用户第一点击闪屏
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/home.do")
+	public void home(HttpServletResponse response) throws Exception {
+		response.sendRedirect("web.do");
+	}
+	
 	@AuthPassport
-	@RequestMapping({"/index.do" })
+	@RequestMapping("/index.do")
 	public String showHomePage() throws Exception {
 		return "admin/index";
 	}
 	
-	@RequestMapping({"/web.do" })
+	@RequestMapping("/web.do")
 	public String web() throws Exception {
 		return "web/index";
 	}
-	@RequestMapping({ "/login.do"})
+	@RequestMapping("/login.do")
 	public String login(@RequestParam String userPassword,@RequestParam String userName,@RequestParam(defaultValue="YES") String remberPwd
 			,String verificationCode) throws IOException {
 		try {
@@ -114,7 +125,7 @@ public class IndexController extends BaseController<User>{
 		}
 		return "admin/login";
 	}
-	@RequestMapping({ "/loginOut.do"})
+	@RequestMapping("/loginOut.do")
 	public String loginOut() throws IOException {
 		try{
 		request.getSession().invalidate();
@@ -131,7 +142,7 @@ public class IndexController extends BaseController<User>{
 	/**
 	 * @return
 	 */
-	@RequestMapping({"/preLogin.do"})
+	@RequestMapping("/preLogin.do")
 	public String preLogin(HttpServletResponse response) {
 		try{
 			request.setAttribute("userName", MyCookie.getCookie(Const.COOKIE_USERNAME, request));
@@ -182,7 +193,6 @@ public class IndexController extends BaseController<User>{
 		response.addHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
-		session.setAttribute(Const.SESSION_OLD_IMG_CODE, session.getAttribute(Const.SESSION_IMG_CODE));
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
 		request.getSession().setAttribute(Const.SESSION_IMG_CODE, vservice.getCode());

@@ -83,6 +83,13 @@ function goJsonPage(editerId, targetId, editerId2, targetId2) {
 	if (targetId2)
 		$("#" + targetId2).removeClass('none');
 };
+function unescapeAndDecode(name){
+	var value = $.cookie(name);
+	if(value){
+		return unescape($.base64.decode(value));
+	}
+	return "";
+}
 function getParamFromTable(tableId) {
 	var json = "[";
 	var i = 0;
@@ -105,6 +112,11 @@ function getParamFromTable(tableId) {
 	});
 	json += "]";
 	return json;
+}
+/************输入接口访问密码***********/
+function setPassword(){
+	$.cookie('password', $.base64.encode(escape($("#password").val())));
+	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
 }
 /** ***************pick控件搜索*************** */
 var navigateText = "";

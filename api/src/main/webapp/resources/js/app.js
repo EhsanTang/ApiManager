@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'mainModule','textAngular']);
+var app = angular.module('app', [ 'ui.router', 'mainModule','webModule','textAngular']);
 /**
  * 由于整个应用都会和路由打交道，所以这里把$state和$stateParams这两个对象放到$rootScope上，方便其它地方引用和注入。
  * 这里的run方法只会在angular启动的时候运行一次。
@@ -80,8 +80,14 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	};
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
+		changeDisplay('interFaceDetail','copyInterFace');
 		goJsonPage('eparam','param','responseEparam','responseParam');
 	}
+	//点击拷贝接口详情回调
+	$rootScope.copyInterface = function() {
+		$rootScope.model.url="";
+		changeDisplay('copyInterFace','interFaceDetail');
+	};
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除'"+id+"'？";
 		if (confirm(title)) {
@@ -112,7 +118,6 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
 			 }else if(result.success==1){
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;

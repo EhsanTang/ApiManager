@@ -28,7 +28,11 @@ function replaceAll(originalStr,oldStr,newStr){
 $(function () {
 	  $('[data-toggle="tooltip"]').tooltip();
 });
-
+/************显示id1，隐藏id2*********************/
+function changeDisplay(id1, id2) {
+	$("#" + id2).addClass('none');
+	$("#" + id1).removeClass('none');
+};
 /**********打开model******************/
 function openModal(title,iwidth){
 	 title = title? title:"编辑";
@@ -55,12 +59,6 @@ function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,i
 			+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&def="+def+params,iCallBack,iCallBackParam);
 	lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 	showMessage('lookUp','false',false,-1);
-}
-/************输入接口访问密码***********/
-function sendPassword(){
-	$.cookie('password', $.base64.encode(escape($("#password").val())));
-	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
-	location.reload();
 }
 
 /**

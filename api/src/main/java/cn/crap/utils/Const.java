@@ -5,7 +5,6 @@ public class Const {
 	public final static String SESSION_ADMIN_TRUENAME = "sessionAdminTrueName";
 	public final static String SESSION_ADMIN_ROLEIDS = "sessionAdminRoleIds";
 	public final static String SESSION_IMG_CODE = "sessionImgCode";
-	public final static String SESSION_OLD_IMG_CODE = "sessionOldImgCode";
 	public static final String NULL = "_NULL";
 	public static final String BLANK = "_BLANK"; 
 	public static final String DEF_MODULEID = "defaultModuleId";

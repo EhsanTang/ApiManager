@@ -55,7 +55,7 @@ public class Tools {
 	}
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
-		Object oldImgCode = request.getSession().getAttribute(Const.SESSION_OLD_IMG_CODE);
+		Object oldImgCode = request.getSession().getAttribute(Const.SESSION_IMG_CODE);
 		if(!MyString.isEmpty(modulePassword)){
 			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				if(MyString.isEmpty(visitCode)||oldImgCode==null||!visitCode.equals(oldImgCode.toString())){

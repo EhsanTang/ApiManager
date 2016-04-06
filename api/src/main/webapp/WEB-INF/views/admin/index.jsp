@@ -38,6 +38,7 @@
 	</div>
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
 	
 	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
 	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
@@ -47,6 +48,7 @@
 	<script src="resources/js/router.js"></script>
     <script src="resources/js/animations.js"></script>
     <script src="resources/js/controllers.js?v=2010"></script>
+    <script src="resources/js/webControllers.js?v=2010"></script>
     <script src="resources/js/filters.js"></script>
     
     <script src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>

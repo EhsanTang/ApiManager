@@ -54,7 +54,7 @@
 	
 	<display-name></display-name>  
 	 <welcome-file-list>
-	    <welcome-file>web.do</welcome-file>
+	    <welcome-file>home.do</welcome-file>
 	 </welcome-file-list>
   
 </web-app>

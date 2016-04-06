@@ -4,9 +4,9 @@
   <li class="active"><a href="web.do#webError/list">错误码列表</a></li>
 </ol>
 <div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs">
+	<button type="button" class="btn btn-danger btn-xs break-word">
 			<span class="glyphicon glyphicon-remove"></span>
-			{{error}}
+			<span ng-bind="error"></span>
 	</button>
 </div>
 <div class="col-xs-6 f16 fb p0 mb5">查询</div>

@@ -4,9 +4,9 @@
   <li>{{model.value}}</li>
 </ol>
 <div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
-	<button type="button" class="btn btn-danger btn-xs">
+	<button type="button" class="btn btn-danger btn-xs break-word">
 			<span class="glyphicon glyphicon-remove"></span>
-			{{error}}
+			<span ng-bind="error"></span>
 	</button>
 </div>
 <div class="col-xs-12 p0 f12 lh26">

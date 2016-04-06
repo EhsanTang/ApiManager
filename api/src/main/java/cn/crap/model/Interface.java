@@ -5,64 +5,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
+
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.Cache;
+import cn.crap.utils.MyString;
 
 @Entity
 @Table(name="interface")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Interface extends BaseModel{
-	/**
-	 * id(主键)
-	 * */
 	private String id;
-	/**
-	 * url(api链接)
-	 * */
 	private String url;
-	/**
-	 * method( 请求方式)
-	 * */
 	private String method;
-	/**
-	 * param(参数列表)
-	 * */
 	private String param;
-	/**
-	 * requestExam(请求示例)
-	 * */
 	private String requestExam;
-	/**
-	 * responseParam(返回参数说明)
-	 * */
 	private String responseParam;
-	/**
-	 * errorList(接口错误码列表)
-	 * */
 	private String errorList;
-	/**
-	 * trueExam(正确返回示例)
-	 * */
 	private String trueExam;
-	/**
-	 * falseExam(错误返回示例)
-	 * */
 	private String falseExam;
-	/**
-	 * moduleId(所属模块ID)
-	 * */
 	private String moduleId;
-	/**
-	 * moduleName(所属模块名称)
-	 * */
-	private String moduleName;
-	
 	private String interfaceName;
 	private String updateBy;
 	private String updateTime;
-	
 	private String remark;//备注
 	private String errors;
+	
+	@Transient
+	public String getModuleName(){
+		if(!MyString.isEmpty(moduleId)){
+			Module module = Cache.getModule(moduleId);
+			if(module!=null)
+				return module.getModuleName();
+		}
+		return "";
+	}
+	
 	@Column(name="errors")
 	public String getErrors() {
 		return errors;
@@ -162,15 +142,6 @@ public class Interface extends BaseModel{
 
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
-	}
-
-	@Column(name="moduleName")
-	public String getModuleName() {
-		return moduleName;
-	}
-
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
 	}
 	
 	@Column(name="interfaceName")

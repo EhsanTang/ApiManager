@@ -103,8 +103,8 @@ function uploadImgCallBack(msg, url) {
  * 图片id 验证码输入框id
  */
 function changeimg(imgId,inputId){
-	document.getElementById(imgId).src='getImgCode.do?'+Math.random(); 
 	try{
+		document.getElementById(imgId).src='getImgCode.do?'+Math.random(); 
 		document.getElementById(inputId).focus();
 	}catch(ex){}
 	return false;

@@ -14,6 +14,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,in
 .dashed{border:1px dashed #DDD;}
 .bl1{border-left: 1px solid #DDD;}
 .bt1{border-top: 1px solid #DDD;}
+.bt0{border-top:0px!important;}
 .bb1{border-bottom: 1px solid #DDD;}
 .br1{border-right: 1px solid #DDD;}
 .bl0{border-left:0px;}
@@ -192,8 +193,8 @@ table{border-collapse:collapse;border-spacing:0}
   font-family: 'iconfont';
   src: url('//at.alicdn.com/t/font_1459914437_0038764.eot'); /* IE9*/
   src: url('//at.alicdn.com/t/font_1459914437_0038764.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1459914437_0038764.woff') format('woff'), /* chrome¡¢firefox */
-  url('//at.alicdn.com/t/font_1459914437_0038764.ttf') format('truetype'), /* chrome¡¢firefox¡¢opera¡¢Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1459914437_0038764.woff') format('woff'), /* chromeï¿½ï¿½firefox */
+  url('//at.alicdn.com/t/font_1459914437_0038764.ttf') format('truetype'), /* chromeï¿½ï¿½firefoxï¿½ï¿½operaï¿½ï¿½Safari, Android, iOS 4.2+*/
   url('//at.alicdn.com/t/font_1459914437_0038764.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
                                      

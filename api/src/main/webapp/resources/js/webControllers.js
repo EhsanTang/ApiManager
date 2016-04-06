@@ -21,6 +21,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.dictionary = null;
 				 $rootScope.model = null;
 			 }else{
 				 $rootScope.error = null;

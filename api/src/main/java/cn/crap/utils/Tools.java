@@ -1,30 +1,22 @@
 package cn.crap.utils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Random;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.hibernate.Query;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import cn.crap.framework.MyException;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.SpringContextHolder;
 
 
 public class Tools {
@@ -55,8 +47,12 @@ public class Tools {
 	}
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
+		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);
 		Object oldImgCode = request.getSession().getAttribute(Const.SESSION_IMG_CODE);
 		if(!MyString.isEmpty(modulePassword)){
+			if(!MyString.isEmpty(temPwd)&&temPwd.toString().equals(modulePassword)){
+				return;
+			}
 			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				if(MyString.isEmpty(visitCode)||oldImgCode==null||!visitCode.equals(oldImgCode.toString())){
 					throw new MyException("000007");
@@ -65,6 +61,7 @@ public class Tools {
 			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
 				throw new MyException("000007");
 			}
+			request.getSession().setAttribute(Const.SESSION_TEMP_PASSWORD, password);
 		}
 	}
 	/**********************构造查询语句****************************/

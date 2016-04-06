@@ -375,7 +375,7 @@ function shake(o){
  * @param lWidth
  * @param onMouse
  *            div是否覆盖点击的点:(0).不覆盖，div居浏览器中部 (1).X轴居中 (2).Y轴居中 (3).X、Y轴均居中
- *            (4).右下方,(5).id左下方
+ *            (4).右下方,(5).id左下方 6:居中，不需要考虑浏览器滚动
  */
 function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    var lObj = self.document.getElementById(id);
@@ -411,7 +411,11 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    lObj.style.height = lHeight + 'px';
 	    lObj.style.width = lWidth + 'px';
 	    lObj.style.left = (lLeft + document.documentElement.scrollLeft) + 'px';
-	    lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
+	    if(onMouse!=6){
+	    	lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
+	    }else{
+	    	lObj.style.top =  lTop + 'px';
+	    }
 }
 
 /**************************** 隐藏div *******************************/

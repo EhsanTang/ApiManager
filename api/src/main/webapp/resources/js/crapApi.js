@@ -1,16 +1,17 @@
 /****************密码访问*****************/
-$(".error").click(function(){
-	var msg = $(this).find(".errorMsg").textContent;
+function propUpPsswordDiv(obj){
+	var msg = obj.textContent;
 	if(msg.indexOf("[000007]")>=0){
-		changeDisplay('password','errorMsg');
-	}else{
-		$("#errorMsg").html(msg);
-		changeDisplay('errorMsg','password');
+		lookUp('passwordDiv', '', 300, 300 ,6,'');
+		showMessage('passwordDiv','false',false,-1);
+		showMessage('fade','false',false,-1);
+		changeimg('imgCode','verificationCode');
 	}
-	openModal("请输入访问密码","300");
-	changeimg('imgCode','verificationCode');
-});
-
+}
+function closePasswordDiv(){
+	iClose('passwordDiv');
+	iClose('fade');
+}
 /*****************接口添加参数**************/
 function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {

@@ -13,6 +13,21 @@ html,body{
     height: 100%;
     width: 100%;
 }
+#fade{
+	opacity: 0.5;
+	position: fixed; 
+	top: 0;
+	bottom:0px;
+	right: 0;
+	left: 0;
+	background-color: #000000;
+	z-index:999;
+	 display: none;
+}
+#passwordDiv{
+	z-index:10001;
+	position:fixed!important;
+}
 /************登录********************/
 #remberPwd .lab{
 	padding-top:3px;
@@ -33,6 +48,7 @@ html,body{
 .input-wrapper:first-child {
     border-top: 1px solid #eee;
 }
+
 .input-wrapper input {
     padding: 15px 8px;
     height: 48px;

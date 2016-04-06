@@ -143,8 +143,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			},'page@webWebPageList' : {
 				templateUrl : 'resources/webHtml/page.tpl.html'
-			},'password@webWebPageList' : {
-				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	}).state('webWebPageDetail', {
@@ -154,8 +152,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
-			},'password@webWebPageDetail' : {
-				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	}).state('webError', {
@@ -176,8 +172,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'page@webInterfaceCtrl' : {
 				templateUrl : 'resources/webHtml/page.tpl.html'
-			},'password@webInterfaceCtrl' : {
-				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	}).state('webInterfaceDetailCtrl', {
@@ -185,8 +179,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' : {
 				templateUrl : 'resources/webHtml/interfaceDetail.tpl.html'
-			},'password@webInterfaceDetailCtrl' : {
-				templateUrl : 'resources/webHtml/password.tpl.html'
 			}
 		}
 	})

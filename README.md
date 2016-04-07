@@ -2,6 +2,7 @@
 一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）
 
 演示地址：http://api.crap.cn  或者 http://api2.crap.cn
+压缩包下载地址：http://ehsantang.github.io/CrapApi/
 账号：super 123456 （请勿修改密码，谢谢）
 游客私有模块访问密码：123
 QQ技术交流群：254450938

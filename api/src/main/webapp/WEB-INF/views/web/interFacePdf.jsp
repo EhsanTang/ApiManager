@@ -2,15 +2,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<style type="text/css">
-	body{font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
-</style>
 </head>
 <body screen_capture_injected="true" ryt11773="1">
-		<div style="padding-left:4px;padding-right:4px;margin-right:50px; background:#fff; 
-		color:#B768A5;font-weight:bold;font-size:16px;text-align:right;">
-			CrapApi接口管理系统 api.crap.cn
-		</div>
-		<div style="height:2px;width:100%;background:#B768A5;"></div>
+    <p>
+        <span style="font-size:12.0pt; font-family:MS Mincho">長空</span> <span
+            style="font-size:12.0pt; font-family:Times New Roman,serif">(Broken
+            Sword),</span> <span style="font-size:12.0pt; font-family:MS Mincho">秦王殘劍</span>
+        <span style="font-size:12.0pt; font-family:Times New Roman,serif">(Flying
+            Snow),</span> <span style="font-size:12.0pt; font-family:MS Mincho">飛雪</span>
+        <span style="font-size:12.0pt; font-family:Times New Roman,serif">(Moon),
+        </span> <span style="font-size:12.0pt; font-family:MS Mincho">如月</span> <span
+            style="font-size:12.0pt; font-family:Times New Roman,serif">(the
+            King), and</span> <span style="font-size:12.0pt; font-family:MS Mincho">秦王</span>
+        <span style="font-size:12.0pt; font-family:Times New Roman,serif">(Sky).</span>
+    </p>
 </body>
 </html>

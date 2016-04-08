@@ -1,7 +1,13 @@
 package cn.crap.controller;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -27,6 +33,7 @@ import cn.crap.model.Module;
 import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -68,9 +75,41 @@ public class InterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/detail/pdf.do")
 	public String pdf(@ModelAttribute Interface interFace) throws Exception {
-		model = interfaceService.get(interFace.getId());
+        model = interfaceService.get(interFace.getId());
 		request.setAttribute("model", model);
 		return "web/interFacePdf";
+	}
+	@RequestMapping("/download/pdf.do")
+	@ResponseBody
+	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
+		String displayFilename = "pdf.pdf";
+        byte[] buf = new byte[1024 * 1024 * 10];  
+        int len = 0; 
+        ServletOutputStream ut = null;
+        BufferedInputStream br = null;  
+        response.setHeader("Pragma", "No-cache");  
+        response.setHeader("Cache-Control", "must-revalidate, no-transform");  
+        response.setDateHeader("Expires", 0L);  
+ 
+        String userAgent = req.getHeader("User-Agent");  
+        boolean isIE = (userAgent != null) && (userAgent.toLowerCase().indexOf("msie") != -1); 
+         
+        response.setContentType("application/x-download"); 
+        if (isIE) {  
+            displayFilename = URLEncoder.encode(displayFilename, "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + displayFilename + "\"");  
+        } else {  
+            displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
+        } 
+            br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req)));
+            ut = response.getOutputStream();  
+            while ((len = br.read(buf)) != -1)  
+                ut.write(buf, 0, len);
+            br.close();
+//            model = interfaceService.get(interFace.getId());
+//		request.setAttribute("model", model);
+//		return "web/interFacePdf";
 	}
 	
 	@RequestMapping("/copy.do")

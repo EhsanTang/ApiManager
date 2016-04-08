@@ -7,13 +7,10 @@
 </style>
 </head>
 <body screen_capture_injected="true" ryt11773="1">
-<div style="border-bottom:3px solid #B768A5;"></div>
-	<div style="border-bottom:3px solid #B768A5;text-align:right;">
-		<div style="padding-left:4px;padding-right:4px;margin-bottom:-6px;margin-right:50px; background:#fff;float:right; color:#B768A5;font-weight:bold;font-size:18px;">
-			CrapApi|Api接口管理系统 
+		<div style="padding-left:4px;padding-right:4px;margin-right:50px; background:#fff; 
+		color:#B768A5;font-weight:bold;font-size:16px;text-align:right;">
+			CrapApi接口管理系统 api.crap.cn
 		</div>
-		<div style="clear:both;"></div>
-	</div>
-	
+		<div style="height:2px;width:100%;background:#B768A5;"></div>
 </body>
 </html>

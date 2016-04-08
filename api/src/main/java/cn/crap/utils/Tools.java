@@ -64,7 +64,11 @@ public class Tools {
 			request.getSession().setAttribute(Const.SESSION_TEMP_PASSWORD, password);
 		}
 	}
-	/**********************构造查询语句****************************/
+	/**
+	 * 构造查询Map集合
+	 * @param params 不定数量参数 格式(key1,value1,key2,value2....)
+	 * @return
+	 */
 	public static Map<String, Object> getMap(Object... params) {
 		if (params.length == 0 || params.length % 2 != 0) {
 			return null;

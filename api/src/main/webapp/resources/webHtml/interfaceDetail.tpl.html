@@ -6,7 +6,9 @@
   <li class="active">接口：{{model.interfaceName}}</li>
 </ol>
 <div class="col-xs-12 p0 f12 lh26 interface-detail">
-		<div class="bb1 fb f20 pb10 C000 mt0 tr">{{model.url}}</div>
+		<div class="bb1 fb f20 pb10 C000 mt0 tr">{{model.url}}
+		<a ng-href="interface/detail/pdf.do?id={{model.id}}" target="_blank" class="btn btn-default btn-sm">下载</a>
+		</div>
 		<blockquote>
   			<p class="cursor" style="color:#000;">目录</p>
   			<p class="cursor" onclick="scrollToId('1')">1  功能说明</p>

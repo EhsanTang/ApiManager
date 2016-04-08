@@ -77,8 +77,8 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	}
 
 	public List<T> findByMap(Map<String, Object> map,
-			Page pageBean, String order) {
-		return dao.findByMap(map, pageBean, order);
+			Page page, String order) {
+		return dao.findByMap(map, page, order);
 	}
 	
 	public List<T> findByHql(String Hql) {

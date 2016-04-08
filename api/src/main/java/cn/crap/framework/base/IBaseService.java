@@ -47,11 +47,27 @@ public interface IBaseService<T extends BaseModel> {
 	 * */
 	public List<T> loadAll(T model);
 
+	/**
+	 * 根据查询条件Map集合查询数据集合
+	 * @param map 查询条件Map集合
+	 * @param page 分页参数
+	 * @param order 排序规则（为空则按创建时间降序排列）
+	 */
 	public List<T> findByMap(Map<String, Object> map,
 			Page pageBean, String order);
 	
+	/**
+	 * 根据查询条件Map集合查询总数量
+	 * @param map
+	 * @return
+	 */
 	public int getCount(Map<String, Object> map);
 
+	/**
+	 * 根据Hql语句查询
+	 * @param Hql
+	 * @return
+	 */
 	public List<T> findByHql(String Hql);
 
 	

@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,9 @@ import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.ParameterType;
 import cn.crap.utils.Tools;
 
 @Service
@@ -48,6 +53,29 @@ public class InterfaceService extends BaseService<Interface>
 		map.put("interfaces", interfaces);
 		map.put("modules", modules);
 		return new JsonResult(1, map, page);
+	}
+	
+	@Override
+	public void getInterFaceRequestExam(Interface interFace) {
+		if(!MyString.isEmpty(interFace.getParam())){
+			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
+			if(!MyString.isEmpty(interFace.getParam())){
+				JSONArray json = JSONArray.fromObject(interFace.getParam());
+				StringBuilder headers = new StringBuilder("请求头:\r\n");
+				StringBuilder params = new StringBuilder("请求参数:\r\n");
+				JSONObject obj = null;
+				for(int i=0;i<json.size();i++){  
+					obj = (JSONObject) json.get(i);
+			        if(obj.containsKey("parameterType")&&obj.getString("parameterType").equals(ParameterType.HEADER.name())){
+			        	headers.append("\t"+obj.getString("name")+"=xxxx\r\n");
+			        }else{
+			        	params.append("\t"+obj.getString("name")+"=xxxx\r\n");
+			        }
+			    }  
+				interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
+				
+			}
+		}
 	}
 
 }

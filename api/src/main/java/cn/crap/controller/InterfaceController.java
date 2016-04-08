@@ -64,6 +64,15 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		return new JsonResult(1, model);
 	}
+	
+
+	@RequestMapping("/detail/pdf.do")
+	public String pdf(@ModelAttribute Interface interFace) throws Exception {
+		model = interfaceService.get(interFace.getId());
+		request.setAttribute("model", model);
+		return "web/interFacePdf";
+	}
+	
 	@RequestMapping("/copy.do")
 	@ResponseBody
 	@AuthPassport
@@ -99,30 +108,9 @@ public class InterfaceController extends BaseController<Interface>{
 	}
 	@RequestMapping("/getRequestExam.do")
 	@ResponseBody
-	public JsonResult getRequestExam(@ModelAttribute Interface interFaceInfo) {
-		getInterFaceRequestExam(interFaceInfo);
-		return new JsonResult(1, interFaceInfo);
-	}
-	private void getInterFaceRequestExam(Interface interFace) {
-		if(!MyString.isEmpty(interFace.getParam())){
-			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
-			if(!MyString.isEmpty(interFace.getParam())){
-				JSONArray json = JSONArray.fromObject(interFace.getParam());
-				StringBuilder headers = new StringBuilder("请求头:\r\n");
-				StringBuilder params = new StringBuilder("请求参数:\r\n");
-				JSONObject obj = null;
-				for(int i=0;i<json.size();i++){  
-					obj = (JSONObject) json.get(i);
-			        if(obj.containsKey("parameterType")&&obj.getString("parameterType").equals(ParameterType.HEADER.name())){
-			        	headers.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			        }else{
-			        	params.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			        }
-			    }  
-				interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
-				
-			}
-		}
+	public JsonResult getRequestExam(@ModelAttribute Interface interFace) {
+		interfaceService.getInterFaceRequestExam(interFace);
+		return new JsonResult(1, interFace);
 	}
 
 	@RequestMapping("/addOrUpdate.do")
@@ -154,7 +142,7 @@ public class InterfaceController extends BaseController<Interface>{
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));
 		//请求示例为空，则自动添加
 		if(MyString.isEmpty(interFace.getRequestExam())){
-			getInterFaceRequestExam(interFace);
+			interfaceService.getInterFaceRequestExam(interFace);
 		}
 		if (!MyString.isEmpty(interFace.getId())) {
 			interfaceService.update(interFace);

@@ -19,8 +19,10 @@ import cn.crap.utils.Tools;
 public class FileController extends BaseController <User>{
 	private HashMap<String, String> extMap = new HashMap<String, String>();
 	public FileController(){
+		/**
+		 * 允许上传的图片类型
+		 */
 		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");
-		//extMap.put("file", ",doc,docx,xls,xlsx,ppt,pdf,htm,html,txt,zip,rar,gz,bz2,");	
 	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
@@ -31,7 +33,9 @@ public class FileController extends BaseController <User>{
 	    String saveUrl ="";
 	    String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1).toLowerCase();
 	    JSONObject obj = new JSONObject();
-	    //拦截信息
+	    /**
+	     * 文件大小拦截，不能超过2M
+	     */
 	    if(file.getSize()>2*1024*1024){
 	    	obj.put("error", 1);
 	    	result = "[ERROR]文件超过最大限制，请上传小于2M的图片";

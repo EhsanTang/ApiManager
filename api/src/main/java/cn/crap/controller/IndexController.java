@@ -62,13 +62,22 @@ public class IndexController extends BaseController<User>{
 	public void home(HttpServletResponse response) throws Exception {
 		response.sendRedirect("web.do");
 	}
-	
+	/**
+	 * 后台管理主页面
+	 * @return
+	 * @throws Exception
+	 */
 	@AuthPassport
 	@RequestMapping("/index.do")
 	public String showHomePage() throws Exception {
 		return "admin/index";
 	}
-	
+
+	/**
+	 * 跳转至前段主页面
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/web.do")
 	public String web() throws Exception {
 		return "web/index";

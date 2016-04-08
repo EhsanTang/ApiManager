@@ -12,6 +12,14 @@ public class MyString {
 		else
 			return false;
 	}
+	/**
+	 * 判断对象是否为空
+	 * Object = null
+	 * String = "","null","undefined"
+	 * List size=0
+	 * @param object
+	 * @return
+	 */
 	public static boolean isEmpty(Object object)
 	{
 		if(object instanceof String){

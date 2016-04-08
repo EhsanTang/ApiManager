@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/cn/crap/framework/ErrorInfos.java=UTF-8
 encoding//src/main/java/cn/crap/framework/auth/AuthInterceptor.java=UTF-8
+encoding//src/main/webapp/WEB-INF/views/web/interFacePdf.jsp=UTF-8
 encoding//src/main/webapp/resources/css/crapApi.css=UTF-8
 encoding//src/main/webapp/resources/html=UTF-8
 encoding//src/main/webapp/resources/html/errorDetail.tpl.html=UTF-8

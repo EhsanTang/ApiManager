@@ -31,4 +31,5 @@ public class Const {
 	public static final String SETTING_SECRETKEY = "SECRETKEY";
 	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";
 	public final static String SETTING_VISITCODE = "VISITCODE";
+	public final static String SETTING_DOMAIN = "DOMAIN";
 }

@@ -6,8 +6,9 @@
   <li class="active">接口：{{model.interfaceName}}</li>
 </ol>
 <div class="col-xs-12 p0 f12 lh26 interface-detail">
-		<div class="bb1 fb f20 pb10 C000 mt0 tr">{{model.url}}
-		<a ng-href="interface/download/pdf.do" target="_blank" class="btn btn-default btn-sm">下载</a>
+		<div class="bb1 fb f20 pb10 C000 mt0">
+			{{model.url}}
+			<a ng-href="interface/download/pdf.do?id={{model.id}}" class="CFFF f12 main-color" target="_blank"><i class="iconfont">&#xe61e;</i>下载</a>
 		</div>
 		<blockquote>
   			<p class="cursor" style="color:#000;">目录</p>

@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.MyException;
+import cn.crap.dto.ErrorDto;
+import cn.crap.dto.ParamDto;
+import cn.crap.dto.ResponseParamDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -77,12 +80,18 @@ public class InterfaceController extends BaseController<Interface>{
 	public String pdf(@ModelAttribute Interface interFace) throws Exception {
         model = interfaceService.get(interFace.getId());
 		request.setAttribute("model", model);
+		Object params = JSONArray.toArray(JSONArray.fromObject(model.getParam()),ParamDto.class);
+		request.setAttribute("header", params);
+		Object responseParam = JSONArray.toArray(JSONArray.fromObject(model.getResponseParam()),ResponseParamDto.class);
+		request.setAttribute("responseParam", responseParam);
+		Object errors = JSONArray.toArray(JSONArray.fromObject(model.getErrors()),ErrorDto.class);
+		request.setAttribute("errors", errors);
 		return "web/interFacePdf";
 	}
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
-		String displayFilename = "pdf.pdf";
+		String displayFilename = "API.pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 
         ServletOutputStream ut = null;
@@ -102,7 +111,7 @@ public class InterfaceController extends BaseController<Interface>{
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
         } 
-            br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req)));
+            br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req,interFace.getId())));
             ut = response.getOutputStream();  
             while ((len = br.read(buf)) != -1)  
                 ut.write(buf, 0, len);

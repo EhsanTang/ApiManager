@@ -24,7 +24,7 @@ public class Html2Pdf {
      * @param file
      * @throws Exception 
      */
-    public static String createPdf(HttpServletRequest request) throws Exception {
+    public static String createPdf(HttpServletRequest request,String interFaceId) throws Exception {
     	String destDir = Tools.getServicePath(request)+"resources/upload/pdf";
     	if(!new File(destDir).exists()){  
     		new File(destDir).mkdirs();  
@@ -35,7 +35,8 @@ public class Html2Pdf {
         // step 3
         document.open();
         // step 4
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString("http://localhost:8080/CrapApi/interface/detail/pdf.do?id=ddd690f3-b87c-41ed-825d-0c39c3d413ff"), Charset.forName("UTF-8"));
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString(Cache.getSetting(Const.SETTING_DOMAIN).getValue()+
+        		"/interface/detail/pdf.do?id="+interFaceId), Charset.forName("UTF-8"));
         // step 5
         document.close();
         return destDir+"/temp.pdf";

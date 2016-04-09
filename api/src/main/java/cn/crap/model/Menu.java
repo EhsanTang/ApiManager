@@ -22,10 +22,6 @@ import cn.crap.utils.MyString;
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Menu extends BaseModel{
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2919550199541804532L;
-	/**
 	 * menuId
 	 * */
 	private String menuId;

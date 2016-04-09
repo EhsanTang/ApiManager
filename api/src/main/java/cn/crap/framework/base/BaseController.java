@@ -6,23 +6,18 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.utils.Page;
-
 
 @Scope("prototype")
 public class BaseController<T extends BaseModel> {
@@ -41,7 +36,6 @@ public class BaseController<T extends BaseModel> {
 	protected HashMap<String, String> getRequestHeaders()  {
 		HashMap<String, String> requestHeaders = new HashMap<String, String>();
 		Enumeration<String> headerNames = request.getHeaderNames();
-
 		while (headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
 			String headerValue = request.getHeader(headerName);
@@ -56,7 +50,6 @@ public class BaseController<T extends BaseModel> {
 	protected HashMap<String, String> getRequestParams() {
 		HashMap<String, String> requestParams = new HashMap<String, String>();
 		Enumeration<String> paramNames = request.getParameterNames();
-
 		while (paramNames.hasMoreElements()) {
 			String paramName = paramNames.nextElement();
 			String paramValue = request.getParameter(paramName);

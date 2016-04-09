@@ -1,11 +1,7 @@
 package cn.crap.framework;
 
 import java.io.Serializable;
-
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import cn.crap.utils.Page;
 

@@ -15,7 +15,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}
 	/*********************后台*******************/
 	$stateProvider.state('menuList', {
-		url : '/menu/list/:parentId/:menuName',
+		url : '/menu/list/:parentId/:type/:menuName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/menuList.tpl.html'

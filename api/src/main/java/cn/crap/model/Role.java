@@ -18,17 +18,8 @@ import cn.crap.framework.base.BaseModel;
 @Table(name="role")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Role extends BaseModel{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4223473013771467071L;
-	/**
-	 * roleId(角色ID)
-	 * */
+
 	private String roleId;
-	/**
-	 * roleName(角色名称)
-	 * */
 	private String roleName;
 	private String auth;
 	private String authName;

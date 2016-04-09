@@ -1,20 +1,11 @@
 package cn.crap.framework.base;
 
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
-
-
-
-
-
 import javax.annotation.Resource;
-
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate4.HibernateTemplate;
-import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.utils.MyString;

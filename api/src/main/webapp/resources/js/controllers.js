@@ -38,7 +38,10 @@ mainModule.controller('lefMenuCtrl', function($rootScope,$scope, $http, $state, 
 /**************************菜单列表****************************/
 mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=menu/list.do|iLoading=FLOAT|iParams=";
+		if($("#searchType").val()!=null&&$("#searchType").val()!=''){
+			$stateParams.type = $("#searchType").val();
+		}
+		var params = "iUrl=menu/list.do|iLoading=FLOAT|iParams=&type="+$stateParams.type;
 		if($("#menuName").val()!=null&&$("#menuName").val()!=''){
 			params += "&menuName=" + $("#menuName").val();
 		}else{

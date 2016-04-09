@@ -1,8 +1,5 @@
 package cn.crap.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -10,15 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
-import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
@@ -32,10 +24,6 @@ public class UserController extends BaseController<User>{
 
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private IMenuService menuService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody

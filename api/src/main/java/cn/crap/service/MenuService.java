@@ -143,7 +143,7 @@ public class MenuService extends
 				picks.add(pick);
 			}
 			break;
-		case "MENUTYPE":// 枚举 接口状态
+		case "MENUTYPE":// 枚举 菜单类型
 			for (MenuType type : MenuType.values()) {
 				pick = new Pick(type.name(), type.getName());
 				picks.add(pick);
@@ -223,12 +223,16 @@ public class MenuService extends
 			// 后端角色管理
 			pick = new Pick("h_r_0", "index.do#/role/list", "角色列表");
 			picks.add(pick);
-			// 后端菜单管理
-			pick = new Pick("h_m_0", "index.do#/menu/list/0/无", "菜单列表");
-			picks.add(pick);
 			// 后端系统设置
 			pick = new Pick("h_s_0", "index.do#/setting/list", "系统设置列表");
 			picks.add(pick);
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "后台菜单列表");
+			picks.add(pick);
+			for (MenuType type : MenuType.values()) {
+				pick = new Pick("h_m_"+type.name(), "index.do#/menu/list/0/"+type.name()+"/一级菜单", type.getName());
+				picks.add(pick);
+			}
 			pick = new Pick(Const.SEPARATOR, "后台数据字典");
 			picks.add(pick);
 			preUrl = "index.do#/webPage/list/";

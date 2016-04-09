@@ -35,7 +35,7 @@ public class MenuController extends BaseController<Menu>{
 	@ResponseBody
 	public JsonResult MenuDemo(@ModelAttribute Menu menu,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("parentId",menu.getParentId(),"menuName|like",menu.getMenuName());
+		map = Tools.getMap("parentId",menu.getParentId(),"menuName|like",menu.getMenuName(),"type",menu.getType());
 		return new JsonResult(1,menuService.findByMap(map,page,null),page);
 	}
 	
@@ -71,6 +71,7 @@ public class MenuController extends BaseController<Menu>{
 		}
 		return new JsonResult(1,menu);
 	}
+	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_MENU)

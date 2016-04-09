@@ -2,13 +2,9 @@ package cn.crap.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,15 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cn.crap.framework.MyException;
-import cn.crap.framework.JsonResult;
 import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
@@ -43,10 +34,6 @@ import cn.crap.utils.ValidateCodeService;
 public class IndexController extends BaseController<User>{
 	@Autowired
 	IMenuService menuService;
-	@Autowired
-	private IModuleService moduleService;
-	@Autowired
-	private IErrorService errorService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
@@ -196,7 +183,6 @@ public class IndexController extends BaseController<User>{
 	@RequestMapping("getImgCode.do")
 	@ResponseBody
 	public void getImgvcode() throws IOException{
-		HttpSession session = request.getSession();
 		// 设置response，输出图片客户端不缓存
 		response.setDateHeader("Expires", 0);
 		response.addHeader("Pragma", "no-cache");

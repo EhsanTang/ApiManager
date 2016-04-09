@@ -4,14 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.framework.MyException;
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
@@ -33,14 +27,10 @@ import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Html2Pdf;
-import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.ParameterType;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
@@ -91,7 +81,8 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
-		String displayFilename = "API.pdf";
+		interFace = interfaceService.get(interFace.getId());
+		String displayFilename = "CrapApi|"+interFace.getInterfaceName()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 
         ServletOutputStream ut = null;
@@ -102,7 +93,6 @@ public class InterfaceController extends BaseController<Interface>{
  
         String userAgent = req.getHeader("User-Agent");  
         boolean isIE = (userAgent != null) && (userAgent.toLowerCase().indexOf("msie") != -1); 
-         
         response.setContentType("application/x-download"); 
         if (isIE) {  
             displayFilename = URLEncoder.encode(displayFilename, "UTF-8");
@@ -111,14 +101,11 @@ public class InterfaceController extends BaseController<Interface>{
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
         } 
-            br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req,interFace.getId())));
-            ut = response.getOutputStream();  
-            while ((len = br.read(buf)) != -1)  
-                ut.write(buf, 0, len);
-            br.close();
-//            model = interfaceService.get(interFace.getId());
-//		request.setAttribute("model", model);
-//		return "web/interFacePdf";
+        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req,interFace.getId())));
+        ut = response.getOutputStream();  
+        while ((len = br.read(buf)) != -1)  
+             ut.write(buf, 0, len);
+        br.close();
 	}
 	
 	@RequestMapping("/copy.do")

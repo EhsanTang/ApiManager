@@ -15,7 +15,18 @@
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right mr20">
+				<ul class="nav navbar-nav navbar-right mr20" ng-controller="lefMenuCtrl">
+					<li ng-repeat="item in menus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
+	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
+	                </li>
+	                <li class="dropdown" ng-repeat="item in menus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
+	                	 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{item.menu.menuName}} <span class="caret"></span></a>
+	                 	 <ul class="dropdown-menu">
+	                    	<li ng-repeat="subItem in item.subMenu">
+	                    		<a ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
+	                    	</li>
+	                  </ul>
+	                </li>
 					<c:if test="${sessionAdminName==null}">
 						<li><a href="index.do"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
 					</c:if>

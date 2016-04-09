@@ -1,7 +1,7 @@
 package cn.crap.utils;
 
 public enum WebPageType {
-	DICTIONARY("数据字典");
+	DICTIONARY("数据字典"),PAGE("网站页面");
 	private final String name;
 	
 	private WebPageType(String name){

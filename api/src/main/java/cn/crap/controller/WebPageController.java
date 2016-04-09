@@ -1,5 +1,7 @@
 package cn.crap.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ public class WebPageController extends BaseController<WebPage>{
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type",webPage.getType());
-		return new JsonResult(1,webPageService.findByMap(map,page,null),page);
+		return new JsonResult(1,webPageService.findByMap(map,page,null),page,WebPageType.valueOf(webPage.getType()).getName());
 	}
 	
 	@RequestMapping("/detail.do")
@@ -50,9 +52,19 @@ public class WebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
-		model= webPageService.get(webPage.getId());
-		Module module = moduleService.get(model.getModuleId());
-		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		if(webPage.getId().length()<21){
+			map = Tools.getMap("key", webPage.getId());
+			List<WebPage>models=webPageService.findByMap(map, null, null);
+			if(models.size()>0)
+				model = models.get(0);
+		}
+		if(model==null){
+			model= webPageService.get(webPage.getId());
+		}
+		if(model.getType().equals(WebPageType.DICTIONARY.name())){
+			Module module = moduleService.get(model.getModuleId());
+			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		}
 		return new JsonResult(1,model);
 	}
 	@RequestMapping("/addOrUpdate.do")
@@ -63,7 +75,19 @@ public class WebPageController extends BaseController<WebPage>{
 		}else{
 			Tools.hasAuth(Const.AUTH_WEBPAGE, request.getSession(), "");
 		}
+		if(MyString.isEmpty(webPage.getKey())){
+			webPage.setKey(null);
+		}
+		webPage.setCanDelete(Byte.valueOf("1"));
 		if(!MyString.isEmpty(webPage.getId())){
+			/**
+			 * 判断是否为系统数据，系统数据不允许修改可以和canDelete字段
+			 */
+			model = webPageService.get(webPage.getId());
+			if(model.getCanDelete()!=1){
+				webPage.setKey(model.getKey());
+				webPage.setCanDelete(Byte.valueOf("0"));
+			}
 			webPageService.update(webPage);
 		}else{
 			webPage.setId(null);
@@ -79,6 +103,10 @@ public class WebPageController extends BaseController<WebPage>{
 			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
 		else
 			Tools.hasAuth(Const.AUTH_WEBPAGE, request.getSession(), webPage.getModuleId());
+		model = webPageService.get(webPage.getId());
+		if(model.getCanDelete()!=1){
+			throw new MyException("000009");
+		}
 		webPageService.delete(webPage);
 		return new JsonResult(1,null);
 	}

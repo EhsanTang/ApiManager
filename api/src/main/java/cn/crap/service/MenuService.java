@@ -15,10 +15,12 @@ import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.IRoleService;
+import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Error;
 import cn.crap.model.Menu;
 import cn.crap.model.Module;
 import cn.crap.model.Role;
+import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
 import cn.crap.utils.DataType;
 import cn.crap.utils.InterfaceStatus;
@@ -32,14 +34,15 @@ import cn.crap.utils.TrueOrFalse;
 import cn.crap.utils.WebPageType;
 
 @Service
-public class MenuService extends
-		BaseService<Menu> implements IMenuService {
+public class MenuService extends BaseService<Menu> implements IMenuService {
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
 	private IErrorService errorService;
 	@Autowired
 	private IRoleService roleService;
+	@Autowired
+	private IWebPageService webPageService;
 
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
@@ -48,37 +51,36 @@ public class MenuService extends
 
 	@Override
 	@Transactional
-	public String pick(List<Pick> picks, String radio, String code, String key, String def,String notNull) {
+	public String pick(List<Pick> picks, String radio, String code, String key, String def, String notNull) {
 		Pick pick = null;
-		if (radio.equals("true")&&!MyString.isEmpty(notNull)&&notNull.equals("false")) {
+		if (radio.equals("true") && !MyString.isEmpty(notNull) && notNull.equals("false")) {
 			pick = new Pick("pick_null", "", "");
 			picks.add(pick);
 		}
 		switch (code) {
 		case "MENU":
-			for (Menu m : findByMap(Tools.getMap("parentId", "0"),
-					null, null)) {
+			for (Menu m : findByMap(Tools.getMap("parentId", "0"), null, null)) {
 				pick = new Pick(m.getMenuId(), m.getMenuName());
 				picks.add(pick);
 			}
 			break;
 		case "AUTH":
-			pick = new Pick(DataType.MODULE.name()+"_0", "项目管理");
+			pick = new Pick(DataType.MODULE.name() + "_0", "项目管理");
 			picks.add(pick);
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
-			moduleService.getModulePick(picks, "m_", "0", "",DataType.MODULE.name()+"_moduleId","--【模块】");
+			moduleService.getModulePick(picks, "m_", "0", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "接口管理");
 			picks.add(pick);
-			moduleService.getModulePick(picks, "i_", "0", "",DataType.INTERFACE.name()+"_moduleId","--【接口】");
+			moduleService.getModulePick(picks, "i_", "0", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
-			for (Module m : moduleService.findByMap(
-					Tools.getMap("parentId", "0"), null, null)) {
-				pick = new Pick(m.getModuleId(),DataType.ERROR.name()+"_"+m.getModuleId(), m.getModuleName()+"--【错误码】");
+			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+				pick = new Pick(m.getModuleId(), DataType.ERROR.name() + "_" + m.getModuleId(),
+						m.getModuleName() + "--【错误码】");
 				picks.add(pick);
 			}
 			// 分割线
@@ -95,31 +97,29 @@ public class MenuService extends
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "数据字典管理");
 			picks.add(pick);
-			for (Module m : moduleService.findByMap(
-					Tools.getMap("parentId", "0"), null, null)) {
-				pick = new Pick("w_d_"+m.getModuleId(),DataType.DICTIONARY.name()+"_"+m.getModuleId(), m.getModuleName());
+			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+				pick = new Pick("w_d_" + m.getModuleId(), DataType.DICTIONARY.name() + "_" + m.getModuleId(),
+						m.getModuleName());
 				picks.add(pick);
 			}
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "我的菜单");
 			picks.add(pick);
-			for (Menu m : findByMap(
-				Tools.getMap("parentId", "0","type",MenuType.BACK.name()), null, null)) {
-				pick = new Pick(m.getMenuId(), m.getMenuName()+"--【菜单】");
+			for (Menu m : findByMap(Tools.getMap("parentId", "0", "type", MenuType.BACK.name()), null, null)) {
+				pick = new Pick(m.getMenuId(), m.getMenuName() + "--【菜单】");
 				picks.add(pick);
 			}
 			break;
 		case "ROLE":
 			pick = new Pick(Const.SUPER, "超级管理员");
 			picks.add(pick);
-			for (Role r : roleService.findByMap(null,null, null)) {
+			for (Role r : roleService.findByMap(null, null, null)) {
 				pick = new Pick(r.getRoleId(), r.getRoleName());
 				picks.add(pick);
 			}
 			break;
 		case "TOPMODULE":// 顶级模块
-			for (Module m : moduleService.findByMap(
-					Tools.getMap("parentId", "0"), null, null)) {
+			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
 				pick = new Pick(m.getModuleId(), m.getModuleName());
 				picks.add(pick);
 			}
@@ -163,8 +163,7 @@ public class MenuService extends
 			break;
 		case "REQUESTMETHOD": // 枚举 请求方式 post get
 			for (RequestMethod status : RequestMethod.values()) {
-				pick = new Pick(status.name(), status.getName(),
-						status.getName());
+				pick = new Pick(status.name(), status.getName(), status.getName());
 				picks.add(pick);
 			}
 			break;
@@ -180,38 +179,12 @@ public class MenuService extends
 				module = moduleService.get(module.getParentId());
 			}
 			for (Error error : errorService.findByMap(
-					Tools.getMap("moduleId",
-							module == null ? "" : module.getModuleId()), null,
-					"errorCode asc")) {
-				pick = new Pick(error.getErrorCode(), error.getErrorCode()
-						+ "--" + error.getErrorMsg());
+					Tools.getMap("moduleId", module == null ? "" : module.getModuleId()), null, "errorCode asc")) {
+				pick = new Pick(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 				picks.add(pick);
 			}
 			break;
 		case "MENURUL":// 前段菜单显示模块url
-			// 分割线
-			pick = new Pick(Const.SEPARATOR,"前端错误码");
-			picks.add(pick);
-			String preUrl = "web.do#/webError/list/";
-			for (Module m : moduleService.findByMap(
-					Tools.getMap("parentId", "0"), null, null)) {
-				pick = new Pick("e_" + m.getModuleId(), preUrl
-						+ m.getModuleId(), m.getModuleName());
-				picks.add(pick);
-			}
-			// 分割线
-			pick = new Pick(Const.SEPARATOR, "前端模块");
-			picks.add(pick);
-			preUrl = "web.do#/webInterface/list/";
-			moduleService.getModulePick(picks, "w_", "0", "",preUrl+"moduleId/moduleName");
-			pick = new Pick(Const.SEPARATOR, "前端数据字典");
-			picks.add(pick);
-			preUrl = "web.do#/webWebPage/list/";
-			for (WebPageType webPage : WebPageType.values()) {
-				pick = new Pick(webPage.name(), preUrl+webPage.name(), webPage.getName());
-				picks.add(pick);
-			}
-			// 分割线
 			pick = new Pick(Const.SEPARATOR, "后台");
 			picks.add(pick);
 			// 后端错误码管理
@@ -230,14 +203,14 @@ public class MenuService extends
 			pick = new Pick(Const.SEPARATOR, "后台菜单列表");
 			picks.add(pick);
 			for (MenuType type : MenuType.values()) {
-				pick = new Pick("h_m_"+type.name(), "index.do#/menu/list/0/"+type.name()+"/一级菜单", type.getName());
+				pick = new Pick("h_m_" + type.name(), "index.do#/menu/list/0/" + type.name() + "/一级菜单", type.getName());
 				picks.add(pick);
 			}
 			pick = new Pick(Const.SEPARATOR, "后台数据字典");
 			picks.add(pick);
-			preUrl = "index.do#/webPage/list/";
+			String preUrl = "index.do#/webPage/list/";
 			for (WebPageType webPage : WebPageType.values()) {
-				pick = new Pick("h_"+webPage.name(), preUrl+webPage.name(), webPage.getName());
+				pick = new Pick("h_" + webPage.name(), preUrl + webPage.name(), webPage.getName());
 				picks.add(pick);
 			}
 			// 分割线
@@ -247,11 +220,40 @@ public class MenuService extends
 			preUrl = "index.do#/interface/list/";
 			pick = new Pick("h_0", preUrl + "0/无", "顶级模块");
 			picks.add(pick);
-			moduleService.getModulePick(picks, "h_", "0", "- - - ",preUrl+"moduleId/moduleName");
-			
+			moduleService.getModulePick(picks, "h_", "0", "- - - ", preUrl + "moduleId/moduleName");
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "前端错误码");
+			picks.add(pick);
+			preUrl = "web.do#/webError/list/";
+			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+				pick = new Pick("e_" + m.getModuleId(), preUrl + m.getModuleId(), m.getModuleName());
+				picks.add(pick);
+			}
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "前端模块");
+			picks.add(pick);
+			preUrl = "web.do#/webInterface/list/";
+			moduleService.getModulePick(picks, "w_", "0", "", preUrl + "moduleId/moduleName");
+			pick = new Pick(Const.SEPARATOR, "前端数据字典");
+			picks.add(pick);
+			preUrl = "web.do#/webWebPage/list/";
+			for (WebPageType webPage : WebPageType.values()) {
+				pick = new Pick(webPage.name(), preUrl + webPage.name(), webPage.getName());
+				picks.add(pick);
+			}
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "前端页面");
+			picks.add(pick);
+			preUrl = "web.do#/webWebPage/detail/PAGE/";
+			for (WebPage w : webPageService.findByMap(Tools.getMap("key|" + Const.NOT_NULL, Const.NOT_NULL,"type","PAGE"), null,
+					null)) {
+				pick = new Pick("wp_" + w.getKey(), preUrl + w.getKey(), w.getName());
+				picks.add(pick);
+			}
+			// 分割线
 			break;
 		case "ALLMODULE":// 所有模块
-			moduleService.getModulePick(picks, "", "0", "",null);
+			moduleService.getModulePick(picks, "", "0", "", null);
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			for (Module m : moduleService
@@ -261,30 +263,34 @@ public class MenuService extends
 			}
 			break;
 		}
-		/***********************组装字符串***************************/
-		if(!radio.equals("")){
+		/*********************** 组装字符串 ***************************/
+		if (!radio.equals("")) {
 			StringBuilder pickContent = new StringBuilder();
 			String separator = "<div class='separator'>%s</div>";
-			String radioDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s','true');\">"+
-					"<input id='%s' type='radio' %s disabled name='cid' value='%s'> "+
-					"&nbsp;&nbsp; <span class='cidName'>%s</span></div>";
-			String checkBoxDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s');\">"+
-					"<input id='%s' type='checkbox' %s disabled name='cid' value='%s'>"+
-					"&nbsp;&nbsp; <span class='cidName'>%s</span><br></div>";
-				
-				for(Pick p:picks){
-					if(p.getValue().equals(Const.SEPARATOR)){
-						pickContent.append(String.format(separator, p.getName()));
-					}else{
-						if(radio.equals("true")){
-							pickContent.append(String.format(radioDiv, def.equals(p.getValue())?" pickActive":"", p.getId(), p.getId(),p.getId(),
-									def.equals(p.getValue())?"checked":"", p.getValue(),p.getName()));
-						}else{
-							pickContent.append(String.format(checkBoxDiv,(","+def).indexOf(","+p.getValue()+",")>=0?" pickActive":"",p.getId(),p.getId(),p.getId(),
-									(","+def).indexOf(","+p.getValue()+",")>=0?"checked":"",p.getValue(),p.getName()));
-						}
+			String radioDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s','true');\">"
+					+ "<input id='%s' type='radio' %s disabled name='cid' value='%s'> "
+					+ "&nbsp;&nbsp; <span class='cidName'>%s</span></div>";
+			String checkBoxDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s');\">"
+					+ "<input id='%s' type='checkbox' %s disabled name='cid' value='%s'>"
+					+ "&nbsp;&nbsp; <span class='cidName'>%s</span><br></div>";
+
+			for (Pick p : picks) {
+				if (p.getValue().equals(Const.SEPARATOR)) {
+					pickContent.append(String.format(separator, p.getName()));
+				} else {
+					if (radio.equals("true")) {
+						pickContent.append(String.format(radioDiv, def.equals(p.getValue()) ? " pickActive" : "",
+								p.getId(), p.getId(), p.getId(), def.equals(p.getValue()) ? "checked" : "",
+								p.getValue(), p.getName()));
+					} else {
+						pickContent.append(String.format(checkBoxDiv,
+								("," + def).indexOf("," + p.getValue() + ",") >= 0 ? " pickActive" : "", p.getId(),
+								p.getId(), p.getId(),
+								("," + def).indexOf("," + p.getValue() + ",") >= 0 ? "checked" : "", p.getValue(),
+								p.getName()));
 					}
 				}
+			}
 			return pickContent.toString();
 		}
 		return "";

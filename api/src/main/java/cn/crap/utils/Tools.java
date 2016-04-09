@@ -103,6 +103,9 @@ public class Tools {
 				} else if (keys[1].equals(Const.NULL)) {
 					hql.append(keys[0] + " =null and ");
 					removes.add(key);
+				} else if (keys[1].equals(Const.NOT_NULL)) {
+					hql.append(keys[0] + "!=null and ");
+					removes.add(key);
 				} else if (keys[1].equals(Const.BLANK)) {
 					hql.append(keys[0] + " ='' and ");
 					removes.add(key);

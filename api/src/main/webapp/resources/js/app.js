@@ -57,6 +57,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.error = null;
 				 $rootScope.list = result.data;
 				 $rootScope.page = result.page;
+				 $rootScope.others=result.others;
 			 }
 		});
     };

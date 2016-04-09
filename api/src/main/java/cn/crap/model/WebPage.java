@@ -25,12 +25,21 @@ public class WebPage extends BaseModel{
 	private int click;
 	private String type;
 	private String moduleId;
+	private String key;
+	private byte canDelete;
 	
 	@Transient
 	public String getTypeName(){
 		if(!MyString.isEmpty(type))
 			return WebPageType.valueOf(type).getName();
 		return "";
+	}
+	@Transient
+	public String getCanDeleteName(){
+		if(canDelete==1)
+			return "可以修改Key，可以删除";
+		else
+			return "系统数据，不可修改Key，不可删除";
 	}
 	@Transient
 	public String getModuleName(){
@@ -51,7 +60,20 @@ public class WebPage extends BaseModel{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+	@Column(name="mkey")
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	@Column(name="canDelete")
+	public byte getCanDelete() {
+		return canDelete;
+	}
+	public void setCanDelete(byte canDelete) {
+		this.canDelete = canDelete;
+	}
 	@Column(name="name")
 	public String getName() {
 		return name;

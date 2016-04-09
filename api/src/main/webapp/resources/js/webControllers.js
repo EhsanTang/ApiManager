@@ -26,7 +26,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;
-				 if($rootScope.model.content!=''){
+				 if($rootScope.model.content!=''&&$rootScope.model.type=="DICTIONARY"){
 					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
 			     }
 			 }

@@ -9,9 +9,9 @@
  */
 app.config(function($stateProvider, $urlRouterProvider) {
 	if($("#sessionAuth").length>0){
-		$urlRouterProvider.otherwise('/webSetting/detail/ADMINHELP');
+		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/ADMINHELP');
 	}else{
-		$urlRouterProvider.otherwise('/webSetting/detail/HELP');
+		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/WELCOME');
 	}
 	/*********************后台*******************/
 	$stateProvider.state('menuList', {
@@ -89,7 +89,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/webPageDetail.tpl.html';
+					return 'resources/html/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
 			}
 		}

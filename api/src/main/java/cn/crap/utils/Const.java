@@ -7,6 +7,7 @@ public class Const {
 	public final static String SESSION_IMG_CODE = "sessionImgCode";
 	public final static String SESSION_TEMP_PASSWORD = "sessionTempPassword";
 	public static final String NULL = "_NULL";
+	public static final String NOT_NULL = "NOT_NULL";
 	public static final String BLANK = "_BLANK"; 
 	public static final String DEF_MODULEID = "defaultModuleId";
 	public static final String SUPER = "super"; 

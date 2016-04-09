@@ -12,6 +12,7 @@
 				<entry key="000006" value="重复的key！" />
 				<entry key="000007" value="请输入访问密码" />
 				<entry key="000008" value="数据类型有误" />
+				<entry key="000009" value="系统数据，不允许删除" />
 			</map>
 		</property>
 	</bean>

@@ -16,7 +16,6 @@ public class Const {
 	public static final String AUTH_MENU = "MENU";
 	public static final String AUTH_SETTING = "SETTING";
 	public static final String AUTH_ERROR = "ERROR_"+MODULEID;
-	public static final String AUTH_WEBPAGE = "WEBPAGE";
 	public static final String AUTH_DICTIONARY = "DICTIONARY_"+MODULEID;
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
 	public static final String AUTH_MODULE = "MODULE_"+MODULEID;

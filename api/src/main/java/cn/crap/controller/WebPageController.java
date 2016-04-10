@@ -34,8 +34,8 @@ public class WebPageController extends BaseController<WebPage>{
 	@ResponseBody
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type",webPage.getType());
-		return new JsonResult(1,webPageService.findByMap(map,page,null),page,WebPageType.valueOf(webPage.getType()).getName());
+		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type",webPage.getType(),"category",webPage.getCategory());
+		return new JsonResult(1,webPageService.findByMap(map,page,null),page,Tools.getMap("type",WebPageType.valueOf(webPage.getType()).getName(),"category",webPage.getCategory()));
 	}
 	
 	@RequestMapping("/detail.do")
@@ -73,7 +73,7 @@ public class WebPageController extends BaseController<WebPage>{
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
 			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
 		}else{
-			Tools.hasAuth(Const.AUTH_WEBPAGE, request.getSession(), "");
+			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(), request.getSession(), "");
 		}
 		if(MyString.isEmpty(webPage.getKey())){
 			webPage.setKey(null);
@@ -102,7 +102,7 @@ public class WebPageController extends BaseController<WebPage>{
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name()))
 			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
 		else
-			Tools.hasAuth(Const.AUTH_WEBPAGE, request.getSession(), webPage.getModuleId());
+			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(), request.getSession(), "");
 		model = webPageService.get(webPage.getId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");

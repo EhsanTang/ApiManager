@@ -27,6 +27,7 @@ public class WebPage extends BaseModel{
 	private String moduleId;
 	private String key;
 	private byte canDelete;
+	private String category;
 	
 	@Transient
 	public String getTypeName(){
@@ -59,6 +60,15 @@ public class WebPage extends BaseModel{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	@Column(name="category")
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	@Column(name="mkey")
 	public String getKey() {

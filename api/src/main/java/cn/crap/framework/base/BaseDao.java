@@ -15,7 +15,7 @@ import cn.crap.utils.Tools;
 @SuppressWarnings("unchecked")
 public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	@Resource
-	private HibernateTemplate hibernateTemplate;
+	protected HibernateTemplate hibernateTemplate;
 
 	public IBaseDao<T> genericDao;
 	

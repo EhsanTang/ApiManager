@@ -36,16 +36,16 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc w200">name</th>
-				<th class="tc">简介</th>
 				<th class="tc w200">项目</th>
+				<th class="tc">简介</th>
+				<th class="tc w200">name</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
-				<td class="tc"><a ng-href="web.do#/webWebPage/detail/{{item.type}}/{{item.id}}">{{item.name}}</a></td>
-				<td class="tc">{{item.brief}}</td>
 				<td class="tc">{{item.moduleName}}</td>
+				<td class="tc">{{item.brief}}</td>
+				<td class="tc"><a ng-href="web.do#/webWebPage/detail/{{item.type}}/{{item.id}}">{{item.name}}</a></td>
 			</tr>
 
 		</tbody>

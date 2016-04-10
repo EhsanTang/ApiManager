@@ -13,6 +13,7 @@ html,body{
     height: 100%;
     width: 100%;
 }
+/********文章页面，图片居中显示********/
 #fade{
 	opacity: 0.5;
 	position: fixed; 
@@ -145,6 +146,9 @@ html,body{
 /****/
 .bt-5{
 	border-top:5px solid #b768a5;
+}
+.bl-5{
+	border-left:5px solid #b768a5;
 }
 #editForm table td{
 	padding:6px 8px;

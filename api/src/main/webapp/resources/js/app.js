@@ -160,7 +160,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	$rootScope.getFields = function() {
 	    	var content = "";
-	    	if($rootScope.model.content!=''){
+	    	if($rootScope.model.content!=''&&isJson($rootScope.model.content)){
 	    		content = eval("("+$rootScope.model.content+")");
 	    	}
 	    	$("#content").find("tbody").find("tr").remove();

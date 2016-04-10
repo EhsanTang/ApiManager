@@ -10,7 +10,6 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 public class Html2Pdf {
 	/**
-	 * Creates a PDF with the words "Hello World"
 	 * 
 	 * @param file
 	 * @throws Exception

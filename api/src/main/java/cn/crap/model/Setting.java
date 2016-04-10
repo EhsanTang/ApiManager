@@ -61,8 +61,10 @@ public class Setting extends BaseModel{
 	}
 	@Transient
 	public String getTypeName(){
-		if(!MyString.isEmpty(type))
-			return SettingType.valueOf(type).getName();
+		if(!MyString.isEmpty(type)){
+			return SettingType.getValue(type);
+		}
 		return "";
+			
 	}
 }

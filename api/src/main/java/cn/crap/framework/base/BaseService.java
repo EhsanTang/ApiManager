@@ -7,7 +7,7 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 public class BaseService<T extends BaseModel> implements IBaseService<T> {
-	private IBaseDao<T> dao;
+	protected IBaseDao<T> dao;
 
 	@Resource
 	public void setDao(IBaseDao<T> dao) {

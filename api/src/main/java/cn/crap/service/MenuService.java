@@ -95,13 +95,23 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			pick = new Pick(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
 			// 分割线
-			pick = new Pick(Const.SEPARATOR, "数据字典管理");
+			pick = new Pick(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
 				pick = new Pick("w_d_" + m.getModuleId(), DataType.DICTIONARY.name() + "_" + m.getModuleId(),
 						m.getModuleName());
 				picks.add(pick);
 			}
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "网站页面&文章管理");
+			picks.add(pick);
+			for (WebPageType w : WebPageType.values()) {
+				if(w.equals(WebPageType.DICTIONARY))
+					continue;
+				pick = new Pick("w_w_" + w.name(), w.name(), w.getName());
+				picks.add(pick);
+			}
+			
 			// 分割线
 			pick = new Pick(Const.SEPARATOR, "我的菜单");
 			picks.add(pick);
@@ -184,6 +194,16 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 				picks.add(pick);
 			}
 			break;
+		case "CATEGORY":
+			int i=0;
+			for (String w : webPageService.findCategory()){
+				if(w==null)
+					continue;
+				i++;
+				pick = new Pick("cat_"+i, w, w);
+				picks.add(pick);
+			}
+			break;
 		case "MENURUL":// 前段菜单显示模块url
 			pick = new Pick(Const.SEPARATOR, "后台");
 			picks.add(pick);
@@ -206,7 +226,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 				pick = new Pick("h_m_" + type.name(), "index.do#/menu/list/0/" + type.name() + "/一级菜单", type.getName());
 				picks.add(pick);
 			}
-			pick = new Pick(Const.SEPARATOR, "后台数据字典");
+			pick = new Pick(Const.SEPARATOR, "后台数据字典&页面&文章管理");
 			picks.add(pick);
 			String preUrl = "index.do#/webPage/list/";
 			for (WebPageType webPage : WebPageType.values()) {
@@ -234,11 +254,21 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			picks.add(pick);
 			preUrl = "web.do#/webInterface/list/";
 			moduleService.getModulePick(picks, "w_", "0", "", preUrl + "moduleId/moduleName");
-			pick = new Pick(Const.SEPARATOR, "前端数据字典");
+			pick = new Pick(Const.SEPARATOR, "前端数据字典列表");
 			picks.add(pick);
 			preUrl = "web.do#/webWebPage/list/";
-			for (WebPageType webPage : WebPageType.values()) {
-				pick = new Pick(webPage.name(), preUrl + webPage.name(), webPage.getName());
+			pick = new Pick("DICTIONARY", preUrl + "DICTIONARY/null", "数据字典列表");
+			picks.add(pick);
+			// 分割线
+			pick = new Pick(Const.SEPARATOR, "前端文章类目列表");
+			picks.add(pick);
+			preUrl = "web.do#/webWebPage/list/ARTICLE/";
+			int j=0;
+			for (String w : webPageService.findCategory()){
+				if(w==null)
+					continue;
+				j++;
+				pick = new Pick("cat_"+j, preUrl + w, w);
 				picks.add(pick);
 			}
 			// 分割线

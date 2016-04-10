@@ -19,6 +19,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,in
 .br1{border-right: 1px solid #DDD;}
 .bl0{border-left:0px;}
 .br0{border-right:0px;}
+.BCEEE{border-color:#EEE;}
 img {
 	width: auto\9;
 	height: auto;
@@ -47,6 +48,7 @@ table{border-collapse:collapse;border-spacing:0}
 .right-radius{border-top-right-radius: 5px;border-bottom-right-radius: 5px;}
 .left-radius{border-top-left-radius: 5px;border-bottom-left-radius: 5px;}
 .r2{-moz-border-radius: 2px;-webkit-border-radius: 2px;border-radius: 2px;-khtml-border-radius: 2px;}
+.r3{-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;-khtml-border-radius: 3px;}
 .r5{-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;-khtml-border-radius: 5px;}
 .bg-feng{background-color:#ffebe8;}
 .bg-lan{background-color:#b2d1ff;}
@@ -191,12 +193,13 @@ table{border-collapse:collapse;border-spacing:0}
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1460156328_8583438.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1460156328_8583438.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1460156328_8583438.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1460156328_8583438.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1460156328_8583438.svg#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1460274273_3840206.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1460274273_3840206.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1460274273_3840206.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
+                    
                     
                                      
 .iconfont {

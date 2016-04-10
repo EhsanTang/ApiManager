@@ -50,6 +50,8 @@ function httpSuccess(data, iLoading, tipTime) {
 			showMessage('passwordDiv','false',false,-1);
 			showMessage('fade','false',false,-1);
 			changeimg('imgCode','verificationCode');
+			$("#password").val('');
+			$("#password").focus();
 			data = "[ERROR][000007] 点击请输入访问密码";
 		}else{
 			data = "[ERROR]"+data.error.message;

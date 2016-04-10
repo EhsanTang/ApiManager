@@ -68,13 +68,13 @@ public class InterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/detail/pdf.do")
 	public String pdf(@ModelAttribute Interface interFace) throws Exception {
-        model = interfaceService.get(interFace.getId());
-		request.setAttribute("model", model);
-		Object params = JSONArray.toArray(JSONArray.fromObject(model.getParam()),ParamDto.class);
+		interFace = interfaceService.get(interFace.getId());
+		request.setAttribute("model", interFace);
+		Object params = JSONArray.toArray(JSONArray.fromObject(interFace.getParam()),ParamDto.class);
 		request.setAttribute("header", params);
-		Object responseParam = JSONArray.toArray(JSONArray.fromObject(model.getResponseParam()),ResponseParamDto.class);
+		Object responseParam = JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class);
 		request.setAttribute("responseParam", responseParam);
-		Object errors = JSONArray.toArray(JSONArray.fromObject(model.getErrors()),ErrorDto.class);
+		Object errors = JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class);
 		request.setAttribute("errors", errors);
 		return "web/interFacePdf";
 	}
@@ -82,6 +82,10 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
 		interFace = interfaceService.get(interFace.getId());
+		if(interFace!=null){
+			Module module = moduleService.get(interFace.getModuleId());
+			Tools.canVisitModule(module.getPassword(), "", "", request);
+		}
 		String displayFilename = "CrapApi|"+interFace.getInterfaceName()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 

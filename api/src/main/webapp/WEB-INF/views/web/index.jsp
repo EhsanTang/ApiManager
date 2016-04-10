@@ -91,26 +91,26 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	<div id="fade"></div>
 	<div id="passwordDiv" class="look-up shadow">
 		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
-			<blockquote style="margin-left: -15px;">
-				<p>&nbsp;私密项目，请输入访问密码</p>
-			</blockquote>
-			<div class="input-wrapper mt20 bt1">
-				<input id="password" type="text" placeholder="请输入访问密码">
-			</div>
-			<c:if test="${applicationScope.VISITCODE=='true'}">
-				<div class="input-wrapper bt0">
-					<input type="text" id="visitCode" placeholder="图形验证码">
-					<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
-						data-toggle="tooltip">
-						<img id="imgCode" width="80" height="30"
-							onclick="changeimg('imgCode','verificationCode')"
-							src="getImgCode.do">
-					</div>
+			<form onsubmit="$('#fushPage').click();closePasswordDiv();">
+				<blockquote style="margin-left: -15px;">
+					<p>&nbsp;私密项目，请输入访问密码</p>
+				</blockquote>
+				<div class="input-wrapper mt20 bt1">
+					<input id="password" type="text" placeholder="请输入访问密码">
 				</div>
-			</c:if>
-			<button type="button" class="btn btn btn-purple btn-sm fr mt10"
-				onclick="$('#fushPage').click();closePasswordDiv();">确认</button>
-
+				<c:if test="${applicationScope.VISITCODE=='true'}">
+					<div class="input-wrapper bt0">
+						<input type="text" id="visitCode" placeholder="图形验证码">
+						<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+							data-toggle="tooltip">
+							<img id="imgCode" width="80" height="30"
+								onclick="changeimg('imgCode','verificationCode')"
+								src="getImgCode.do">
+						</div>
+					</div>
+				</c:if>
+				<button type="submit" class="btn btn btn-purple btn-sm fr mt20">确认</button>
+			</form>
 		</div>
 		<i class="iconfont i-close" onclick="closePasswordDiv()">&#xe615;</i>
 	</div>

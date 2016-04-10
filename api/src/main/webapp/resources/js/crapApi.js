@@ -6,6 +6,8 @@ function propUpPsswordDiv(obj){
 		showMessage('passwordDiv','false',false,-1);
 		showMessage('fade','false',false,-1);
 		changeimg('imgCode','verificationCode');
+		$("#password").val('');
+		$("#password").focus();
 	}
 }
 function closePasswordDiv(){

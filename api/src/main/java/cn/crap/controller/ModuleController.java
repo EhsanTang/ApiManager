@@ -12,6 +12,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Module;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -45,6 +46,7 @@ public class ModuleController extends BaseController<Module>{
 			module.setModuleId(null);
 			moduleService.save(module);
 		}
+		Cache.setModule(module);
 		return new JsonResult(1,module);
 	}
 	@RequestMapping("/delete.do")

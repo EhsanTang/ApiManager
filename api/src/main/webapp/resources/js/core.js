@@ -85,7 +85,6 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 	iTarget = iTarget ? iTarget : 'lookUpContent';
 	
 	// 获取参数
-	//var xParams = getParams(iFormId);
 	var xParams = "";
 	if(iFormId){
 		xParams = $('#'+iFormId).serialize();
@@ -247,83 +246,6 @@ function closeTip(data,iLoading,tipTime){
 			floatOrPropUp = true;
 		}
 	}
-}
-function getParams(form_id) {
-	var params = "none=none";
-	if (form_id == null || form_id == "")
-		return params;
-	// 获取所有文本框
-	var texts = $("form[id='" + form_id + "'] :input[type='text']");
-	$.each(texts, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有密码
-	var passwords = $("form[id='" + form_id + "'] :input[type='password']");
-	$.each(passwords, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有隐藏域
-	var hiddens = $("form[id='" + form_id + "'] :input[type='hidden']");
-	$.each(hiddens, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有textarea
-	var textareas = $("form[id='" + form_id + "'] textarea");
-	$.each(textareas, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有多选
-	var checkboxs = $("form[id='" + form_id
-			+ "'] :input[type='checkbox']:checked");
-	$.each(checkboxs, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有单选
-	var radios = $("form[id='" + form_id + "'] :input[type='radio']:checked");
-	$.each(radios, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	// 获取所有下拉框
-	var selects = $("form[id='" + form_id + "'] select");
-	$.each(selects, function(i, val) {
-		try {
-			if (val.name != '')
-				params = params + '&' + val.name + '=' + val.value;
-		} catch (ex) {
-			alert(ex);
-		}
-	});
-	return params;
 }
 /** *********************页面提示信息显示方法************************* */
 /**

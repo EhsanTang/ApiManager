@@ -62,10 +62,8 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	<script src="resources/js/app.js?v=2010"></script>
 	<script src="resources/js/services.js"></script>
 	<script src="resources/js/router.js"></script>
-	<script src="resources/js/animations.js"></script>
 	<script src="resources/js/controllers.js?v=2010"></script>
 	<script src="resources/js/webControllers.js?v=2010"></script>
-	<script src="resources/js/filters.js"></script>
 
 	<script
 		src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>

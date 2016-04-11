@@ -6,14 +6,20 @@ var webModule = angular.module("webModule", []);
 webModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
 });
+/***
+ * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
+ * 初始化不需要加载数据
+ */
 webModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
-	 
 });
+
+/**
+ * webPage详情（数据字典，网站页面，文章）
+ */
 webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
-		if(setPwd){
-			setPassword();
-		}
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
 		var params = "iLoading=FLOAT|iUrl=webPage/webDetail.do?id="+$stateParams.id;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
@@ -26,6 +32,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;
+				 //如果是数据字典，则将内容转为json
 				 if($rootScope.model.content!=''&&$rootScope.model.type=="DICTIONARY"){
 					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
 			     }
@@ -34,12 +41,14 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
     };
     $scope.getData();
 });
-/**************************前段接口详情:不需要打开模态框，所以不能调用getBaseData()****************************/
+/**
+ * 接口详情
+ * 不需要打开模态框，所以不能调用$rootScope中的getBaseData()
+ */
 webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
-		if(setPwd){
-			setPassword();
-		}
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
 		var params = "iUrl=interface/webDetail.do|iLoading=FLOAT|iParams=&id="+$stateParams.id;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
@@ -57,6 +66,10 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 			 }
 		});
     };
+    /**
+     * 根据参数中的paramterType判断该参数是否还有请求头或请求参数
+     * 如果没有，前端显示无，不显示table
+     */
     $scope.hasRequestHeader = function(params,type){
     	if(params.length>0){
     		for (var i=0;i<params.length;i++){
@@ -69,11 +82,13 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
     }
     $scope.getData();
 });
+/**
+ * 接口列表
+ */
 webModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
-		if(setPwd){
-			setPassword();
-		}
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
 		var params = "";
 		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
 			params += "&interfaceName=" + $("#interfaceName").val();

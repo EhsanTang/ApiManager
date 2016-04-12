@@ -271,7 +271,7 @@ html,body{
 .folat{
 	display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
 	z-index:1050;
-	background: rgba(0, 0, 0, 0.2); 
+	background: rgba(0, 0, 0, 0.1); 
 	padding-top:20%; text-align:center;
 }
 .look-up {

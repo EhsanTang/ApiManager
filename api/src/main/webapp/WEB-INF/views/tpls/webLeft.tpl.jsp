@@ -8,7 +8,6 @@
 								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml">
 								</div>
 								 	<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
-								 	<span class="badge pull-right" ng-bind="item.subMenu.length"></span>
 							</div>
 						</div>
 						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse in" ng-if="item.menu.type=='FRONT'">

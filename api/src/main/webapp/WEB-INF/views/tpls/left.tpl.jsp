@@ -13,8 +13,7 @@
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
 									<div class="f14 mt-3 fl mr10">
 										<i class="iconfont">&#xe60f;</i>
-									</div> <span class="hidden-xs">系统管理</span> <span
-									class="badge pull-right">5</span>
+									</div> <span class="hidden-xs">系统管理</span>
 								</div>
 							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse in">
@@ -55,7 +54,6 @@
 								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml">
 								</div> 
 									<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
-									<span class="badge pull-right" ng-bind="item.subMenu.length"></span>
 								</div>
 						</div>
 						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse" ng-if="canSeeMenu(item.menu.menuId,item.menu.type);">

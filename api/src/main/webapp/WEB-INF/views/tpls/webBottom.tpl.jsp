@@ -3,6 +3,14 @@
 <div class="container" ng-controller="lefMenuCtrl">
 	<div class="col-xs-12 f14 p0 mb5 h100 tc mt20">
 	    		<ul class="dis-in-tab"> 
+	    			<li class="dis-in-tab mr20">
+	    				<a target="_blank" href="http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
+	    				<span class="bg_line"></span>
+	    			</li>
+	    			<li class="dis-in-tab mr20">
+	    				<a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub源码</a>
+	    				<span class="bg_line"></span>
+	    			</li>
 	    			<li class="dis-in-tab mr20"  ng-repeat="item in menus" ng-if="item.menu.type=='BOTTOM'">
 	    				<a target="_blank" ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
 	    				<span class="bg_line"></span>

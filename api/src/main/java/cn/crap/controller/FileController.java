@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
 import cn.crap.utils.DateFormartUtil;
@@ -78,6 +79,12 @@ public class FileController extends BaseController <User>{
     	   obj.put("message", result);
            printMsg(obj.toString());
        }
+	}
+	
+	
+	@Override
+	public JsonResult detail(User model) {
+		return null;
 	}
 	
 }

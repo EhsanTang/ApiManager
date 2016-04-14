@@ -15,6 +15,6 @@ public class UserService extends BaseService<User>
 
 	@Resource(name="userDao")
 	public void setDao(IBaseDao<User> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new User());
 	}
 }

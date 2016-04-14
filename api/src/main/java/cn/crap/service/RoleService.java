@@ -23,7 +23,7 @@ public class RoleService extends BaseService<Role>
 	private IModuleService moduleService;
 	@Resource(name="roleDao")
 	public void setDao(IBaseDao<Role> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new Role());
 	}
 	@Override
 	@Transactional

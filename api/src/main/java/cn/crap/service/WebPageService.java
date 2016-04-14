@@ -20,7 +20,7 @@ public class WebPageService extends BaseService<WebPage>
 
 	@Resource(name="webPageDao")
 	public void setDao(IBaseDao<WebPage> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new WebPage());
 	}
 
 	@Override

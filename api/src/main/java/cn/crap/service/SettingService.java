@@ -15,6 +15,6 @@ public class SettingService extends BaseService<Setting>
 
 	@Resource(name="settingDao")
 	public void setDao(IBaseDao<Setting> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new Setting());
 	}
 }

@@ -15,6 +15,6 @@ public class ErrorService extends BaseService<Error>
 
 	@Resource(name="errorDao")
 	public void setDao(IBaseDao<Error> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new Error());
 	}
 }

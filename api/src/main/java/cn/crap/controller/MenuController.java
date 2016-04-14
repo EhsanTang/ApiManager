@@ -27,13 +27,14 @@ public class MenuController extends BaseController<Menu>{
 
 	@Autowired
 	IMenuService menuService;
+	
 	/**
-	 * MenuDemo
+	 * 根据父菜单、菜单名、菜单类型及页码获取菜单列表
 	 * @return 
 	 * */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult MenuDemo(@ModelAttribute Menu menu,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(@ModelAttribute Menu menu,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("parentId",menu.getParentId(),"menuName|like",menu.getMenuName(),"type",menu.getType());
 		return new JsonResult(1,menuService.findByMap(map,page,null),page);
@@ -42,8 +43,9 @@ public class MenuController extends BaseController<Menu>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu){
-		model= menuService.get(menu.getMenuId());
-		if(model==null){
+		if(menu.getMenuId() != Const.NULL_ID){
+			model= menuService.get(menu.getMenuId());
+		}else{
 			model=new Menu();
 			model.setParentId(menu.getParentId());
 		}

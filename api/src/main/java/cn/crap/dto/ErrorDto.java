@@ -1,6 +1,10 @@
 package cn.crap.dto;
 
-
+/**
+ * 
+ * @author Ehsan
+ *
+ */
 public class ErrorDto{
 
 	private String errorCode;

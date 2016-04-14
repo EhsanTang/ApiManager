@@ -56,9 +56,10 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Interface interFace) throws Exception {
-		model = interfaceService.get(interFace.getId());
-		if (model == null) {
+	public JsonResult detail(@ModelAttribute Interface interFace) {
+		if(interFace.getId() != Const.NULL_ID){
+			model= interfaceService.get(interFace.getId());
+		}else{
 			model = new Interface();
 			model.setModuleId(interFace.getModuleId());
 		}

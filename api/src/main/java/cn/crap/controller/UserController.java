@@ -35,8 +35,9 @@ public class UserController extends BaseController<User>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute User user){
-		user= userService.get(user.getUserId());
-		if(user==null){
+		if(user.getUserId() != Const.NULL_ID){
+			user= userService.get(user.getUserId());
+		}else{
 			user=new User();
 		}
 		user.setPassword("");

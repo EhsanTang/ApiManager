@@ -6,21 +6,26 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
+import cn.crap.model.Menu;
 import cn.crap.utils.Page;
 
 @Scope("prototype")
-public class BaseController<T extends BaseModel> {
+public abstract class BaseController<T extends BaseModel> {
 	protected Page page= new Page(15);
 	protected Map<String,Object> map;
 	protected Map<String,Object> returnMap = new HashMap<String,Object>();
@@ -30,6 +35,14 @@ public class BaseController<T extends BaseModel> {
 	protected HttpServletResponse response;
 	private Logger log = Logger.getLogger(getClass());
 	protected T model;
+	
+	/**
+	 * 所有detail方法必须返回一个对象，不能为空，用于前端angularjs初始化对象
+	 * @param menu
+	 * @return
+	 */
+	public abstract JsonResult detail(T model);
+	
 	/**
 	 * @return
 	 */

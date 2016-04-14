@@ -19,8 +19,8 @@ public class ModuleService extends BaseService<Module>
 		implements IModuleService {
 
 	@Resource(name="moduleDao")
-	public void setDao(IBaseDao<Module> dao) {
-		super.setDao(dao);
+	public void setDao(IBaseDao<Module> dao ) {
+		super.setDao(dao, new Module());
 	}
 	@Override
 	@Transactional

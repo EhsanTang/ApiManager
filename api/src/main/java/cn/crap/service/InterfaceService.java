@@ -27,12 +27,13 @@ import cn.crap.utils.Tools;
 @Service
 public class InterfaceService extends BaseService<Interface>
 		implements IInterfaceService {
+
 	@Autowired
 	private IModuleService moduleService;
 	
 	@Resource(name="interfaceDao")
 	public void setDao(IBaseDao<Interface> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new Interface());
 	}
 
 	@Override

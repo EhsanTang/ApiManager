@@ -35,6 +35,7 @@ import cn.crap.utils.WebPageType;
 
 @Service
 public class MenuService extends BaseService<Menu> implements IMenuService {
+
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
@@ -46,7 +47,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
-		super.setDao(dao);
+		super.setDao(dao, new Menu());
 	}
 
 	@Override

@@ -34,8 +34,9 @@ public class RoleController extends BaseController<Role>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Role role){
-		model= roleService.get(role.getRoleId());
-		if(model==null){
+		if(role.getRoleId() != Const.NULL_ID){
+			model= roleService.get(role.getRoleId());
+		}else{
 			model=new Role();
 		}
 		return new JsonResult(1,model);

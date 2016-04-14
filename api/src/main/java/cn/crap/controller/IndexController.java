@@ -3,8 +3,10 @@ package cn.crap.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.crap.framework.JsonResult;
 import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -197,5 +201,10 @@ public class IndexController extends BaseController<User>{
 		}finally {
 			out.close();
 		}
+	}
+	
+	@Override
+	public JsonResult detail(User model) {
+		return null;
 	}
 }

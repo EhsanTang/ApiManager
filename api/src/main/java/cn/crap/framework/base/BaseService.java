@@ -1,17 +1,19 @@
 package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	protected IBaseDao<T> dao;
-
-	@Resource
-	public void setDao(IBaseDao<T> dao) {
+	//空对象，避免空指针异常（当没有找到数据时，返回一个新的对象，该对象在类实例化时由子类调用setDao注入）
+	private T model = null;
+	
+	
+	public void setDao(IBaseDao<T> dao, T model) {
 		this.dao = dao;
+		this.model = model;
 	}
 
 	/**
@@ -59,7 +61,11 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * 根据主键获取对象
 	 * */
 	public T get(String id){
-		return dao.get(id);
+		T temp = dao.get(id);
+		if(temp != null)
+			return temp;
+		else
+			return model;
 	}
 
 	/**

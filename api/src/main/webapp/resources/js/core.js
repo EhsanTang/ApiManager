@@ -297,15 +297,23 @@ function shake(o){
  * @param lWidth
  * @param onMouse
  *            div是否覆盖点击的点:(0).不覆盖，div居浏览器中部 (1).X轴居中 (2).Y轴居中 (3).X、Y轴均居中
- *            (4).右下方,(5).id左下方 6:居中，不需要考虑浏览器滚动
+ *            (4).右下方,(5).id左下方 6:居中，不需要考虑浏览器滚动 7：居中，高度不定，最大不超过浏览器80%
  */
 function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    var lObj = self.document.getElementById(id);
 	    var lTop;
 	    var lLeft;
+	    //居中，高度不定，最大不超过浏览器80%
+	    if(onMouse==7){
+	    	lLeft=$(window).width()/2 - (lWidth/2);
+		    lObj.style.top = '30px';
+		    lObj.style.width = lWidth + 'px';
+		    lObj.style.height = "auto";
+		    lObj.style.left = lLeft + 'px';
+		    return;
+	    }
 	    
-	    lTop=$(window).height()/2 - (lHeight/2);
-    	lLeft=$(window).width()/2 - (lWidth/2);
+	    //如果传入了event
 	    if(e.clientY&&onMouse&&onMouse!=0){
 	    	lTop = e.clientY;
 	    	lLeft = e.clientX;
@@ -321,6 +329,9 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 				lTop = e.clientY;
 		    	lLeft = e.clientX;
 			}
+	    }else{
+	    	lTop=$(window).height()/2 - (lHeight/2);
+	    	lLeft=$(window).width()/2 - (lWidth/2);
 	    }
 	    if(onMouse==5){
 			lTop = $("#"+positionId).offset().top+$("#"+positionId).outerHeight()-1;
@@ -330,13 +341,15 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    if ((lLeft + lWidth*1) > $(window).width()) lLeft = $(window).width() - lWidth - 20;
 	    if ((lTop + lHeight*1) > $(window).height()) lTop =  $(window).height() - lHeight - 70;
 
-	    lObj.style.height = lHeight + 'px';
 	    lObj.style.width = lWidth + 'px';
 	    lObj.style.left = (lLeft + document.documentElement.scrollLeft) + 'px';
-	    if(onMouse!=6){
-	    	lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
-	    }else{
+	    
+	    if(onMouse==6){
+	    	lObj.style.height = lHeight + 'px';
 	    	lObj.style.top =  lTop + 'px';
+	    }else{
+	    	lObj.style.height = lHeight + 'px';
+	    	lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
 	    }
 }
 

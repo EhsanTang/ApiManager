@@ -75,18 +75,17 @@
 	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
 </div>
 <div id="fade"></div>
-<div id="myDialog" class="look-up shadow">
-		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
+<div id="myDialog" class="look-up shadow r2 bottom-radius pt50">
+		<div id="myDialog-title" class="CFFF f20 fb shadow" style="margin-top:-50px;line-height:50px;padding-left:20px;height:50px;">
+		</div>
+		<div id="myDialogContent" class="look-up-content b0 f12 tc p30 BGFFF bottom-radius">
 			<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
 					<span class="glyphicon glyphicon-remove"></span>
 					<span ng-bind="error"></span>
 			</button>
-			<blockquote class="mb20">
-					<p class="pl10 tl f18 fb" id="myDialog-title"></p>
-			</blockquote>
 			<div ui-view="detail"></div>
 		</div>
-		<i class="iconfont i-close" onclick="closeMyDialog('myDialog')">&#xe615;</i>
+		<i class="iconfont i-close CFFF fb f20" onclick="closeMyDialog('myDialog')">&#xe615;</i>
 </div>    
 <div id="float" class="folat">
 		<div class="sk-wave">

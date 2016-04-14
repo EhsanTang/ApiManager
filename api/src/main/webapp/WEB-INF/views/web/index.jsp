@@ -110,7 +110,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 				<button type="submit" class="btn btn btn-purple btn-sm fr mt20">确认</button>
 			</form>
 		</div>
-		<i class="iconfont i-close" onclick="closePasswordDiv()">&#xe615;</i>
+		<i class="iconfont i-close" onclick="closeMyDialog('passwordDiv')">&#xe615;</i>
 	</div>
 	<div id="float" class="folat">
 		<div class="sk-wave">

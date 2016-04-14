@@ -62,7 +62,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		});
     };
 	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {
-			openModal(title,iwidth);
+			//打开编辑对话框
+			openMyDialog(title,iwidth);
 			var params = "iUrl="+iurl+"|iLoading=FLOAT";
 			if(iParams)
 				params += "|iParams="+iParams;
@@ -111,6 +112,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	};
 
 	$rootScope.submitForm = function(iurl,callBack){
+		/**
+		  * 回调刷新当前页面数据
+		  */
 		if(callBack){
 			callBack();
 		}
@@ -122,9 +126,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			 }else if(result.success==1){
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;
-				 /**
-				  * 回调刷新当前页面数据
-				  */
+				 //关闭编辑对话框
 				 closeMyDialog('myDialog');
 				 $timeout(function() {
 					 $("#refresh").click();

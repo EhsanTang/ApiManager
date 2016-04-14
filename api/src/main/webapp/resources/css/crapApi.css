@@ -79,10 +79,7 @@ html,body{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-/*****重置模态框高度**************/
-.modal-backdrop{
-	min-height:1500px!important;
-}
+
 /***************接口详情页面*************/
 .interface-detail{
 	color:#555;
@@ -281,12 +278,13 @@ html,body{
   background: #000000;
   background: rgba(0, 0, 0, 0.2);
   display: none;
-  z-index: 1060;
   height: 100px;
   width: 500px;
   padding: 1px;
 }
-
+#lookUp{
+ 	z-index: 1060;
+}
 .look-up-content {
   border-top: 3px solid #b768a5;
   position: relative;
@@ -304,6 +302,11 @@ html,body{
   font-size: 14px;
   cursor: pointer;
   color:#999;
+}
+#myDialog{
+	color: #fff;
+	 z-index: 1051;
+    background-color: #888;
 }
 #pickTip {
   position: absolute;

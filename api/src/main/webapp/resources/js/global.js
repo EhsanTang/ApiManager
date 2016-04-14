@@ -33,24 +33,23 @@ function changeDisplay(id1, id2) {
 	$("#" + id2).addClass('none');
 	$("#" + id1).removeClass('none');
 };
-/**********打开model******************/
-function openModal(title,iwidth,iheight){
+/**********打开Dialog******************/
+function openMyDialog(title,iwidth){
 	if(!iwidth){
 		iwidth = 400;
 	}
-	if(!iheight){
-		iheight = $(document).height()*0.8
-	}
-	lookUp('myDialog', '', iheight, iwidth ,6,'');
+	//对话框最高为浏览器的百分之80
+	lookUp('myDialog', '', '', iwidth ,7,'');
+	$("#myDialogContent").css("max-height",($(document).height()*0.8)+'px');
 	showMessage('myDialog','false',false,-1);
 	showMessage('fade','false',false,-1);
 	title = title? title:"编辑";
 	$("#myDialog-title").html(title);
 }
-function closeModeal(){
-	$("#myDialog>.i-close").click();
+function closeMyDialog(tagDiv){
+	iClose(tagDiv);
+	iClose('fade');
 }
-
 function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
 	/***********加载选择对话框********************/
 	if(!params)

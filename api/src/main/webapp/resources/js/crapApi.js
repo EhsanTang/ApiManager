@@ -10,10 +10,6 @@ function propUpPsswordDiv(obj){
 		$("#password").focus();
 	}
 }
-function closeMyDialog(tagDiv){
-	iClose(tagDiv);
-	iClose('fade');
-}
 /*****************接口添加参数**************/
 function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {

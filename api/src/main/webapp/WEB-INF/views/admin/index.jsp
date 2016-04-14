@@ -74,29 +74,20 @@
 	<div id="pickTip"></div>
 	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
 </div>
-	<!-- 对话框 -->
-<div class="imodal modal fade" id="myModal" role="dialog"
-	aria-label="myModalLabel" aria-hidden="true">
-	<div id="modal-dialog" class="modal-dialog modal-lg w400">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
-				<h4 class="modal-title"></h4>
-			</div>
-			<div class="modal-body" id="modal-body">
-				<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
+<div id="fade"></div>
+<div id="myDialog" class="look-up shadow">
+		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
+			<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
 					<span class="glyphicon glyphicon-remove"></span>
 					<span ng-bind="error"></span>
-				</button>
-				<div ui-view="detail"></div>
-			</div>
+			</button>
+			<blockquote class="mb20">
+					<p class="pl10 tl f18 fb" id="myDialog-title"></p>
+			</blockquote>
+			<div ui-view="detail"></div>
 		</div>
-	</div>
-</div>
-    
+		<i class="iconfont i-close" onclick="closeMyDialog('myDialog')">&#xe615;</i>
+</div>    
 <div id="float" class="folat">
 		<div class="sk-wave">
         <div class="sk-rect sk-rect1"></div>

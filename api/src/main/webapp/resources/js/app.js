@@ -125,7 +125,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 /**
 				  * 回调刷新当前页面数据
 				  */
-				 closeModeal();
+				 closeMyDialog('myDialog');
 				 $timeout(function() {
 					 $("#refresh").click();
                  })

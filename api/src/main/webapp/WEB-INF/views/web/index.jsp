@@ -89,7 +89,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	<div id="fade"></div>
 	<div id="passwordDiv" class="look-up shadow">
 		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
-			<form onsubmit="$('#fushPage').click();closePasswordDiv();">
+			<form onsubmit="$('#fushPage').click();closeMyDialog('passwordDiv');">
 				<blockquote style="margin-left: -15px;">
 					<p>&nbsp;私密项目，请输入访问密码</p>
 				</blockquote>

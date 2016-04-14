@@ -10,8 +10,8 @@ function propUpPsswordDiv(obj){
 		$("#password").focus();
 	}
 }
-function closePasswordDiv(){
-	iClose('passwordDiv');
+function closeMyDialog(tagDiv){
+	iClose(tagDiv);
 	iClose('fade');
 }
 /*****************接口添加参数**************/

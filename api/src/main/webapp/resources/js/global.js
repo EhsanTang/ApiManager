@@ -34,18 +34,21 @@ function changeDisplay(id1, id2) {
 	$("#" + id1).removeClass('none');
 };
 /**********打开model******************/
-function openModal(title,iwidth){
-	 title = title? title:"编辑";
-	 if(iwidth){
-		 $("#modal-dialog").width(iwidth);
-	 }else{
-		 $("#modal-dialog").width(400);
-	 }
-	 $(".modal-title").html(title);
-	 $("#myModal").modal("show");
+function openModal(title,iwidth,iheight){
+	if(!iwidth){
+		iwidth = 400;
+	}
+	if(!iheight){
+		iheight = $(document).height()*0.8
+	}
+	lookUp('myDialog', '', iheight, iwidth ,6,'');
+	showMessage('myDialog','false',false,-1);
+	showMessage('fade','false',false,-1);
+	title = title? title:"编辑";
+	$("#myDialog-title").html(title);
 }
 function closeModeal(){
-	$(".modal-header>.close").click();
+	$("#myDialog>.i-close").click();
 }
 
 function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 

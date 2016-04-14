@@ -84,7 +84,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in params">
+			<tr ng-repeat="item in params" ng-if="item.parameterType=='PARAMETER'">
 				<td class="tc fb C000">{{item.name}}</td>
 				<td class="tc C000">{{item.necessary}}</td>
 				<td class="tc C000">{{item.type}}</td>

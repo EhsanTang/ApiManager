@@ -35,7 +35,7 @@ public class UserController extends BaseController<User>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute User user){
-		if(user.getUserId() != Const.NULL_ID){
+		if(!user.getUserId().equals(Const.NULL_ID)){
 			user= userService.get(user.getUserId());
 		}else{
 			user=new User();

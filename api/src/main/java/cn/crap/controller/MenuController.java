@@ -43,7 +43,7 @@ public class MenuController extends BaseController<Menu>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu){
-		if(menu.getMenuId() != Const.NULL_ID){
+		if(!menu.getMenuId().equals(Const.NULL_ID)){
 			model= menuService.get(menu.getMenuId());
 		}else{
 			model=new Menu();

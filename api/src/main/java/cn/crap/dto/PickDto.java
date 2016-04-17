@@ -1,16 +1,23 @@
-package cn.crap.framework;
+package cn.crap.dto;
 
-public class Pick{
+/**
+ * 前端下拉选着框DTO
+ * @author Ehsan
+ *
+ */
+
+public class PickDto{
 	private String id;
 	private String value;
 	private String name;
-	public Pick(){}
-	public Pick(String id,String value,String name){
+	
+	public PickDto(){}
+	public PickDto(String id,String value,String name){
 		this.id=id;
 		this.value=value;
 		this.name=name;
 	}
-	public Pick(String id,String name){
+	public PickDto(String id,String name){
 		this.id=id;
 		this.value=id;
 		this.name=name;

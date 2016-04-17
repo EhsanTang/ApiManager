@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.PickDto;
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.Pick;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IMenuService;
@@ -171,7 +171,7 @@ public class IndexController extends BaseController<User>{
 		if(MyString.isEmpty(radio)){
 			radio = "true";
 		}
-		List<Pick> picks = new ArrayList<Pick>();
+		List<PickDto> picks = new ArrayList<PickDto>();
 		String pickContent = menuService.pick(picks, radio, code, key,def, notNull);
 		request.setAttribute("radio", radio);
 		request.setAttribute("picks", picks);

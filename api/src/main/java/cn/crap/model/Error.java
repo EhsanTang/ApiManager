@@ -5,10 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.Cache;
+import cn.crap.utils.MyString;
 
 @Entity
 @Table(name="error")
@@ -19,15 +22,15 @@ public class Error extends BaseModel{
 	private String errorCode;
 	private String errorMsg;
 	private String moduleId;
-	private String moduleName;
-
-	@Column(name="moduleName")
-	public String getModuleName() {
-		return moduleName;
-	}
-
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
+	
+	@Transient
+	public String getModuleName(){
+		if(!MyString.isEmpty(moduleId)){
+			Module module = Cache.getModule(moduleId);
+			if(module!=null)
+				return module.getModuleName();
+		}
+		return "";
 	}
 
 	@Id

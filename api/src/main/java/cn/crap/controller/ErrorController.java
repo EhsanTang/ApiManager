@@ -58,10 +58,6 @@ public class ErrorController extends BaseController<Error>{
 	@AuthPassport(authority=Const.AUTH_ERROR)
 	public JsonResult addOrUpdate(@ModelAttribute Error error){
 		try{
-			if(error.getModuleId()!=null){
-				Module module = moduleService.get(error.getModuleId());
-				error.setModuleName(module==null?"":module.getModuleName());
-			}
 			if(!MyString.isEmpty(error.getErrorId())){
 				errorService.update(error);
 			}else{

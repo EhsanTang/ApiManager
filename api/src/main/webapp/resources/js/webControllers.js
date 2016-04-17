@@ -28,13 +28,17 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.dictionary = null;
-				 $rootScope.model = null;
+				 $rootScope.webpage = null;
+				 $rootScope.model = null;//初始化评论对象
 			 }else{
 				 $rootScope.error = null;
-				 $rootScope.model = result.data;
+				 $rootScope.webpage = result.data;
+				 $rootScope.model = result.others.comment;//初始化评论对象
+				 $rootScope.comments = result.others.comments;//评论列表
+				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
 				 //如果是数据字典，则将内容转为json
-				 if($rootScope.model.content!=''&&$rootScope.model.type=="DICTIONARY"){
-					 $rootScope.dictionary = eval("("+$rootScope.model.content+")");
+				 if($rootScope.webpage.content!=''&&$rootScope.webpage.type=="DICTIONARY"){
+					 $rootScope.dictionary = eval("("+$rootScope.webpage.content+")");
 			     }
 			 }
 		});

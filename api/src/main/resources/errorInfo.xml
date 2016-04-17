@@ -13,6 +13,8 @@
 				<entry key="000007" value="请输入访问密码" />
 				<entry key="000008" value="数据类型有误" />
 				<entry key="000009" value="系统数据，不允许删除" />
+				<entry key="000010" value="验证码输入有误" />
+				<entry key="000011" value="验证码已失效，请刷新验证码" />
 			</map>
 		</property>
 	</bean>

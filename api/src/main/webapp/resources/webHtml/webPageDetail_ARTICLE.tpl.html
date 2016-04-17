@@ -1,15 +1,18 @@
 <div class="r0 p20 pt0 col-xs-12" ng-controller="webPageDetailCtrl">
+<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <ol class="breadcrumb">
   <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
-  <li><a ng-href="web.do#/webWebPage/list/ARTICLE/{{model.category}}"><i class="iconfont f14 mt-3">&#xe61f;&nbsp;</i>{{model.category}}</a></li>
-  <li>{{model.name}}</li>
+  <li><a ng-href="web.do#/webWebPage/list/ARTICLE/{{webpage.category}}"><i class="iconfont f14 mt-3">&#xe61f;&nbsp;</i>{{webpage.category}}</a></li>
+  <li>{{webpage.name}}</li>
 </ol>
 <div class="col-xs-12 p0 f12 lh26">
-	<div class="f14 mt10 mb20 b1 bl-5 p0 r3 no-right-radius BCEEE" ng-if="model.brief!=''">
-		<pre ng-bind="model.brief" class="b0 p10 BGFFF">
+	<div class="f14 mt10 mb20 b1 bl-5 p0 r3 no-right-radius BCEEE" ng-if="webpage.brief!=''">
+		<pre ng-bind="webpage.brief" class="b0 p10 BGFFF">
 		</pre>
 	</div>
-	<div class="f14 mt-3 imgCenter" ng-bind-html="model.content|trustHtml"></div>
+	<div class="f14 mt-3 imgCenter" ng-bind-html="webpage.content|trustHtml"></div>
+	
+	<div ui-view="addComment"></div>
 </div>
 </div>
 <div class="cb"></div>

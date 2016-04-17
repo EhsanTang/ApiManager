@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.model.Menu;
+import cn.crap.utils.Const;
 import cn.crap.utils.Page;
 
 @Scope("prototype")

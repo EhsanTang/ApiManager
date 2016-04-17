@@ -28,6 +28,9 @@ public class WebPage extends BaseModel{
 	private String key;
 	private byte canDelete;
 	private String category;
+	private byte canComment;
+	private int commentCount;
+	
 	
 	@Transient
 	public String getTypeName(){
@@ -131,5 +134,22 @@ public class WebPage extends BaseModel{
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
 	}
+	
+	@Column(name="canComment")
+	public byte getCanComment() {
+		return canComment;
+	}
+	public void setCanComment(byte canComment) {
+		this.canComment = canComment;
+	}
+	
+	@Column(name="commentCount")
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+	
 	
 }

@@ -28,6 +28,21 @@ public class Tools {
 	public static List<String> getIdsFromField(String ids) {
 		return Arrays.asList(ids.split(","));
 	}
+	
+	// 获取图形验证码
+	public static String getImgCode(HttpServletRequest request) throws MyException{
+		Object timesStr = request.getSession().getAttribute(Const.SESSION_IMGCODE_TIMES);
+		int times = 0;
+		if(timesStr != null){
+			times = Integer.parseInt(timesStr.toString()) + 1;
+		}
+		if(times > 3){
+			throw new MyException("000011");
+		}
+		request.getSession().setAttribute(Const.SESSION_IMGCODE_TIMES, times + "");
+		Object imgCode = request.getSession().getAttribute(Const.SESSION_IMG_CODE);
+		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
+	}
 	/**
 	 * 查询是否拥有权限
 	 */
@@ -48,7 +63,7 @@ public class Tools {
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
 		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);
-		Object imgCode = request.getSession().getAttribute(Const.SESSION_IMG_CODE);
+		Object imgCode = getImgCode(request);
 		if(!MyString.isEmpty(modulePassword)){
 			if(!MyString.isEmpty(temPwd)&&temPwd.toString().equals(modulePassword)){
 				return;

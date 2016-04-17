@@ -152,6 +152,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
+			},'addComment@webWebPageDetail' : {
+				templateUrl : 'resources/webHtml/addComment.tpl.html'
 			}
 		}
 	}).state('webError', {

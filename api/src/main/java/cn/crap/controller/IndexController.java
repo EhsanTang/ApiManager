@@ -80,7 +80,7 @@ public class IndexController extends BaseController<User>{
 			request.setAttribute("remberPwd", MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
 			request.setAttribute("userName", userName);
 			if(Cache.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")){
-				if(MyString.isEmpty(verificationCode)||!verificationCode.equals(request.getSession().getAttribute(Const.SESSION_IMG_CODE).toString())){
+				if(MyString.isEmpty(verificationCode)||!verificationCode.equals(Tools.getImgCode(request))){
 					request.setAttribute("tipMessage", "验证码输入有误");
 					return "admin/login";
 				}
@@ -195,6 +195,7 @@ public class IndexController extends BaseController<User>{
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
 		request.getSession().setAttribute(Const.SESSION_IMG_CODE, vservice.getCode());
+		request.getSession().setAttribute(Const.SESSION_IMGCODE_TIMES, "0");
 		try {
 	    	vservice.write(out);
 			out.flush();

@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.IWebPageService;
+import cn.crap.model.Comment;
 import cn.crap.model.Module;
 import cn.crap.model.WebPage;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -29,6 +32,8 @@ public class WebPageController extends BaseController<WebPage>{
 	private IModuleService moduleService;
 	@Autowired
 	private IWebPageService webPageService;
+	@Autowired
+	private ICommentService commentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -66,7 +71,11 @@ public class WebPageController extends BaseController<WebPage>{
 			Module module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}
-		return new JsonResult(1,model);
+		returnMap.put("comment", new Comment(model.getId()));
+		map = Tools.getMap("webpageId", model.getId());
+		returnMap.put("comments", commentService.findByMap(map, null, null));
+		returnMap.put("commentCode", Cache.getSetting(Const.SETTING_COMMENTCODE).getValue());
+		return new JsonResult(1,model, null, returnMap);
 	}
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody

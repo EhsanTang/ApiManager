@@ -1,6 +1,7 @@
 package cn.crap.utils;
 public class Const {
 	public final static String SESSION_ADMIN = "sessionAdminName";
+	public final static String SESSION_IMGCODE_TIMES = "sessionImgCodeTryTimes";
 	public final static String SESSION_ADMIN_AUTH = "sessionAdminAuthor";
 	public final static String SESSION_ADMIN_TRUENAME = "sessionAdminTrueName";
 	public final static String SESSION_ADMIN_ROLEIDS = "sessionAdminRoleIds";
@@ -16,6 +17,7 @@ public class Const {
 	public static final String AUTH_USER = "USER";
 	public static final String AUTH_MENU = "MENU";
 	public static final String AUTH_SETTING = "SETTING";
+	public static final String AUTH_COMMENT = "COMMENT";
 	public static final String AUTH_ERROR = "ERROR_"+MODULEID;
 	public static final String AUTH_DICTIONARY = "DICTIONARY_"+MODULEID;
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
@@ -33,4 +35,5 @@ public class Const {
 	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";
 	public final static String SETTING_VISITCODE = "VISITCODE";
 	public final static String SETTING_DOMAIN = "DOMAIN";
+	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
 }

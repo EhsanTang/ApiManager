@@ -4,9 +4,9 @@
 	<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="model.content"
 			rows="4" required placeholder="请输入评论内容">
 	</textarea>
-	<div class="input-wrapper bt0 fr w300 m0" ng-if="commentCode=='true'">
-			<input type="text" placeholder="图形验证码" required ng-model="model.id"><!-- 添加评论id为空，所以用来临时报错code -->
-			<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+	<div class="input-wrapper bt0 fr w300 m0 h50">
+			<input  ng-if="commentCode=='true'" type="text" placeholder="图形验证码" required ng-model="model.id"><!-- 添加评论id为空，所以用来临时报错code -->
+			<div  ng-if="commentCode=='true'" class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
 			data-toggle="tooltip" style="right:100px;">
 			<img id="imgCode2" width="80" height="30"
 								onclick="changeimg('imgCode2','verificationCode')"

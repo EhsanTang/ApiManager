@@ -41,7 +41,7 @@ public class WebPageController extends BaseController<WebPage>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute WebPage webPage){
-		if(webPage.getId() != Const.NULL_ID){
+		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());
 		}else{
 			model=new WebPage();

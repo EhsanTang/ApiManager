@@ -28,7 +28,7 @@ public class ModuleController extends BaseController<Module>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Module module){
-		if(module.getModuleId() != Const.NULL_ID){
+		if(!module.getModuleId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getModuleId());
 		}else{
 			model=new Module();

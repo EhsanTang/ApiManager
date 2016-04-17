@@ -57,7 +57,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Interface interFace) {
-		if(interFace.getId() != Const.NULL_ID){
+		if(!interFace.getId().equals(Const.NULL_ID)){
 			model= interfaceService.get(interFace.getId());
 		}else{
 			model = new Interface();

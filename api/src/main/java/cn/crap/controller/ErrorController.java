@@ -45,8 +45,9 @@ public class ErrorController extends BaseController<Error>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Error error){
-		model= errorService.get(error.getErrorId());
-		if(model==null){
+		if(!error.getErrorId().equals(Const.NULL_ID)){
+			model= errorService.get(error.getErrorId());
+		}else{
 			model=new Error();
 			model.setModuleId(error.getModuleId());
 		}

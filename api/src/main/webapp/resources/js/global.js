@@ -79,7 +79,7 @@ function uploadImage(id,size,form){
           alert("图片不能大于"+size+"kb,约"+(Math.round(size*1000/1024)/1000)+"M"); 
           return false; 
      } 
-	lookUp('lookUp',event,100,350,0); 
+	lookUp('lookUp','',100,350,0); 
 	$("#lookUpContent").html("上传中，请稍后...");
 	showMessage('lookUp', 'false', false, -1);
 	form.submit();

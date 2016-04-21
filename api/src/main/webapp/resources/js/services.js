@@ -45,14 +45,14 @@ function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
 }
 function httpSuccess(data, iLoading, tipTime) {
 	if(data.success==0){
-		if(data.error.code=="000007"){
+		if(data.error.code=="000007" || data.error.code=="000011"){
 			lookUp('passwordDiv', '', 300, 300 ,6,'');
 			showMessage('passwordDiv','false',false,-1);
 			showMessage('fade','false',false,-1);
 			changeimg('imgCode','verificationCode');
 			$("#password").val('');
 			$("#password").focus();
-			data = "[ERROR][000007] 点击请输入访问密码";
+			data = "[ERROR][000007] "+data.error.message+"，点击请输入访问密码";
 		}else{
 			data = "[ERROR]"+data.error.message;
 		}

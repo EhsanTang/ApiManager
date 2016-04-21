@@ -63,18 +63,18 @@ public class Tools {
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
 		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);
-		Object imgCode = getImgCode(request);
 		if(!MyString.isEmpty(modulePassword)){
 			if(!MyString.isEmpty(temPwd)&&temPwd.toString().equals(modulePassword)){
 				return;
 			}
+			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
+				throw new MyException("000007");
+			}
 			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
+				Object imgCode = getImgCode(request);
 				if(MyString.isEmpty(visitCode)||imgCode==null||!visitCode.equals(imgCode.toString())){
 					throw new MyException("000007");
 				}
-			}
-			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
-				throw new MyException("000007");
 			}
 			request.getSession().setAttribute(Const.SESSION_TEMP_PASSWORD, password);
 		}

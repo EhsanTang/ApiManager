@@ -34,7 +34,7 @@ public abstract class BaseController<T extends BaseModel> {
 	protected HttpServletRequest request;
 	@Autowired
 	protected HttpServletResponse response;
-	private Logger log = Logger.getLogger(getClass());
+	protected Logger log = Logger.getLogger(getClass());
 	protected T model;
 	
 	/**

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -16,7 +15,6 @@ import cn.crap.inter.service.ICommentService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")

@@ -20,7 +20,8 @@
 	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
 	                </li>
 	                <li class="dropdown" ng-repeat="item in menus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
-	                	 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{item.menu.menuName}} <span class="caret"></span></a>
+	                	 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>
 	                 	 <ul class="dropdown-menu">
 	                    	<li ng-repeat="subItem in item.subMenu">
 	                    		<a ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>

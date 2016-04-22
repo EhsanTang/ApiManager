@@ -87,7 +87,7 @@ public class IndexController extends BaseController<User>{
 			}
 			User user = new User();
 			user.setUserName(userName);
-			user.setStatus(Byte.valueOf("1"));
+			user.setStatus(Byte.valueOf("1"));// 未设置值得时候，status为基本类型变量，会自动赋值为0
 			List<User> users = userService.findByExample(user);
 			if(users.size()>0){
 				user = users.get(0);

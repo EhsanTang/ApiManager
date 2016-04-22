@@ -51,7 +51,6 @@ public class UserController extends BaseController<User>{
 		if(!MyString.isEmpty(user.getPassword())){
 			user.setPassword(MD5.encrytMD5(user.getPassword()));
 		}
-		try{
 		if(!MyString.isEmpty(user.getUserId())){
 			User temp = userService.get(user.getUserId());
 			if(MyString.isEmpty(user.getPassword())){
@@ -59,11 +58,9 @@ public class UserController extends BaseController<User>{
 			}
 			userService.update(user);
 		}else{
+			user.setStatus(Byte.valueOf("1"));
 			user.setUserId(null);
 			userService.save(user);
-		}
-		}catch(Exception e){
-			e.printStackTrace();
 		}
 		return new JsonResult(1,user);
 	}

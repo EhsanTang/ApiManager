@@ -112,20 +112,5 @@ webModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $sta
     };
     $scope.getData();
 });
-webModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function() {
-		var params = "iLoading=FLOAT|iUrl=setting/detail.do?id="+$stateParams.id+"&key="+$stateParams.key;
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
-			 }else{
-				 $rootScope.error = null;
-				 $rootScope.model = result.data;
-			 }
-		});
-    };
-    $scope.getData();
-});
+
 

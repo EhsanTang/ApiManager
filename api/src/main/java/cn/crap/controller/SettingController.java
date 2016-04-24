@@ -44,17 +44,18 @@ public class SettingController extends BaseController<Setting>{
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Setting setting){
 		if(!MyString.isEmpty(setting.getId())){
-			setting = settingService.get(setting.getId());
+			model = settingService.get(setting.getId());
 		}else if(!MyString.isEmpty(setting.getKey())){
 			List<Setting> settings= settingService.findByMap(Tools.getMap("key",setting.getKey()),null,null);
 			if(settings.size()>0){
-				setting = settings.get(0);
+				model = settings.get(0);
 			}
 		}
-		if(setting==null){
-			setting=new Setting();
+		if(model==null){
+			model=new Setting();
+			model.setType(setting.getType());
 		}
-		return new JsonResult(1,setting);
+		return new JsonResult(1,model);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
@@ -66,6 +67,7 @@ public class SettingController extends BaseController<Setting>{
 			}else{
 				setting.setId(null);
 				if(settingService.getCount(Tools.getMap("key",setting.getKey()))==0){
+					setting.setCanDelete(Byte.valueOf("1"));
 					settingService.save(setting);
 				}else{
 					return new JsonResult(new MyException("000006"));
@@ -78,6 +80,9 @@ public class SettingController extends BaseController<Setting>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
 		setting = settingService.get(setting.getId());
+		if(setting.getCanDelete()==0){
+			throw new MyException("000009");
+		}
 		Tools.hasAuth(Const.AUTH_SETTING, request.getSession(),"");
 		settingService.delete(setting);
 		return new JsonResult(1,null);

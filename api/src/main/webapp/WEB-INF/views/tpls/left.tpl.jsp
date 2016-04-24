@@ -33,7 +33,7 @@
 									<a class="menu-a" target="_self" href="index.do#/error/list">错误码管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/setting/list">系统设置管理</a>
+									<a class="menu-a" target="_self" href="index.do#/setting/list/null">系统设置管理</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="index.do#/webPage/list/DICTIONARY">数据字典管理</a>

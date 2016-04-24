@@ -20,6 +20,7 @@ public class Setting extends BaseModel{
 	private String value;
 	private String remark;
 	private String type;
+	private byte canDelete;
 	
 	@Id
 	@GeneratedValue(generator="Generator")
@@ -58,6 +59,14 @@ public class Setting extends BaseModel{
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	
+	@Column(name="canDelete")
+	public byte getCanDelete() {
+		return canDelete;
+	}
+	public void setCanDelete(byte canDelete) {
+		this.canDelete = canDelete;
 	}
 	@Transient
 	public String getTypeName(){

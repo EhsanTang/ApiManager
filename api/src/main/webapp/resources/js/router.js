@@ -45,7 +45,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingList', {
-		url : '/setting/list',
+		url : '/setting/list/:key',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/settingList.tpl.html'

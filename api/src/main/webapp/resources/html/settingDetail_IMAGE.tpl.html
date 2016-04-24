@@ -11,7 +11,8 @@
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="text" ng-model="model.key" readonly>
+						<input class="form-control" type="text" ng-model="model.key" ng-if="model.id==null">
+						<input class="form-control" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>
@@ -23,8 +24,7 @@
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc">
-						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型"
-						ng-focus="loadPickByName('iwidth=200|iheight=250|radio=true|tagName=typeName|tag=type|code=SETTINGTYPE|def='+model.type,$event)">
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
 					</td>
 				</tr>
 				<tr>

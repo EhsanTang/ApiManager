@@ -212,7 +212,7 @@ public class PickFactory {
 				pick = new PickDto("h_r_0", "index.do#/role/list", "角色列表");
 				picks.add(pick);
 				// 后端系统设置
-				pick = new PickDto("h_s_0", "index.do#/setting/list", "系统设置列表");
+				pick = new PickDto("h_s_0", "index.do#/setting/list/null", "系统设置列表");
 				picks.add(pick);
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");

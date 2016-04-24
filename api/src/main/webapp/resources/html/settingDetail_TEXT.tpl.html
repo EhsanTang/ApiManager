@@ -7,7 +7,8 @@
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="text" ng-model="model.key" readonly>
+						<input class="form-control" type="text" ng-model="model.key" ng-if="model.id==null">
+						<input class="form-control" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>

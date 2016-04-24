@@ -2,6 +2,7 @@ package cn.crap.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -203,7 +204,15 @@ public class IndexController extends BaseController<User>{
 			out.close();
 		}
 	}
-	
+	/**
+	 * 
+	 * @param 跳转至jsp页面
+	 * @return
+	 */
+	@RequestMapping({"/go.do"})
+	public String showHomePage(HttpServletResponse response,String p) {
+		return p;
+	}
 	@Override
 	public JsonResult detail(User model) {
 		return null;

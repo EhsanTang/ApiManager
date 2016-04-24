@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
-
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Module;
@@ -17,6 +16,9 @@ public class Cache {
 	private static Map<String,Setting> settingMap=new HashMap<String,Setting>();
 	public static Setting getSetting(String key){
 		return settingMap.get(key);
+	}
+	public static Map<String, Setting> getSetting(){
+		return settingMap;
 	}
 	public static void setSetting(List<Setting> setting,ServletContext sc){
 		for(Setting s:setting){

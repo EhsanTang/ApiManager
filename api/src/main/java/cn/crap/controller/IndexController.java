@@ -209,7 +209,7 @@ public class IndexController extends BaseController<User>{
 	 * @param 跳转至jsp页面
 	 * @return
 	 */
-	@RequestMapping({"/go.do"})
+	@RequestMapping({"go.do"})
 	public String showHomePage(HttpServletResponse response,String p) {
 		return p;
 	}

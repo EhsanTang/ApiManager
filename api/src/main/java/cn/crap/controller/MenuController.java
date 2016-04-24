@@ -68,7 +68,7 @@ public class MenuController extends BaseController<Menu> {
 		try {
 			// 子菜单类型和父菜单类型一致
 			Menu parentMenu = menuService.get(menu.getParentId());
-			if (parentMenu != null || menu.getParentId().equals("0"))
+			if (parentMenu != null && parentMenu.getMenuId()!=null)
 				menu.setType(parentMenu.getType());
 
 			if (!MyString.isEmpty(menu.getMenuId())) {

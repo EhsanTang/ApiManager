@@ -65,7 +65,7 @@ mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, 
 		if($("#searchCategory").length==1&&$("#searchCategory").val()!=null&&$("#searchCategory").val()!=""){
 			$stateParams.category = $("#searchCategory").val();
 		}
-		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val()
+		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val()
 		+"&name="+$("#searchName").val()+"&category="+$stateParams.category;
 		$rootScope.getBaseData($scope,$http,params,page);
     };

@@ -16,6 +16,8 @@ function callHttpName($http, params, iCallBack, iCallBackParam) {
 }
 
 function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
+	iUrl=encodeURI(iUrl);
+	iParams=encodeURI(iParams);
 	iTarget = iTarget ? iTarget : 'lookUpContent';
 	var xParams = "";
 	if (iFormId) {

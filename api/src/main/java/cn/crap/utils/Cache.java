@@ -1,5 +1,6 @@
 package cn.crap.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,16 @@ public class Cache {
 	private static boolean forceRefresh = true;
 	/************将setting添加至内存及application范围内*****************/
 	private static Map<String,Setting> settingMap=new HashMap<String,Setting>();
+	private static List<Setting> settings = new ArrayList<Setting>();
 	public static Setting getSetting(String key){
 		return settingMap.get(key);
 	}
-	public static Map<String, Setting> getSetting(){
-		return settingMap;
+	public static List<Setting> getSetting(){
+		return settings;
 	}
 	public static void setSetting(List<Setting> setting,ServletContext sc){
+		settings.clear();
+		settings.addAll(setting);
 		for(Setting s:setting){
 			setSetting(s,sc);
 		}
@@ -29,6 +33,12 @@ public class Cache {
 		if(settingMap.containsKey(setting.getKey()))
 			settingMap.remove(setting.getKey());
 		settingMap.put(setting.getKey(), setting);
+		for(int i = 0; i< settings.size(); i++){
+			if(settings.get(i).getKey().equals(setting.getKey())){
+				settings.remove(i);
+				settings.add(i, setting);
+			}
+		}
 		sc.setAttribute(setting.getKey(), setting.getValue());
 	}
 	/*************将module放入缓存***********/

@@ -108,6 +108,7 @@ public class SettingController extends BaseController<Setting>{
 		
 		settingService.update(model);
 		settingService.update(change);
+		Cache.setSetting(settingService.findByMap(null, null, null), Tools.getServletContext());
 		return new JsonResult(1, null);
 	}
 

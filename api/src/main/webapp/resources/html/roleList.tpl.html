@@ -32,13 +32,15 @@
 			<tr class="BGEEE">
 				<th class="tc w200">名称</th>
 				<th class="tc">权限</th>
+				<td class="tc">排序</td>
 				<th class="w200 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.roleName}}</td>
-				<td class="tc">{{item.authName}}</td>
+				<td class="tc" title="{{item.authName}}">{{item.authName| cut:true:50:' ...'}}</td>
+				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('ROLE','');"
 					ng-click="detail('编辑【'+item.roleName+'】',700,'role/detail.do?roleId='+item.roleId)"

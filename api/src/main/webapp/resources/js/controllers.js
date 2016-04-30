@@ -6,6 +6,26 @@ var mainModule = angular.module("mainModule", []);
 mainModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
 });
+// 显示长度 wordwise：切字方式- 如果是 true，只切單字
+mainModule.filter('cut', function () {
+	  return function (value, wordwise, max, tail) {
+	    if (!value) return '';
+
+	    max = parseInt(max, 10);
+	    if (!max) return value;
+	    if (value.length <= max) return value;
+
+	    value = value.substr(0, max);
+	    if (wordwise) {
+	      var lastspace = value.lastIndexOf(' ');
+	      if (lastspace != -1) {
+	        value = value.substr(0, lastspace);
+	      }
+	    }
+	    return value + (tail || ' …');
+	  };
+});
+
 mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
 	 
 });

@@ -4,9 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.List;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.crap.framework.MyException;
+
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IErrorService;
@@ -32,6 +34,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
+import net.sf.json.JSONArray;
 
 @Scope("prototype")
 @Controller
@@ -229,6 +232,23 @@ public class InterfaceController extends BaseController<Interface>{
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
 		interfaceService.delete(interFace);
+		return new JsonResult(1, null);
+	}
+
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		Interface change = interfaceService.get(changeId);
+		model = interfaceService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		interfaceService.update(model);
+		interfaceService.update(change);
 		return new JsonResult(1, null);
 	}
 

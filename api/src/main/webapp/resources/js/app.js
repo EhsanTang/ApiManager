@@ -134,6 +134,21 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			 }
 		});
 	}
+	$rootScope.changeSequence = function(model,id,changeId){
+		var params = "iUrl="+model+"/changeSequence.do|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT')
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 }else if(result.success==1){
+				 $rootScope.error = null;
+				 //关闭编辑对话框
+				 $timeout(function() {
+					 $("#refresh").click();
+                 })
+			 }
+		});
+	}
 	/***********************是否显示操作按钮************/
 	$rootScope.showOperation = function(dataType,moduleId){
 		var userRole = $("#sessionRoleIds").val();

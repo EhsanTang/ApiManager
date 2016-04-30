@@ -10,6 +10,15 @@ public abstract class BaseModel{
 	 * -1:删除，0:不可用，1:可用
 	 */
 	protected byte status;
+	protected int sequence;// 排序
+	
+	@Column(name="sequence")
+	public int getSequence() {
+		return sequence;
+	}
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
 	@Column(name="createTime")
 	public String getCreateTime() {
 		return createTime;

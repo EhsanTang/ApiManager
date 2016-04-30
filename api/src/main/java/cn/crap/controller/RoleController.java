@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -63,5 +64,8 @@ public class RoleController extends BaseController<Role>{
 		return new JsonResult(1,null);
 	}
 
-
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		return null;
+	}
 }

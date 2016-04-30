@@ -35,21 +35,23 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc w100">key</th>
-				<th class="tc w100">value</th>
-				<th class="tc w200">类型</th>
+				<th class="tc">key</th>
+				<th class="tc">value</th>
+				<th class="tc">类型</th>
 				<th class="tc">备注</th>
+				<td class="tc">排序</td>
 				<th class="w200 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.key}}</td>
-				<td class="tc">{{item.value}}</td>
+				<td class="tc" title="{{item.value}}">{{item.value|cut:true:20:' ...'}}</td>
 				<th class="tc">{{item.typeName}}</th>
-				<td class="tc">
-					<div class="mah50 of-h" ng-bind-html="item.remark|trustHtml"></div>
+				<td class="tc" title="{{item.remark}}">
+					{{item.remark|cut:true:20:' ...'}}
 				</td>
+				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('SETTING','');"
 					ng-href="#/setting/detail/{{item.type}}/{{item.id}}">
@@ -59,6 +61,14 @@
 					ng-click="del('setting/delete.do?id='+item.id,item.key)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
+				<div class="w50 fr tl">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('setting',item.id,list[$index-1].id)" ng-if="$index>0">
+						<i class="iconfont f12">&#xe623;</i>
+					</a>
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('setting',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
+						<i class="iconfont f12">&#xe624;</i>
+					</a>
+				</div>
 				</td>
 			</tr>
 

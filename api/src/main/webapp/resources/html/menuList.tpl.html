@@ -46,7 +46,8 @@
 				<!-- 一级菜单不显示超链接，二级菜单不显示类型 -->
 				<th class="tc" ng-if="$stateParams.parentId!='0'">超链地址</th>
 				<th class="tc" ng-if="$stateParams.parentId=='0'">类型</th>
-				<th class="w200 tc">操作</th>
+				<td class="tc">排序</td>
+				<th class="w250 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,6 +55,7 @@
 				<td class="tc">{{item.menuName}}</td>
 				<td class="tc" ng-if="$stateParams.parentId!='0'">{{item.menuUrl}}</td>
 				<td class="tc" ng-if="$stateParams.parentId=='0'">{{item.typeName}}</td>
+				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor"
 					ng-click="detail('编辑【'+item.menuName+'】',800,'menu/detail.do?menuId='+item.menuId)"
@@ -68,6 +70,14 @@
 					ng-click="del('menu/delete.do?menuId='+item.menuId,item.menuName)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
+				<div class="w50 fr tl">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('menu',item.menuId,list[$index-1].menuId)" ng-if="$index>0">
+						<i class="iconfont f12">&#xe623;</i>
+					</a>
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('menu',item.menuId,list[$index+1].menuId)" ng-if="$index<list.length-1">
+						<i class="iconfont f12">&#xe624;</i>
+					</a>
+				</div>
 				</td>
 			</tr>
 

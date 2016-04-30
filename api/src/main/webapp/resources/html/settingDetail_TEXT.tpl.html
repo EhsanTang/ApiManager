@@ -1,20 +1,18 @@
 ﻿<div class="r0 p10 pt0 col-xs-12" ng-controller="settingDetailCtrl">
 <div class="col-xs-12 p0 mt10">
-<form id="editArticleShare" enctype="multipart/form-data" name="settingForm"
-			target="hiddenFrame" action="file/upload.do?isEditor=false"
-			method="post">
+		<form  ng-submit="submitForm('setting/addOrUpdate.do')">
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="text" ng-model="model.key" ng-if="model.id==null">
+						<input class="form-control" type="text" ng-model="model.key" required ng-if="model.id==null">
 						<input class="form-control" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">value</td>
 					<td class="tc">
-						<input class="form-control" type="text" ng-model="model.value">
+						<input class="form-control" type="text" required ng-model="model.value">
 					</td>
 				</tr>
 				<tr>
@@ -29,8 +27,13 @@
 					<td class="tc"><textarea class="form-control no-resize"
 							ng-model="model.remark" rows="6" placeholder="备注信息"></textarea></td>
 				</tr>
+				<tr>
+					<td class="tc">排序</td>
+					<td class="tc">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+			</tr>
 			</table>
-			<button type="button" ng-click="submitForm('setting/addOrUpdate.do')" class="btn btn-success fr">提交</button>
+			<button type="submit" class="btn btn-success fr">提交</button>
 		</form>
 
 	</div>

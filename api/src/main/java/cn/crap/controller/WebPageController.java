@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.crap.framework.MyException;
+
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IModuleService;
@@ -120,5 +122,23 @@ public class WebPageController extends BaseController<WebPage>{
 		webPageService.delete(webPage);
 		return new JsonResult(1,null);
 	}
+	
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		WebPage change = webPageService.get(changeId);
+		model = webPageService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		webPageService.update(model);
+		webPageService.update(change);
+		return new JsonResult(1, null);
+	}
+
 
 }

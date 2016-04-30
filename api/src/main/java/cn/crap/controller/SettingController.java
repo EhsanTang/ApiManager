@@ -1,6 +1,7 @@
 package cn.crap.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -8,8 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.crap.framework.MyException;
+
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IModuleService;
@@ -90,6 +92,23 @@ public class SettingController extends BaseController<Setting>{
 		settingService.delete(setting);
 		Cache.clear(settingService, moduleService, Tools.getServletContext());
 		return new JsonResult(1,null);
+	}
+	
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		Setting change = settingService.get(changeId);
+		model = settingService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		settingService.update(model);
+		settingService.update(change);
+		return new JsonResult(1, null);
 	}
 
 }

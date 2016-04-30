@@ -86,5 +86,9 @@ public class FileController extends BaseController <User>{
 	public JsonResult detail(User model) {
 		return null;
 	}
+	@Override
+	public JsonResult changeSequence(String id, String changeId) {
+		return null;
+	}
 	
 }

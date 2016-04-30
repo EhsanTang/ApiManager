@@ -2,7 +2,6 @@ package cn.crap.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -215,6 +214,10 @@ public class IndexController extends BaseController<User>{
 	}
 	@Override
 	public JsonResult detail(User model) {
+		return null;
+	}
+	@Override
+	public JsonResult changeSequence(String id, String changeId) {
 		return null;
 	}
 }

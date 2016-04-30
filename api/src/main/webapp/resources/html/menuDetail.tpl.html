@@ -45,6 +45,11 @@
 				</td>
 			</tr>
 			<tr>
+					<td class="tc">排序</td>
+					<td class="tc" colspan="3">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+			</tr>
+			<tr>
 				<td class="tc" rowspan="2" ng-if="model.parentId=='0'">图标</td>
 				<td class="tc" rowspan="2" ng-if="model.parentId!='0'">备注</td>
 				<td class="tc">

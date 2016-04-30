@@ -73,5 +73,11 @@ public class UserController extends BaseController<User>{
 		return new JsonResult(1,null);
 	}
 
-
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		return null;
+	}
 }

@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Module;
@@ -57,6 +59,24 @@ public class ModuleController extends BaseController<Module>{
 		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
 		moduleService.delete(module);
 		return new JsonResult(1,null);
+	}
+	
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		Module change = moduleService.get(changeId);
+		model = moduleService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		moduleService.update(model);
+		moduleService.update(change);
+
+		return new JsonResult(1, null);
 	}
 
 }

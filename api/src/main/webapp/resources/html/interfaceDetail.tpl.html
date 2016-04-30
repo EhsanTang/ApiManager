@@ -5,7 +5,7 @@
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc">名称</td>
-					<td class="tc" colspan="3"><input class="form-control"
+					<td class="tc" colspan="3"><input class="form-control" maxlength="50"
 						required type="text" ng-model="model.moduleName"></td>
 				</tr>
 				<tr>
@@ -13,25 +13,24 @@
 					<td class="tc" colspan="3"><input class="form-control"
 						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
 				</tr>
-
-
+				<tr>
+					<td class="tc">排序</td>
+					<td class="tc" colspan="3">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+				</tr>
 			</table>
 			<button type="submit" class="btn btn-success fr">提交</button>
 		</form>
 
 		<form ng-submit="submitForm('interface/addOrUpdate.do')"
 			ng-if="model.moduleId!=null&&model.parentId==null">
-				<blockquote class="pl10 C555 mb10 f16 tl">
-					模块：{{model.moduleName}}
-				</blockquote>
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w80">接口名称</td>
 					<td class="tc w400"><input class="form-control" type="text" required maxlength="50"
 						ng-model="model.interfaceName" placeholder="示例：获取订单列表接口"></td>
-					<td class="tc w80">版本号</td>
-					<td class="tc"><input class="form-control" type="text"
-						ng-model="model.version" required></td>
+					<td>模块名</td>
+					<td><input type="text"  class="form-control" value="{{model.moduleName}}" readonly></td>
 				</tr>
 				<tr>
 					<td class="tc">URL</td>
@@ -52,6 +51,14 @@
 							ng-focus="loadPick($event,220,220,'true','status','INTERFACESTATUS','',model.status);"
 								ng-model="model.status" required placeholder="请点击输入框选择">
 					</td>
+				</tr>
+				<tr>
+					<td class="tc w80">版本号</td>
+					<td class="tc"><input class="form-control" type="text"
+						ng-model="model.version" required></td>
+					<td>排序</td>
+					<td class="tc">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
 				<tr>
 					<td class="tc">参数</td>

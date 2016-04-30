@@ -2,6 +2,7 @@ package cn.crap.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -119,6 +120,23 @@ public class MenuController extends BaseController<Menu> {
 			menuVOs.add(menuVO);
 		}
 		return new JsonResult(1, menuVOs);
+	}
+	
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		Menu change = menuService.get(changeId);
+		model = menuService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		menuService.update(model);
+		menuService.update(change);
+		return new JsonResult(1, null);
 	}
 
 }

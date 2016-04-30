@@ -6,23 +6,18 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
-import cn.crap.model.Menu;
-import cn.crap.utils.Const;
+import cn.crap.framework.MyException;
 import cn.crap.utils.Page;
 
 @Scope("prototype")
@@ -43,6 +38,14 @@ public abstract class BaseController<T extends BaseModel> {
 	 * @return
 	 */
 	public abstract JsonResult detail(T model);
+	
+	/**
+	 * 快速修改排序，非核心功能，未添加权限验证，所有管理员均能修改
+	 * @param model
+	 * @param num
+	 * @return
+	 */
+	public abstract JsonResult changeSequence(String id,String changeId);
 	
 	/**
 	 * @return

@@ -65,4 +65,9 @@ public class CommentController extends BaseController<Comment> {
 		return new JsonResult(1, null);
 	}
 
+	@Override
+	public JsonResult changeSequence(String id, String changeId) {
+		return null;
+	}
+
 }

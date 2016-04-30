@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.MyException;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IErrorService;
-import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Error;
-import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -27,8 +25,6 @@ public class ErrorController extends BaseController<Error>{
 
 	@Autowired
 	private IErrorService errorService;
-	@Autowired
-	private IModuleService moduleService;
 	/**
 	 * MenuDemo
 	 * @return 
@@ -81,6 +77,11 @@ public class ErrorController extends BaseController<Error>{
 		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(), error.getModuleId());
 		errorService.delete(error);
 		return new JsonResult(1,null);
+	}
+
+	@Override
+	public JsonResult changeSequence(String id, String changeId) {
+		return null;
 	}
 
 }

@@ -1,5 +1,5 @@
 <div class="r0 p10 pt0 col-xs-12" ng-controller="interfaceDetailCtrl">
-	<div class="col-xs-12 p0 mt10" id="interFaceDetail">
+	<div class="col-xs-12 p0" id="interFaceDetail">
 		<form ng-submit="submitForm('module/addOrUpdate.do')"
 			ng-if="model.parentId!=null">
 			<table class="table table-bordered">
@@ -21,42 +21,36 @@
 
 		<form ng-submit="submitForm('interface/addOrUpdate.do')"
 			ng-if="model.moduleId!=null&&model.parentId==null">
+				<blockquote class="pl10 C555 mb10 f16 tl">
+					模块：{{model.moduleName}}
+				</blockquote>
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w80">接口名称</td>
-					<td class="tc w400"><input class="form-control" type="text"
-						ng-model="model.interfaceName" placeholder="示例：获取订单列表接口" required></td>
-					<td class="tc w80">模块名</td>
+					<td class="tc w400"><input class="form-control" type="text" required maxlength="50"
+						ng-model="model.interfaceName" placeholder="示例：获取订单列表接口"></td>
+					<td class="tc w80">版本号</td>
 					<td class="tc"><input class="form-control" type="text"
-						ng-model="model.moduleName" readonly></td>
+						ng-model="model.version" required></td>
 				</tr>
 				<tr>
 					<td class="tc">URL</td>
 					<td class="tc" colspan="3"><input class="form-control"
-						type="text" ng-model="model.url" required
-						placeholder="示例：http://api.biyao.com/CustomerOrder/GetMyOrderList">
+						type="text" ng-model="model.url" required maxlength="100"
+						placeholder="示例：http://api.crap.cn/CustomerOrder/GetMyOrderList">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc w80">请求方式</td>
 					<td class="tc">
-						<div class="input-group">
-							<input class="form-control" type="text" id="method"
-								ng-model="model.method" readonly placeholder="请点击“选择”按钮选择">
-							<div class="input-group-addon cursor btn-purple"
-								ng-click="loadPick($event,220,250,'true','method','REQUESTMETHOD','',model.method);">
-								选择</div>
-						</div>
+						<input class="form-control cursor" type="text" id="method" placeholder="请点击输入框选择" required ng-model="model.method"
+							ng-focus="loadPickByName('iwidth=220|iheight=250|tag=method|code=REQUESTMETHOD|def='+model.method,$event)">
 					</td>
 					<td class="tc">状态</td>
-					<td class="tc">
-						<div class="input-group">
-							<input class="form-control" type="text" id="status"
-								ng-model="model.status" readonly placeholder="请点击“选择”按钮选择">
-							<div class="input-group-addon cursor btn-purple"
-								ng-click="loadPick($event,220,220,'true','status','INTERFACESTATUS','',model.status);">
-								选择</div>
-						</div>
+					<td>
+						<input class="form-control" type="text" id="status"
+							ng-focus="loadPick($event,220,220,'true','status','INTERFACESTATUS','',model.status);"
+								ng-model="model.status" required placeholder="请点击输入框选择">
 					</td>
 				</tr>
 				<tr>

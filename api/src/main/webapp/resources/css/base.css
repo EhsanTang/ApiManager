@@ -182,6 +182,7 @@ table{border-collapse:collapse;border-spacing:0}
 .maw40 {max-width:40px;}
 .maw100 {max-width:100px;}
 .maw200 {max-width:100px;}
+.maw200 {max-width:400px;}
 .maw400 {max-width:400px;}
 
 .mah {max-height:100%;}
@@ -190,18 +191,7 @@ table{border-collapse:collapse;border-spacing:0}
 .mah100{ max-height:100px;}
 .mah200{ max-height:200px;}
 .mah300{ max-height:300px;}.mah400{ max-height:400px;}
-/***********Color***********************/
-/***remote iconfont*****/
-@font-face {
-  font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1460274273_3840206.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1460274273_3840206.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1460274273_3840206.svg#iconfont') format('svg'); /* iOS 4.1- */
-}
-                    
-                    
+/***********Color***********************/                                
                                      
 .iconfont {
 	vertical-align: middle;

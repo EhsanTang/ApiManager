@@ -151,7 +151,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	
 	$rootScope.getDate = function(str){
-		return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
+		if(str && str.indexOf(".")>0)
+			return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
 	/**
 	 * 提交数据字典时将表格数据转换为json

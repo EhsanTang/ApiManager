@@ -64,6 +64,7 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;
+				 $rootScope.versions = result.others.versions;
 				 $rootScope.errors = eval("("+result.data.errors+")");
 				 $rootScope.params = eval("("+result.data.param+")");
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");

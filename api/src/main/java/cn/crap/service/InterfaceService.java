@@ -58,7 +58,6 @@ public class InterfaceService extends BaseService<Interface>
 	
 	@Override
 	public void getInterFaceRequestExam(Interface interFace) {
-		if(!MyString.isEmpty(interFace.getParam())){
 			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
 			if(!MyString.isEmpty(interFace.getParam())){
 				JSONArray json = JSONArray.fromObject(interFace.getParam());
@@ -76,7 +75,6 @@ public class InterfaceService extends BaseService<Interface>
 				interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
 				
 			}
-		}
 	}
 
 }

@@ -79,6 +79,7 @@ public class InterfaceController extends BaseController<Interface>{
 		request.setAttribute("errors", errors);
 		return "web/interFacePdf";
 	}
+	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
@@ -124,6 +125,7 @@ public class InterfaceController extends BaseController<Interface>{
 		interfaceService.save(interFace);
 		return new JsonResult(1, interFace);
 	}
+	
 	@RequestMapping("/webList.do")
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
@@ -133,7 +135,6 @@ public class InterfaceController extends BaseController<Interface>{
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
 	}
 
-	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
@@ -141,11 +142,22 @@ public class InterfaceController extends BaseController<Interface>{
 		if(interFace!=null){
 			Module module = moduleService.get(interFace.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+			/**
+			 * 查询相同模块下，相同接口名的其它版本号
+			 */
+			List<Interface> versions = interfaceService.findByMap(
+					Tools.getMap("moduleId",interFace.getModuleId(),"interfaceName",interFace.getInterfaceName(),"version|<>",interFace.getVersion()), null, null);
+			return new JsonResult(1, interFace, null, Tools.getMap("versions",versions));
 		}else{
-			interFace = new Interface();
+			throw new MyException("000012");
 		}
-		return new JsonResult(1, interFace);
 	}
+	
+	/**
+	 * 根据参数生成请求示例
+	 * @param interFace
+	 * @return
+	 */
 	@RequestMapping("/getRequestExam.do")
 	@ResponseBody
 	public JsonResult getRequestExam(@ModelAttribute Interface interFace) {
@@ -161,6 +173,10 @@ public class InterfaceController extends BaseController<Interface>{
 		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new MyException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
+		
+		/**
+		 * 根据选着的错误码id，组装json字符串
+		 */
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
 			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
@@ -177,6 +193,17 @@ public class InterfaceController extends BaseController<Interface>{
 		}else{
 			interFace.setErrors("[]");
 		}
+		
+		/**
+		 * 如果参数为空，则需要设置一个大小为0的空json数组
+		 */
+		if(MyString.isEmpty(interFace.getParam())){
+			interFace.setParam("[]");
+		}
+		if(MyString.isEmpty(interFace.getResponseParam())){
+			interFace.setResponseParam("[]");
+		}
+		
 		interFace.setUpdateBy("userName："+request.getSession().getAttribute(Const.SESSION_ADMIN).toString()+" | trueName："+
 				request.getSession().getAttribute(Const.SESSION_ADMIN_TRUENAME).toString());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));

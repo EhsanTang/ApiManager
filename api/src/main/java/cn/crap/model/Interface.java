@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.Cache;
@@ -32,6 +33,7 @@ public class Interface extends BaseModel{
 	private String updateTime;
 	private String remark;//备注
 	private String errors;
+	private String version;//版本号
 	
 	@Transient
 	public String getModuleName(){
@@ -177,5 +179,14 @@ public class Interface extends BaseModel{
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	
 
 }

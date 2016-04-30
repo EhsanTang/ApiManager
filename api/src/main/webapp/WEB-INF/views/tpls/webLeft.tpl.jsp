@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<div class="col-xs-3 col-sm-2 sidebar BGEEE p20 pt0 pb0 m0 min-h600" ng-controller="lefMenuCtrl">
+<div class="col-xs-2 col-sm-2 sidebar BGEEE p20 pt0 pb0 m0 min-h600" ng-controller="lefMenuCtrl">
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
 					<div class="panel panel-info no-radius b0 mt0" ng-repeat="item in menus">

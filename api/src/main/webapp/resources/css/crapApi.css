@@ -25,7 +25,10 @@ blockquote{
   url('//at.alicdn.com/t/font_1462031239_5223558.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('//at.alicdn.com/t/font_1462031239_5223558.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
-                    
+/********前端显示最小宽度*************/
+.container-fluid{min-width: 770px;}
+.navbar-inverse{min-width: 770px;}
+.container{min-width: 750px;}               
 /********文章页面，图片居中显示********/
 #fade{
 	opacity: 0.5;
@@ -114,7 +117,6 @@ blockquote{
     margin-bottom: 10px;
 }
 .interface-detail blockquote{
-	color:#B768A5;
 	line-height:10px;
 	padding-left:10px;
 	font-size:12px;
@@ -153,13 +155,6 @@ blockquote{
     line-height: 26px;
     width: 100%;
 }
-/****/
-.bt-5{
-	border-top:5px solid #b768a5;
-}
-.bl-5{
-	border-left:5px solid #b768a5;
-}
 #editForm table td{
 	padding:6px 8px;
 }
@@ -193,11 +188,6 @@ blockquote{
 .navbar-fixed-top {
     border: 0;
 }
-/*****寮傛鍔犺浇瀵艰嚧楂樺害鏈夐棶棰橈紝婊氬姩搴曢儴鍑虹幇鐧借竟*****/
-.modal-backdrop{
-	min-height:1000px;	
-}
-
 
 /*******************left**********************/
 .nav-face{
@@ -227,7 +217,6 @@ blockquote{
 
 .panel-body:hover, .panel-body .active{
   color: #fff;
-  background-color: #B768A5;
 }
 .panel-body a{
 	width:100%;
@@ -257,12 +246,10 @@ blockquote{
  }****************/
  /*****************pick***************************/
  .pickActive{
- 	color:#b768a5;
  	font-weight:bold;
  }
  .pickSelect{
  	background:#DDD;
- 	color:#b768a5;
  	font-weight:bold;
  }
  #pickContent div:hover{
@@ -271,11 +258,9 @@ blockquote{
  .separator{
  	border:0px;
  	margin-top:10px;
- 	border-bottom:1px dotted #b768a5;
  	font-size:12px;
  	margin-bottom:10px;
  	text-align: left;
- 	color:#b768a5;
  }
  /*****************加载浮层***************************/
 .folat{
@@ -299,7 +284,6 @@ blockquote{
  	z-index: 1060;
 }
 .look-up-content {
-  border-top: 3px solid #b768a5;
   position: relative;
   background: #FDFDFD;
   width: 100%;
@@ -384,7 +368,6 @@ blockquote{
   text-align: center;
   font-size: 10px; }
   .sk-wave .sk-rect {
-    background-color: #B768A5;
     height: 100%;
     width: 6px;
     display: inline-block;

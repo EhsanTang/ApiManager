@@ -15,38 +15,26 @@
 <link href="${ICON}" rel="shortcut icon" type="image/x-icon" />
 <link href="${ICON}" rel="icon" type="image/x-icon" />
 <link href="${ICON}" rel="shortcut" type="image/x-icon" />
-<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css"
-	rel="stylesheet" type="text/css" />
-<link
-	href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css"
-	rel="stylesheet" type="text/css" />
+<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/global.css" rel="stylesheet" type="text/css" />
-<link
-	href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css" />
-<link href="resources/framework/textAngular-1.5.0/textAngular.css"
-	rel="stylesheet" type="text/css" />
-<style type="text/css">
-body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
-	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: Tahoma, "SimSun" !important;
-}
-</style>
+<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
+<%@include file="../tpls/webCss.tpl.jsp"%>
 </head>
-<body class="BGFFF">
+<body class="BG_COLOR">
 	<%@include file="../tpls/webTop.tpl.jsp"%>
 	<div class="container p0">
 		<div class="row min-h p0 m0">
 			<%@include file="../tpls/webLeft.tpl.jsp"%>
-			<div class="col-xs-9 col-sm-10 p0 BGFFF m0 p10 pt0 r5">
-				<div class="col-xs-12 f16 fb p20 pt0 mb5" ng-if="error">
+			<div class="col-xs-9 col-sm-10 p0 BG_COLOR m0 p10 pt0 r5">
+				<div class="col-xs-12 f16 fb p20 pt10 pb0 mb5 BGFFF r5" ng-if="error">
 					<button type="button" class="btn btn-danger btn-xs break-word" onclick="propUpPsswordDiv(this)" ng-bind="error">
 					</button>
 				</div>
-				<div ui-view="main"></div>
+				<div ui-view="main" class="BGFFF r5 min-h600"></div>
 			</div>
 		</div>
 	</div>

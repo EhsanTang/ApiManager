@@ -1,11 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<div class="container-fluid m0 bt1 mt20">
-<div class="container" ng-controller="lefMenuCtrl">
-	<div class="col-xs-12 f14 p0 mb5 h100 tc mt20">
-	    		<ul class="dis-in-tab"> 
+<div class="container-fluid m0 mt30 FOOTER_BG_COLOR FOOTER_COLOR">
+<div class="container p0" ng-controller="lefMenuCtrl">
+	<div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">
+				©crap.cn &nbsp;版权所有
+	    		<ul class="dis-in-tab ml0"> 
 	    			<li class="dis-in-tab mr20">
 	    				<a target="_blank" href="http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
-	    				<span class="bg_line"></span>
 	    			</li>
 	    			<li class="dis-in-tab mr20">
 	    				<a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub源码</a>
@@ -13,16 +13,13 @@
 	    			</li>
 	    			<li class="dis-in-tab mr20"  ng-repeat="item in menus" ng-if="item.menu.type=='BOTTOM'">
 	    				<a target="_blank" ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
-	    				<span class="bg_line"></span>
 	    			</li>
 	    		</ul>
-	    		<div class="mt20 ">
-	    			©crap.cn &nbsp;&nbsp; 
+	    		<div class="mt20">
 					友情链接：
 					<ul class="dis-in-tab p0"> 
-		    			<li class="dis-in-tab pr10"  ng-repeat="item in menus" ng-if="item.menu.type=='FRIEND'">
+		    			<li class="dis-in-tab pr20"  ng-repeat="item in menus" ng-if="item.menu.type=='FRIEND'">
 		    				<a target="_blank" ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
-		    				<span class="bg_line"></span>
 		    			</li>
 	    			</ul>
 				</div>

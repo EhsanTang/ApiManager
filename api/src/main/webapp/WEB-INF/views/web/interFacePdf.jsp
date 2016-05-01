@@ -23,7 +23,7 @@
 		color:#B768A5;font-size:16px;text-align:right;">
 			CrapApi接口管理系统
 		</div>
-		<div style="height:2px;width:100%;background:#B768A5;margin-bottom:20px;"></div>
+		<div style="height:2px;width:100%;background:${MAIN_COLOR};margin-bottom:20px;"></div>
 		<br/>
 		<br/>
 		
@@ -44,7 +44,7 @@
 			<br/>
 			<h3>4 请求头说明</h3>
 			<table style="width:100%;">
-				<tr style="background:#B768A5;color:#fff;">
+				<tr style="background:${MAIN_COLOR};color:#fff;">
 					<td>名称</td>
 					<td>是否必须</td>
 					<td>类型</td>
@@ -65,7 +65,7 @@
 			<br/>
 			<h3>5 输入参数说明</h3>
 			<table style="width:100%;">
-				<tr style="background:#B768A5;color:#fff;">
+				<tr style="background:${MAIN_COLOR};color:#fff;">
 					<td>名称</td>
 					<td>是否必须</td>
 					<td>类型</td>
@@ -92,7 +92,7 @@
 			<br/>
 			<h3>7 返回参数说明</h3>
 			<table style="width:100%;">
-				<tr style="background:#B768A5;color:#fff;">
+				<tr style="background:${MAIN_COLOR};color:#fff;">
 					<td>名称</td>
 					<td>类型</td>
 					<td>备注</td>
@@ -121,7 +121,7 @@
 			<br/>
 			<h3>10 错误码</h3>
 			<table style="width:100%;">
-				<tr style="background:#B768A5;color:#fff;">
+				<tr style="background:${MAIN_COLOR};color:#fff;">
 					<td>Code</td>
 					<td>Msg</td>
 				</tr>

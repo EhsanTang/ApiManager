@@ -15,6 +15,7 @@
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+<%@include file="../tpls/webCss.tpl.jsp"%>
 </head>
 <body class="BGF5">
 	<div class="container">

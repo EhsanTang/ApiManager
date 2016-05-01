@@ -19,10 +19,9 @@
 <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 <link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/global.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
-
+<%@include file="../tpls/webCss.tpl.jsp"%>
 </head>
 <body>
 	<%@include file="../tpls/top.tpl.jsp"%>

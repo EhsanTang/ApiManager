@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<nav class="navbar navbar-inverse no-radius">
+<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed"
@@ -10,12 +10,12 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand pt10" href="#">
+				<a class="navbar-brand p0 pt10" href="#">
 					<img class="h30" src="${LOGO}" />
 				</a>
 			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right mr20" ng-controller="lefMenuCtrl">
+			<div id="navbar" class="navbar-collapse collapse p0">
+				<ul class="nav navbar-nav navbar-right ml20" ng-controller="lefMenuCtrl">
 					<li ng-repeat="item in menus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
 	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
 	                </li>

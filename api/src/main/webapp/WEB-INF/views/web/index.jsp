@@ -34,7 +34,7 @@
 					<button type="button" class="btn btn-danger btn-xs break-word" onclick="propUpPsswordDiv(this)" ng-bind="error">
 					</button>
 				</div>
-				<div ui-view="main" class="BGFFF r5 min-h600"></div>
+				<div ui-view="main" class="BGFFF r5 min-h600 pt10"></div>
 			</div>
 		</div>
 	</div>

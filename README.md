@@ -6,7 +6,7 @@
 
 面对快速变动的需求文档，不断更迭的API接口，此时你应该考虑找一个好的接口管理系统...
 
-CrapApi：一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）
+CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）
 ```
 [CrapApi能做什么]
 ```
@@ -38,7 +38,7 @@ QQ技术交流群：254450938
 ```
 主要语言：java、js
 
-主要技术：anjularjs、bootstrap、springMVC、hibernate、maven、iconfont
+主要技术：angularjs、bootstrap、springMVC、hibernate、maven、iconfont
 ```
 
 [系统功能]

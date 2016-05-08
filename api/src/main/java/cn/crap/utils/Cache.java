@@ -1,21 +1,21 @@
 package cn.crap.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javax.servlet.ServletContext;
+
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Module;
 import cn.crap.model.Setting;
 
 public class Cache {
-	private static long lastUpdatedTime = 0;
-	private static boolean forceRefresh = true;
 	/************将setting添加至内存及application范围内*****************/
-	private static Map<String,Setting> settingMap=new HashMap<String,Setting>();
-	private static List<Setting> settings = new ArrayList<Setting>();
+	private static ConcurrentHashMap<String,Setting> settingMap=new ConcurrentHashMap<String,Setting>();// 单个获取
+	private static CopyOnWriteArrayList<Setting> settings = new CopyOnWriteArrayList<Setting>(); // 批量获取，同时满足排序要求
+	
 	public static Setting getSetting(String key){
 		return settingMap.get(key);
 	}
@@ -41,8 +41,10 @@ public class Cache {
 		}
 		sc.setAttribute(setting.getKey(), setting.getValue());
 	}
+	
+	
 	/*************将module放入缓存***********/
-	private static Map<String,Module> moduleMap=new HashMap<String,Module>();
+	private static ConcurrentHashMap<String,Module> moduleMap=new ConcurrentHashMap<String,Module>();
 	public static Module getModule(String moduleId){
 		return moduleMap.get(moduleId);
 	}
@@ -52,40 +54,15 @@ public class Cache {
 		}
 	}
 	public static void setModule(Module module){
-		if(moduleMap.containsKey(module.getModuleId()))
-			moduleMap.remove(module.getModuleId());
 		moduleMap.put(module.getModuleId(), module);
 	}
-
-		
-	//首页产品，产品存application范围内
-	public synchronized static void updateCache(ISettingService settingService,IModuleService moduleService, ServletContext context) {
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastUpdatedTime >= 30 * 60 * 1000) {// 30分钟钟更新一次
-			lastUpdatedTime = currentTime;
-			
-			if (forceRefresh) {
-				/********* 将setting添加至application ************/
-				List<Setting> sets = settingService.findByMap(null, null, null);
-				Cache.setSetting(sets, context);
-				forceRefresh = false;
-				List<Module> modules = moduleService.findByMap(null, null, null);
-				Cache.setModule(modules);
-				forceRefresh = false;
-			}
-		}
-	}
+	
+	/************刷新缓存*******************/
 	public static void clear(ISettingService settingService,IModuleService moduleService, ServletContext context) {
-		lastUpdatedTime = 0;
-		forceRefresh = true;
-		updateCache(settingService,moduleService, context);
+		List<Setting> sets = settingService.findByMap(null, null, null);
+		Cache.setSetting(sets, context);
+		List<Module> modules = moduleService.findByMap(null, null, null);
+		Cache.setModule(modules);
 	}
-
-	public static long getLastUpdatedTime() {
-		return lastUpdatedTime;
-	}
-
-	public static void setLastUpdatedTime(long lastUpdatedTime) {
-		Cache.lastUpdatedTime = lastUpdatedTime;
-	}
+		
 }

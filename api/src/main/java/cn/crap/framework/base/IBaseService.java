@@ -12,15 +12,11 @@ public interface IBaseService<T extends BaseModel> {
 	public T save(T model);
 
 	public void update(T model);
+	
 	/**
 	 * 批量保存对象
 	 * */
 	public List<T> saveAll(List<T> list);
-
-	/**
-	 * 根据主键删除
-	 * */
-	public void deleteByPK(String id);
 
 	/**
 	 * 根据示例对象删除
@@ -63,13 +59,8 @@ public interface IBaseService<T extends BaseModel> {
 	 */
 	public int getCount(Map<String, Object> map);
 
-	/**
-	 * 根据Hql语句查询
-	 * @param Hql
-	 * @return
-	 */
-	public List<T> findByHql(String Hql);
+	List<?> queryByHql(String hql, Map<String, Object> map);
 
-	
+	void update(String hql, Map<String, Object> map);
 
 }

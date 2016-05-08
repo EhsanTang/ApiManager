@@ -8,7 +8,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.Cache;

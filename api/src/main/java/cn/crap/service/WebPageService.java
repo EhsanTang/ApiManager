@@ -11,6 +11,7 @@ import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.IWebPageDao;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.WebPage;
+import cn.crap.utils.Tools;
 
 @Service
 public class WebPageService extends BaseService<WebPage>
@@ -22,9 +23,5 @@ public class WebPageService extends BaseService<WebPage>
 	public void setDao(IBaseDao<WebPage> dao) {
 		super.setDao(dao, new WebPage());
 	}
-
-	@Override
-	public List<String> findCategory() {
-		return webPageDao.getCategory();
-	}
+	
 }

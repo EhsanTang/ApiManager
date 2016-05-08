@@ -13,7 +13,7 @@
 	<table class="table table-hover">
 			<tr ng-repeat="item in list">
 				<td><a ng-href="web.do#/webWebPage/detail/{{item.type}}/{{item.id}}">{{item.name}}</a></td>
-				<td class="tr w200">{{getDate(item.createTime)|date:'yyyy-MM-dd HH:mm'}}</td>
+				<td class="tr w200 C999">点击量:{{item.click}}次  <span class="C999 pl20">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</span></td>
 			</tr>
 	</table>
 	<div ui-view="page"></div>

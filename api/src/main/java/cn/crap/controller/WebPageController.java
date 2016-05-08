@@ -77,6 +77,9 @@ public class WebPageController extends BaseController<WebPage>{
 		map = Tools.getMap("webpageId", model.getId());
 		returnMap.put("comments", commentService.findByMap(map, null, null));
 		returnMap.put("commentCode", Cache.getSetting(Const.SETTING_COMMENTCODE).getValue());
+		
+		// 更新点击量
+		webPageService.update("update WebPage set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
 		return new JsonResult(1,model, null, returnMap);
 	}
 	@RequestMapping("/addOrUpdate.do")

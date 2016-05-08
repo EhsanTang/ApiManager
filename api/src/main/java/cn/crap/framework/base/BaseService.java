@@ -19,33 +19,36 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	/**
 	 * 保存对象
 	 * */
+	@Override
 	public T save(T model){
 		model.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		dao.save(model);
 		return model;
 	}
 
+	@Override
 	public void update(T model) {
 		dao.update(model);
 	}
+	
+	@Override
+	public void update(String hql, Map<String, Object> map) {
+		dao.update(hql, map);
+	}
+	
 	/**
 	 * 批量保存对象
 	 * */
+	@Override
 	public List<T> saveAll(List<T> list){
 		dao.saveAll(list);
 		return list;
 	}
 
 	/**
-	 * 根据主键删除
-	 * */
-	public void deleteByPK(String id){
-		dao.deleteByPK(id);
-	}
-
-	/**
 	 * 根据示例对象删除
 	 * */
+	@Override
 	public void delete(T model){
 		dao.delete(model);
 	}
@@ -53,6 +56,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	/**
 	 * 根据示例对象集合删除
 	 * */
+	@Override
 	public void deleteAll(List<T> list){
 		dao.deleteAll(list);
 	}
@@ -60,6 +64,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	/**
 	 * 根据主键获取对象
 	 * */
+	@Override
 	public T get(String id){
 		T temp = dao.get(id);
 		if(temp != null)
@@ -71,6 +76,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	/**
 	 * 根据示例对象获取对象列表
 	 * */
+	@Override
 	public List<T> findByExample(T model){
 		return dao.findByExample(model);
 	}
@@ -78,22 +84,25 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	/**
 	 * 根据示例对象获取对象列表
 	 * */
+	@Override
 	public List<T> loadAll(T model){
 		return dao.loadAll(model);
 	}
 
+	@Override
 	public List<T> findByMap(Map<String, Object> map,
 			Page page, String order) {
 		return dao.findByMap(map, page, order);
 	}
 	
-	public List<T> findByHql(String Hql) {
-		return dao.findByHql(Hql);
-	}
-	
+	@Override
 	public int getCount(Map<String, Object> map) {
 		String conditions = Tools.getHql(map);
 		return dao.getCount(map,conditions);
 	}
-
+	
+	@Override
+	public List<?> queryByHql(String hql, Map<String, Object> map){
+		return  dao.queryByHql(hql, map);
+	}
 }

@@ -187,7 +187,9 @@ public class PickFactory {
 			break;
 		case "CATEGORY":
 			int i = 0;
-			for (String w : webPageService.findCategory()) {
+			@SuppressWarnings("unchecked")
+			List<String> categorys = (List<String>) webPageService.queryByHql("select distinct category from WebPage", null);
+			for (String w : categorys) {
 				if (w == null)
 					continue;
 				i++;
@@ -265,7 +267,9 @@ public class PickFactory {
 				picks.add(pick);
 				preUrl = "web.do#/webWebPage/list/ARTICLE/";
 				int j = 0;
-				for (String w : webPageService.findCategory()) {
+				@SuppressWarnings("unchecked")
+				List<String> categorys2 = (List<String>) webPageService.queryByHql("select distinct category from WebPage", null);
+				for (String w : categorys2) {
 					if (w == null)
 						continue;
 					j++;
@@ -289,8 +293,10 @@ public class PickFactory {
 			moduleService.getModulePick(picks, "", "0", "", null);
 			break;
 		case "LEAFMODULE":// 查询叶子模块
-			for (Module m : moduleService
-					.findByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)")) {
+			@SuppressWarnings("unchecked")
+			List<Module> modules = (List<Module>) moduleService
+					.queryByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)",null);
+			for (Module m : modules) {
 				pick = new PickDto(m.getModuleId(), m.getModuleName());
 				picks.add(pick);
 			}

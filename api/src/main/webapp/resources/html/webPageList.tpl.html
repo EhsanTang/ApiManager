@@ -45,6 +45,7 @@
 				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</th>
 				<th class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</th>
+				<th class="tc">点击量</th>
 				<td class="tc">排序</td>
 				<th class="tc w300">操作</th>
 			</tr>
@@ -57,6 +58,7 @@
 				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
 				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
+				<td class="tc">{{item.click}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation(item.type,item.moduleId);"

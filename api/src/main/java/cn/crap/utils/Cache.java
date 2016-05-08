@@ -11,6 +11,10 @@ import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Module;
 import cn.crap.model.Setting;
 
+/**
+ * @author Ehsan
+ *
+ */
 public class Cache {
 	/************将setting添加至内存及application范围内*****************/
 	private static ConcurrentHashMap<String,Setting> settingMap=new ConcurrentHashMap<String,Setting>();// 单个获取

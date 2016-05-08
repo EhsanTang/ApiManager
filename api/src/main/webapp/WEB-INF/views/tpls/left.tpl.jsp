@@ -18,31 +18,31 @@
 							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse in">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/menu/list/0/FRONT/一级菜单">菜单管理</a>
+									<a class="menu-a" target="_self" href="index.do#/menu/list/0/FRONT/一级菜单" onclick="selectButton(this,'menu-a')">菜单管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/interface/list/0/无">项目&模块&接口管理</a>
+									<a class="menu-a" target="_self" href="index.do#/interface/list/0/无" onclick="selectButton(this,'menu-a')">项目&模块&接口管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/user/list">用户管理</a>
+									<a class="menu-a" target="_self" href="index.do#/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/role/list">角色管理</a>
+									<a class="menu-a" target="_self" href="index.do#/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/error/list">错误码管理</a>
+									<a class="menu-a" target="_self" href="index.do#/error/list" onclick="selectButton(this,'menu-a')">错误码管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/setting/list/null">系统设置管理</a>
+									<a class="menu-a" target="_self" href="index.do#/setting/list/null" onclick="selectButton(this,'menu-a')">系统设置管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/webPage/list/DICTIONARY">数据字典管理</a>
+									<a class="menu-a" target="_self" href="index.do#/webPage/list/DICTIONARY" onclick="selectButton(this,'menu-a')">数据字典管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/webPage/list/PAGE">页面管理</a>
+									<a class="menu-a" target="_self" href="index.do#/webPage/list/PAGE" onclick="selectButton(this,'menu-a')">页面管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="index.do#/webPage/list/ARTICLE">文章管理</a>
+									<a class="menu-a" target="_self" href="index.do#/webPage/list/ARTICLE" onclick="selectButton(this,'menu-a')">文章管理</a>
 								</div>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 						</div>
 						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse" ng-if="canSeeMenu(item.menu.menuId,item.menu.type);">
 							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
-								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
+								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" onclick="selectButton(this,'menu-a')" ng-bind="subItem.menuName"></a>
 							</div>
 						</div>
 					</div>

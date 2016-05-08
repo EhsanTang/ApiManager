@@ -207,5 +207,11 @@ function selectRadio(className,id,radioId){
 		obj.addClass("active"); 
 		$(cobj).prop("checked",true);
 	}
-	
+}
+
+/** ********************************** */
+function selectButton(obj,className){
+	var objs = $("."+className);
+	objs.removeClass("iactive");
+	$(obj).addClass("iactive");
 }

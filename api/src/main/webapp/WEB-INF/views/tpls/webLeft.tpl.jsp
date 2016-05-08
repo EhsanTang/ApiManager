@@ -12,7 +12,7 @@
 						</div>
 						<div id="panel{{item.menu.menuId}}" class="panel-collapse BGEEE collapse in" ng-if="item.menu.type=='FRONT'">
 							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
-								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
+								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" onclick="selectButton(this,'menu-a')" ng-bind="subItem.menuName"></a>
 							</div>
 						</div>
 					</div>

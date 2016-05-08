@@ -27,7 +27,8 @@
 	.interface-detail blockquote{color:${MAIN_COLOR};}
 	.bt-5{border-top:5px solid ${MAIN_COLOR};}
 	.bl-5{border-left:5px solid ${MAIN_COLOR};}
-	.panel-body:hover, .panel-body .active{background-color: ${MAIN_COLOR};}
+	.menu-a:hover{background-color:${MAIN_COLOR}!important;color:#ffffff!important;opacity: 1;}
+	.iactive{background-color:${MAIN_COLOR}!important;color:#ffffff!important;opacity: 0.8;}
 	.pickActive{color:${MAIN_COLOR};}
 	.pickSelect{color:${MAIN_COLOR};}
 	.separator{border-bottom:1px dotted ${MAIN_COLOR};color:${MAIN_COLOR};}

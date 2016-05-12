@@ -32,7 +32,7 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	@Override
 	@Transactional
 	public T save(T t) {
-		hibernateTemplate.merge(entityName, t);
+		hibernateTemplate.save(entityName, t);
 		return t;
 	}
 

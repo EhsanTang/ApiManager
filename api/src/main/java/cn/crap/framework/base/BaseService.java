@@ -2,6 +2,7 @@ package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -66,6 +67,8 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * */
 	@Override
 	public T get(String id){
+		if(MyString.isEmpty(id))
+			return model;
 		T temp = dao.get(id);
 		if(temp != null)
 			return temp;

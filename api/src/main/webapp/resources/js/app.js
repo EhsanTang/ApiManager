@@ -176,10 +176,16 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var content = getParamFromTable("content");
 		$rootScope.model.content = content;
 	}
+	/**
+	 * 数据字典编辑回调
+	 */
 	$rootScope.getFields = function() {
 	    	var content = "";
-	    	if($rootScope.model.content!=''&&isJson($rootScope.model.content)){
-	    		content = eval("("+$rootScope.model.content+")");
+	    	if($rootScope.model.content!=''){
+	    		// 如果是文章，eval会报错
+	    		try{
+	    			content = eval("("+$rootScope.model.content+")");
+	    		}catch(e){}
 	    	}
 	    	$("#content").find("tbody").find("tr").remove();
 	    	if(content!=null&&content!=""){

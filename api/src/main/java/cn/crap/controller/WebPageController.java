@@ -60,15 +60,19 @@ public class WebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
+		
+		// 根据key查询webPage
 		if(webPage.getId().length()<21){
 			map = Tools.getMap("key", webPage.getId());
 			List<WebPage>models=webPageService.findByMap(map, null, null);
 			if(models.size()>0)
 				model = models.get(0);
 		}
+		// 根据key没有查到，则根据id查
 		if(model==null){
 			model= webPageService.get(webPage.getId());
 		}
+		
 		if(model.getType().equals(WebPageType.DICTIONARY.name())){
 			Module module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);

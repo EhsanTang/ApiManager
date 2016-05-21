@@ -6,6 +6,15 @@ var webModule = angular.module("webModule", []);
 webModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
 });
+webModule.filter("removeLast",function(){
+	return function (value) {
+		if(!value)
+			return "";
+		else{
+			return value.substring(0,value.length-1);
+		}
+	}
+});
 /***
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据
@@ -68,6 +77,23 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 				 $rootScope.errors = eval("("+result.data.errors+")");
 				 $rootScope.params = eval("("+result.data.param+")");
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");
+				 if(result.data.method)// 调试页面默认显示method中第一个
+					 $rootScope.model.debugMethod = result.data.method.split(",")[0];
+			 }
+		});
+    };
+    $scope.getDebugResult= function() {
+    	$rootScope.model.headers = getParamFromTable("debugHeader");
+		$rootScope.model.params =getParamFromTable("debugParams");
+    	var params = "iUrl=interface/debug.do|iLoading=FLOAT|iParams=&"+$.param($rootScope.model);
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.model = null;
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.model.debugResult = result.data.debugResult;
 			 }
 		});
     };

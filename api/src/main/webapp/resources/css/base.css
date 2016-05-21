@@ -74,7 +74,7 @@ table{border-collapse:collapse;border-spacing:0}
 .fb{font-weight:bold}
 .fn{font-weight:normal}
 .t2{text-indent:2em}
-.lh20{line-height:20px}
+.lh20{line-height:20px!important}
 .lh25{line-height:25px}
 .lh26{line-height:26px}
 .lh30{line-height:30px}

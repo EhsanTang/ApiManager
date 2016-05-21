@@ -183,5 +183,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/webHtml/interfaceDetail.tpl.html'
 			}
 		}
+	}).state('webInterfaceDebugCtrl', {
+		url : '/webInterface/debug/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/webHtml/interfaceDebug.tpl.html';
+				}
+			}
+		}
 	})
 });

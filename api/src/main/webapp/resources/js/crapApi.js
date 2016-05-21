@@ -11,11 +11,12 @@ function propUpPsswordDiv(obj){
 	}
 }
 /*****************接口添加参数**************/
-function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
+function addOneParam(name, necessary, type, def, parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
 		rowNum = mydate.getMilliseconds();
 	}
+	if(!def) def = "";
 	if (tableId == 'editParamTable') {
 		$("#editParamTable")
 				.append(
@@ -35,6 +36,9 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 								+ "<td><input class='form-control' type='text' name='type' value='"
 								+ type
 								+ "' placeholder=\"类型：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='def' value='"
+								+ def
+								+ "' placeholder=\"默认值\"></td>"
 								+ "<td><input class='form-control' type='text' name='parameterType' id='parameterType"
 								+ rowNum
 								+ "' value='"
@@ -112,13 +116,11 @@ function getParamFromTable(tableId) {
 		if (i != 1)
 			json += ","
 		json += "{";
-		$(this).find('td').each(function() {
-			j = j + 1;
-			$(this).find('input').each(function(i, val) {
+		$(this).find('td').find('input').each(function(i, val) {
+				j = j + 1;
 				if (j != 1)
 					json += ","
 				json += "\"" + val.name + "\":\"" + val.value + "\""
-			});
 		});
 		json += "}"
 	});

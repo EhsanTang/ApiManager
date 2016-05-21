@@ -15,6 +15,9 @@
 					class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
 					<i class="iconfont">&#xe620;&nbsp;</i>{{version.version}}
 				</a>
+				<a ng-href="web.do#/webInterface/debug/{{model.id}}" class="f12 btn btn-default btn-xs">
+					<i class="iconfont">&#xe625;&nbsp;</i>调试
+				</a>
 			</div>
 			<div class="cb"></div>
 		</div>
@@ -55,7 +58,7 @@
 		{{model.url}}
 		
 		<div id="2_2">2.2 HTTP请求方式</div>
-		{{model.method}}
+		{{model.method|removeLast}}
 		
 		<div id="2_3">2.3 请求头说明</div>
 		<span ng-if="params!=null&&!hasRequestHeader(params,'HEADER')" >
@@ -67,6 +70,7 @@
 					<th class="tc">名称</th>
 					<th class="tc">是否必须</th>
 					<th class="tc">类型</th>
+					<th class="tc">默认值</th>
 					<th class="tc w300">备注</th>
 				</tr>
 			</thead>
@@ -75,6 +79,7 @@
 					<td class="tc fb C000">{{item.name}}</td>
 					<td class="tc C000">{{item.necessary}}</td>
 					<td class="tc C000">{{item.type}}</td>
+					<td class="tc C000">{{item.def}}</td>
 					<td class="tc C000">{{item.remark}}</td>
 				</tr>
 			</tbody>
@@ -92,6 +97,7 @@
 				<th class="tc">名称</th>
 				<th class="tc">是否必须</th>
 				<th class="tc">类型</th>
+				<th class="tc">默认值</th>
 				<th class="tc w300">备注</th>
 			</tr>
 		</thead>
@@ -100,6 +106,7 @@
 				<td class="tc fb C000">{{item.name}}</td>
 				<td class="tc C000">{{item.necessary}}</td>
 				<td class="tc C000">{{item.type}}</td>
+				<td class="tc C000">{{item.def}}</td>
 				<td class="tc C000">{{item.remark}}</td>
 			</tr>
 		</tbody>

@@ -41,8 +41,8 @@ public class Html2Pdf {
 			String pdfUrl = Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id="
 					+ interFaceId;
 			System.out.println("pdfUrl:" + pdfUrl);
-			String pdfContent = HttpPostGet.Get(
-					Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId);
+			String pdfContent = HttpPostGet.get(
+					Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId,null,null);
 			System.out.println("pdfContent:" + pdfContent);
 			throw e;
 		}

@@ -1,9 +1,13 @@
 package cn.crap.controller;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;import java.io.IOException;
+import java.io.Reader;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +36,11 @@ import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Html2Pdf;
+import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Scope("prototype")
 @Controller
@@ -250,6 +256,48 @@ public class InterfaceController extends BaseController<Interface>{
 		interfaceService.update(model);
 		interfaceService.update(change);
 		return new JsonResult(1, null);
+	}
+	
+	@RequestMapping("/debug.do")
+	@ResponseBody
+	public JsonResult debug(@RequestParam String params, @RequestParam String headers,
+			@RequestParam String debugMethod,@RequestParam String url) throws Exception {
+		JSONArray jsonParams = JSONArray.fromObject(params);
+		JSONArray jsonHeaders = JSONArray.fromObject(headers);
+		Map<String,String> httpParams = new HashMap<String,String>();
+		for(int i=0;i<jsonParams.size();i++){
+			JSONObject param = jsonParams.getJSONObject(i);
+			for(Object paramKey:param.keySet()){
+				httpParams.put(paramKey.toString(), param.getString(paramKey.toString()));
+			}
+		}
+		
+		Map<String,String> httpHeaders = new HashMap<String,String>();
+		for(int i=0;i<jsonHeaders.size();i++){
+			JSONObject param = jsonHeaders.getJSONObject(i);
+			for(Object paramKey:param.keySet()){
+				httpHeaders.put(paramKey.toString(), param.getString(paramKey.toString()));
+			}
+		}
+		switch(debugMethod){
+			case "POST":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.post(url, httpParams, httpHeaders)));
+			case "GET":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.get(url, httpParams, httpHeaders)));
+			case "PUT":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.put(url, httpParams, httpHeaders)));
+			case "DELETE":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.delete(url, httpParams, httpHeaders)));
+			case "HEAD":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.head(url, httpParams, httpHeaders)));
+			case "OPTIONS":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.options(url, httpParams, httpHeaders)));
+			case "TRACE":
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.trace(url, httpParams, httpHeaders)));
+			default:
+				return new JsonResult(1, Tools.getMap("debugResult","不支持的请求方法："+debugMethod));
+			
+		}
 	}
 
 }

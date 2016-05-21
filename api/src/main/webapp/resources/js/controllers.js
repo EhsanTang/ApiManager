@@ -6,6 +6,7 @@ var mainModule = angular.module("mainModule", []);
 mainModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
 });
+
 // 显示长度 wordwise：切字方式- 如果是 true，只切單字
 mainModule.filter('cut', function () {
 	  return function (value, wordwise, max, tail) {
@@ -182,7 +183,7 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
 	    	var i=0;
 	    	$.each(params, function (n, value) {
 	    		i++;
-	    		addOneParam(value.name,value.necessary,value.type,value.parameterType,value.remark,i,tableId)
+	    		addOneParam(value.name,value.necessary,value.type, value.def, value.parameterType,value.remark,i,tableId)
 	        });  
     	}
 		$("#"+editerId).removeClass('none');

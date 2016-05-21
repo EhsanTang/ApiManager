@@ -170,7 +170,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
 	/**
-	 * 提交数据字典时将表格数据转换为json
+	 * 提交数据字典时回调将表格数据转换为json
 	 */
 	$rootScope.preAddDictionary = function(){
 		var content = getParamFromTable("content");

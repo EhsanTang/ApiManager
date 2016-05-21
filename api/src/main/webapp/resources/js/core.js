@@ -344,13 +344,8 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    lObj.style.width = lWidth + 'px';
 	    lObj.style.left = (lLeft + document.documentElement.scrollLeft) + 'px';
 	    
-	    if(onMouse==6){
-	    	lObj.style.height = lHeight + 'px';
-	    	lObj.style.top =  lTop + 'px';
-	    }else{
-	    	lObj.style.height = lHeight + 'px';
-	    	lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
-	    }
+	    lObj.style.height = lHeight + 'px';
+		lObj.style.top =  lTop + 'px';
 }
 
 /**************************** 隐藏div *******************************/

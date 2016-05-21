@@ -19,12 +19,13 @@ blockquote{
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1462031239_5223558.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1462031239_5223558.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1462031239_5223558.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1462031239_5223558.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1462031239_5223558.svg#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1463815693_8591297.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1463815693_8591297.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1463815693_8591297.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1463815693_8591297.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1463815693_8591297.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
+                    
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
@@ -89,7 +90,7 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#content input,#editResponseParamTable input{
+#editParamTable input,#content input,#editResponseParamTable input,.tableInupt input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;

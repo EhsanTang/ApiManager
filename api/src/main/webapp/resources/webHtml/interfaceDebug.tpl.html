@@ -1,0 +1,116 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="webInterfaceDetailCtrl">
+<button type="button" class="ndis" id="fushPage" ng-click="getData(1,true);"></button>
+<ol class="breadcrumb">
+  <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
+  <li>接口调试</li>
+  <li class="active">接口：{{model.interfaceName}}</li>
+</ol>
+<div class="col-xs-12 p0 f12 lh26">
+		<div class="fb f20 pb10 C555 mt0">
+			<div class="fl m0">Url：{{model.url}}</div>
+			<div class="fr m0">
+				版本号：
+				<a href="javascript:void(0)" class="f12 btn btn-purple btn-xs" ><i class="iconfont">&#xe625;&nbsp;</i>{{model.version}}</a>
+				<a ng-href="web.do#/webInterface/debug/{{version.id}}" 
+					class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
+					<i class="iconfont">&#xe625;&nbsp;</i>{{version.version}}
+				</a>
+				<a ng-href="web.do#/webInterfaceDetail/{{model.moduleId}}/{{model.moduleName}}/{{model.id}}" class="f12 btn btn-default btn-xs">
+					<i class="iconfont">&#xe614;&nbsp;</i>接口
+				</a>
+			</div>
+			<div class="cb"></div>
+		</div>
+		<div class="f14 mt10 mb20 b1 bl-5 r3 p10 no-right-radius BCEEE">
+			接口：{{model.interfaceName}}
+			<br>
+			说明：<span ng-bind-html="model.remark|trustHtml"></span>
+		</div>
+		
+		
+			<form ng-submit="getDebugResult()">
+				<table class="table table-bordered table-hover">
+					<tr>
+						<td>url</td>
+						<td>{{model.url}}</td>
+					</tr>
+					<tr>
+						<td>请求方式</td>
+						<td>
+							<input class="form-control cursor" type="text" id="debugMethod" placeholder="请点击输入框选择" required ng-model="model.debugMethod"
+							ng-focus="loadPickByName('iwidth=220|iheight=250|showType=5|tag=debugMethod|code=REQUESTMETHOD|def='+model.debugMethod,$event)">
+						</td>
+					</tr>
+					<tr ng-if="params!=null&&hasRequestHeader(params,'HEADER')">
+						<td>请求头</td>
+						<td>
+							<table class="table tableInupt" id="debugHeader">
+								<thead>
+									<tr class="BGEEE C000">
+										<th class="tc w200">名称</th>
+										<th class="tc">值</th>
+										<th class="tc">类型</th>
+										
+										<th class="tc w150">备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="lh20" ng-repeat="item in params" ng-if="item.parameterType=='HEADER'">
+										<td class="tc fb C000">{{item.name}}</td>
+										<td class="tc C000 w250">
+											<input class="form-control btn-xs dis-in-tab w200 fl" type="text" name="{{item.name}}" value="{{item.def}}">
+											<span ng-if="item.necessary=='true'" class="w50 fb text-danger">*</span>
+										</td>
+										<td class="tc C000">{{item.type}}</td>
+										
+										<td class="tc C000">{{item.remark}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr ng-if="params!=null&&hasRequestHeader(params,'PARAMETER')">
+						<td>请求参数</td>
+						<td>
+							<table class="table tableInupt" id="debugParams">
+								<thead>
+									<tr class="BGEEE C000">
+										<th class="tc w200">名称</th>
+										<th class="tc">值</th>
+										<th class="tc">类型</th>
+										
+										<th class="tc w150">备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="lh20" ng-repeat="item in params" ng-if="item.parameterType=='PARAMETER'">
+										<td class="tc fb C000">{{item.name}}</td>
+										<td class="tc C000 w250">
+											<input class="form-control btn-xs dis-in-tab w200 fl" type="text" name="{{item.name}}" value="{{item.def}}">
+											<span ng-if="item.necessary=='true'" class="w50 fb text-danger">*</span>
+										</td>
+										<td class="tc C000">{{item.type}}</td>
+										
+										<td class="tc C000">{{item.remark}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="submit" class="btn btn-success fr ml10">调试</button>
+						</td>
+					</tr>
+				</table>
+				
+			</form>
+			<div class="code" ng-if="model.debugResult">
+				<pre>{{model.debugResult}}</pre>
+			</div>
+			
+		
+</div>
+</div>
+<div class="cb"></div>
+

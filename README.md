@@ -17,6 +17,7 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 4.自定义菜单、自定义网站样式，满足你的各种需求
 5.文档管理：说明文档、需求文档、技术实现文档，想怎么分类CrapApi都支持
 6.文档留言、错误码管理、接口排序... 
+7.post、get、delete、head、trace、put、options请求在线调试
 
 更多功能还在路上，想要什么，在此留言，统统都能满足！
 留言地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25

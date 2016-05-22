@@ -1,17 +1,13 @@
 package cn.crap.controller;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;import java.io.IOException;
-import java.io.Reader;
+import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
@@ -93,10 +88,6 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
 		interFace = interfaceService.get(interFace.getId());
-		if(interFace!=null){
-			Module module = moduleService.get(interFace.getModuleId());
-			Tools.canVisitModule(module.getPassword(), "", "", request);
-		}
 		String displayFilename = "CrapApi|"+interFace.getInterfaceName()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 
@@ -279,7 +270,8 @@ public class InterfaceController extends BaseController<Interface>{
 				httpHeaders.put(paramKey.toString(), param.getString(paramKey.toString()));
 			}
 		}
-		switch(debugMethod){
+		try{
+			switch(debugMethod){
 			case "POST":
 				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.post(url, httpParams, httpHeaders)));
 			case "GET":
@@ -296,7 +288,9 @@ public class InterfaceController extends BaseController<Interface>{
 				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.trace(url, httpParams, httpHeaders)));
 			default:
 				return new JsonResult(1, Tools.getMap("debugResult","不支持的请求方法："+debugMethod));
-			
+		}
+		}catch(Exception e){
+			return new JsonResult(1, Tools.getMap("debugResult","调试出错\r\nmessage:"+e.getMessage()));
 		}
 	}
 

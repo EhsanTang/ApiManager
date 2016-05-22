@@ -30,6 +30,7 @@ public class WebPage extends BaseModel{
 	private String category;
 	private byte canComment;
 	private int commentCount;
+	private String password;
 	
 	
 	@Transient
@@ -149,6 +150,14 @@ public class WebPage extends BaseModel{
 	}
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
+	}
+	
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

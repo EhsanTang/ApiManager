@@ -57,10 +57,10 @@ public class WebPageController extends BaseController<WebPage>{
 		}
 		return new JsonResult(1,model);
 	}
+	
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
-		
 		// 根据key查询webPage
 		if(webPage.getId().length()<21){
 			map = Tools.getMap("key", webPage.getId());
@@ -73,7 +73,12 @@ public class WebPageController extends BaseController<WebPage>{
 			model= webPageService.get(webPage.getId());
 		}
 		
-		if(model.getType().equals(WebPageType.DICTIONARY.name())){
+		// 文章访问密码
+		if(model.getType().equals(WebPageType.ARTICLE.name())){
+			Tools.canVisitModule(model.getPassword(), password, visitCode, request);
+		}
+		// 数据字典密码访问由模块决定
+		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
 			Module module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}
@@ -114,6 +119,7 @@ public class WebPageController extends BaseController<WebPage>{
 		}
 		return new JsonResult(1,webPage);
 	}
+	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException{

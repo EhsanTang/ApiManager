@@ -85,7 +85,7 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
     $scope.getDebugResult= function() {
     	$rootScope.model.headers = getParamFromTable("debugHeader");
 		$rootScope.model.params =getParamFromTable("debugParams");
-    	var params = "iUrl=interface/debug.do|iLoading=FLOAT|iParams=&"+$.param($rootScope.model);
+    	var params = "iUrl=interface/debug.do|iLoading=FLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

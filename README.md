@@ -23,13 +23,15 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 留言地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25
 ```
 
-[演示&帮助文档]
+[演示&帮助文档&部署文档]
 ```
 演示地址：http://api.crap.cn
 
 压缩包下载地址：http://ehsantang.github.io/CrapApi/
 
 帮助文档地址：http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3
+
+部署文档地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/19dc3d5c7-ff3d-4dff-ad72-2212869cd92a
 
 账号：super 123456 
 游客私有模块访问密码：123

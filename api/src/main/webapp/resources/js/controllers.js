@@ -30,7 +30,33 @@ mainModule.filter('cut', function () {
 mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
 	 
 });
-/**************************左边菜单栏***************************/
+/**************************后端接口列表****************************/
+mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function() {
+		if($rootScope.model && $rootScope.model.sessionAdminName){
+			window.location.href="web.do";
+		}else if($rootScope.model && $rootScope.model.tipMessage){
+			showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
+		}else{
+			var params = "iUrl=preLogin.do|iLoading=FLOAT";
+			httpService.callHttpMethod($http,params).success(function(result) {
+				var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
+				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+					alert(isSuccess.replace('[ERROR]', ''));
+				 }else{
+					 $rootScope.model = result.data.model;
+					 $rootScope.fontSettings = result.data.settingMap;
+					 showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
+				 }
+			});
+		}
+    };
+    $scope.changeRadio = function(value){
+    	$rootScope.model.remberPwd = value;
+    }
+    $scope.getData();
+});
+/**************************管理员左边菜单栏***************************/
 mainModule.controller('lefMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.menu = function() {
 		var params = "iUrl=menu/menu.do|iLoading=FLOAT";

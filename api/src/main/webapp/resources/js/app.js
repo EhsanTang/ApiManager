@@ -111,16 +111,20 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	    }
 	};
 
-	$rootScope.submitForm = function(iurl,callBack){
+	$rootScope.submitForm = function(iurl,callBack,myLoading){
 		/**
 		  * 回调刷新当前页面数据
 		  */
 		if(callBack){
 			callBack();
 		}
-		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
+		iLoading = "PROPUPFLOAT";
+		if(myLoading){
+			iLoading = myLoading;
+		}
+		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading)
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 			 }else if(result.success==1){

@@ -2,6 +2,7 @@ package cn.crap.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -98,29 +99,10 @@ public class MenuController extends BaseController<Menu> {
 	@RequestMapping("/menu.do")
 	@ResponseBody
 	public JsonResult menu() {
-		map = Tools.getMap("parentId", "0");
-		List<Menu> menus = menuService.findByMap(map, null, null);
-		map.clear();
-		List<String> menuIds = new ArrayList<String>();
-		for (Menu menu : menus) {
-			menuIds.add(menu.getMenuId());
-		}
-		map.put("parentId|in", menuIds);
-		List<Menu> subMenus = menuService.findByMap(map, null, null);
-		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
-		for (Menu menu : menus) {
-			MenuDto menuVO = new MenuDto();
-			menuVO.setMenu(menu);
-			menuVO.setSubMenu(new ArrayList<Menu>());
-			for (Menu subMenu : subMenus) {
-				if (subMenu.getParentId().equals(menu.getMenuId())) {
-					menuVO.getSubMenu().add(subMenu);
-				}
-			}
-			menuVOs.add(menuVO);
-		}
-		return new JsonResult(1, menuVOs);
+		return new JsonResult(1, menuService.getLeftMenu(map));
 	}
+
+	
 	
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody

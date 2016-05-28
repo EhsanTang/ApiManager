@@ -140,4 +140,23 @@ webModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $sta
     $scope.getData();
 });
 
+/***
+ * 前端页面初始化，加载系统设置，菜单等
+ */
+webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		var params = "iUrl=frontInit.do|iLoading=fase"; //  表示查询所有
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=false');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
+			 }
+			$rootScope.fontSettings = result.data.settingMap;
+			$rootScope.sessionAdminName = result.data.sessionAdminName;
+			$rootScope.fontMenus = result.data.menuList;
+		});
+    };
+    $scope.getData();
+});
+
 

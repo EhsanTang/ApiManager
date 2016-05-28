@@ -100,8 +100,8 @@
 	</bean>
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views/"></property>
-		<property name="suffix" value=".jsp"></property>
+		<property name="prefix" value="/"></property>
+		<!-- <property name="suffix" value=".jsp"></property> -->
 	</bean> 
 
 	<!-- hibernate的事物管理sevices层面实现事物管理,而且达到和平台无关 -->

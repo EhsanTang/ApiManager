@@ -14,7 +14,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/WELCOME');
 	}
 	/*********************后台*******************/
-	$stateProvider.state('menuList', {
+	$stateProvider.state('preLogin', {
+		url : '/preLogin',
+	}).state('menuList', {
 		url : '/menu/list/:parentId/:type/:menuName',
 		views : {
 			'main' : {

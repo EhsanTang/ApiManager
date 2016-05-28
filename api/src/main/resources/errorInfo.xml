@@ -16,6 +16,8 @@
 				<entry key="000010" value="验证码输入有误" />
 				<entry key="000011" value="验证码已失效，请刷新验证码" />
 				<entry key="000012" value="查找数据失败" />
+				<entry key="000013" value="用户名不存在" />
+				<entry key="000014" value="用密码有误" />
 			</map>
 		</property>
 	</bean>

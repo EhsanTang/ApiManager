@@ -1,6 +1,8 @@
 package cn.crap.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -33,16 +35,19 @@ public class SettingController extends BaseController<Setting>{
 	private IModuleService moduleService;
 	
 	/**
-	 * MenuDemo
-	 * @return 
-	 * @throws Exception 
-	 * */
+	 * 
+	 * @param setting
+	 * @param currentPage 当前页
+	 * @param pageSize 每页显示多少条，-1表示查询全部
+	 * @return
+	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("key|like",setting.getKey(),"remark|like",setting.getRemark());
-		return new JsonResult(1,settingService.findByMap(map,page, null),page);
+		// 搜索条件
+		map = Tools.getMap(  "key|like", setting.getKey()  ,  "remark|like", setting.getRemark()  );
+		return new JsonResult(1,  settingService.findByMap(map, page, null)   , page);
 	}
 	
 	@RequestMapping("/detail.do")

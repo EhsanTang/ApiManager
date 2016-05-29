@@ -80,13 +80,16 @@ public class WebPageController extends BaseController<WebPage>{
 			returnMap.put("crumbs", Tools.getCrumbs(model.getCategory(),"web.do#/webWebPage/list/ARTICLE/"+model.getCategory(), model.getName(), "void"));
 			Tools.canVisitModule(model.getPassword(), password, visitCode, request);
 		}
+		
 		// 数据字典密码访问由模块决定
 		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
 			returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "web.do#/webWebPage/list/DICTIONARY/null", model.getName(), "void"));
-			
 			Module module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		}else{
+			returnMap.put("crumbs", Tools.getCrumbs(model.getName(), "void"));
 		}
+		
 		returnMap.put("comment", new Comment(model.getId()));
 		map = Tools.getMap("webpageId", model.getId());
 		returnMap.put("comments", commentService.findByMap(map, null, null));

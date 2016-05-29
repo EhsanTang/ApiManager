@@ -10,6 +10,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 	 word-wrap:break-word;
 	 white-space: normal!important;
 }
+.o2{opacity:0.2}.o3{opacity:0.3}.o5{opacity:0.5}.o8{opacity:0.8}
 .b0{border:0px!important;}
 .b1{border: 1px solid #DDD;}
 .dashed{border:1px dashed #DDD;}
@@ -42,7 +43,7 @@ fieldset,img{border:0}
 table{border-collapse:collapse;border-spacing:0}
 .fixed{position:fixed;}.rel{position:relative;}
 .abs{position:absolute;}.static{position:static;}
-.r0{right:0px;}.l0{left:0px;}.t0{top:0px;}.b0{bottom:0px;}
+.r0{right:0px;}.l0{left:0px;}.t0{top:0px;}
 .no-radius{-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;-khtml-border-radius: 0px;}
 .no-left-radius{border-top-left-radius: 0;border-bottom-left-radius: 0;}
 .no-right-radius{border-top-right-radius: 0;border-bottom-right-radius: 0;}
@@ -57,7 +58,7 @@ table{border-collapse:collapse;border-spacing:0}
 .BG999{background-color:#999!important;}.BGEEE{background-color:#EEE;}.BGFFF{background-color:#FFF;}
 .BGF5{background-color:#f5f5f5}.BGF9{background-color:#f9f9f9}
 .BGBBB{background-color:#BBB!important;}
-.C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.C000{color:#000}
+.C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.CFFF{color:#FFF;}.C000{color:#000}
 .ACFFF{color:#FFF;}.ACFFF:hover{color:#FFF;}
 .f9{font-size:9px}
 .f10{font-size:10px}

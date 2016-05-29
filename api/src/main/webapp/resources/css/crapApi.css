@@ -29,7 +29,12 @@ blockquote{
   url('//at.alicdn.com/t/font_1463815693_8591297.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('//at.alicdn.com/t/font_1463815693_8591297.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
-                    
+.search-input:focus{
+	opacity:1!important;
+}  
+.search-section:hover .search-button{
+	opacity:0.8!important;
+}      
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}

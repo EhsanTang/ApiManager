@@ -23,8 +23,7 @@
 <link href="resources/framework/textAngular-1.5.0/textAngular.css"
 	rel="stylesheet" type="text/css" />
 	
-<style type="text/css">
-
+<style type="text/css"> 
 @media ( min-width : 1210px) {.container {width: {{fontSettings.MAX_WIDTH}}px!important}}
 .BG_COLOR {background-color: {{fontSettings.BG_COLOR}}}
 .FOOTER_BG_COLOR {background-color: {{fontSettings.FOOTER_BG_COLOR}}}
@@ -88,13 +87,26 @@
 	</nav>
 	<div class="main-bg h80 mb20">
 		<div class="container lh80 p0">
-		<ul class="nls m0 p0 f12 ACFFF">
- 			 <li class="fl p0"><a href="web.do" class="ACFFF">首页</a></li>
- 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
- 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name"></a>
- 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name"></span>	
- 			 </li>
-		</ul>
+			<div class="row">
+				<div class="col-xs-6">
+					<ul class="nls m0 p0 f12 ACFFF fl">
+		 			 <li class="fl p0"><a href="web.do" class="ACFFF">首页</a></li>
+		 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
+		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name"></a>
+		 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name"></span>	
+		 			 </li>
+					</ul>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group w300 fr mr10 mt20 search-section">
+						<label class="sr-only">search</label>
+						<div class="input-group b0">
+							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" placeholder="全文检索">
+							<div class="input-group-addon no-radius o3 b0 search-button cursor"><i class="iconfont C000">&#xe60d;</i></div>
+						</div>
+					</div>
+		 		</div>
+			</div>
 		</div>
 	</div>
 	<!-- End:top -->

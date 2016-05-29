@@ -1,10 +1,5 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="webInterfaceDetailCtrl">
 <button type="button" class="ndis" id="fushPage" ng-click="getData(1,true);"></button>
-<ol class="breadcrumb">
-  <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
-  <li>接口调试</li>
-  <li class="active">接口：{{model.interfaceName}}</li>
-</ol>
 <div class="col-xs-12 p0 f12 lh26">
 		<div class="fb f20 pb10 C555 mt0">
 			<div class="fl m0">Url：{{model.url}}</div>
@@ -15,7 +10,7 @@
 					class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
 					<i class="iconfont">&#xe625;&nbsp;</i>{{version.version}}
 				</a>
-				<a ng-href="web.do#/webInterfaceDetail/{{model.moduleId}}/{{model.moduleName}}/{{model.id}}" class="f12 btn btn-default btn-xs">
+				<a ng-href="web.do#/webInterfaceDetail/{{model.id}}" class="f12 btn btn-default btn-xs">
 					<i class="iconfont">&#xe614;&nbsp;</i>接口
 				</a>
 			</div>

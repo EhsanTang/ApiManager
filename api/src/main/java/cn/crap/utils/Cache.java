@@ -50,7 +50,16 @@ public class Cache {
 	/*************将module放入缓存***********/
 	private static ConcurrentHashMap<String,Module> moduleMap=new ConcurrentHashMap<String,Module>();
 	public static Module getModule(String moduleId){
-		return moduleMap.get(moduleId);
+		if(MyString.isEmpty(moduleId)){
+			return new Module();
+		}
+		return moduleMap.get(moduleId) == null? new Module() : moduleMap.get(moduleId);
+	}
+	public static String getModuleName(String moduleId){
+		String name = getModule(moduleId).getModuleName();
+		if(MyString.isEmpty(name))
+			name = "无";
+		return name;
 	}
 	public static void setModule(List<Module> modules){
 		for(Module module:modules){

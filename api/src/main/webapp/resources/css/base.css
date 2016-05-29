@@ -4,6 +4,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 .roman {font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
 .transition{transition: all 0.2s ease-in-out;-moz-transition: all 0.2s ease-in-out;-webkit-transition: all 0.2s ease-in-out;}
 .cursor{cursor:pointer;}
+.nls{list-style: none}
 .break-word{
 	 word-break:break-all;
 	 word-wrap:break-word;
@@ -57,6 +58,7 @@ table{border-collapse:collapse;border-spacing:0}
 .BGF5{background-color:#f5f5f5}.BGF9{background-color:#f9f9f9}
 .BGBBB{background-color:#BBB!important;}
 .C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.C000{color:#000}
+.ACFFF{color:#FFF;}.ACFFF:hover{color:#FFF;}
 .f9{font-size:9px}
 .f10{font-size:10px}
 .f11{font-size:11px}
@@ -81,6 +83,7 @@ table{border-collapse:collapse;border-spacing:0}
 .lh40{line-height:40px}
 .lh50{line-height:50px}
 .lh70{line-height:70px}
+.lh80{line-height:80px}
 .unl{text-decoration:underline}
 .no_unl{text-decoration:none}
 .tl{text-align:left}

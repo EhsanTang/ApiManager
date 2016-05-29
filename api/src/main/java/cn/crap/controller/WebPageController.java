@@ -41,8 +41,10 @@ public class WebPageController extends BaseController<WebPage>{
 	@ResponseBody
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type",webPage.getType(),"category",webPage.getCategory());
-		return new JsonResult(1,webPageService.findByMap(map,page,null),page,Tools.getMap("type",WebPageType.valueOf(webPage.getType()).getName(),"category",webPage.getCategory()));
+		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
+		return new JsonResult(1,webPageService.findByMap(map,page,null), page,
+				Tools.getMap("type", WebPageType.valueOf(webPage.getType()).getName(), "category", webPage.getCategory(), "crumbs", 
+						Tools.getCrumbs(MyString.isEmpty(webPage.getCategory()) ? WebPageType.valueOf( webPage.getType()).getName() : webPage.getCategory(), "void")));
 	}
 	
 	@RequestMapping("/detail.do")
@@ -75,10 +77,13 @@ public class WebPageController extends BaseController<WebPage>{
 		
 		// 文章访问密码
 		if(model.getType().equals(WebPageType.ARTICLE.name())){
+			returnMap.put("crumbs", Tools.getCrumbs(model.getCategory(),"web.do#/webWebPage/list/ARTICLE/"+model.getCategory(), model.getName(), "void"));
 			Tools.canVisitModule(model.getPassword(), password, visitCode, request);
 		}
 		// 数据字典密码访问由模块决定
 		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
+			returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "web.do#/webWebPage/list/DICTIONARY/null", model.getName(), "void"));
+			
 			Module module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}
@@ -86,7 +91,6 @@ public class WebPageController extends BaseController<WebPage>{
 		map = Tools.getMap("webpageId", model.getId());
 		returnMap.put("comments", commentService.findByMap(map, null, null));
 		returnMap.put("commentCode", Cache.getSetting(Const.SETTING_COMMENTCODE).getValue());
-		
 		// 更新点击量
 		webPageService.update("update WebPage set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
 		return new JsonResult(1,model, null, returnMap);

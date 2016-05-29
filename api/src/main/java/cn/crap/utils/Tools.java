@@ -18,6 +18,8 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import cn.crap.dto.CrumbDto;
 import cn.crap.framework.MyException;
 
 
@@ -96,6 +98,24 @@ public class Tools {
 				map.put(params[i].toString(), params[i + 1]);
 		}
 		return map;
+
+	}
+	
+	/**
+	 * 构造导航条
+	 */
+	public static List<CrumbDto> getCrumbs(String... params) {
+		 List<CrumbDto> crumbDtos = new ArrayList<CrumbDto>();
+		if (params.length == 0 || params.length % 2 != 0) {
+			return crumbDtos;
+		}
+		for (int i = 0; i < params.length; i = i + 2) {
+			if (!MyString.isEmpty(params[i + 1])){
+				CrumbDto crumb = new CrumbDto(params[i], params[i + 1]);
+				crumbDtos.add(crumb);
+			}
+		}
+		return crumbDtos;
 
 	}
 	//查询需要添加过滤器status>-1

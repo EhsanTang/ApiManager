@@ -45,6 +45,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 				 $rootScope.model = result.others.comment;//初始化评论对象
 				 $rootScope.comments = result.others.comments;//评论列表
 				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
+				 $rootScope.others = result.others;//导航路径
 				 //如果是数据字典，则将内容转为json
 				 if($rootScope.webpage.content!=''&&$rootScope.webpage.type=="DICTIONARY"){
 					 $rootScope.dictionary = eval("("+$rootScope.webpage.content+")");
@@ -77,6 +78,7 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 				 $rootScope.errors = eval("("+result.data.errors+")");
 				 $rootScope.params = eval("("+result.data.param+")");
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");
+				 $rootScope.others = result.others;
 				 if(result.data.method)// 调试页面默认显示method中第一个
 					 $rootScope.model.debugMethod = result.data.method.split(",")[0];
 			 }
@@ -94,6 +96,7 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.model.debugResult = result.data.debugResult;
+				 $rootScope.others = result.others;
 			 }
 		});
     };
@@ -145,9 +148,9 @@ webModule.controller('webInterfaceCtrl', function($rootScope,$scope, $http, $sta
  */
 webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
-		var params = "iUrl=frontInit.do|iLoading=fase"; //  表示查询所有
+		var params = "iUrl=frontInit.do|iLoading=FLOAT"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=false');
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
 			 }

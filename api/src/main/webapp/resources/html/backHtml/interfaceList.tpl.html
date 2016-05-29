@@ -118,7 +118,7 @@
 					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'interface/detail.do?id='+item.id,'',copyInterface)"> 
 					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webInterfaceDetail/{{item.moduleId}}/{{item.moduleName}}/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webInterfaceDetail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('INTERFACE',$stateParams.moduleId)"

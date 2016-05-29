@@ -19,6 +19,7 @@ import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.ParameterType;
@@ -53,7 +54,8 @@ public class InterfaceService extends BaseService<Interface>
 		}
 		map.put("interfaces", interfaces);
 		map.put("modules", modules);
-		return new JsonResult(1, map, page);
+		return new JsonResult(1, map, page, 
+				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+Cache.getModuleName(interFace.getModuleId()),"void")));
 	}
 	
 	@Override

@@ -1,9 +1,5 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="webInterfaceCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
-<ol class="breadcrumb">
-  <li><a href="web.do"><i class="iconfont main-color f14 mt-5">&#xe616;</i></a></li>
-  <li class="active"><a ng-href="web.do#webInterface/list/{{$stateParams.moduleId}}/{{$stateParams.moduleName}}">模块：{{$stateParams.moduleName}}</a></li>
-</ol>
 <div class="col-xs-6 f16 fb p0 mb5">搜索接口</div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
@@ -69,7 +65,7 @@
 				<td class="tc">{{item.moduleName}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="web.do#/webInterfaceDetail/{{item.moduleId}}/{{item.moduleName}}/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
+					ng-href="web.do#/webInterfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
 				</a>
 				<a class="f12 text-primary mr10 cursor"
 					ng-href="web.do#/webInterface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试

@@ -14,6 +14,7 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
+import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -35,7 +36,8 @@ public class ErrorController extends BaseController<Error>{
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
-		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page);
+		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+Cache.getModuleName(error.getModuleId()), "void")));
 	}
 	
 	@RequestMapping("/detail.do")

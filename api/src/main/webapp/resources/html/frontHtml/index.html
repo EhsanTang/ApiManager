@@ -87,7 +87,15 @@
 		</div>
 	</nav>
 	<div class="main-bg h80 mb20">
-
+		<div class="container lh80 p0">
+		<ul class="nls m0 p0 f12 ACFFF">
+ 			 <li class="fl p0"><a href="web.do" class="ACFFF">首页</a></li>
+ 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
+ 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name"></a>
+ 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name"></span>	
+ 			 </li>
+		</ul>
+		</div>
 	</div>
 	<!-- End:top -->
 	
@@ -146,7 +154,7 @@
 					<button type="button" class="btn btn-danger btn-xs break-word"
 						onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
 				</div>
-				<div ui-view="main" class="BGFFF r5 min-h600 pt10"></div>
+				<div ui-view="main" class="BGFFF r5 min-h600"></div>
 			</div>
 		</div>
 	</div>

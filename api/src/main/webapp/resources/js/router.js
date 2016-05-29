@@ -179,7 +179,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('webInterfaceDetailCtrl', {
-		url : '/webInterfaceDetail/:moduleId/:moduleName/:id',
+		url : '/webInterfaceDetail/:id',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/interfaceDetail.tpl.html'

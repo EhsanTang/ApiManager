@@ -81,7 +81,7 @@ public class InterfaceController extends BaseController<Interface>{
 		request.setAttribute("responseParam", responseParam);
 		Object errors = JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class);
 		request.setAttribute("errors", errors);
-		return "/WEB-INF/views/web/interFacePdf.jsp";
+		return "/WEB-INF/views/interFacePdf.jsp";
 	}
 	
 	@RequestMapping("/download/pdf.do")

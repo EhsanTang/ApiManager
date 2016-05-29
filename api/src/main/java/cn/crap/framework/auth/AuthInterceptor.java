@@ -42,7 +42,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }else if(session.getAttribute(Const.SESSION_ADMIN)!=null){
             	return true;
             }
-            response.sendRedirect("preLogin.do");
+            response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
             return false;
         }
         else

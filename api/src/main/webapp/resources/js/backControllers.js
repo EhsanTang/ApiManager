@@ -30,11 +30,53 @@ mainModule.filter('cut', function () {
 mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
 	 
 });
+
+/***
+ * 后台初始化，加载系统设置，菜单等
+ */
+mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		var params = "iUrl=backInit.do|iLoading=fase"; //  表示查询所有
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=false');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
+			}else{
+				$rootScope.backSettings = result.data.settingMap;
+				$rootScope.backMenus = result.data.menuList;
+				$rootScope.sessionAdminName = result.data.sessionAdminName;
+				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
+				$rootScope.sessionAdminName = result.data.sessionAdminName;
+				$rootScope.sessionAdminRoleIds = result.data.sessionAdminRoleIds;
+			}
+		});
+    };
+    // 判断是否是最高管理员
+    $scope.isSupperAdmin = function (){
+    	if($rootScope.sessionAdminRoleIds){
+    		var roles = ","+$rootScope.sessionAdminRoleIds+",";
+    		if(roles.indexOf(',super,')>=0){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    /***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
+	$scope.canSeeMenu = function(menuId,type){
+		if(!menuId||menuId==""||type!="BACK")
+			return false;
+		var auth = $("#sessionAuth").val();
+		if((","+auth+",").indexOf(","+menuId+",")>=0)
+			return true;
+		return false;
+	}
+    $scope.getData();
+});
 /**************************后端接口列表****************************/
 mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function() {
 		if($rootScope.model && $rootScope.model.sessionAdminName){
-			window.location.href="web.do";
+			window.location.href="index.do";
 		}else if($rootScope.model && $rootScope.model.tipMessage){
 			showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
 		}else{
@@ -56,32 +98,7 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
     }
     $scope.getData();
 });
-/**************************管理员左边菜单栏***************************/
-mainModule.controller('lefMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.menu = function() {
-		var params = "iUrl=menu/menu.do|iLoading=FLOAT";
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				$scope.menus = null;
-			 }else{
-				$rootScope.error = null;
-				$scope.menus = result.data;
-			 }
-		});
-	};
-	/***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
-	$scope.canSeeMenu = function(menuId,type){
-		if(!menuId||menuId==""||type!="BACK")
-			return false;
-		var auth = $("#sessionAuth").val();
-		if((","+auth+",").indexOf(","+menuId+",")>=0)
-			return true;
-		return false;
-	}
-	$scope.menu();
-});
+
 /**************************菜单列表****************************/
 mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
@@ -111,6 +128,9 @@ mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, 
 	$scope.getData = function(page) {
 		if($("#searchCategory").length==1&&$("#searchCategory").val()!=null&&$("#searchCategory").val()!=""){
 			$stateParams.category = $("#searchCategory").val();
+		}
+		if($("#searchModuleId").length==1&&$("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=""){
+			$stateParams.searchModuleId = $("#searchModuleId").val();
 		}
 		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val()
 		+"&name="+$("#searchName").val()+"&category="+$stateParams.category;
@@ -157,6 +177,7 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
 		var params = "iUrl=error/list.do|iLoading=FLOAT|iParams=&errorMsg=" + $("#searchMsg").val()+"&errorCode=" + $("#searchCode").val();
 		if($("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=''){
 			params += "&moduleId=" + $("#searchModuleId").val();
+			$stateParams.searchModuleId = $("#searchModuleId").val();
 		}else if($stateParams.moduleId){
 			$stateParams.searchModuleId=$stateParams.moduleId;
 			params += "&moduleId=" + $stateParams.moduleId;

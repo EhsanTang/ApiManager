@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.LoginDto;
-import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -27,7 +22,6 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.ISettingService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.Setting;
@@ -49,9 +43,6 @@ public class IndexController extends BaseController<User> {
 	private IRoleService roleService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private ISettingService settingService;
-	private Logger log = Logger.getLogger(getClass());
 
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
@@ -72,14 +63,12 @@ public class IndexController extends BaseController<User> {
 	 */
 	@RequestMapping("/web.do")
 	public String web() throws Exception {
-		return "resources/webHtml/index.html";
+		return "resources/html/frontHtml/index.html";
 	}
 
 	/**
 	 * 初始化前端页面
 	 * 
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/frontInit.do")
 	@ResponseBody
@@ -103,7 +92,27 @@ public class IndexController extends BaseController<User> {
 	@AuthPassport
 	@RequestMapping("/index.do")
 	public String showHomePage() throws Exception {
-		return "resources/html/index";
+		return "resources/html/backHtml/index.html";
+	}
+	
+	/**
+	 * 后台页面初始化
+	 * 
+	 */
+	@RequestMapping("/backInit.do")
+	@ResponseBody
+	public JsonResult backInit() throws Exception {
+		Map<String, String> settingMap = new HashMap<String, String>();
+		for (Setting setting : Cache.getSetting()) {
+			settingMap.put(setting.getKey(), setting.getValue());
+		}
+		returnMap.put("settingMap", settingMap);
+		returnMap.put("menuList", menuService.getLeftMenu(map));
+		returnMap.put("sessionAdminName", request.getSession().getAttribute(Const.SESSION_ADMIN));
+		returnMap.put("sessionAdminAuthor", request.getSession().getAttribute(Const.SESSION_ADMIN_AUTH));
+		returnMap.put("sessionAdminRoleIds", request.getSession().getAttribute(Const.SESSION_ADMIN_ROLEIDS));
+		
+		return new JsonResult(1, returnMap);
 	}
 
 	@RequestMapping("/login.do")
@@ -158,7 +167,7 @@ public class IndexController extends BaseController<User> {
 	@RequestMapping("/loginOut.do")
 	public String loginOut() throws IOException {
 		request.getSession().invalidate();
-		return "resources/webHtml/index.html";
+		return "resources/html/frontHtml/index.html";
 	}
 
 	@RequestMapping("/preLogin.do")
@@ -216,8 +225,7 @@ public class IndexController extends BaseController<User> {
 		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
 		request.setAttribute("tagName", tagName);
 		request.setAttribute("pickContent", pickContent);
-
-		return "/WEB-INF/views/admin/pick.jsp";
+		return "WEB-INF/views/pick.jsp";
 	}
 
 	@RequestMapping("getImgCode.do")
@@ -242,11 +250,11 @@ public class IndexController extends BaseController<User> {
 
 	/**
 	 * 
-	 * @param 跳转至jsp页面
+	 * @param 跳转至指定页面
 	 * @return
 	 */
 	@RequestMapping("go.do")
-	public String showHomePage(HttpServletResponse response, String p) {
+	public String go(@RequestParam String p) {
 		return p;
 	}
 

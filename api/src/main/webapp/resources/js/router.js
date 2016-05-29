@@ -20,14 +20,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/menu/list/:parentId/:type/:menuName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/menuList.tpl.html'
+				templateUrl : 'resources/html/backHtml/menuList.tpl.html'
 			},
 			'page@menuList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/menuDetail.tpl.html';
+					return 'resources/html/backHtml/menuDetail.tpl.html';
 				}
 			}
 		}
@@ -35,14 +35,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/interface/list/:moduleId/:moduleName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/interfaceList.tpl.html'
+				templateUrl : 'resources/html/backHtml/interfaceList.tpl.html'
 			},
 			'page@interfaceList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/interfaceDetail.tpl.html';
+					return 'resources/html/backHtml/interfaceDetail.tpl.html';
 				}
 			}
 		}
@@ -50,10 +50,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/setting/list/:key',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/settingList.tpl.html'
+				templateUrl : 'resources/html/backHtml/settingList.tpl.html'
 			},
 			'page@settingList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			}
 		}
 	}).state('settingDetail', {
@@ -61,7 +61,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/settingDetail_'+$stateParems.type+'.tpl.html';
+					return 'resources/html/backHtml/settingDetail_'+$stateParems.type+'.tpl.html';
 				}
 			}
 		}
@@ -69,14 +69,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/user/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/userList.tpl.html'
+				templateUrl : 'resources/html/backHtml/userList.tpl.html'
 			},
 			'page@userList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/userDetail.tpl.html';
+					return 'resources/html/backHtml/userDetail.tpl.html';
 				}
 			}
 		}
@@ -84,14 +84,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/webPage/list/:type',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/webPageList.tpl.html'
+				templateUrl : 'resources/html/backHtml/webPageList.tpl.html'
 			},
 			'page@webPageList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/webPageDetail_'+$stateParems.type+'.tpl.html';
+					return 'resources/html/backHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
 			}
 		}
@@ -99,14 +99,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/role/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/roleList.tpl.html'
+				templateUrl : 'resources/html/backHtml/roleList.tpl.html'
 			},
 			'page@roleList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/roleDetail.tpl.html';
+					return 'resources/html/backHtml/roleDetail.tpl.html';
 				}
 			}
 		}
@@ -114,14 +114,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/error/list',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/errorList.tpl.html'
+				templateUrl : 'resources/html/backHtml/errorList.tpl.html'
 			},
 			'page@errorList' : {
-				templateUrl : 'resources/html/page.tpl.html'
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/errorDetail.tpl.html';
+					return 'resources/html/backHtml/errorDetail.tpl.html';
 				}
 			}
 		}
@@ -132,7 +132,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/webHtml/settingDetail.tpl.html';
+					return 'resources/html/frontHtml/settingDetail.tpl.html';
 				}
 			}
 		}
@@ -141,10 +141,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/webHtml/webPageList_'+$stateParems.type+'.tpl.html';
+					return 'resources/html/frontHtml/webPageList_'+$stateParems.type+'.tpl.html';
 				}
 			},'page@webWebPageList' : {
-				templateUrl : 'resources/webHtml/page.tpl.html'
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('webWebPageDetail', {
@@ -152,37 +152,37 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/webHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
+					return 'resources/html/frontHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
 				}
 			},'addComment@webWebPageDetail' : {
-				templateUrl : 'resources/webHtml/addComment.tpl.html'
+				templateUrl : 'resources/html/frontHtml/addComment.tpl.html'
 			}
 		}
 	}).state('webError', {
 		url : '/webError/list/:moduleId',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/errorList.tpl.html'
+				templateUrl : 'resources/html/frontHtml/errorList.tpl.html'
 			},
 			'page@webError' : {
-				templateUrl : 'resources/webHtml/page.tpl.html'
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('webInterfaceCtrl', {
 		url : '/webInterface/list/:moduleId/:moduleName',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/interfaceList.tpl.html'
+				templateUrl : 'resources/html/frontHtml/interfaceList.tpl.html'
 			},
 			'page@webInterfaceCtrl' : {
-				templateUrl : 'resources/webHtml/page.tpl.html'
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('webInterfaceDetailCtrl', {
 		url : '/webInterfaceDetail/:moduleId/:moduleName/:id',
 		views : {
 			'main' : {
-				templateUrl : 'resources/webHtml/interfaceDetail.tpl.html'
+				templateUrl : 'resources/html/frontHtml/interfaceDetail.tpl.html'
 			}
 		}
 	}).state('webInterfaceDebugCtrl', {
@@ -190,7 +190,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/webHtml/interfaceDebug.tpl.html';
+					return 'resources/html/frontHtml/interfaceDebug.tpl.html';
 				}
 			}
 		}

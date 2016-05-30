@@ -12,19 +12,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.PickDto;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IMenuService;
+import cn.crap.model.Interface;
+import cn.crap.model.Module;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import cn.crap.utils.ValidateCodeService;
 
 @Scope("prototype")
@@ -32,7 +38,8 @@ import cn.crap.utils.ValidateCodeService;
 public class IndexController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
-
+	@Autowired
+	private IInterfaceService interfaceService;
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -129,6 +136,20 @@ public class IndexController extends BaseController<User> {
 			out.close();
 		}
 	}
+	
+
+	@RequestMapping("/frontSearch.do")
+	@ResponseBody
+	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage){
+		page.setCurrentPage(currentPage);
+		map = Tools.getMap("interfaceName|like", keyword);
+		List<Interface> interfaces = interfaceService.findByMap(map, page, null);
+		returnMap.put("interfaces", interfaces);
+		return new JsonResult(1, returnMap, page, 
+				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));
+	}
+	
+	
 
 	/**
 	 * 

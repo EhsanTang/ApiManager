@@ -194,5 +194,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('frontSearchCtrl', {
+		url : '/frontSearch/:keyword',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/frontHtml/searchResult.tpl.html';
+				}
+			},
+			'page@frontSearchCtrl' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
 	})
 });

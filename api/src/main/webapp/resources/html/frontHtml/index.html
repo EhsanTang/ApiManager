@@ -98,11 +98,15 @@
 					</ul>
 				</div>
 				<div class="col-xs-6">
-					<div class="form-group w300 fr mr10 mt20 search-section">
+					<div class="form-group w300 fr mr10 mt20 search-section" ng-controller="frontSearchCtrl">
 						<label class="sr-only">search</label>
 						<div class="input-group b0">
-							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" placeholder="全文检索">
-							<div class="input-group-addon no-radius o3 b0 search-button cursor"><i class="iconfont C000">&#xe60d;</i></div>
+							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" 
+							ng-model="$stateParams.keyword" placeholder="检索">
+							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}"  ng-click="getData()"
+								class="input-group-addon no-radius o3 b0 search-button cursor">
+									<i class="iconfont C000">&#xe60d;</i>
+							</a>
 						</div>
 					</div>
 		 		</div>

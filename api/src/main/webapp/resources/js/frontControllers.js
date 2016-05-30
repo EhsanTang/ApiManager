@@ -161,5 +161,14 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
     };
     $scope.getData();
 });
+webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		if(!$stateParams.keyword)
+			$stateParams.keyword ="";
+		params = "iUrl=frontSearch.do|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 
 

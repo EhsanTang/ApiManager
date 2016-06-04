@@ -9,7 +9,7 @@
 			<i class="iconfont">&#xe60d;</i>&nbsp;查询
 		</button>
 		<div class="form-group w200 fr mr10" ng-if="$stateParams.type=='DICTIONARY'">
-			<input type="hidden" class="form-control dis-in-blo w120" id="searchModuleId">
+			<input type="hidden" class="form-control dis-in-blo w120" ng-model="$stateParams.searchModuleId">
 			<label class="sr-only" for="">模块</label>
 			<div class="input-group">
 				<div class="input-group-addon">模块</div>
@@ -17,12 +17,19 @@
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=searchModuleName|tag=searchModuleId|code=TOPMODULE|def='+$stateParams.searchModuleId,$event);">
 			</div>
 		</div>
+		<div class="form-group w200 fr mr10">
+			<label class="sr-only" for="">名称</label>
+			<div class="input-group">
+				<div class="input-group-addon">名称</div>
+				<input type="text" class="form-control dis-in-blo w120" placeholder="名称" ng-model="$stateParams.searchName">
+			</div>
+		</div>
 		<div class="form-group w200 fr mr10" ng-if="$stateParams.type=='ARTICLE'">
 			<label class="sr-only" for="">类目</label>
 			<div class="input-group">
 				<div class="input-group-addon">类目</div>
-				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选择类目" id="searchCategory"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tag=searchCategory|code=CATEGORY|def='+$stateParams.category,$event);">
+				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选择类目" id="searchCategory" ng-model="$stateParams.searchCategory"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tag=searchCategory|code=CATEGORY|def='+$stateParams.searchCategory,$event);">
 			</div>
 		</div>
 		<div class="cb"></div>

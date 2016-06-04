@@ -126,14 +126,7 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************WebPage列表****************************/
 mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		if($("#searchCategory").length==1&&$("#searchCategory").val()!=null&&$("#searchCategory").val()!=""){
-			$stateParams.category = $("#searchCategory").val();
-		}
-		if($("#searchModuleId").length==1&&$("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=""){
-			$stateParams.searchModuleId = $("#searchModuleId").val();
-		}
-		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$("#searchModuleId").val()
-		+"&name="+$("#searchName").val()+"&category="+$stateParams.category;
+		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$stateParams.searchModuleId+"&category="+$stateParams.searchCategory+"&name="+$stateParams.searchName;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

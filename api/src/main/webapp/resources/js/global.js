@@ -138,6 +138,10 @@ function getRootScope(){
 	var $body = angular.element(document.body);
 	return $body.scope().$root;
 }
+function getStateParams(){
+	var $body = angular.element(document.body);
+	return $body.scope().$stateParams;
+}
 
 
 

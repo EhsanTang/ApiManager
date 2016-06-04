@@ -80,12 +80,12 @@
 	                </li>
 					<li ng-if="sessionAdminName==null"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
 					<li ng-if="sessionAdminName!=null"><a href="index.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-					<li ng-if="sessionAdminName!=null"><a href="loginOut.do"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+					<li ng-if="sessionAdminName!=null"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<div class="main-bg h80 mb20">
+	<div class="def-bg main-bg h80 mb20">
 		<div class="container lh80 p0">
 			<div class="row">
 				<div class="col-xs-6">
@@ -170,7 +170,7 @@
 					<button type="button" class="btn btn-danger btn-xs break-word"
 						onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
 				</div>
-				<div ui-view="main" class="BGFFF r5 min-h600"></div>
+				<div ui-view="main" class="BGFFF r5 min-h700"></div>
 			</div>
 		</div>
 	</div>
@@ -179,7 +179,7 @@
 
 
 	<!-- footer -->
-	<div class="container-fluid m0 mt30 FOOTER_BG_COLOR FOOTER_COLOR">
+	<div class="container-fluid m0 mt30 def-bg FOOTER_BG_COLOR FOOTER_COLOR">
 		<div class="container p0">
 			<div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">
 				©crap.cn &nbsp;版权所有

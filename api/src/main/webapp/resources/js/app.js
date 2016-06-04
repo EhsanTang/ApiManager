@@ -153,6 +153,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			 }
 		});
 	}
+	$rootScope.loginOut = function(){
+		callAjaxByName("iUrl=loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+		location.reload();
+	}
 	/***********************是否显示操作按钮************/
 	$rootScope.showOperation = function(dataType,moduleId){
 		var userRole = $("#sessionRoleIds").val();

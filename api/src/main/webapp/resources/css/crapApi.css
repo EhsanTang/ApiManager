@@ -29,7 +29,10 @@ blockquote{
   url('//at.alicdn.com/t/font_1464625870_5757787.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
   url('//at.alicdn.com/t/font_1464625870_5757787.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
-                    
+/***默认颜色**/
+.def-bg{
+	background:#cccccc;
+}                 
 .search-input:focus{
 	opacity:1!important;
 }  

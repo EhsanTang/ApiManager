@@ -49,7 +49,7 @@
 				<td class="tc">
 					内容
 					<input type="button" class="btn btn-default btn-sm mt10" value="默认编辑器" onclick="changeDisplay('defEditor','kindEditor')">
-					<input type="button" class="btn btn-default btn-sm mt10" value="Kind编辑器" ng-click="createEditor('eidtorId2','content')">
+					<input type="button" class="btn btn-default btn-sm mt10" value="Kind编辑器" ng-click="createEditor('eidtorId','content')">
 				</td>
 				<td class="tc">
 					<!-- 默认编辑器 -->
@@ -63,7 +63,7 @@
 						<div  ng-model="model.content" text-angular="text-angular"  class="tl p10 imgCenter"></div>
 					</div>
 					<div id="kindEditor" class="none p10">
-						<textarea id="eidtorId2" ng-model="model.content" style="width:100%;height:500px;"></textarea>
+						<textarea id="eidtorId" ng-model="model.content" style="width:100%;height:500px;"></textarea>
 					</div>
 					
 					

@@ -268,22 +268,11 @@ function needHiddenModule() {
 	}
 }
 // 创建kindEditory
-// 每一个页面的id必须要不同，editor必须放入全局变量，在同一个页面不能重复创建
+// 子页面加载一次，需要初始化编辑器（点击左边菜单是更新editorId）
 function createKindEditor(id,modelField){
 	var root = getRootScope();
-	if(window.oldEditorId != id){
-		oldEditorId = id;
-		window.editor =  KindEditor.create('#'+id,{
-	        uploadJson : 'file/upload.do',
-	        filePostName: 'img',
-	        allowFileManager : true,
-	        afterBlur: function () { 
-	        	editor.sync();
-	        	root.model[modelField] = $('#'+id).val();
-	        }
-		});
-	}
-	if(window.editor == null){
+	if(window.oldEditorId != window.editorId || window.editor == null){
+		oldEditorId = editorId;
 		window.editor =  KindEditor.create('#'+id,{
 	        uploadJson : 'file/upload.do',
 	        filePostName: 'img',

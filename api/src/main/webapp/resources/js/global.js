@@ -215,6 +215,7 @@ function selectRadio(className,id,radioId){
 
 /** ********************************** */
 function selectButton(obj,className){
+	window.editorId = new Date().getTime();
 	var objs = $("."+className);
 	objs.removeClass("iactive");
 	$(obj).addClass("iactive");

@@ -28,7 +28,7 @@ mainModule.filter('cut', function () {
 });
 
 mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
-	 
+	
 });
 
 /***

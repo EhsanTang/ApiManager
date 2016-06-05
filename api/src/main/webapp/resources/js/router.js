@@ -144,7 +144,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('webWebPageList', {
-		url : '/webWebPage/list/:type/:category',
+		url : '/webWebPage/list/:type/:searchCategory',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){

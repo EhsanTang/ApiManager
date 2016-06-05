@@ -88,6 +88,9 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 		callAjaxByName("iUrl=loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
 		location.href="web.do#/webWebPage/detail/PAGE/WELCOME";
 	}
+	$scope.createEditor = function(id,field){
+		createKindEditor(id,field);
+	}
     $scope.getData();
 });
 /**************************后端接口列表****************************/

@@ -14,7 +14,7 @@ function propUpPsswordDiv(obj){
 function addOneParam(name, necessary, type, def, parameterType, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
-		rowNum = mydate.getMilliseconds();
+		rowNum = mydate.getTime();
 	}
 	if(!def) def = "";
 	if (tableId == 'editParamTable') {
@@ -74,7 +74,7 @@ function addOneParam(name, necessary, type, def, parameterType, remark, rowNum, 
 function addOneField(name, type, notNull,def, remark, rowNum) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
-		rowNum = mydate.getMilliseconds();
+		rowNum = mydate.getTime();
 	}
 		$("#content")
 				.append("<tr>"
@@ -268,18 +268,32 @@ function needHiddenModule() {
 	}
 }
 // 创建kindEditory
+// 每一个页面的id必须要不同，editor必须放入全局变量，在同一个页面不能重复创建
 function createKindEditor(id,modelField){
 	var root = getRootScope();
-	$("#"+id).val(root.model[modelField]);
-	
-	var editor =  KindEditor.create('#'+id,{
-        uploadJson : 'file/upload.do',
-        filePostName: 'img',
-        allowFileManager : true,
-        afterBlur: function () { 
-        	editor.sync();
-        	root.model[modelField] = $('#editor_id').val();
-        }
-	});
+	if(window.oldEditorId != id){
+		oldEditorId = id;
+		window.editor =  KindEditor.create('#'+id,{
+	        uploadJson : 'file/upload.do',
+	        filePostName: 'img',
+	        allowFileManager : true,
+	        afterBlur: function () { 
+	        	editor.sync();
+	        	root.model[modelField] = $('#'+id).val();
+	        }
+		});
+	}
+	if(window.editor == null){
+		window.editor =  KindEditor.create('#'+id,{
+	        uploadJson : 'file/upload.do',
+	        filePostName: 'img',
+	        allowFileManager : true,
+	        afterBlur: function () { 
+	        	editor.sync();
+	        	root.model[modelField] = $('#'+id).val();
+	        }
+		});
+	}
+	window.editor.html(root.model[modelField]);
 	changeDisplay('kindEditor','defEditor')
 }

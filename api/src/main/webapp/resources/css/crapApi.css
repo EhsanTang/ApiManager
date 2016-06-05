@@ -279,7 +279,7 @@ blockquote{
  /*****************加载浮层***************************/
 .folat{
 	display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
-	z-index:1050;
+	z-index:1060;
 	background: rgba(0, 0, 0, 0.1); 
 	padding-top:20%; text-align:center;
 }

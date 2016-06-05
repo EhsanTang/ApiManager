@@ -125,6 +125,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('profile', {
+		url : '/profile',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/userDetail.tpl.html'
+			}
+		}
 	})
 	/*********************前端*******************/
 	$stateProvider.state('webSettingDetail', {

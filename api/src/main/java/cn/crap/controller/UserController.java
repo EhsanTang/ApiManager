@@ -1,5 +1,7 @@
 package cn.crap.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IUserService;
@@ -47,12 +50,43 @@ public class UserController extends BaseController<User>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
-	public JsonResult addOrUpdate(@ModelAttribute User user){
+	public JsonResult addOrUpdate(@ModelAttribute User user) throws MyException{
+		// 判断是否重名
+		List<User> users = userService.findByMap(Tools.getMap("userName", user.getUserName()), null, null);
+		if(users.size()>0 && !users.get(0).getUserId().equals(user.getUserId())){
+			throw new MyException("000015");
+		}
+		
+		// 如果前端设置了密码，则修改密码，否者使用就密码
 		if(!MyString.isEmpty(user.getPassword())){
 			user.setPassword(MD5.encrytMD5(user.getPassword()));
 		}
+		
+		User temp = null;
 		if(!MyString.isEmpty(user.getUserId())){
-			User temp = userService.get(user.getUserId());
+			temp = userService.get(user.getUserId());
+		}
+		
+		// 如果不是最高管理员，不允许修改权限、角色
+		String roleIds = MyString.getValueFromSession(request, Const.SESSION_ADMIN_ROLEIDS);
+		if((","+roleIds).indexOf(","+Const.SUPER+",") < 0){
+			if(temp != null){
+				user.setAuth(temp.getAuth());
+				user.setAuthName(temp.getAuthName());
+				user.setRoleId(temp.getRoleId());
+				user.setRoleName(temp.getRoleName());
+			}else{
+				user.setAuth("");
+				user.setAuthName("");
+				user.setRoleId("");
+				user.setRoleName("");
+			}
+			
+		}
+		
+		// 如果temp不为空，表示修改用户信息
+		if(temp != null){
+			// 如果密码为空，则设置为旧密码
 			if(MyString.isEmpty(user.getPassword())){
 				user.setPassword(temp.getPassword());
 			}
@@ -62,6 +96,7 @@ public class UserController extends BaseController<User>{
 			user.setUserId(null);
 			userService.save(user);
 		}
+		user.setPassword("");
 		return new JsonResult(1,user);
 	}
 	

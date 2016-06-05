@@ -20,7 +20,7 @@
 					<input  class="form-control" type="text" ng-model="model.password">
 				</td>
 			</tr>
-			<tr>
+			<tr ng-if="showOperation('USER','');">
 				<td class="tc">权限</td>
 				<td class="tc w200" colspan="3">
 					<div class="input-group">
@@ -31,7 +31,7 @@
 				</td>
 				
 			</tr>
-			<tr>
+			<tr ng-if="showOperation('USER','');">
 				<td class="tc">角色</td>
 				<td class="tc w200" colspan="3">
 					<div class="input-group">
@@ -43,7 +43,7 @@
 				</td>
 			</tr>
 	</table>
-	<button type="submit" class="btn btn-success fr">提交</button>
+	<button type="submit" class="btn btn-success fr">修改</button>
 	</form>
 	
 </div>

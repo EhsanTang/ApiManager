@@ -8,6 +8,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.crap.framework.MyException;
 import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 
@@ -27,15 +28,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             if(authPassport == null || authPassport.validate() == false)
                 return true;
             else if(!authPassport.authority().equals("")){
-            	/***
-            	 * 查询是否有模块id
-            	 */
-            	String moduleId = request.getParameter("moduleId");
-            	if(moduleId==null){
-            		moduleId = "";
-            	}
             	if(session.getAttribute(Const.SESSION_ADMIN_AUTH)!=null){
-            		return Tools.hasAuth(authPassport.authority(), session, moduleId);
+            		return Tools.hasAuth(authPassport.authority(), session, MyString.getValueFromRequest(request, "moduleId"), request);
             	}else{
             		throw new MyException("000003");
             	}

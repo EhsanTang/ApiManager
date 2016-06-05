@@ -48,6 +48,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminRoleIds = result.data.sessionAdminRoleIds;
+				$rootScope.sessionAdminId =result.data.sessionAdminId;
 			}
 		});
     };
@@ -69,6 +70,19 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 		if((","+auth+",").indexOf(","+menuId+",")>=0)
 			return true;
 		return false;
+	}
+	$scope.profile = function(userId){
+		var params = "iUrl=user/detail.do?userId="+userId+"|iLoading=FLOAT";
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.model = null;
+			 }else{
+				 $rootScope.model = result.data;
+				 $rootScope.error = null;
+			 }
+		});
 	}
     $scope.getData();
 });

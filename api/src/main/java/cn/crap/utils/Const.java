@@ -3,6 +3,7 @@ public class Const {
 	public final static String SESSION_ADMIN = "sessionAdminName";
 	public final static String SESSION_IMGCODE_TIMES = "sessionImgCodeTryTimes";
 	public final static String SESSION_ADMIN_AUTH = "sessionAdminAuthor";
+	public final static String SESSION_ADMIN_ID = "sessionAdminId";
 	public final static String SESSION_ADMIN_TRUENAME = "sessionAdminTrueName";
 	public final static String SESSION_ADMIN_ROLEIDS = "sessionAdminRoleIds";
 	public final static String SESSION_IMG_CODE = "sessionImgCode";

@@ -98,6 +98,7 @@ public class LoginController extends BaseController<User> {
 					}
 					// 将角色组合：数据类型+模块存入session，拦截器中将根据注解类型判断用户是否有权限操作数据
 					request.getSession().setAttribute(Const.SESSION_ADMIN_AUTH, sb.toString());
+					request.getSession().setAttribute(Const.SESSION_ADMIN_ID, user.getUserId());
 					// 菜单页面将根据用户的roleIds判断是否显示菜单
 					request.getSession().setAttribute(Const.SESSION_ADMIN_ROLEIDS, user.getRoleId());
 					request.getSession().setAttribute(Const.SESSION_ADMIN_TRUENAME, user.getTrueName());
@@ -149,6 +150,7 @@ public class LoginController extends BaseController<User> {
 		returnMap.put("sessionAdminName", request.getSession().getAttribute(Const.SESSION_ADMIN));
 		returnMap.put("sessionAdminAuthor", request.getSession().getAttribute(Const.SESSION_ADMIN_AUTH));
 		returnMap.put("sessionAdminRoleIds", request.getSession().getAttribute(Const.SESSION_ADMIN_ROLEIDS));
+		returnMap.put("sessionAdminId", request.getSession().getAttribute(Const.SESSION_ADMIN_ID));
 		
 		return new JsonResult(1, returnMap);
 	}

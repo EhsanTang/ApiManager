@@ -18,6 +18,7 @@
 				<entry key="000012" value="查找数据失败" />
 				<entry key="000013" value="用户名不存在" />
 				<entry key="000014" value="用密码有误" />
+				<entry key="000015" value="用户名已被使用，请更换用户名" />
 			</map>
 		</property>
 	</bean>

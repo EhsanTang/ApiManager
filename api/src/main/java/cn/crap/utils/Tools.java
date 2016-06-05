@@ -50,13 +50,25 @@ public class Tools {
 	/**
 	 * 查询是否拥有权限
 	 */
+	public static boolean hasAuth(String authPassport, HttpSession session, String moduleId) throws MyException {
+		return hasAuth(authPassport, session, moduleId, null);
+	}
 	public static boolean hasAuth(String authPassport, HttpSession session,
-			String moduleId) throws MyException {
+			String moduleId, HttpServletRequest request) throws MyException {
 		String authority = session.getAttribute(Const.SESSION_ADMIN_AUTH).toString();
 		String roleIds = session.getAttribute(Const.SESSION_ADMIN_ROLEIDS).toString();
 		if((","+roleIds).indexOf(","+Const.SUPER+",")>=0){
 			return true;//超级管理员
 		}
+		
+		// 管理员修改自己的资料
+		if(authPassport.equals("USER") && request != null){
+			// 如果session中的管理员id和参数中的id一致
+			if( MyString.isEquals(  session.getAttribute(Const.SESSION_ADMIN_ID).toString(),  MyString.getValueFromRequest(request, "userId", "-1")  )  ){
+				return true;
+			}
+		}
+		
 		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
 		if(authority.indexOf(","+needAuth+",")>=0){
 			return true;
@@ -64,6 +76,7 @@ public class Tools {
 			throw new MyException("000003");
 		}
 	}
+	
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
 		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);

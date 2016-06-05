@@ -101,7 +101,7 @@ word-wrap: break-word;}
 int i=0;
 for(Setting setting:settings){
 	Setting s = null;
-	if(setting.getKey().startsWith("cm_")){
+	if(setting.getKey().startsWith("cm1_")){
 		s=setting;
 		int div = i/10;
 		
@@ -113,7 +113,7 @@ for(Setting setting:settings){
 				<img name="img<%=div%>" <%if(div==0){%> src="<%=s.getValue() %>" <%}%> title="<%=s.getValue() %>"
 				onclick="showBigImg('<%=s.getValue() %>')"/></td>
 				<td style="padding-left:10px;overflow: hidden;">
-					<div style="font-size:16px;color:#555;font-weight:bold;"><%=s.getKey().replace("cm_", "") %>
+					<div style="font-size:16px;color:#555;font-weight:bold;"><%=s.getKey().replace("cm1_", "") %>
 					</div>
 					<pre style="font-size:14px;color:#888;"><%=s.getRemark() %></pre>
 				</td>

@@ -53,7 +53,7 @@ public class CommentController extends BaseController<Comment> {
 		}
 		comment.setId(null);
 		commentService.save(comment);
-		return new JsonResult(1, comment);
+		return new JsonResult(1, null);
 	}
 
 	@RequestMapping("/delete.do")

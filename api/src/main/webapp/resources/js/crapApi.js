@@ -267,3 +267,19 @@ function needHiddenModule() {
 		iShow("roleModuleId");
 	}
 }
+// 创建kindEditory
+function createKindEditor(id,modelField){
+	var root = getRootScope();
+	$("#"+id).val(root.model[modelField]);
+	
+	var editor =  KindEditor.create('#'+id,{
+        uploadJson : 'file/upload.do',
+        filePostName: 'img',
+        allowFileManager : true,
+        afterBlur: function () { 
+        	editor.sync();
+        	root.model[modelField] = $('#editor_id').val();
+        }
+	});
+	changeDisplay('kindEditor','defEditor')
+}

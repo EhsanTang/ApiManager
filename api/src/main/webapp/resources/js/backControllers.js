@@ -84,6 +84,10 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 			 }
 		});
 	}
+	$scope.loginOut = function(){
+		callAjaxByName("iUrl=loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+		location.href="web.do#/webWebPage/detail/PAGE/WELCOME";
+	}
     $scope.getData();
 });
 /**************************后端接口列表****************************/

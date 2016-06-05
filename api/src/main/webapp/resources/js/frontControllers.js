@@ -159,6 +159,10 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
 			$rootScope.fontMenus = result.data.menuList;
 		});
     };
+    $scope.loginOut = function(){
+		callAjaxByName("iUrl=loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+		location.reload();
+	}
     $scope.getData();
 });
 webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {

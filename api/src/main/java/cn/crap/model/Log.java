@@ -16,7 +16,7 @@ import cn.crap.framework.base.BaseModel;
 public class Log extends BaseModel{
 	private String id;
 	private String modelCalss;// 数据对应的class类
-	private String user;//用户
+	private String updateBy;//用户
 	private String remark;//备注
 	private String modelName;// 前端展示的名称：如接口、菜单....
 	private String type;//操作类型：删除、修改
@@ -40,12 +40,12 @@ public class Log extends BaseModel{
 		this.modelCalss = modelCalss;
 	}
 	
-	@Column(name="user")
-	public String getUser() {
-		return user;
+	@Column(name="updateBy")
+	public String getUpdateBy() {
+		return updateBy;
 	}
-	public void setUser(String user) {
-		this.user = user;
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
 	}
 	
 	@Column(name="remark")

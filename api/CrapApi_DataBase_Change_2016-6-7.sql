@@ -8,7 +8,7 @@ CREATE TABLE `log` (
   `modelClass` varchar(50) NOT NULL,
   `modelName` varchar(50) NOT NULL,
   `type` varchar(20) NOT NULL,
-  `user` varchar(50) NOT NULL DEFAULT '' COMMENT '操作人',
+  `updateBy` varchar(50) NOT NULL DEFAULT '' COMMENT '操作人',
   `remark` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

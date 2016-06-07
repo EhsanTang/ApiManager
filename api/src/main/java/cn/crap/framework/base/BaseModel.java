@@ -1,10 +1,14 @@
 package cn.crap.framework.base;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 public abstract class BaseModel{
+	protected String id;
 	protected String createTime;
 	/**
 	 * -1:删除，0:不可用，1:可用
@@ -12,6 +16,16 @@ public abstract class BaseModel{
 	protected byte status;
 	protected int sequence;// 排序
 	
+	@Id
+	@GeneratedValue(generator="Generator")
+	@Column(name="id")
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Column(name="sequence")
 	public int getSequence() {
 		return sequence;
@@ -34,6 +48,10 @@ public abstract class BaseModel{
 		this.status = status;
 	}
 	
+	@Transient
+	public String getLogRemark(){
+		return "";
+	}
 	
 	
 }

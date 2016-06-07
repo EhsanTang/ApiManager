@@ -1,22 +1,33 @@
 package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.crap.inter.dao.ILogDao;
+import cn.crap.model.Log;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.LogType;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
+import net.sf.json.JSONObject;
 
 public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	protected IBaseDao<T> dao;
 	//空对象，避免空指针异常（当没有找到数据时，返回一个新的对象，该对象在类实例化时由子类调用setDao注入）
 	private T model = null;
+	@Autowired
+	private ILogDao logDao;
 	
 	
 	public void setDao(IBaseDao<T> dao, T model) {
 		this.dao = dao;
 		this.model = model;
 	}
-
+	
 	/**
 	 * 保存对象
 	 * */
@@ -37,30 +48,41 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 		dao.update(hql, map);
 	}
 	
-	/**
-	 * 批量保存对象
-	 * */
-	@Override
-	public List<T> saveAll(List<T> list){
-		dao.saveAll(list);
-		return list;
-	}
+//	/**
+//	 * 批量保存对象
+//	 * */
+//	@Override
+//	public List<T> saveAll(List<T> list){
+//		dao.saveAll(list);
+//		return list;
+//	}
 
 	/**
-	 * 根据示例对象删除
+	 * 删除前，先将对象数据存入log对象
 	 * */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(T model, String modelName, String remark){
+		model = get(model.getId());
+		if(MyString.isEmpty(remark))
+			remark = "删除："+model.getLogRemark();
+		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(), model.getClass().getSimpleName());
+		logDao.save(log);
+		dao.delete(model);
+	}
+	
 	@Override
 	public void delete(T model){
 		dao.delete(model);
 	}
 
-	/**
-	 * 根据示例对象集合删除
-	 * */
-	@Override
-	public void deleteAll(List<T> list){
-		dao.deleteAll(list);
-	}
+//	/**
+//	 * 根据示例对象集合删除
+//	 * */
+//	@Override
+//	public void deleteAll(List<T> list){
+//		dao.deleteAll(list);
+//	}
 
 	/**
 	 * 根据主键获取对象
@@ -108,4 +130,5 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	public List<?> queryByHql(String hql, Map<String, Object> map){
 		return  dao.queryByHql(hql, map);
 	}
+	
 }

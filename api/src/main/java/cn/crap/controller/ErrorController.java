@@ -43,8 +43,8 @@ public class ErrorController extends BaseController<Error>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Error error){
-		if(!error.getErrorId().equals(Const.NULL_ID)){
-			model= errorService.get(error.getErrorId());
+		if(!error.getId().equals(Const.NULL_ID)){
+			model= errorService.get(error.getId());
 		}else{
 			model=new Error();
 			model.setModuleId(error.getModuleId());
@@ -57,10 +57,10 @@ public class ErrorController extends BaseController<Error>{
 	@AuthPassport(authority=Const.AUTH_ERROR)
 	public JsonResult addOrUpdate(@ModelAttribute Error error){
 		try{
-			if(!MyString.isEmpty(error.getErrorId())){
+			if(!MyString.isEmpty(error.getId())){
 				errorService.update(error);
 			}else{
-				error.setErrorId(null);
+				error.setId(null);
 				if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"moduleId",error.getModuleId()))==0){
 					errorService.save(error);
 				}else{
@@ -75,7 +75,7 @@ public class ErrorController extends BaseController<Error>{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
-		error = errorService.get(error.getErrorId());
+		error = errorService.get(error.getId());
 		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(), error.getModuleId());
 		errorService.delete(error);
 		return new JsonResult(1,null);

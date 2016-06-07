@@ -34,7 +34,7 @@ public class PickFactory {
 		// 一级菜单
 		case "MENU":
 			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getMenuId(), m.getMenuName());
+				pick = new PickDto(m.getId(), m.getMenuName());
 				picks.add(pick);
 			}
 			break;
@@ -55,7 +55,7 @@ public class PickFactory {
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getModuleId(), DataType.ERROR.name() + "_" + m.getModuleId(),
+				pick = new PickDto(m.getId(), DataType.ERROR.name() + "_" + m.getId(),
 						m.getModuleName() + "--【错误码】");
 				picks.add(pick);
 			}
@@ -74,7 +74,7 @@ public class PickFactory {
 			pick = new PickDto(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto("w_d_" + m.getModuleId(), DataType.DICTIONARY.name() + "_" + m.getModuleId(),
+				pick = new PickDto("w_d_" + m.getId(), DataType.DICTIONARY.name() + "_" + m.getId(),
 						m.getModuleName());
 				picks.add(pick);
 			}
@@ -93,7 +93,7 @@ public class PickFactory {
 			picks.add(pick);
 			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0", "type", MenuType.BACK.name()), null,
 					null)) {
-				pick = new PickDto(m.getMenuId(), m.getMenuName() + "--【菜单】");
+				pick = new PickDto(m.getId(), m.getMenuName() + "--【菜单】");
 				picks.add(pick);
 			}
 			break;
@@ -103,7 +103,7 @@ public class PickFactory {
 			pick = new PickDto(Const.SUPER, "超级管理员");
 			picks.add(pick);
 			for (Role r : roleService.findByMap(null, null, null)) {
-				pick = new PickDto(r.getRoleId(), r.getRoleName());
+				pick = new PickDto(r.getId(), r.getRoleName());
 				picks.add(pick);
 			}
 			break;
@@ -111,7 +111,7 @@ public class PickFactory {
 		// 顶级模块
 		case "TOPMODULE":
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getModuleId(), m.getModuleName());
+				pick = new PickDto(m.getId(), m.getModuleName());
 				picks.add(pick);
 			}
 			break;
@@ -180,7 +180,7 @@ public class PickFactory {
 				module = moduleService.get(module.getParentId());
 			}
 			for (Error error : errorService.findByMap(
-					Tools.getMap("moduleId", module == null ? "" : module.getModuleId()), null, "errorCode asc")) {
+					Tools.getMap("moduleId", module == null ? "" : module.getId()), null, "errorCode asc")) {
 				pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 				picks.add(pick);
 			}
@@ -249,7 +249,7 @@ public class PickFactory {
 				picks.add(pick);
 				preUrl = "web.do#/webError/list/";
 				for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-					pick = new PickDto("e_" + m.getModuleId(), preUrl + m.getModuleId(), m.getModuleName());
+					pick = new PickDto("e_" + m.getId(), preUrl + m.getId(), m.getModuleName());
 					picks.add(pick);
 				}
 				// 分割线
@@ -297,7 +297,7 @@ public class PickFactory {
 			List<Module> modules = (List<Module>) moduleService
 					.queryByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)",null);
 			for (Module m : modules) {
-				pick = new PickDto(m.getModuleId(), m.getModuleName());
+				pick = new PickDto(m.getId(), m.getModuleName());
 				picks.add(pick);
 			}
 			break;

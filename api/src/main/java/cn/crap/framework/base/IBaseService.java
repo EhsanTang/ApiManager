@@ -2,6 +2,7 @@ package cn.crap.framework.base;
 
 import java.util.List;
 import java.util.Map;
+
 import cn.crap.utils.Page;
 
 public interface IBaseService<T extends BaseModel> {
@@ -13,20 +14,20 @@ public interface IBaseService<T extends BaseModel> {
 
 	public void update(T model);
 	
-	/**
-	 * 批量保存对象
-	 * */
-	public List<T> saveAll(List<T> list);
+//	/**
+//	 * 批量保存对象
+//	 * */
+//	public List<T> saveAll(List<T> list);
 
 	/**
 	 * 根据示例对象删除
 	 * */
 	public void delete(T model);
-
-	/**
-	 * 根据示例对象集合删除
-	 * */
-	public void deleteAll(List<T> list);
+//
+//	/**
+//	 * 根据示例对象集合删除
+//	 * */
+//	public void deleteAll(List<T> list);
 
 	/**
 	 * 根据主键获取对象
@@ -62,5 +63,9 @@ public interface IBaseService<T extends BaseModel> {
 	List<?> queryByHql(String hql, Map<String, Object> map);
 
 	void update(String hql, Map<String, Object> map);
+	/**
+	 * 删除前，先将对象数据存入log对象
+	 * */
+	void delete(T model, String modelName, String remark);
 
 }

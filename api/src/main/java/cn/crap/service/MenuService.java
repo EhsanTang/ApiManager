@@ -49,7 +49,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		map.clear();
 		List<String> menuIds = new ArrayList<String>();
 		for (Menu menu : menus) {
-			menuIds.add(menu.getMenuId());
+			menuIds.add(menu.getId());
 		}
 		map.put("parentId|in", menuIds);
 		List<Menu> subMenus = findByMap(map, null, null);
@@ -59,7 +59,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			menuVO.setMenu(menu);
 			menuVO.setSubMenu(new ArrayList<Menu>());
 			for (Menu subMenu : subMenus) {
-				if (subMenu.getParentId().equals(menu.getMenuId())) {
+				if (subMenu.getParentId().equals(menu.getId())) {
 					menuVO.getSubMenu().add(subMenu);
 				}
 			}

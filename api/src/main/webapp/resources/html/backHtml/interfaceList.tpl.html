@@ -35,7 +35,7 @@
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
 	<a type="button" class="btn btn-success btn-sm cursor" ng-if="list.interfaces.length<=0&&showOperation('MODULE',$stateParams.moduleId)"
-		ng-click="detail('新增',700,'module/detail.do?moduleId=NULL','&parentId='+$stateParams.moduleId)"> 
+		ng-click="detail('新增',700,'module/detail.do?id=NULL','&parentId='+$stateParams.moduleId)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;
 		<!-- 一级模块显示为项目，其他均为模块 -->
 		<span ng-if="$stateParams.moduleId=='0'">新增项目</span>
@@ -63,22 +63,22 @@
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc w300">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('MODULE',$stateParams.moduleId)"
-					ng-click="detail('编辑【'+item.moduleName+'】',700,'module/detail.do?moduleId='+item.moduleId)"
+					ng-click="detail('编辑【'+item.moduleName+'】',700,'module/detail.do?id='+item.id)"
 					data-toggle="tooltip" data-placement="top"
 					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/interface/list/{{item.moduleId}}/{{item.moduleName}}"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/interface/list/{{item.id}}/{{item.moduleName}}"> 
 					<i class="iconfont f12">&#xe60f;查看接口</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('MODULE',$stateParams.moduleId)"
-					ng-click="del('module/delete.do?moduleId='+item.moduleId,item.moduleName)">
+					ng-click="del('module/delete.do?id='+item.id,item.moduleName)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				<div class="w50 fr tl">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('module',item.moduleId,list.modules[$index-1].moduleId)" ng-if="$index>0">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('module',item.id,list.modules[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('module',item.moduleId,list.modules[$index+1].moduleId)" ng-if="$index<list.modules.length-1">
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('module',item.id,list.modules[$index+1].id)" ng-if="$index<list.modules.length-1">
 						<i class="iconfont f12">&#xe624;</i>
 					</a>
 				</div>

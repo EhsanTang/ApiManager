@@ -35,8 +35,8 @@ public class RoleController extends BaseController<Role>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Role role){
-		if(!role.getRoleId().equals(Const.NULL_ID)){
-			model= roleService.get(role.getRoleId());
+		if(!role.getId().equals(Const.NULL_ID)){
+			model= roleService.get(role.getId());
 		}else{
 			model=new Role();
 		}
@@ -47,10 +47,10 @@ public class RoleController extends BaseController<Role>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ROLE)
 	public JsonResult addOrUpdate(@ModelAttribute Role role){
-		if(!MyString.isEmpty(role.getRoleId())){
+		if(!MyString.isEmpty(role.getId())){
 			roleService.update(role);
 		}else{
-			role.setRoleId(null);
+			role.setId(null);
 			roleService.save(role);
 		}
 		return new JsonResult(1,role);

@@ -28,12 +28,12 @@ public class ModuleService extends BaseService<Module>
 		PickDto pick = null;
 		for (Module m : findByMap(Tools.getMap("parentId",parentId), null,null)) {
 			if(value==null)
-				pick = new PickDto(idPre+m.getModuleId(), deep+m.getModuleName());
+				pick = new PickDto(idPre+m.getId(), deep+m.getModuleName());
 			else
-				pick = new PickDto(idPre+m.getModuleId(),
-						value.replace("moduleId", m.getModuleId()).replace("moduleName", m.getModuleName()),deep+m.getModuleName()+suffix);
+				pick = new PickDto(idPre+m.getId(),
+						value.replace("moduleId", m.getId()).replace("moduleName", m.getModuleName()),deep+m.getModuleName()+suffix);
 			picks.add(pick);
-			getModulePick(picks,idPre,m.getModuleId(),deep+"- - - ",value,suffix);
+			getModulePick(picks,idPre,m.getId(),deep+"- - - ",value,suffix);
 		}
 	}
 	@Override

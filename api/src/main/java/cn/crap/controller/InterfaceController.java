@@ -189,7 +189,7 @@ public class InterfaceController extends BaseController<Interface>{
 			while (module != null && !module.getParentId().equals("0")) {
 				module = moduleService.get(module.getParentId());
 			}
-			map.put("moduleId", module.getModuleId());
+			map.put("moduleId", module.getId());
 			List<Error> errors = errorService.findByMap(map, null,
 					null);
 			interFace.setErrors(JSONArray.fromObject(errors).toString());
@@ -231,7 +231,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
-		interfaceService.delete(interFace);
+		interfaceService.delete(interFace, "删除接口", "");
 		return new JsonResult(1, null);
 	}
 

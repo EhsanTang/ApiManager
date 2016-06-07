@@ -2,8 +2,6 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -18,7 +16,6 @@ import cn.crap.utils.WebPageType;
 @Table(name="webpage")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class WebPage extends BaseModel{
-	private String id;
 	private String name;
 	private String brief;
 	private String content;
@@ -54,16 +51,6 @@ public class WebPage extends BaseModel{
 				return module.getModuleName();
 		}
 		return "";
-	}
-	
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="id")
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	@Column(name="category")

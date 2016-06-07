@@ -67,7 +67,7 @@ public class Cache {
 		}
 	}
 	public static void setModule(Module module){
-		moduleMap.put(module.getModuleId(), module);
+		moduleMap.put(module.getId(), module);
 	}
 	
 	/************刷新缓存*******************/

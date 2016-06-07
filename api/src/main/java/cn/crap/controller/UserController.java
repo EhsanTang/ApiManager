@@ -38,8 +38,8 @@ public class UserController extends BaseController<User>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute User user){
-		if(!user.getUserId().equals(Const.NULL_ID)){
-			user= userService.get(user.getUserId());
+		if(!user.getId().equals(Const.NULL_ID)){
+			user= userService.get(user.getId());
 		}else{
 			user=new User();
 		}
@@ -53,7 +53,7 @@ public class UserController extends BaseController<User>{
 	public JsonResult addOrUpdate(@ModelAttribute User user) throws MyException{
 		// 判断是否重名
 		List<User> users = userService.findByMap(Tools.getMap("userName", user.getUserName()), null, null);
-		if(users.size()>0 && !users.get(0).getUserId().equals(user.getUserId())){
+		if(users.size()>0 && !users.get(0).getId().equals(user.getId())){
 			throw new MyException("000015");
 		}
 		
@@ -63,8 +63,8 @@ public class UserController extends BaseController<User>{
 		}
 		
 		User temp = null;
-		if(!MyString.isEmpty(user.getUserId())){
-			temp = userService.get(user.getUserId());
+		if(!MyString.isEmpty(user.getId())){
+			temp = userService.get(user.getId());
 		}
 		
 		// 如果不是最高管理员，不允许修改权限、角色
@@ -93,7 +93,7 @@ public class UserController extends BaseController<User>{
 			userService.update(user);
 		}else{
 			user.setStatus(Byte.valueOf("1"));
-			user.setUserId(null);
+			user.setId(null);
 			userService.save(user);
 		}
 		user.setPassword("");

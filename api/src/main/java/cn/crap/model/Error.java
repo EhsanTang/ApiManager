@@ -2,8 +2,6 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -18,7 +16,6 @@ import cn.crap.utils.MyString;
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Error extends BaseModel{
 
-	private String errorId;
 	private String errorCode;
 	private String errorMsg;
 	private String moduleId;
@@ -31,17 +28,6 @@ public class Error extends BaseModel{
 				return module.getModuleName();
 		}
 		return "";
-	}
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="errorId")
-	public String getErrorId() {
-		return errorId;
-	}
-
-	public void setErrorId(String errorId) {
-		this.errorId = errorId;
 	}
 
 	@Column(name="errorCode")

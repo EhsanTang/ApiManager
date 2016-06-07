@@ -2,8 +2,6 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -15,22 +13,10 @@ import cn.crap.framework.base.BaseModel;
 @Table(name="module")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Module extends BaseModel{
-	private String moduleId;
 	private String moduleName;
 	private String parentId;
 	private String password;
 
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="moduleId")
-	public String getModuleId() {
-		return moduleId;
-	}
-
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
-	}
-	
 	@Column(name="password")
 	public String getPassword() {
 		return password;

@@ -63,16 +63,16 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
     	return false;
     }
     /***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
-	$scope.canSeeMenu = function(menuId,type){
-		if(!menuId||menuId==""||type!="BACK")
+	$scope.canSeeMenu = function(id,type){
+		if(!id||id==""||type!="BACK")
 			return false;
 		var auth = $("#sessionAuth").val();
-		if((","+auth+",").indexOf(","+menuId+",")>=0)
+		if((","+auth+",").indexOf(","+id+",")>=0)
 			return true;
 		return false;
 	}
-	$scope.profile = function(userId){
-		var params = "iUrl=user/detail.do?userId="+userId+"|iLoading=FLOAT";
+	$scope.profile = function(id){
+		var params = "iUrl=user/detail.do?id="+id+"|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

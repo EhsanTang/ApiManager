@@ -41,8 +41,8 @@ public class MenuController extends BaseController<Menu> {
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu) {
-		if (!menu.getMenuId().equals(Const.NULL_ID)) {
-			model = menuService.get(menu.getMenuId());
+		if (!menu.getId().equals(Const.NULL_ID)) {
+			model = menuService.get(menu.getId());
 		} else {
 			model = new Menu();
 			model.setParentId(menu.getParentId());
@@ -53,7 +53,6 @@ public class MenuController extends BaseController<Menu> {
 	}
 
 	/**
-	 * roleIds=0 表示前端菜单
 	 * 
 	 * @param menu
 	 * @return
@@ -65,13 +64,13 @@ public class MenuController extends BaseController<Menu> {
 		try {
 			// 子菜单类型和父菜单类型一致
 			Menu parentMenu = menuService.get(menu.getParentId());
-			if (parentMenu != null && parentMenu.getMenuId()!=null)
+			if (parentMenu != null && parentMenu.getId()!=null)
 				menu.setType(parentMenu.getType());
 
-			if (!MyString.isEmpty(menu.getMenuId())) {
+			if (!MyString.isEmpty(menu.getId())) {
 				menuService.update(menu);
 			} else {
-				menu.setMenuId(null);
+				menu.setId(null);
 				menuService.save(menu);
 			}
 		} catch (Exception e) {

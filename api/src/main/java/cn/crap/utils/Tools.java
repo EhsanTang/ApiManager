@@ -64,7 +64,7 @@ public class Tools {
 		// 管理员修改自己的资料
 		if(authPassport.equals("USER") && request != null){
 			// 如果session中的管理员id和参数中的id一致
-			if( MyString.isEquals(  session.getAttribute(Const.SESSION_ADMIN_ID).toString(),  MyString.getValueFromRequest(request, "userId", "-1")  )  ){
+			if( MyString.isEquals(  session.getAttribute(Const.SESSION_ADMIN_ID).toString(),  MyString.getValueFromRequest(request, "id", "-1")  )  ){
 				return true;
 			}
 		}

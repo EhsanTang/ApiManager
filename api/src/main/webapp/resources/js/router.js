@@ -132,6 +132,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/backHtml/userDetail.tpl.html'
 			}
 		}
+	}).state('logList', {
+		url : '/log/list',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/logList.tpl.html'
+			},
+			'page@logList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/backHtml/logDetail.tpl.html';
+				}
+			}
+		}
 	})
 	/*********************前端*******************/
 	$stateProvider.state('webSettingDetail', {

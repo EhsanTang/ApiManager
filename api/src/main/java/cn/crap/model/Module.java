@@ -3,10 +3,13 @@ package cn.crap.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.Cache;
+import cn.crap.utils.MyString;
 
 
 @Entity
@@ -16,6 +19,12 @@ public class Module extends BaseModel{
 	private String moduleName;
 	private String parentId;
 	private String password;
+
+	public Module(){};
+	public Module(String parentId, String moduleName) {
+		this.parentId = parentId;
+		this.moduleName = moduleName;
+	}
 
 	@Column(name="password")
 	public String getPassword() {
@@ -44,5 +53,14 @@ public class Module extends BaseModel{
 		this.parentId = parentId;
 	}
 
+	@Transient
+	public String getParentName(){
+		if(!MyString.isEmpty(parentId)){
+			Module module = Cache.getModule(parentId);
+			if(module!=null)
+				return module.getModuleName();
+		}
+		return "";
+	}
 
 }

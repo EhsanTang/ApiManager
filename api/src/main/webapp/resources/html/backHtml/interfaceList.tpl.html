@@ -30,11 +30,11 @@
 </div>
 <div class="col-xs-12 mt20 p0 mb10 f14 tr">
 	
-	<a type="button" class="btn btn-success btn-sm cursor" ng-if="$stateParams.moduleId!='0'&&list.modules.length<=0&&showOperation('INTERFACE',$stateParams.moduleId)"
+	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('INTERFACE',$stateParams.moduleId)"
 		ng-click="detail('新增接口',1100,'interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId,initEditInterFace)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
-	<a type="button" class="btn btn-success btn-sm cursor" ng-if="list.interfaces.length<=0&&showOperation('MODULE',$stateParams.moduleId)"
+	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('MODULE',$stateParams.moduleId)"
 		ng-click="detail('新增',700,'module/detail.do?id=NULL','&parentId='+$stateParams.moduleId)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;
 		<!-- 一级模块显示为项目，其他均为模块 -->

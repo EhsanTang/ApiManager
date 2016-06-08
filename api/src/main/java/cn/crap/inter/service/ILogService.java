@@ -5,4 +5,6 @@ import cn.crap.model.Log;
 
 public interface ILogService extends IBaseService<Log>{
 
+	void recover(Log log);
+
 }

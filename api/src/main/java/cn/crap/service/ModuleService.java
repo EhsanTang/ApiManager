@@ -37,6 +37,7 @@ public class ModuleService extends BaseService<Module>
 		}
 	}
 	@Override
+	@Transactional
 	public void getModulePick(List<PickDto> picks,String idPre,String parentId,String deep,String value){
 		getModulePick(picks,idPre,parentId,deep,value,"");
 	}

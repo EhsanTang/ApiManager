@@ -32,6 +32,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * 保存对象
 	 * */
 	@Override
+	@Transactional
 	public T save(T model){
 		model.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		dao.save(model);
@@ -39,23 +40,31 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	}
 
 	@Override
+	@Transactional
 	public void update(T model) {
 		dao.update(model);
 	}
 	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void update(T model, String modelName, String remark) {
+		T oldModel = dao.get(model.getId());
+		if(MyString.isEmpty(remark))
+			remark = "修改："+oldModel.getLogRemark();
+		Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(oldModel).toString(),
+				model.getClass().getSimpleName(), model.getId());
+		logDao.save(log);
+		dao.update(model);
+	}
+	
+	
+	
+	@Override
+	@Transactional
 	public void update(String hql, Map<String, Object> map) {
 		dao.update(hql, map);
 	}
 	
-//	/**
-//	 * 批量保存对象
-//	 * */
-//	@Override
-//	public List<T> saveAll(List<T> list){
-//		dao.saveAll(list);
-//		return list;
-//	}
 
 	/**
 	 * 删除前，先将对象数据存入log对象
@@ -66,28 +75,24 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 		model = get(model.getId());
 		if(MyString.isEmpty(remark))
 			remark = "删除："+model.getLogRemark();
-		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(), model.getClass().getSimpleName());
+		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(),
+				model.getClass().getSimpleName(), model.getId());
 		logDao.save(log);
 		dao.delete(model);
 	}
 	
 	@Override
+	@Transactional
 	public void delete(T model){
 		dao.delete(model);
 	}
 
-//	/**
-//	 * 根据示例对象集合删除
-//	 * */
-//	@Override
-//	public void deleteAll(List<T> list){
-//		dao.deleteAll(list);
-//	}
 
 	/**
 	 * 根据主键获取对象
 	 * */
 	@Override
+	@Transactional
 	public T get(String id){
 		if(MyString.isEmpty(id))
 			return model;
@@ -102,6 +107,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * 根据示例对象获取对象列表
 	 * */
 	@Override
+	@Transactional
 	public List<T> findByExample(T model){
 		return dao.findByExample(model);
 	}
@@ -110,23 +116,27 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	 * 根据示例对象获取对象列表
 	 * */
 	@Override
+	@Transactional
 	public List<T> loadAll(T model){
 		return dao.loadAll(model);
 	}
 
 	@Override
+	@Transactional
 	public List<T> findByMap(Map<String, Object> map,
 			Page page, String order) {
 		return dao.findByMap(map, page, order);
 	}
 	
 	@Override
+	@Transactional
 	public int getCount(Map<String, Object> map) {
 		String conditions = Tools.getHql(map);
 		return dao.getCount(map,conditions);
 	}
 	
 	@Override
+	@Transactional
 	public List<?> queryByHql(String hql, Map<String, Object> map){
 		return  dao.queryByHql(hql, map);
 	}

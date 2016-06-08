@@ -117,6 +117,9 @@
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="index.do#/webPage/list/ARTICLE" onclick="selectButton(this,'menu-a')">文章管理</a>
 								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="index.do#/log/list" onclick="selectButton(this,'menu-a')">日志管理</a>
+								</div>
 							</div>
 						</div>
 					
@@ -206,8 +209,8 @@
 <div id="myDialog" class="look-up shadow r2 bottom-radius pt50">
 		<div id="myDialog-title" class="CFFF f20 fb shadow" style="margin-top:-50px;line-height:50px;padding-left:20px;height:50px;">
 		</div>
-		<div id="myDialogContent" class="look-up-content b0 f12 tc p30 BGFFF bottom-radius">
-			<button type="button" class="btn btn-danger btn-xs break-word" ng-if="error">
+		<div id="myDialogContent" class="look-up-content b0 f12 tl p30 BGFFF bottom-radius">
+			<button type="button" class="btn btn-danger btn-xs break-word ml10" ng-if="error">
 					<span class="glyphicon glyphicon-remove"></span>
 					<span ng-bind="error"></span>
 			</button>

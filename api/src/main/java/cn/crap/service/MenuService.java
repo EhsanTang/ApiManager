@@ -43,6 +43,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	}
 
 	@Override
+	@Transactional
 	public List<MenuDto> getLeftMenu(Map<String,Object> map) {
 		map = Tools.getMap("parentId", "0");
 		List<Menu> menus = findByMap(map, null, null);

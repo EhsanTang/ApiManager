@@ -259,3 +259,11 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
 		$("#"+targetId).removeClass('none');
     };
 });
+/**************************日志列表****************************/
+mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=log/list.do|iLoading=FLOAT|iParams=&modelName="+$stateParams.modelName;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});

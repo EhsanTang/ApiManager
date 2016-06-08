@@ -3,10 +3,11 @@ package cn.crap.framework.base;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.hibernate.Query;
 import org.springframework.orm.hibernate4.HibernateTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -30,59 +31,38 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	}
 
 	@Override
-	@Transactional
 	public T save(T t) {
 		hibernateTemplate.save(entityName, t);
 		return t;
 	}
 
-	@Override
-	@Transactional
-	public List<T> saveAll(List<T> list) {
-		for (T t : list) {
-			hibernateTemplate.merge(entityName, t);
-		}
-		return list;
-	}
 
 	@Override
-	@Transactional
 	public void delete(T t) {
 		hibernateTemplate.delete(entityName, t);
 	}
 
 	@Override
-	@Transactional
-	public void deleteAll(List<T> list) {
-		hibernateTemplate.deleteAll(list);
-	}
-
-	@Override
-	@Transactional
 	public T get(String m) {
 		return (T) hibernateTemplate.get(entity, m);
 	}
 
 	@Override
-	@Transactional
 	public List<T> findByExample(T t) {
 		return hibernateTemplate.findByExample(entityName, t);
 	}
 
 	@Override
-	@Transactional
 	public List<T> loadAll(T t) {
 		return hibernateTemplate.loadAll(entity);
 	}
 
 	@Override
-	@Transactional
 	public void update(T t) {
-		 hibernateTemplate.update(t);
+		 hibernateTemplate.merge(t);
 	}
 	
 	@Override
-	@Transactional
 	public int update(String hql, Map<String, Object> map) {
 		Query query = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(hql);  
 		Tools.setQuery(map, query);
@@ -90,7 +70,6 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	}
 	
 	@Override
-	@Transactional
 	public List<?> queryByHql(String hql, Map<String, Object> map) {
 		Query query = hibernateTemplate.getSessionFactory().getCurrentSession()
 				.createQuery(hql);
@@ -99,7 +78,6 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	}
 	
 	@Override
-	@Transactional
 	public int getCount(Map<String, Object> map, String conditions) {
 		String hql = "select count(*) from " + entity.getSimpleName() + conditions;
 		
@@ -110,7 +88,6 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	}
 
 	@Override
-	@Transactional
 	public List<T> findByMap(Map<String, Object> map,
 			Page pageBean, String order) {
 		String conditions = Tools.getHql(map);
@@ -126,4 +103,10 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 		Tools.setQuery(map, query);
 		return query.list();
 	}
+	
+	@Override
+	public HibernateTemplate gethibernateTemplate(){
+		return hibernateTemplate;
+	}
+	
 }

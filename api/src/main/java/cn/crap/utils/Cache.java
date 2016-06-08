@@ -50,6 +50,9 @@ public class Cache {
 	/*************将module放入缓存***********/
 	private static ConcurrentHashMap<String,Module> moduleMap=new ConcurrentHashMap<String,Module>();
 	public static Module getModule(String moduleId){
+		if(moduleId != null && moduleId.equals("0")){
+			return new Module("0", "顶级项目");
+		}
 		if(MyString.isEmpty(moduleId)){
 			return new Module();
 		}

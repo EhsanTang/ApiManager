@@ -215,7 +215,7 @@ public class InterfaceController extends BaseController<Interface>{
 			interfaceService.getInterFaceRequestExam(interFace);
 		}
 		if (!MyString.isEmpty(interFace.getId())) {
-			interfaceService.update(interFace);
+			interfaceService.update(interFace, "接口", "");
 		} else {
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
@@ -231,7 +231,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
-		interfaceService.delete(interFace, "删除接口", "");
+		interfaceService.delete(interFace, "接口", "");
 		return new JsonResult(1, null);
 	}
 

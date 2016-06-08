@@ -87,11 +87,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
-		$rootScope.model.url="";
 		changeDisplay('copyInterFace','interFaceDetail');
 	};
 	$rootScope.del = function(iUrl,id,title){
-		title = title? title:"确认要删除'"+id+"'？";
+		title = title? title:"确认要删除【"+id+"】？";
 		if (confirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
 			httpService.callHttpMethod($http,params).success(function(result) {
@@ -180,6 +179,13 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var content = getParamFromTable("content");
 		$rootScope.model.content = content;
 	}
+	/**
+	 * 查看日志详情回调，格式化数据
+	 */
+	$rootScope.logDetailFormat = function(){
+		$rootScope.model.content  = format($rootScope.model.content);
+	}
+	
 	
 	/**
 	 * 数据字典、文章编辑回调

@@ -20,15 +20,18 @@ public class Log extends BaseModel{
 	private String modelName;// 前端展示的名称：如接口、菜单....
 	private String type;//操作类型：删除、修改
 	private String content;//操作之前的json数据
+	private String identy;//数据唯一标识
+	
 	
 	public Log(){}
-	public Log(String modelName, String remark, String type, String content, String modelClass){
+	public Log(String modelName, String remark, String type, String content, String modelClass,String identy){
 		this.modelName = modelName;
 		this.updateBy = Tools.getRequest().getSession().getAttribute(Const.SESSION_ADMIN).toString();
 		this.remark = remark;
 		this.type = type;
 		this.content = content;
 		this.modelClass = modelClass;
+		this.identy = identy;
 	}
 	@Column(name="modelClass")
 	public String getModelClass() {
@@ -76,6 +79,14 @@ public class Log extends BaseModel{
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	@Column(name="identy")
+	public String getIdenty() {
+		return identy;
+	}
+	public void setIdenty(String identy) {
+		this.identy = identy;
 	}
 	
 }

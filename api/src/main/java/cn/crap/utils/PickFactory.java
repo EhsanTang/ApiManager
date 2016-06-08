@@ -70,6 +70,8 @@ public class PickFactory {
 			picks.add(pick);
 			pick = new PickDto(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
+			pick = new PickDto(DataType.LOG);
+			picks.add(pick);
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
@@ -114,6 +116,7 @@ public class PickFactory {
 				pick = new PickDto(m.getId(), m.getModuleName());
 				picks.add(pick);
 			}
+			picks.add(0,new PickDto("0","顶级项目"));
 			break;
 		
 		// 枚举 接口状态
@@ -197,6 +200,18 @@ public class PickFactory {
 				picks.add(pick);
 			}
 			break;
+		case "MODELNAME":// 数据类型
+			i = 0;
+			@SuppressWarnings("unchecked")
+			List<String> modelNames = (List<String>) webPageService.queryByHql("select distinct modelName from Log", null);
+			for (String w : modelNames) {
+				if (w == null)
+					continue;
+				i++;
+				pick = new PickDto("modelName_" + i, w, w);
+				picks.add(pick);
+			}
+			break;
 		
 		case "MENURUL":
 			
@@ -215,6 +230,8 @@ public class PickFactory {
 				picks.add(pick);
 				// 后端系统设置
 				pick = new PickDto("h_s_0", "index.do#/setting/list/null", "系统设置列表");
+				picks.add(pick);
+				pick = new PickDto("h_l_0", "index.do#/log/list", "日志列表");
 				picks.add(pick);
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
@@ -291,11 +308,12 @@ public class PickFactory {
 						
 		case "ALLMODULE":// 所有模块
 			moduleService.getModulePick(picks, "", "0", "", null);
+			picks.add(0,new PickDto("0","顶级项目"));
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			@SuppressWarnings("unchecked")
 			List<Module> modules = (List<Module>) moduleService
-					.queryByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)",null);
+					.queryByHql("from Module m where m.id not in (select m2.parentId from Module m2)",null);
 			for (Module m : modules) {
 				pick = new PickDto(m.getId(), m.getModuleName());
 				picks.add(pick);

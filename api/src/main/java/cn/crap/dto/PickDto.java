@@ -1,5 +1,7 @@
 package cn.crap.dto;
 
+import cn.crap.utils.DataType;
+
 /**
  * 前端下拉选着框DTO
  * @author Ehsan
@@ -21,6 +23,11 @@ public class PickDto{
 		this.id=id;
 		this.value=id;
 		this.name=name;
+	}
+	public PickDto(DataType dateType){
+		this.id=dateType.name();
+		this.value=dateType.name();
+		this.name=dateType.getName();
 	}
 	public String getId() {
 		return id;

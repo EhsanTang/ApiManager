@@ -32,4 +32,7 @@ CHANGE COLUMN `userId` `id` VARCHAR(50) NOT NULL ;
 ALTER TABLE `api`.`log` 
 ADD COLUMN `content` TEXT NOT NULL AFTER `remark`;
 
+ALTER TABLE `api`.`log` 
+ADD COLUMN `identy` VARCHAR(50) NOT NULL COMMENT '数据唯一主键' AFTER `content`;
+
 

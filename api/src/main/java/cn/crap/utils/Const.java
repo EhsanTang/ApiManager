@@ -24,6 +24,7 @@ public class Const {
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
 	public static final String AUTH_MODULE = "MODULE_"+MODULEID;
 	public static final String AUTH_ROLE = "ROLE";
+	public static final String AUTH_LOG = "LOG";
 	public static final String SEPARATOR = "SEPARATOR";
 	
 	//常量

@@ -62,6 +62,7 @@ public class InterfaceService extends BaseService<Interface>
 	}
 	
 	@Override
+	@Transactional
 	public void getInterFaceRequestExam(Interface interFace) {
 			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
 			if(!MyString.isEmpty(interFace.getParam())){

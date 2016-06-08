@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.PickDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.model.Interface;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Cache;
@@ -35,8 +36,9 @@ import cn.crap.utils.ValidateCodeService;
 public class IndexController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
-	@Autowired
-	private IInterfaceService interfaceService;
+	
+	@Resource(name="dataBaseSearch")
+	private ISearchService searchServer;
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -139,9 +141,8 @@ public class IndexController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("interfaceName|like", keyword);
-		List<Interface> interfaces = interfaceService.findByMap(map, page, null);
-		returnMap.put("interfaces", interfaces);
+		List<SearchDto> searchResults = searchServer.search(keyword, page);
+		returnMap.put("searchResults", searchResults);
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));
 	}

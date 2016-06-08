@@ -5,27 +5,22 @@
 </div>
 
 <div class="col-xs-12 p0">
-	<div ng-if="list.interfaces.length==0" class="tc mt10 mb10 C999"><i class="iconfont f20 mt-5 mr10">&#xe626;</i>没有符合条件的搜索结果</div>
-	<table class="table table-hover" ng-if="list.interfaces.length>0">
+	<div ng-if="list.searchResults.length==0" class="tc mt10 mb10 C999"><i class="iconfont f20 mt-5 mr10">&#xe626;</i>没有符合条件的搜索结果</div>
+	<table class="table table-hover" ng-if="list.searchResults.length>0">
 			<tr class="fb">
 				<th class="tl">名称</th>
 				<th class="tc">版本号</th>
 				<th class="tc">模块</th>
 				<th class="tc"></th>
 			</tr>
-			<tr ng-repeat="item in list.interfaces">
-				<td class="tl">{{item.interfaceName}}</td>
+			<tr ng-repeat="item in list.searchResults">
+				<td class="tl">{{item.title}}</td>
 				<td class="tc">{{item.version}}</td>
 				<td class="tc">{{item.moduleName}}</td>
 				<td class="tr">
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="web.do#/webInterfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
+					ng-href="{{item.url}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
 				</a>
-				<a class="f12 text-primary mr10 cursor"
-					ng-href="web.do#/webInterface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
-				</a>
-				<a class="f12 text-primary mr10 cursor"
-					ng-href="interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
 				</td>
 			</tr>
 	</table>

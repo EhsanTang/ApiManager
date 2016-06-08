@@ -1,3 +1,5 @@
+#2016-6-8 至2016-6-11 V3版本开发和系统结构优化中，githhub上的代码为未经过严格测试的开发代码，请勿部署至生产环境。如需使用，请不是V2版本，后续V3版本发布后升级即可。V2版本源码地址：https://github.com/EhsanTang/CrapApi.V2
+
 # CrapApi
    
 [CrapApi是什么]

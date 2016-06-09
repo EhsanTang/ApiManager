@@ -35,6 +35,8 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 
 部署文档地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/19dc3d5c7-ff3d-4dff-ad72-2212869cd92a
 
+码云源码地址：https://git.oschina.net/CrapApi/CrapApi.git
+
 账号：super 123456 
 游客私有模块访问密码：123
 QQ技术交流群：254450938

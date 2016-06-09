@@ -35,4 +35,9 @@ ADD COLUMN `content` TEXT NOT NULL AFTER `remark`;
 ALTER TABLE `api`.`log` 
 ADD COLUMN `identy` VARCHAR(50) NOT NULL COMMENT '数据唯一主键' AFTER `content`;
 
+INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `createTime`, `status`, `type`, `canDelete`) VALUES ('fpmbdc8b-9cd8-4839-b38a-1cea3ceb3945', 'FONT_FAMILY', '\"Lantinghei SC\", \"Open Sans\", Arial, \"Hiragino Sans GB\", \"Microsoft YaHei\", \"STHeiti\", \"WenQuanYi Micro Hei\", SimSun, sans-serif;
+', '网站字体', '2016-06-09 13:07:37', '1', 'FONTFAMILY', '0');
+
+ALTER TABLE `api`.`setting` 
+CHANGE COLUMN `value` `value` VARCHAR(500) NOT NULL ;
 

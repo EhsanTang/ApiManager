@@ -4,10 +4,6 @@ body{
 	word-wrap:break-word;
 	background-color:#DDD;
 }
-body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
-	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: Tahoma, "SimSun" !important;
-}
 /**火狐红色边框**/
 input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
 table{

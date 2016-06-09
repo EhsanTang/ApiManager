@@ -319,6 +319,12 @@ public class PickFactory {
 				picks.add(pick);
 			}
 			break;
+		case "FONTFAMILY":// 字体
+			for (FontFamilyType font : FontFamilyType.values()) {
+				pick = new PickDto(font.name(), font.getValue(), font.getName());
+				picks.add(pick);
+			}
+			break;
 		}
 	}
 

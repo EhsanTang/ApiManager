@@ -154,7 +154,7 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
 			 }
-			$rootScope.fontSettings = result.data.settingMap;
+			$rootScope.settings = result.data.settingMap;
 			$rootScope.sessionAdminName = result.data.sessionAdminName;
 			$rootScope.fontMenus = result.data.menuList;
 		});

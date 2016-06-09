@@ -42,7 +42,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
 			}else{
-				$rootScope.backSettings = result.data.settingMap;
+				$rootScope.settings = result.data.settingMap;
 				$rootScope.backMenus = result.data.menuList;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;

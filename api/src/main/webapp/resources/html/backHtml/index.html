@@ -1,54 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app" ng-controller="backInit">
 <head>
-<meta charset="UTF-8">
-<title ng-bind="backSettings.TITLE">CrapApi|应用接口管理系统</title>
-<meta charset="UTF-8" />
-<meta name="keywords"
-	content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
-<meta name="description" content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统），api.crap.cn" />
-<link href="{{backSettings.ICON}}" rel="shortcut icon" type="image/x-icon" />
-<link href="{{backSettings.ICON}}" rel="icon" type="image/x-icon" />
-<link href="{{backSettings.ICON}}" rel="shortcut" type="image/x-icon" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
-<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
-
-<style type="text/css">
-@media ( min-width : 1210px) {.container {width: {{backSettings.MAX_WIDTH}}px!important}}
-.BG_COLOR {background-color: {{backSettings.BG_COLOR}}}
-.FOOTER_BG_COLOR {background-color: {{backSettings.FOOTER_BG_COLOR}}}
-.FOOTER_COLOR {color: {{backSettings.FOOTER_COLOR}}}
-.FOOTER_COLOR a {color: {{backSettings.FOOTER_COLOR}}}
-/* 默认主色:#B768A5*/
-.main-bg {background-color: {{backSettings.MAIN_COLOR}}!important;}
-.main-color {color: {{backSettings.MAIN_COLOR}}}
-.interface-detail blockquote {color: {{backSettings.MAIN_COLOR}}}
-.bt-5 {border-top: 5px solid{{backSettings.MAIN_COLOR}}}
-.bl-5 {border-left: 5px solid{{backSettings.MAIN_COLOR}}}
-.menu-a:hover {background-color: {{backSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:1;}
-.iactive {background-color: {{backSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity: 0.8;}
-.pickActive {color: {{backSettings.MAIN_COLOR}}}
-.pickSelect {color: {{backSettings.MAIN_COLOR}}}
-.separator {border-bottom: 1px dotted{{backSettings.MAIN_COLOR}};color: {{backSettings.MAIN_COLOR}}}
-.look-up-content {border-top: 3px solid{{backSettings.MAIN_COLOR}};}
-.sk-wave .sk-rect {background-color: {{backSettings.MAIN_COLOR}}}
-body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
-	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: {{backSettings.FONT_FAMILY}};}
-}
-/****************End:颜色*****************/
-</style>
-
+	<meta charset="UTF-8">
+	<title ng-bind="settings.TITLE">CrapApi|应用接口管理系统</title>
+	<meta name="keywords" content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
+	<meta name="description" content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统），api.crap.cn" />
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+	<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-
-<!-- Top -->
+	<div ng-include="'resources/html/subTpl/css.tpl.html'"></div>
+	<!-- Top -->
 	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
 	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -62,7 +33,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand pt10" href="web.do" target="_blank">
-					<img class="h30" ng-src="{{backSettings.LOGO}}" />
+					<img class="h30" ng-src="{{settings.LOGO}}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">

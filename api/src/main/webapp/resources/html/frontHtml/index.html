@@ -1,58 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app" ng-controller="fontInit">
-<head  >
-<meta charset="UTF-8">
-<title ng-bind="fontSettings.TITLE">CrapApi|接口管理系统</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="keywords"
-	content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
-<meta name="description"
-	content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统），api.crap.cn" />
-<link href="{{fontSettings.ICON}}" rel="shortcut icon" type="image/x-icon" />
-<link href="{{fontSettings.ICON}}" rel="icon" type="image/x-icon" />
-<link href="{{fontSettings.ICON}}" rel="shortcut" type="image/x-icon" />
-<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
-<link
-	href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css" />
-<link href="resources/framework/textAngular-1.5.0/textAngular.css"
-	rel="stylesheet" type="text/css" />
-	
-<style type="text/css"> 
-@media ( min-width : 1210px) {.container {width: {{fontSettings.MAX_WIDTH}}px!important}}
-.BG_COLOR {background-color: {{fontSettings.BG_COLOR}}}
-.FOOTER_BG_COLOR {background-color: {{fontSettings.FOOTER_BG_COLOR}}}
-.FOOTER_COLOR {color: {{fontSettings.FOOTER_COLOR}}}
-.FOOTER_COLOR a {color: {{fontSettings.FOOTER_COLOR}}}
-/* 默认主色:#B768A5*/
-.main-bg {background-color: {{fontSettings.MAIN_COLOR}}!important;}
-.main-color {color: {{fontSettings.MAIN_COLOR}}}
-.interface-detail blockquote {color: {{fontSettings.MAIN_COLOR}}}
-.bt-5 {border-top: 5px solid{{fontSettings.MAIN_COLOR}}}
-.bl-5 {border-left: 5px solid{{fontSettings.MAIN_COLOR}}}
-.menu-a:hover {background-color: {{fontSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:1;}
-.iactive {background-color: {{fontSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity: 0.8;}
-.pickActive {color: {{fontSettings.MAIN_COLOR}}}
-.pickSelect {color: {{fontSettings.MAIN_COLOR}}}
-.separator {border-bottom: 1px dotted{{fontSettings.MAIN_COLOR}};color: {{fontSettings.MAIN_COLOR}}}
-.look-up-content {border-top: 3px solid{{fontSettings.MAIN_COLOR}};}
-.sk-wave .sk-rect {background-color: {{fontSettings.MAIN_COLOR}};}
-body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
-	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: {{fontSettings.FONT_FAMILY}};}
-}
-/****************End:颜色*****************/
-</style>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
+	<meta name="description" content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统），api.crap.cn" />
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+	<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
+	<title ng-bind="settings.TITLE">CrapApi|接口管理系统</title>
 </head>
 <body class="BG_COLOR">
-
-
-
+	<div ng-include="'resources/html/subTpl/css.tpl.html'"></div>
 	<!-- Top -->
 		<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR mb0">
 		<div class="container">
@@ -65,7 +31,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand p0 pt10" href="#">
-					<img class="h30" ng-src="{{fontSettings.LOGO}}" />
+					<img class="h30" ng-src="{{settings.LOGO}}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
@@ -128,41 +94,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 
 
 			<!-- leftMenu -->
-			<div class="col-xs-2 col-sm-2 sidebar BGEEE p20 pt0 pb0 m0 min-h600">
-				<div class="panel-group" id="accordion" role="tablist"
-					aria-multiselectable="true">
-					<div class="panel panel-info no-radius b0 mt0"
-						ng-repeat="item in fontMenus">
-						<div class="panel-heading BGBBB no-radius"
-							data-parent="#accordion" ng-if="item.menu.type=='FRONT'">
-							<div class="a cursor" data-toggle="collapse"
-								data-parent="#accordion" href="#panel{{item.menu.id}}">
-								<div class="f14 mt-3 fl mr10"
-									ng-bind-html="item.menu.iconRemark|trustHtml"></div>
-								<span class="hidden-xs" ng-bind="item.menu.menuName"></span>
-							</div>
-						</div>
-						<div id="panel{{item.menu.id}}"
-							class="panel-collapse BGEEE collapse in"
-							ng-if="item.menu.type=='FRONT'">
-							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
-								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}"
-									onclick="selectButton(this,'menu-a')"
-									ng-bind="subItem.menuName"></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="panel panel-info no-radius b0 mt0">
-						<div class="panel-heading BGBBB no-radius"
-							data-parent="#accordion">
-							<a data-toggle="collapse" data-parent="#accordion" href="#panel3">
-								<div class="f14 mt-3 fl mr10"></div> <span class="hidden-xs">&nbsp;</span>
-							</a>
-						</div>
-					</div>
-
-				</div>
+			<div class="col-xs-2 col-sm-2 sidebar BGEEE p20 pt0 pb0 m0 min-h600" ng-include="'resources/html/subTpl/frontLeft.tpl.html'">
 			</div>
 			<!-- End:leftMenu -->
 
@@ -192,7 +124,10 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 						href="http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
 					</li>
 					<li class="dis-in-tab mr20"><a target="_blank"
-						href="https://github.com/EhsanTang/CrapApi">GitHub源码</a> <span
+						href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a> <span
+						class="bg_line"></span></li>
+					<li class="dis-in-tab mr20"><a target="_blank"
+						href="https://git.oschina.net/CrapApi/CrapApi">源码:码云</a> <span
 						class="bg_line"></span></li>
 					<li class="dis-in-tab mr20" ng-repeat="item in fontMenus"
 						ng-if="item.menu.type=='BOTTOM'"><a target="_blank"
@@ -235,8 +170,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	<script src="resources/framework/jquery.base64.js"></script>
 
 	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
-	<script
-		src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
 	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
 	<script src="resources/js/app.js?v=2010"></script>
 	<script src="resources/js/services.js"></script>
@@ -275,7 +209,7 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 				<div class="input-wrapper mt20 bt1">
 					<input id="password" type="text" placeholder="请输入访问密码">
 				</div>
-				<div class="input-wrapper bt0" ng-if="fontSettings.VISITCODE=='true'">
+				<div class="input-wrapper bt0" ng-if="settings.VISITCODE=='true'">
 						<input type="text" id="visitCode" placeholder="图形验证码">
 						<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
 							data-toggle="tooltip">

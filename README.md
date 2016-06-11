@@ -1,3 +1,5 @@
+#2016-6-8 至2016-6-11 V3版本开发和系统结构优化中，githhub上的代码为未经过严格测试的开发代码，请勿部署至生产环境。如需使用，请部署V2版本，后续V3版本发布后升级即可。V2版本源码地址：https://github.com/EhsanTang/CrapApi.V2
+
 # CrapApi
    
 [CrapApi是什么]
@@ -32,6 +34,8 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 帮助文档地址：http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3
 
 部署文档地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/19dc3d5c7-ff3d-4dff-ad72-2212869cd92a
+
+码云源码地址：https://git.oschina.net/CrapApi/CrapApi.git
 
 账号：super 123456 
 游客私有模块访问密码：123

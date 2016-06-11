@@ -180,7 +180,7 @@ public class LuceneSearchService implements ISearchService{
 		if(hc == null){
 			String content = doc.get(fieldName);
 			if(content != null){
-				hc =  content.substring(0, Math.min(50, content.length())-1);
+				hc =  content.substring(0, Math.min(50, content.length()));
 			}else{
 				hc = "";
 			}

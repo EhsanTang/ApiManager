@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -266,4 +269,17 @@ public class Tools {
 		return new String(outSteam.toByteArray(), encoding);
 	}
 
+	public static String removeHtml(String inputStr){
+		inputStr=inputStr.replaceAll("<[a-zA-Z|//]+[1-9]?[^><]*>", "");
+		inputStr=inputStr.replaceAll("&nbsp;", "");
+		StringBuffer temp=new StringBuffer();
+		String str="[a-z]*[A-Z]*[0-9]*[\u4E00-\u9FA5]*[Ⅰ|,|。|，|.|：|(|)|（|）|:|/]*";
+		Pattern pattern = Pattern.compile(str,Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(inputStr);
+		while (matcher.find())
+		{
+			temp.append(matcher.group());
+		}
+		return temp.toString();
+	}
 }

@@ -2,10 +2,13 @@ package cn.crap.controller;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -25,6 +29,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
@@ -49,7 +54,9 @@ public class InterfaceController extends BaseController<Interface>{
 	private IModuleService moduleService;
 	@Autowired
 	private IErrorService errorService;
-
+	@Resource(name="luceneSearch")
+	private ISearchService searchServer;
+	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
@@ -118,12 +125,13 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/copy.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException {
+	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
 		if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
 		interFace.setId(null);
 		interfaceService.save(interFace);
+		searchServer.add(interFace.toSearchDto());
 		return new JsonResult(1, interFace);
 	}
 	
@@ -172,7 +180,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_INTERFACE)
 	public JsonResult addOrUpdate(
-			@ModelAttribute Interface interFace) {
+			@ModelAttribute Interface interFace) throws IOException {
 		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new MyException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
@@ -216,22 +224,25 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		if (!MyString.isEmpty(interFace.getId())) {
 			interfaceService.update(interFace, "接口", "");
+			searchServer.update(interFace.toSearchDto());
 		} else {
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interfaceService.save(interFace);
+			searchServer.add(interFace.toSearchDto());
 		}
 		return new JsonResult(1, interFace);
 	}
 
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException {
+	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException, IOException {
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
 		interfaceService.delete(interFace, "接口", "");
+		searchServer.delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);
 	}
 

@@ -1,6 +1,9 @@
 package cn.crap.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -10,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
 import cn.crap.model.Module;
@@ -36,6 +41,9 @@ public class WebPageController extends BaseController<WebPage>{
 	private IWebPageService webPageService;
 	@Autowired
 	private ICommentService commentService;
+	
+	@Resource(name="luceneSearch")
+	private ISearchService searchServer;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -100,7 +108,7 @@ public class WebPageController extends BaseController<WebPage>{
 	}
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException{
+	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
 			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
 		}else{
@@ -120,16 +128,18 @@ public class WebPageController extends BaseController<WebPage>{
 				webPage.setCanDelete(Byte.valueOf("0"));
 			}
 			webPageService.update(webPage);
+			searchServer.update(webPage.toSearchDto());
 		}else{
 			webPage.setId(null);
 			webPageService.save(webPage);
+			searchServer.add(webPage.toSearchDto());
 		}
 		return new JsonResult(1,webPage);
 	}
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException{
+	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		webPage = webPageService.get(webPage.getId());
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name()))
 			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
@@ -140,6 +150,7 @@ public class WebPageController extends BaseController<WebPage>{
 			throw new MyException("000009");
 		}
 		webPageService.delete(webPage);
+		searchServer.delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}
 	

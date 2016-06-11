@@ -1,7 +1,5 @@
 package cn.crap.service;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.IWebPageDao;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.WebPage;
-import cn.crap.utils.Tools;
 
 @Service
 public class WebPageService extends BaseService<WebPage>

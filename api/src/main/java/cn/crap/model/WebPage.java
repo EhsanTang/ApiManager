@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
@@ -28,6 +29,27 @@ public class WebPage extends BaseModel{
 	private byte canComment;
 	private int commentCount;
 	private String password;
+	
+	@Transient
+	public SearchDto toSearchDto(){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setContent(brief + content);
+		dto.setModuleName(getModuleName());
+		dto.setTitle(name);
+		dto.setType(WebPage.class.getSimpleName());
+		if(type.equals(WebPageType.ARTICLE.name()))
+			dto.setUrl("web.do#/webWebPage/detail/ARTICLE/"+id);
+		else if(type.equals(WebPageType.DICTIONARY.name()))
+			dto.setUrl("web.do#/webWebPage/detail/DICTIONARY/"+id);
+		else if(type.equals(WebPageType.PAGE.name()))
+			dto.setUrl("web.do#/webWebPage/detail/PAGE/"+key);
+		else
+			dto.setUrl("");
+		dto.setVersion("");
+		return dto;
+	}
 	
 	
 	@Transient

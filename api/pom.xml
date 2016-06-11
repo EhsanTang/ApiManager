@@ -1,28 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cn.crap</groupId>
-  <artifactId>api</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>api Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-    <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.crap</groupId>
+	<artifactId>api</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>api Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<properties>
 		<spring_version>4.2.0.RELEASE</spring_version>
 	</properties>
-  <dependencies>
-  <!-- hibernate -->
-  <dependency>
+	<dependencies>
+		<!-- hibernate -->
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.2.5.Final</version>
 		</dependency>
 		<dependency>
-    <groupId>org.aspectj</groupId>
-    <artifactId>aspectjweaver</artifactId>
-    <version>1.8.9</version>
-</dependency>
-  	<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.9</version>
+		</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
@@ -154,19 +154,40 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- pdf导出 -->
-		
+
 		<dependency>
-		<groupId>com.itextpdf.tool</groupId>
-<artifactId>xmlworker</artifactId>
-<version>5.5.9</version>
-</dependency>
+			<groupId>com.itextpdf.tool</groupId>
+			<artifactId>xmlworker</artifactId>
+			<version>5.5.9</version>
+		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 			<version>4.2.1</version>
 		</dependency>
-  </dependencies>
-  <build>
-    <finalName>api</finalName>
-  </build>
+		<!-- lucene -->
+		<dependency>
+    		<groupId>org.apache.lucene</groupId>
+    		<artifactId>lucene-core</artifactId>
+    		<version>6.0.1</version>
+		</dependency>
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    <version>6.0.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-queryparser</artifactId>
+    <version>6.0.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-highlighter</artifactId>
+    <version>6.0.1</version>
+</dependency>
+	</dependencies>
+	<build>
+		<finalName>api</finalName>
+	</build>
 </project>

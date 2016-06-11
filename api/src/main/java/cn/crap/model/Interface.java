@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
@@ -30,6 +31,22 @@ public class Interface extends BaseModel{
 	private String remark;//备注
 	private String errors;
 	private String version;//版本号
+	
+	@Transient
+	public SearchDto toSearchDto(){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setContent(remark + responseParam + param);
+		dto.setModuleName(getModuleName());
+		dto.setTitle(interfaceName);
+		dto.setType(Interface.class.getSimpleName());
+		dto.setUrl("web.do#/webInterfaceDetail/"+id);
+		dto.setVersion(version);
+		return dto;
+		
+	}
+	
 	
 	@Transient
 	@Override

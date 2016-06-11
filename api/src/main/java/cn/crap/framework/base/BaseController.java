@@ -83,6 +83,7 @@ public abstract class BaseController<T extends BaseModel> {
         if(ex instanceof MyException) {  
             return new JsonResult((MyException)ex);
         } else {  
+        	ex.printStackTrace();
         	log.error(ex.getMessage());
         	ex.printStackTrace();
         	return new JsonResult(new MyException("000001",ex.getMessage()));

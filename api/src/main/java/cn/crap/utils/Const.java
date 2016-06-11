@@ -38,4 +38,5 @@ public class Const {
 	public final static String SETTING_VISITCODE = "VISITCODE";
 	public final static String SETTING_DOMAIN = "DOMAIN";
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
+	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
 }

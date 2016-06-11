@@ -41,3 +41,6 @@ INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `createTime`, `sta
 ALTER TABLE `api`.`setting` 
 CHANGE COLUMN `value` `value` VARCHAR(500) NOT NULL ;
 
+INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `createTime`, `status`, `type`, `canDelete`) 
+VALUES ('fpmbdc00-9cd8-4839-b38a-1cea3ceb3945', 'LUCENE_DIR', '/usr/local/crap/lucene', 'Lucene全文检索文件存储地址', '2016-06-09 13:07:37', '1', 'TEXT', '0');
+

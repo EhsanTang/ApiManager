@@ -251,10 +251,26 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
 		$("#"+targetId).addClass('none');
     };
     $scope.modifyParam = function(editerId,targetId,item,type) {
-    	if(type=='param')
-    		item.param = getParamFromTable('editParamTable');
-    	else if(type="responseParam")
-    		item.responseParam = getParamFromTable('editResponseParamTable');
+    	if(type=='param'){
+    		var json = getParamFromTable('editParamTable');
+    		try{
+    		 eval("("+json+")");
+    		}catch(e){
+    			alert("输入有误，json解析出错："+e);
+    			return;
+    		}
+    		item.param = json	
+    	}
+    	else if(type="responseParam"){
+    		var json = getParamFromTable('editResponseParamTable');
+    		try{
+       		 eval("("+json+")");
+       		}catch(e){
+       			alert("输入有误，json解析出错："+e);
+       			return;
+       		}
+    		item.responseParam = json;
+    	}
     	$("#"+editerId).addClass('none');
 		$("#"+targetId).removeClass('none');
     };

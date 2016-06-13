@@ -76,7 +76,14 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 				 $rootScope.model = result.data;
 				 $rootScope.versions = result.others.versions;
 				 $rootScope.errors = eval("("+result.data.errors+")");
-				 $rootScope.params = eval("("+result.data.param+")");
+				 
+				 // 如果param以form=开头，表示为form表单参数
+				 if(result.data.param.length>5 && result.data.param.substring(0,5)=="form="){
+					 $rootScope.formParams = eval("("+result.data.param.substring(5)+")");
+				 }else{
+					 $rootScope.customParams = result.data.param;
+				 }
+				 
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");
 				 $rootScope.others = result.others;
 				 if(result.data.method)// 调试页面默认显示method中第一个

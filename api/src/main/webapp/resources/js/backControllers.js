@@ -235,10 +235,28 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     $scope.editerParam = function(editerId,targetId,item,tableId) {
     	var params = "";
     	if(tableId=='editParamTable'&&item.param!=''){
-    		params = eval("("+item.param+")");
+    		
+    		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
+    		if(item.param.length<5 || item.param.substring(0,5)!="form="){
+    			alert("参数格式有误，无法解析，请点击【Custom】自定义参数");
+    			return;
+    		}else{
+    			item.iparam = item.param.substring(5);
+    		}
+    		
+    		// 将param转换为json数据
+    		try{
+    			params = eval("("+item.iparam+")");
+    		}catch(e){
+    			alert("参数格式有误，无法解析，请点击【Custom】自定义参数");
+    			return;
+    		}
+    		
     	}else if(tableId=='editResponseParamTable'&&item.responseParam!=''){
     		params = eval("("+item.responseParam+")");
     	}
+    	
+    	
     	$("#"+editerId).find("tbody").find("tr").remove();
     	if(params!=null&&params!=""){
 	    	var i=0;
@@ -259,7 +277,7 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     			alert("输入有误，json解析出错："+e);
     			return;
     		}
-    		item.param = json	
+    		item.param = "form="+json	
     	}
     	else if(type="responseParam"){
     		var json = getParamFromTable('editResponseParamTable');

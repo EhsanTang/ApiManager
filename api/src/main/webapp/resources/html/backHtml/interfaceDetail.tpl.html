@@ -74,40 +74,59 @@
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
 				<tr>
-					<td class="tc">参数</td>
+					<td class="tc">
+						参数<br> 
+						<input type="button" class="btn btn-default btn-sm w100 mt10" value="Form" onclick="changeDisplay('formParam','customParam')">
+						<input type="button" class="btn btn-default btn-sm w100 mt10" value="Custom" onclick="changeDisplay('customParam','formParam')">
+					</td>
 					<td class="tc" colspan="3">
-						<div id="eparam" class="none">
-							<table class="table table-hover" id="editParamTable">
-								<thead>
-									<tr class="btn-purple">
-										<th>名称</th>
-										<th>是否必须</th>
-										<th>类型</th>
-										<th>默认值</th>
-										<th>参数来源</th>
-										<th>备注</th>
-										<th class="w50">操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<button type="button"
-								ng-click="modifyParam('eparam','param',model,'param')"
-								class="btn btn-warning fr ml10">提交修改</button>
-							<button type="button"
-								onclick="addOneParam('','','','','','','','editParamTable')"
-								class="btn btn-success fr ml10">添加</button>
-							<button type="button" onclick="goJsonPage('eparam','param')"
-								class="btn btn-primary fr">返回</button>
+					
+					
+						<!-- form表单参数 -->
+						<div id="formParam">
+							<div id="eparam" class="none">
+								<table class="table table-hover" id="editParamTable">
+									<thead>
+										<tr class="btn-purple">
+											<th>名称</th>
+											<th>是否必须</th>
+											<th>类型</th>
+											<th>默认值</th>
+											<th>参数来源</th>
+											<th>备注</th>
+											<th class="w50">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<button type="button"
+									ng-click="modifyParam('eparam','param',model,'param')"
+									class="btn btn-warning fr ml10">提交修改</button>
+								<button type="button"
+									onclick="addOneParam('','','','','','','','editParamTable')"
+									class="btn btn-success fr ml10">添加</button>
+								<button type="button" onclick="goJsonPage('eparam','param')"
+									class="btn btn-primary fr">返回</button>
+							</div>
+							<div class="input-group w" id="param">
+								<textarea class="form-control no-resize" ng-model="model.param"
+									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
+								<div class="input-group-addon cursor btn-purple"
+									ng-click="editerParam('eparam','param',model,'editParamTable');">
+									编辑</div>
+							</div>
 						</div>
-						<div class="input-group w" id="param">
-							<textarea class="form-control no-resize" ng-model="model.param"
-								rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
-							<div class="input-group-addon cursor btn-purple"
-								ng-click="editerParam('eparam','param',model,'editParamTable');">
-								编辑</div>
+						<!-- End:form表单参数 -->
+						
+						
+						<!-- 自定义参数 -->
+						<div class="input-group w none" id="customParam">
+							<textarea class="form-control no-resize" ng-model="model.param" rows="6" placeholder="自定义参数"></textarea>
 						</div>
+						<!-- End:自定义参数 -->
+						
+						
 					</td>
 				</tr>
 				<tr>
@@ -153,8 +172,8 @@
 							class="tl" ng-model="model.remark"></div></td>
 				</tr>
 				<tr>
-					<td class="tc">正确返回示例<br> <input type="button"
-						class="btn btn-default btn-sm" value="格式化数据"
+					<td class="tc">正确返回示例<br> 
+					<input type="button" class="btn btn-default btn-sm w100 mt10" value="格式化数据"
 						ng-click="setValueForModel('trueExam',true)">
 					</td>
 					<td class="tc"><textarea class="form-control no-resize"
@@ -189,9 +208,8 @@
 		}'></textarea></td>
 				</tr>
 				<tr>
-					<td class="tc">请求示例<br> <input type="button"
-						class="btn btn-default btn-sm" value="自动生成"
-						ng-click="getRequestExam()">
+					<td class="tc">请求示例<br> 
+						<input type="button" class="btn btn-default btn-sm w100 mt10" value="自动生成" ng-click="getRequestExam()">
 					</td>
 					<td class="tc"><textarea class="form-control no-resize"
 							ng-model="model.requestExam" rows="5"

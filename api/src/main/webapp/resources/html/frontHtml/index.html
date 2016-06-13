@@ -72,8 +72,9 @@
 						<label class="sr-only">search</label>
 						<div class="input-group b0">
 							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" 
-							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文章">
-							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}"  ng-click="getData()"
+							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文章" 
+							onkeypress="if(event.keyCode==13) {luceneSearch.click();return false;}">
+							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="getData()"
 								class="input-group-addon no-radius o3 b0 search-button cursor">
 									<i class="iconfont C000">&#xe60d;</i>
 							</a>

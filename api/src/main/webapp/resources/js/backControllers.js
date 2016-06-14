@@ -254,6 +254,8 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     		
     	}else if(tableId=='editResponseParamTable'&&item.responseParam!=''){
     		params = eval("("+item.responseParam+")");
+    	}else if(tableId=='editHeaderTable'&&item.header!=''){
+    		params = eval("("+item.header+")");
     	}
     	
     	
@@ -262,7 +264,7 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
 	    	var i=0;
 	    	$.each(params, function (n, value) {
 	    		i++;
-	    		addOneParam(value.name,value.necessary,value.type, value.def, value.parameterType,value.remark,i,tableId)
+	    		addOneParam(value.name,value.necessary,value.type, value.def,value.remark,i,tableId)
 	        });  
     	}
 		$("#"+editerId).removeClass('none');
@@ -279,7 +281,7 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     		}
     		item.param = "form="+json	
     	}
-    	else if(type="responseParam"){
+    	else if(type=="responseParam"){
     		var json = getParamFromTable('editResponseParamTable');
     		try{
        		 eval("("+json+")");
@@ -288,6 +290,15 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
        			return;
        		}
     		item.responseParam = json;
+    	}else if(type=="header"){
+    		var json = getParamFromTable('editHeaderTable');
+    		try{
+       		 eval("("+json+")");
+       		}catch(e){
+       			alert("输入有误，json解析出错："+e);
+       			return;
+       		}
+    		item.header = json;
     	}
     	$("#"+editerId).addClass('none');
 		$("#"+targetId).removeClass('none');

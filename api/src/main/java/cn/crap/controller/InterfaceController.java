@@ -180,7 +180,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_INTERFACE)
 	public JsonResult addOrUpdate(
-			@ModelAttribute Interface interFace) throws IOException {
+			@ModelAttribute Interface interFace) throws IOException, MyException {
 		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new MyException("000005"));
 		interFace.setUrl(interFace.getUrl().trim());
@@ -223,6 +223,9 @@ public class InterfaceController extends BaseController<Interface>{
 			interfaceService.getInterFaceRequestExam(interFace);
 		}
 		if (!MyString.isEmpty(interFace.getId())) {
+			if( interfaceService.getCount(Tools.getMap("url",interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
+				throw new MyException("000004");
+			}
 			interfaceService.update(interFace, "接口", "");
 			searchServer.update(interFace.toSearchDto());
 		} else {
@@ -265,7 +268,7 @@ public class InterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/debug.do")
 	@ResponseBody
-	public JsonResult debug(@RequestParam String params, @RequestParam String headers,
+	public JsonResult debug(@RequestParam String params, @RequestParam String headers, @RequestParam(defaultValue="") String customParams,
 			@RequestParam String debugMethod,@RequestParam String url) throws Exception {
 		JSONArray jsonParams = JSONArray.fromObject(params);
 		JSONArray jsonHeaders = JSONArray.fromObject(headers);
@@ -284,6 +287,11 @@ public class InterfaceController extends BaseController<Interface>{
 				httpHeaders.put(paramKey.toString(), param.getString(paramKey.toString()));
 			}
 		}
+		// 如果自定义参数不为空，则表示需要使用post发送自定义包体
+		if(!MyString.isEmpty(customParams)){
+			return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.postBody(url, customParams, httpHeaders)));
+		}
+		
 		try{
 			switch(debugMethod){
 			case "POST":

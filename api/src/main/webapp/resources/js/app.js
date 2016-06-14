@@ -83,7 +83,12 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
 		changeDisplay('interFaceDetail','copyInterFace');
-		goJsonPage('eparam','param','responseEparam','responseParam');
+		$("#eparam").addClass('none');
+		$("#param").removeClass('none');
+		$("#eheader").addClass('none');
+		$("#header").removeClass('none');
+		$("#responseEparam").addClass('none');
+		$("#responseParam").removeClass('none');
 	}
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {

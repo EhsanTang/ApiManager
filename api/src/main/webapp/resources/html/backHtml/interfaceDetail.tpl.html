@@ -73,6 +73,46 @@
 					<td class="tc">
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
+				
+				
+				<tr>
+					<td class="tc">请求头</td>
+					<td class="tc" colspan="3">
+							<div id="eheader" class="none">
+								<table class="table table-hover" id="editHeaderTable">
+									<thead>
+										<tr class="btn-purple">
+											<th>名称</th>
+											<th>是否必须</th>
+											<th>类型</th>
+											<th>默认值</th>
+											<th>备注</th>
+											<th class="w50">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<button type="button"
+									ng-click="modifyParam('eheader','header',model,'header')"
+									class="btn btn-warning fr ml10">提交修改</button>
+								<button type="button"
+									onclick="addOneParam('','','','','','','editHeaderTable')"
+									class="btn btn-success fr ml10">添加</button>
+								<button type="button" onclick="changeDisplay('header','eheader')"
+									class="btn btn-primary fr">返回</button>
+							</div>
+							<div class="input-group w" id="header">
+								<textarea class="form-control no-resize" ng-model="model.header"
+									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
+								<div class="input-group-addon cursor btn-purple"
+									ng-click="editerParam('eheader','header',model,'editHeaderTable');">
+									编辑</div>
+							</div>
+					</td>
+				</tr>
+				
+				
 				<tr>
 					<td class="tc">
 						参数<br> 
@@ -92,7 +132,6 @@
 											<th>是否必须</th>
 											<th>类型</th>
 											<th>默认值</th>
-											<th>参数来源</th>
 											<th>备注</th>
 											<th class="w50">操作</th>
 										</tr>
@@ -104,9 +143,9 @@
 									ng-click="modifyParam('eparam','param',model,'param')"
 									class="btn btn-warning fr ml10">提交修改</button>
 								<button type="button"
-									onclick="addOneParam('','','','','','','','editParamTable')"
+									onclick="addOneParam('','','','','','','editParamTable')"
 									class="btn btn-success fr ml10">添加</button>
-								<button type="button" onclick="goJsonPage('eparam','param')"
+								<button type="button" onclick="changeDisplay('param','eparam')"
 									class="btn btn-primary fr">返回</button>
 							</div>
 							<div class="input-group w" id="param">
@@ -149,10 +188,10 @@
 								ng-click="modifyParam('responseEparam','responseParam',model,'responseParam')"
 								class="btn btn-warning fr ml10">提交修改</button>
 							<button type="button"
-								onclick="addOneParam('','','','','','','','editResponseParamTable')"
+								onclick="addOneParam('','','','','','','editResponseParamTable')"
 								class="btn btn-success fr ml10">添加</button>
 							<button type="button"
-								onclick="goJsonPage('responseEparam','responseParam')"
+								onclick="changeDisplay('responseParam','responseEparam')"
 								class="btn btn-primary fr">返回</button>
 						</div>
 						<div class="input-group w" id="responseParam">

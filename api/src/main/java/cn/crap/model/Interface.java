@@ -31,6 +31,7 @@ public class Interface extends BaseModel{
 	private String remark;//备注
 	private String errors;
 	private String version;//版本号
+	private String header;//请求头
 	
 	@Transient
 	public SearchDto toSearchDto(){
@@ -93,6 +94,8 @@ public class Interface extends BaseModel{
 
 	@Column(name="param")
 	public String getParam() {
+		if(MyString.isEmpty(param))
+			return "[]";
 		return param;
 	}
 
@@ -111,6 +114,8 @@ public class Interface extends BaseModel{
 
 	@Column(name="responseParam")
 	public String getResponseParam() {
+		if(MyString.isEmpty(responseParam))
+			return "[]";
 		return responseParam;
 	}
 
@@ -194,6 +199,17 @@ public class Interface extends BaseModel{
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	@Column(name="header")
+	public String getHeader() {
+		if(MyString.isEmpty(header))
+			return "[]";
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
 	}
 	
 	

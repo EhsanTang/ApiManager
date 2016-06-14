@@ -196,11 +196,19 @@ public class HttpPostGet {
 
 	
 
-	public static String postBody(String cType, String url, String body) throws Exception {
+	public static String postBody(String url, String body, Map<String, String> headers) throws Exception {
 		HttpClient client = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(url);
-		httppost.setHeader("Accept", cType);
-		httppost.setHeader("Content-Type", cType + ";charset=utf-8");
+		httppost.setHeader("charset", "utf-8");
+		if (headers != null) {
+			Set<String> keys = headers.keySet();
+			Iterator<String> iterator = keys.iterator();
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				httppost.setHeader(key, headers.get(key));
+			}
+		}
+		
 		BasicHttpEntity requestBody = new BasicHttpEntity();
 		requestBody.setContent(new ByteArrayInputStream(body.getBytes("UTF-8")));
 		requestBody.setContentLength(body.getBytes("UTF-8").length);

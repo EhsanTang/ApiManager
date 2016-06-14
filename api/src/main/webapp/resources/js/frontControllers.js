@@ -81,8 +81,10 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 				 if(result.data.param.length>5 && result.data.param.substring(0,5)=="form="){
 					 $rootScope.formParams = eval("("+result.data.param.substring(5)+")");
 				 }else{
-					 $rootScope.customParams = result.data.param;
+					 $rootScope.model.customParams = result.data.param;
 				 }
+				 
+				 $rootScope.headers = eval("("+result.data.header+")");
 				 
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");
 				 $rootScope.others = result.others;
@@ -107,20 +109,6 @@ webModule.controller('webInterfaceDetailCtrl', function($rootScope,$scope, $http
 			 }
 		});
     };
-    /**
-     * 根据参数中的paramterType判断该参数是否还有请求头或请求参数
-     * 如果没有，前端显示无，不显示table
-     */
-    $scope.hasRequestHeader = function(params,type){
-    	if(params.length>0){
-    		for (var i=0;i<params.length;i++){
-    	         if(type==params[i].parameterType){
-    	        	 return true;
-    	         }
-    	    }
-    	}
-    	return false;
-    }
     $scope.getData();
 });
 /**

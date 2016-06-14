@@ -19,7 +19,6 @@ import cn.crap.model.Module;
 import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.ParameterType;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -63,17 +62,18 @@ public class InterfaceService extends BaseService<Interface>
 	public void getInterFaceRequestExam(Interface interFace) {
 			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
 			if(!MyString.isEmpty(interFace.getParam())){
-				JSONArray json = JSONArray.fromObject(interFace.getParam());
-				StringBuilder headers = new StringBuilder("请求头:\r\n");
-				StringBuilder params = new StringBuilder("请求参数:\r\n");
+				JSONArray params = JSONArray.fromObject(interFace.getParam());
+				JSONArray headers = JSONArray.fromObject(interFace.getHeader());
+				StringBuilder strHeaders = new StringBuilder("请求头:\r\n");
+				StringBuilder strParams = new StringBuilder("请求参数:\r\n");
 				JSONObject obj = null;
-				for(int i=0;i<json.size();i++){  
-					obj = (JSONObject) json.get(i);
-			        if(obj.containsKey("parameterType")&&obj.getString("parameterType").equals(ParameterType.HEADER.name())){
-			        	headers.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			        }else{
-			        	params.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			        }
+				for(int i=0;i<headers.size();i++){  
+					obj = (JSONObject) headers.get(i);
+			        strHeaders.append("\t"+obj.getString("name")+"=xxxx\r\n");
+			    }  
+				for(int i=0;i<params.size();i++){  
+					obj = (JSONObject) params.get(i);
+					strParams.append("\t"+obj.getString("name")+"=xxxx\r\n");
 			    }  
 				interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
 				

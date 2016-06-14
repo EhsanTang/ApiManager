@@ -36,7 +36,7 @@
 							ng-focus="loadPickByName('iwidth=220|iheight=250|showType=5|tag=debugMethod|code=REQUESTMETHOD|def='+model.debugMethod,$event)">
 						</td>
 					</tr>
-					<tr ng-if="params!=null&&hasRequestHeader(params,'HEADER')">
+					<tr ng-if="headers!=null&& headers.length>0">
 						<td>请求头</td>
 						<td>
 							<table class="table tableInupt" id="debugHeader">
@@ -50,7 +50,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="lh20" ng-repeat="item in params" ng-if="item.parameterType=='HEADER'">
+									<tr class="lh20" ng-repeat="item in headers">
 										<td class="tc fb C000">{{item.name}}</td>
 										<td class="tc C000 w250">
 											<input class="form-control btn-xs dis-in-tab w200 fl" type="text" name="{{item.name}}" value="{{item.def}}">
@@ -64,7 +64,7 @@
 							</table>
 						</td>
 					</tr>
-					<tr ng-if="params!=null&&hasRequestHeader(params,'PARAMETER')">
+					<tr ng-if="formParams!=null && formParams.length>0">
 						<td>请求参数</td>
 						<td>
 							<table class="table tableInupt" id="debugParams">
@@ -78,7 +78,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="lh20" ng-repeat="item in params" ng-if="item.parameterType=='PARAMETER'">
+									<tr class="lh20" ng-repeat="item in formParams">
 										<td class="tc fb C000">{{item.name}}</td>
 										<td class="tc C000 w250">
 											<input class="form-control btn-xs dis-in-tab w200 fl" type="text" name="{{item.name}}" value="{{item.def}}">
@@ -92,6 +92,13 @@
 							</table>
 						</td>
 					</tr>
+					<tr ng-if="model.customParams">
+						<td>请求参数</td>
+						<td>
+							<textarea class="form-control no-resize" ng-model="model.customParams" rows="6" placeholder="自定义参数"></textarea>
+						</td>
+					</tr>
+					
 					<tr>
 						<td colspan="2">
 							<button type="submit" class="btn btn-success fr ml10">调试</button>

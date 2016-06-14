@@ -56,10 +56,10 @@
 		{{model.method|removeLast}}
 		
 		<div id="2_3">2.3 请求头说明</div>
-		<span ng-if="formParams!=null&&!hasRequestHeader(formParams,'HEADER')" >
+		<span ng-if="headers!=null&&headers.length==0" >
 			无
 		</span>
-		<table class="table table-bordered" ng-if="formParams!=null&&hasRequestHeader(formParams,'HEADER')" >
+		<table class="table table-bordered" ng-if="headers!=null && headers.length>0" >
 			<thead>
 				<tr class="BGEEE C000">
 					<th class="tc">名称</th>
@@ -70,7 +70,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in formParams" ng-if="item.parameterType=='HEADER'">
+				<tr ng-repeat="item in headers">
 					<td class="tc fb C000">{{item.name}}</td>
 					<td class="tc C000">{{item.necessary}}</td>
 					<td class="tc C000">{{item.type}}</td>
@@ -81,17 +81,18 @@
 		</table>
 		
 		<div id="2_4">2.4 输入参数说明</div>
-		<div class="code" ng-if="customParams">
-			<pre>{{customParams}}</pre>
+		<div class="code" ng-if="model.customParams">
+			<div class="bb1 mt0 pt0">自定义参数（Custom）</div>
+			<pre>{{model.customParams}}</pre>
 		</div>
 		
 		
 		<!-- 如果不判断formParams!=null,当formParams还没加载成功,hasRequestHeader就会被调用导致报错 -->
-		<span ng-if="formParams!=null&&!hasRequestHeader(formParams,'PARAMETER')" >
+		<span ng-if="formParams!=null && formParams.length==0" >
 			无
 		</span>
 		
-		<table class="table table-bordered" ng-if="formParams!=null&&hasRequestHeader(formParams,'PARAMETER')" >
+		<table class="table table-bordered" ng-if="formParams!=null && formParams.length>0" >
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
@@ -102,7 +103,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in formParams" ng-if="item.parameterType=='PARAMETER'">
+			<tr ng-repeat="item in formParams">
 				<td class="tc fb C000">{{item.name}}</td>
 				<td class="tc C000">{{item.necessary}}</td>
 				<td class="tc C000">{{item.type}}</td>

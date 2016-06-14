@@ -134,15 +134,6 @@ public class PickFactory {
 				picks.add(pick);
 			}
 			break;
-
-		// 请求参数类型
-		case "PARAMETERTYPE":
-			for (ParameterType param : ParameterType.values()) {
-				pick = new PickDto(param.name(), param.getName());
-				picks.add(pick);
-			}
-			break;
-		
 		// 枚举 菜单类型
 		case "MENUTYPE":
 			for (MenuType type : MenuType.values()) {

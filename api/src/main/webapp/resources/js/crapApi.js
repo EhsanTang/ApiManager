@@ -11,13 +11,40 @@ function propUpPsswordDiv(obj){
 	}
 }
 /*****************接口添加参数**************/
-function addOneParam(name, necessary, type, def, parameterType, remark, rowNum, tableId) {
+function addOneParam(name, necessary, type, def, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
 		rowNum = mydate.getTime();
 	}
 	if(!def) def = "";
-	if (tableId == 'editParamTable') {
+	if (tableId == 'editHeaderTable') {
+		$("#editHeaderTable")
+				.append(
+						"<tr><td><input class='form-control' type='text' name='name' value='"
+								+ name
+								+ "' placeholder=\"参数名：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='necessary' id='necessary"
+								+ rowNum
+								+ "' value='"
+								+ necessary
+								+ "'"
+								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
+								+ rowNum
+								+ "','TRUEORFALSE','','"
+								+ necessary
+								+ "','',5);\" placeholder=\"点击输入框选择\"></td>"
+								+ "<td><input class='form-control' type='text' name='type' value='"
+								+ type
+								+ "' placeholder=\"类型：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='def' value='"
+								+ def
+								+ "' placeholder=\"默认值\"></td>"
+								+ "<td><input class='form-control' type='text' name='remark' value='"
+								+ remark
+								+ "'></td>"
+								+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
+								+ "</tr>");
+	}else if (tableId == 'editParamTable') {
 		$("#editParamTable")
 				.append(
 						"<tr><td><input class='form-control' type='text' name='name' value='"
@@ -39,16 +66,6 @@ function addOneParam(name, necessary, type, def, parameterType, remark, rowNum, 
 								+ "<td><input class='form-control' type='text' name='def' value='"
 								+ def
 								+ "' placeholder=\"默认值\"></td>"
-								+ "<td><input class='form-control' type='text' name='parameterType' id='parameterType"
-								+ rowNum
-								+ "' value='"
-								+ parameterType
-								+ "'"
-								+ "onfocus=\"loadPick(event,200,250,'true','parameterType"
-								+ rowNum
-								+ "','PARAMETERTYPE','','"
-								+ parameterType
-								+ "','',5);\" placeholder=\"参数类型：请求头/参数\"></td>"
 								+ "<td><input class='form-control' type='text' name='remark' value='"
 								+ remark
 								+ "'></td>"
@@ -91,14 +108,7 @@ function addOneField(name, type, notNull,def, remark, rowNum) {
 function deleteOneParam(nowTr) {
 	$(nowTr).parent().parent().remove();
 }
-function goJsonPage(editerId, targetId, editerId2, targetId2) {
-	$("#" + editerId).addClass('none');
-	$("#" + targetId).removeClass('none');
-	if (editerId2)
-		$("#" + editerId2).addClass('none');
-	if (targetId2)
-		$("#" + targetId2).removeClass('none');
-};
+
 function unescapeAndDecode(name){
 	var value = $.cookie(name);
 	if(value){

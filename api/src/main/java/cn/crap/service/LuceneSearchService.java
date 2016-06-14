@@ -122,7 +122,7 @@ public class LuceneSearchService implements ISearchService{
 	@Override
 	public boolean add(SearchDto searchDto) throws IOException{
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
-		conf.setOpenMode(OpenMode.CREATE);
+		conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   Cache.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
 
 		writer.addDocument(dtoToDoc(searchDto));

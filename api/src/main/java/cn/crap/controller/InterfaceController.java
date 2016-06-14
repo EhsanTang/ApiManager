@@ -96,7 +96,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
 		interFace = interfaceService.get(interFace.getId());
-		String displayFilename = "CrapApi|"+interFace.getInterfaceName()+".pdf";
+		String displayFilename = "CrapApi"+System.currentTimeMillis()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 
         ServletOutputStream ut = null;

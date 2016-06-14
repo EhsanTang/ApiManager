@@ -167,25 +167,25 @@
 		</dependency>
 		<!-- lucene -->
 		<dependency>
-    		<groupId>org.apache.lucene</groupId>
-    		<artifactId>lucene-core</artifactId>
-    		<version>6.0.1</version>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>5.5.1</version>
 		</dependency>
-<dependency>
-    <groupId>org.apache.lucene</groupId>
-    <artifactId>lucene-analyzers-common</artifactId>
-    <version>6.0.1</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.lucene</groupId>
-    <artifactId>lucene-queryparser</artifactId>
-    <version>6.0.1</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.lucene</groupId>
-    <artifactId>lucene-highlighter</artifactId>
-    <version>6.0.1</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>5.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>5.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>5.5.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>api</finalName>

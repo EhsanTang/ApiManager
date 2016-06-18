@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
-import cn.crap.utils.Cache;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -27,7 +27,8 @@ import net.sf.json.JSONObject;
 public class InterfaceService extends BaseService<Interface>
 		implements IInterfaceService {
 	
-	
+	@Autowired
+	private ICacheService cacheService;
 	@Autowired
 	private IModuleService moduleService;
 	
@@ -54,7 +55,7 @@ public class InterfaceService extends BaseService<Interface>
 		map.put("interfaces", interfaces);
 		map.put("modules", modules);
 		return new JsonResult(1, map, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+Cache.getModuleName(interFace.getModuleId()),"void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void")));
 	}
 	
 	@Override

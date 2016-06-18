@@ -31,10 +31,11 @@ import org.apache.lucene.search.highlight.Scorer;
 import org.apache.lucene.search.highlight.SimpleFragmenter;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.crap.dto.SearchDto;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ISearchService;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -46,11 +47,13 @@ public class LuceneSearchService implements ISearchService{
 	 * 搜索
 	 * @throws Exception 
 	 */
+	@Autowired
+	private ICacheService cacheService;
 	@Override
 	public List<SearchDto> search(String keyword, Page page) throws Exception{
 		if(MyString.isEmpty(keyword))
 			return new ArrayList<SearchDto>();
-		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(  Cache.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )));
+		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(  cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		 Analyzer analyzer = new StandardAnalyzer();
 		 String[] fields = { "contents", "modelName", "title" };
@@ -102,7 +105,7 @@ public class LuceneSearchService implements ISearchService{
 	public boolean delete(SearchDto searchDto) throws IOException{
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 		conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
-		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   Cache.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
+		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
 		writer.deleteDocuments(new Term("id", searchDto.getId()));
 		writer.close();
 		return true;
@@ -112,7 +115,7 @@ public class LuceneSearchService implements ISearchService{
 	public boolean update(SearchDto searchDto) throws IOException{
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 		conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
-		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   Cache.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
+		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
 
 		writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		writer.close();
@@ -123,7 +126,7 @@ public class LuceneSearchService implements ISearchService{
 	public boolean add(SearchDto searchDto) throws IOException{
 		IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 		conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
-		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   Cache.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
+		IndexWriter writer = new IndexWriter(FSDirectory.open(Paths.get(   cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue()  )), conf);
 
 		writer.addDocument(dtoToDoc(searchDto));
 		writer.close();

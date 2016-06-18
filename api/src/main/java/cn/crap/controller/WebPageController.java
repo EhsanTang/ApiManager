@@ -18,6 +18,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISearchService;
@@ -25,7 +26,6 @@ import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
 import cn.crap.model.Module;
 import cn.crap.model.WebPage;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -41,7 +41,8 @@ public class WebPageController extends BaseController<WebPage>{
 	private IWebPageService webPageService;
 	@Autowired
 	private ICommentService commentService;
-	
+	@Autowired
+	private ICacheService cacheService;
 	@Resource(name="luceneSearch")
 	private ISearchService searchServer;
 
@@ -101,7 +102,7 @@ public class WebPageController extends BaseController<WebPage>{
 		returnMap.put("comment", new Comment(model.getId()));
 		map = Tools.getMap("webpageId", model.getId());
 		returnMap.put("comments", commentService.findByMap(map, null, null));
-		returnMap.put("commentCode", Cache.getSetting(Const.SETTING_COMMENTCODE).getValue());
+		returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
 		// 更新点击量
 		webPageService.update("update WebPage set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
 		return new JsonResult(1,model, null, returnMap);

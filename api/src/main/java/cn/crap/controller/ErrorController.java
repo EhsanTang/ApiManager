@@ -12,9 +12,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -23,7 +23,8 @@ import cn.crap.utils.Tools;
 @Controller
 @RequestMapping("/error")
 public class ErrorController extends BaseController<Error>{
-
+	@Autowired
+	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
 	/**
@@ -37,7 +38,7 @@ public class ErrorController extends BaseController<Error>{
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+Cache.getModuleName(error.getModuleId()), "void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
 	}
 	
 	@RequestMapping("/detail.do")

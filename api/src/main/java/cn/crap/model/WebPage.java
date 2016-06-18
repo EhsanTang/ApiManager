@@ -8,8 +8,10 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.dto.SearchDto;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Cache;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.WebPageType;
 
@@ -68,7 +70,8 @@ public class WebPage extends BaseModel{
 	@Transient
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
-			Module module = Cache.getModule(moduleId);
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
 			if(module!=null)
 				return module.getModuleName();
 		}

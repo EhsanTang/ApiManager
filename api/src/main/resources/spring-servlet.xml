@@ -23,6 +23,7 @@
 	<!--注解扫描范围 -->
 	<context:annotation-config />
 	<mvc:annotation-driven/>
+	 <aop:aspectj-autoproxy proxy-target-class="true"/> 
 	<context:component-scan base-package="cn.crap" />
 	<!-- 业务错误码 -->
 	<import resource="errorInfo.xml" />

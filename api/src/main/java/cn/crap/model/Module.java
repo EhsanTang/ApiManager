@@ -4,11 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Cache;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
 
 
@@ -56,7 +57,8 @@ public class Module extends BaseModel{
 	@Transient
 	public String getParentName(){
 		if(!MyString.isEmpty(parentId)){
-			Module module = Cache.getModule(parentId);
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(parentId);
 			if(module!=null)
 				return module.getModuleName();
 		}

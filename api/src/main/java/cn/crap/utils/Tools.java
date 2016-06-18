@@ -24,6 +24,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.crap.dto.CrumbDto;
 import cn.crap.framework.MyException;
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 
 
 public class Tools {
@@ -90,7 +93,8 @@ public class Tools {
 			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
 				throw new MyException("000007");
 			}
-			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			if(cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				Object imgCode = getImgCode(request);
 				if(MyString.isEmpty(visitCode)||imgCode==null||!visitCode.equals(imgCode.toString())){
 					throw new MyException("000007");

@@ -26,6 +26,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
@@ -33,7 +34,6 @@ import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Html2Pdf;
@@ -54,6 +54,8 @@ public class InterfaceController extends BaseController<Interface>{
 	private IModuleService moduleService;
 	@Autowired
 	private IErrorService errorService;
+	@Autowired
+	private ICacheService cacheService;
 	@Resource(name="luceneSearch")
 	private ISearchService searchServer;
 	
@@ -154,7 +156,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		if(interFace!=null){
-			Tools.canVisitModule(Cache.getModule(interFace.getModuleId()).getPassword(), password, visitCode, request);
+			Tools.canVisitModule(cacheService.getModule(interFace.getModuleId()).getPassword(), password, visitCode, request);
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号
 			 */
@@ -162,7 +164,7 @@ public class InterfaceController extends BaseController<Interface>{
 					Tools.getMap("moduleId",interFace.getModuleId(),"interfaceName",interFace.getInterfaceName(),"version|<>",interFace.getVersion()), null, null);
 			return new JsonResult(1, interFace, null, 
 					Tools.getMap("versions", versions, "crumbs",
-							Tools.getCrumbs( Cache.getModuleName(interFace.getModuleId()), "web.do#/webInterface/list/"+interFace.getModuleId() +"/" +Cache.getModuleName(interFace.getModuleId())
+							Tools.getCrumbs( cacheService.getModuleName(interFace.getModuleId()), "web.do#/webInterface/list/"+interFace.getModuleId() +"/" +cacheService.getModuleName(interFace.getModuleId())
 							,interFace.getInterfaceName() , "void")));
 		}else{
 			throw new MyException("000012");

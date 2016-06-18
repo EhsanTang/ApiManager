@@ -14,10 +14,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Setting;
-import cn.crap.utils.Cache;
+import cn.crap.service.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -31,7 +32,8 @@ public class SettingController extends BaseController<Setting>{
 	private ISettingService settingService;
 	@Autowired
 	private IModuleService moduleService;
-	
+	@Autowired
+	private ICacheService cacheService;
 	/**
 	 * 
 	 * @param setting
@@ -81,7 +83,8 @@ public class SettingController extends BaseController<Setting>{
 					return new JsonResult(new MyException("000006"));
 				}
 			}
-		Cache.setSetting(setting,Tools.getServletContext());
+			cacheService.delObj(CacheService.cacheSettingKeyPre);
+			cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/delete.do")
@@ -93,7 +96,8 @@ public class SettingController extends BaseController<Setting>{
 		}
 		Tools.hasAuth(Const.AUTH_SETTING, request.getSession(),"");
 		settingService.delete(setting);
-		Cache.clear(settingService, moduleService, Tools.getServletContext());
+		cacheService.delObj(CacheService.cacheSettingKeyPre,setting.getKey());
+		cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1,null);
 	}
 	
@@ -111,7 +115,8 @@ public class SettingController extends BaseController<Setting>{
 		
 		settingService.update(model);
 		settingService.update(change);
-		Cache.setSetting(settingService.findByMap(null, null, null), Tools.getServletContext());
+		cacheService.delObj(CacheService.cacheSettingKeyPre);
+		cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1, null);
 	}
 

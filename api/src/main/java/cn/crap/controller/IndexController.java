@@ -17,15 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -36,7 +37,8 @@ import cn.crap.utils.ValidateCodeService;
 public class IndexController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
-	
+	@Autowired
+	private ICacheService cacheService;
 	@Resource(name="luceneSearch")
 	private ISearchService searchServer;
 	/**
@@ -65,15 +67,35 @@ public class IndexController extends BaseController<User> {
 	 * 初始化前端页面
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/frontInit.do")
 	@ResponseBody
 	public JsonResult frontInit() throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : Cache.getSetting()) {
+		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		returnMap.put("settingMap", settingMap);
-		returnMap.put("menuList", menuService.getLeftMenu(map));
+		
+		// 从缓存中获取菜单
+		Object objMenus = cacheService.getObj("cache:leftMenu");
+		List<MenuDto> menus = null;
+		if(objMenus == null){
+			synchronized (IndexController.class) {
+				objMenus = cacheService.getObj("cache:leftMenu");
+				if(objMenus == null){
+					menus = menuService.getLeftMenu(map);
+					cacheService.setObj("cache:leftMenu", menus, 10*60);//缓存10分钟
+				}else{
+					menus = (List<MenuDto>) objMenus;
+				}
+			}
+			
+		}else{
+			menus = (List<MenuDto>) objMenus;
+		}
+		
+		returnMap.put("menuList", menus);
 		returnMap.put("sessionAdminName", request.getSession().getAttribute(Const.SESSION_ADMIN));
 		return new JsonResult(1, returnMap);
 	}

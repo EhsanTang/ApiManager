@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.model.Menu;
 import cn.crap.utils.Const;
@@ -21,9 +22,10 @@ import cn.crap.utils.Tools;
 @Controller
 @RequestMapping("/menu")
 public class MenuController extends BaseController<Menu> {
-
 	@Autowired
 	IMenuService menuService;
+	@Autowired
+	ICacheService cacheService;
 
 	/**
 	 * 根据父菜单、菜单名、菜单类型及页码获取菜单列表
@@ -76,6 +78,8 @@ public class MenuController extends BaseController<Menu> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, menu);
 	}
 
@@ -84,6 +88,8 @@ public class MenuController extends BaseController<Menu> {
 	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult delete(@ModelAttribute Menu menu) {
 		menuService.delete(menu);
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 
@@ -112,6 +118,9 @@ public class MenuController extends BaseController<Menu> {
 		
 		menuService.update(model);
 		menuService.update(change);
+		
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 

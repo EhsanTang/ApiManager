@@ -17,13 +17,13 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
@@ -39,7 +39,8 @@ public class LoginController extends BaseController<User> {
 	private IRoleService roleService;
 	@Autowired
 	private IUserService userService;
-
+	@Autowired
+	private ICacheService cacheService;
 	
 	/**
 	 * 登陆页面获取基础数据
@@ -48,7 +49,7 @@ public class LoginController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult preLogin() {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : Cache.getSetting()) {
+		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		LoginDto model = new LoginDto();
@@ -74,7 +75,7 @@ public class LoginController extends BaseController<User> {
 	@RequestMapping("/login.do")
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
-			if (Cache.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+			if (cacheService.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
 				if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode(request))) {
 					model.setTipMessage("验证码有误");
 					return new JsonResult(1, model);
@@ -142,7 +143,7 @@ public class LoginController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult backInit() throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : Cache.getSetting()) {
+		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		returnMap.put("settingMap", settingMap);

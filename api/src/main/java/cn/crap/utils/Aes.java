@@ -4,7 +4,10 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.model.Setting;
+import cn.crap.service.CacheService;
 
  
 public class Aes
@@ -20,7 +23,8 @@ public class Aes
 	}
 	 public static final String iv="CRAPG_@W8#_19#10";
 	 public static String encrypt(String data){
-		 Setting setting = Cache.getSetting(Const.SETTING_SECRETKEY);
+		 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();
@@ -53,7 +57,8 @@ public class Aes
      }
  
      public static String desEncrypt(String data){
-    	 Setting setting = Cache.getSetting(Const.SETTING_SECRETKEY);
+    	 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+    	 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();

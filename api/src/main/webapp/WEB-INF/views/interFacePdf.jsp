@@ -48,40 +48,47 @@
 					<td>名称</td>
 					<td>是否必须</td>
 					<td>类型</td>
+					<td>默认值</td>
 					<td style="width:260px;">备注</td>
 				</tr>
-				<c:forEach var="v" items="${requestScope.header}"> 
-				<c:if test="${v.parameterType=='HEADER'}">
+				<c:forEach var="v" items="${requestScope.headers}"> 
 				<tr>
 					<td>${v.name}</td>
 					<td>${v.necessary}</td>
 					<td>${v.type}</td>
+					<td>${v.def}</td>
 					<td>${v.remark}</td>
 				</tr>
-				</c:if>
 				</c:forEach>
 			</table>
 			<br/>
 			<br/>
-			<h3>5 输入参数说明</h3>
-			<table style="width:100%;">
-				<tr style="background:${MAIN_COLOR};color:#fff;">
-					<td>名称</td>
-					<td>是否必须</td>
-					<td>类型</td>
-					<td style="width:260px;">备注</td>
-				</tr>
-				<c:forEach var="v" items="${requestScope.header}"> 
-				<c:if test="${v.parameterType=='PARAMETER'}">
-				<tr>
-					<td>${v.name}</td>
-					<td>${v.necessary}</td>
-					<td>${v.type}</td>
-					<td>${v.remark}</td>
-				</tr>
+			<h3>5 输入参数说明<c:if test="${requestScope.customParams!=null}">(自定义参数)</c:if></h3>
+				<c:if test="${requestScope.formParams!=null}">
+					<table style="width:100%;">
+						<tr style="background:${MAIN_COLOR};color:#fff;">
+							<td>名称</td>
+							<td>是否必须</td>
+							<td>类型</td>
+							<td>默认值</td>
+							<td style="width:260px;">备注</td>
+						</tr>
+						
+						<c:forEach var="v" items="${requestScope.formParams}"> 
+						
+						<tr>
+							<td>${v.name}</td>
+							<td>${v.necessary}</td>
+							<td>${v.type}</td>
+							<td>${v.def}</td>
+							<td>${v.remark}</td>
+						</tr>
+						</c:forEach>
+					</table>
 				</c:if>
-				</c:forEach>
-			</table>
+				<c:if test="${requestScope.customParams!=null}">
+					${requestScope.customParams}
+				</c:if>
 			<br/>
 			<br/>
 			<h3>6 请求示例</h3>

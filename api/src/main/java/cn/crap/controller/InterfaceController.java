@@ -83,8 +83,13 @@ public class InterfaceController extends BaseController<Interface>{
 	public String pdf(@ModelAttribute Interface interFace) throws Exception {
 		interFace = interfaceService.get(interFace.getId());
 		request.setAttribute("model", interFace);
-		Object params = JSONArray.toArray(JSONArray.fromObject(interFace.getParam()),ParamDto.class);
-		request.setAttribute("header", params);
+		if(interFace.getParam().startsWith("form=")){
+			request.setAttribute("formParams", JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
+		}else{
+			request.setAttribute("customParams", interFace.getParam());
+		}
+		request.setAttribute("headers", JSONArray.toArray(JSONArray.fromObject(interFace.getHeader()),ParamDto.class));
+		
 		Object responseParam = JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class);
 		request.setAttribute("responseParam", responseParam);
 		Object errors = JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class);

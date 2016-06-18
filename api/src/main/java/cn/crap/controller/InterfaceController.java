@@ -96,6 +96,7 @@ public class InterfaceController extends BaseController<Interface>{
 		request.setAttribute("responseParam", responseParam);
 		Object errors = JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class);
 		request.setAttribute("errors", errors);
+		request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
 		return "/WEB-INF/views/interFacePdf.jsp";
 	}
 	

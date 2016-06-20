@@ -39,4 +39,10 @@ public class Const {
 	public final static String SETTING_DOMAIN = "DOMAIN";
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
 	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
+	
+	//SOLR
+	public static final String SOLR_URL = "SOLR_URL";
+	public static final String SOLR_QUEUESIZE  = "SOLR_QUEUESIZE";
+	public static final String SOLR_THREADCOUNT = "SOLR_THREADCOUNT";
+	public static final String SEARCH_TYPE = "SEARCH_TYPE";
 }

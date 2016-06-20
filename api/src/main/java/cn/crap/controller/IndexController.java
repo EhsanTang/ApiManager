@@ -29,6 +29,7 @@ import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Search;
 import cn.crap.utils.Tools;
 import cn.crap.utils.ValidateCodeService;
 
@@ -39,8 +40,6 @@ public class IndexController extends BaseController<User> {
 	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
-	@Resource(name="luceneSearch")
-	private ISearchService searchServer;
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -164,7 +163,7 @@ public class IndexController extends BaseController<User> {
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
 		page.setCurrentPage(currentPage);
 		page.setSize(10);
-		List<SearchDto> searchResults = searchServer.search(keyword, page);
+		List<SearchDto> searchResults = Search.getSearchService().search(keyword, page);
 		returnMap.put("searchResults", searchResults);
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));

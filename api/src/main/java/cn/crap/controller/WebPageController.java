@@ -28,6 +28,7 @@ import cn.crap.model.Module;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Search;
 import cn.crap.utils.Tools;
 import cn.crap.utils.WebPageType;
 
@@ -43,8 +44,6 @@ public class WebPageController extends BaseController<WebPage>{
 	private ICommentService commentService;
 	@Autowired
 	private ICacheService cacheService;
-	@Resource(name="luceneSearch")
-	private ISearchService searchServer;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -129,11 +128,11 @@ public class WebPageController extends BaseController<WebPage>{
 				webPage.setCanDelete(Byte.valueOf("0"));
 			}
 			webPageService.update(webPage);
-			searchServer.update(webPage.toSearchDto());
+			Search.getSearchService().update(webPage.toSearchDto());
 		}else{
 			webPage.setId(null);
 			webPageService.save(webPage);
-			searchServer.add(webPage.toSearchDto());
+			Search.getSearchService().add(webPage.toSearchDto());
 		}
 		return new JsonResult(1,webPage);
 	}
@@ -151,7 +150,7 @@ public class WebPageController extends BaseController<WebPage>{
 			throw new MyException("000009");
 		}
 		webPageService.delete(webPage);
-		searchServer.delete(new SearchDto(webPage.getId()));
+		Search.getSearchService().delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}
 	

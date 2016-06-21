@@ -114,7 +114,7 @@ public class LoginController extends BaseController<User> {
 					model.setSessionAdminName(model.getUserName());
 					return new JsonResult(1, model);
 				}
-				model.setTipMessage("用密码有误");
+				model.setTipMessage("用户密码有误");
 				return new JsonResult(1, model);
 			}else{
 				model.setTipMessage("用户名不存在");

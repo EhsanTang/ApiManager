@@ -98,7 +98,7 @@ public class Interface extends BaseModel{
 	@Column(name="param")
 	public String getParam() {
 		if(MyString.isEmpty(param))
-			return "[]";
+			return "form=[]";
 		return param;
 	}
 

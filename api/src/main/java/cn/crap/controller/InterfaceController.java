@@ -213,16 +213,6 @@ public class InterfaceController extends BaseController<Interface>{
 			interFace.setErrors("[]");
 		}
 		
-		/**
-		 * 如果参数为空，则需要设置一个大小为0的空json数组
-		 */
-		if(MyString.isEmpty(interFace.getParam())){
-			interFace.setParam("[]");
-		}
-		if(MyString.isEmpty(interFace.getResponseParam())){
-			interFace.setResponseParam("[]");
-		}
-		
 		interFace.setUpdateBy("userName："+request.getSession().getAttribute(Const.SESSION_ADMIN).toString()+" | trueName："+
 				request.getSession().getAttribute(Const.SESSION_ADMIN_TRUENAME).toString());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));

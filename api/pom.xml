@@ -197,28 +197,8 @@
 			<artifactId>solr-solrj</artifactId>
 			<version>6.0.1</version>
 		</dependency>
-		<!-- google gson support -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.3</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>api</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>1.7</source>
-					<target>1.7</target>
-					<compilerArguments>  
-		               <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar:${java.home}/lib/jsse.jar:</bootclasspath>  
-					</compilerArguments>  
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 </project>

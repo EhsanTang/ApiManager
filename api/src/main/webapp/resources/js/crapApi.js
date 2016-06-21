@@ -129,8 +129,8 @@ function getParamFromTable(tableId) {
 		$(this).find('td').find('input').each(function(i, val) {
 				j = j + 1;
 				if (j != 1)
-					json += ","
-				json += "\"" + val.name + "\":\"" + val.value + "\""
+					json += ",";
+				json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
 		});
 		json += "}"
 	});

@@ -62,22 +62,30 @@ public class InterfaceService extends BaseService<Interface>
 	@Transactional
 	public void getInterFaceRequestExam(Interface interFace) {
 			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
+			
+			// 请求头
+			JSONArray headers = JSONArray.fromObject(interFace.getHeader());
+			StringBuilder strHeaders = new StringBuilder("请求头:\r\n");
+			JSONObject obj = null;
+			for(int i=0;i<headers.size();i++){  
+				obj = (JSONObject) headers.get(i);
+		        strHeaders.append("\t"+obj.getString("name") + "="+ (obj.containsKey("def")?obj.getString("def"):"")+"\r\n");
+		    }  
+			
+			// 请求参数
+			StringBuilder strParams = new StringBuilder("请求参数:\r\n");
 			if(!MyString.isEmpty(interFace.getParam())){
-				JSONArray params = JSONArray.fromObject(interFace.getParam());
-				JSONArray headers = JSONArray.fromObject(interFace.getHeader());
-				StringBuilder strHeaders = new StringBuilder("请求头:\r\n");
-				StringBuilder strParams = new StringBuilder("请求参数:\r\n");
-				JSONObject obj = null;
-				for(int i=0;i<headers.size();i++){  
-					obj = (JSONObject) headers.get(i);
-			        strHeaders.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			    }  
-				for(int i=0;i<params.size();i++){  
-					obj = (JSONObject) params.get(i);
-					strParams.append("\t"+obj.getString("name")+"=xxxx\r\n");
-			    }  
-				interFace.setRequestExam(interFace.getRequestExam()+headers.toString()+params.toString());
-				
+				JSONArray params = null;
+				if(interFace.getParam().startsWith("form=")){
+					 params = JSONArray.fromObject(interFace.getParam().substring(5));
+					 for(int i=0;i<params.size();i++){  
+							obj = (JSONObject) params.get(i);
+							strParams.append("\t"+obj.getString("name") + "=" + (obj.containsKey("def")?obj.getString("def"):"")+"\r\n");
+					 }  
+				}else{
+					strParams.append(interFace.getParam()); 
+				}
 			}
+			interFace.setRequestExam(interFace.getRequestExam()+strHeaders.toString()+strParams.toString());
 	}
 }

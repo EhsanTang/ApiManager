@@ -3,8 +3,6 @@ package cn.crap.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -21,14 +19,13 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IModuleService;
-import cn.crap.inter.service.ISearchService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
 import cn.crap.model.Module;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
+import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Search;
 import cn.crap.utils.Tools;
 import cn.crap.utils.WebPageType;
 
@@ -128,11 +125,11 @@ public class WebPageController extends BaseController<WebPage>{
 				webPage.setCanDelete(Byte.valueOf("0"));
 			}
 			webPageService.update(webPage);
-			Search.getSearchService().update(webPage.toSearchDto());
+			GetBeanBySetting.getSearchService().update(webPage.toSearchDto());
 		}else{
 			webPage.setId(null);
 			webPageService.save(webPage);
-			Search.getSearchService().add(webPage.toSearchDto());
+			GetBeanBySetting.getSearchService().add(webPage.toSearchDto());
 		}
 		return new JsonResult(1,webPage);
 	}
@@ -150,7 +147,7 @@ public class WebPageController extends BaseController<WebPage>{
 			throw new MyException("000009");
 		}
 		webPageService.delete(webPage);
-		Search.getSearchService().delete(new SearchDto(webPage.getId()));
+		GetBeanBySetting.getSearchService().delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}
 	

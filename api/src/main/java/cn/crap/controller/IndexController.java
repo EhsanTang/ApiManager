@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,12 +23,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
+import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Search;
 import cn.crap.utils.Tools;
 import cn.crap.utils.ValidateCodeService;
 
@@ -163,7 +161,7 @@ public class IndexController extends BaseController<User> {
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
 		page.setCurrentPage(currentPage);
 		page.setSize(10);
-		List<SearchDto> searchResults = Search.getSearchService().search(keyword, page);
+		List<SearchDto> searchResults = GetBeanBySetting.getSearchService().search(keyword, page);
 		returnMap.put("searchResults", searchResults);
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));

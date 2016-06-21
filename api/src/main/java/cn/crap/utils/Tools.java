@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,7 +27,10 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.service.CacheService;
+import cn.crap.service.LuceneSearchService;
+import cn.crap.service.SolrSearchService;
 
 
 public class Tools {

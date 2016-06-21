@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,19 +34,16 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IModuleService;
-import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Search;
 import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Scope("prototype")
 @Controller
@@ -140,7 +139,7 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		interFace.setId(null);
 		interfaceService.save(interFace);
-		Search.getSearchService().add(interFace.toSearchDto());
+		GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
 		return new JsonResult(1, interFace);
 	}
 	
@@ -236,14 +235,14 @@ public class InterfaceController extends BaseController<Interface>{
 				throw new MyException("000004");
 			}
 			interfaceService.update(interFace, "接口", "");
-			Search.getSearchService().update(interFace.toSearchDto());
+			GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
 		} else {
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interfaceService.save(interFace);
-			Search.getSearchService().add(interFace.toSearchDto());
+			GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
 		}
 		return new JsonResult(1, interFace);
 	}
@@ -254,7 +253,7 @@ public class InterfaceController extends BaseController<Interface>{
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
 		interfaceService.delete(interFace, "接口", "");
-		Search.getSearchService().delete(new SearchDto(interFace.getId()));
+		GetBeanBySetting.getSearchService().delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);
 	}
 

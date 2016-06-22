@@ -214,10 +214,9 @@ blockquote{
   	background-color:transparent!important;
 }
 .panel-heading{
-	border-top: 1px solid #AAA!important;
-  	border-bottom: 1px solid #BBB!important;
   	color:#DDD!important;
   	padding:0px!important;
+  	background:#999999!important;
 }
 .panel-heading .badge{
 	background-color: #B768A5!important;

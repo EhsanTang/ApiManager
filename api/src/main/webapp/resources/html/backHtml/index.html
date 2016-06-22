@@ -56,8 +56,8 @@
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
 						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0" ng-if="isSupperAdmin()">
-							<div class="panel-heading BG999 no-radius" data-parent="#accordion">
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
 									<div class="f14 mt-3 fl mr10">
 										<i class="iconfont">&#xe60f;</i>
@@ -98,27 +98,24 @@
 							</div>
 						</div>
 					
-					<div class="panel panel-info no-radius b0 mt0" ng-repeat="item in backMenus">
-						<div class="panel-heading BG999 no-radius" data-parent="#accordion" ng-if="canSeeMenu(item.menu.id,item.menu.type);">
+					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-repeat="item in backMenus" ng-if="canSeeMenu(item.menu.id,item.menu.type);">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menu.id}}">
-								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml">
-								</div> 
-									<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
-								</div>
+								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml"></div> 
+								<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
+							</div>
 						</div>
-						<div id="panel{{item.menu.id}}" class="panel-collapse BGEEE collapse" ng-if="canSeeMenu(item.menu.id,item.menu.type);">
+						<div id="panel{{item.menu.id}}" class="panel-collapse BGEEE collapse">
 							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
 								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" onclick="selectButton(this,'menu-a')" ng-bind="subItem.menuName"></a>
 							</div>
 						</div>
 					</div>
 					
-					<div class="panel panel-info no-radius b0 mt0">
-						<div class="panel-heading BG999 no-radius" data-parent="#accordion">
-							<a data-toggle="collapse" data-parent="#accordion" href="#panel3">
-								<div class="f14 mt-3 fl mr10">
-								</div> <span class="hidden-xs">&nbsp;</span>
-							</a>
+					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#panel3"></div>
+							<span class="hidden-xs">&nbsp;</span>
 						</div>
 					</div>
 

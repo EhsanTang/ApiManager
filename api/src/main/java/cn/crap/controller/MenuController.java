@@ -1,8 +1,5 @@
 package cn.crap.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -11,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.MenuDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.model.Menu;
 import cn.crap.utils.Const;
@@ -25,9 +22,10 @@ import cn.crap.utils.Tools;
 @Controller
 @RequestMapping("/menu")
 public class MenuController extends BaseController<Menu> {
-
 	@Autowired
 	IMenuService menuService;
+	@Autowired
+	ICacheService cacheService;
 
 	/**
 	 * 根据父菜单、菜单名、菜单类型及页码获取菜单列表
@@ -45,8 +43,8 @@ public class MenuController extends BaseController<Menu> {
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu) {
-		if (!menu.getMenuId().equals(Const.NULL_ID)) {
-			model = menuService.get(menu.getMenuId());
+		if (!menu.getId().equals(Const.NULL_ID)) {
+			model = menuService.get(menu.getId());
 		} else {
 			model = new Menu();
 			model.setParentId(menu.getParentId());
@@ -57,7 +55,6 @@ public class MenuController extends BaseController<Menu> {
 	}
 
 	/**
-	 * roleIds=0 表示前端菜单
 	 * 
 	 * @param menu
 	 * @return
@@ -69,18 +66,20 @@ public class MenuController extends BaseController<Menu> {
 		try {
 			// 子菜单类型和父菜单类型一致
 			Menu parentMenu = menuService.get(menu.getParentId());
-			if (parentMenu != null && parentMenu.getMenuId()!=null)
+			if (parentMenu != null && parentMenu.getId()!=null)
 				menu.setType(parentMenu.getType());
 
-			if (!MyString.isEmpty(menu.getMenuId())) {
+			if (!MyString.isEmpty(menu.getId())) {
 				menuService.update(menu);
 			} else {
-				menu.setMenuId(null);
+				menu.setId(null);
 				menuService.save(menu);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, menu);
 	}
 
@@ -89,6 +88,8 @@ public class MenuController extends BaseController<Menu> {
 	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult delete(@ModelAttribute Menu menu) {
 		menuService.delete(menu);
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 
@@ -98,29 +99,10 @@ public class MenuController extends BaseController<Menu> {
 	@RequestMapping("/menu.do")
 	@ResponseBody
 	public JsonResult menu() {
-		map = Tools.getMap("parentId", "0");
-		List<Menu> menus = menuService.findByMap(map, null, null);
-		map.clear();
-		List<String> menuIds = new ArrayList<String>();
-		for (Menu menu : menus) {
-			menuIds.add(menu.getMenuId());
-		}
-		map.put("parentId|in", menuIds);
-		List<Menu> subMenus = menuService.findByMap(map, null, null);
-		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
-		for (Menu menu : menus) {
-			MenuDto menuVO = new MenuDto();
-			menuVO.setMenu(menu);
-			menuVO.setSubMenu(new ArrayList<Menu>());
-			for (Menu subMenu : subMenus) {
-				if (subMenu.getParentId().equals(menu.getMenuId())) {
-					menuVO.getSubMenu().add(subMenu);
-				}
-			}
-			menuVOs.add(menuVO);
-		}
-		return new JsonResult(1, menuVOs);
+		return new JsonResult(1, menuService.getLeftMenu(map));
 	}
+
+	
 	
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
@@ -136,6 +118,9 @@ public class MenuController extends BaseController<Menu> {
 		
 		menuService.update(model);
 		menuService.update(change);
+		
+		// 清除缓存
+		cacheService.delObj("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 

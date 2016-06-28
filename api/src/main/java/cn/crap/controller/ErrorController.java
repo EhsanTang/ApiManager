@@ -12,6 +12,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
@@ -22,7 +23,8 @@ import cn.crap.utils.Tools;
 @Controller
 @RequestMapping("/error")
 public class ErrorController extends BaseController<Error>{
-
+	@Autowired
+	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
 	/**
@@ -35,14 +37,15 @@ public class ErrorController extends BaseController<Error>{
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
-		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page);
+		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
 	}
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Error error){
-		if(!error.getErrorId().equals(Const.NULL_ID)){
-			model= errorService.get(error.getErrorId());
+		if(!error.getId().equals(Const.NULL_ID)){
+			model= errorService.get(error.getId());
 		}else{
 			model=new Error();
 			model.setModuleId(error.getModuleId());
@@ -55,10 +58,10 @@ public class ErrorController extends BaseController<Error>{
 	@AuthPassport(authority=Const.AUTH_ERROR)
 	public JsonResult addOrUpdate(@ModelAttribute Error error){
 		try{
-			if(!MyString.isEmpty(error.getErrorId())){
+			if(!MyString.isEmpty(error.getId())){
 				errorService.update(error);
 			}else{
-				error.setErrorId(null);
+				error.setId(null);
 				if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"moduleId",error.getModuleId()))==0){
 					errorService.save(error);
 				}else{
@@ -73,7 +76,7 @@ public class ErrorController extends BaseController<Error>{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
-		error = errorService.get(error.getErrorId());
+		error = errorService.get(error.getId());
 		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(), error.getModuleId());
 		errorService.delete(error);
 		return new JsonResult(1,null);

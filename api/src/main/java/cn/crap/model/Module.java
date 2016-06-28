@@ -2,35 +2,31 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
+import cn.crap.utils.MyString;
 
 
 @Entity
 @Table(name="module")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Module extends BaseModel{
-	private String moduleId;
 	private String moduleName;
 	private String parentId;
 	private String password;
 
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="moduleId")
-	public String getModuleId() {
-		return moduleId;
+	public Module(){};
+	public Module(String parentId, String moduleName) {
+		this.parentId = parentId;
+		this.moduleName = moduleName;
 	}
 
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
-	}
-	
 	@Column(name="password")
 	public String getPassword() {
 		return password;
@@ -58,5 +54,15 @@ public class Module extends BaseModel{
 		this.parentId = parentId;
 	}
 
+	@Transient
+	public String getParentName(){
+		if(!MyString.isEmpty(parentId)){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(parentId);
+			if(module!=null)
+				return module.getModuleName();
+		}
+		return "";
+	}
 
 }

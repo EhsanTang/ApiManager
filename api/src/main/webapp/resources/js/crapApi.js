@@ -11,12 +11,40 @@ function propUpPsswordDiv(obj){
 	}
 }
 /*****************接口添加参数**************/
-function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableId) {
+function addOneParam(name, necessary, type, def, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
-		rowNum = mydate.getMilliseconds();
+		rowNum = mydate.getTime();
 	}
-	if (tableId == 'editParamTable') {
+	if(!def) def = "";
+	if (tableId == 'editHeaderTable') {
+		$("#editHeaderTable")
+				.append(
+						"<tr><td><input class='form-control' type='text' name='name' value='"
+								+ name
+								+ "' placeholder=\"参数名：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='necessary' id='necessary"
+								+ rowNum
+								+ "' value='"
+								+ necessary
+								+ "'"
+								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
+								+ rowNum
+								+ "','TRUEORFALSE','','"
+								+ necessary
+								+ "','',5);\" placeholder=\"点击输入框选择\"></td>"
+								+ "<td><input class='form-control' type='text' name='type' value='"
+								+ type
+								+ "' placeholder=\"类型：必填\"></td>"
+								+ "<td><input class='form-control' type='text' name='def' value='"
+								+ def
+								+ "' placeholder=\"默认值\"></td>"
+								+ "<td><input class='form-control' type='text' name='remark' value='"
+								+ remark
+								+ "'></td>"
+								+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
+								+ "</tr>");
+	}else if (tableId == 'editParamTable') {
 		$("#editParamTable")
 				.append(
 						"<tr><td><input class='form-control' type='text' name='name' value='"
@@ -35,16 +63,9 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 								+ "<td><input class='form-control' type='text' name='type' value='"
 								+ type
 								+ "' placeholder=\"类型：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='parameterType' id='parameterType"
-								+ rowNum
-								+ "' value='"
-								+ parameterType
-								+ "'"
-								+ "onfocus=\"loadPick(event,200,250,'true','parameterType"
-								+ rowNum
-								+ "','PARAMETERTYPE','','"
-								+ parameterType
-								+ "','',5);\" placeholder=\"参数类型：请求头/参数\"></td>"
+								+ "<td><input class='form-control' type='text' name='def' value='"
+								+ def
+								+ "' placeholder=\"默认值\"></td>"
 								+ "<td><input class='form-control' type='text' name='remark' value='"
 								+ remark
 								+ "'></td>"
@@ -70,7 +91,7 @@ function addOneParam(name, necessary, type,parameterType, remark, rowNum, tableI
 function addOneField(name, type, notNull,def, remark, rowNum) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
-		rowNum = mydate.getMilliseconds();
+		rowNum = mydate.getTime();
 	}
 		$("#content")
 				.append("<tr>"
@@ -87,14 +108,7 @@ function addOneField(name, type, notNull,def, remark, rowNum) {
 function deleteOneParam(nowTr) {
 	$(nowTr).parent().parent().remove();
 }
-function goJsonPage(editerId, targetId, editerId2, targetId2) {
-	$("#" + editerId).addClass('none');
-	$("#" + targetId).removeClass('none');
-	if (editerId2)
-		$("#" + editerId2).addClass('none');
-	if (targetId2)
-		$("#" + targetId2).removeClass('none');
-};
+
 function unescapeAndDecode(name){
 	var value = $.cookie(name);
 	if(value){
@@ -112,13 +126,11 @@ function getParamFromTable(tableId) {
 		if (i != 1)
 			json += ","
 		json += "{";
-		$(this).find('td').each(function() {
-			j = j + 1;
-			$(this).find('input').each(function(i, val) {
+		$(this).find('td').find('input').each(function(i, val) {
+				j = j + 1;
 				if (j != 1)
-					json += ","
-				json += "\"" + val.name + "\":\"" + val.value + "\""
-			});
+					json += ",";
+				json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
 		});
 		json += "}"
 	});
@@ -207,6 +219,7 @@ function setPick() {
 	var checkBoxValue = "";
 	var checkBoxName = "";
 	var rootScope = getRootScope();
+	var stateParams = getStateParams();
 	for (var i = 0; i < length; i++) {
 		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
@@ -217,6 +230,7 @@ function setPick() {
 							rootScope.model[pickTagName] = $(".cidName")[i].textContent;
 					}
 					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
+					stateParams[pickTag] = document.getElementsByName('cid')[i].value;
 					if(rootScope.model)
 						rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
 				});
@@ -262,4 +276,23 @@ function needHiddenModule() {
 	} else {
 		iShow("roleModuleId");
 	}
+}
+// 创建kindEditory
+// 子页面加载一次，需要初始化编辑器（点击左边菜单是更新editorId）
+function createKindEditor(id,modelField){
+	var root = getRootScope();
+	if(window.oldEditorId != window.editorId || window.editor == null){
+		oldEditorId = editorId;
+		window.editor =  KindEditor.create('#'+id,{
+	        uploadJson : 'file/upload.do',
+	        filePostName: 'img',
+	        allowFileManager : true,
+	        afterBlur: function () { 
+	        	editor.sync();
+	        	root.model[modelField] = $('#'+id).val();
+	        }
+		});
+	}
+	window.editor.html(root.model[modelField]);
+	changeDisplay('kindEditor','defEditor')
 }

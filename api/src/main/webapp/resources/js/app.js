@@ -83,15 +83,19 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
 		changeDisplay('interFaceDetail','copyInterFace');
-		goJsonPage('eparam','param','responseEparam','responseParam');
+		$("#eparam").addClass('none');
+		$("#param").removeClass('none');
+		$("#eheader").addClass('none');
+		$("#header").removeClass('none');
+		$("#responseEparam").addClass('none');
+		$("#responseParam").removeClass('none');
 	}
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
-		$rootScope.model.url="";
 		changeDisplay('copyInterFace','interFaceDetail');
 	};
 	$rootScope.del = function(iUrl,id,title){
-		title = title? title:"确认要删除'"+id+"'？";
+		title = title? title:"确认要删除【"+id+"】？";
 		if (confirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
 			httpService.callHttpMethod($http,params).success(function(result) {
@@ -111,16 +115,20 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	    }
 	};
 
-	$rootScope.submitForm = function(iurl,callBack){
+	$rootScope.submitForm = function(iurl,callBack,myLoading){
 		/**
 		  * 回调刷新当前页面数据
 		  */
 		if(callBack){
 			callBack();
 		}
-		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
+		iLoading = "PROPUPFLOAT";
+		if(myLoading){
+			iLoading = myLoading;
+		}
+		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading)
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 			 }else if(result.success==1){
@@ -170,16 +178,32 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
 	/**
-	 * 提交数据字典时将表格数据转换为json
+	 * 提交数据字典时回调将表格数据转换为json
 	 */
 	$rootScope.preAddDictionary = function(){
 		var content = getParamFromTable("content");
 		$rootScope.model.content = content;
 	}
+	/**
+	 * 查看日志详情回调，格式化数据
+	 */
+	$rootScope.logDetailFormat = function(){
+		$rootScope.model.content  = format($rootScope.model.content);
+	}
+	
+	
+	/**
+	 * 数据字典、文章编辑回调
+	 */
 	$rootScope.getFields = function() {
+    		// 切换为默认编辑器
+    		changeDisplay('defEditor','kindEditor');
 	    	var content = "";
-	    	if($rootScope.model.content!=''&&isJson($rootScope.model.content)){
-	    		content = eval("("+$rootScope.model.content+")");
+	    	if($rootScope.model.content!=''){
+	    		// 如果是文章，eval会报错
+	    		try{
+	    			content = eval("("+$rootScope.model.content+")");
+	    		}catch(e){}
 	    	}
 	    	$("#content").find("tbody").find("tr").remove();
 	    	if(content!=null&&content!=""){

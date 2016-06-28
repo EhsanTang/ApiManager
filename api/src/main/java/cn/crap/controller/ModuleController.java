@@ -12,9 +12,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.model.Module;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -26,12 +26,13 @@ public class ModuleController extends BaseController<Module>{
 
 	@Autowired
 	private IModuleService moduleService;
-	
+	@Autowired
+	private ICacheService cacheService;
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Module module){
-		if(!module.getModuleId().equals(Const.NULL_ID)){
-			model= moduleService.get(module.getModuleId());
+		if(!module.getId().equals(Const.NULL_ID)){
+			model= moduleService.get(module.getId());
 		}else{
 			model=new Module();
 			model.setParentId(module.getParentId());
@@ -43,19 +44,19 @@ public class ModuleController extends BaseController<Module>{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Module module) throws MyException{
 		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
-		if(!MyString.isEmpty(module.getModuleId())){
+		if(!MyString.isEmpty(module.getId())){
 			moduleService.update(module);
 		}else{
-			module.setModuleId(null);
+			module.setId(null);
 			moduleService.save(module);
 		}
-		Cache.setModule(module);
+		cacheService.delObj(module.getId());
 		return new JsonResult(1,module);
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Module module) throws MyException{
-		module = moduleService.get(module.getModuleId());
+		module = moduleService.get(module.getId());
 		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
 		moduleService.delete(module);
 		return new JsonResult(1,null);

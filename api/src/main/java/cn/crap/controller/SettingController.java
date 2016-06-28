@@ -14,10 +14,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Setting;
-import cn.crap.utils.Cache;
+import cn.crap.service.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -31,18 +32,22 @@ public class SettingController extends BaseController<Setting>{
 	private ISettingService settingService;
 	@Autowired
 	private IModuleService moduleService;
-	
+	@Autowired
+	private ICacheService cacheService;
 	/**
-	 * MenuDemo
-	 * @return 
-	 * @throws Exception 
-	 * */
+	 * 
+	 * @param setting
+	 * @param currentPage 当前页
+	 * @param pageSize 每页显示多少条，-1表示查询全部
+	 * @return
+	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("key|like",setting.getKey(),"remark|like",setting.getRemark());
-		return new JsonResult(1,settingService.findByMap(map,page, null),page);
+		// 搜索条件
+		map = Tools.getMap(  "key|like", setting.getKey()  ,  "remark|like", setting.getRemark()  );
+		return new JsonResult(1,  settingService.findByMap(map, page, null)   , page);
 	}
 	
 	@RequestMapping("/detail.do")
@@ -78,7 +83,8 @@ public class SettingController extends BaseController<Setting>{
 					return new JsonResult(new MyException("000006"));
 				}
 			}
-		Cache.setSetting(setting,Tools.getServletContext());
+			cacheService.delObj(CacheService.cacheSettingKeyPre);
+			cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/delete.do")
@@ -90,7 +96,8 @@ public class SettingController extends BaseController<Setting>{
 		}
 		Tools.hasAuth(Const.AUTH_SETTING, request.getSession(),"");
 		settingService.delete(setting);
-		Cache.clear(settingService, moduleService, Tools.getServletContext());
+		cacheService.delObj(CacheService.cacheSettingKeyPre,setting.getKey());
+		cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1,null);
 	}
 	
@@ -108,7 +115,8 @@ public class SettingController extends BaseController<Setting>{
 		
 		settingService.update(model);
 		settingService.update(change);
-		Cache.setSetting(settingService.findByMap(null, null, null), Tools.getServletContext());
+		cacheService.delObj(CacheService.cacheSettingKeyPre);
+		cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1, null);
 	}
 

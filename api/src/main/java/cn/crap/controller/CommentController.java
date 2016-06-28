@@ -11,9 +11,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.model.Comment;
-import cn.crap.utils.Cache;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
@@ -21,6 +21,8 @@ import cn.crap.utils.Tools;
 @Controller
 @RequestMapping("/comment")
 public class CommentController extends BaseController<Comment> {
+	@Autowired
+	private ICacheService cacheService;
 
 	@Autowired
 	private ICommentService commentService;
@@ -46,14 +48,14 @@ public class CommentController extends BaseController<Comment> {
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		if (Cache.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
+		if (cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode(request))) {
 				throw new MyException("000010");
 			}
 		}
 		comment.setId(null);
 		commentService.save(comment);
-		return new JsonResult(1, comment);
+		return new JsonResult(1, null);
 	}
 
 	@RequestMapping("/delete.do")

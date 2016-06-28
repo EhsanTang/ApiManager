@@ -34,7 +34,7 @@ public class PickFactory {
 		// 一级菜单
 		case "MENU":
 			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getMenuId(), m.getMenuName());
+				pick = new PickDto(m.getId(), m.getMenuName());
 				picks.add(pick);
 			}
 			break;
@@ -55,7 +55,7 @@ public class PickFactory {
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getModuleId(), DataType.ERROR.name() + "_" + m.getModuleId(),
+				pick = new PickDto(m.getId(), DataType.ERROR.name() + "_" + m.getId(),
 						m.getModuleName() + "--【错误码】");
 				picks.add(pick);
 			}
@@ -70,11 +70,13 @@ public class PickFactory {
 			picks.add(pick);
 			pick = new PickDto(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
+			pick = new PickDto(DataType.LOG);
+			picks.add(pick);
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto("w_d_" + m.getModuleId(), DataType.DICTIONARY.name() + "_" + m.getModuleId(),
+				pick = new PickDto("w_d_" + m.getId(), DataType.DICTIONARY.name() + "_" + m.getId(),
 						m.getModuleName());
 				picks.add(pick);
 			}
@@ -93,7 +95,7 @@ public class PickFactory {
 			picks.add(pick);
 			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0", "type", MenuType.BACK.name()), null,
 					null)) {
-				pick = new PickDto(m.getMenuId(), m.getMenuName() + "--【菜单】");
+				pick = new PickDto(m.getId(), m.getMenuName() + "--【菜单】");
 				picks.add(pick);
 			}
 			break;
@@ -103,7 +105,7 @@ public class PickFactory {
 			pick = new PickDto(Const.SUPER, "超级管理员");
 			picks.add(pick);
 			for (Role r : roleService.findByMap(null, null, null)) {
-				pick = new PickDto(r.getRoleId(), r.getRoleName());
+				pick = new PickDto(r.getId(), r.getRoleName());
 				picks.add(pick);
 			}
 			break;
@@ -111,9 +113,10 @@ public class PickFactory {
 		// 顶级模块
 		case "TOPMODULE":
 			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getModuleId(), m.getModuleName());
+				pick = new PickDto(m.getId(), m.getModuleName());
 				picks.add(pick);
 			}
+			picks.add(0,new PickDto("0","顶级项目"));
 			break;
 		
 		// 枚举 接口状态
@@ -131,15 +134,6 @@ public class PickFactory {
 				picks.add(pick);
 			}
 			break;
-
-		// 请求参数类型
-		case "PARAMETERTYPE":
-			for (ParameterType param : ParameterType.values()) {
-				pick = new PickDto(param.name(), param.getName());
-				picks.add(pick);
-			}
-			break;
-		
 		// 枚举 菜单类型
 		case "MENUTYPE":
 			for (MenuType type : MenuType.values()) {
@@ -180,7 +174,7 @@ public class PickFactory {
 				module = moduleService.get(module.getParentId());
 			}
 			for (Error error : errorService.findByMap(
-					Tools.getMap("moduleId", module == null ? "" : module.getModuleId()), null, "errorCode asc")) {
+					Tools.getMap("moduleId", module == null ? "" : module.getId()), null, "errorCode asc")) {
 				pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 				picks.add(pick);
 			}
@@ -194,6 +188,18 @@ public class PickFactory {
 					continue;
 				i++;
 				pick = new PickDto("cat_" + i, w, w);
+				picks.add(pick);
+			}
+			break;
+		case "MODELNAME":// 数据类型
+			i = 0;
+			@SuppressWarnings("unchecked")
+			List<String> modelNames = (List<String>) webPageService.queryByHql("select distinct modelName from Log", null);
+			for (String w : modelNames) {
+				if (w == null)
+					continue;
+				i++;
+				pick = new PickDto("modelName_" + i, w, w);
 				picks.add(pick);
 			}
 			break;
@@ -215,6 +221,8 @@ public class PickFactory {
 				picks.add(pick);
 				// 后端系统设置
 				pick = new PickDto("h_s_0", "index.do#/setting/list/null", "系统设置列表");
+				picks.add(pick);
+				pick = new PickDto("h_l_0", "index.do#/log/list", "日志列表");
 				picks.add(pick);
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
@@ -249,7 +257,7 @@ public class PickFactory {
 				picks.add(pick);
 				preUrl = "web.do#/webError/list/";
 				for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-					pick = new PickDto("e_" + m.getModuleId(), preUrl + m.getModuleId(), m.getModuleName());
+					pick = new PickDto("e_" + m.getId(), preUrl + m.getId(), m.getModuleName());
 					picks.add(pick);
 				}
 				// 分割线
@@ -291,13 +299,20 @@ public class PickFactory {
 						
 		case "ALLMODULE":// 所有模块
 			moduleService.getModulePick(picks, "", "0", "", null);
+			picks.add(0,new PickDto("0","顶级项目"));
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			@SuppressWarnings("unchecked")
 			List<Module> modules = (List<Module>) moduleService
-					.queryByHql("from Module m where m.moduleId not in (select m2.parentId from Module m2)",null);
+					.queryByHql("from Module m where m.id not in (select m2.parentId from Module m2)",null);
 			for (Module m : modules) {
-				pick = new PickDto(m.getModuleId(), m.getModuleName());
+				pick = new PickDto(m.getId(), m.getModuleName());
+				picks.add(pick);
+			}
+			break;
+		case "FONTFAMILY":// 字体
+			for (FontFamilyType font : FontFamilyType.values()) {
+				pick = new PickDto(font.name(), font.getValue(), font.getName());
 				picks.add(pick);
 			}
 			break;

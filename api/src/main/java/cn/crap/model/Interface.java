@@ -2,22 +2,22 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.SearchDto;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Cache;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
 
 @Entity
 @Table(name="interface")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Interface extends BaseModel{
-	private String id;
 	private String url;
 	private String method;
 	private String param;
@@ -33,11 +33,35 @@ public class Interface extends BaseModel{
 	private String remark;//备注
 	private String errors;
 	private String version;//版本号
+	private String header;//请求头
+	
+	@Transient
+	public SearchDto toSearchDto(){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setContent(remark + responseParam + param);
+		dto.setModuleName(getModuleName());
+		dto.setTitle(interfaceName);
+		dto.setType(Interface.class.getSimpleName());
+		dto.setUrl("web.do#/webInterfaceDetail/"+id);
+		dto.setVersion(version);
+		return dto;
+		
+	}
+	
+	
+	@Transient
+	@Override
+	public String getLogRemark(){
+		return interfaceName;
+	}
 	
 	@Transient
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
-			Module module = Cache.getModule(moduleId);
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
 			if(module!=null)
 				return module.getModuleName();
 		}
@@ -51,17 +75,6 @@ public class Interface extends BaseModel{
 
 	public void setErrors(String errors) {
 		this.errors = errors;
-	}
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="id")
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	@Column(name="url")
@@ -84,6 +97,8 @@ public class Interface extends BaseModel{
 
 	@Column(name="param")
 	public String getParam() {
+		if(MyString.isEmpty(param))
+			return "form=[]";
 		return param;
 	}
 
@@ -102,6 +117,8 @@ public class Interface extends BaseModel{
 
 	@Column(name="responseParam")
 	public String getResponseParam() {
+		if(MyString.isEmpty(responseParam))
+			return "[]";
 		return responseParam;
 	}
 
@@ -186,6 +203,18 @@ public class Interface extends BaseModel{
 	public void setVersion(String version) {
 		this.version = version;
 	}
+
+	@Column(name="header")
+	public String getHeader() {
+		if(MyString.isEmpty(header))
+			return "[]";
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+	
 	
 
 }

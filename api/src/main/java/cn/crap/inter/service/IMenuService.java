@@ -1,7 +1,9 @@
 package cn.crap.inter.service;
 
 import java.util.List;
+import java.util.Map;
 
+import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.IBaseService;
 import cn.crap.model.Menu;
@@ -19,5 +21,7 @@ public interface IMenuService extends IBaseService<Menu>{
 	 * @return
 	 */
 	String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull);
+
+	List<MenuDto> getLeftMenu(Map<String, Object> map);
 
 }

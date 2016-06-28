@@ -4,6 +4,8 @@ body{
 	word-wrap:break-word;
 	background-color:#DDD;
 }
+/**火狐红色边框**/
+input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
 table{
 	font-size:12px;
 	font-weight:normal;
@@ -19,12 +21,23 @@ blockquote{
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1462031239_5223558.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1462031239_5223558.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1462031239_5223558.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1462031239_5223558.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1462031239_5223558.svg#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1465407164_903647.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1465407164_903647.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1465407164_903647.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1465407164_903647.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1465407164_903647.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
+                    
+/***默认颜色**/
+.def-bg{
+	background:#cccccc;
+}                 
+.search-input:focus{
+	opacity:1!important;
+}  
+.search-section:hover .search-button{
+	opacity:0.8!important;
+}      
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
@@ -89,7 +102,7 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#content input,#editResponseParamTable input{
+#editParamTable input,#content input,#editResponseParamTable input,.tableInupt input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;
@@ -128,6 +141,8 @@ blockquote{
     font-weight:100;
     line-height: 24px;
     font-size: 12px;
+    white-space: pre-wrap;
+	word-wrap: break-word;
 }
 /***************************/
 #go_top{
@@ -199,10 +214,9 @@ blockquote{
   	background-color:transparent!important;
 }
 .panel-heading{
-	border-top: 1px solid #AAA!important;
-  	border-bottom: 1px solid #BBB!important;
   	color:#DDD!important;
   	padding:0px!important;
+  	background:#999999!important;
 }
 .panel-heading .badge{
 	background-color: #B768A5!important;
@@ -263,7 +277,7 @@ blockquote{
  /*****************加载浮层***************************/
 .folat{
 	display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
-	z-index:1050;
+	z-index:1060;
 	background: rgba(0, 0, 0, 0.1); 
 	padding-top:20%; text-align:center;
 }
@@ -358,7 +372,7 @@ blockquote{
 }
 @media (max-width: 767px) {
 }
-/*************椤甸潰鍔犺浇鎻愮ず************/
+/*************loading************/
 .sk-wave {
   margin: 40px auto;
   width: 50px;

@@ -6,16 +6,18 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.utils.Page;
@@ -81,6 +83,7 @@ public abstract class BaseController<T extends BaseModel> {
         if(ex instanceof MyException) {  
             return new JsonResult((MyException)ex);
         } else {  
+        	ex.printStackTrace();
         	log.error(ex.getMessage());
         	ex.printStackTrace();
         	return new JsonResult(new MyException("000001",ex.getMessage()));

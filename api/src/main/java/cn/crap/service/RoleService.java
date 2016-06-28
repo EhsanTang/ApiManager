@@ -40,8 +40,8 @@ public class RoleService extends BaseService<Role>
 	@Transactional
 	private void getSubAuth(DataType dataType,StringBuilder sb,String parentId){
 		for(Module module :moduleService.findByMap(Tools.getMap("parentId",parentId), null, null)){
-			sb.append(dataType.name()+"_"+module.getModuleId()+",");
-			getSubAuth(dataType,sb,module.getModuleId());
+			sb.append(dataType.name()+"_"+module.getId()+",");
+			getSubAuth(dataType,sb,module.getId());
 		}
 	}
 }

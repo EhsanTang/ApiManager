@@ -2,8 +2,6 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -15,10 +13,6 @@ import cn.crap.framework.base.BaseModel;
 @Table(name="user")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class User extends BaseModel{
-	/**
-	 * userId(用户ID)
-	 * */
-	private String userId;
 	/**
 	 * userName(用户昵称)
 	 * */
@@ -33,18 +27,6 @@ public class User extends BaseModel{
 	private String auth;
 	private String authName;
 	
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="userId")
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	@Column(name="userName")
 	public String getUserName() {
 		return userName;

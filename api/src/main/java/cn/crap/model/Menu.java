@@ -2,8 +2,6 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -21,10 +19,6 @@ import cn.crap.utils.MyString;
 @Table(name="menu")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Menu extends BaseModel{
-	/**
-	 * menuId
-	 * */
-	private String menuId;
 	/**
 	 * menuName(菜单名称)
 	 * */
@@ -49,17 +43,6 @@ public class Menu extends BaseModel{
 		return "";
 	}
 	
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="menuId")
-	public String getMenuId() {
-		return menuId;
-	}
-
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
-	}
-
 	@Column(name="menuName")
 	public String getMenuName() {
 		return menuName;

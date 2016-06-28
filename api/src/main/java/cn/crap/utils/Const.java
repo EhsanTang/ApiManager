@@ -3,6 +3,7 @@ public class Const {
 	public final static String SESSION_ADMIN = "sessionAdminName";
 	public final static String SESSION_IMGCODE_TIMES = "sessionImgCodeTryTimes";
 	public final static String SESSION_ADMIN_AUTH = "sessionAdminAuthor";
+	public final static String SESSION_ADMIN_ID = "sessionAdminId";
 	public final static String SESSION_ADMIN_TRUENAME = "sessionAdminTrueName";
 	public final static String SESSION_ADMIN_ROLEIDS = "sessionAdminRoleIds";
 	public final static String SESSION_IMG_CODE = "sessionImgCode";
@@ -23,6 +24,7 @@ public class Const {
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
 	public static final String AUTH_MODULE = "MODULE_"+MODULEID;
 	public static final String AUTH_ROLE = "ROLE";
+	public static final String AUTH_LOG = "LOG";
 	public static final String SEPARATOR = "SEPARATOR";
 	
 	//常量
@@ -36,4 +38,11 @@ public class Const {
 	public final static String SETTING_VISITCODE = "VISITCODE";
 	public final static String SETTING_DOMAIN = "DOMAIN";
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
+	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
+	
+	//SOLR
+	public static final String SOLR_URL = "SOLR_URL";
+	public static final String SOLR_QUEUESIZE  = "SOLR_QUEUESIZE";
+	public static final String SOLR_THREADCOUNT = "SOLR_THREADCOUNT";
+	public static final String SEARCH_TYPE = "SEARCH_TYPE";
 }

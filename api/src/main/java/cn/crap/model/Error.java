@@ -2,15 +2,15 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Cache;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
 
 @Entity
@@ -18,7 +18,6 @@ import cn.crap.utils.MyString;
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class Error extends BaseModel{
 
-	private String errorId;
 	private String errorCode;
 	private String errorMsg;
 	private String moduleId;
@@ -26,22 +25,12 @@ public class Error extends BaseModel{
 	@Transient
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
-			Module module = Cache.getModule(moduleId);
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
 			if(module!=null)
 				return module.getModuleName();
 		}
 		return "";
-	}
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="errorId")
-	public String getErrorId() {
-		return errorId;
-	}
-
-	public void setErrorId(String errorId) {
-		this.errorId = errorId;
 	}
 
 	@Column(name="errorCode")

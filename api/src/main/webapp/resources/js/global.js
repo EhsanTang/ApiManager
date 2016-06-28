@@ -138,6 +138,10 @@ function getRootScope(){
 	var $body = angular.element(document.body);
 	return $body.scope().$root;
 }
+function getStateParams(){
+	var $body = angular.element(document.body);
+	return $body.scope().$stateParams;
+}
 
 
 
@@ -211,6 +215,7 @@ function selectRadio(className,id,radioId){
 
 /** ********************************** */
 function selectButton(obj,className){
+	window.editorId = new Date().getTime();
 	var objs = $("."+className);
 	objs.removeClass("iactive");
 	$(obj).addClass("iactive");

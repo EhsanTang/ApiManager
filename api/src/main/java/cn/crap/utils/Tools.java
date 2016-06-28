@@ -1,5 +1,7 @@
 package cn.crap.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,16 +9,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import cn.crap.dto.CrumbDto;
 import cn.crap.framework.MyException;
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.ISearchService;
+import cn.crap.service.CacheService;
+import cn.crap.service.LuceneSearchService;
+import cn.crap.service.SolrSearchService;
 
 
 public class Tools {
@@ -46,13 +60,25 @@ public class Tools {
 	/**
 	 * 查询是否拥有权限
 	 */
+	public static boolean hasAuth(String authPassport, HttpSession session, String moduleId) throws MyException {
+		return hasAuth(authPassport, session, moduleId, null);
+	}
 	public static boolean hasAuth(String authPassport, HttpSession session,
-			String moduleId) throws MyException {
+			String moduleId, HttpServletRequest request) throws MyException {
 		String authority = session.getAttribute(Const.SESSION_ADMIN_AUTH).toString();
 		String roleIds = session.getAttribute(Const.SESSION_ADMIN_ROLEIDS).toString();
 		if((","+roleIds).indexOf(","+Const.SUPER+",")>=0){
 			return true;//超级管理员
 		}
+		
+		// 管理员修改自己的资料
+		if(authPassport.equals("USER") && request != null){
+			// 如果session中的管理员id和参数中的id一致
+			if( MyString.isEquals(  session.getAttribute(Const.SESSION_ADMIN_ID).toString(),  MyString.getValueFromRequest(request, "id", "-1")  )  ){
+				return true;
+			}
+		}
+		
 		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
 		if(authority.indexOf(","+needAuth+",")>=0){
 			return true;
@@ -60,6 +86,7 @@ public class Tools {
 			throw new MyException("000003");
 		}
 	}
+	
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
 		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);
@@ -70,7 +97,8 @@ public class Tools {
 			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
 				throw new MyException("000007");
 			}
-			if(Cache.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			if(cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				Object imgCode = getImgCode(request);
 				if(MyString.isEmpty(visitCode)||imgCode==null||!visitCode.equals(imgCode.toString())){
 					throw new MyException("000007");
@@ -94,6 +122,24 @@ public class Tools {
 				map.put(params[i].toString(), params[i + 1]);
 		}
 		return map;
+
+	}
+	
+	/**
+	 * 构造导航条
+	 */
+	public static List<CrumbDto> getCrumbs(String... params) {
+		 List<CrumbDto> crumbDtos = new ArrayList<CrumbDto>();
+		if (params.length == 0 || params.length % 2 != 0) {
+			return crumbDtos;
+		}
+		for (int i = 0; i < params.length; i = i + 2) {
+			if (!MyString.isEmpty(params[i + 1])){
+				CrumbDto crumb = new CrumbDto(params[i], params[i + 1]);
+				crumbDtos.add(crumb);
+			}
+		}
+		return crumbDtos;
 
 	}
 	//查询需要添加过滤器status>-1
@@ -217,5 +263,31 @@ public class Tools {
 	public static ServletContext getServletContext(){
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();  
         return webApplicationContext.getServletContext(); 
+	}
+	public static String readStream(InputStream inStream, String encoding)
+			throws Exception {
+		ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = -1;
+		while ((len = inStream.read(buffer)) != -1) {
+			outSteam.write(buffer, 0, len);
+		}
+		outSteam.close();
+		inStream.close();
+		return new String(outSteam.toByteArray(), encoding);
+	}
+
+	public static String removeHtml(String inputStr){
+		inputStr=inputStr.replaceAll("<[a-zA-Z|//]+[1-9]?[^><]*>", "");
+		inputStr=inputStr.replaceAll("&nbsp;", "");
+		StringBuffer temp=new StringBuffer();
+		String str="[a-z]*[A-Z]*[0-9]*[\u4E00-\u9FA5]*[Ⅰ|,|。|，|.|：|(|)|（|）|:|/]*";
+		Pattern pattern = Pattern.compile(str,Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(inputStr);
+		while (matcher.find())
+		{
+			temp.append(matcher.group());
+		}
+		return temp.toString();
 	}
 }

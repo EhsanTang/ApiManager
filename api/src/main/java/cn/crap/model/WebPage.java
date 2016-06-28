@@ -2,15 +2,16 @@ package cn.crap.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.SearchDto;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Cache;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.WebPageType;
 
@@ -18,7 +19,6 @@ import cn.crap.utils.WebPageType;
 @Table(name="webpage")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
 public class WebPage extends BaseModel{
-	private String id;
 	private String name;
 	private String brief;
 	private String content;
@@ -30,6 +30,28 @@ public class WebPage extends BaseModel{
 	private String category;
 	private byte canComment;
 	private int commentCount;
+	private String password;
+	
+	@Transient
+	public SearchDto toSearchDto(){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setContent(brief + content);
+		dto.setModuleName(getModuleName());
+		dto.setTitle(name);
+		dto.setType(WebPage.class.getSimpleName());
+		if(type.equals(WebPageType.ARTICLE.name()))
+			dto.setUrl("web.do#/webWebPage/detail/ARTICLE/"+id);
+		else if(type.equals(WebPageType.DICTIONARY.name()))
+			dto.setUrl("web.do#/webWebPage/detail/DICTIONARY/"+id);
+		else if(type.equals(WebPageType.PAGE.name()))
+			dto.setUrl("web.do#/webWebPage/detail/PAGE/"+key);
+		else
+			dto.setUrl("");
+		dto.setVersion("");
+		return dto;
+	}
 	
 	
 	@Transient
@@ -48,21 +70,12 @@ public class WebPage extends BaseModel{
 	@Transient
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
-			Module module = Cache.getModule(moduleId);
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
 			if(module!=null)
 				return module.getModuleName();
 		}
 		return "";
-	}
-	
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="id")
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	@Column(name="category")
@@ -149,6 +162,14 @@ public class WebPage extends BaseModel{
 	}
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
+	}
+	
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

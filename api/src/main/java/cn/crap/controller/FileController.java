@@ -24,6 +24,7 @@ public class FileController extends BaseController <User>{
 		 * 允许上传的图片类型
 		 */
 		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");
+		extMap.put("files", ",txt,doc,xls,rar,zip,pdf,docx");
 	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
@@ -40,7 +41,7 @@ public class FileController extends BaseController <User>{
 	    if(file.getSize()>2*1024*1024){
 	    	obj.put("error", 1);
 	    	result = "[ERROR]文件超过最大限制，请上传小于2M的图片";
-	    }else if(extMap.get("image").indexOf(suffix)<0){
+	    }else if(extMap.get("image").indexOf(suffix)<0 && extMap.get("files").indexOf(suffix)<0){
 	    	 //检查扩展名
 	    	obj.put("error", 1);
 	    	result = "[ERROR]上传文件扩展名是不允许的扩展名";
@@ -48,6 +49,8 @@ public class FileController extends BaseController <User>{
 	    	//检查扩展名
 	    	if(extMap.get("image").indexOf(suffix)>=0){
 	    		saveUrl +="resources/upload/images";
+	    	}else{
+	    		saveUrl +="resources/upload/files";
 	    	}
 		  	saveUrl +="/"+DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD)+"/";
 		    realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.HHmmss)+Tools.getChar(6)+"."+suffix;

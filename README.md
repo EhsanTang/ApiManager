@@ -14,20 +14,28 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 1.项目管理、模块管理、接口管理、接口版本、接口拷贝、接口文档pdf下载、模块加密访问....
 2.数据字典管理、数据字典加密访问...
 3.多管理员、多权限、多角色管理，精准控制每个接口的删改权限
-4.自定义菜单、自定义网站样式，满足你的各种需求
+4.自定义菜单、自定义网站样式、自定义网站字体，满足你的各种需求
 5.文档管理：说明文档、需求文档、技术实现文档，想怎么分类CrapApi都支持
 6.文档留言、错误码管理、接口排序... 
+7.post、get、delete、head、trace、put、options请求在线调试
+8.接口修改日志记录、接口恢复
+9.接口、文章Lucene全文搜索
 
 更多功能还在路上，想要什么，在此留言，统统都能满足！
 留言地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25
 ```
-[演示&帮助文档]
+
+[演示&帮助文档&部署文档]
 ```
 演示地址：http://api.crap.cn
 
 压缩包下载地址：http://ehsantang.github.io/CrapApi/
 
 帮助文档地址：http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3
+
+部署文档地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/19dc3d5c7-ff3d-4dff-ad72-2212869cd92a
+
+码云源码地址：https://git.oschina.net/CrapApi/CrapApi.git
 
 账号：super 123456 
 游客私有模块访问密码：123
@@ -59,7 +67,6 @@ QQ技术交流群：254450938
 
 支持自定义网站风格
 ```
-
 
 [相关技术介绍]
 ```

@@ -17,6 +17,8 @@ public class Page {
 		this.allRow = allRow;
 	}
 	public Integer getCurrentPage() {
+		if(currentPage < 1)
+			return 1;
 		return currentPage;
 	}
 	public void setCurrentPage(Integer currentPage) {

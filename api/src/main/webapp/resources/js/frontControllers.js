@@ -55,6 +55,25 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
     };
     $scope.getData();
 });
+
+
+webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iLoading=FLOAT|iUrl=source/detail.do?id="+$stateParams.id;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.source = null;
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.source = result.data;
+			 }
+		});
+    };
+    $scope.getData();
+});
+
 /**
  * 接口详情
  * 不需要打开模态框，所以不能调用$rootScope中的getBaseData()

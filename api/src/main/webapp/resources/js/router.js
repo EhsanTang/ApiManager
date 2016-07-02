@@ -61,6 +61,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('sourceDetail', {
+		url : '/webSource/detail/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/frontHtml/sourceDetail.tpl.html';
+				}
+			}
+		}
 	}).state('settingList', {
 		url : '/setting/list/:key',
 		views : {

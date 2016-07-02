@@ -75,14 +75,13 @@ public class SourceController extends BaseController<Source>{
 			SearchDto searchDto = source.toSearchDto();
 			//索引内容 = 备注内容 + 文档内容
 			searchDto.setContent(searchDto.getContent() + GetTextFromFile.getText(source.getFilePath()));
-			//如果备注为空，则提取文档内容前500 个字
+			
+			//如果备注为空，则提取文档内容前2500 个字
 			if( MyString.isEmpty(source.getRemark()) ){
-				source.setRemark(searchDto.getContent().length() > 500? searchDto.getContent().substring(0, 500) : searchDto.getContent());
+				source.setRemark(searchDto.getContent().length() > 2500? searchDto.getContent().substring(0, 2500) +" ... \r\n..." : searchDto.getContent());
 			}
 			
 			GetBeanBySetting.getSearchService().update(searchDto);
-			if(	source.getRemark().length() > 5000	)
-				source.setRemark(source.getRemark().substring(0, 5000));
 			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
 				sourceService.update(source);

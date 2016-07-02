@@ -46,7 +46,7 @@
 					<tr>
 					<td class="tc w200">备注</td>
 					<td class="tc">
-						<textarea rows="6" class="form-control" ng-model="model.remark"></textarea>
+						<textarea rows="6" class="form-control" ng-model="model.remark" placeholder="若为空，系统将自动提取文档中的内容"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -72,7 +72,7 @@
 								</div>
 					    </div>
 						<span class="ndis"> 
-								<input type="file" name="img" onchange="uploadImage('filePath',1024*5,fileForm)" id="filePath" />
+								<input type="file" name="img" onchange="uploadImage('filePath',1024*10,fileForm)" id="filePath" />
 						</span>
 					</td>
 				</tr>

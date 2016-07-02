@@ -36,11 +36,11 @@ public class FileController extends BaseController <User>{
 	    String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1).toLowerCase();
 	    JSONObject obj = new JSONObject();
 	    /**
-	     * 文件大小拦截，不能超过2M
+	     * 文件大小拦截，不能超过10M
 	     */
-	    if(file.getSize()>2*1024*1024){
+	    if(file.getSize()>2*1024*1024*10){
 	    	obj.put("error", 1);
-	    	result = "[ERROR]文件超过最大限制，请上传小于2M的图片";
+	    	result = "[ERROR]文件超过最大限制，请上传小于10M的图片";
 	    }else if(extMap.get("image").indexOf(suffix)<0 && extMap.get("files").indexOf(suffix)<0){
 	    	 //检查扩展名
 	    	obj.put("error", 1);

@@ -12,10 +12,11 @@
 		</div>
 		<div ng-if="list.searchResults.length>0" ng-repeat="item in list.searchResults">
 			<div class="tl col-xs-6">
-				<a ng-href="{{item.url}}" class="f12 text-primary mr10 cursor" ng-bind-html="item.title|trustHtml"></a>
+				<a ng-href="{{item.url}}" class="f14 text-primary mr10 cursor" ng-bind-html="item.title|trustHtml"></a>
 			</div>
-			<div class="tc col-xs-2" ng-bind="item.version"></div>
-			<div class="tc col-xs-2" ng-bind-html="item.moduleName|trustHtml"></div>
+			<div class="tc col-xs-2" ng-bind="item.version" ng-if="item.type=='Interface'"></div>
+			<div class="tc col-xs-2" ng-bind-html="item.moduleName|trustHtml" ng-if="item.type=='Interface'"></div>
+			<div class="tc col-xs-4 tr C999" ng-bind="getDate(item.createTime)|date:'yyyy-MM-dd HH:mm'" ng-if="item.type!='Interface'"></div>
 			<div class="tr col-xs-2">
 				<a class="f12 text-primary mr10 cursor" ng-href="{{item.url}}">
 					<i class="iconfont f12">&#xe60a;</i>&nbsp;详情

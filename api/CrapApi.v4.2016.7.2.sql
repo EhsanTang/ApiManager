@@ -35,7 +35,7 @@ ALTER TABLE `api`.`source`
 ADD COLUMN `directoryId` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '文件夹目录' AFTER `updateTime`;
 
 ALTER TABLE `api`.`source` 
-ADD COLUMN `remark` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '备注' AFTER `directoryId`;
+ADD COLUMN `remark` VARCHAR(5000) NOT NULL DEFAULT '' COMMENT '备注' AFTER `directoryId`;
 
 ALTER TABLE `api`.`source` 
 ADD COLUMN `filePath` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '文件目录' AFTER `remark`;

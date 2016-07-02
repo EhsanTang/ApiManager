@@ -50,7 +50,7 @@ public class ModuleController extends BaseController<Module>{
 			module.setId(null);
 			moduleService.save(module);
 		}
-		cacheService.delObj(module.getId());
+		cacheService.delObj("cache:model:"+module.getId());
 		return new JsonResult(1,module);
 	}
 	@RequestMapping("/delete.do")

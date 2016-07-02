@@ -43,10 +43,11 @@
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=directoryName|tag=directoryId|code=DATACENTER|params=&key=DIRECTORY|def='+model.directoryId,$event)">
 					</td>
 				</tr>
-				<tr>
-					<td class="tc">备注</td>
-					<td class="tc"><textarea class="form-control no-resize"
-							ng-model="model.remark" rows="6" placeholder="备注信息"></textarea></td>
+					<tr>
+					<td class="tc w200">备注</td>
+					<td class="tc">
+						<textarea rows="6" class="form-control" ng-model="model.remark"></textarea>
+					</td>
 				</tr>
 				<tr>
 					<td class="tc">排序</td>
@@ -64,7 +65,7 @@
 				<tr>
 					<td class="tc w200">上传文件</td>
 					<td>
-						<div class="input-group w" id="header">
+						<div class="input-group w">
 								<input class="form-control no-resize" ng-model="model.filePath" placeholder="请点击“上传”按钮选择文件或输入文件路径">
 								<div class="input-group-addon cursor btn-purple C999" title="点击选择文件" onclick="$('#filePath').click();">
 									<i class="iconfont main-color">&#xe619;</i> 选择文件

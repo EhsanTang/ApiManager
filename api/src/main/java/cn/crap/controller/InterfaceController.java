@@ -139,7 +139,7 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		interFace.setId(null);
 		interfaceService.save(interFace);
-		GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
+		GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
 		return new JsonResult(1, interFace);
 	}
 	
@@ -225,7 +225,7 @@ public class InterfaceController extends BaseController<Interface>{
 				throw new MyException("000004");
 			}
 			interfaceService.update(interFace, "接口", "");
-			GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
+			GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
 		} else {
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){

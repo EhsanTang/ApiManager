@@ -26,19 +26,13 @@ public interface ISearchService{
 	boolean delete(SearchDto searchDto) throws IOException;
 
 	/**
-	 * 更新索引文件
-	 * @param searchDto
-	 * @return
-	 * @throws IOException 
-	 */
-	boolean update(SearchDto searchDto) throws IOException;
-
-	/**
-	 * 添加索引文件
+	 * 添加索引文件, 更新索引文件
 	 * @param searchDto
 	 * @return
 	 * @throws IOException 
 	 */
 	boolean add(SearchDto searchDto) throws IOException;
+
+	boolean update(SearchDto searchDto) throws IOException;
 
 }

@@ -130,6 +130,13 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	
 	@Override
 	@Transactional
+	public List<T> findByMap(Map<String, Object> map, String construct,
+			Page page, String order) {
+		return dao.findByMap(construct, map, page, order);
+	}
+	
+	@Override
+	@Transactional
 	public int getCount(Map<String, Object> map) {
 		String conditions = Tools.getHql(map);
 		return dao.getCount(map,conditions);

@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
@@ -27,6 +28,19 @@ public class Source extends BaseModel{
 	private String directoryId;// 文件夹目录：dataCenter id
 	private String remark; // 资源内容
 	private String filePath;
+	
+	public Source(){};
+	public Source(String id, String createTime, byte status, int sequence, String name, String filePath, String directoryId, String updateTime){
+		this.id = id;
+		this.createTime = createTime;
+		this.status = status;
+		this.sequence = sequence;
+		this.name = name;
+		this.filePath = filePath;
+		this.directoryId = directoryId;
+		this.updateTime = updateTime;
+		
+	}
 	
 	@Column(name="name")
 	public String getName() {
@@ -82,6 +96,19 @@ public class Source extends BaseModel{
 				return module.getName();
 		}
 		return "";
+	}
+
+	@Transient
+	public SearchDto toSearchDto(){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setContent(remark == null? "":remark);
+		dto.setTitle(name);
+		dto.setType(Source.class.getSimpleName());
+		dto.setUrl("web.do#/webSource/detail/"+id);
+		dto.setVersion("");
+		return dto;
 	}
 	
 	

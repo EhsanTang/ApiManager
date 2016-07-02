@@ -1,5 +1,7 @@
 package cn.crap.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -7,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -16,6 +18,8 @@ import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.ISourceService;
 import cn.crap.model.Source;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.GetBeanBySetting;
+import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -41,7 +45,9 @@ public class SourceController extends BaseController<Source>{
 		page.setCurrentPage(currentPage);
 		// 搜索条件
 		map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		//returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
 		returnMap.put("sources", sourceService.findByMap(map, page, null));
+
 		map.clear();
 		map = Tools.getMap("parentId", source.getDirectoryId(), "type", "DIRECTORY");
 		returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
@@ -62,20 +68,36 @@ public class SourceController extends BaseController<Source>{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Source source){
-		source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
+			if(MyString.isEmpty(source.getFilePath())){
+				throw new MyException("000016");
+			}
+			SearchDto searchDto = source.toSearchDto();
+			//索引内容 = 备注内容 + 文档内容
+			searchDto.setContent(searchDto.getContent() + GetTextFromFile.getText(source.getFilePath()));
+			//如果备注为空，则提取文档内容前500 个字
+			if( MyString.isEmpty(source.getRemark()) ){
+				source.setRemark(searchDto.getContent().length() > 500? searchDto.getContent().substring(0, 500) : searchDto.getContent());
+			}
+			
+			GetBeanBySetting.getSearchService().update(searchDto);
+			if(	source.getRemark().length() > 5000	)
+				source.setRemark(source.getRemark().substring(0, 5000));
+			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
 				sourceService.update(source);
 			}else{
 				source.setId(null);
 				sourceService.save(source);
+				
 			}
 		return new JsonResult(1,source);
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Source source) throws MyException{
+	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
 		sourceService.delete(source);
+		GetBeanBySetting.getSearchService().delete(new SearchDto(source.getId()));
 		return new JsonResult(1,null);
 	}
 	

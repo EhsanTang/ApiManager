@@ -87,6 +87,26 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 		return Integer.parseInt(query.uniqueResult().toString());
 	}
 
+	/**
+	 * @param constructed: 构造函数 如 new A(aa,bb)
+	 */
+	@Override
+	public List<T> findByMap(String construct,Map<String, Object> map,
+			Page pageBean, String order) {
+		String conditions = Tools.getHql(map);
+		String hql = "select " + construct +" from "+entity.getSimpleName() + conditions + (MyString.isEmpty(order) ? " order by sequence desc, createTime desc" : " order by " + order);
+		Query query = hibernateTemplate.getSessionFactory().getCurrentSession()
+				.createQuery(hql);
+		if(pageBean!=null){
+			pageBean.setAllRow(getCount(map, conditions));
+			if(pageBean.getCurrentPage()>pageBean.getTotalPage())
+				pageBean.setCurrentPage(pageBean.getTotalPage());
+		}
+		Tools.setPage(query, pageBean);
+		Tools.setQuery(map, query);
+		return query.list();
+	}
+	
 	@Override
 	public List<T> findByMap(Map<String, Object> map,
 			Page pageBean, String order) {

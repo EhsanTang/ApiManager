@@ -3,7 +3,6 @@ package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
 
-import cn.crap.dto.PickDto;
 import cn.crap.utils.Page;
 
 public interface IBaseService<T extends BaseModel> {
@@ -63,5 +62,7 @@ public interface IBaseService<T extends BaseModel> {
 	 * 修改前，先将对象数据存入log对象
 	 * */
 	void update(T model, String modelName, String remark);
+
+	List<T> findByMap(Map<String, Object> map, String construct, Page page, String order);
 
 }

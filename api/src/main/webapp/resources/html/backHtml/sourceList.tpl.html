@@ -89,7 +89,7 @@
 		<tbody>
 			<tr ng-repeat="item in list.sources">
 				<td class="tc w200">{{item.name}}</td>
-				<td class="tc">{{item.remark}}</td>
+				<td class="tc">{{item.remark|cut:true:50:' ...'}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">{{getDate(item.updateTime)|date:'yyyy-MM-dd HH:mm'}}</td>
 				<td class="tc">

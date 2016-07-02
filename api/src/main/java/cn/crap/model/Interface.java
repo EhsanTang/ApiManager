@@ -68,6 +68,17 @@ public class Interface extends BaseModel{
 		return "";
 	}
 	
+	@Transient
+	public String getModuleUrl(){
+		if(!MyString.isEmpty(moduleId)){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
+			if(module!=null)
+				return module.getUrl();
+		}
+		return "";
+	}
+	
 	@Column(name="errors")
 	public String getErrors() {
 		return errors;

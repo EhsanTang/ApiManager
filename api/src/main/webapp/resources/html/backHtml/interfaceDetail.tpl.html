@@ -17,6 +17,12 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tc">Url</td>
+					<td class="tc" colspan="3">
+						<input  class="form-control" type="text" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
+					</td>
+				</tr>
+				<tr>
 					<td class="tc">访问密码</td>
 					<td class="tc" colspan="3"><input class="form-control"
 						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
@@ -47,9 +53,12 @@
 				</tr>
 				<tr>
 					<td class="tc">URL</td>
-					<td class="tc" colspan="3"><input class="form-control"
-						type="text" ng-model="model.url" required maxlength="100"
+					<td class="tc" colspan="3">
+					    <div ng-class="{true: 'input-group w', false: 'w'}[model.moduleUrl!='']">
+					      <div class="input-group-addon" ng-bind="model.moduleUrl" ng-if="model.moduleUrl"></div>
+					      <input type="text" class="form-control" ng-model="model.url" required maxlength="100"
 						placeholder="示例：http://api.crap.cn/CustomerOrder/GetMyOrderList">
+					    </div>
 					</td>
 				</tr>
 				<tr>

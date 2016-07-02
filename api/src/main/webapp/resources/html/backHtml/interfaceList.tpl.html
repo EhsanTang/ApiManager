@@ -53,6 +53,7 @@
 		<thead>
 			<tr class="BGEEE">
 				<th class="tc">名称</th>
+				<th class="tc">Url</th>
 				<td class="tc">排序</td>
 				<th class="w300 tc">操作</th>
 			</tr>
@@ -60,6 +61,7 @@
 		<tbody>
 			<tr ng-repeat="item in list.modules">
 				<td class="tc">{{item.moduleName}}</td>
+				<td class="tc">{{item.url}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc w300">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('MODULE',$stateParams.moduleId)"

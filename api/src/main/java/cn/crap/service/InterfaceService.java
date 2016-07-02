@@ -61,7 +61,7 @@ public class InterfaceService extends BaseService<Interface>
 	@Override
 	@Transactional
 	public void getInterFaceRequestExam(Interface interFace) {
-			interFace.setRequestExam("请求地址:"+interFace.getUrl()+"\r\n");
+			interFace.setRequestExam("请求地址:"+interFace.getModuleUrl()+interFace.getUrl()+"\r\n");
 			
 			// 请求头
 			JSONArray headers = JSONArray.fromObject(interFace.getHeader());

@@ -35,7 +35,7 @@
 			<br/>
 			<br/>
 			<h3>2 URL</h3>
-			${model.url}
+			${model.moduleUrl}${model.url}
 			<br/>
 			<br/>
 			<h3>3 HTTP请求方式</h3>

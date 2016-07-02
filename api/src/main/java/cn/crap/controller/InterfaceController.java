@@ -267,7 +267,10 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/debug.do")
 	@ResponseBody
 	public JsonResult debug(@RequestParam String params, @RequestParam String headers, @RequestParam(defaultValue="") String customParams,
-			@RequestParam String debugMethod,@RequestParam String url) throws Exception {
+			@RequestParam String debugMethod,@RequestParam String url, String moduleUrl) throws Exception {
+		if(!MyString.isEmpty(moduleUrl))
+			url = moduleUrl + url;
+		
 		JSONArray jsonParams = JSONArray.fromObject(params);
 		JSONArray jsonHeaders = JSONArray.fromObject(headers);
 		Map<String,String> httpParams = new HashMap<String,String>();

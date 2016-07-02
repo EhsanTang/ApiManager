@@ -20,6 +20,7 @@ public class Module extends BaseModel{
 	private String moduleName;
 	private String parentId;
 	private String password;
+	private String url;
 
 	public Module(){};
 	public Module(String parentId, String moduleName) {
@@ -54,6 +55,14 @@ public class Module extends BaseModel{
 		this.parentId = parentId;
 	}
 
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	@Transient
 	public String getParentName(){
 		if(!MyString.isEmpty(parentId)){

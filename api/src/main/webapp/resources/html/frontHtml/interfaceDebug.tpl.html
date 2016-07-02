@@ -2,7 +2,7 @@
 <button type="button" class="ndis" id="fushPage" ng-click="getData(1,true);"></button>
 <div class="col-xs-12 p0 f12 lh26">
 		<div class="fb f20 pb10 C555 mt0">
-			<div class="fl m0">Url：{{model.url}}</div>
+			<div class="fl m0">Url：{{model.moduleUrl}}{{model.url}}</div>
 			<div class="fr m0">
 				版本号：
 				<a href="javascript:void(0)" class="f12 btn btn-purple btn-xs" ><i class="iconfont">&#xe625;&nbsp;</i>{{model.version}}</a>
@@ -27,7 +27,7 @@
 				<table class="table table-bordered table-hover">
 					<tr>
 						<td>url</td>
-						<td>{{model.url}}</td>
+						<td>{{model.moduleUrl}}{{model.url}}</td>
 					</tr>
 					<tr>
 						<td>请求方式</td>

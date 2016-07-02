@@ -61,9 +61,9 @@ public class Interface extends BaseModel{
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			Module module = cacheService.getModule(moduleId);
+			DataCenter module = cacheService.getModule(moduleId);
 			if(module!=null)
-				return module.getModuleName();
+				return module.getName();
 		}
 		return "";
 	}
@@ -72,7 +72,7 @@ public class Interface extends BaseModel{
 	public String getModuleUrl(){
 		if(!MyString.isEmpty(moduleId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			Module module = cacheService.getModule(moduleId);
+			DataCenter module = cacheService.getModule(moduleId);
 			if(module!=null)
 				return module.getUrl();
 		}

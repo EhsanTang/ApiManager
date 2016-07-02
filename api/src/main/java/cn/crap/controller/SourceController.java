@@ -1,0 +1,99 @@
+package cn.crap.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.ISourceService;
+import cn.crap.model.Source;
+import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
+
+@Scope("prototype")
+@Controller
+@RequestMapping("/source")
+public class SourceController extends BaseController<Source>{
+
+	@Autowired
+	private ISourceService sourceService;
+	@Autowired
+	private IDataCenterService dataCenterService;
+	/**
+	 * 
+	 * @param source
+	 * @param currentPage 当前页
+	 * @param pageSize 每页显示多少条，-1表示查询全部
+	 * @return
+	 */
+	@RequestMapping("/list.do")
+	@ResponseBody
+	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage){
+		page.setCurrentPage(currentPage);
+		// 搜索条件
+		map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		returnMap.put("sources", sourceService.findByMap(map, page, null));
+		map.clear();
+		map = Tools.getMap("parentId", source.getDirectoryId(), "type", "DIRECTORY");
+		returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
+		return new JsonResult(1, returnMap, page);
+	}
+	
+	@RequestMapping("/detail.do")
+	@ResponseBody
+	public JsonResult detail(@ModelAttribute Source source){
+		if(!MyString.isEmpty(source.getId())){
+			model = sourceService.get(source.getId());
+		}else{
+			model=new Source();
+			model.setDirectoryId(source.getDirectoryId());
+		}
+		return new JsonResult(1,model);
+	}
+	
+	@RequestMapping("/addOrUpdate.do")
+	@ResponseBody
+	public JsonResult addOrUpdate(@ModelAttribute Source source){
+		source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+			if(!MyString.isEmpty(source.getId())){
+				sourceService.update(source);
+			}else{
+				source.setId(null);
+				sourceService.save(source);
+			}
+		return new JsonResult(1,source);
+	}
+	@RequestMapping("/delete.do")
+	@ResponseBody
+	public JsonResult delete(@ModelAttribute Source source) throws MyException{
+		sourceService.delete(source);
+		return new JsonResult(1,null);
+	}
+	
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	@Override
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+		Source change = sourceService.get(changeId);
+		model = sourceService.get(id);
+		int modelSequence = model.getSequence();
+		
+		model.setSequence(change.getSequence());
+		change.setSequence(modelSequence);
+		
+		sourceService.update(model);
+		sourceService.update(change);
+		return new JsonResult(1, null);
+	}
+
+}

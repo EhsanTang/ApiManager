@@ -13,8 +13,8 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IModuleService;
-import cn.crap.model.Module;
+import cn.crap.inter.service.IDataCenterService;
+import cn.crap.model.DataCenter;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -22,19 +22,23 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/module")
-public class ModuleController extends BaseController<Module>{
+public class ModuleController extends BaseController<DataCenter>{
 
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Module module){
+	public JsonResult detail(@ModelAttribute DataCenter module){
 		if(!module.getId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getId());
 		}else{
-			model=new Module();
+			model=new DataCenter();
+			if(MyString.isEmpty((module.getType())))
+				model.setType("MODULE");
+			else
+				model.setType(module.getType());
 			model.setParentId(module.getParentId());
 		}
 		return new JsonResult(1,model);
@@ -42,7 +46,7 @@ public class ModuleController extends BaseController<Module>{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Module module) throws MyException{
+	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws MyException{
 		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
 		if(!MyString.isEmpty(module.getId())){
 			moduleService.update(module);
@@ -55,7 +59,7 @@ public class ModuleController extends BaseController<Module>{
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Module module) throws MyException{
+	public JsonResult delete(@ModelAttribute DataCenter module) throws MyException{
 		module = moduleService.get(module.getId());
 		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
 		moduleService.delete(module);
@@ -67,7 +71,7 @@ public class ModuleController extends BaseController<Module>{
 	@AuthPassport
 	@Override
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		Module change = moduleService.get(changeId);
+		DataCenter change = moduleService.get(changeId);
 		model = moduleService.get(id);
 		int modelSequence = model.getSequence();
 		

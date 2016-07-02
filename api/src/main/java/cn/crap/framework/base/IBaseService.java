@@ -3,6 +3,7 @@ package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.dto.PickDto;
 import cn.crap.utils.Page;
 
 public interface IBaseService<T extends BaseModel> {

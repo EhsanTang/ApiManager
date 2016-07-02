@@ -16,7 +16,7 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Menu;
@@ -29,7 +29,7 @@ import cn.crap.utils.Tools;
 public class MenuService extends BaseService<Menu> implements IMenuService {
 
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService dataCenter;
 	@Autowired
 	private IErrorService errorService;
 	@Autowired
@@ -80,7 +80,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		
 		// 根据code，key加载pick列表
-		PickFactory.getPickList(picks, code, key, this, moduleService, errorService, roleService, webPageService);
+		PickFactory.getPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService);
 		
 		// 组装字符串，返回至前端页面
 		if (!radio.equals("")) {

@@ -2,7 +2,7 @@ package cn.crap.inter.service;
 
 import java.util.List;
 
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.model.Setting;
 
 public interface ICacheService{
@@ -15,7 +15,7 @@ public interface ICacheService{
 
 	String getModuleName(String moduleId);
 
-	Module getModule(String moduleId);
+	DataCenter getModule(String moduleId);
 
 	boolean delObj(String key, String field);
 

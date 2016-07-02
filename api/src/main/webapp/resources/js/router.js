@@ -46,6 +46,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('sourceList', {
+		url : '/source/list/:directoryId/:directoryName',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/sourceList.tpl.html'
+			},
+			'page@sourceList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/backHtml/sourceDetail.tpl.html';
+				}
+			}
+		}
 	}).state('settingList', {
 		url : '/setting/list/:key',
 		views : {

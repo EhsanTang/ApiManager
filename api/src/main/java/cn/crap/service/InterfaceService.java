@@ -14,9 +14,9 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IInterfaceService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -30,7 +30,7 @@ public class InterfaceService extends BaseService<Interface>
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService dataCenterService;
 	
 	@Resource(name="interfaceDao")
 	public void setDao(IBaseDao<Interface> dao) {
@@ -46,11 +46,11 @@ public class InterfaceService extends BaseService<Interface>
 		List<Interface> interfaces = findByMap(
 				map, page, null);
 		map.clear();
-		List<Module> modules = null;
+		List<DataCenter> modules = null;
 		// 搜索接口时，module为空
 		if (interFace.getModuleId() != null) {
-			map = Tools.getMap("parentId", interFace.getModuleId());
-			modules = moduleService.findByMap(map, null, null);
+			map = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
+			modules = dataCenterService.findByMap(map, null, null);
 		}
 		map.put("interfaces", interfaces);
 		map.put("modules", modules);

@@ -15,7 +15,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IModuleService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Setting;
 import cn.crap.service.CacheService;
@@ -30,8 +29,6 @@ public class SettingController extends BaseController<Setting>{
 
 	@Autowired
 	private ISettingService settingService;
-	@Autowired
-	private IModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	/**

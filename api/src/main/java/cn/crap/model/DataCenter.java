@@ -14,18 +14,22 @@ import cn.crap.utils.MyString;
 
 
 @Entity
-@Table(name="module")
+@Table(name="datacenter")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Module extends BaseModel{
-	private String moduleName;
+public class DataCenter extends BaseModel{
+	private String name;
 	private String parentId;
 	private String password;
 	private String url;
+	private byte canDelete;
+	private String type;
+	private String remark;
+	
 
-	public Module(){};
-	public Module(String parentId, String moduleName) {
+	public DataCenter(){};
+	public DataCenter(String parentId, String name) {
 		this.parentId = parentId;
-		this.moduleName = moduleName;
+		this.name = name;
 	}
 
 	@Column(name="password")
@@ -37,13 +41,13 @@ public class Module extends BaseModel{
 		this.password = password;
 	}
 
-	@Column(name="moduleName")
-	public String getModuleName() {
-		return moduleName;
+	@Column(name="name")
+	public String getName() {
+		return name;
 	}
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Column(name="parentId")
@@ -63,13 +67,36 @@ public class Module extends BaseModel{
 		this.url = url;
 	}
 	
+	@Column(name="canDelete")
+	public byte getCanDelete() {
+		return canDelete;
+	}
+	public void setCanDelete(byte canDelete) {
+		this.canDelete = canDelete;
+	}
+	
+	@Column(name="type")
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	@Column(name="remark")
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 	@Transient
 	public String getParentName(){
 		if(!MyString.isEmpty(parentId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			Module module = cacheService.getModule(parentId);
+			DataCenter module = cacheService.getModule(parentId);
 			if(module!=null)
-				return module.getModuleName();
+				return module.getName();
 		}
 		return "";
 	}

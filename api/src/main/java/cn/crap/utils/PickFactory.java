@@ -4,12 +4,12 @@ import java.util.List;
 import cn.crap.dto.PickDto;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Error;
 import cn.crap.model.Menu;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.model.Role;
 import cn.crap.model.WebPage;
 
@@ -18,15 +18,13 @@ public class PickFactory {
 	/**
 	 * 
 	 * @param picks
-	 * @param code
-	 *            需要选着的pick代码
-	 * @param key
-	 *            pick二级关键字（如类型、父节点等）
+	 * @param code 需要选着的pick代码
+	 * @param key pick二级关键字（如类型、父节点等）
 	 * @return
 	 */
 
 	public static void getPickList(List<PickDto> picks, String code, String key, 
-			IMenuService menuService, IModuleService moduleService, IErrorService errorService, IRoleService roleService, IWebPageService webPageService) {
+			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, IWebPageService webPageService) {
 		PickDto pick = null;
 		String preUrl = "";
 		switch (code) {
@@ -46,17 +44,17 @@ public class PickFactory {
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
-			moduleService.getModulePick(picks, "m_", "0", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
+			dataCenter.getDataCenterPick(picks, "m_", "0", "MODULE", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "接口管理");
 			picks.add(pick);
-			moduleService.getModulePick(picks, "i_", "0", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
+			dataCenter.getDataCenterPick(picks, "i_", "0", "MODULE", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
-			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+			for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0",  "type", "MODULE"), null, null)) {
 				pick = new PickDto(m.getId(), DataType.ERROR.name() + "_" + m.getId(),
-						m.getModuleName() + "--【错误码】");
+						m.getName() + "--【错误码】");
 				picks.add(pick);
 			}
 			// 分割线
@@ -75,9 +73,9 @@ public class PickFactory {
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
-			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+			for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0",  "type", "MODULE"), null, null)) {
 				pick = new PickDto("w_d_" + m.getId(), DataType.DICTIONARY.name() + "_" + m.getId(),
-						m.getModuleName());
+						m.getName());
 				picks.add(pick);
 			}
 			// 分割线
@@ -112,8 +110,8 @@ public class PickFactory {
 		
 		// 顶级模块
 		case "TOPMODULE":
-			for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getId(), m.getModuleName());
+			for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE"), null, null)) {
+				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}
 			picks.add(0,new PickDto("0","顶级项目"));
@@ -169,9 +167,9 @@ public class PickFactory {
 			break;
 			
 		case "ERRORCODE":// 错误码
-			Module module = moduleService.get(key);
+			DataCenter module = dataCenter.get(key);
 			while (module != null && !module.getParentId().equals("0")) {
-				module = moduleService.get(module.getParentId());
+				module = dataCenter.get(module.getParentId());
 			}
 			for (Error error : errorService.findByMap(
 					Tools.getMap("moduleId", module == null ? "" : module.getId()), null, "errorCode asc")) {
@@ -247,7 +245,7 @@ public class PickFactory {
 				preUrl = "index.do#/interface/list/";
 				pick = new PickDto("h_0", preUrl + "0/无", "顶级模块");
 				picks.add(pick);
-				moduleService.getModulePick(picks, "h_", "0", "- - - ", preUrl + "moduleId/moduleName");
+				dataCenter.getDataCenterPick(picks, "h_", "0", "MODULE", "- - - ", preUrl + "moduleId/moduleName",null);
 				break;
 			}
 			
@@ -256,15 +254,15 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "前端错误码");
 				picks.add(pick);
 				preUrl = "web.do#/webError/list/";
-				for (Module m : moduleService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-					pick = new PickDto("e_" + m.getId(), preUrl + m.getId(), m.getModuleName());
+				for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE"), null, null)) {
+					pick = new PickDto("e_" + m.getId(), preUrl + m.getId(), m.getName());
 					picks.add(pick);
 				}
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "前端模块");
 				picks.add(pick);
 				preUrl = "web.do#/webInterface/list/";
-				moduleService.getModulePick(picks, "w_", "0", "", preUrl + "moduleId/moduleName");
+				dataCenter.getDataCenterPick(picks, "w_", "0", "MODULE", "", preUrl + "moduleId/moduleName", "");
 				pick = new PickDto(Const.SEPARATOR, "前端数据字典列表");
 				picks.add(pick);
 				preUrl = "web.do#/webWebPage/list/";
@@ -297,16 +295,16 @@ public class PickFactory {
 				break;
 			}
 						
-		case "ALLMODULE":// 所有模块
-			moduleService.getModulePick(picks, "", "0", "", null);
+		case "DATACENTER":// 所有数据
+			dataCenter.getDataCenterPick(picks, "", "0", key,  "" , "", "");
 			picks.add(0,new PickDto("0","顶级项目"));
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			@SuppressWarnings("unchecked")
-			List<Module> modules = (List<Module>) moduleService
-					.queryByHql("from Module m where m.id not in (select m2.parentId from Module m2)",null);
-			for (Module m : modules) {
-				pick = new PickDto(m.getId(), m.getModuleName());
+			List<DataCenter> modules = (List<DataCenter>) dataCenter
+					.queryByHql("from Module m where type='MODULE' and m.id not in (select m2.parentId from Module m2)",null);
+			for (DataCenter m : modules) {
+				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}
 			break;

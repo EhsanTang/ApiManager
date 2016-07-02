@@ -218,6 +218,15 @@ mainModule.controller('interfaceCtrl', function($rootScope,$scope, $http, $state
     };
     $scope.getData();
 });
+
+mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&directoryId="+$stateParams.directoryId;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+  });
+
 mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
     $scope.getRequestExam = function(editerId,targetId,item,tableId) {
     	var params = "iUrl=interface/getRequestExam.do|iLoading=FLOAT|iParams=&"+$.param($rootScope.model);

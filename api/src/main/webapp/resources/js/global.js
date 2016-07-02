@@ -102,6 +102,25 @@ function uploadImgCallBack(msg, url) {
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
+
+//文档管理上传文件回调方法
+function uploadFileCallBack(msg, url) {
+	if (msg.indexOf("[OK]") >= 0) {
+		showMessage('lookUp', 'false', false, 0);
+		if (url!= undefined) {
+			//修改source中的filePath
+			var rootScope = getRootScope();
+			rootScope.$apply(function () {          
+			    rootScope.model.filePath = url;
+			    // 获取文件原名
+			    rootScope.model.name = $("#filePath").val().substring($("#filePath").val().lastIndexOf("\\")+1);
+			});
+		}
+	}else {
+		$("#lookUpContent").html(err1 + "&nbsp; " + url + "" + err2);
+		showMessage('lookUp', 'false', false, 3);
+	}
+}
 //文章页面上传图片回调方法
 function acticleUploadImgCallBack(msg, url) {
 	if (msg.indexOf("[OK]") >= 0) {

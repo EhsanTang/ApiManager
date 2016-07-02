@@ -18,10 +18,10 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
@@ -34,7 +34,7 @@ import cn.crap.utils.WebPageType;
 @RequestMapping("/webPage")
 public class WebPageController extends BaseController<WebPage>{
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService moduleService;
 	@Autowired
 	private IWebPageService webPageService;
 	@Autowired
@@ -89,7 +89,7 @@ public class WebPageController extends BaseController<WebPage>{
 		// 数据字典密码访问由模块决定
 		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
 			returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "web.do#/webWebPage/list/DICTIONARY/null", model.getName(), "void"));
-			Module module = moduleService.get(model.getModuleId());
+			DataCenter module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}else{
 			returnMap.put("crumbs", Tools.getCrumbs(model.getName(), "void"));

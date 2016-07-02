@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.inter.dao.ICacheDao;
-import cn.crap.inter.dao.IModuleDao;
+import cn.crap.inter.dao.IDataCenterDao;
 import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.model.Setting;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -23,9 +23,8 @@ public class CacheService implements ICacheService {
 	private ICacheDao cacheDao;
 	@Resource(name="settingDao")
 	private ISettingDao settingDao;
-	@Resource(name="moduleDao")
-	
-	private IModuleDao moduleDao;
+	@Resource(name="dataCenterDao")
+	private IDataCenterDao dataCenterDao;
 	private static String cacheModuleKeyPre = "cache:model:";
 	public static String cacheSettingKeyPre = "cache:setting";
 	public static String cacheSettingList = "cache:settingList";
@@ -100,12 +99,12 @@ public class CacheService implements ICacheService {
 	
 	@Override
 	@Transactional
-	public Module getModule(String moduleId){
+	public DataCenter getModule(String moduleId){
 		if(moduleId != null && moduleId.equals("0")){
-			return new Module("0", "顶级项目");
+			return new DataCenter("0", "顶级项目");
 		}
 		if(MyString.isEmpty(moduleId)){
-			return new Module();
+			return new DataCenter();
 		}
 		
 		Object obj = cacheDao.getObj(cacheModuleKeyPre + moduleId);
@@ -113,23 +112,23 @@ public class CacheService implements ICacheService {
 			synchronized(moduleId){
 				obj = cacheDao.getObj(cacheModuleKeyPre + moduleId);
 				if(obj == null){
-					Module module = moduleDao.get(moduleId);
+					DataCenter module = dataCenterDao.get(moduleId);
 					if(module == null)
-						module = new Module();
+						module = new DataCenter();
 					cacheDao.setObj(cacheModuleKeyPre + moduleId, module, cacheTime);
 					return module;
 				}else{
-					return (Module) obj;
+					return (DataCenter) obj;
 				}
 				
 			}
 		}
-		return (Module) obj;
+		return (DataCenter) obj;
 	}
 	
 	@Override
 	public String getModuleName(String moduleId){
-		String name = getModule(cacheModuleKeyPre + moduleId).getModuleName();
+		String name = getModule(cacheModuleKeyPre + moduleId).getName();
 		if(MyString.isEmpty(name))
 			name = "无";
 		return name;

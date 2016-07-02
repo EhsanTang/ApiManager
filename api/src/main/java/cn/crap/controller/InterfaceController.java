@@ -33,10 +33,10 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IInterfaceService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetBeanBySetting;
@@ -53,7 +53,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService dataCenterService;
 	@Autowired
 	private IErrorService errorService;
 	@Autowired
@@ -147,7 +147,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
-		Module module = moduleService.get(interFace.getModuleId());
+		DataCenter module = dataCenterService.get(interFace.getModuleId());
 		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
 	}
@@ -200,10 +200,10 @@ public class InterfaceController extends BaseController<Interface>{
 		if (errorIds != null && !errorIds.equals("")) {
 			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
-			Module module = moduleService.get(interFace
+			DataCenter module = dataCenterService.get(interFace
 					.getModuleId());
 			while (module != null && !module.getParentId().equals("0")) {
-				module = moduleService.get(module.getParentId());
+				module = dataCenterService.get(module.getParentId());
 			}
 			map.put("moduleId", module.getId());
 			List<Error> errors = errorService.findByMap(map, null,

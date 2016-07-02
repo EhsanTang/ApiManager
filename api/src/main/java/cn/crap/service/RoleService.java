@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.framework.base.BaseService;
-import cn.crap.inter.service.IModuleService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
-import cn.crap.model.Module;
+import cn.crap.model.DataCenter;
 import cn.crap.model.Role;
 import cn.crap.utils.DataType;
 import cn.crap.utils.Tools;
@@ -20,7 +20,7 @@ import cn.crap.utils.Tools;
 public class RoleService extends BaseService<Role>
 		implements IRoleService {
 	@Autowired
-	private IModuleService moduleService;
+	private IDataCenterService moduleService;
 	@Resource(name="roleDao")
 	public void setDao(IBaseDao<Role> dao) {
 		super.setDao(dao, new Role());
@@ -39,7 +39,7 @@ public class RoleService extends BaseService<Role>
 	}
 	@Transactional
 	private void getSubAuth(DataType dataType,StringBuilder sb,String parentId){
-		for(Module module :moduleService.findByMap(Tools.getMap("parentId",parentId), null, null)){
+		for(DataCenter module :moduleService.findByMap(Tools.getMap("parentId",parentId), null, null)){
 			sb.append(dataType.name()+"_"+module.getId()+",");
 			getSubAuth(dataType,sb,module.getId());
 		}

@@ -25,7 +25,7 @@ public class MyString {
 	public static boolean isEmpty(Object object)
 	{
 		if(object instanceof String){
-			if(object == null||object.toString().trim().equals("")||object.toString().trim().equals("null")||object.toString().equals("undefined"))
+			if(object == null||object.toString().trim().equals("")||object.toString().trim().equalsIgnoreCase("null")||object.toString().equals("undefined"))
 				return true;
 		}else if(object instanceof List<?>){
 			if(object == null ||((List<?>)object).size()==0)

@@ -59,7 +59,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.page = result.page;
 				 $rootScope.others=result.others;
 			 }
-		});
+		}).error(function(result) {
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			$rootScope.error = result;
+			 
+		});;
     };
 	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {
 			//打开编辑对话框
@@ -78,7 +82,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 if(callBack)
 						 callBack();
 				 }
-			});
+			}).error(function(result) {
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+				$rootScope.error = result;
+				 
+			});;
 	};
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
@@ -111,7 +119,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 						 $("#refresh").click();
 	                 })
 				 }
-			});
+			}).error(function(result) {
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+				$rootScope.error = result;
+				 
+			});;
 	    }
 	};
 
@@ -128,7 +140,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading='+iLoading)
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading);
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 			 }else if(result.success==1){
@@ -140,6 +152,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 $("#refresh").click();
                  })
 			 }
+		}).error(function(result) {
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			$rootScope.error = result;
+			 
 		});
 	}
 	$rootScope.changeSequence = function(model,id,changeId){
@@ -155,7 +171,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 $("#refresh").click();
                  })
 			 }
-		});
+		}).error(function(result) {
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			$rootScope.error = result;
+			 
+		});;
 	}
 	/***********************是否显示操作按钮************/
 	$rootScope.showOperation = function(dataType,moduleId){

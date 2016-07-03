@@ -25,13 +25,17 @@ public class Const {
 	public static final String AUTH_MODULE = "MODULE_"+MODULEID;
 	public static final String AUTH_ROLE = "ROLE";
 	public static final String AUTH_LOG = "LOG";
-	public static final String SEPARATOR = "SEPARATOR";
+	public static final String AUTH_SOURCE = "SOURCE";
+	
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";
 	public static final String COOKIE_PASSWORD = "cookiePassword";
 	public static final String COOKIE_REMBER_PWD = "cookieRemberPwd";
-	
+	public static final String MODULE = "MODULE";
+	public static final String DIRECTORY = "DIRECTORY";
+	public static final String SOURCE = "SOURCE";
+	public static final String SEPARATOR = "SEPARATOR";
 	//系统设置
 	public static final String SETTING_SECRETKEY = "SECRETKEY";
 	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";

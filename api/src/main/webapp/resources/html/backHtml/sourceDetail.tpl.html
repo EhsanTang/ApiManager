@@ -14,6 +14,11 @@
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=parentName|tag=parentId|code=DATACENTER|params=&key=DIRECTORY|def='+model.parentId,$event)">
 					</td>
 				</tr>
+					<tr>
+					<td class="tc">访问密码</td>
+					<td class="tc" colspan="3"><input class="form-control"
+						type="text" ng-model="model.password" placeholder="可选，私密目录请设置密码"></td>
+				</tr>
 				<tr>
 					<td class="tc">备注</td>
 					<td class="tc" colspan="3">
@@ -34,7 +39,7 @@
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w200">标题</td>
-					<td class="tc"><input class="form-control" type="text" required ng-model="model.name"></td>
+					<td class="tc"><input class="form-control" type="text" placeholder="文件名" required ng-model="model.name"></td>
 				</tr>
 				<tr>
 					<td class="tc">目录</td>
@@ -79,6 +84,6 @@
 			</table>
 		</form>
 	</div>
-<button class="btn btn-success fr" onclick="$('#sourceForm').click();">提交</button>
+<button class="btn btn-success fr" onclick="$('#sourceForm').click();" ng-if="model.directoryId">提交</button>
 <div class="cb"></div>
 <iframe name="hiddenFrame" class="ndis"></iframe>

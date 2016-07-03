@@ -77,7 +77,7 @@ public abstract class BaseController<T extends BaseModel> {
 		return requestParams;
 	}
 	
-	 @ExceptionHandler({ Exception.class })
+	 @ExceptionHandler({ Exception.class})
 	 @ResponseBody  
      public JsonResult expHandler(HttpServletRequest request, Exception ex) {  
         if(ex instanceof MyException) {  

@@ -47,7 +47,14 @@ public class ModuleController extends BaseController<DataCenter>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws MyException{
-		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+		DataCenter oldDataCenter = cacheService.getModule(module.getId());
+		if( (  oldDataCenter.getType() == null && module.getType().equals(Const.MODULE)  ) ||
+				(  oldDataCenter.getType() != null && oldDataCenter.getType().equals(Const.MODULE) ) ){
+			Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+		}else{
+			Tools.hasAuth(Const.AUTH_SOURCE, request.getSession(), "");
+		}
+		
 		if(!MyString.isEmpty(module.getId())){
 			moduleService.update(module);
 		}else{
@@ -60,8 +67,13 @@ public class ModuleController extends BaseController<DataCenter>{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute DataCenter module) throws MyException{
-		module = moduleService.get(module.getId());
-		Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+		DataCenter oldDataCenter = cacheService.getModule(module.getId());
+		if(oldDataCenter.getType().equals(Const.MODULE)){
+			Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+		}else{
+			Tools.hasAuth(Const.AUTH_SOURCE, request.getSession(), "");
+		}
+		cacheService.delObj("cache:model:"+module.getId());
 		moduleService.delete(module);
 		return new JsonResult(1,null);
 	}

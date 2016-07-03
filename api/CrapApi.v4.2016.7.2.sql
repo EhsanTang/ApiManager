@@ -9,7 +9,7 @@ ADD COLUMN `canDelete` TINYINT NOT NULL DEFAULT 1 COMMENT '1：可删除，0：�
 
 
 ALTER TABLE `api`.`datacenter` 
-ADD COLUMN `type` VARCHAR(50) NOT NULL DEFAULT 'MODULE' COMMENT '数据类型，默认为模块' AFTER `canDelete`,
+ADD COLUMN `type` VARCHAR(50) NOT NULL DEFAULT 'MODULE' COMMENT '数据类型，默认为模块' AFTER `canDelete`;
 
 
 ALTER TABLE `api`.`datacenter` 

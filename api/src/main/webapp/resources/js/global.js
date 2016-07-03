@@ -113,7 +113,9 @@ function uploadFileCallBack(msg, url) {
 			rootScope.$apply(function () {          
 			    rootScope.model.filePath = url;
 			    // 获取文件原名
-			    rootScope.model.name = $("#filePath").val().substring($("#filePath").val().lastIndexOf("\\")+1);
+			    if(!rootScope.model.name){
+			    	rootScope.model.name = $("#filePath").val().substring($("#filePath").val().lastIndexOf("\\")+1);
+			    }
 			});
 		}
 	}else {

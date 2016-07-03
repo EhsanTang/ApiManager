@@ -61,6 +61,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('webSourceList', {
+		url : '/webSource/list/:directoryId/:directoryName',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/frontHtml/webSourceList.tpl.html'
+			},
+			'page@webourceList' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
 	}).state('sourceDetail', {
 		url : '/webSource/detail/:id',
 		views : {

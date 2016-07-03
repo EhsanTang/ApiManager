@@ -58,8 +58,12 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 
 
 webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iLoading=FLOAT|iUrl=source/detail.do?id="+$stateParams.id;
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		var params = "iLoading=FLOAT|iUrl=source/webDetail.do?id="+$stateParams.id;
+		params +="&password="+unescapeAndDecode('password');
+		params +="&visitCode="+unescapeAndDecode('visitCode');
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -70,6 +74,20 @@ webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $sta
 				 $rootScope.source = result.data;
 			 }
 		});
+    };
+    $scope.getData();
+});
+/**
+ * 资源列表
+ */
+webModule.controller('webSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		var params = "iUrl=source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
+		params +="&password="+unescapeAndDecode('password');
+		params +="&visitCode="+unescapeAndDecode('visitCode');
+		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });

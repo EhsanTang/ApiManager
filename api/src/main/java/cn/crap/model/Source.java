@@ -90,6 +90,9 @@ public class Source extends BaseModel{
 	@Transient
 	public String getDirectoryName(){
 		if(!MyString.isEmpty(directoryId)){
+			if(directoryId != null && directoryId.equals("0")){
+				return "根目录";
+			}
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			DataCenter module = cacheService.getModule(directoryId);
 			if(module!=null)

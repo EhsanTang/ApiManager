@@ -54,6 +54,7 @@ public class WebPageController extends BaseController<WebPage>{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult detail(@ModelAttribute WebPage webPage){
 		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());

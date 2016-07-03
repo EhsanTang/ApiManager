@@ -10,6 +10,7 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
+import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 
 
@@ -93,6 +94,9 @@ public class DataCenter extends BaseModel{
 	@Transient
 	public String getParentName(){
 		if(!MyString.isEmpty(parentId)){
+			if(parentId != null && parentId.equals("0") && type != null && type.equals(Const.DIRECTORY)){
+				return "根目录";
+			}
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			DataCenter module = cacheService.getModule(parentId);
 			if(module!=null)

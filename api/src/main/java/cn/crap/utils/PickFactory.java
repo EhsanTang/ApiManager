@@ -70,6 +70,8 @@ public class PickFactory {
 			picks.add(pick);
 			pick = new PickDto(DataType.LOG);
 			picks.add(pick);
+			pick = new PickDto(DataType.SOURCE);
+			picks.add(pick);
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "数据字典");
 			picks.add(pick);
@@ -114,7 +116,7 @@ public class PickFactory {
 				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}
-			picks.add(0,new PickDto("0","顶级项目"));
+			picks.add(0,new PickDto("0","顶级父类"));
 			break;
 		
 		// 枚举 接口状态
@@ -217,6 +219,9 @@ public class PickFactory {
 				// 后端角色管理
 				pick = new PickDto("h_r_0", "index.do#/role/list", "角色列表");
 				picks.add(pick);
+				// 后端PDF、DOC等文档管理
+				pick = new PickDto("h_sorce_0", "index.do#/source/list/0/根目录", "PDF、DOC等文档列表");
+				picks.add(pick);
 				// 后端系统设置
 				pick = new PickDto("h_s_0", "index.do#/setting/list/null", "系统设置列表");
 				picks.add(pick);
@@ -262,7 +267,15 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "前端模块");
 				picks.add(pick);
 				preUrl = "web.do#/webInterface/list/";
-				dataCenter.getDataCenterPick(picks, "w_", "0", "MODULE", "", preUrl + "moduleId/moduleName", "");
+				dataCenter.getDataCenterPick(picks, "w_", "0", Const.MODULE , "", preUrl + "moduleId/moduleName", "");
+				
+				pick = new PickDto(Const.SEPARATOR, "前端文档");
+				picks.add(pick);
+				preUrl = "web.do#/webSource/list/";
+				pick = new PickDto("source_0", preUrl + "0/根目录", "根目录");
+				picks.add(pick);
+				dataCenter.getDataCenterPick(picks, "source_", "0", Const.DIRECTORY, "--", preUrl + "moduleId/moduleName", "");
+				
 				pick = new PickDto(Const.SEPARATOR, "前端数据字典列表");
 				picks.add(pick);
 				preUrl = "web.do#/webWebPage/list/";
@@ -297,7 +310,11 @@ public class PickFactory {
 						
 		case "DATACENTER":// 所有数据
 			dataCenter.getDataCenterPick(picks, "", "0", key,  "" , "", "");
-			picks.add(0,new PickDto("0","顶级项目"));
+			if(key.equals(Const.DIRECTORY)){
+				picks.add(0,new PickDto("0","根目录"));
+			}else{
+				picks.add(0,new PickDto("0","顶级项目"));
+			}
 			break;
 		case "LEAFMODULE":// 查询叶子模块
 			@SuppressWarnings("unchecked")

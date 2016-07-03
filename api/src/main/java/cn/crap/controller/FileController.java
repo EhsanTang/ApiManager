@@ -24,7 +24,7 @@ public class FileController extends BaseController <User>{
 		 * 允许上传的图片类型
 		 */
 		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");
-		extMap.put("files", ",txt,doc,xls,rar,zip,pdf,docx");
+		extMap.put("files", ",txt,doc,xls,xlsx,rar,zip,pdf,docx");
 	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
@@ -36,11 +36,11 @@ public class FileController extends BaseController <User>{
 	    String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1).toLowerCase();
 	    JSONObject obj = new JSONObject();
 	    /**
-	     * 文件大小拦截，不能超过10M
+	     * 文件大小拦截，不能超过20M
 	     */
-	    if(file.getSize()>2*1024*1024*10){
+	    if(file.getSize()>2*1024*1024*20){
 	    	obj.put("error", 1);
-	    	result = "[ERROR]文件超过最大限制，请上传小于10M的图片";
+	    	result = "[ERROR]文件超过最大限制，请上传小于20M";
 	    }else if(extMap.get("image").indexOf(suffix)<0 && extMap.get("files").indexOf(suffix)<0){
 	    	 //检查扩展名
 	    	obj.put("error", 1);
@@ -53,7 +53,18 @@ public class FileController extends BaseController <User>{
 	    		saveUrl +="resources/upload/files";
 	    	}
 		  	saveUrl +="/"+DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD)+"/";
-		    realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.HHmmss)+Tools.getChar(6)+"."+suffix;
+		  	String version = ".CAV."+Tools.getChar(6)+".1";
+		  	// 如果文件包含版本号：.CAV.文件标识.版本号 //版本号CrapApi Version
+		  	try{
+		  		if( realFileName.contains(".CAV.")){
+		  			String str[] = realFileName.split("\\.");
+		  			version = ".CAV." + str[str.length-3] + "." +  (Long.parseLong(str[str.length-2])+1);
+			  	}
+		  	}catch(Exception e){
+		  		e.printStackTrace();
+		  	}
+		  	
+		    realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.HHmmss)+Tools.getChar(6)+version+"."+suffix;
 	      //保存  
 	        try {
 	        	 if(!new File(destDir+saveUrl).exists()){  

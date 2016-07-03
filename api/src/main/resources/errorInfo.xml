@@ -6,7 +6,7 @@
 			<map>
 				<entry key="000001" value="系统未知错误" />
 				<entry key="000002" value="重复的errorCode" />
-				<entry key="000003" value="权限不足，操作失败！" />
+				<entry key="000003" value="权限不足或登录超时，操作失败！" />
 				<entry key="000004" value="重复的接口url地址！" />
 				<entry key="000005" value="接口url不能为空！" />
 				<entry key="000006" value="重复的key！" />
@@ -20,6 +20,10 @@
 				<entry key="000014" value="用密码有误" />
 				<entry key="000015" value="用户名已被使用，请更换用户名" />
 				<entry key="000016" value="文件地址不能为空" />
+				<entry key="000017" value="文件名有误，无法识别的版本号：文件必须包含“.CAV.文件标识.版本号”" />
+				<entry key="000018" value="文件标识有误，更新文件时，文件名必须包含“.CAV.文件标识.版本号”，且【文件标识】必须和原文件相同" />
+				<entry key="000019" value="文件版本号已经过期，请重新下载文件编辑后再上传" />
+				<entry key="000020" value="参数有误" />
 			</map>
 		</property>
 	</bean>

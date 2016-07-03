@@ -6,7 +6,7 @@
 
 面对快速变动的需求文档，不断更迭的API接口，此时你应该考虑找一个好的接口管理系统...
 
-CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统）
+CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接口、文档管理系统（应用接口管理系统）
 ```
 [CrapApi能做什么]
 ```
@@ -20,6 +20,8 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 7.post、get、delete、head、trace、put、options请求在线调试
 8.接口修改日志记录、接口恢复
 9.接口、文章Lucene全文搜索
+10.DOC、PDF、TEXT、EXCEL等资源管理，支持版本号控制，文档内容检索，支持无限级目录设置，支持目录密码访问
+11.操作日志记录、根据日志恢复数据
 
 更多功能还在路上，想要什么，在此留言，统统都能满足！
 留言地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25
@@ -66,6 +68,8 @@ QQ技术交流群：254450938
 接口支持多版本号
 
 支持自定义网站风格
+
+PDF、DOC、TEXT、EXCEL等文档管理，支持文档内容检索，支持版本号控制（避免同时修改文档导致相互覆盖的情况）
 ```
 
 [相关技术介绍]

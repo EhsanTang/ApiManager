@@ -87,7 +87,6 @@ public class SourceController extends BaseController<Source>{
 	
 	@RequestMapping("/webList.do")
 	@ResponseBody
-	@AuthPassport
 	public JsonResult webList(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage,String password,String visitCode,
 			@RequestParam(defaultValue="无") String directoryName) throws MyException{
 		Tools.canVisitModule(cacheService.getModule(source.getDirectoryId()).getPassword(), password, visitCode, request);

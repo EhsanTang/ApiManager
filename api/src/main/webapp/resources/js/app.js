@@ -60,7 +60,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.others=result.others;
 			 }
 		}).error(function(result) {
-			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			lookUp('lookUp','',100,300,3);
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
 			$rootScope.error = result;
 			 
 		});;
@@ -83,7 +84,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 						 callBack();
 				 }
 			}).error(function(result) {
-				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+				lookUp('lookUp','',100,300,3);
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
 				$rootScope.error = result;
 				 
 			});;
@@ -120,7 +122,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	                 })
 				 }
 			}).error(function(result) {
-				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP', 3);
 				$rootScope.error = result;
 				 
 			});;
@@ -172,7 +174,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
                  })
 			 }
 		}).error(function(result) {
-			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			lookUp('lookUp','',100,300,3);
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
 			$rootScope.error = result;
 			 
 		});;

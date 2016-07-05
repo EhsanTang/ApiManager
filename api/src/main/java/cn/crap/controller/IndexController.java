@@ -117,7 +117,7 @@ public class IndexController extends BaseController<User> {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "pick.do")
-	public String pickOut(String code, String key, @RequestParam(defaultValue = "true") String radio, String def,
+	public String pickOut(String code,@RequestParam(defaultValue = "")  String key, @RequestParam(defaultValue = "true") String radio, String def,
 			String tag, String tagName, String notNull) throws Exception {
 		if (MyString.isEmpty(radio)) {
 			radio = "true";

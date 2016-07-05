@@ -62,8 +62,8 @@
 					<ul class="nls m0 p0 f12 ACFFF fl">
 		 			 <li class="fl p0"><a href="web.do" class="ACFFF">首页</a></li>
 		 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
-		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name"></a>
-		 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name"></span>	
+		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name|cut:true:20:' ...'"></a>
+		 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name|cut:true:20:' ...'"></span>	
 		 			 </li>
 					</ul>
 				</div>

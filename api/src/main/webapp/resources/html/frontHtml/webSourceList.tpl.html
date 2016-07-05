@@ -2,21 +2,25 @@
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.directorys.length>0">目录列表</div>
+<div class="col-xs-12 p0 tc mt50 mb10 C999 f14" ng-if="list.directorys.length==0 && list.sources.length==0">
+		<i class="iconfont f30 mt-5 mr10">&#xe626;</i>目录为空
+</div>
 <div class="col-xs-12 p0" ng-if="list.directorys.length>0">
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
 				<th class="tc">目录名称</th>
-				<th class="w300 tc">操作</th>
+				<th class="w300 tc">创建时间</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list.directorys" class="h40 lh40">
-				<td class="tc lh40">{{item.name}}</td>
 				<td class="tc lh40">
-					<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webSource/list/{{item.id}}/{{item.name}}"> 
-						<i class="iconfont f12">&#xe60f;&nbsp;查看文档</i>
-					</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webSource/list/{{item.id}}/{{item.name}}"> 
+				<i class="iconfont f14 C999">&#xe628;&nbsp;</i>{{item.name}}
+				</a>
+				</td>
+				<td class="tc lh40" ng-bind="getDate(item.createTime)|date:'yyyy-MM-dd hh:mm'">
 				</td>
 			</tr>
 

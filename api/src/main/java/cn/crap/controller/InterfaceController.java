@@ -147,8 +147,8 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
-		DataCenter module = dataCenterService.get(interFace.getModuleId());
-		Tools.canVisitModule(module.getPassword(), password, visitCode, request);
+		DataCenter dc = dataCenterService.get(interFace.getModuleId());
+		Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, map,interFace, currentPage);
 	}
 
@@ -200,12 +200,12 @@ public class InterfaceController extends BaseController<Interface>{
 		if (errorIds != null && !errorIds.equals("")) {
 			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
-			DataCenter module = dataCenterService.get(interFace
+			DataCenter dc = dataCenterService.get(interFace
 					.getModuleId());
-			while (module != null && !module.getParentId().equals("0")) {
-				module = dataCenterService.get(module.getParentId());
+			while (dc != null && !dc.getParentId().equals("0")) {
+				dc = dataCenterService.get(dc.getParentId());
 			}
-			map.put("moduleId", module.getId());
+			map.put("moduleId", dc.getId());
 			List<Error> errors = errorService.findByMap(map, null,
 					null);
 			interFace.setErrors(JSONArray.fromObject(errors).toString());

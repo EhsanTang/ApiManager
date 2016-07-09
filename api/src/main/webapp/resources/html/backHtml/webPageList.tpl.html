@@ -48,7 +48,6 @@
 			<tr class="BGEEE">
 				<th class="tc">名称</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">key</th>
-				<th class="tc">简介</th>
 				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</th>
 				<th class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</th>
@@ -61,7 +60,6 @@
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.name| cut:true:15:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
-				<td class="tc">{{item.brief| cut:true:20:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
 				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>

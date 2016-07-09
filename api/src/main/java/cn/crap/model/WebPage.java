@@ -32,6 +32,21 @@ public class WebPage extends BaseModel{
 	private int commentCount;
 	private String password;
 	
+	public WebPage(){};
+	
+	
+	public WebPage(String id, String type, String name, int click, String category, String createTime, String key) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.name = name;
+		this.click = click;
+		this.category = category;
+		this.createTime = createTime;
+		this.key = key;
+	}
+
+
 	@Transient
 	public SearchDto toSearchDto(){
 		SearchDto dto = new SearchDto();

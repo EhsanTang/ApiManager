@@ -44,7 +44,7 @@ public class InterfaceService extends BaseService<Interface>
 		map = Tools.getMap("moduleId", interFace.getModuleId(),
 				"interfaceName|like", interFace.getInterfaceName(),"url|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
 		List<Interface> interfaces = findByMap(
-				map, page, null);
+				map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null);
 		map.clear();
 		List<DataCenter> modules = null;
 		// 搜索接口时，module为空

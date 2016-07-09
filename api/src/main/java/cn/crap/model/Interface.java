@@ -35,6 +35,21 @@ public class Interface extends BaseModel{
 	private String version;//版本号
 	private String header;//请求头
 	
+	public Interface(){}
+	
+	
+	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime) {
+		super();
+		this.id = id;
+		this.moduleId = moduleId;
+		this.interfaceName = interfaceName;
+		this.version = version;
+		this.createTime = createTime;
+		this.updateBy = updateBy;
+		this.updateTime = updateTime;
+	}
+
+
 	@Transient
 	public SearchDto toSearchDto(){
 		SearchDto dto = new SearchDto();

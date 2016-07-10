@@ -285,7 +285,7 @@ function createKindEditor(id,modelField){
 	var root = getRootScope();
 	if(window.oldEditorId != window.editorId || window.editor == null){
 		if(window.editorId)
-			window.oldEditorId = oldEditorId;
+			window.oldEditorId = window.editorId;
 		window.editor =  KindEditor.create('#'+id,{
 	        uploadJson : 'file/upload.do',
 	        filePostName: 'img',

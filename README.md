@@ -23,6 +23,7 @@ CrapApi：一个由angularjs+bootstrap+springMVC搭建的免费开源的API接�
 10.DOC、PDF、TEXT、EXCEL等资源管理，支持版本号控制，文档内容检索，支持无限级目录设置，支持目录密码访问
 11.操作日志记录、根据日志恢复数据
 12.支持markdown、kindeditor、text-angularjs等多种编辑器
+13.支持redis缓存
 
 更多功能还在路上，想要什么，在此留言，统统都能满足！
 留言地址：http://api.crap.cn/web.do#/webWebPage/detail/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25
@@ -49,7 +50,7 @@ QQ技术交流群：254450938
 ```
 主要语言：java、js
 
-主要技术：angularjs、bootstrap、springMVC、hibernate、maven、iconfont、markdown
+主要技术：angularjs、bootstrap、springMVC、hibernate、maven、iconfont、markdown、redis
 ```
 
 [系统功能]

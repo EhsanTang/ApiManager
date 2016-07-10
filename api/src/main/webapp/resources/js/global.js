@@ -12,6 +12,10 @@ $("#go_top").click(function (){
 function scrollToId(id){
 	$("html, body").animate({ scrollTop: $("#"+id).offset().top }, 400);
 }
+function getMarkdownText(html){
+	// 从markdown编辑器中提取文本
+	return replaceAll(html,"ace_line_group","\">\n<\"").replace(/<[^>]+>/g,"") ;
+}
 
 /**
  * 替换字符串中自定的字符
@@ -29,9 +33,11 @@ $(function () {
 	  $('[data-toggle="tooltip"]').tooltip();
 });
 /************显示id1，隐藏id2*********************/
-function changeDisplay(id1, id2) {
+function changeDisplay(id1, id2, id3, id4) {
 	$("#" + id2).addClass('none');
 	$("#" + id1).removeClass('none');
+	if(id3) $("#" + id3).addClass('none');
+	if(id4) $("#" + id4).addClass('none');
 };
 /**********打开Dialog******************/
 function openMyDialog(title,iwidth){

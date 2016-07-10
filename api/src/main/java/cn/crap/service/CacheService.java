@@ -13,14 +13,14 @@ import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Setting;
+import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @Service
 @Repository(value = "cacheService")
 public class CacheService implements ICacheService {
-	@Resource(name="memoryCacheDao")
-	private ICacheDao cacheDao;
+	private ICacheDao cacheDao = GetBeanBySetting.getCacheDao();
 	@Resource(name="settingDao")
 	private ISettingDao settingDao;
 	@Resource(name="dataCenterDao")

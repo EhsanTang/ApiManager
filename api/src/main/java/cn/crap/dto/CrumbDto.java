@@ -1,6 +1,12 @@
 package cn.crap.dto;
 
-public class CrumbDto {
+import java.io.Serializable;
+
+public class CrumbDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// 导航条
 	String url;
 	String name;

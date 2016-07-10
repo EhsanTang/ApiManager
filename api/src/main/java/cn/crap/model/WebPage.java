@@ -1,5 +1,7 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,7 +20,11 @@ import cn.crap.utils.WebPageType;
 @Entity
 @Table(name="webpage")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class WebPage extends BaseModel{
+public class WebPage extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String brief;
 	private String content;
@@ -31,6 +37,7 @@ public class WebPage extends BaseModel{
 	private byte canComment;
 	private int commentCount;
 	private String password;
+	private String markdown;
 	
 	public WebPage(){};
 	
@@ -185,6 +192,14 @@ public class WebPage extends BaseModel{
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Column(name="markdown")
+	public String getMarkdown() {
+		return markdown;
+	}
+	public void setMarkdown(String markdown) {
+		this.markdown = markdown;
 	}
 	
 	

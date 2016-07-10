@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE directory>
+<application>
+	<redis>
+		<redisIp></redisIp><!-- ip为空，则使用内存缓存，否则使用reids缓存，测试redis：60.28.29.22 -->
+		<redisPort>6379</redisPort>
+		<redisPwd></redisPwd><!-- 为空串则表示没有密码 -->
+		<redisPoolSize>50</redisPoolSize><!-- reids连接池大小 -->
+		<redisKeyPrefix>api:crap:</redisKeyPrefix>
+		<cacheTime>600</cacheTime><!-- 缓存时间，单位：s -->
+	</redis>
+</application>

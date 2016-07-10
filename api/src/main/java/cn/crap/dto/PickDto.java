@@ -1,5 +1,7 @@
 package cn.crap.dto;
 
+import java.io.Serializable;
+
 import cn.crap.utils.DataType;
 
 /**
@@ -8,7 +10,11 @@ import cn.crap.utils.DataType;
  *
  */
 
-public class PickDto{
+public class PickDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String value;
 	private String name;

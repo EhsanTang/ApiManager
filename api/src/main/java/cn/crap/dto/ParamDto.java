@@ -1,6 +1,12 @@
 package cn.crap.dto;
 
-public class ParamDto {
+import java.io.Serializable;
+
+public class ParamDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String necessary;
 	private String type;

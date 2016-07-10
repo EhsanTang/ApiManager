@@ -252,5 +252,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			}
 		}
 	}
+	/**************markdown*************/
+	$rootScope.markdownEtitor = function(href){
+		$("#markdownDialog").css('display','block'); 
+		document.getElementById("markdownFrame").src=href;
+	}
 });
 

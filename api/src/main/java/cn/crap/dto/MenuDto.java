@@ -1,11 +1,16 @@
 package cn.crap.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.crap.model.Menu;
 
-public class MenuDto{
+public class MenuDto implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Menu menu;
 	private List<Menu> subMenu;
 	public Menu getMenu() {

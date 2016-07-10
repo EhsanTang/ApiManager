@@ -1,6 +1,12 @@
 package cn.crap.dto;
 
-public class SearchDto {
+import java.io.Serializable;
+
+public class SearchDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id = "";// 主键，不参与分词搜索
 	private String title = "";
 	private String type = "";// 接口，文章等，不参与分词

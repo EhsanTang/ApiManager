@@ -1,5 +1,7 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,7 +15,11 @@ import cn.crap.utils.Tools;
 @Entity
 @Table(name="log")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Log extends BaseModel{
+public class Log extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String modelClass;// 数据对应的class类
 	private String updateBy;//用户
 	private String remark;//备注

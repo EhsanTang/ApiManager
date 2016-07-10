@@ -262,5 +262,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
+	}).state('markdown', {
+		url : '/markdown',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/markdown/markdown.html';
+				}
+			}
+		}
 	})
 });

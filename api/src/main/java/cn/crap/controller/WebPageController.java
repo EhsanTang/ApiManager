@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -169,5 +168,18 @@ public class WebPageController extends BaseController<WebPage>{
 		return new JsonResult(1, null);
 	}
 
+	@RequestMapping("/markdown.do")
+	public String markdown(@ModelAttribute WebPage webPage) throws Exception {
+		if(!webPage.getId().equals(Const.NULL_ID)){
+			model= webPageService.get(webPage.getId());
+		}else{
+			model=new WebPage();
+			model.setType(webPage.getType());
+			model.setModuleId(webPage.getModuleId());
+		}
+		request.setAttribute("markdownPreview", model.getContent());
+		request.setAttribute("markdownText", model.getMarkdown());
+		return "/WEB-INF/views/markdown.jsp";
+	}
 
 }

@@ -1,11 +1,17 @@
 package cn.crap.dto;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Ehsan
  *
  */
-public class ErrorDto{
+public class ErrorDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String errorCode;
 	private String errorMsg;

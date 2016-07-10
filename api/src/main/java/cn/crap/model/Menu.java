@@ -1,5 +1,7 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,7 +20,11 @@ import cn.crap.utils.MyString;
 @Entity
 @Table(name="menu")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Menu extends BaseModel{
+public class Menu extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * menuName(菜单名称)
 	 * */

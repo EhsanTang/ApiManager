@@ -25,6 +25,7 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
+import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
@@ -82,7 +83,7 @@ public class IndexController extends BaseController<User> {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
 					menus = menuService.getLeftMenu(map);
-					cacheService.setObj("cache:leftMenu", menus, 10*60);//缓存10分钟
+					cacheService.setObj("cache:leftMenu", menus, Config.getCacheTime());//缓存10分钟
 				}else{
 					menus = (List<MenuDto>) objMenus;
 				}

@@ -1,6 +1,12 @@
 package cn.crap.dto;
 
-public class LoginDto {
+import java.io.Serializable;
+
+public class LoginDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String userName;
 	public String password;
 	public String remberPwd;

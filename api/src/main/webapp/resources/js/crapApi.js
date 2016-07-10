@@ -10,6 +10,8 @@ function propUpPsswordDiv(obj){
 		$("#password").focus();
 	}
 }
+
+
 /*****************接口添加参数**************/
 function addOneParam(name, necessary, type, def, remark, rowNum, tableId) {
 	if (!rowNum || rowNum == '') {
@@ -282,7 +284,8 @@ function needHiddenModule() {
 function createKindEditor(id,modelField){
 	var root = getRootScope();
 	if(window.oldEditorId != window.editorId || window.editor == null){
-		oldEditorId = editorId;
+		if(window.editorId)
+			window.oldEditorId = oldEditorId;
 		window.editor =  KindEditor.create('#'+id,{
 	        uploadJson : 'file/upload.do',
 	        filePostName: 'img',
@@ -295,4 +298,13 @@ function createKindEditor(id,modelField){
 	}
 	window.editor.html(root.model[modelField]);
 	changeDisplay('kindEditor','defEditor')
+}
+// 保存markdown
+function saveMarkdown(markdown,content){
+	var rootScope = getRootScope();
+	rootScope.$apply(function () {    
+	    rootScope.model[markdown] = getMarkdownText( $(window.frames["markdownFrame"].document).find('.ace_text-layer').html() );
+	    rootScope.model[content] = $(window.frames["markdownFrame"].document).find('#preview').html();
+	});
+	closeMyDialog('markdownDialog');
 }

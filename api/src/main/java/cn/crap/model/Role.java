@@ -1,5 +1,7 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,7 +17,11 @@ import cn.crap.framework.base.BaseModel;
 @Entity
 @Table(name="role")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Role extends BaseModel{
+public class Role extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String roleName;
 	private String auth;

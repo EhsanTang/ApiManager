@@ -80,7 +80,11 @@ public class InterfaceService extends BaseService<Interface>
 					 params = JSONArray.fromObject(interFace.getParam().substring(5));
 					 for(int i=0;i<params.size();i++){  
 							obj = (JSONObject) params.get(i);
-							strParams.append("\t"+obj.getString("name") + "=" + (obj.containsKey("def")?obj.getString("def"):"")+"\r\n");
+							if(obj.containsKey("inUrl") && obj.getString("inUrl").equals("true")){
+								interFace.setRequestExam(interFace.getRequestExam().replace("{"+obj.getString("name")+"}", (obj.containsKey("def")?obj.getString("def"):"")));
+							}else{
+								strParams.append("\t"+obj.getString("name") + "=" + (obj.containsKey("def")?obj.getString("def"):"")+"\r\n");
+							}
 					 }  
 				}else{
 					strParams.append(interFace.getParam()); 

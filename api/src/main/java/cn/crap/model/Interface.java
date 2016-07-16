@@ -95,7 +95,7 @@ public class Interface extends BaseModel implements Serializable{
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			DataCenter module = cacheService.getModule(moduleId);
 			if(module!=null)
-				return module.getUrl();
+				return MyString.isEmpty(module.getUrl())?"":module.getUrl();
 		}
 		return "";
 	}

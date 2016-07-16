@@ -255,30 +255,39 @@ mainModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, 
     		
     		// 将param转换为json数据
     		try{
-    			params = eval("("+item.iparam+")");
+    			$rootScope.model.params = eval("("+item.iparam+")");
     		}catch(e){
     			alert("参数格式有误，无法解析，请点击【Custom】自定义参数");
     			return;
     		}
     		
-    	}else if(tableId=='editResponseParamTable'&&item.responseParam!=''){
-    		params = eval("("+item.responseParam+")");
-    	}else if(tableId=='editHeaderTable'&&item.header!=''){
-    		params = eval("("+item.header+")");
+    	}else if(tableId=='editResponseParamTable'){
+    		$rootScope.model.responseParams = eval("("+item.responseParam+")");
+    	}else if(tableId=='editHeaderTable'){
+    		$rootScope.model.headers = eval("("+item.header+")");
     	}
     	
     	
-    	$("#"+editerId).find("tbody").find("tr").remove();
-    	if(params!=null&&params!=""){
-	    	var i=0;
-	    	$.each(params, function (n, value) {
-	    		i++;
-	    		addOneParam(value.name,value.necessary,value.type, value.def,value.remark,i,tableId)
-	        });  
-    	}
+//    	$("#"+editerId).find("tbody").find("tr").remove();
+//    	if(params!=null&&params!=""){
+//	    	var i=0;
+//	    	$.each(params, function (n, value) {
+//	    		i++;
+//	    		addOneParam(value.name,value.necessary,value.type, value.def,value.remark,i,tableId)
+//	        });  
+//    	}
 		$("#"+editerId).removeClass('none');
 		$("#"+targetId).addClass('none');
     };
+    $scope.addOneHeard = function(){
+    	$rootScope.model.headers[$rootScope.model.headers.length] = "{}";
+    }
+    $scope.addOneParam = function(){
+    	$rootScope.model.params[$rootScope.model.params.length] = "{}";
+    }
+    $scope.addOneResponseParams = function(){
+    	$rootScope.model.responseParams[$rootScope.model.responseParams.length] =  "{}";
+    }
     $scope.modifyParam = function(editerId,targetId,item,type) {
     	if(type=='param'){
     		var json = getParamFromTable('editParamTable');

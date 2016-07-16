@@ -277,7 +277,12 @@ public class InterfaceController extends BaseController<Interface>{
 		for(int i=0;i<jsonParams.size();i++){
 			JSONObject param = jsonParams.getJSONObject(i);
 			for(Object paramKey:param.keySet()){
-				httpParams.put(paramKey.toString(), param.getString(paramKey.toString()));
+				if(url.contains("{"+paramKey.toString()+"}")){
+					url = url.replace("{"+paramKey.toString()+"}", param.getString(paramKey.toString()));
+				}else{
+					httpParams.put(paramKey.toString(), param.getString(paramKey.toString()));
+				}
+				
 			}
 		}
 		

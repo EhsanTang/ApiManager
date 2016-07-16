@@ -11,84 +11,6 @@ function propUpPsswordDiv(obj){
 	}
 }
 
-
-/*****************接口添加参数**************/
-function addOneParam(name, necessary, type, def, remark, rowNum, tableId) {
-	if (!rowNum || rowNum == '') {
-		var mydate = new Date();
-		rowNum = mydate.getTime();
-	}
-	if(!def) def = "";
-	if (tableId == 'editHeaderTable') {
-		$("#editHeaderTable")
-				.append(
-						"<tr><td><input class='form-control' type='text' name='name' value='"
-								+ name
-								+ "' placeholder=\"参数名：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='necessary' id='necessary"
-								+ rowNum
-								+ "' value='"
-								+ necessary
-								+ "'"
-								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
-								+ rowNum
-								+ "','TRUEORFALSE','','"
-								+ necessary
-								+ "','',5);\" placeholder=\"点击输入框选择\"></td>"
-								+ "<td><input class='form-control' type='text' name='type' value='"
-								+ type
-								+ "' placeholder=\"类型：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='def' value='"
-								+ def
-								+ "' placeholder=\"默认值\"></td>"
-								+ "<td><input class='form-control' type='text' name='remark' value='"
-								+ remark
-								+ "'></td>"
-								+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
-								+ "</tr>");
-	}else if (tableId == 'editParamTable') {
-		$("#editParamTable")
-				.append(
-						"<tr><td><input class='form-control' type='text' name='name' value='"
-								+ name
-								+ "' placeholder=\"参数名：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='necessary' id='necessary"
-								+ rowNum
-								+ "' value='"
-								+ necessary
-								+ "'"
-								+ "onfocus=\"loadPick(event,200,250,'true','necessary"
-								+ rowNum
-								+ "','TRUEORFALSE','','"
-								+ necessary
-								+ "','',5);\" placeholder=\"点击输入框选择\"></td>"
-								+ "<td><input class='form-control' type='text' name='type' value='"
-								+ type
-								+ "' placeholder=\"类型：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='def' value='"
-								+ def
-								+ "' placeholder=\"默认值\"></td>"
-								+ "<td><input class='form-control' type='text' name='remark' value='"
-								+ remark
-								+ "'></td>"
-								+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
-								+ "</tr>");
-	} else if (tableId == 'editResponseParamTable') {
-		$("#editResponseParamTable")
-				.append(
-						"<tr><td><input class='form-control' type='text' name='name' value='"
-								+ name
-								+ "' placeholder=\"参数名：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='type' value='"
-								+ type
-								+ "' placeholder=\"类型：必填\"></td>"
-								+ "<td><input class='form-control' type='text' name='remark' value='"
-								+ remark
-								+ "'></td>"
-								+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
-								+ "</tr>");
-	}
-}
 /****************添加数据字典****************/
 function addOneField(name, type, notNull,def, remark, rowNum) {
 	if (!rowNum || rowNum == '') {
@@ -134,6 +56,12 @@ function getParamFromTable(tableId) {
 					json += ",";
 				json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
 		});
+		$(this).find('td').find('select').each(function(i, val) {
+			j = j + 1;
+			if (j != 1)
+				json += ",";
+			json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
+	});
 		json += "}"
 	});
 	json += "]";

@@ -103,7 +103,7 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#content input,#editResponseParamTable input,.tableInupt input{
+#editParamTable input,#editParamTable select,#content input,#editHeaderTable input, #editResponseParamTable input,.tableInupt input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;

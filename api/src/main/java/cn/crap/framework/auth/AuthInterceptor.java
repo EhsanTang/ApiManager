@@ -1,4 +1,6 @@
 package cn.crap.framework.auth;
+import java.net.InetAddress;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,12 +28,18 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(handler.getClass().isAssignableFrom(HandlerMethod.class)){
         	AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
+        	
         	String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+        	
         	 // 未登陆用户唯一识别
         	String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
             if( MyString.isEmpty(uuid) ){
             	MyCookie.addCookie(Const.COOKIE_UUID, System.currentTimeMillis() + Tools.getChar(10), response);
             }
+            
+            // 返回服务器ip
+            response.setHeader("serviceIp", InetAddress.getLocalHost().getHostAddress());
+            
             if(authPassport == null || authPassport.validate() == false)
                 return true;
             else if(token != null && !authPassport.authority().equals("")){

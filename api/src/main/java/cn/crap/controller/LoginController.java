@@ -24,6 +24,7 @@ import cn.crap.inter.service.IUserService;
 import cn.crap.model.Role;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
+import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
@@ -52,13 +53,14 @@ public class LoginController extends BaseController<User> {
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		LoginDto model = new LoginDto();
 		model.setUserName(MyCookie.getCookie(Const.COOKIE_USERNAME, request));
 		model.setPassword(MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		model.setRemberPwd(MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
 		model.setTipMessage("");
-		Object obj = request.getSession().getAttribute(Const.SESSION_ADMIN);
-		model.setSessionAdminName(obj == null? null:obj.toString());
+		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		model.setSessionAdminName(user == null? null:user.getUserName());
 		
 		returnMap.put("settingMap", settingMap);
 		returnMap.put("model", model);
@@ -88,7 +90,10 @@ public class LoginController extends BaseController<User> {
 			if (users.size() > 0) {
 				user = users.get(0);
 				if (model.getUserName().equals(user.getUserName()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword())) {
-					request.getSession().setAttribute(Const.SESSION_ADMIN, model.getUserName());
+					String token  = Aes.encrypt(user.getId());
+					MyCookie.addCookie(Const.COOKIE_TOKEN, token, response);
+					cacheService.setObj(Const.CACHE_USER + token, user, Const.CACHE_USER_TIME);
+					
 					StringBuilder sb = new StringBuilder("," + user.getAuth() + ",");
 					if (user.getRoleId() != null && !user.getRoleId().equals("")) {
 						List<Role> roles = roleService.findByMap(
@@ -98,11 +103,7 @@ public class LoginController extends BaseController<User> {
 						}
 					}
 					// 将角色组合：数据类型+模块存入session，拦截器中将根据注解类型判断用户是否有权限操作数据
-					request.getSession().setAttribute(Const.SESSION_ADMIN_AUTH, sb.toString());
-					request.getSession().setAttribute(Const.SESSION_ADMIN_ID, user.getId());
-					// 菜单页面将根据用户的roleIds判断是否显示菜单
-					request.getSession().setAttribute(Const.SESSION_ADMIN_ROLEIDS, user.getRoleId());
-					request.getSession().setAttribute(Const.SESSION_ADMIN_TRUENAME, user.getTrueName());
+					cacheService.setStr(Const.CACHE_AUTH + token, sb.toString(), Const.CACHE_USER_TIME);
 					
 					MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
 					MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);
@@ -141,17 +142,20 @@ public class LoginController extends BaseController<User> {
 	 */
 	@RequestMapping("/backInit.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult backInit() throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		returnMap.put("settingMap", settingMap);
 		returnMap.put("menuList", menuService.getLeftMenu(map));
-		returnMap.put("sessionAdminName", request.getSession().getAttribute(Const.SESSION_ADMIN));
-		returnMap.put("sessionAdminAuthor", request.getSession().getAttribute(Const.SESSION_ADMIN_AUTH));
-		returnMap.put("sessionAdminRoleIds", request.getSession().getAttribute(Const.SESSION_ADMIN_ROLEIDS));
-		returnMap.put("sessionAdminId", request.getSession().getAttribute(Const.SESSION_ADMIN_ID));
+		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		returnMap.put("sessionAdminName", user.getUserName());
+		returnMap.put("sessionAdminAuthor", cacheService.getStr(Const.CACHE_AUTH + token));
+		returnMap.put("sessionAdminRoleIds", user.getRoleId());
+		returnMap.put("sessionAdminId", user.getId());
 		
 		return new JsonResult(1, returnMap);
 	}
@@ -159,7 +163,10 @@ public class LoginController extends BaseController<User> {
 
 	@RequestMapping("/loginOut.do")
 	public String loginOut() throws IOException {
-		request.getSession().invalidate();
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		cacheService.delObj(Const.CACHE_USER + token);
+		cacheService.delStr(Const.CACHE_AUTH + token);
+		MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
 		return "resources/html/frontHtml/index.html";
 	}
 

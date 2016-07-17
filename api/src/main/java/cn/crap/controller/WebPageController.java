@@ -107,9 +107,9 @@ public class WebPageController extends BaseController<WebPage>{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
-			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
+			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
 		}else{
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(), request.getSession(), "");
+			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
 		}
 		if(MyString.isEmpty(webPage.getKey())){
 			webPage.setKey(null);
@@ -139,9 +139,9 @@ public class WebPageController extends BaseController<WebPage>{
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		webPage = webPageService.get(webPage.getId());
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name()))
-			Tools.hasAuth(Const.AUTH_DICTIONARY, request.getSession(), webPage.getModuleId());
+			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
 		else
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(), request.getSession(), "");
+			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
 		model = webPageService.get(webPage.getId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");

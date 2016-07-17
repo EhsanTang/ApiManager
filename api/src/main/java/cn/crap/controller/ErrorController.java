@@ -77,7 +77,7 @@ public class ErrorController extends BaseController<Error>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
 		error = errorService.get(error.getId());
-		Tools.hasAuth(Const.AUTH_ERROR, request.getSession(), error.getModuleId());
+		Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
 		errorService.delete(error);
 		return new JsonResult(1,null);
 	}

@@ -48,17 +48,4 @@ public class MyString {
 			return request.getParameter(name).toString();
 		}
 	}
-	
-	// 从session中获取值
-	public static String getValueFromSession(HttpServletRequest request, String name){
-		return getValueFromSession(request, name, "");
-	}
-	
-	public static String getValueFromSession(HttpServletRequest request, String name, String defValue){
-		if( isEmpty(request.getSession().getAttribute(name)) ){
-			return defValue;
-		}else{
-			return request.getSession().getAttribute(name).toString();
-		}
-	}
 }

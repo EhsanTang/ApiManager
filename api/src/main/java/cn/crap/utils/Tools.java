@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,13 +27,12 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.ISearchService;
+import cn.crap.model.User;
 import cn.crap.service.CacheService;
-import cn.crap.service.LuceneSearchService;
-import cn.crap.service.SolrSearchService;
 
 
 public class Tools {
+	
 	/**
 	 * 构造查询的id
 	 * @param roleName
@@ -45,7 +44,8 @@ public class Tools {
 	
 	// 获取图形验证码
 	public static String getImgCode(HttpServletRequest request) throws MyException{
-		Object timesStr = request.getSession().getAttribute(Const.SESSION_IMGCODE_TIMES);
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		String timesStr = cacheService.getStr(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
 		int times = 0;
 		if(timesStr != null){
 			times = Integer.parseInt(timesStr.toString()) + 1;
@@ -53,28 +53,31 @@ public class Tools {
 		if(times > 3){
 			throw new MyException("000011");
 		}
-		request.getSession().setAttribute(Const.SESSION_IMGCODE_TIMES, times + "");
-		Object imgCode = request.getSession().getAttribute(Const.SESSION_IMG_CODE);
+		cacheService.setStr(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false, request), times + "", 10 * 60);
+		String imgCode = cacheService.getStr(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
 		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
 	}
 	/**
 	 * 查询是否拥有权限
 	 */
-	public static boolean hasAuth(String authPassport, HttpSession session, String moduleId) throws MyException {
-		return hasAuth(authPassport, session, moduleId, null);
+	public static boolean hasAuth(String authPassport, String moduleId) throws MyException {
+		return hasAuth(authPassport, moduleId, null);
 	}
-	public static boolean hasAuth(String authPassport, HttpSession session,
+	public static boolean hasAuth(String authPassport,
 			String moduleId, HttpServletRequest request) throws MyException {
-		String authority = session.getAttribute(Const.SESSION_ADMIN_AUTH).toString();
-		String roleIds = session.getAttribute(Const.SESSION_ADMIN_ROLEIDS).toString();
-		if((","+roleIds).indexOf(","+Const.SUPER+",")>=0){
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		cacheService.getStr(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
+		User user = (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
+		
+		String authority = cacheService.getStr(Const.CACHE_AUTH + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
+		if((","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
 			return true;//超级管理员
 		}
 		
 		// 管理员修改自己的资料
 		if(authPassport.equals("USER") && request != null){
 			// 如果session中的管理员id和参数中的id一致
-			if( MyString.isEquals(  session.getAttribute(Const.SESSION_ADMIN_ID).toString(),  MyString.getValueFromRequest(request, "id", "-1")  )  ){
+			if( MyString.isEquals(  user.getId(),  MyString.getValueFromRequest(request, "id", "-1")  )  ){
 				return true;
 			}
 		}
@@ -89,7 +92,8 @@ public class Tools {
 	
 	/**********************模块访问密码***************************/
 	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
-		Object temPwd = request.getSession().getAttribute(Const.SESSION_TEMP_PASSWORD);
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		String temPwd = cacheService.getStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
 		if(!MyString.isEmpty(modulePassword)){
 			if(!MyString.isEmpty(temPwd)&&temPwd.toString().equals(modulePassword)){
 				return;
@@ -97,14 +101,13 @@ public class Tools {
 			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
 				throw new MyException("000007");
 			}
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			if(cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
 				Object imgCode = getImgCode(request);
 				if(MyString.isEmpty(visitCode)||imgCode==null||!visitCode.equals(imgCode.toString())){
 					throw new MyException("000007");
 				}
 			}
-			request.getSession().setAttribute(Const.SESSION_TEMP_PASSWORD, password);
+			cacheService.setStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request), password, 10 * 60);
 		}
 	}
 	/**
@@ -289,5 +292,10 @@ public class Tools {
 			temp.append(matcher.group());
 		}
 		return temp.toString();
+	}
+	
+	public static User getUser(){
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		return (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, Tools.getRequest()));
 	}
 }

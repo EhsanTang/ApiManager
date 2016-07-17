@@ -32,7 +32,7 @@ public class Log extends BaseModel implements Serializable{
 	public Log(){}
 	public Log(String modelName, String remark, String type, String content, String modelClass,String identy){
 		this.modelName = modelName;
-		this.updateBy = Tools.getRequest().getSession().getAttribute(Const.SESSION_ADMIN).toString();
+		this.updateBy = Tools.getUser().getUserName();
 		this.remark = remark;
 		this.type = type;
 		this.content = content;

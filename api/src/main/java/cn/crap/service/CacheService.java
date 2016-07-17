@@ -133,4 +133,19 @@ public class CacheService implements ICacheService {
 			name = "无";
 		return name;
 	}
+
+	@Override
+	public boolean setStr(String key, String value, int expireTime) {
+		return cacheDao.setStr(key, value, expireTime);
+	}
+
+	@Override
+	public String getStr(String key) {
+		return cacheDao.getStr(key);
+	}
+
+	@Override
+	public void delStr(String key) {
+		cacheDao.delStr(key);
+	}
 }

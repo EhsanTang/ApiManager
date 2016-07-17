@@ -28,6 +28,7 @@ import cn.crap.model.User;
 import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
+import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import cn.crap.utils.ValidateCodeService;
@@ -39,6 +40,7 @@ public class IndexController extends BaseController<User> {
 	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
+	
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -94,7 +96,10 @@ public class IndexController extends BaseController<User> {
 		}
 		
 		returnMap.put("menuList", menus);
-		returnMap.put("sessionAdminName", request.getSession().getAttribute(Const.SESSION_ADMIN));
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+
+		returnMap.put("sessionAdminName", user == null? "": user.getUserName());
 		return new JsonResult(1, returnMap);
 	}
 	
@@ -146,8 +151,9 @@ public class IndexController extends BaseController<User> {
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
-		request.getSession().setAttribute(Const.SESSION_IMG_CODE, vservice.getCode());
-		request.getSession().setAttribute(Const.SESSION_IMGCODE_TIMES, "0");
+		String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
+		cacheService.setStr(Const.CACHE_IMGCODE + uuid, vservice.getCode() , 10 * 60);
+		cacheService.setStr(Const.CACHE_IMGCODE_TIMES + uuid, "0" , 10 * 60);
 		try {
 			vservice.write(out);
 			out.flush();

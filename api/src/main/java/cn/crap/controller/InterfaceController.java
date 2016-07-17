@@ -36,12 +36,14 @@ import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
+import cn.crap.model.User;
 import cn.crap.model.DataCenter;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -212,9 +214,9 @@ public class InterfaceController extends BaseController<Interface>{
 		}else{
 			interFace.setErrors("[]");
 		}
-		
-		interFace.setUpdateBy("userName："+request.getSession().getAttribute(Const.SESSION_ADMIN).toString()+" | trueName："+
-				request.getSession().getAttribute(Const.SESSION_ADMIN_TRUENAME).toString());
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));
 		//请求示例为空，则自动添加
 		if(MyString.isEmpty(interFace.getRequestExam())){
@@ -241,7 +243,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException, IOException {
 		interFace = interfaceService.get(interFace.getId());
-		Tools.hasAuth(Const.AUTH_INTERFACE, request.getSession(), interFace.getModuleId());
+		Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
 		interfaceService.delete(interFace, "接口", "");
 		GetBeanBySetting.getSearchService().delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);

@@ -35,7 +35,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				byte[] obj = jedis.get((key + Config.getRedisKeyPrefix()).getBytes());
+				byte[] obj = jedis.get((Config.getRedisKeyPrefix() + key).getBytes());
 				if (obj == null)
 					return null;
 				return SerializeUtil.unserialize(obj);
@@ -53,7 +53,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				jedis.setex((key + Config.getRedisKeyPrefix()), expireTime, value);
+				jedis.setex((Config.getRedisKeyPrefix() + key), expireTime, value);
 				return true;
 			} catch (Exception e) {
 				throw e;
@@ -69,7 +69,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				return jedis.get((key + Config.getRedisKeyPrefix()));
+				return jedis.get((Config.getRedisKeyPrefix() + key));
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -86,7 +86,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				jedis.setex((key + Config.getRedisKeyPrefix()).getBytes(), expireTime, SerializeUtil.serialize(value));
+				jedis.setex((Config.getRedisKeyPrefix() + key).getBytes(), expireTime, SerializeUtil.serialize(value));
 				return true;
 			} catch (Exception e) {
 				throw e;
@@ -102,7 +102,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				return jedis.del((key + Config.getRedisKeyPrefix())) > 0;
+				return jedis.del((Config.getRedisKeyPrefix() + key)) > 0;
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -117,7 +117,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				return jedis.del((key + Config.getRedisKeyPrefix()).getBytes()) > 0;
+				return jedis.del((Config.getRedisKeyPrefix() + key).getBytes()) > 0;
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -132,7 +132,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				return jedis.hdel((key + Config.getRedisKeyPrefix()).getBytes(), field.getBytes()) > 0;
+				return jedis.hdel((Config.getRedisKeyPrefix() + key).getBytes(), field.getBytes()) > 0;
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -149,8 +149,8 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				jedis.hset((key + Config.getRedisKeyPrefix()).getBytes(), field.getBytes(), SerializeUtil.serialize(value));
-				jedis.expire((key + Config.getRedisKeyPrefix()).getBytes(), expireTime);
+				jedis.hset((Config.getRedisKeyPrefix() + key).getBytes(), field.getBytes(), SerializeUtil.serialize(value));
+				jedis.expire((Config.getRedisKeyPrefix() + key).getBytes(), expireTime);
 				return true;
 			} catch (Exception e) {
 				throw e;
@@ -166,7 +166,7 @@ public class RedisCacheDao implements ICacheDao{
 			Jedis jedis = null;
 			try {
 				jedis = pool.getResource();
-				byte[] obj = jedis.hget((key + Config.getRedisKeyPrefix()).getBytes(), field.getBytes());
+				byte[] obj = jedis.hget((Config.getRedisKeyPrefix() + key).getBytes(), field.getBytes());
 				if (obj == null)
 					return null;
 				return SerializeUtil.unserialize(obj);

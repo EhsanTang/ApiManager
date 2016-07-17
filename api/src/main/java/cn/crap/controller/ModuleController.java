@@ -50,9 +50,9 @@ public class ModuleController extends BaseController<DataCenter>{
 		DataCenter oldDataCenter = cacheService.getModule(module.getId());
 		if( (  oldDataCenter.getType() == null && module.getType().equals(Const.MODULE)  ) ||
 				(  oldDataCenter.getType() != null && oldDataCenter.getType().equals(Const.MODULE) ) ){
-			Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+			Tools.hasAuth(Const.AUTH_MODULE,  module.getParentId());
 		}else{
-			Tools.hasAuth(Const.AUTH_SOURCE, request.getSession(), "");
+			Tools.hasAuth(Const.AUTH_SOURCE,  "");
 		}
 		
 		if(!MyString.isEmpty(module.getId())){
@@ -69,9 +69,9 @@ public class ModuleController extends BaseController<DataCenter>{
 	public JsonResult delete(@ModelAttribute DataCenter module) throws MyException{
 		DataCenter oldDataCenter = cacheService.getModule(module.getId());
 		if(oldDataCenter.getType().equals(Const.MODULE)){
-			Tools.hasAuth(Const.AUTH_MODULE, request.getSession(), module.getParentId());
+			Tools.hasAuth(Const.AUTH_MODULE,  module.getParentId());
 		}else{
-			Tools.hasAuth(Const.AUTH_SOURCE, request.getSession(), "");
+			Tools.hasAuth(Const.AUTH_SOURCE,  "");
 		}
 		cacheService.delObj("cache:model:"+module.getId());
 		moduleService.delete(module);

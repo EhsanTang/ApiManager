@@ -13,10 +13,12 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
+import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -27,7 +29,9 @@ public class UserController extends BaseController<User>{
 
 	@Autowired
 	private IUserService userService;
-
+	@Autowired
+	private ICacheService cacheService;
+	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute User user,@RequestParam(defaultValue="1") Integer currentPage){
@@ -66,10 +70,10 @@ public class UserController extends BaseController<User>{
 		if(!MyString.isEmpty(user.getId())){
 			temp = userService.get(user.getId());
 		}
-		
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		User cacheUser = (User) cacheService.getObj(Const.CACHE_USER + token);
 		// 如果不是最高管理员，不允许修改权限、角色
-		String roleIds = MyString.getValueFromSession(request, Const.SESSION_ADMIN_ROLEIDS);
-		if((","+roleIds).indexOf(","+Const.SUPER+",") < 0){
+		if((","+cacheUser.getRoleId()).indexOf(","+Const.SUPER+",") < 0){
 			if(temp != null){
 				user.setAuth(temp.getAuth());
 				user.setAuthName(temp.getAuthName());

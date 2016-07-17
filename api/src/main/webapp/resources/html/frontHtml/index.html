@@ -48,9 +48,9 @@
 	                    	</li>
 	                  </ul>
 	                </li>
-					<li ng-if="sessionAdminName==null"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
-					<li ng-if="sessionAdminName!=null"><a href="index.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-					<li ng-if="sessionAdminName!=null"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+					<li ng-if="sessionAdminName==''"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
+					<li ng-if="sessionAdminName!=''"><a href="index.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
+					<li ng-if="sessionAdminName!=''"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
 		</div>

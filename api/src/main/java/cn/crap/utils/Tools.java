@@ -61,12 +61,11 @@ public class Tools {
 	 * 查询是否拥有权限
 	 */
 	public static boolean hasAuth(String authPassport, String moduleId) throws MyException {
-		return hasAuth(authPassport, moduleId, null);
+		return hasAuth(authPassport, moduleId, Tools.getRequest());
 	}
 	public static boolean hasAuth(String authPassport,
 			String moduleId, HttpServletRequest request) throws MyException {
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		cacheService.getStr(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
 		User user = (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
 		
 		String authority = cacheService.getStr(Const.CACHE_AUTH + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));

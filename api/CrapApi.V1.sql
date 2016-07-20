@@ -76,7 +76,7 @@ CREATE TABLE `interface` (
   `remark` text,
   `errors` text COMMENT '错误码、错误码信息',
   `updateBy` varchar(100) DEFAULT NULL,
-  `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updateTime` timestamp NOT NULL DEFAULT '2016-01-01 09:40:00',
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`)

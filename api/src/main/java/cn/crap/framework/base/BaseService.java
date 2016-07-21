@@ -34,7 +34,6 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	@Override
 	@Transactional
 	public T save(T model){
-		model.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		dao.save(model);
 		return model;
 	}

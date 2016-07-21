@@ -1,6 +1,7 @@
 package cn.crap.framework.base;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 
+import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -32,6 +34,8 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 
 	@Override
 	public T save(T t) {
+		if(t.getCreateTime() == null)
+			t.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		hibernateTemplate.save(entityName, t);
 		return t;
 	}

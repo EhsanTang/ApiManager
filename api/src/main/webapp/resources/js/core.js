@@ -202,7 +202,7 @@ function showTip(iTarget,iLoading) {
 			floatOrPropUp = true;
 		}
 	}
-	if (!floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
+	if (oldLoadText.toUpperCase().indexOf('PROPUP') >= 0 && !floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
 		if (iLoading.toUpperCase() != "FALSE"){
 			//传递的参数含有图片，表示不以div的形式显示提示内容
 			if(iLoading.indexOf("<img")>=0){

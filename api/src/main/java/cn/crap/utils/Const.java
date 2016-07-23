@@ -36,6 +36,7 @@ public class Const {
 	public static final String CACHE_IMGCODE = ":imgCode";
 	public static final String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
+	public static final String CACHE_SEARCH_WORDS = ":searchWords";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";

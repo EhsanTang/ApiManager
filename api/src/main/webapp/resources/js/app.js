@@ -23,10 +23,13 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var showType = getValue(params,'showType');
 		var def = getValue(params,'def');
 		var tagName = getValue(params,'tagName');
-		$rootScope.loadPick(event,iwidth,iheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName);
+		var iUrl = getValue(params,'iUrl');
+		$rootScope.loadPick(event,iwidth,iheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName,iUrl);
 	}
-	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName) { 
+	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName,iUrl) { 
 		/***********加载选择对话框********************/
+		if(!iUrl)
+			iUrl = "pick.do";
 		if(!params)
 			params='';
 		if(!tagName)
@@ -37,7 +40,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 			
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
-		callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
+		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
 		if(tagName)
 			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);
@@ -257,5 +260,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		$("#markdownDialog").css('display','block'); 
 		document.getElementById("markdownFrame").src=href;
 	}
+	 $rootScope.iClose = function(id) {
+	    	iClose(id);
+	    };
 });
 

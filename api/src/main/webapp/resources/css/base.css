@@ -157,7 +157,7 @@ table{border-collapse:collapse;border-spacing:0}
 .ml75{margin-left:75px}.ml100{margin-left:100px}
 
 /***********padding*******************/
-.p0{padding:0px!important}
+.p0{padding:0px!important}.p3{padding:3px!important}
 .p5{padding:5px!important}.p10{padding:10px!important}.p15{padding:15px!important}.p20{padding:20px!important}
 .p30{padding:30px!important}.p40{padding:30px!important}.p50{padding:30px!important}
 

@@ -23,6 +23,8 @@ public class MemoryCacheDao implements ICacheDao {
 	
 	@Override
 	public boolean setStr(String key, String value, int expireTime){
+		// 如果为-1，存储一年
+		if(expireTime == -1) expireTime = 360 * 24 * 60 *60;
 		stringCache.put(key, value);
 		cacheTime.put(key, System.currentTimeMillis() + expireTime*1000);
 		return true;
@@ -51,6 +53,8 @@ public class MemoryCacheDao implements ICacheDao {
 	
 	@Override
 	public boolean setObj(String key, Object value, int expireTime){
+		// 如果为-1，存储一年
+		if(expireTime == -1) expireTime = 360 * 24 * 60 *60;
 		objectCache.put(key, value);
 		cacheTime.put(key, System.currentTimeMillis() + expireTime*1000);
 		return true;
@@ -58,6 +62,8 @@ public class MemoryCacheDao implements ICacheDao {
 	
 	@Override
 	public boolean setObj(String key,String field, Object value, int expireTime){
+		// 如果为-1，存储一年
+		if(expireTime == -1) expireTime = 360 * 24 * 60 *60;
 		HashMap<String,Object> map;
 		if(objectMapCache.containsKey(key)){
 			map = objectMapCache.get(key);

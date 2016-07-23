@@ -51,6 +51,39 @@ public class IndexController extends BaseController<User> {
 	public void home(HttpServletResponse response) throws Exception {
 		response.sendRedirect("web.do");
 	}
+	
+	@RequestMapping("/searchList.do")
+	@ResponseBody
+	public void searchList(HttpServletResponse response) throws Exception {
+		// 只显示前10个
+		StringBuilder sb = new StringBuilder("<div class='tl'>");
+		@SuppressWarnings("unchecked")
+		ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
+		if(searchWords != null){
+			int i = 0;
+			String itemClass = "";
+			for(String searchWord: searchWords){
+				i = i+1;
+				if(i > 10) break;
+				if(i == 1) itemClass = " text-danger ";
+				else if(i == 2) itemClass = " text-info ";
+				else if(i == 3) itemClass = " text-warning ";
+				else itemClass = " C555 ";
+				
+				
+				String showText = searchWord.substring(0, searchWord.length()>20?20:searchWord.length());
+				if(searchWord.length()>20){
+					showText = showText + "...";
+				}
+				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='web.do#/frontSearch/"+searchWord+"'>"+showText+"</a>");
+			}
+			
+		}
+		sb.append("</div>");
+		printMsg(sb.toString());
+		
+	}
+
 
 	/**
 	 * 跳转至前段主页面
@@ -170,6 +203,33 @@ public class IndexController extends BaseController<User> {
 		page.setSize(10);
 		List<SearchDto> searchResults = GetBeanBySetting.getSearchService().search(keyword, page);
 		returnMap.put("searchResults", searchResults);
+		
+		// 将搜索的内容记入内存
+		if(!MyString.isEmpty(keyword)){
+			@SuppressWarnings("unchecked")
+			ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
+			if(searchWords == null){
+				searchWords = new ArrayList<String>();
+			}
+			// 如果已经存在，则将排序+1
+			if(searchWords.contains(keyword)){
+				int index = searchWords.indexOf(keyword);
+				if(index>0){
+					searchWords.remove(keyword);
+					searchWords.add(index-1, keyword);
+				}
+			}else{
+				// 最多存200个，超过200个，则移除最后一个，并将新搜索的词放在100
+				if(searchWords.size() >= 200){
+					searchWords.remove(199);
+					searchWords.add(100, keyword);
+				}else{
+					searchWords.add(keyword);
+				}
+			}
+			cacheService.setObj(Const.CACHE_SEARCH_WORDS, searchWords, -1);
+		}
+		
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));
 	}

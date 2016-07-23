@@ -71,10 +71,11 @@
 					<div class="form-group w300 fr mr10 mt20 search-section" ng-controller="frontSearchCtrl">
 						<label class="sr-only">search</label>
 						<div class="input-group b0">
-							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" 
+							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" id="searchInput"
 							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文章" 
-							onkeypress="if(event.keyCode==13) {luceneSearch.click();return false;}">
-							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="getData()"
+							ng-focus="loadPickByName('iwidth=265|iUrl=searchList.do|iheight=260|tag=searchInput',$event)"
+							onkeypress="iClose('lookUp');if(event.keyCode==13) {luceneSearch.click();return false;}">
+							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
 								class="input-group-addon no-radius o3 b0 search-button cursor">
 									<i class="iconfont C000">&#xe60d;</i>
 							</a>

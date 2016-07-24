@@ -34,7 +34,7 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 
 	@Override
 	public T save(T t) {
-		if(t.getCreateTime() == null)
+		if(MyString.isEmpty(t.getCreateTime()))
 			t.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		hibernateTemplate.save(entityName, t);
 		return t;

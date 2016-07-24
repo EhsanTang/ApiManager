@@ -42,7 +42,7 @@ blockquote{
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
-.container{min-width: 750px;}               
+.container{min-width: 770px;}               
 /********文章页面，图片居中显示********/
 #fade{
 	opacity: 0.5;

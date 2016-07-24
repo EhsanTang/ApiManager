@@ -199,6 +199,7 @@ public class IndexController extends BaseController<User> {
 	@RequestMapping("/frontSearch.do")
 	@ResponseBody
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
+		keyword = keyword.trim();
 		page.setCurrentPage(currentPage);
 		page.setSize(10);
 		List<SearchDto> searchResults = GetBeanBySetting.getSearchService().search(keyword, page);

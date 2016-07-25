@@ -201,7 +201,7 @@ webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $stat
 	$scope.getData = function(page) {
 		if(!$stateParams.keyword)
 			$stateParams.keyword ="";
-		params = "iUrl=frontSearch.do|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		params = "iUrl=frontSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

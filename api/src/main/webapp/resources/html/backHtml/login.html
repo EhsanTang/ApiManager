@@ -49,13 +49,13 @@
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
 					<form class="form-horizontal p15 mt10" ng-submit="submitForm('login.do','','FLOAT')">
 						<div class="input-wrapper">
-							    <input type="text" class="" id="userName" ng-model="model.userName" placeholder="用户名"  autocomplete="off" required>
+							    <input type="text" ng-model="model.userName" placeholder="用户名"  autocomplete="off" required>
 						</div>
 						<div class="input-wrapper">
-								<input type="password"  id="userPassword" ng-model="model.password" placeholder="密码（不少于6位）"  autocomplete="off" required>
+								<input type="password" ng-model="model.password" placeholder="密码（不少于6位）"  autocomplete="off" required>
 						</div>
 						<div class="input-wrapper" ng-if="fontSettings.VERIFICATIONCODE=='true'">
-								<input type="text" class="" id="verificationCode" ng-model="model.verificationCode"  autocomplete="off"  placeholder="图形验证码" required>
+								<input type="text" ng-model="model.verificationCode"  autocomplete="off"  placeholder="图形验证码" required>
 								
 								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
 									<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"

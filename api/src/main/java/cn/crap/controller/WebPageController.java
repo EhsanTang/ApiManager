@@ -46,7 +46,7 @@ public class WebPageController extends BaseController<WebPage>{
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
-		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key) ", page,null), page,
+		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId) ", page,null), page,
 				Tools.getMap("type", WebPageType.valueOf(webPage.getType()).getName(), "category", webPage.getCategory(), "crumbs", 
 						Tools.getCrumbs(MyString.isEmpty(webPage.getCategory()) ? WebPageType.valueOf( webPage.getType()).getName() : webPage.getCategory(), "void")));
 	}

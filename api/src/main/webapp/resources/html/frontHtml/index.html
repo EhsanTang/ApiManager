@@ -36,9 +36,15 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
+					<li>
+	                	<a href="http://tools.crap.cn/index.jsp.do" class="menu-a ng-binding" target="_blank"
+	                	onclick="selectButton(this,'menu-a')" href="http://tools.crap.cn/index.jsp.do">在线工具</a>
+	                </li>
+	                
 					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
 	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="menu-a" onclick="selectButton(this,'menu-a')"></a>
 	                </li>
+	                
 	                <li class="dropdown" ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
 	                	 <a href="javascript:void(0)" class="dropdown-toggle menu-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'menu-a')">
 	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>

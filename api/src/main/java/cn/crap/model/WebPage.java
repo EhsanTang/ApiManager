@@ -42,7 +42,7 @@ public class WebPage extends BaseModel implements Serializable{
 	public WebPage(){};
 	
 	
-	public WebPage(String id, String type, String name, int click, String category, String createTime, String key) {
+	public WebPage(String id, String type, String name, int click, String category, String createTime, String key, String moduleId) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -51,6 +51,7 @@ public class WebPage extends BaseModel implements Serializable{
 		this.category = category;
 		this.createTime = createTime;
 		this.key = key;
+		this.moduleId = moduleId;
 	}
 
 

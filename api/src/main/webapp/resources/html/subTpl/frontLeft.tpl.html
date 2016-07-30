@@ -1,7 +1,7 @@
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-repeat="item in fontMenus" ng-if="item.menu.type=='FRONT'">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+						<div class="panel-heading no-radius" data-parent="#accordion">
 							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menu.id}}">
 								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml"></div>
 								<span class="hidden-xs" ng-bind="item.menu.menuName"></span>
@@ -15,7 +15,7 @@
 					</div>
 
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+						<div class="panel-heading no-radius" data-parent="#accordion">
 							<div class="a cursor" data-toggle="collapse" data-parent="#panel3"></div>
 							<span class="hidden-xs">&nbsp;</span>
 						</div>

@@ -55,7 +55,8 @@ public class InterfaceService extends BaseService<Interface>
 		map.put("interfaces", interfaces);
 		map.put("modules", modules);
 		return new JsonResult(1, map, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
+						"module",cacheService.getModule(interFace.getModuleId())));
 	}
 	
 	@Override

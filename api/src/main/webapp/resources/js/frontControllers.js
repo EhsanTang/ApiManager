@@ -206,5 +206,15 @@ webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $stat
     };
     $scope.getData();
 });
+/***************项目主页*******/
+webModule.controller('projectCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		if(!$stateParams.keyword)
+			$stateParams.keyword ="";
+		params = "iUrl=frontSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 
 

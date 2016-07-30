@@ -39,6 +39,14 @@ blockquote{
 .search-section:hover .search-button{
 	opacity:0.8!important;
 }      
+/*****项目主页*****/
+.project-title{
+	background-image:url('../images/project.jpg'); background-position:center;
+}
+/*****左边菜单*****/
+ .left-menu-border-top{
+ 	border-top: 1px solid #888!important;
+ }
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}

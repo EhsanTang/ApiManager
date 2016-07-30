@@ -10,6 +10,9 @@
 app.config(function($stateProvider, $urlRouterProvider) {
 	if($("#sessionAuth").length>0){
 		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/ADMINHELP');
+	}
+	else if($("#projectId").length>0){// 项目主页
+		$urlRouterProvider.otherwise('/project');
 	}else{
 		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/WELCOME');
 	}
@@ -271,5 +274,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('project', {
+		url : '/project/:moduleId',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/project/list.tpl.html';
+				}
+			}
+		}
 	})
+	
+	/*********************前端项目主页*******************/
 });

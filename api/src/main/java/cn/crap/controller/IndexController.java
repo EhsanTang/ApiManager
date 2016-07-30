@@ -51,6 +51,16 @@ public class IndexController extends BaseController<User> {
 	public void home(HttpServletResponse response) throws Exception {
 		response.sendRedirect("web.do");
 	}
+	/**
+	 * 前端项目主页
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/project.do")
+	public String project() throws Exception {
+		return "resources/html/project/index.html";
+	}
 	
 	@RequestMapping("/searchList.do")
 	@ResponseBody
@@ -95,7 +105,7 @@ public class IndexController extends BaseController<User> {
 	public String web() throws Exception {
 		return "resources/html/frontHtml/index.html";
 	}
-
+	
 	/**
 	 * 初始化前端页面
 	 * 

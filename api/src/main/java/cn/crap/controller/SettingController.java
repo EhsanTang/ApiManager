@@ -40,6 +40,7 @@ public class SettingController extends BaseController<Setting>{
 	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
 		page.setCurrentPage(currentPage);
 		// 搜索条件
@@ -49,6 +50,7 @@ public class SettingController extends BaseController<Setting>{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult detail(@ModelAttribute Setting setting){
 		if(!MyString.isEmpty(setting.getId())){
 			model = settingService.get(setting.getId());
@@ -86,6 +88,7 @@ public class SettingController extends BaseController<Setting>{
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
 		setting = settingService.get(setting.getId());
 		if(setting.getCanDelete()==0){
@@ -100,8 +103,7 @@ public class SettingController extends BaseController<Setting>{
 	
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
-	@AuthPassport
-	@Override
+	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Setting change = settingService.get(changeId);
 		model = settingService.get(id);

@@ -6,11 +6,11 @@
 			<div class="fr m0">
 				版本号：
 				<a href="javascript:void(0)" class="f12 btn btn-purple btn-xs" ><i class="iconfont">&#xe620;&nbsp;</i>{{model.version}}</a>
-				<a ng-href="web.do#/webInterfaceDetail/{{version.id}}" 
+				<a ng-href="#/webInterfaceDetail/{{version.id}}" 
 					class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
 					<i class="iconfont">&#xe620;&nbsp;</i>{{version.version}}
 				</a>
-				<a ng-href="web.do#/webInterface/debug/{{model.id}}" class="f12 btn btn-default btn-xs">
+				<a ng-href="#/webInterface/debug/{{model.id}}" class="f12 btn btn-default btn-xs">
 					<i class="iconfont">&#xe625;&nbsp;</i>调试
 				</a>
 			</div>

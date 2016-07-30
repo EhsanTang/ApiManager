@@ -61,6 +61,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private ICacheService cacheService;
 	
+	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
@@ -168,7 +169,7 @@ public class InterfaceController extends BaseController<Interface>{
 			return new JsonResult(1, interFace, null, 
 					Tools.getMap("versions", versions, "crumbs",
 							Tools.getCrumbs( cacheService.getModuleName(interFace.getModuleId()), "web.do#/webInterface/list/"+interFace.getModuleId() +"/" +cacheService.getModuleName(interFace.getModuleId())
-							,interFace.getInterfaceName() , "void")));
+							,interFace.getInterfaceName() , "void"), "module",cacheService.getModule(interFace.getModuleId()) ));
 		}else{
 			throw new MyException("000012");
 		}

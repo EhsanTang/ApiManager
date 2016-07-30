@@ -44,6 +44,7 @@ public class Const {
 	public static final String COOKIE_TOKEN = "token";
 	public static final String COOKIE_UUID = "uuid";
 	public static final String COOKIE_REMBER_PWD = "cookieRemberPwd";
+	public static final String COOKIE_PROJECTID = "cookieProjectId"; // 访问的项目ID
 	public static final String MODULE = "MODULE";
 	public static final String DIRECTORY = "DIRECTORY";
 	public static final String SOURCE = "SOURCE";

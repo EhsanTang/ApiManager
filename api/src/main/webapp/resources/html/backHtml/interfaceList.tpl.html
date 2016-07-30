@@ -63,7 +63,10 @@
 				<td class="tc">{{item.name}}</td>
 				<td class="tc">{{item.url}}</td>
 				<td class="tc">{{item.sequence}}</td>
-				<td class="tc w300">
+				<td class="tc w400">
+				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/project/{{item.id}}" target="_blank"> 
+					<i class="iconfont f12">&#xe613;模块主页</i>
+				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('MODULE',$stateParams.moduleId)"
 					ng-click="detail('编辑【'+item.name+'】',700,'module/detail.do?id='+item.id,initEditInterFace)"
 					data-toggle="tooltip" data-placement="top"

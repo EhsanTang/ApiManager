@@ -69,7 +69,7 @@ public class Tools {
 		User user = (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
 		
 		String authority = cacheService.getStr(Const.CACHE_AUTH + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
-		if((","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
+		if( user != null && (","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
 			return true;//超级管理员
 		}
 		
@@ -82,7 +82,7 @@ public class Tools {
 		}
 		
 		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
-		if(authority.indexOf(","+needAuth+",")>=0){
+		if(authority != null && authority.indexOf(","+needAuth+",")>=0){
 			return true;
 		}else{
 			throw new MyException("000003");

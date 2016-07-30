@@ -18,7 +18,7 @@ import cn.crap.utils.Tools;
 
 
 /**
- * 对登录状态进行拦截验�?
+ * 对登录状态进行拦截
  * @author 
  *
  */

@@ -92,6 +92,4 @@ public class User extends BaseModel implements Serializable{
 	public void setAuthName(String authName) {
 		this.authName = authName;
 	}
-
-
 }

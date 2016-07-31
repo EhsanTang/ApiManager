@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.crap.enumeration.LogType;
 import cn.crap.inter.dao.ILogDao;
 import cn.crap.model.Log;
 import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.LogType;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;

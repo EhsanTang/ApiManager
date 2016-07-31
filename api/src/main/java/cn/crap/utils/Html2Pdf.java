@@ -39,18 +39,18 @@ public class Html2Pdf {
 			document.open();
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString(
-					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId),
+					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id=" + interFaceId),
 					Charset.forName("UTF-8"));
 			document.close();
 			return destDir;
 		} catch (Exception e) {
 			e.printStackTrace();
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			String pdfUrl = cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id="
+			String pdfUrl = cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id="
 					+ interFaceId;
 			System.out.println("pdfUrl:" + pdfUrl);
 			String pdfContent = HttpPostGet.get(
-					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId,null,null);
+					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id=" + interFaceId,null,null);
 			System.out.println("pdfContent:" + pdfContent);
 			throw e;
 		}

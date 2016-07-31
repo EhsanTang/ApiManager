@@ -44,10 +44,10 @@
 			<div class="col-sm-12 col-lg-4 p50 shadow panel panel-default r5 bt-5">
 					<div id="warnMessage" class="text-error mb15 mt10"></div>
 					<blockquote>
-  						<a href="web.do" class="pl10 C999" ng-bind="fontSettings.TITLE"></a>
+  						<a href="index.do" class="pl10 C999" ng-bind="fontSettings.TITLE"></a>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
-					<form class="form-horizontal p15 mt10" ng-submit="submitForm('login.do','','FLOAT')">
+					<form class="form-horizontal p15 mt10" ng-submit="submitForm('back/login.do','','FLOAT')">
 						<div class="input-wrapper">
 							    <input type="text" ng-model="model.userName" placeholder="用户名"  autocomplete="off" required>
 						</div>
@@ -76,7 +76,7 @@
   								</label>
 							</div>
 							<div class="fr lab">记住密码?</div>
-							<div class="fl lab"><a href="web.do">首页 →</a></div>
+							<div class="fl lab"><a href="index.do">首页 →</a></div>
 						</div>
 					</form>
 				</div>

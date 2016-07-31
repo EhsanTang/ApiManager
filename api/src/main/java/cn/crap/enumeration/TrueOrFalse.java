@@ -1,4 +1,4 @@
-package cn.crap.utils;
+package cn.crap.enumeration;
 
 public enum TrueOrFalse {
 	TRUE("true"),FALSE("false");

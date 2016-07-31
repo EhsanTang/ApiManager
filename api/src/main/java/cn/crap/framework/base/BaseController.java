@@ -34,20 +34,20 @@ public abstract class BaseController<T extends BaseModel> {
 	protected Logger log = Logger.getLogger(getClass());
 	protected T model;
 	
-	/**
-	 * 所有detail方法必须返回一个对象，不能为空，用于前端angularjs初始化对象
-	 * @param menu
-	 * @return
-	 */
-	public abstract JsonResult detail(T model);
-	
-	/**
-	 * 快速修改排序，非核心功能，未添加权限验证，所有管理员均能修改
-	 * @param model
-	 * @param num
-	 * @return
-	 */
-	public abstract JsonResult changeSequence(String id,String changeId);
+//	/**
+//	 * 所有detail方法必须返回一个对象，不能为空，用于前端angularjs初始化对象
+//	 * @param menu
+//	 * @return
+//	 */
+//	public abstract JsonResult detail(T model);
+//	
+//	/**
+//	 * 快速修改排序，非核心功能，未添加权限验证，所有管理员均能修改
+//	 * @param model
+//	 * @param num
+//	 * @return
+//	 */
+//	public abstract JsonResult changeSequence(String id,String changeId);
 	
 	/**
 	 * @return

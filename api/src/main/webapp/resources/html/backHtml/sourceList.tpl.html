@@ -55,7 +55,7 @@
 					data-toggle="tooltip" data-placement="top"
 					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/source/list/{{item.id}}/{{item.name}}"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/source/list/{{item.id}}/{{item.name}}"> 
 					<i class="iconfont f12">&#xe60f;查看文档</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('SOURCE')" ng-click="del('module/delete.do?id='+item.id,item.name)">
@@ -101,7 +101,7 @@
 					ng-click="del('source/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webSource/detail/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/webSource/detail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<div class="w50 fr tl">

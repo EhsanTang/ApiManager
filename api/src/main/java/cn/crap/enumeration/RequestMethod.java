@@ -1,4 +1,4 @@
-package cn.crap.utils;
+package cn.crap.enumeration;
 
 public enum RequestMethod {
 	POST("POST"),GET("GET"),PUT("PUT"),HEAD("HEAD"),DELETE("DELETE"),OPTIONS("OPTIONS"),TRACE("TRACE");

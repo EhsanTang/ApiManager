@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.IBaseService;
 import cn.crap.model.Menu;
 
@@ -19,8 +20,9 @@ public interface IMenuService extends IBaseService<Menu>{
 	 * @param def	默认值
 	 * @param notNull 单选是否可以为空
 	 * @return
+	 * @throws MyException 
 	 */
-	String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull);
+	String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull) throws MyException;
 
 	List<MenuDto> getLeftMenu(Map<String, Object> map);
 

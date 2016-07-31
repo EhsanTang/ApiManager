@@ -9,9 +9,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.SettingType;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.MyString;
-import cn.crap.utils.SettingType;
 
 @Entity
 @Table(name="setting")

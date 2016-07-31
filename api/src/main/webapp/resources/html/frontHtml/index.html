@@ -55,7 +55,7 @@
 	                  </ul>
 	                </li>
 					<li ng-if="sessionAdminName==''"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
-					<li ng-if="sessionAdminName!=''"><a href="index.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
+					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
 					<li ng-if="sessionAdminName!=''"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
@@ -66,7 +66,7 @@
 			<div class="row">
 				<div class="col-xs-6">
 					<ul class="nls m0 p0 f12 ACFFF fl">
-		 			 <li class="fl p0"><a href="web.do" class="ACFFF">首页</a></li>
+		 			 <li class="fl p0"><a href="index.do" class="ACFFF">首页</a></li>
 		 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
 		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name|cut:true:20:' ...'"></a>
 		 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name|cut:true:20:' ...'"></span>	
@@ -81,7 +81,7 @@
 							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文章" 
 							ng-focus="loadPickByName('iwidth=265|iUrl=searchList.do|iheight=260|tag=searchInput',$event)"
 							onkeypress="iClose('lookUp');if(event.keyCode==13) {luceneSearch.click();return false;}">
-							<a ng-href="web.do#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
+							<a ng-href="#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
 								class="input-group-addon no-radius o3 b0 search-button cursor">
 									<i class="iconfont C000">&#xe60d;</i>
 							</a>
@@ -129,7 +129,7 @@
 				©crap.cn &nbsp;版权所有
 				<ul class="dis-in-tab ml0">
 					<li class="dis-in-tab mr20"><a target="_blank"
-						href="http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
+						href="http://api.crap.cn/index.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
 					</li>
 					<li class="dis-in-tab mr20"><a target="_blank"
 						href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a> <span

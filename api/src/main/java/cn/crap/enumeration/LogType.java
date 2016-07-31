@@ -1,4 +1,4 @@
-package cn.crap.utils;
+package cn.crap.enumeration;
 
 public enum LogType {
 	DELTET("删除"),UPDATE("修改");

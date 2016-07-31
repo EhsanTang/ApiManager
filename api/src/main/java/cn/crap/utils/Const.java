@@ -22,6 +22,7 @@ public class Const {
 	public static final String AUTH_MENU = "MENU";
 	public static final String AUTH_SETTING = "SETTING";
 	public static final String AUTH_COMMENT = "COMMENT";
+	public static final String AUTH_VIEW = "VIEW";// 查看数据
 	public static final String AUTH_ERROR = "ERROR_"+MODULEID;
 	public static final String AUTH_DICTIONARY = "DICTIONARY_"+MODULEID;
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
@@ -37,6 +38,7 @@ public class Const {
 	public static final String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
 	public static final String CACHE_SEARCH_WORDS = ":searchWords";
+	public static final String CACHE_MODULEIDS = ":moduleIds:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";

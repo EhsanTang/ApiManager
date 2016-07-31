@@ -19,5 +19,9 @@ public interface IDataCenterService extends IBaseService<DataCenter>{
 	 */
 	void getDataCenterPick(List<PickDto> picks, String idPre, String parentId, String type, String deep, String value,
 			String suffix);
-
+	/**
+	 * 根据状态获、类型、用户ID 获取DataCenterID
+	 * @return
+	 */
+	List<String> getList(Byte status, String type, String userId);
 }

@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12" ng-controller="webInterfaceCtrl">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="frontInterfaceCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <div class="col-xs-6 f16 fb p0 mb5">搜索接口</div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
@@ -37,7 +37,7 @@
 			<tr ng-repeat="item in list.modules" class="h40 lh40">
 				<td class="tc lh40">{{item.name}}</td>
 				<td class="tc lh40">
-					<a class="f12 text-primary mr10 cursor" ng-href="web.do#/webInterface/list/{{item.id}}/{{item.moduleName}}"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="#/front/interface/list/{{item.id}}/{{item.moduleName}}"> 
 						<i class="iconfont f12">&#xe60f;&nbsp;查看接口</i>
 					</a>
 				</td>
@@ -65,13 +65,13 @@
 				<td class="tc">{{item.moduleName}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="web.do#/webInterfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
+					ng-href="#/front/interfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
 				</a>
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="web.do#/webInterface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
+					ng-href="#/front/interface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
 				</a>
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
+					ng-href="front/interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
 				</td>
 			</tr>
 

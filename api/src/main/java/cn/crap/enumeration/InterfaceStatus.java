@@ -1,4 +1,4 @@
-package cn.crap.utils;
+package cn.crap.enumeration;
 
 public enum InterfaceStatus {
 	不可用("0"),可用("1");

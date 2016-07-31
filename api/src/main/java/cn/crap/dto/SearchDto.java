@@ -10,7 +10,7 @@ public class SearchDto implements Serializable{
 	private String id = "";// 主键，不参与分词搜索
 	private String title = "";
 	private String type = "";// 接口，文章等，不参与分词
-	private String url;// 相对路径：web.do#/webInterfaceDetail，不参与分词搜索
+	private String url;// 相对路径：#/font/interfaceDetail，不参与分词搜索
 	private String content = "";// 参与搜索的类容：简介、备注、参数等的组合 或 搜索到的结果（高亮显示）
 	private String version = "";// 不参与分词搜索
 	private String moduleName = "";

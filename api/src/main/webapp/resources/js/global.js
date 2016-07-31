@@ -209,6 +209,12 @@ function clearCookie(params){
 	$.cookie(params, "");
 }
 
+function addCookie(key,value){
+	$.cookie(key, value);
+}
+function getCookie(key){
+	return $.cookie(key);
+}
 
 
 

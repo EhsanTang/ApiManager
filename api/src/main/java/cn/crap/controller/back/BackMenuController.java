@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +21,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends BaseController<Menu> {
+public class BackMenuController extends BaseController<Menu> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
@@ -107,7 +107,6 @@ public class MenuController extends BaseController<Menu> {
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	@Override
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Menu change = menuService.get(changeId);
 		model = menuService.get(id);

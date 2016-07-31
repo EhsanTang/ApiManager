@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,14 +22,16 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/module")
-public class ModuleController extends BaseController<DataCenter>{
+public class BackModuleController extends BaseController<DataCenter>{
 
 	@Autowired
 	private IDataCenterService moduleService;
 	@Autowired
 	private ICacheService cacheService;
+	
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_VIEW)
 	public JsonResult detail(@ModelAttribute DataCenter module){
 		if(!module.getId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getId());
@@ -39,6 +41,7 @@ public class ModuleController extends BaseController<DataCenter>{
 				model.setType("MODULE");
 			else
 				model.setType(module.getType());
+			model.setStatus(Byte.valueOf("1"));
 			model.setParentId(module.getParentId());
 		}
 		return new JsonResult(1,model);
@@ -48,6 +51,7 @@ public class ModuleController extends BaseController<DataCenter>{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws MyException{
 		DataCenter oldDataCenter = cacheService.getModule(module.getId());
+		
 		if( (  oldDataCenter.getType() == null && module.getType().equals(Const.MODULE)  ) ||
 				(  oldDataCenter.getType() != null && oldDataCenter.getType().equals(Const.MODULE) ) ){
 			Tools.hasAuth(Const.AUTH_MODULE,  module.getParentId());
@@ -64,6 +68,7 @@ public class ModuleController extends BaseController<DataCenter>{
 		cacheService.delObj("cache:model:"+module.getId());
 		return new JsonResult(1,module);
 	}
+	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute DataCenter module) throws MyException{
@@ -81,10 +86,11 @@ public class ModuleController extends BaseController<DataCenter>{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	@Override
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		DataCenter change = moduleService.get(changeId);
 		model = moduleService.get(id);
+		Tools.hasAuth(Const.AUTH_MODULE,  model.getParentId());
+		
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());

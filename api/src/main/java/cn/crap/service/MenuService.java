@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.IErrorService;
@@ -70,7 +71,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	}
 	@Override
 	@Transactional
-	public String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull) {
+	public String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull) throws MyException {
 		PickDto pick = null;
 		
 		// 单选是否可以为空
@@ -80,7 +81,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		
 		// 根据code，key加载pick列表
-		PickFactory.getPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService);
+		PickFactory.getFrontPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService);
 		
 		// 组装字符串，返回至前端页面
 		if (!radio.equals("")) {

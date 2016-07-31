@@ -65,7 +65,7 @@ public class Interface extends BaseModel implements Serializable{
 		dto.setModuleName(getModuleName());
 		dto.setTitle(interfaceName);
 		dto.setType(Interface.class.getSimpleName());
-		dto.setUrl("web.do#/webInterfaceDetail/"+id);
+		dto.setUrl("#/font/interfaceDetail/"+id);
 		dto.setVersion(version);
 		return dto;
 		

@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,19 +21,19 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/error")
-public class ErrorController extends BaseController<Error>{
+@RequestMapping("/back/error")
+public class BackErrorController extends BaseController<Error>{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
 	/**
-	 * MenuDemo
 	 * @return 
 	 * @throws Exception 
 	 * */
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_VIEW)
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
@@ -43,9 +43,11 @@ public class ErrorController extends BaseController<Error>{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Error error){
+	@AuthPassport(authority = Const.AUTH_VIEW)
+	public JsonResult detail(@ModelAttribute Error error) throws MyException{
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());
+			Tools.hasAuth(Const.AUTH_ERROR, model.getModuleId());
 		}else{
 			model=new Error();
 			model.setModuleId(error.getModuleId());
@@ -55,8 +57,17 @@ public class ErrorController extends BaseController<Error>{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ERROR)
-	public JsonResult addOrUpdate(@ModelAttribute Error error){
+	public JsonResult addOrUpdate(@ModelAttribute Error error) throws MyException{
+		
+		// 修改错误码需要判断是否有原有模块的权限、是否有新模块的权限，新增错误码需要判断是否有该模块的权限
+		if(!MyString.isEmpty(error.getId())){
+			Error oldError = errorService.get(error.getId());
+			Tools.hasAuth(Const.AUTH_ERROR, oldError.getModuleId());
+			Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
+		}else{
+			Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
+		}
+		
 		try{
 			if(!MyString.isEmpty(error.getId())){
 				errorService.update(error);
@@ -73,6 +84,7 @@ public class ErrorController extends BaseController<Error>{
 		}
 		return new JsonResult(1,error);
 	}
+	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
@@ -81,10 +93,5 @@ public class ErrorController extends BaseController<Error>{
 		errorService.delete(error);
 		return new JsonResult(1,null);
 	}
-
-	@Override
-	public JsonResult changeSequence(String id, String changeId) {
-		return null;
-	}
-
+	
 }

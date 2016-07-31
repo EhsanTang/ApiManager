@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +19,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController<Log>{
+public class BackLogController extends BaseController<Log>{
 
 	@Autowired
 	private ILogService logService;
@@ -55,10 +55,5 @@ public class LogController extends BaseController<Log>{
 			logService.delete(log);// 删除日志
 		}
 		return new JsonResult(1,null);
-	}
-
-	@Override
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		return null;
 	}
 }

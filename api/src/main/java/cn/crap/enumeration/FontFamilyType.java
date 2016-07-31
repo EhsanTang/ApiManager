@@ -1,4 +1,4 @@
-package cn.crap.utils;
+package cn.crap.enumeration;
 
 public enum FontFamilyType {
 	FONT_DEF("Georgia, \"Times New Roman\", Times,\"Microsoft Yahei\",\"Hiragino Sans GB\",sans-serif;","默认字体"),

@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -26,12 +27,11 @@ import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
-import cn.crap.utils.WebPageType;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/webPage")
-public class WebPageController extends BaseController<WebPage>{
+public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
 	private IDataCenterService moduleService;
 	@Autowired
@@ -82,13 +82,13 @@ public class WebPageController extends BaseController<WebPage>{
 		
 		// 文章访问密码
 		if(model.getType().equals(WebPageType.ARTICLE.name())){
-			returnMap.put("crumbs", Tools.getCrumbs(model.getCategory(),"web.do#/webWebPage/list/ARTICLE/"+model.getCategory(), model.getName(), "void"));
+			returnMap.put("crumbs", Tools.getCrumbs(model.getCategory(),"#/webWebPage/list/ARTICLE/"+model.getCategory(), model.getName(), "void"));
 			Tools.canVisitModule(model.getPassword(), password, visitCode, request);
 		}
 		
 		// 数据字典密码访问由模块决定
 		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
-			returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "web.do#/webWebPage/list/DICTIONARY/null", model.getName(), "void"));
+			returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "#/webWebPage/list/DICTIONARY/null", model.getName(), "void"));
 			DataCenter module = moduleService.get(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}else{
@@ -154,7 +154,6 @@ public class WebPageController extends BaseController<WebPage>{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	@Override
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		WebPage change = webPageService.get(changeId);
 		model = webPageService.get(id);

@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +20,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/comment")
-public class CommentController extends BaseController<Comment> {
+public class BackCommentController extends BaseController<Comment> {
 	@Autowired
 	private ICacheService cacheService;
 
@@ -29,6 +29,7 @@ public class CommentController extends BaseController<Comment> {
 
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_VIEW)
 	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) {
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, commentService.findByMap(map, page, null), page);
@@ -36,6 +37,7 @@ public class CommentController extends BaseController<Comment> {
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_VIEW)
 	public JsonResult detail(@ModelAttribute Comment comment) {
 		if (!comment.getId().equals(Const.NULL_ID)) {
 			model = commentService.get(comment.getId());
@@ -47,6 +49,7 @@ public class CommentController extends BaseController<Comment> {
 
 	@RequestMapping("/add.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_COMMENT)
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
 		if (cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode(request))) {
@@ -66,10 +69,4 @@ public class CommentController extends BaseController<Comment> {
 		commentService.delete(comment);
 		return new JsonResult(1, null);
 	}
-
-	@Override
-	public JsonResult changeSequence(String id, String changeId) {
-		return null;
-	}
-
 }

@@ -10,12 +10,12 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
 import cn.crap.utils.MyString;
-import cn.crap.utils.WebPageType;
 
 @Entity
 @Table(name="webpage")
@@ -65,11 +65,11 @@ public class WebPage extends BaseModel implements Serializable{
 		dto.setTitle(name);
 		dto.setType(WebPage.class.getSimpleName());
 		if(type.equals(WebPageType.ARTICLE.name()))
-			dto.setUrl("web.do#/webWebPage/detail/ARTICLE/"+id);
+			dto.setUrl("#/webWebPage/detail/ARTICLE/"+id);
 		else if(type.equals(WebPageType.DICTIONARY.name()))
-			dto.setUrl("web.do#/webWebPage/detail/DICTIONARY/"+id);
+			dto.setUrl("#/webWebPage/detail/DICTIONARY/"+id);
 		else if(type.equals(WebPageType.PAGE.name()))
-			dto.setUrl("web.do#/webWebPage/detail/PAGE/"+key);
+			dto.setUrl("#/webWebPage/detail/PAGE/"+key);
 		else
 			dto.setUrl("");
 		dto.setVersion("");

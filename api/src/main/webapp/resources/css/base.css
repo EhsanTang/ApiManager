@@ -44,6 +44,8 @@ table{border-collapse:collapse;border-spacing:0}
 .fixed{position:fixed;}.rel{position:relative;}
 .abs{position:absolute;}.static{position:static;}
 .r0{right:0px;}.l0{left:0px;}.t0{top:0px;}
+.pos-r10{right:10px;}.pos-l10{left:10px;}.pos-b10{bottom:10px;}
+
 .no-radius{-moz-border-radius: 0px!important;-webkit-border-radius:  0px!important; border-radius:  0px!important; -khtml-border-radius:  0px!important;}
 .no-left-radius{border-top-left-radius: 0;border-bottom-left-radius: 0;}
 .no-right-radius{border-top-right-radius: 0;border-bottom-right-radius: 0;}

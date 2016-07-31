@@ -31,12 +31,16 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand p0 pt10" href="web.do">
+				<a class="navbar-brand p0 pt10" href="index.do" target="_blank">
 					<img class="h30" ng-src="{{settings.LOGO}}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
+					<li>
+	                	<a ng-href="#/project/{{projectId}}" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">项目首页</a>
+	                </li>
+	                
 					<li>
 	                	<a href="http://tools.crap.cn/index.jsp.do" class="menu-a ng-binding" target="_blank"
 	                	onclick="selectButton(this,'menu-a')" href="http://tools.crap.cn/index.jsp.do">在线工具</a>
@@ -56,19 +60,28 @@
 	                  </ul>
 	                </li>
 					<li ng-if="sessionAdminName==''"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
-					<li ng-if="sessionAdminName!=''"><a href="index.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
+					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
 					<li ng-if="sessionAdminName!=''"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<div class="h200 project-title">
-		<div class="container p0 CFFF">
-			<div class="mt50">
-				<h1 ng-bind="others.module.name"></h1>
+		<div class="container p0 CFFF h">
+			<div class="rel h">
+				<div class="pt50" ng-if="others.module"><h1 ng-bind="others.module.name"></h1></div>
+				<div class="pt10 f20" ng-bind="others.module.remark|cut:true:50:' ...'"  ng-if="others.module"></div>
+				
+				<div class="f16 pl10 tl" ng-if="!others.module">
+					<div class="pt50 mb20"><h1>站内导航</h1></div>
+					<a ng-href="#/project/{{projectId}}" class="ACFFF">首页</a>
+					<span ng-repeat="item in others.crumbs">
+						<span class="ACFFF"> > </span>	
+						<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name|cut:true:20:' ...'"></a>
+		 			 	<span class="adorn-color" ng-if="item.url=='void'" ng-bind="item.name|cut:true:20:' ...'"></span>	
+					</span>
+				</div>
 			</div>
-			<div class="mt10 f20" ng-bind="others.module.remark|cut:true:50:' ...'"></div>
-			<a class="adorn-color fr cursor mr10" onclick="history.back(-1);"> << 后退</a>
 		</div>
 	</div>
 	
@@ -101,7 +114,7 @@
 				©crap.cn &nbsp;版权所有
 				<ul class="dis-in-tab ml0">
 					<li class="dis-in-tab mr20"><a target="_blank"
-						href="http://api.crap.cn/web.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
+						href="http://api.crap.cn/index.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
 					</li>
 					<li class="dis-in-tab mr20"><a target="_blank"
 						href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a> <span

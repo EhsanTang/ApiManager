@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.io.IOException;
 
@@ -27,8 +27,8 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/source")
-public class SourceController extends BaseController<Source>{
+@RequestMapping("/back/source")
+public class BackSourceController extends BaseController<Source>{
 
 	@Autowired
 	private ISourceService sourceService;
@@ -177,7 +177,6 @@ public class SourceController extends BaseController<Source>{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	@Override
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Source change = sourceService.get(changeId);
 		model = sourceService.get(id);

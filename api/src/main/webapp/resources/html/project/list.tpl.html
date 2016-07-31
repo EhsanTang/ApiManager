@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12" ng-controller="webInterfaceCtrl">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="frontProjectCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <div class="col-xs-12 f16 fb pl0 mb10 pb5 mt20" ng-if="list.modules.length>0">模块列表</div>
 <div class="col-xs-12 p0 m0" ng-if="list.modules.length>0">
@@ -32,13 +32,13 @@
 				<td class="tc p15">{{item.moduleName}}</td>
 				<td class="tc p15">
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="#/webInterfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
+					ng-href="#/front/interfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
 				</a>
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="#/webInterface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
+					ng-href="#/front/interface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
 				</a>
 				<a class="f12 text-primary mr10 cursor"
-					ng-href="interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
+					ng-href="front/interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
 				</td>
 			</tr>
 

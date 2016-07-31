@@ -1,8 +1,7 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.io.File;
 import java.util.HashMap;
-
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +9,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.crap.framework.JsonResult;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
+import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
-public class FileController extends BaseController <User>{
+public class BackFileController extends BaseController <User>{
 	private HashMap<String, String> extMap = new HashMap<String, String>();
-	public FileController(){
+	public BackFileController(){
 		/**
 		 * 允许上传的图片类型
 		 */
@@ -28,6 +28,7 @@ public class FileController extends BaseController <User>{
 	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_VIEW)
 	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack) {
 		String result = "";
 	    String realFileName = file.getOriginalFilename();    
@@ -93,16 +94,6 @@ public class FileController extends BaseController <User>{
     	   obj.put("message", result);
            printMsg(obj.toString());
        }
-	}
-	
-	
-	@Override
-	public JsonResult detail(User model) {
-		return null;
-	}
-	@Override
-	public JsonResult changeSequence(String id, String changeId) {
-		return null;
 	}
 	
 }

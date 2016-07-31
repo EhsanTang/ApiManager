@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController<User>{
+public class BackUserController extends BaseController<User>{
 
 	@Autowired
 	private IUserService userService;
@@ -34,6 +34,7 @@ public class UserController extends BaseController<User>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult list(@ModelAttribute User user,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("trueName|like",user.getTrueName());
@@ -41,6 +42,7 @@ public class UserController extends BaseController<User>{
 	}
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult detail(@ModelAttribute User user){
 		if(!user.getId().equals(Const.NULL_ID)){
 			user= userService.get(user.getId());
@@ -110,13 +112,5 @@ public class UserController extends BaseController<User>{
 	public JsonResult delete(@ModelAttribute User user){
 		userService.delete(user);
 		return new JsonResult(1,null);
-	}
-
-	@RequestMapping("/changeSequence.do")
-	@ResponseBody
-	@AuthPassport
-	@Override
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		return null;
 	}
 }

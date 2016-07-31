@@ -28,6 +28,14 @@
 						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
 				</tr>
 				<tr>
+					<td class="tc">是否公开</td>
+					<td class="tc" colspan="3">
+						*公开模块下的接口、错误码可以在站内搜索检索到，私有模块只能通过模块主页地址进入<br>
+						<input  class="form-control"  id="statusName" type="text" ng-model="model.status" required placeholder="点击选择"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=statusName|tag=status|code=MODULESTATUS|def='+model.status,$event)">
+					</td>
+				</tr>
+				<tr>
 					<td class="tc">项目简介</td>
 					<td class="tc" colspan="3">
 						<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
@@ -41,7 +49,7 @@
 			<button type="submit" class="btn btn-success fr">提交</button>
 		</form>
 
-		<form ng-submit="submitForm('interface/addOrUpdate.do')"
+		<form ng-submit="submitForm('back/interface/addOrUpdate.do')"
 			ng-if="model.moduleId!=null&&model.parentId==null">
 			<table class="table table-bordered">
 				<tr>
@@ -327,7 +335,7 @@
 		</form>
 	</div>
 	<div class="col-xs-12 p0 mt10 none" id="copyInterFace">
-		<form ng-submit="submitForm('interface/copy.do')">
+		<form ng-submit="submitForm('back/interface/copy.do')">
 			<input class="form-control mb10" type="text"
 							ng-model="model.interfaceName" placeholder="示例：获取订单列表接口" required>
 			<input class="form-control mb10" type="text" ng-model="model.url" required

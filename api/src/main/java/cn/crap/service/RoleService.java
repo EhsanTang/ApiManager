@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.enumeration.DataType;
 import cn.crap.framework.base.BaseService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Role;
-import cn.crap.utils.DataType;
 import cn.crap.utils.Tools;
 
 @Service

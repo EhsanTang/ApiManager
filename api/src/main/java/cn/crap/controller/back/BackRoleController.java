@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +20,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController<Role>{
+public class BackRoleController extends BaseController<Role>{
 
 	@Autowired
 	private IRoleService roleService;
@@ -62,10 +62,5 @@ public class RoleController extends BaseController<Role>{
 	public JsonResult delete(@ModelAttribute Role role){
 		roleService.delete(role);
 		return new JsonResult(1,null);
-	}
-
-	@Override
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		return null;
 	}
 }

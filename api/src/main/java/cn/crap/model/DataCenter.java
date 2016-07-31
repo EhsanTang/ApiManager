@@ -31,6 +31,7 @@ public class DataCenter extends BaseModel implements Serializable{
 	private byte canDelete;
 	private String type;
 	private String remark;
+	private String userId;
 	
 
 	public DataCenter(){};
@@ -97,6 +98,16 @@ public class DataCenter extends BaseModel implements Serializable{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
+	@Column(name="userId")
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
+	
 	@Transient
 	public String getParentName(){
 		if(!MyString.isEmpty(parentId)){

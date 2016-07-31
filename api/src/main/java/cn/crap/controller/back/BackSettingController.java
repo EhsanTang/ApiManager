@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 @Scope("prototype")
 @Controller
 @RequestMapping("/setting")
-public class SettingController extends BaseController<Setting>{
+public class BackSettingController extends BaseController<Setting>{
 
 	@Autowired
 	private ISettingService settingService;

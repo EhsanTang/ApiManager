@@ -164,7 +164,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		});
 	}
 	$rootScope.changeSequence = function(model,id,changeId){
-		var params = "iUrl="+model+"/changeSequence.do|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
+		var params = "iUrl=back/"+model+"/changeSequence.do|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT')
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

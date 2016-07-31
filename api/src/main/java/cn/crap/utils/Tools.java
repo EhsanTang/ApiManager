@@ -213,6 +213,8 @@ public class Tools {
 				query.setInteger(key, Integer.parseInt(value.toString()));
 			} else if (value instanceof String) {
 				query.setString(key, value.toString());
+			} else if (value instanceof Byte) {
+				query.setByte(key, Byte.valueOf(value.toString()));
 			}else if(value instanceof List){
 				query.setParameterList(key,(List<?>) value); 
 			} else {

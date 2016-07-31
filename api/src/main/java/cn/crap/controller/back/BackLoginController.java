@@ -1,4 +1,4 @@
-package cn.crap.controller;
+package cn.crap.controller.back;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,11 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.LoginDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
@@ -33,20 +31,33 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-public class LoginController extends BaseController<User> {
+public class BackLoginController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
-	private IRoleService roleService;
+	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private ICacheService cacheService;
+	private IRoleService roleService;
+
+	/**
+	 * 退出登录
+	 */
+	@RequestMapping("/back/loginOut.do")
+	public String loginOut() throws IOException {
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		cacheService.delObj(Const.CACHE_USER + token);
+		cacheService.delStr(Const.CACHE_AUTH + token);
+		MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
+		return "resources/html/frontHtml/index.html";
+	}
+	
 	
 	/**
 	 * 登陆页面获取基础数据
 	 */
-	@RequestMapping("/preLogin.do")
+	@RequestMapping("/back/preLogin.do")
 	@ResponseBody
 	public JsonResult preLogin() {
 		Map<String, String> settingMap = new HashMap<String, String>();
@@ -74,7 +85,7 @@ public class LoginController extends BaseController<User> {
 	 * @throws IOException
 	 * @throws MyException
 	 */
-	@RequestMapping("/login.do")
+	@RequestMapping("/back/login.do")
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
 			if (cacheService.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
@@ -123,60 +134,4 @@ public class LoginController extends BaseController<User> {
 			}
 	}
 	
-	
-	/**
-	 * 后台管理主页面
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	@AuthPassport
-	@RequestMapping("/index.do")
-	public String showHomePage() throws Exception {
-		return "resources/html/backHtml/index.html";
-	}
-	
-	/**
-	 * 后台页面初始化
-	 * 
-	 */
-	@RequestMapping("/backInit.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult backInit() throws Exception {
-		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
-			settingMap.put(setting.getKey(), setting.getValue());
-		}
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		returnMap.put("settingMap", settingMap);
-		returnMap.put("menuList", menuService.getLeftMenu(map));
-		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
-		returnMap.put("sessionAdminName", user.getUserName());
-		returnMap.put("sessionAdminAuthor", cacheService.getStr(Const.CACHE_AUTH + token));
-		returnMap.put("sessionAdminRoleIds", user.getRoleId());
-		returnMap.put("sessionAdminId", user.getId());
-		
-		return new JsonResult(1, returnMap);
-	}
-
-
-	@RequestMapping("/loginOut.do")
-	public String loginOut() throws IOException {
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		cacheService.delObj(Const.CACHE_USER + token);
-		cacheService.delStr(Const.CACHE_AUTH + token);
-		MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
-		return "resources/html/frontHtml/index.html";
-	}
-
-	@Override
-	public JsonResult detail(User model) {
-		return null;
-	}
-
-	@Override
-	public JsonResult changeSequence(String id, String changeId) {
-		return null;
-	}
 }

@@ -9,8 +9,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.MenuType;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.MenuType;
 import cn.crap.utils.MyString;
 
 

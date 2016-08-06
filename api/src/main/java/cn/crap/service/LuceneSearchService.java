@@ -104,11 +104,13 @@ public class LuceneSearchService implements ISearchService {
 			}
 			return searchDtos;
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
+			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
 		} finally {
 			if (reader != null)
 				reader.close();
 		}
+		return new ArrayList<SearchDto>();
 	}
 
 	@Override
@@ -121,7 +123,8 @@ public class LuceneSearchService implements ISearchService {
 					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.deleteDocuments(new Term("id", searchDto.getId()));
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
+			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -202,7 +205,8 @@ public class LuceneSearchService implements ISearchService {
 					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
+			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -221,7 +225,8 @@ public class LuceneSearchService implements ISearchService {
 					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
+			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
 		} finally {
 			if (writer != null) {
 				writer.close();

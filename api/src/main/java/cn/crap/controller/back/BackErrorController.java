@@ -33,7 +33,7 @@ public class BackErrorController extends BaseController<Error>{
 	 * */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
@@ -43,7 +43,7 @@ public class BackErrorController extends BaseController<Error>{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult detail(@ModelAttribute Error error) throws MyException{
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());

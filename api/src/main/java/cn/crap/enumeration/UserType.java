@@ -1,18 +1,18 @@
 package cn.crap.enumeration;
 
-public enum ModuleStatus {
-	公开("1"),私有("2"),推荐("3");
+public enum UserType {
+	管理员("100"),普通用户("1");
 	private final String name;
 	
 	public static String getNameByValue(String value){
-		for(ModuleStatus type : ModuleStatus.values()){
+		for(UserType type : UserType.values()){
 			if(type.getName().equals(value))
 				return type.name();
 		}
 		return "";
 	}
 	
-	private ModuleStatus(String name){
+	private UserType(String name){
 		this.name = name;
 	}
 	public String getName(){

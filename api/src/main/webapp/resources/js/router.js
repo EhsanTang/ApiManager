@@ -50,7 +50,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('sourceList', {
-		url : '/source/list/:directoryId/:directoryName',
+		url : '/back/source/list/:directoryId/:directoryName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/backHtml/sourceList.tpl.html'

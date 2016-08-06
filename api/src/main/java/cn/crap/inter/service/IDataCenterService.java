@@ -1,6 +1,7 @@
 package cn.crap.inter.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.IBaseService;
@@ -17,11 +18,12 @@ public interface IDataCenterService extends IBaseService<DataCenter>{
 	 * @param value 选中后的值：为空则为datacenter.name ，不为空则使用datacenter.id,datacenter.name 替换value中的moduleId，moduleName
 	 * @param suffix
 	 */
-	void getDataCenterPick(List<PickDto> picks, String idPre, String parentId, String type, String deep, String value,
-			String suffix);
+	void getDataCenterPick(List<PickDto> picks, Map<String, Object> map, String idPre, String parentId, String type,
+			String deep, String value, String suffix);
 	/**
 	 * 根据状态获、类型、用户ID 获取DataCenterID
 	 * @return
 	 */
 	List<String> getList(Byte status, String type, String userId);
+	
 }

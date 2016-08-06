@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -23,7 +24,6 @@ import cn.crap.inter.service.IInterfaceService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
-import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetBeanBySetting;
@@ -49,18 +49,26 @@ public class BackInterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage){
-		return interfaceService.getInterfaceList(page, map, interFace, currentPage);
+		
+		List<String> moduleIds = null;
+		// 如果用户为普通用户，则只能查看自己的模块
+		LoginInfoDto user = Tools.getUser();
+		if(user != null && user.getType() == 1){
+			moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+		}
+		
+		return interfaceService.getInterfaceList(page, moduleIds, interFace, currentPage);
 	}
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
-	public JsonResult detail(@ModelAttribute Interface interFace) {
+	public JsonResult detail(@ModelAttribute Interface interFace) throws MyException {
 		if(!interFace.getId().equals(Const.NULL_ID)){
 			model= interfaceService.get(interFace.getId());
+			Tools.hasAuth("", model.getModuleId() );
 		}else{
 			model = new Interface();
 			model.setModuleId(interFace.getModuleId());
@@ -76,9 +84,10 @@ public class BackInterfaceController extends BaseController<Interface>{
 	 */
 	@RequestMapping("/copy.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
 	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
-		//TODO 判断是否拥有该模块的权限
+		//判断是否拥有该模块的权限
+		Tools.hasAuth("", interFace.getModuleId());
+		
 		if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
@@ -95,7 +104,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	 */
 	@RequestMapping("/getRequestExam.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport
 	public JsonResult getRequestExam(@ModelAttribute Interface interFace) {
 		interfaceService.getInterFaceRequestExam(interFace);
 		return new JsonResult(1, interFace);
@@ -103,7 +112,6 @@ public class BackInterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_INTERFACE)
 	public JsonResult addOrUpdate(
 			@ModelAttribute Interface interFace) throws IOException, MyException {
 		if(MyString.isEmpty(interFace.getUrl()))
@@ -117,8 +125,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 		if (errorIds != null && !errorIds.equals("")) {
 			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
-			DataCenter dc = dataCenterService.get(interFace
-					.getModuleId());
+			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			while (dc != null && !dc.getParentId().equals("0")) {
 				dc = dataCenterService.get(dc.getParentId());
 			}
@@ -129,27 +136,46 @@ public class BackInterfaceController extends BaseController<Interface>{
 		}else{
 			interFace.setErrors("[]");
 		}
+		
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));
+		
 		//请求示例为空，则自动添加
 		if(MyString.isEmpty(interFace.getRequestExam())){
 			interfaceService.getInterFaceRequestExam(interFace);
 		}
+		
 		if (!MyString.isEmpty(interFace.getId())) {
+			// 判断是否有修改模块的权限
+			Tools.hasAuth(Const.AUTH_INTERFACE, interfaceService.get(interFace.getId()).getModuleId());
+			
 			if( interfaceService.getCount(Tools.getMap("url",interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
 			interfaceService.update(interFace, "接口", "");
-			GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
+			if(cacheService.getModule(interFace.getModuleId()).getStatus() == 2){// 私有，删除缓存
+				GetBeanBySetting.getSearchService().delete(interFace.toSearchDto());
+			}else{
+				GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
+			}
+			
 		} else {
+			// 判断是否有新建模块的权限
+			Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
+			
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interfaceService.save(interFace);
-			GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
+			
+			if(cacheService.getModule(interFace.getModuleId()).getStatus() == 2){// 私有，删除缓存
+				GetBeanBySetting.getSearchService().delete(interFace.toSearchDto());
+			}else{
+				GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
+			}
 		}
 		return new JsonResult(1, interFace);
 	}

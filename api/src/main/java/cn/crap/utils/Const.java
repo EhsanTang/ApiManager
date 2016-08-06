@@ -22,7 +22,7 @@ public class Const {
 	public static final String AUTH_MENU = "MENU";
 	public static final String AUTH_SETTING = "SETTING";
 	public static final String AUTH_COMMENT = "COMMENT";
-	public static final String AUTH_VIEW = "VIEW";// 查看数据
+	public static final String AUTH_ADMIN = "ADMIN";// 管理员
 	public static final String AUTH_ERROR = "ERROR_"+MODULEID;
 	public static final String AUTH_DICTIONARY = "DICTIONARY_"+MODULEID;
 	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
@@ -31,19 +31,18 @@ public class Const {
 	public static final String AUTH_LOG = "LOG";
 	public static final String AUTH_SOURCE = "SOURCE";
 	// 缓存
-	public static int CACHE_USER_TIME = 60 *30;// 用户相关数据缓存30 分钟
 	public static final String CACHE_USER= ":user";
-	public static final String CACHE_AUTH = ":auth";
 	public static final String CACHE_IMGCODE = ":imgCode";
 	public static final String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
 	public static final String CACHE_SEARCH_WORDS = ":searchWords";
 	public static final String CACHE_MODULEIDS = ":moduleIds:";
+	public static final String CACHE_ERROR_TIP = ":errorTip:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";
 	public static final String COOKIE_PASSWORD = "cookiePassword";
-	public static final String COOKIE_TOKEN = "token";
+	public static final String COOKIE_TOKEN= "token";
 	public static final String COOKIE_UUID = "uuid";
 	public static final String COOKIE_REMBER_PWD = "cookieRemberPwd";
 	public static final String COOKIE_PROJECTID = "cookieProjectId"; // 访问的项目ID
@@ -51,6 +50,8 @@ public class Const {
 	public static final String DIRECTORY = "DIRECTORY";
 	public static final String SOURCE = "SOURCE";
 	public static final String SEPARATOR = "SEPARATOR";
+	public static final String PRIVATE_MODULE= "privateModule";
+	public static final String LEVEL_PRE = "- - ";
 	
 	//系统设置
 	public static final String SETTING_SECRETKEY = "SECRETKEY";

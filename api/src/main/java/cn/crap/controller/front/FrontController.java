@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
@@ -124,7 +125,7 @@ public class FrontController extends BaseController<User> {
 		
 		returnMap.put("menuList", menus);
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 
 		returnMap.put("sessionAdminName", user == null? "": user.getUserName());
 		return new JsonResult(1, returnMap);

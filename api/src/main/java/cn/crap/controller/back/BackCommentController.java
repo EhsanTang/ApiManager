@@ -29,7 +29,7 @@ public class BackCommentController extends BaseController<Comment> {
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) {
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, commentService.findByMap(map, page, null), page);
@@ -37,7 +37,7 @@ public class BackCommentController extends BaseController<Comment> {
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult detail(@ModelAttribute Comment comment) {
 		if (!comment.getId().equals(Const.NULL_ID)) {
 			model = commentService.get(comment.getId());

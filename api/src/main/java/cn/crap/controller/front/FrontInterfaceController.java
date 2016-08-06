@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.ErrorDto;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
+import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -102,12 +104,14 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
+		// 不允许查看根路径下所有项目
 		if(MyString.isEmpty(interFace.getModuleId()) || interFace.getModuleId().equals("0")){
 			throw new MyException("000020");
 		}else{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
-			return interfaceService.getInterfaceList(page, map,interFace, currentPage);
+			
+			return interfaceService.getInterfaceList(page, null,interFace, currentPage);
 		}
 		
 	}

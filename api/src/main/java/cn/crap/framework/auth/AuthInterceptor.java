@@ -9,6 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.crap.framework.MyException;
 import cn.crap.inter.dao.ICacheDao;
+import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
@@ -42,20 +43,38 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             
             if(authPassport == null || authPassport.validate() == false)
                 return true;
-            else if(token != null && !authPassport.authority().equals("")){
-            	ICacheDao cacheDao = GetBeanBySetting.getCacheDao();
-            	if(cacheDao.getStr(Const.CACHE_AUTH + token) != null){
-            		return Tools.hasAuth(authPassport.authority(), MyString.getValueFromRequest(request, "moduleId"), request);
-            	}else{
-            		throw new MyException("000003");
-            	}
-            }else if( token != null){
-            	ICacheDao cacheDao = GetBeanBySetting.getCacheDao();
-            	if(cacheDao.getObj(Const.CACHE_USER + token) != null)
-            		return true;
+            
+            // 前端没有传递token，未登录
+            if(MyString.isEmpty(token)){
+            	if(request.getRequestURI().endsWith("admin.do"))
+            		response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
+            	else
+            		throw new MyException("000021");
             }
-            response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
-            return false;
+            
+            // 后端没登录信息：登录超时
+            ICacheDao cacheDao = GetBeanBySetting.getCacheDao();
+            Object obj = cacheDao.getObj(Const.CACHE_USER + token);
+            if(obj == null){
+            	// 删除cookie
+            	MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
+            	if(request.getRequestURI().endsWith("admin.do")){
+            		response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
+            		return false;
+            	}
+            	else
+            		throw new MyException("000021");
+            }
+            
+            // 每次访问，将用户登录有效信息延长
+            cacheDao.setObj(Const.CACHE_USER + token, obj, Config.getLoginInforTime());
+            
+            if(!authPassport.authority().equals("")){
+            	return Tools.hasAuth(authPassport.authority(), MyString.getValueFromRequest(request, "moduleId"), request);
+            }else{
+            	return true;
+            }
+            
         }
         else
             return true;   

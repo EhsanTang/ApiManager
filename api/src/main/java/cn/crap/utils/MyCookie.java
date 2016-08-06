@@ -24,17 +24,23 @@ public class MyCookie {
 		      }
 		 }
 	}
+	public static void addCookie(String key,String value, HttpServletResponse response, int time){
+		addCookie(key,value,false, response, time);
+	}
 	public static void addCookie(String key,String value, HttpServletResponse response){
-		addCookie(key,value,false, response);
+		addCookie(key,value,false, response,60*60*24*7);
 	}
 	public static void addCookie(String key,String value,boolean jiami, HttpServletResponse response){
+		addCookie(key,value,jiami, response,60*60*24*7);
+	}
+	public static void addCookie(String key,String value,boolean jiami, HttpServletResponse response, int time){
 		if(jiami){
 			value = Aes.encrypt(value);
 		}else{
 			value =new String(new Base64().encode(value.getBytes()));
 		}
 		Cookie myCookie=new Cookie(key,value);
-		myCookie.setMaxAge(60*60*24*7);
+		myCookie.setMaxAge(time);
 		response.addCookie(myCookie);
 	}
 	public static String getCookie(String key,HttpServletRequest request){

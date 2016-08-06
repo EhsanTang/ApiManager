@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -73,19 +75,21 @@ public class BackUserController extends BaseController<User>{
 			temp = userService.get(user.getId());
 		}
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		User cacheUser = (User) cacheService.getObj(Const.CACHE_USER + token);
-		// 如果不是最高管理员，不允许修改权限、角色
+		LoginInfoDto cacheUser = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		// 如果不是最高管理员，不允许修改权限、角色、类型
 		if((","+cacheUser.getRoleId()).indexOf(","+Const.SUPER+",") < 0){
 			if(temp != null){
 				user.setAuth(temp.getAuth());
 				user.setAuthName(temp.getAuthName());
 				user.setRoleId(temp.getRoleId());
 				user.setRoleName(temp.getRoleName());
+				user.setType(temp.getType());
 			}else{
 				user.setAuth("");
 				user.setAuthName("");
 				user.setRoleId("");
 				user.setRoleName("");
+				user.setType(Byte.valueOf("1"));// 普通用户
 			}
 			
 		}

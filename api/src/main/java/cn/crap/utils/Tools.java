@@ -17,17 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.crap.dto.CrumbDto;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.model.User;
 import cn.crap.service.CacheService;
 
 
@@ -66,11 +65,19 @@ public class Tools {
 	public static boolean hasAuth(String authPassport,
 			String moduleId, HttpServletRequest request) throws MyException {
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		User user = (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
+		LoginInfoDto user = Tools.getUser();
+		if(user == null ){
+			throw new MyException("000003");
+		}
 		
-		String authority = cacheService.getStr(Const.CACHE_AUTH + MyCookie.getCookie(Const.COOKIE_TOKEN, false, request));
+		String authority = user.getAuthStr();
 		if( user != null && (","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
 			return true;//超级管理员
+		}
+		
+		// 修改自己创建的模块
+		if(!MyString.isEmpty(moduleId) && cacheService.getModule(moduleId).getUserId().equals(user.getId())){
+			return true;
 		}
 		
 		// 管理员修改自己的资料
@@ -81,12 +88,16 @@ public class Tools {
 			}
 		}
 		
-		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
-		if(authority != null && authority.indexOf(","+needAuth+",")>=0){
-			return true;
-		}else{
+		// 普通用户没有其他访问的权限
+		if(Tools.getUser().getType() != 100){
 			throw new MyException("000003");
 		}
+		
+		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
+		if(authority.indexOf(","+needAuth+",")>=0){
+			return true;
+		}
+		throw new MyException("000003");
 	}
 	
 	/**********************模块访问密码***************************/
@@ -161,15 +172,22 @@ public class Tools {
 			if (key.indexOf("|") > 0) {
 				String[] keys = key.split("\\|");
 				keys[0] = keys[0].replaceAll("\\.", "_");
+				
 				if (keys[1].equals("in")) {
-					hql.append(keys[0] + " in (:" + keys[0].replaceAll("\\.", "_") + ") and ");
-				} else if (keys[1].equals(Const.NULL)) {
+					hql.append(keys[0] + " in (:" + keys[0]+"_in".replaceAll("\\.", "_") + ") and ");
+				} 
+				
+				else if (keys[1].equals(Const.NULL)) {
 					hql.append(keys[0] + " =null and ");
 					removes.add(key);
-				} else if (keys[1].equals(Const.NOT_NULL)) {
+				} 
+				
+				else if (keys[1].equals(Const.NOT_NULL)) {
 					hql.append(keys[0] + "!=null and ");
 					removes.add(key);
-				} else if (keys[1].equals(Const.BLANK)) {
+				} 
+				
+				else if (keys[1].equals(Const.BLANK)) {
 					hql.append(keys[0] + " ='' and ");
 					removes.add(key);
 				} else if (keys[1].equals("like")) {
@@ -216,7 +234,7 @@ public class Tools {
 			} else if (value instanceof Byte) {
 				query.setByte(key, Byte.valueOf(value.toString()));
 			}else if(value instanceof List){
-				query.setParameterList(key,(List<?>) value); 
+				query.setParameterList(key+"_in",(List<?>) value); 
 			} else {
 				query.setParameter(key, value);
 			}
@@ -295,8 +313,8 @@ public class Tools {
 		return temp.toString();
 	}
 	
-	public static User getUser(){
+	public static LoginInfoDto getUser(){
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		return (User) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, Tools.getRequest()));
+		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, Tools.getRequest()));
 	}
 }

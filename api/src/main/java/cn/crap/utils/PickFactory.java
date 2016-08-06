@@ -1,7 +1,10 @@
 package cn.crap.utils;
 
 import java.util.List;
+
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
+import cn.crap.enumeration.DataCeneterType;
 import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.FontFamilyType;
 import cn.crap.enumeration.InterfaceStatus;
@@ -10,16 +13,17 @@ import cn.crap.enumeration.ModuleStatus;
 import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.TrueOrFalse;
+import cn.crap.enumeration.UserType;
 import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.MyException;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IWebPageService;
+import cn.crap.model.DataCenter;
 import cn.crap.model.Error;
 import cn.crap.model.Menu;
-import cn.crap.model.DataCenter;
 import cn.crap.model.Role;
 import cn.crap.model.WebPage;
 
@@ -27,7 +31,7 @@ public class PickFactory {
 
 	/**
 	 * 
-	 * @param picks 后台选项
+	 * @param picks 前端选项（非敏感信息）
 	 * @param code 需要选着的pick代码
 	 * @param key pick二级关键字（如类型、父节点等）
 	 * @return
@@ -35,7 +39,7 @@ public class PickFactory {
 	 */
 
 	public static void getFrontPickList(List<PickDto> picks, String code, String key, 
-			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, IWebPageService webPageService) throws MyException {
+			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, IWebPageService webPageService,IDataCenterService dataCenterService) throws MyException {
 		
 			PickDto pick = null;
 			switch (code) {
@@ -45,10 +49,82 @@ public class PickFactory {
 						picks.add(pick);
 					}
 					return;
+				case "REQUESTMETHOD": // 枚举 请求方式 post get
+					for (RequestMethod status : RequestMethod.values()) {
+						pick = new PickDto(status.name(), status.getName(), status.getName());
+						picks.add(pick);
+					}
+					return;
+					// 枚举 接口状态
+				case "INTERFACESTATUS":
+					for (InterfaceStatus status : InterfaceStatus.values()) {
+						pick = new PickDto(status.getName(), status.name());
+						picks.add(pick);
+					}
+					return;
+				case "TRUEORFALSE":// 枚举true or false
+					for (TrueOrFalse status : TrueOrFalse.values()) {
+						pick = new PickDto(status.getName(), status.name());
+						picks.add(pick);
+					}
+					return;
+			}
+			// 如果前端pick没有，则查询登陆用户的pick
+			if(getUserPickList(picks, code, key, menuService, dataCenter, errorService, roleService, webPageService, dataCenterService)){
+				return;
 			}
 			
-			// 如果前端选项没有，则查询后端选项
+			// 如果前端选项、登陆用户的pick没有，则查询后端选项
 			getBackPickList(picks, code, key, menuService, dataCenter, errorService, roleService, webPageService);
+	}
+	
+	/**
+	 * 普通用户pick
+	 * @param picks
+	 * @param code
+	 * @param key
+	 * @param menuService
+	 * @param dataCenter
+	 * @param errorService
+	 * @param roleService
+	 * @param webPageService
+	 * @throws MyException
+	 */
+	private static boolean getUserPickList(List<PickDto> picks, String code, String key, 
+			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, IWebPageService webPageService,
+			IDataCenterService dataCenterService) throws MyException {
+		// 需要登陆才能
+		LoginInfoDto user = Tools.getUser();
+		if(user == null ){
+			throw new MyException("000003");
+		}
+		// 管理员通过getBackPickList方法查询
+		if(user.getType() != 1){
+			return false;
+		}
+		PickDto pick = null;
+		switch (code) {
+			case "DATACENTER":// 所有数据
+				// 如果用户为普通用户，则只能查看自己的模块
+				List<String> moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+				moduleIds.add("NULL");
+				
+				dataCenter.getDataCenterPick(picks, Tools.getMap("id|in", moduleIds) , "", Const.PRIVATE_MODULE , key,  Const.LEVEL_PRE , "", "");
+				picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
+				return true;
+				// 枚举 模块类型（公开、私有）
+			case "MODULESTATUS":
+				for (ModuleStatus status : ModuleStatus.values()) {
+					// 用户不能设置模块为推荐状态
+					if(status.getName().equals("3"))
+						continue;
+					pick = new PickDto(status.getName(), status.name());
+					picks.add(pick);
+				}
+				return true;
+		}
+		
+		return false;
 	}
 	/**
 	 * 
@@ -60,11 +136,12 @@ public class PickFactory {
 	 */
 
 	private static void getBackPickList(List<PickDto> picks, String code, String key, 
-			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, IWebPageService webPageService) throws MyException {
+			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, 
+			IWebPageService webPageService) throws MyException {
 		PickDto pick = null;
 		String preUrl = "";
 		// 后端选项需要具有数据查看功能才能查看
-		Tools.hasAuth(Const.AUTH_VIEW,"");
+		Tools.hasAuth(Const.AUTH_ADMIN,"");
 		switch (code) {
 		// 一级菜单
 		case "MENU":
@@ -83,11 +160,11 @@ public class PickFactory {
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, "m_", "0", "MODULE", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
+			dataCenter.getDataCenterPick(picks, null, "m_", "0", "MODULE", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "接口管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, "i_", "0", "MODULE", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
+			dataCenter.getDataCenterPick(picks, null, "i_", "0", "MODULE", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
@@ -157,13 +234,6 @@ public class PickFactory {
 			}
 			picks.add(0,new PickDto("0","顶级父类"));
 			return;
-		// 枚举 接口状态
-		case "INTERFACESTATUS":
-			for (InterfaceStatus status : InterfaceStatus.values()) {
-				pick = new PickDto(status.getName(), status.name());
-				picks.add(pick);
-			}
-			return;
 		// 枚举 模块类型（公开、私有）
 		case "MODULESTATUS":
 			for (ModuleStatus status : ModuleStatus.values()) {
@@ -197,18 +267,6 @@ public class PickFactory {
 		case "DATATYPE":// 枚举 数据类型
 			for (DataType status : DataType.values()) {
 				pick = new PickDto(status.name(), status.getName());
-				picks.add(pick);
-			}
-			return;
-		case "REQUESTMETHOD": // 枚举 请求方式 post get
-			for (RequestMethod status : RequestMethod.values()) {
-				pick = new PickDto(status.name(), status.getName(), status.getName());
-				picks.add(pick);
-			}
-			return;
-		case "TRUEORFALSE":// 枚举true or false
-			for (TrueOrFalse status : TrueOrFalse.values()) {
-				pick = new PickDto(status.getName(), status.name());
 				picks.add(pick);
 			}
 			return;
@@ -295,7 +353,7 @@ public class PickFactory {
 				preUrl = "#/back/interface/list/";
 				pick = new PickDto("h_0", preUrl + "0/无", "顶级模块");
 				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, "h_", "0", "MODULE", "- - - ", preUrl + "moduleId/moduleName","");
+				dataCenter.getDataCenterPick(picks, null, "h_", "0", "MODULE", "- - - ", preUrl + "moduleId/moduleName","");
 				return;
 			}
 			
@@ -312,14 +370,14 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "前端模块");
 				picks.add(pick);
 				preUrl = "#/front/interface/list/";
-				dataCenter.getDataCenterPick(picks, "w_", "0", Const.MODULE , "", preUrl + "moduleId/moduleName", "");
+				dataCenter.getDataCenterPick(picks, null, "w_", "0", Const.MODULE , "", preUrl + "moduleId/moduleName", "");
 				
 				pick = new PickDto(Const.SEPARATOR, "前端文档");
 				picks.add(pick);
 				preUrl = "#/webSource/list/";
 				pick = new PickDto("source_0", preUrl + "0/根目录", "根目录");
 				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, "source_", "0", Const.DIRECTORY, "--", preUrl + "moduleId/moduleName", "");
+				dataCenter.getDataCenterPick(picks, null, "source_", "0", Const.DIRECTORY, "--", preUrl + "moduleId/moduleName", "");
 				
 				pick = new PickDto(Const.SEPARATOR, "前端数据字典列表");
 				picks.add(pick);
@@ -354,7 +412,7 @@ public class PickFactory {
 			}
 						
 		case "DATACENTER":// 所有数据
-			dataCenter.getDataCenterPick(picks, "", "0", key,  "" , "", "");
+			dataCenter.getDataCenterPick(picks, null, "", "0", key,  "" , "", "");
 			if(key.equals(Const.DIRECTORY)){
 				picks.add(0,new PickDto("0","根目录"));
 			}else{
@@ -373,6 +431,12 @@ public class PickFactory {
 		case "FONTFAMILY":// 字体
 			for (FontFamilyType font : FontFamilyType.values()) {
 				pick = new PickDto(font.name(), font.getValue(), font.getName());
+				picks.add(pick);
+			}
+			return;
+		case "USERTYPE": // 用户类型
+			for (UserType type : UserType.values()) {
+				pick = new PickDto("user-type"+type.getName(), type.getName(), type.name());
 				picks.add(pick);
 			}
 			return;

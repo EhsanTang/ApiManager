@@ -13,19 +13,19 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisCacheDao implements ICacheDao{
 		private static JedisPool pool;
 		static {
-			JedisPoolConfig config = new JedisPoolConfig();
-			// 最大连接数
-			config.setMaxTotal(Config.getRedisPoolSize());
-			// 最大空闲数
-			config.setMaxIdle(10);
-			// 最大等待时间
-			config.setMaxWaitMillis(1000);
-			// 连接池获取Redis
-			if(Config.getRedisPwd().trim().equals("")){
-				pool = new JedisPool(config, Config.getRedisIp(), Config.getRedisPort(), 10000);// 10000:读取数据超时时间
-			}else{
-				pool = new JedisPool(config, Config.getRedisIp(), Config.getRedisPort(), 10000, Config.getRedisPwd());// 连接池密码
-			}
+				JedisPoolConfig config = new JedisPoolConfig();
+				// 最大连接数
+				config.setMaxTotal(Config.getRedisPoolSize());
+				// 最大空闲数
+				config.setMaxIdle(10);
+				// 最大等待时间
+				config.setMaxWaitMillis(1000);
+				// 连接池获取Redis
+				if(Config.getRedisPwd().trim().equals("")){
+					pool = new JedisPool(config, Config.getRedisIp(), Config.getRedisPort(), 10000);// 10000:读取数据超时时间
+				}else{
+					pool = new JedisPool(config, Config.getRedisIp(), Config.getRedisPort(), 10000, Config.getRedisPwd());// 连接池密码
+				}
 			
 		}
 

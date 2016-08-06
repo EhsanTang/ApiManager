@@ -32,6 +32,7 @@
 			<tr class="BGEEE">
 				<th class="tc w100">名称</th>
 				<th class="tc w100">真实名称</th>
+				<th class="tc">类型</th>
 				<th class="tc">角色</th>
 				<th class="tc">权限</th>
 				<th class="w200 tc">操作</th>
@@ -39,11 +40,12 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
-				<td class="tc">{{item.userName}}</td>
-				<td class="tc">{{item.trueName}}</td>
-				<td class="tc">{{item.roleName}}</td>
+				<td class="tc w100">{{item.userName}}</td>
+				<td class="tc w100">{{item.trueName}}</td>
+				<td class="tc w100" ng-bind="item.type==100?'管理员':'普通用户'"></td>
+				<td class="tc w100">{{item.roleName}}</td>
 				<td class="tc">{{item.authName}}</td>
-				<td class="tc">
+				<td class="tc w100">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('USER','');"
 					ng-click="detail('编辑【'+item.userName+'】',700,'user/detail.do?id='+item.id)"
 					data-toggle="tooltip" data-placement="top"

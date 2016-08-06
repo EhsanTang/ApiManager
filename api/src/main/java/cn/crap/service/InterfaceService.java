@@ -13,10 +13,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IDataCenterService;
-import cn.crap.model.Interface;
+import cn.crap.inter.service.IInterfaceService;
 import cn.crap.model.DataCenter;
+import cn.crap.model.Interface;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -39,22 +39,33 @@ public class InterfaceService extends BaseService<Interface>
 
 	@Override
 	@Transactional
-	public JsonResult getInterfaceList(Page page,Map<String,Object> map, Interface interFace, Integer currentPage) {
+	public JsonResult getInterfaceList(Page page,List<String> moduleIds, Interface interFace, Integer currentPage) {
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("moduleId", interFace.getModuleId(),
+		
+		Map<String, Object> params = Tools.getMap("moduleId", interFace.getModuleId(),
 				"interfaceName|like", interFace.getInterfaceName(),"url|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
+		if(moduleIds != null){
+			moduleIds.add("NULL");// 防止长度为0，导致in查询报错
+			params.put("moduleId|in", moduleIds);
+		}
+			
 		List<Interface> interfaces = findByMap(
-				map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null);
-		map.clear();
+				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null);
+		
 		List<DataCenter> modules = null;
 		// 搜索接口时，module为空
 		if (interFace.getModuleId() != null) {
-			map = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
-			modules = dataCenterService.findByMap(map, null, null);
+			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
+			if(moduleIds != null){
+				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
+				params.put("id|in", moduleIds);
+			}
+			modules = dataCenterService.findByMap(params, null, null);
 		}
-		map.put("interfaces", interfaces);
-		map.put("modules", modules);
-		return new JsonResult(1, map, page, 
+		params.clear();
+		params.put("interfaces", interfaces);
+		params.put("modules", modules);
+		return new JsonResult(1, params, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
 						"module",cacheService.getModule(interFace.getModuleId())));
 	}

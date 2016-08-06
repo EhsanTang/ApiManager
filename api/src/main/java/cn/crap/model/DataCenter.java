@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.ModuleStatus;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
@@ -38,6 +39,7 @@ public class DataCenter extends BaseModel implements Serializable{
 	public DataCenter(String parentId, String name) {
 		this.parentId = parentId;
 		this.name = name;
+		this.userId = "superAdmin";
 	}
 
 	@Column(name="password")
@@ -107,6 +109,10 @@ public class DataCenter extends BaseModel implements Serializable{
 		this.userId = userId;
 	}
 	
+	@Transient
+	public String getStatusName(){
+		return ModuleStatus.getNameByValue(status+"");
+	}
 	
 	@Transient
 	public String getParentName(){

@@ -1,13 +1,14 @@
 package cn.crap.model;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.UserType;
 import cn.crap.framework.base.BaseModel;
 
 
@@ -32,6 +33,7 @@ public class User extends BaseModel implements Serializable{
 	private String roleName;
 	private String auth;
 	private String authName;
+	private byte type;
 	
 	@Column(name="userName")
 	public String getUserName() {
@@ -92,4 +94,20 @@ public class User extends BaseModel implements Serializable{
 	public void setAuthName(String authName) {
 		this.authName = authName;
 	}
+
+	
+	@Column(name="type")
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
+	}
+	
+	@Transient
+	public String getTypeName(){
+		return UserType.getNameByValue(type+"");
+	}
+	
 }

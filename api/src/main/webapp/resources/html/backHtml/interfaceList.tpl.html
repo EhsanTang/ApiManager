@@ -29,7 +29,9 @@
 		<div class="cb"></div>
 </div>
 <div class="col-xs-12 mt20 p0 mb10 f14 tr">
-	
+	<span class="f12 C999" ng-if="!showOperation('INTERFACE',$stateParams.moduleId) && !showOperation('MODULE',$stateParams.moduleId)">
+		*权限不足，若为新增模块，请刷新页面
+	</span>
 	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('INTERFACE',$stateParams.moduleId)"
 		ng-click="detail('新增接口',1100,'back/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId,initEditInterFace)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
@@ -123,7 +125,7 @@
 					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'back/interface/detail.do?id='+item.id,'',copyInterface)"> 
 					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="#/front/interfaceDetail/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="web.do#/front/interfaceDetail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('INTERFACE',$stateParams.moduleId)"

@@ -37,6 +37,8 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	private IRoleService roleService;
 	@Autowired
 	private IWebPageService webPageService;
+	@Autowired
+	private IDataCenterService dataCenterService;
 	
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
@@ -81,7 +83,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		
 		// 根据code，key加载pick列表
-		PickFactory.getFrontPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService);
+		PickFactory.getFrontPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService, dataCenterService);
 		
 		// 组装字符串，返回至前端页面
 		if (!radio.equals("")) {

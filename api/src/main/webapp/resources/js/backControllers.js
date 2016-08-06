@@ -49,6 +49,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminRoleIds = result.data.sessionAdminRoleIds;
 				$rootScope.sessionAdminId =result.data.sessionAdminId;
+				$rootScope.errorTips = result.data.errorTips;
 			}
 		});
     };
@@ -62,12 +63,20 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
     	}
     	return false;
     }
+    // 是否为用户
+    $scope.isUser = function (){
+    	var auth = $("#sessionAuth").val();
+    	if(auth.indexOf(',ADMIN,')<0){
+    		return true;
+    	}
+    	return false;
+    }
     /***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
 	$scope.canSeeMenu = function(id,type){
 		if(!id||id==""||type!="BACK")
 			return false;
 		var auth = $("#sessionAuth").val();
-		if((","+auth+",").indexOf(","+id+",")>=0)
+		if((","+auth+",").indexOf(","+id+",")>=0 && (","+auth+",").indexOf(",ADMIN,")>=0)
 			return true;
 		return false;
 	}
@@ -81,6 +90,18 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 			 }else{
 				 $rootScope.model = result.data;
 				 $rootScope.error = null;
+			 }
+		});
+	}
+	$scope.closeErrorTips = function(){
+		var params = "iUrl=back/closeErrorTips.do|iLoading=FLOAT";
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.errorTips = null;
 			 }
 		});
 	}
@@ -221,7 +242,7 @@ mainModule.controller('backInterfaceCtrl', function($rootScope,$scope, $http, $s
 
 mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&directoryId="+$stateParams.directoryId;
+		var params = "iUrl=back/source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&directoryId="+$stateParams.directoryId;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

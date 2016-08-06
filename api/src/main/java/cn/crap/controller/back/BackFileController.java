@@ -28,7 +28,7 @@ public class BackFileController extends BaseController <User>{
 	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_VIEW)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack) {
 		String result = "";
 	    String realFileName = file.getOriginalFilename();    

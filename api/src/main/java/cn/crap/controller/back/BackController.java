@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
@@ -30,10 +31,21 @@ public class BackController extends BaseController<User> {
 	/**
 	 * 后台管理主页面
 	 */
-	@AuthPassport
 	@RequestMapping("/admin.do")
+	@AuthPassport
 	public String showHomePage() throws Exception {
 		return "resources/html/backHtml/index.html";
+	}
+	
+	/**
+	 * 删除错误提示
+	 */
+	@RequestMapping("/back/closeErrorTips.do")
+	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_ADMIN)
+	public JsonResult closeErrorTips() throws Exception {
+		cacheService.delStr(Const.CACHE_ERROR_TIP);
+		return new JsonResult(1, null);
 	}
 	
 	/**
@@ -50,11 +62,12 @@ public class BackController extends BaseController<User> {
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		returnMap.put("settingMap", settingMap);
 		returnMap.put("menuList", menuService.getLeftMenu(map));
-		User user = (User) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 		returnMap.put("sessionAdminName", user.getUserName());
-		returnMap.put("sessionAdminAuthor", cacheService.getStr(Const.CACHE_AUTH + token));
+		returnMap.put("sessionAdminAuthor", user.getAuthStr());
 		returnMap.put("sessionAdminRoleIds", user.getRoleId());
 		returnMap.put("sessionAdminId", user.getId());
+		returnMap.put("errorTips", cacheService.getStr(Const.CACHE_ERROR_TIP));
 		return new JsonResult(1, returnMap);
 	}
 }

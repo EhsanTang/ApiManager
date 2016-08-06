@@ -72,7 +72,7 @@
 									<a class="menu-a" target="_self" href="#/back/interface/list/0/根目录" onclick="selectButton(this,'menu-a')">项目&模块&接口管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
+									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
@@ -115,6 +115,20 @@
 						</div>
 					</div>
 					
+					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isUser()">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel-myproject">
+								<div class="f14 mt-3 fl mr10"><i class="iconfont">&#xe61f;</i></div> 
+								<span class="hidden-xs">我的项目</span> 
+							</div>
+						</div>
+						<div id="panel-myproject" class="panel-collapse BGEEE collapse in">
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_self" ng-href="#/back/interface/list/privateModule/我的项目" onclick="selectButton(this,'menu-a')">我的项目</a>
+							</div>
+						</div>
+					</div>
+					
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
 						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 							<div class="a cursor" data-toggle="collapse" data-parent="#panel3"></div>
@@ -127,10 +141,6 @@
 
 				<!-- End:left -->
 				
-				
-				
-				
-				
 				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
 					<div class="BGFFF m20 BGFFF p10 r5">
 						<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
@@ -138,6 +148,17 @@
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-bind="error"></span>
 							</button>
+						</div>
+						<div class="col-xs-12 f16 fb p0 mb5" ng-if="errorTips">
+							<button type="button" class="btn btn-danger btn-xs break-word">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span ng-bind="errorTips"></span>
+							</button>
+							<button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span> 删除提示</span>
+							</button>
+							
 						</div>
 						<div ui-view="main"></div>
 					</div>

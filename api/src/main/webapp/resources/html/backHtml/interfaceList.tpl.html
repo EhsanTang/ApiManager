@@ -8,7 +8,7 @@
 </div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
-			<i class="iconfont">&#xe60d;</i>&nbsp;查询
+			<i class="iconfont">&#xe610;</i>&nbsp;查询
 		</button>
 		<div class="form-group w200 fr">
 			<label class="sr-only" for="">名称</label>
@@ -55,8 +55,9 @@
 		<thead>
 			<tr class="BGEEE">
 				<th class="tc">名称</th>
-				<th class="tc">Url</th>
+				<th class="tc">Url前缀</th>
 				<td class="tc">排序</td>
+				<td class="tc">类型</td>
 				<th class="w300 tc">操作</th>
 			</tr>
 		</thead>
@@ -64,11 +65,9 @@
 			<tr ng-repeat="item in list.modules">
 				<td class="tc">{{item.name}}</td>
 				<td class="tc">{{item.url}}</td>
+				<td class="tc">{{item.statusName}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc w400">
-				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/project/{{item.id}}/{{item.id}}" target="_blank"> 
-					<i class="iconfont f12">&#xe613;模块主页</i>
-				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('MODULE',$stateParams.moduleId)"
 					ng-click="detail('编辑【'+item.name+'】',700,'module/detail.do?id='+item.id,initEditInterFace)"
 					data-toggle="tooltip" data-placement="top"
@@ -80,6 +79,9 @@
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('MODULE',$stateParams.moduleId)"
 					ng-click="del('module/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/project/{{item.id}}/{{item.id}}" target="_blank"> 
+					<i class="iconfont f12 adorn-color">&#xe613;模块主页</i>
 				</a>
 				<div class="w50 fr tl">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('module',item.id,list.modules[$index-1].id)" ng-if="$index>0">

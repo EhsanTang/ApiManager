@@ -11,6 +11,7 @@ public interface IDataCenterService extends IBaseService<DataCenter>{
 	/**
 	 * 
 	 * @param picks
+	 * @param map
 	 * @param idPre html id前缀
 	 * @param parentId 父id
 	 * @param type 数据类型
@@ -25,5 +26,6 @@ public interface IDataCenterService extends IBaseService<DataCenter>{
 	 * @return
 	 */
 	List<String> getList(Byte status, String type, String userId);
+	List<String> getListByStatuss(List<Byte> statuss, String type, String userId);
 	
 }

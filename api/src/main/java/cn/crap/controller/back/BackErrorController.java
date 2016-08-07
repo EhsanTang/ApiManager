@@ -1,5 +1,7 @@
 package cn.crap.controller.back;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -8,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
@@ -27,23 +32,35 @@ public class BackErrorController extends BaseController<Error>{
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
+	@Autowired
+	private IDataCenterService dataCenterService;
+
 	/**
 	 * @return 
 	 * @throws Exception 
 	 * */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
+	@AuthPassport
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
+		
+		// 如果用户为普通用户，则只能查看自己的模块
+		LoginInfoDto user = Tools.getUser();
+		List<String> moduleIds = null;
+		if(user != null && user.getType() == 1){
+			moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+			moduleIds.add("NULL");
+		}
+		
+		map = Tools.getMap("moduleId|in", moduleIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
 				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
 	}
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
+	@AuthPassport
 	public JsonResult detail(@ModelAttribute Error error) throws MyException{
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());

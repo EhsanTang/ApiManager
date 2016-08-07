@@ -3,6 +3,7 @@ package cn.crap.controller.front;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.ErrorDto;
-import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
 import cn.crap.enumeration.DataCeneterType;
@@ -31,6 +31,8 @@ import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
+import cn.crap.utils.Config;
+import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
@@ -104,9 +106,18 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
-		// 不允许查看根路径下所有项目
-		if(MyString.isEmpty(interFace.getModuleId()) || interFace.getModuleId().equals("0")){
-			throw new MyException("000020");
+		// 查询公开和推荐的接口
+		if(!Tools.moduleIdIsLegal(interFace.getModuleId())){
+			@SuppressWarnings("unchecked")
+			List<String> moduleIds = (List<String>) cacheService.getObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS);
+			if(moduleIds == null){
+				List<Byte> statuss = new ArrayList<Byte>();
+				statuss.add(Byte.valueOf("1"));
+				statuss.add(Byte.valueOf("3"));
+				moduleIds = dataCenterService.getListByStatuss(statuss, DataCeneterType.MODULE.name(), null);
+				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, Config.getCacheTime());
+			}
+			return interfaceService.getInterfaceList(page, moduleIds ,interFace, currentPage);
 		}else{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);

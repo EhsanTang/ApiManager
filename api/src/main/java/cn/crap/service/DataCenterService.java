@@ -9,16 +9,16 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.crap.framework.base.IBaseDao;
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseService;
+import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.ICacheDao;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.DataCenter;
-import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Service
@@ -58,8 +58,21 @@ public class DataCenterService extends BaseService<DataCenter>
 	@Override
 	@Transactional
 	public List<String> getList(Byte status, String type, String userId) {
+		List<Byte> statuss = null;
+		if(status != null){
+			statuss= new ArrayList<Byte>();
+			statuss.add(status);
+		}
+		return getListByStatuss(statuss, type, userId);
+	}
+	
+	@Override
+	@Transactional
+	public List<String> getListByStatuss(List<Byte> statuss, String type, String userId) {
+		Page page = new Page();
+		page.setSize(2000);// 最多显示钱2000条
 		List<String> ids = new ArrayList<String>();
-		List<DataCenter> dcs = findByMap(Tools.getMap("status", status, "type", type, "userId", userId), null, null);
+		List<DataCenter> dcs = findByMap(Tools.getMap("status|in", statuss, "type", type, "userId", userId), page, null);
 		for(DataCenter dc:dcs){
 			ids.add(dc.getId());
 		}

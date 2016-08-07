@@ -1,6 +1,11 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="frontProjectCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <div class="col-xs-12 f16 fb pl0 mb10 pb5 mt20" ng-if="list.modules.length>0">模块列表</div>
+
+<div ng-if="list.modules.length==0 && list.interfaces.length==0" class="tc mt10 mb10 C999">
+			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>该模块下没有接口或子模块
+</div>
+		
 <div class="col-xs-12 p0 m0" ng-if="list.modules.length>0">
 	<div class="col-sm-4 col-md-3 m0 p0" ng-repeat="item in list.modules">
 		<div class="b1 tc r3 h220 m15 p10">

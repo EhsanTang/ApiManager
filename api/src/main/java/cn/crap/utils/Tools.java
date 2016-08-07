@@ -312,9 +312,21 @@ public class Tools {
 		}
 		return temp.toString();
 	}
-	
+	/**
+	 * 获取用户登录信息
+	 * @return
+	 */
 	public static LoginInfoDto getUser(){
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, Tools.getRequest()));
 	}
+	/**
+	 * 判断模块id是否合法：top，0，privateModule则不合法，不允许查看所有项目
+	 * @param moduleId
+	 */
+	public static boolean moduleIdIsLegal(String moduleId){
+		return !(MyString.isEmpty(moduleId) || moduleId.equals(Const.ADMIN_MODULE) || moduleId.equals(Const.TOP_MODULE) || moduleId.equals(Const.PRIVATE_MODULE));
+	}
+	
+	
 }

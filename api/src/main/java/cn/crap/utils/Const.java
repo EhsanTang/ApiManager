@@ -38,6 +38,7 @@ public class Const {
 	public static final String CACHE_SEARCH_WORDS = ":searchWords";
 	public static final String CACHE_MODULEIDS = ":moduleIds:";
 	public static final String CACHE_ERROR_TIP = ":errorTip:";
+	public static final String CACHE_TUIJIAN_OPEN_MODULEIDS = ":openTuijianModuleIds:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";
@@ -51,6 +52,8 @@ public class Const {
 	public static final String SOURCE = "SOURCE";
 	public static final String SEPARATOR = "SEPARATOR";
 	public static final String PRIVATE_MODULE= "privateModule";
+	public static final String ADMIN_MODULE= "0";
+	public static final String TOP_MODULE= "top";
 	public static final String LEVEL_PRE = "- - ";
 	
 	//系统设置

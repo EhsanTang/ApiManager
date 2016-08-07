@@ -21,6 +21,7 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
 import cn.crap.model.User;
+import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -59,11 +60,21 @@ public class FrontProjectController extends BaseController<User> {
 		page.setCurrentPage(currentPage);
 		List<DataCenter> modules = null;
 		List<Interface> interfaces = null;
-		if( MyString.isEmpty(interFace.getModuleId()) || interFace.getModuleId().equals("0") ){
+		if( !Tools.moduleIdIsLegal(interFace.getModuleId()) || interFace.getModuleId().equals("open")){
 			// 查询所有推荐的
 			map = Tools.getMap( "status", Byte.valueOf("3"), "type", "MODULE");
 			modules = dataCenterService.findByMap(map, null, null);
 			interfaces = new ArrayList<Interface>();
+			
+			map.clear();
+			map.put("interfaces", interfaces);
+			map.put("modules", modules);
+			DataCenter dc = new DataCenter();
+			dc.setName("开放接口");
+			dc.setId("open");
+			dc.setRemark("由CrapApi&网友整理的常用免费接口");
+			return new JsonResult(1, map, page, Tools.getMap("module", dc));
+			
 		}else{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
@@ -73,11 +84,12 @@ public class FrontProjectController extends BaseController<User> {
 			map.clear();
 			map = Tools.getMap("moduleId", interFace.getModuleId());
 			interfaces = interfaceService.findByMap( map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null );
+			
+			map.clear();
+			map.put("interfaces", interfaces);
+			map.put("modules", modules);
+			return new JsonResult(1, map, page, Tools.getMap("module", cacheService.getModule(interFace.getModuleId())));
 		}
 		
-		map.clear();
-		map.put("interfaces", interfaces);
-		map.put("modules", modules);
-		return new JsonResult(1, map, page, Tools.getMap("module", cacheService.getModule(interFace.getModuleId())));
 	}
 }

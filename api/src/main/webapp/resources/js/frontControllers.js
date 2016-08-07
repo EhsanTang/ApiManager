@@ -84,7 +84,7 @@ webModule.controller('webSourceCtrl', function($rootScope,$scope, $http, $state,
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iUrl=source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
+		var params = "iUrl=back/source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		$rootScope.getBaseData($scope,$http,params,page);
@@ -184,7 +184,8 @@ webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $sta
 			addCookie("projectId", $stateParams.projectId);// 将项目主页存储至cookie中
 		}else{
 			$rootScope.projectId = getCookie("projectId");
-			$stateParams.moduleId= getCookie("projectId");
+			if(!$stateParams.moduleId)
+				$stateParams.moduleId= getCookie("projectId");
 		}
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();

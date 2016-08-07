@@ -15,10 +15,10 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.DataCenter;
-import cn.crap.service.UserService;
 import cn.crap.utils.Aes;
 import cn.crap.utils.Config;
 import cn.crap.utils.Const;
@@ -39,7 +39,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IInterfaceService interfaceService;
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
@@ -66,7 +66,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		// 修改
 		if(!MyString.isEmpty(module.getId())){
 			if(module.getId().equals(Const.PRIVATE_MODULE)){
-				throw new Exception("000009");
+				throw new MyException("000009");
 			}
 			
 			DataCenter oldDataCenter = cacheService.getModule(module.getId());
@@ -125,7 +125,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		LoginInfoDto user = Tools.getUser();
 		String token  = Aes.encrypt(user.getId());
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(userService.get(user.getId()), roleService, dataCenterService), Config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(userService.get(user.getId()), roleService, moduleService), Config.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
 	
@@ -151,6 +151,15 @@ public class BackModuleController extends BaseController<DataCenter>{
 		else{
 			Tools.hasAuth(Const.AUTH_MODULE,  oldDataCenter.getId());
 		}
+		
+		// 只有子模块和接口数量为0，才允许删除模块
+		if(moduleService.getCount(Tools.getMap("parentId", oldDataCenter.getId())) > 0){
+			throw new MyException("000023");
+		}
+		if(interfaceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
+			throw new MyException("000024");
+		}
+		
 		
 		cacheService.delObj("cache:model:"+module.getId());
 		moduleService.delete(module);

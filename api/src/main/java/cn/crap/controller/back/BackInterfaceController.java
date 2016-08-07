@@ -126,7 +126,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
-			while (dc != null && !dc.getParentId().equals("0")) {
+			while (!MyString.isEmpty(dc.getId()) && !dc.getParentId().equals("0") && !dc.getParentId().equals(Const.PRIVATE_MODULE)) {
 				dc = dataCenterService.get(dc.getParentId());
 			}
 			map.put("moduleId", dc.getId());

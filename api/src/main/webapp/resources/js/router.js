@@ -284,7 +284,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('projectMain', {
-		url : '/project/:projectId/:moduleId',
+		url : '/project/:moduleId/:projectId',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){

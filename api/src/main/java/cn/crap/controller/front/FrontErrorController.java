@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
@@ -27,8 +25,6 @@ public class FrontErrorController extends BaseController<Error>{
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
-	@Autowired
-	private IDataCenterService dataCenterService;
 
 	/**
 	 * 前端错误码列表，只查询公开的顶级项目错误码（错误码定义在顶级项目中）
@@ -36,16 +32,17 @@ public class FrontErrorController extends BaseController<Error>{
 	 * @param error
 	 * @param currentPage
 	 * @return
+	 * @throws MyException 
 	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		page.setCurrentPage(currentPage);
 		
-		// 如果错误码模块Id为空，则查询所有公开的顶级项目
+		// 不允许查看根路径下所有项目
 		map = Tools.getMap(  "errorCode|like",error.getErrorCode(),  "errorMsg|like",error.getErrorMsg());
-		if( MyString.isEmpty(error.getModuleId()) || error.getModuleId().equals("0") ){
-			map.put( "moduleId|in",  dataCenterService.getList(Byte.valueOf("2"), DataCeneterType.MODULE.name(), "")  );
+		if( !Tools.moduleIdIsLegal(error.getModuleId()) ){
+			throw new MyException("000020");
 		}else{
 			map.put( "moduleId", error.getModuleId() );
 		}

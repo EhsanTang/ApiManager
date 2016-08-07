@@ -1,5 +1,6 @@
 package cn.crap.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.crap.dto.LoginInfoDto;
@@ -44,7 +45,10 @@ public class PickFactory {
 			PickDto pick = null;
 			switch (code) {
 				case "FRONTERRORMODULE": // 前端错误码模块列表
-					for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE", "status", "1"), null, null)) {
+					List<Byte> statuss = new ArrayList<Byte>();
+					statuss.add(Byte.valueOf("1"));
+					statuss.add(Byte.valueOf("3"));
+					for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE", "status|in", statuss ), null, null)) {
 						pick = new PickDto(m.getId(), m.getName());
 						picks.add(pick);
 					}
@@ -103,10 +107,21 @@ public class PickFactory {
 			return false;
 		}
 		PickDto pick = null;
+		List<String> moduleIds = null;
 		switch (code) {
+			case "TOPMODULE":// 所有顶级模块
+				// 如果用户为普通用户，则只能查看自己的模块
+				moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+				moduleIds.add("NULL");
+				
+				for (DataCenter m : dataCenter.findByMap(Tools.getMap("id|in", moduleIds, "parentId", Const.PRIVATE_MODULE, "type", "MODULE"), null, null)) {
+					pick = new PickDto(m.getId(), m.getName());
+					picks.add(pick);
+				}
+				return true;
 			case "DATACENTER":// 所有数据
 				// 如果用户为普通用户，则只能查看自己的模块
-				List<String> moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+				moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
 				moduleIds.add("NULL");
 				
 				dataCenter.getDataCenterPick(picks, Tools.getMap("id|in", moduleIds) , "", Const.PRIVATE_MODULE , key,  Const.LEVEL_PRE , "", "");
@@ -119,6 +134,17 @@ public class PickFactory {
 					if(status.getName().equals("3"))
 						continue;
 					pick = new PickDto(status.getName(), status.name());
+					picks.add(pick);
+				}
+				return true;
+			case "ERRORCODE":// 错误码
+				DataCenter module = dataCenter.get(key);
+				while (module != null &&  !module.getParentId().equals(Const.PRIVATE_MODULE)) {
+					module = dataCenter.get(module.getParentId());
+				}
+				for (Error error : errorService.findByMap(
+						Tools.getMap("moduleId", module == null ? "" : module.getId()), null, "errorCode asc")) {
+					pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 					picks.add(pick);
 				}
 				return true;
@@ -227,12 +253,11 @@ public class PickFactory {
 			return;
 		
 		// 顶级模块
-		case "TOPMODULE":
+		case "TOPMODULE": 
 			for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE"), null, null)) {
 				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}
-			picks.add(0,new PickDto("0","顶级父类"));
 			return;
 		// 枚举 模块类型（公开、私有）
 		case "MODULESTATUS":
@@ -273,7 +298,7 @@ public class PickFactory {
 			
 		case "ERRORCODE":// 错误码
 			DataCenter module = dataCenter.get(key);
-			while (module != null && !module.getParentId().equals("0")) {
+			while (module != null &&  !module.getParentId().equals("0")) {
 				module = dataCenter.get(module.getParentId());
 			}
 			for (Error error : errorService.findByMap(
@@ -351,9 +376,7 @@ public class PickFactory {
 				picks.add(pick);
 				// 后端接口&模块管理
 				preUrl = "#/back/interface/list/";
-				pick = new PickDto("h_0", preUrl + "0/无", "顶级模块");
-				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, null, "h_", "0", "MODULE", "- - - ", preUrl + "moduleId/moduleName","");
+				dataCenter.getDataCenterPick(picks, null, "h_", "top", "MODULE", Const.LEVEL_PRE, preUrl + "moduleId/moduleName","");
 				return;
 			}
 			
@@ -370,7 +393,7 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "前端模块");
 				picks.add(pick);
 				preUrl = "#/front/interface/list/";
-				dataCenter.getDataCenterPick(picks, null, "w_", "0", Const.MODULE , "", preUrl + "moduleId/moduleName", "");
+				dataCenter.getDataCenterPick(picks, null, "w_", Const.ADMIN_MODULE , Const.MODULE , "", preUrl + "moduleId/moduleName", "");
 				
 				pick = new PickDto(Const.SEPARATOR, "前端文档");
 				picks.add(pick);
@@ -412,12 +435,8 @@ public class PickFactory {
 			}
 						
 		case "DATACENTER":// 所有数据
-			dataCenter.getDataCenterPick(picks, null, "", "0", key,  "" , "", "");
-			if(key.equals(Const.DIRECTORY)){
-				picks.add(0,new PickDto("0","根目录"));
-			}else{
-				picks.add(0,new PickDto("0","顶级项目"));
-			}
+			dataCenter.getDataCenterPick(picks, null, "", Const.ADMIN_MODULE, key,  "" , "", "");
+			picks.add(0,new PickDto(Const.ADMIN_MODULE, "根目录（管理员）"));
 			return;
 		case "LEAFMODULE":// 查询叶子模块
 			@SuppressWarnings("unchecked")

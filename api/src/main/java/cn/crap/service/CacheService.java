@@ -85,9 +85,6 @@ public class CacheService implements ICacheService {
 	@Override
 	@Transactional
 	public DataCenter getModule(String moduleId){
-		if(moduleId != null && moduleId.equals("0")){
-			return new DataCenter("0", "顶级项目");
-		}
 		if(MyString.isEmpty(moduleId)){
 			return new DataCenter();
 		}

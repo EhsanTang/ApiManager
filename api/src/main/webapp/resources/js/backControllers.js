@@ -81,7 +81,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 		return false;
 	}
 	$scope.profile = function(id){
-		var params = "iUrl=back/user/detail.do?id="+id+"|iLoading=FLOAT";
+		var params = "iUrl=user/detail.do?id="+id+"|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

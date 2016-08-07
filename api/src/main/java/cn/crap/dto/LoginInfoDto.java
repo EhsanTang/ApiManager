@@ -2,7 +2,6 @@ package cn.crap.dto;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import cn.crap.enumeration.DataCeneterType;
 import cn.crap.enumeration.DataType;
@@ -47,6 +46,7 @@ public class LoginInfoDto implements Serializable{
 		for(String moduleId:moduleIds){
 			sb.append(DataType.MODULE.name()+"_" + moduleId+",");
 			sb.append(DataType.INTERFACE.name()+"_" + moduleId+",");
+			sb.append(DataType.ERROR.name()+"_" + moduleId+",");
 			roleService.getSubAuth(DataType.MODULE, sb, moduleId);
 			roleService.getSubAuth(DataType.INTERFACE,sb, moduleId);
 		}

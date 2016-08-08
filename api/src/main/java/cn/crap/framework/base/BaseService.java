@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.enumeration.LogType;
 import cn.crap.inter.dao.ILogDao;
 import cn.crap.model.Log;
-import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -144,6 +143,12 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	@Override
 	@Transactional
 	public List<?> queryByHql(String hql, Map<String, Object> map){
+		return  queryByHql(hql, map, null);
+	}
+	
+	@Override
+	@Transactional
+	public List<?> queryByHql(String hql, Map<String, Object> map, Page page){
 		return  dao.queryByHql(hql, map);
 	}
 	

@@ -65,4 +65,6 @@ public interface IBaseService<T extends BaseModel> {
 
 	List<T> findByMap(Map<String, Object> map, String construct, Page page, String order);
 
+	List<?> queryByHql(String hql, Map<String, Object> map, Page page);
+
 }

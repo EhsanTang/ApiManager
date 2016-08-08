@@ -1,7 +1,6 @@
 package cn.crap.framework.base;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -75,8 +74,19 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	
 	@Override
 	public List<?> queryByHql(String hql, Map<String, Object> map) {
+		return queryByHql(hql, map, null);
+	}
+	
+	@Override
+	public List<?> queryByHql(String hql, Map<String, Object> map, Page pageBean) {
 		Query query = hibernateTemplate.getSessionFactory().getCurrentSession()
 				.createQuery(hql);
+		if(pageBean!=null){
+			pageBean.setAllRow(  getCount(map, hql.toUpperCase().indexOf(" WHERE ")>0? hql.substring(  hql.toUpperCase().indexOf(" WHERE")  ) : "")  );
+			if(pageBean.getCurrentPage()>pageBean.getTotalPage())
+				pageBean.setCurrentPage(pageBean.getTotalPage());
+		}
+		Tools.setPage(query, pageBean);
 		Tools.setQuery(map, query);
 		return query.list();
 	}
@@ -132,5 +142,4 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	public HibernateTemplate gethibernateTemplate(){
 		return hibernateTemplate;
 	}
-	
 }

@@ -25,4 +25,9 @@ CHANGE COLUMN `authName` `authName` VARCHAR(1024) NOT NULL DEFAULT '' ;
 ALTER TABLE `api`.`user` 
 ADD COLUMN `email` VARCHAR(45) NULL AFTER `type`;
 
+INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `status`, `type`,`canDelete`) VALUES 
+('e2a493a7-c4f0-4cbb-832f-4495a7074252', 'LOGINBG', 'https://dn-coding-net-production-static.qbox.me/d58141c9-9a0c-40b0-a408-5935fd70670f.jpg', 
+'登陆背景图', '1', 'IMAGE','0');
+
+
 

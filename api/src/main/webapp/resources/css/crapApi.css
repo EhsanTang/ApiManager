@@ -38,7 +38,14 @@ blockquote{
 }  
 .search-section:hover .search-button{
 	opacity:0.8!important;
-}      
+}  
+/*****登陆框*******/
+.login{
+	position: relative;
+	width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}    
 /*****项目主页*****/
 .project-title{
 	background-image:url('../images/project.jpg'); background-position:center;
@@ -89,12 +96,12 @@ blockquote{
 }
 
 .input-wrapper input {
-    padding: 15px 8px;
+    padding: 30px 8px;
     height: 48px;
     width: 100%;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 18px;
-    color: #787878;
+    color: #999999;
     border: 0;
     outline: 0;
     box-sizing: border-box;

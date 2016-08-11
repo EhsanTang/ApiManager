@@ -1,17 +1,20 @@
-body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,input,textarea,th,td
-{margin:0;padding:0;font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
+body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,textarea,th,td
+{margin:0;padding:0;font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif;}
 .fm{font-family: Tahoma,"\5b8b\4f53",Arial,Helvetica,Arial,sans-serif;}
 .roman {font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
 .transition{transition: all 0.2s ease-in-out;-moz-transition: all 0.2s ease-in-out;-webkit-transition: all 0.2s ease-in-out;}
 .cursor{cursor:pointer;}
+.nls{list-style: none}
 .break-word{
 	 word-break:break-all;
 	 word-wrap:break-word;
 	 white-space: normal!important;
 }
+.o2{opacity:0.2}.o3{opacity:0.3}.o5{opacity:0.5}.o8{opacity:0.8}
 .b0{border:0px!important;}
 .b1{border: 1px solid #DDD;}
 .dashed{border:1px dashed #DDD;}
+.dashed-t{border-top:1px dashed #DDD;}
 .bl1{border-left: 1px solid #DDD;}
 .bt1{border-top: 1px solid #DDD;}
 .bt0{border-top:0px!important;}
@@ -20,6 +23,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,pre,form,fieldset,legend,button,in
 .bl0{border-left:0px;}
 .br0{border-right:0px;}
 .BCEEE{border-color:#EEE;}
+.z10{z-index:10}
 img {
 	width: auto\9;
 	height: auto;
@@ -41,8 +45,10 @@ fieldset,img{border:0}
 table{border-collapse:collapse;border-spacing:0}
 .fixed{position:fixed;}.rel{position:relative;}
 .abs{position:absolute;}.static{position:static;}
-.r0{right:0px;}.l0{left:0px;}.t0{top:0px;}.b0{bottom:0px;}
-.no-radius{-moz-border-radius: 0px;-webkit-border-radius: 0px;border-radius: 0px;-khtml-border-radius: 0px;}
+.r0{right:0px;}.l0{left:0px;}.t0{top:0px;}
+.pos-r10{right:10px;}.pos-l10{left:10px;}.pos-b10{bottom:10px;}
+
+.no-radius{-moz-border-radius: 0px!important;-webkit-border-radius:  0px!important; border-radius:  0px!important; -khtml-border-radius:  0px!important;}
 .no-left-radius{border-top-left-radius: 0;border-bottom-left-radius: 0;}
 .no-right-radius{border-top-right-radius: 0;border-bottom-right-radius: 0;}
 .right-radius{border-top-right-radius: 5px;border-bottom-right-radius: 5px;}
@@ -51,18 +57,24 @@ table{border-collapse:collapse;border-spacing:0}
 .r2{-moz-border-radius: 2px;-webkit-border-radius: 2px;border-radius: 2px;-khtml-border-radius: 2px;}
 .r3{-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;-khtml-border-radius: 3px;}
 .r5{-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;-khtml-border-radius: 5px;}
+.r10{-moz-border-radius: 10px;-webkit-border-radius: 10px;border-radius: 10px;-khtml-border-radius: 10px;}
+.r12{-moz-border-radius: 12px;-webkit-border-radius: 12px;border-radius: 12px;-khtml-border-radius: 12px;}
+.r20{-moz-border-radius: 20px;-webkit-border-radius: 20px;border-radius: 20px;-khtml-border-radius: 20px;}
+
+
 .bg-feng{background-color:#ffebe8;}
 .bg-lan{background-color:#b2d1ff;}
 .BG999{background-color:#999!important;}.BGEEE{background-color:#EEE;}.BGFFF{background-color:#FFF;}
 .BGF5{background-color:#f5f5f5}.BGF9{background-color:#f9f9f9}
 .BGBBB{background-color:#BBB!important;}
-.C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.C000{color:#000}
+.C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.CFFF{color:#FFF;}.C000{color:#000}
+.ACFFF{color:#FFF;}.ACFFF:hover{color:#FFF;}
 .f9{font-size:9px}
 .f10{font-size:10px}
 .f11{font-size:11px}
 .f12{font-size:12px}
 .f13{font-size:13px}
-.f14{font-size:14px}
+.f14{font-size:14px!important}
 .f16{font-size:16px!important}
 .f18{font-size:18px!important}
 .f20{font-size:20px!important}
@@ -72,17 +84,19 @@ table{border-collapse:collapse;border-spacing:0}
 .f50{font-size:50px}
 .f60{font-size:60px}
 .fb{font-weight:bold}
-.fn{font-weight:normal}
+.fn{font-weight:normal!important}
 .t2{text-indent:2em}
-.lh20{line-height:20px}
+.lh20{line-height:20px!important}
 .lh25{line-height:25px}
 .lh26{line-height:26px}
 .lh30{line-height:30px}
 .lh40{line-height:40px}
 .lh50{line-height:50px}
 .lh70{line-height:70px}
-.unl{text-decoration:underline}
-.no_unl{text-decoration:none}
+.lh80{line-height:80px}
+.unl{text-decoration:underline!important}
+.no_unl{text-decoration:none!important}
+.no_unl:hover {text-decoration: none!important}
 .tl{text-align:left}
 .tc{text-align:center}
 .tr{text-align:right}
@@ -99,7 +113,7 @@ table{border-collapse:collapse;border-spacing:0}
 .h-auto{height:auto;}
 .h30{height:30px!important}.h20{height:20px}
 .h40{height:40px}.h50{height:50px}.h60{height:60px}.h70{height:70px}.h80{height:80px}.h90{height:90px}
-.h100{height:100px}.h200{height:200px}.h300{height:300px}.h400{height:400px}.h500{height:500px}
+.h100{height:100px}.h200{height:200px}.h220{height:220px}.h300{height:300px}.h400{height:400px}.h500{height:500px}
 .h{height:100%!important}
 .min-h{min-height:100%!important}
 .min-h70{min-height:70px}
@@ -108,6 +122,8 @@ table{border-collapse:collapse;border-spacing:0}
 .min-h400{min-height:400px}
 .min-h500{min-height:500px}
 .min-h600{min-height:600px}
+.min-h700{min-height:700px}
+.min-h800{min-height:800px}
 .min-w100{min-width:100px}
 .min-w200{min-width:200px}.min-w300{min-width:300px}
 .m0{margin:0px!important}
@@ -116,7 +132,7 @@ table{border-collapse:collapse;border-spacing:0}
 .mt-5{margin-top:-5px!important;}.mt-3{margin-top:-3px!important;}.mt-1{margin-top:-1px!important;}
 .mt-8{margin-top:-8px!important;}
 .mt-10{margin-top:-10px!important;}.mt0{margin-top:0px!important}
-.mt1{margin-top:1px!important}
+.mt1{margin-top:1px!important}.mt2{margin-top:2px!important}
 .mt5{margin-top:5px!important}.mt10{margin-top:10px!important}
 .mt15{margin-top:15px!important}.mt20{margin-top:20px!important}.mt30{margin-top:30px!important}.mt50{margin-top:50px!important}
 .mt75{margin-top:75px!important}.mt100{margin-top:100px!important}
@@ -151,7 +167,7 @@ table{border-collapse:collapse;border-spacing:0}
 .ml75{margin-left:75px}.ml100{margin-left:100px}
 
 /***********padding*******************/
-.p0{padding:0px!important}
+.p0{padding:0px!important}.p3{padding:3px!important}
 .p5{padding:5px!important}.p10{padding:10px!important}.p15{padding:15px!important}.p20{padding:20px!important}
 .p30{padding:30px!important}.p40{padding:30px!important}.p50{padding:30px!important}
 
@@ -182,6 +198,7 @@ table{border-collapse:collapse;border-spacing:0}
 .maw40 {max-width:40px;}
 .maw100 {max-width:100px;}
 .maw200 {max-width:100px;}
+.maw200 {max-width:400px;}
 .maw400 {max-width:400px;}
 
 .mah {max-height:100%;}
@@ -190,18 +207,7 @@ table{border-collapse:collapse;border-spacing:0}
 .mah100{ max-height:100px;}
 .mah200{ max-height:200px;}
 .mah300{ max-height:300px;}.mah400{ max-height:400px;}
-/***********Color***********************/
-/***remote iconfont*****/
-@font-face {
-  font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1460274273_3840206.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1460274273_3840206.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1460274273_3840206.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1460274273_3840206.svg#iconfont') format('svg'); /* iOS 4.1- */
-}
-                    
-                    
+/***********Color***********************/                                
                                      
 .iconfont {
 	vertical-align: middle;
@@ -233,3 +239,13 @@ table{border-collapse:collapse;border-spacing:0}
   	box-shadow:none!important;
 }
 .shadow{box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);}
+.trans{
+	content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,.6);
+    z-index:1;
+}

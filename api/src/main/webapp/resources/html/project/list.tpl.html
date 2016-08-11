@@ -1,0 +1,56 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="frontProjectCtrl">
+<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+<div class="col-xs-12 f16 fb pl0 mb10 pb5 mt20" ng-if="list.modules.length>0">模块列表</div>
+
+<div ng-if="list.modules.length==0 && list.interfaces.length==0" class="tc mt10 mb10 C999">
+			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>该模块下没有接口或子模块
+</div>
+		
+<div class="col-xs-12 p0 m0" ng-if="list.modules.length>0">
+	<div class="col-sm-4 col-md-3 m0 p0" ng-repeat="item in list.modules">
+		<div class="b1 tc r3 h220 m15 p10">
+			<i class="iconfont adorn-color f40 dis">&#xe61f;</i>
+				<div class="f16 C000 p10" ng-bind="item.name"></div>
+				<div class="C555 p10" ng-bind="item.remark|cut:true:20:' ...'"></div>
+			<a class="btn btn-default" ng-href="project.do#/project/{{item.id}}"> 
+				<i class="iconfont f12">&#xe60a;&nbsp;查看接口</i>
+			</a>
+		</div>
+	</div>
+</div>
+
+<div class="col-xs-12 f16 fb pl0 mb10 pb5 mt20" ng-if="list.interfaces.length>0">接口列表</div>
+<div class="col-xs-12 p0" ng-if="list.interfaces.length>0">
+	<table class="table table-striped">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc p15">名称</th>
+				<th class="tc p15">版本号</th>
+				<th class="tc p15">模块名</th>
+				<th class="w200 tc p15">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list.interfaces">
+				<td class="tc p15">{{item.interfaceName}}</td>
+				<td class="tc p15">{{item.version}}</td>
+				<td class="tc p15">{{item.moduleName}}</td>
+				<td class="tc p15">
+				<a class="f12 text-primary mr10 cursor"
+					ng-href="#/front/interfaceDetail/{{item.id}}"> <i class="iconfont f12">&#xe60a;</i>&nbsp;详情
+				</a>
+				<a class="f12 text-primary mr10 cursor"
+					ng-href="#/front/interface/debug/{{item.id}}"> <i class="iconfont f12">&#xe625;</i>&nbsp;调试
+				</a>
+				<a class="f12 text-primary mr10 cursor"
+					ng-href="front/interface/download/pdf.do?id={{item.id}}" target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

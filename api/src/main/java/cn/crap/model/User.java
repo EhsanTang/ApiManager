@@ -1,24 +1,25 @@
 package cn.crap.model;
 
+import javax.persistence.Transient;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.UserType;
 import cn.crap.framework.base.BaseModel;
 
 
 @Entity
 @Table(name="user")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class User extends BaseModel{
+public class User extends BaseModel implements Serializable{
 	/**
-	 * userId(用户ID)
-	 * */
-	private String userId;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * userName(用户昵称)
 	 * */
@@ -32,19 +33,8 @@ public class User extends BaseModel{
 	private String roleName;
 	private String auth;
 	private String authName;
+	private byte type;
 	
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="userId")
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	@Column(name="userName")
 	public String getUserName() {
 		return userName;
@@ -105,5 +95,19 @@ public class User extends BaseModel{
 		this.authName = authName;
 	}
 
+	
+	@Column(name="type")
+	public byte getType() {
+		return type;
+	}
 
+	public void setType(byte type) {
+		this.type = type;
+	}
+	
+	@Transient
+	public String getTypeName(){
+		return UserType.getNameByValue(type+"");
+	}
+	
 }

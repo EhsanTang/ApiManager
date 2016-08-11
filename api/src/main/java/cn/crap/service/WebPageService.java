@@ -1,7 +1,5 @@
 package cn.crap.service;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -22,9 +20,5 @@ public class WebPageService extends BaseService<WebPage>
 	public void setDao(IBaseDao<WebPage> dao) {
 		super.setDao(dao, new WebPage());
 	}
-
-	@Override
-	public List<String> findCategory() {
-		return webPageDao.getCategory();
-	}
+	
 }

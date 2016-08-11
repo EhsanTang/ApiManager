@@ -1,7 +1,6 @@
 package cn.crap.framework;
 
 import java.io.Serializable;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.crap.utils.Page;
 
@@ -13,11 +12,6 @@ public class JsonResult implements Serializable {
 	private  ErrorMessage error;
 	//传递至前端的其他参数
 	private Object others;
-	@Autowired
-	private static ErrorInfos errorInfos;
-	static{
-		errorInfos = SpringContextHolder.getBean("errorInfos", ErrorInfos.class);
-	}
 
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;
@@ -45,7 +39,7 @@ public class JsonResult implements Serializable {
 		this.data = null;
 		this.success = 0;
 		String errorCode = exception.getMessage();
-		String errorMsg =  errorInfos.getMessage(errorCode);
+		String errorMsg =  ErrorInfos.getMessage(errorCode);
 		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention())));
 	}
 	

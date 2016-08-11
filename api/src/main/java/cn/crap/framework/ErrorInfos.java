@@ -3,22 +3,16 @@ package cn.crap.framework;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
-/**
- *
- */
-@Component
 public class ErrorInfos {
 	
-	private Map<String, String> errMsgs;
+	private static Map<String, String> errMsgs;
 
-	public Map<String, String> getErrMsgs() {
+	public static Map<String, String> getErrMsgs() {
 		return errMsgs;
 	}
 
-	public void setErrMsgs(Map<String, String> errMsgs) {
-		this.errMsgs = errMsgs;
+	public static void setErrMsgs(Map<String, String> errMsgs) {
+		ErrorInfos.errMsgs = errMsgs;
 	}
 
 	public Map<String, String> getErrMap(String code) {
@@ -30,7 +24,7 @@ public class ErrorInfos {
 		return returnMap;
 	}
 	
-	public String getMessage(String code) {
+	public static String getMessage(String code) {
 		return errMsgs.get(code);
 	}
 	public Map<String, String> getErrMap(String code, String msg) {

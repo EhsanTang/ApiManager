@@ -12,6 +12,10 @@ $("#go_top").click(function (){
 function scrollToId(id){
 	$("html, body").animate({ scrollTop: $("#"+id).offset().top }, 400);
 }
+function getMarkdownText(html){
+	// 从markdown编辑器中提取文本
+	return replaceAll(html,"ace_line_group","\">\n<\"").replace(/<[^>]+>/g,"") ;
+}
 
 /**
  * 替换字符串中自定的字符
@@ -29,9 +33,11 @@ $(function () {
 	  $('[data-toggle="tooltip"]').tooltip();
 });
 /************显示id1，隐藏id2*********************/
-function changeDisplay(id1, id2) {
+function changeDisplay(id1, id2, id3, id4) {
 	$("#" + id2).addClass('none');
 	$("#" + id1).removeClass('none');
+	if(id3) $("#" + id3).addClass('none');
+	if(id4) $("#" + id4).addClass('none');
 };
 /**********打开Dialog******************/
 function openMyDialog(title,iwidth){
@@ -102,6 +108,27 @@ function uploadImgCallBack(msg, url) {
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
+
+//文档管理上传文件回调方法
+function uploadFileCallBack(msg, url) {
+	if (msg.indexOf("[OK]") >= 0) {
+		showMessage('lookUp', 'false', false, 0);
+		if (url!= undefined) {
+			//修改source中的filePath
+			var rootScope = getRootScope();
+			rootScope.$apply(function () {          
+			    rootScope.model.filePath = url;
+			    // 获取文件原名
+			    if(!rootScope.model.name){
+			    	rootScope.model.name = $("#filePath").val().substring($("#filePath").val().lastIndexOf("\\")+1);
+			    }
+			});
+		}
+	}else {
+		$("#lookUpContent").html(err1 + "&nbsp; " + url + "" + err2);
+		showMessage('lookUp', 'false', false, 3);
+	}
+}
 //文章页面上传图片回调方法
 function acticleUploadImgCallBack(msg, url) {
 	if (msg.indexOf("[OK]") >= 0) {
@@ -137,6 +164,10 @@ function changeimg(imgId,inputId){
 function getRootScope(){
 	var $body = angular.element(document.body);
 	return $body.scope().$root;
+}
+function getStateParams(){
+	var $body = angular.element(document.body);
+	return $body.scope().$stateParams;
 }
 
 
@@ -178,6 +209,12 @@ function clearCookie(params){
 	$.cookie(params, "");
 }
 
+function addCookie(key,value){
+	$.cookie(key, value);
+}
+function getCookie(key){
+	return $.cookie(key);
+}
 
 
 
@@ -207,5 +244,12 @@ function selectRadio(className,id,radioId){
 		obj.addClass("active"); 
 		$(cobj).prop("checked",true);
 	}
-	
+}
+
+/** ********************************** */
+function selectButton(obj,className){
+	window.editorId = new Date().getTime();
+	var objs = $("."+className);
+	objs.removeClass("iactive");
+	$(obj).addClass("iactive");
 }

@@ -1,0 +1,73 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+<div class="col-xs-12 p0 mt10">
+	<form ng-submit="submitForm('menu/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<!-- 菜单父节点不能修改
+			<tr>
+				<td class="tc">父菜单</td>
+				<td class="tc w200" colspan="3">
+					<input class="form-control" type="hidden" ng-model="model.id">
+					<div class="input-group">
+						<input  class="form-control"  id="parentId" type="text" ng-model="model.parentId" readonly>
+						<div class="input-group-addon cursor btn-purple"
+						 ng-click="loadPick($event,220,320,'true','parentId','MENU','',model.parentId,'&key=0');">
+						选择</div>
+					</div>
+				</td>
+				
+			</tr>
+			 -->
+			 <tr>
+				<td class="tc w150">名称</td>
+				<td class="tc"><input  class="form-control"  type="text" required ng-model="model.menuName"></td>
+			</tr>
+			<tr>
+				<td class="tc w150">类型</td>
+				<!-- 二级菜单不需要选着类型 -->
+				<td class="tc" ng-if="model.parentId=='0'">
+					<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选着类型" required
+					ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=typeName|tag=type|code=MENUTYPE|def='+model.type,$event)">
+				</td>
+				<td class="tc" ng-if="model.parentId!='0'">
+					<input  class="form-control" type="text" ng-model="model.typeName" readonly>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc">链接</td>
+				<td class="tc">
+					<div class="input-group w">
+						<textarea  class="form-control no-resize" id="menuUrl" ng-model="model.menuUrl" rows="3"
+						placeholder="请点击“选择地址”按钮选择链接地址，亦可手动输入链接，若有二级菜单，一级菜单链接无效"></textarea>
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,300,460,'true','menuUrl','MENURUL','','','&key='+model.type);">
+						选择地址
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+					<td class="tc">排序</td>
+					<td class="tc" colspan="3">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+			</tr>
+			<tr>
+				<td class="tc" rowspan="2" ng-if="model.parentId=='0'">图标</td>
+				<td class="tc" rowspan="2" ng-if="model.parentId!='0'">备注</td>
+				<td class="tc">
+					<textarea class="form-control no-resize" ng-model="model.iconRemark" rows="3"
+					placeholder='图片格式：<i class="iconfont">&xxxxx;</i>'></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc p0" colspan="3">
+					<div class="BGEEE p10" ng-bind-html="model.iconRemark|trustHtml"></div>
+				</td>
+			</tr>
+			
+	</table>
+	<button type="submit" class="btn btn-success fr">提交</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

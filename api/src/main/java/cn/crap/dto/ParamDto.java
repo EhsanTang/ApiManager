@@ -1,11 +1,17 @@
 package cn.crap.dto;
 
-public class ParamDto {
+import java.io.Serializable;
+
+public class ParamDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String necessary;
 	private String type;
-	private String parameterType;
 	private String remark;
+	private String def;
 	public String getName() {
 		return name;
 	}
@@ -24,17 +30,20 @@ public class ParamDto {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getParameterType() {
-		return parameterType;
-	}
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
-	}
+	
 	public String getRemark() {
 		return remark;
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	public String getDef() {
+		return def;
+	}
+	public void setDef(String def) {
+		this.def = def;
+	}
+	
+	
 	
 }

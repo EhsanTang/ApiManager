@@ -23,10 +23,13 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		var showType = getValue(params,'showType');
 		var def = getValue(params,'def');
 		var tagName = getValue(params,'tagName');
-		$rootScope.loadPick(event,iwidth,iheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName);
+		var iUrl = getValue(params,'iUrl');
+		$rootScope.loadPick(event,iwidth,iheight,radio,tag,code,type,def,iparams,showType,iCallBack,iCallBackParam,tagName,iUrl);
 	}
-	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName) { 
+	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName,iUrl) { 
 		/***********加载选择对话框********************/
+		if(!iUrl)
+			iUrl = "pick.do";
 		if(!params)
 			params='';
 		if(!tagName)
@@ -37,7 +40,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 			
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
-		callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
+		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
 		if(tagName)
 			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);
@@ -59,7 +62,12 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.page = result.page;
 				 $rootScope.others=result.others;
 			 }
-		});
+		}).error(function(result) {
+			lookUp('lookUp','',100,300,3);
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
+			$rootScope.error = result;
+			 
+		});;
     };
 	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {
 			//打开编辑对话框
@@ -78,20 +86,29 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 if(callBack)
 						 callBack();
 				 }
-			});
+			}).error(function(result) {
+				lookUp('lookUp','',100,300,3);
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
+				$rootScope.error = result;
+				 
+			});;
 	};
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
 		changeDisplay('interFaceDetail','copyInterFace');
-		goJsonPage('eparam','param','responseEparam','responseParam');
+		$("#eparam").addClass('none');
+		$("#param").removeClass('none');
+		$("#eheader").addClass('none');
+		$("#header").removeClass('none');
+		$("#responseEparam").addClass('none');
+		$("#responseParam").removeClass('none');
 	}
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
-		$rootScope.model.url="";
 		changeDisplay('copyInterFace','interFaceDetail');
 	};
 	$rootScope.del = function(iUrl,id,title){
-		title = title? title:"确认要删除'"+id+"'？";
+		title = title? title:"确认要删除【"+id+"】？";
 		if (confirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
 			httpService.callHttpMethod($http,params).success(function(result) {
@@ -107,20 +124,28 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 						 $("#refresh").click();
 	                 })
 				 }
-			});
+			}).error(function(result) {
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP', 3);
+				$rootScope.error = result;
+				 
+			});;
 	    }
 	};
 
-	$rootScope.submitForm = function(iurl,callBack){
+	$rootScope.submitForm = function(iurl,callBack,myLoading){
 		/**
 		  * 回调刷新当前页面数据
 		  */
 		if(callBack){
 			callBack();
 		}
-		var params = "iUrl="+iurl+"|iLoading=PROPUPFLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
+		iLoading = "PROPUPFLOAT";
+		if(myLoading){
+			iLoading = myLoading;
+		}
+		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=PROPUPFLOAT')
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading);
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 			 }else if(result.success==1){
@@ -132,7 +157,31 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 					 $("#refresh").click();
                  })
 			 }
+		}).error(function(result) {
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			$rootScope.error = result;
+			 
 		});
+	}
+	$rootScope.changeSequence = function(model,id,changeId){
+		var params = "iUrl=back/"+model+"/changeSequence.do|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT')
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 }else if(result.success==1){
+				 $rootScope.error = null;
+				 //关闭编辑对话框
+				 $timeout(function() {
+					 $("#refresh").click();
+                 })
+			 }
+		}).error(function(result) {
+			lookUp('lookUp','',100,300,3);
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
+			$rootScope.error = result;
+			 
+		});;
 	}
 	/***********************是否显示操作按钮************/
 	$rootScope.showOperation = function(dataType,moduleId){
@@ -151,19 +200,36 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	
 	$rootScope.getDate = function(str){
-		return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
+		if(str && str.indexOf(".")>0)
+			return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
 	}
 	/**
-	 * 提交数据字典时将表格数据转换为json
+	 * 提交数据字典时回调将表格数据转换为json
 	 */
 	$rootScope.preAddDictionary = function(){
 		var content = getParamFromTable("content");
 		$rootScope.model.content = content;
 	}
+	/**
+	 * 查看日志详情回调，格式化数据
+	 */
+	$rootScope.logDetailFormat = function(){
+		$rootScope.model.content  = format($rootScope.model.content);
+	}
+	
+	
+	/**
+	 * 数据字典、文章编辑回调
+	 */
 	$rootScope.getFields = function() {
+    		// 切换为默认编辑器
+    		changeDisplay('defEditor','kindEditor');
 	    	var content = "";
-	    	if($rootScope.model.content!=''&&isJson($rootScope.model.content)){
-	    		content = eval("("+$rootScope.model.content+")");
+	    	if($rootScope.model.content!=''){
+	    		// 如果是文章，eval会报错
+	    		try{
+	    			content = eval("("+$rootScope.model.content+")");
+	    		}catch(e){}
 	    	}
 	    	$("#content").find("tbody").find("tr").remove();
 	    	if(content!=null&&content!=""){
@@ -189,5 +255,13 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			}
 		}
 	}
+	/**************markdown*************/
+	$rootScope.markdownEtitor = function(href){
+		$("#markdownDialog").css('display','block'); 
+		document.getElementById("markdownFrame").src=href;
+	}
+	 $rootScope.iClose = function(id) {
+	    	iClose(id);
+	    };
 });
 

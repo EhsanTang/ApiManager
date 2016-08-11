@@ -3,10 +3,16 @@ package cn.crap.utils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
+
 import javax.servlet.http.HttpServletRequest;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.inter.service.ICacheService;
+import cn.crap.service.CacheService;
 
 public class Html2Pdf {
 	/**
@@ -31,18 +37,20 @@ public class Html2Pdf {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(destDir));
 			document.open();
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString(
-					Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId),
+					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id=" + interFaceId),
 					Charset.forName("UTF-8"));
 			document.close();
 			return destDir;
 		} catch (Exception e) {
 			e.printStackTrace();
-			String pdfUrl = Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id="
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			String pdfUrl = cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id="
 					+ interFaceId;
 			System.out.println("pdfUrl:" + pdfUrl);
-			String pdfContent = HttpPostGet.Get(
-					Cache.getSetting(Const.SETTING_DOMAIN).getValue() + "/interface/detail/pdf.do?id=" + interFaceId);
+			String pdfContent = HttpPostGet.get(
+					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id=" + interFaceId,null,null);
 			System.out.println("pdfContent:" + pdfContent);
 			throw e;
 		}

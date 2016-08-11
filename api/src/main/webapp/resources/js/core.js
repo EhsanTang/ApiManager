@@ -57,7 +57,7 @@ function getValue(params, key)
  * @param iPost
  *            发送方式
  * @param ishowMethod
- *            返回数据显示方式:(1:updateInput).更新input文本域中的值 (2:updateDivWithImg).更新div中的html，带图标
+ *            返回数据显示方式:(0:doNothing).什么都不做 (1:updateInput).更新input文本域中的值 (2:updateDivWithImg).更新div中的html，带图标
  *            (3:updateDiv).更新div中的html，不带图标 (4:html).返回html页面 (5:replaceDiv).替换div 
  *            (6:deleteDiv).删除div (7:return).返回数据 (100:custom).调用自定义回调函数刷新数据
  * @param iLoading
@@ -202,7 +202,7 @@ function showTip(iTarget,iLoading) {
 			floatOrPropUp = true;
 		}
 	}
-	if (!floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
+	if (oldLoadText.toUpperCase().indexOf('PROPUP') >= 0 && !floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
 		if (iLoading.toUpperCase() != "FALSE"){
 			//传递的参数含有图片，表示不以div的形式显示提示内容
 			if(iLoading.indexOf("<img")>=0){
@@ -344,13 +344,8 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    lObj.style.width = lWidth + 'px';
 	    lObj.style.left = (lLeft + document.documentElement.scrollLeft) + 'px';
 	    
-	    if(onMouse==6){
-	    	lObj.style.height = lHeight + 'px';
-	    	lObj.style.top =  lTop + 'px';
-	    }else{
-	    	lObj.style.height = lHeight + 'px';
-	    	lObj.style.top =  (lTop + $(window).scrollTop()) + 'px';
-	    }
+	    lObj.style.height = lHeight + 'px';
+		lObj.style.top =  lTop + 'px';
 }
 
 /**************************** 隐藏div *******************************/

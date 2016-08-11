@@ -2,10 +2,12 @@ package cn.crap.utils;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class MyString {
 	public static boolean isEquals(String tagValue,String value)
 	{
-		if(isEmpty(tagValue))
+		if(isEmpty(tagValue) || isEmpty(value))
 			return false;
 		else if(tagValue.equals(value))
 			return true;
@@ -23,7 +25,7 @@ public class MyString {
 	public static boolean isEmpty(Object object)
 	{
 		if(object instanceof String){
-			if(object == null||object.toString().trim().equals("")||object.toString().trim().equals("null")||object.toString().equals("undefined"))
+			if(object == null||object.toString().trim().equals("")||object.toString().trim().equalsIgnoreCase("null")||object.toString().equals("undefined"))
 				return true;
 		}else if(object instanceof List<?>){
 			if(object == null ||((List<?>)object).size()==0)
@@ -32,5 +34,18 @@ public class MyString {
 			return true;
 		}
 		return false;
+	}
+	
+	// 从request中获取值
+	public static String getValueFromRequest(HttpServletRequest request, String name){
+		return getValueFromRequest(request, name, "");
+	}
+	
+	public static String getValueFromRequest(HttpServletRequest request, String name, String defValue){
+		if( isEmpty(request.getParameter(name)) ){
+			return defValue;
+		}else{
+			return request.getParameter(name).toString();
+		}
 	}
 }

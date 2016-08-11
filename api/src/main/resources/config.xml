@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="config" class="cn.crap.utils.Config">
+		<!-- ip为空，则使用内存缓存，否则使用reids缓存，测试redis：60.28.29.22 -->
+		<property name="redisIp" value=""/>
+		
+		<property name="redisPort" value="6379"/>
+		
+		<!-- 为空串则表示没有密码 -->
+		<property name="redisPwd" value=""/>
+		
+		<!-- reids连接池大小 -->
+		<property name="redisPoolSize" value="50"/>
+		
+		<property name="redisKeyPrefix" value="api:crap:"/>
+		
+		<!-- 缓存时间，单位：s -->
+		<property name="cacheTime" value="3600"/>
+		
+		<!-- 用户登录信息缓存时间（最后一次后台操作时间超过该时间，登录信息将失效）：s -->
+		<property name="loginInforTime" value="3600"/>
+	</bean>
+</beans>

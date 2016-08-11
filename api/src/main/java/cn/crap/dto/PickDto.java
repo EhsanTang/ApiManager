@@ -1,12 +1,20 @@
 package cn.crap.dto;
 
+import java.io.Serializable;
+
+import cn.crap.enumeration.DataType;
+
 /**
  * 前端下拉选着框DTO
  * @author Ehsan
  *
  */
 
-public class PickDto{
+public class PickDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String value;
 	private String name;
@@ -21,6 +29,11 @@ public class PickDto{
 		this.id=id;
 		this.value=id;
 		this.name=name;
+	}
+	public PickDto(DataType dateType){
+		this.id=dateType.name();
+		this.value=dateType.name();
+		this.name=dateType.getName();
 	}
 	public String getId() {
 		return id;

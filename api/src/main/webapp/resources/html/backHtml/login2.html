@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="preLoginCtrl">
+<head>
+<title ng-bind="fontSettings.TITLE">CrapApi|接口管理系统</title>
+<meta charset="UTF-8">
+<link href="{{fontSettings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+<link href="{{fontSettings.ICON}}" rel="icon" type="image/x-icon" />
+<link href="{{fontSettings.ICON}}" rel="shortcut" type="image/x-icon" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+<link href="resources/framework/textAngular-1.5.0/textAngular.css"
+	rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+@media ( min-width : 1210px) {.container {width: {{fontSettings.MAX_WIDTH}}px!important}}
+.BG_COLOR {background-color: {{fontSettings.BG_COLOR}}}
+.FOOTER_BG_COLOR {background-color: {{fontSettings.FOOTER_BG_COLOR}}}
+.FOOTER_COLOR {color: {{fontSettings.FOOTER_COLOR}}}
+.FOOTER_COLOR a {color: {{fontSettings.FOOTER_COLOR}}}
+/* 默认主色:#B768A5*/
+.main-bg {background-color: {{fontSettings.MAIN_COLOR}}!important;}
+.main-color {color: {{fontSettings.MAIN_COLOR}}}
+.interface-detail blockquote {color: {{fontSettings.MAIN_COLOR}}}
+.bt-5 {border-top: 5px solid{{fontSettings.MAIN_COLOR}}}
+.bl-5 {border-left: 5px solid{{fontSettings.MAIN_COLOR}}}
+.menu-a:hover {background-color: {{fontSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:1;}
+.iactive {background-color: {{fontSettings.MAIN_COLOR}}!important;color:#ffffff!important;opacity: 0.8;}
+.pickActive {color: {{fontSettings.MAIN_COLOR}}}
+.pickSelect {color: {{fontSettings.MAIN_COLOR}}}
+.separator {border-bottom: 1px dotted{{fontSettings.MAIN_COLOR}};color: {{fontSettings.MAIN_COLOR}}}
+.look-up-content {border-top: 3px solid{{fontSettings.MAIN_COLOR}};}
+.sk-wave .sk-rect {background-color: {{fontSettings.MAIN_COLOR}}}
+/****************End:颜色*****************/
+</style>
+</head>
+<body class="BGF5">
+	<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
+	<div class="container">
+		<div class="row p0 m0 mt100  r5">
+			<div class="visible-lg-block col-lg-4"></div>
+			<div class="col-sm-12 col-lg-4 p50 shadow panel panel-default r5 bt-5">
+					<div id="warnMessage" class="text-error mb15 mt10"></div>
+					<blockquote>
+  						<a href="index.do" class="pl10 C999" ng-bind="fontSettings.TITLE"></a>
+					</blockquote>
+					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
+					<form class="form-horizontal p15 mt10" ng-submit="submitForm('login.do','','FLOAT')">
+						<div class="input-wrapper">
+							    <input type="text" ng-model="model.userName" placeholder="用户名"  autocomplete="off" required>
+						</div>
+						<div class="input-wrapper">
+								<input type="password" ng-model="model.password" placeholder="密码（不少于6位）"  autocomplete="off" required>
+						</div>
+						<div class="input-wrapper" ng-if="fontSettings.VERIFICATIONCODE=='true'">
+								<input type="text" ng-model="model.verificationCode"  autocomplete="off"  placeholder="图形验证码" required>
+								
+								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
+									<img id="imgCode" width="80" height="30" onclick="changeimg('imgCode','verificationCode')"
+  									 src="getImgCode.do">
+								</div>
+						</div>
+						<div class="form-group mt30">
+							<button type="submit" class="btn btn-block btn-success">登入<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
+						</div>
+						
+						<div class="form-group mb0 f12 C555 tr" id="remberPwd">
+							<div class="btn-group fr" data-toggle="buttons"">
+  								<label ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd != 'NO']" ng-click="changeRadio('YES')">
+   			 						<input type="radio" name="remberPwd" ng-model="model.remberPwd" value="YES"> YES
+  								</label>
+  								<label ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd == 'NO']" ng-click="changeRadio('NO')">
+    								<input type="radio" name="remberPwd" ng-model="model.remberPwd" value="NO"> NO
+  								</label>
+							</div>
+							<div class="fr lab">记住密码?</div>
+							<div class="fl lab"><a href="index.do">首页 →</a></div>
+								<div class="fl lab"><a href="http://tools.crap.cn/preLogin.do" target="_self">注册 →</a></div>
+						</div>
+					</form>
+				</div>
+				<div class="visible-lg-block col-lg-4"></div>
+			</div>
+		</div>
+	<!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
+	<!-- 可选: 包含 jQuery 库 -->
+		
+	<script src="resources/framework/jquery-1.9.1.min.js"></script>
+	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
+
+	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
+	<script
+		src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
+	<script src="resources/js/app.js?v=2010"></script>
+	<script src="resources/js/services.js"></script>
+	<script src="resources/js/router.js"></script>
+	 <script src="resources/js/backControllers.js?v=2010"></script>
+    <script src="resources/js/frontControllers.js?v=2010"></script>
+
+	<script
+		src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>
+	<script
+		src='resources/framework/textAngular-1.5.0/textAngular-sanitize.min.js'></script>
+	<script src='resources/framework/textAngular-1.5.0/textAngular.min.js'></script>
+
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
+	<script
+		src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+	<script
+		src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="resources/js/validateAndRefresh.js?v=200"></script>
+	<script src="resources/js/core.js?v=200"></script>
+	<script src="resources/js/global.js?v=200"></script>
+	<script src="resources/js/crapApi.js?v=200"></script>
+	
+	
+	<!-- 提示窗口 -->
+	<div id="lookUp" class="look-up shadow">
+		<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
+		<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
+	</div>
+	<div id="fade"></div>
+	
+	
+	<div id="float" class="folat">
+		<div class="sk-wave">
+			<div class="sk-rect sk-rect1"></div>
+			<div class="sk-rect sk-rect2"></div>
+			<div class="sk-rect sk-rect3"></div>
+			<div class="sk-rect sk-rect4"></div>
+			<div class="sk-rect sk-rect5"></div>
+		</div>
+	</div>
+</body>
+</html>

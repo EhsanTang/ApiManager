@@ -4,6 +4,8 @@ body{
 	word-wrap:break-word;
 	background-color:#DDD;
 }
+/**火狐红色边框**/
+input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
 table{
 	font-size:12px;
 	font-weight:normal;
@@ -13,6 +15,49 @@ html,body{
     height: 100%;
     width: 100%;
 }
+blockquote{
+	padding-left:10px;
+}
+/***remote iconfont*****/
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1467531606_3978436.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1467531606_3978436.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1467531606_3978436.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1467531606_3978436.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1467531606_3978436.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+                    
+                    
+/***默认颜色**/
+.def-bg{
+	background:#cccccc;
+}                 
+.search-input:focus{
+	opacity:1!important;
+}  
+.search-section:hover .search-button{
+	opacity:0.8!important;
+}  
+/*****登陆框*******/
+.login{
+	position: relative;
+	width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}    
+/*****项目主页*****/
+.project-title{
+	background-image:url('../images/project.jpg'); background-position:center;
+}
+/*****左边菜单*****/
+ .left-menu-border-top{
+ 	border-top: 1px solid #888!important;
+ }
+/********前端显示最小宽度*************/
+.container-fluid{min-width: 770px;}
+.navbar-inverse{min-width: 770px;border:0px!important;}
+.container{min-width: 770px;}               
 /********文章页面，图片居中显示********/
 #fade{
 	opacity: 0.5;
@@ -51,12 +96,12 @@ html,body{
 }
 
 .input-wrapper input {
-    padding: 15px 8px;
+    padding: 30px 8px;
     height: 48px;
     width: 100%;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 18px;
-    color: #787878;
+    color: #999999;
     border: 0;
     outline: 0;
     box-sizing: border-box;
@@ -73,7 +118,7 @@ html,body{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#content input,#editResponseParamTable input{
+#editParamTable input,#editParamTable select,#content input,#editHeaderTable input, #editResponseParamTable input,.tableInupt input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;
@@ -101,7 +146,6 @@ html,body{
     margin-bottom: 10px;
 }
 .interface-detail blockquote{
-	color:#B768A5;
 	line-height:10px;
 	padding-left:10px;
 	font-size:12px;
@@ -113,6 +157,8 @@ html,body{
     font-weight:100;
     line-height: 24px;
     font-size: 12px;
+    white-space: pre-wrap;
+	word-wrap: break-word;
 }
 /***************************/
 #go_top{
@@ -139,13 +185,6 @@ html,body{
     padding: 2px;
     line-height: 26px;
     width: 100%;
-}
-/****/
-.bt-5{
-	border-top:5px solid #b768a5;
-}
-.bl-5{
-	border-left:5px solid #b768a5;
 }
 #editForm table td{
 	padding:6px 8px;
@@ -180,11 +219,6 @@ html,body{
 .navbar-fixed-top {
     border: 0;
 }
-/*****寮傛鍔犺浇瀵艰嚧楂樺害鏈夐棶棰橈紝婊氬姩搴曢儴鍑虹幇鐧借竟*****/
-.modal-backdrop{
-	min-height:1000px;	
-}
-
 
 /*******************left**********************/
 .nav-face{
@@ -196,10 +230,9 @@ html,body{
   	background-color:transparent!important;
 }
 .panel-heading{
-	border-top: 1px solid #AAA!important;
-  	border-bottom: 1px solid #BBB!important;
   	color:#DDD!important;
   	padding:0px!important;
+  	background:#999999!important;
 }
 .panel-heading .badge{
 	background-color: #B768A5!important;
@@ -212,10 +245,7 @@ html,body{
 	text-decoration: none;
 }
 
-.panel-body:hover, .panel-body .active{
-  color: #fff;
-  background-color: #B768A5;
-}
+
 .panel-body a{
 	width:100%;
 	display:inline-block;
@@ -223,9 +253,6 @@ html,body{
 	padding-bottom:10px;
 	padding-left:30px;
 	color: #555;
-}
-.panel-body:hover a{
-	color: #fff;
 }
  .searchInput {
  	display:inline-block!important;
@@ -243,13 +270,14 @@ html,body{
 	 background: rgba(255, 255, 255, 0.4); 
  }****************/
  /*****************pick***************************/
+ .iactive{
+ 	font-weight:bold;
+ }
  .pickActive{
- 	color:#b768a5;
  	font-weight:bold;
  }
  .pickSelect{
  	background:#DDD;
- 	color:#b768a5;
  	font-weight:bold;
  }
  #pickContent div:hover{
@@ -258,16 +286,14 @@ html,body{
  .separator{
  	border:0px;
  	margin-top:10px;
- 	border-bottom:1px dotted #b768a5;
  	font-size:12px;
  	margin-bottom:10px;
  	text-align: left;
- 	color:#b768a5;
  }
  /*****************加载浮层***************************/
 .folat{
 	display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
-	z-index:1050;
+	z-index:1060;
 	background: rgba(0, 0, 0, 0.1); 
 	padding-top:20%; text-align:center;
 }
@@ -286,7 +312,6 @@ html,body{
  	z-index: 1060;
 }
 .look-up-content {
-  border-top: 3px solid #b768a5;
   position: relative;
   background: #FDFDFD;
   width: 100%;
@@ -363,7 +388,7 @@ html,body{
 }
 @media (max-width: 767px) {
 }
-/*************椤甸潰鍔犺浇鎻愮ず************/
+/*************loading************/
 .sk-wave {
   margin: 40px auto;
   width: 50px;
@@ -371,7 +396,6 @@ html,body{
   text-align: center;
   font-size: 10px; }
   .sk-wave .sk-rect {
-    background-color: #B768A5;
     height: 100%;
     width: 6px;
     display: inline-block;

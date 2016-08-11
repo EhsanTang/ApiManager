@@ -1,9 +1,9 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -17,9 +17,12 @@ import cn.crap.framework.base.BaseModel;
 @Entity
 @Table(name="role")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Role extends BaseModel{
+public class Role extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private String roleId;
 	private String roleName;
 	private String auth;
 	private String authName;
@@ -39,17 +42,6 @@ public class Role extends BaseModel{
 
 	public void setAuthName(String authName) {
 		this.authName = authName;
-	}
-
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="roleId")
-	public String getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
 	}
 
 	@Column(name="roleName")

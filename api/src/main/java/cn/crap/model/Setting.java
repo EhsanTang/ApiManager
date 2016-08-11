@@ -1,35 +1,32 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
+
+import cn.crap.enumeration.SettingType;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.utils.MyString;
-import cn.crap.utils.SettingType;
 
 @Entity
 @Table(name="setting")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Setting extends BaseModel{
-	private String id;
+public class Setting extends BaseModel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String key;
 	private String value;
 	private String remark;
 	private String type;
+	private byte canDelete;
 	
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="id")
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	@Column(name="mkey")
 	public String getKey() {
 		return key;
@@ -58,6 +55,14 @@ public class Setting extends BaseModel{
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	
+	@Column(name="canDelete")
+	public byte getCanDelete() {
+		return canDelete;
+	}
+	public void setCanDelete(byte canDelete) {
+		this.canDelete = canDelete;
 	}
 	@Transient
 	public String getTypeName(){

@@ -1,16 +1,16 @@
 package cn.crap.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.MenuType;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.MenuType;
 import cn.crap.utils.MyString;
 
 
@@ -20,11 +20,11 @@ import cn.crap.utils.MyString;
 @Entity
 @Table(name="menu")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Menu extends BaseModel{
+public class Menu extends BaseModel implements Serializable{
 	/**
-	 * menuId
-	 * */
-	private String menuId;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * menuName(菜单名称)
 	 * */
@@ -49,17 +49,6 @@ public class Menu extends BaseModel{
 		return "";
 	}
 	
-	@Id
-	@GeneratedValue(generator="Generator")
-	@Column(name="menuId")
-	public String getMenuId() {
-		return menuId;
-	}
-
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
-	}
-
 	@Column(name="menuName")
 	public String getMenuName() {
 		return menuName;

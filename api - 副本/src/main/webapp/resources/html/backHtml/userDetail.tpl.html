@@ -1,0 +1,60 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+<div class="col-xs-12 p0 mt10">
+	<form ng-submit="submitForm('user/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<tr>
+				<td class="tc w100">用户名</td>
+				<td class="tc" colspan="3">
+					<input  class="form-control"  type="text" ng-model="model.userName" required>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc">真实姓名</td>
+				<td class="tc" colspan="3">
+					<input  class="form-control" type="text" ng-model="model.trueName" required>
+				</td>
+			</tr>
+			<tr>
+				<td class="tc">类型</td>
+				<td class="tl" colspan="3">
+						*普通用户只能查看自己创建的项目，管理员能查看所有项目<br>
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=typeName|tag=type|code=USERTYPE|def='+model.type,$event)">
+				</td>
+			</tr>
+			<tr>
+				<td class="tc">密码</td>
+				<td class="tc" colspan="3">
+					<input  class="form-control" type="text" ng-model="model.password">
+				</td>
+			</tr>
+			<tr ng-if="showOperation('USER','');">
+				<td class="tc">权限</td>
+				<td class="tc w200" colspan="3">
+					<div class="input-group">
+						<input  class="form-control" readonly id="authName" type="text" ng-model="model.authName" placeholder="请点击“选择”按钮选择权限">
+						<div class="input-group-addon cursor btn-purple" ng-click="loadPickByName('iwidth=300|iheight=460|radio=false|tagName=authName|tag=auth|code=AUTH|def='+model.auth,$event)">
+						选择</div>
+					</div>
+				</td>
+				
+			</tr>
+			<tr ng-if="showOperation('USER','');">
+				<td class="tc">角色</td>
+				<td class="tc w200" colspan="3">
+					<div class="input-group">
+						<input  class="form-control" readonly id="roleName" type="text" ng-model="model.roleName" placeholder="请点击“选择”按钮选择角色">
+						<div class="input-group-addon cursor btn-purple" 
+						ng-click="loadPickByName('iwidth=300|iheight=460|radio=false|tagName=roleName|tag=roleId|code=ROLE|def='+model.roleId,$event)">
+						选择</div>
+					</div>
+				</td>
+			</tr>
+	</table>
+	<button type="submit" class="btn btn-success fr">修改</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

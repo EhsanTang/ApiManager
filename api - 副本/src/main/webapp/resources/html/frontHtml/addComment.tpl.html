@@ -1,0 +1,23 @@
+<div class="bb1 mt20 C999 fb f16 pb5">发表评论</div>
+
+<form ng-submit="submitForm('comment/add.do')" class="mt10">
+	<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="model.content"
+			rows="4" required placeholder="请输入评论内容">
+	</textarea>
+	<div class="input-wrapper bt0 fr w300 m0 h50">
+			<input  ng-if="commentCode=='true'" type="text" placeholder="图形验证码" required ng-model="model.id"><!-- 添加评论id为空，所以用来临时报错code -->
+			<div  ng-if="commentCode=='true'" class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+			data-toggle="tooltip" style="right:100px;">
+			<img id="imgCode2" width="80" height="30"
+								onclick="changeimg('imgCode2','verificationCode')"
+								src="getImgCode.do">
+			</div>
+			<button type="submit" class="btn btn-purple btn-sm mt10 imgCode">发表评论</button>
+	</div>
+</form>
+<div class="cb"></div>
+<div ng-repeat="item in comments" class="p10 BGF9 mt10 r5 lh20">
+	<div class="fb">匿名<br>{{item.content}}</div>
+	<div class="f12 C999 fr">{{getDate(item.createTime)|date:'yyyy-MM-dd HH:mm'}}</div>
+	<div class="cb"></div>
+</div>

@@ -1,0 +1,80 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="backErrorCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">错误码管理</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
+	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+</div>
+<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
+		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
+			<i class="iconfont">&#xe60d;</i>&nbsp;查询
+		</button>
+		<div class="form-group w200 fr">
+			<label class="sr-only" for="">Code</label>
+			<div class="input-group">
+				<div class="input-group-addon">Code</div>
+				<input type="text" class="form-control input-xs dis-in-blo"
+					placeholder="Code" id="searchCode">
+			</div>
+		</div>
+		<div class="form-group w200 fr mr10">
+			<label class="sr-only" for="">Msg</label>
+			<div class="input-group">
+				<div class="input-group-addon">Msg</div>
+				<input type="text" class="form-control input-xs dis-in-blo w120"
+					placeholder="Msg" id="searchMsg">
+			</div>
+		</div>
+		<div class="form-group w200 fr mr10">
+			<input type="hidden" class="form-control dis-in-blo w120" id="searchModuleId">
+			<label class="sr-only" for="">模块</label>
+			<div class="input-group">
+				<div class="input-group-addon">模块</div>
+				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选着模块" id="searchModuleName"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=searchModuleName|tag=searchModuleId|code=TOPMODULE|def='+$stateParams.searchModuleId,$event);">
+			</div>
+		</div>
+		<div class="cb"></div>
+</div>
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">错误码列表</div>
+<div class="col-xs-9 mt20 p0 mb10 f14 tr">
+	<a type="button" class="btn btn-success btn-sm cursor" 
+		ng-click="detail('新增错误码',700,'back/error/detail.do?id=NULL','&moduleId='+$stateParams.searchModuleId);"> 
+		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
+	</a>
+</div>
+
+<div class="col-xs-12 p0">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">Code</th>
+				<th class="tc">Msg</th>
+				<th class="tc">模块</th>
+				<th class="w300 tc">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list">
+				<td class="tc">{{item.errorCode}}</td>
+				<td class="tc">{{item.errorMsg}}</td>
+				<td class="tc">{{item.moduleName}}</td>
+				<td class="tc">
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('ERROR',item.moduleId);"
+					ng-click="detail('编辑【'+item.errorCode+'】',700,'back/error/detail.do?id='+item.id)"
+					data-toggle="tooltip" data-placement="top"
+					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
+				</a>
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('ERROR',item.moduleId);"
+					ng-click="del('back/error/delete.do?id='+item.id,item.errorCode)">
+					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

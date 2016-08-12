@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="errorInfos" class="cn.crap.framework.ErrorInfos">
+		<property name="errMsgs">
+			<map>
+				<entry key="000001" value="系统未知错误" />
+				<entry key="000002" value="重复的errorCode" />
+				<entry key="000003" value="权限不足或登录超时，操作失败！" />
+				<entry key="000004" value="重复的接口url地址！" />
+				<entry key="000005" value="接口url不能为空！" />
+				<entry key="000006" value="重复的key！" />
+				<entry key="000007" value="请输入访问密码" />
+				<entry key="000008" value="数据类型有误" />
+				<entry key="000009" value="系统数据，不允许删除" />
+				<entry key="000010" value="验证码输入有误" />
+				<entry key="000011" value="验证码已失效，请刷新验证码" />
+				<entry key="000012" value="查找数据失败" />
+				<entry key="000013" value="用户名不存在" />
+				<entry key="000014" value="用密码有误" />
+				<entry key="000015" value="用户名已被使用，请更换用户名" />
+				<entry key="000016" value="文件地址不能为空" />
+				<entry key="000017" value="文件名有误，无法识别的版本号：文件必须包含“.CAV.文件标识.版本号”" />
+				<entry key="000018" value="文件标识有误，更新文件时，文件名必须包含“.CAV.文件标识.版本号”，且【文件标识】必须和原文件相同" />
+				<entry key="000019" value="文件版本号已经过期，请重新下载文件编辑后再上传" />
+				<entry key="000020" value="参数有误，查询失败" />
+				<entry key="000021" value="登录超时" />
+				<entry key="000022" value="权限不足" />
+				<entry key="000023" value="子模块数量大于0，不允许删除该模块" />
+				<entry key="000024" value="接口数量大于0，不允许删除该模块" />
+				
+			</map>
+		</property>
+	</bean>
+</beans>

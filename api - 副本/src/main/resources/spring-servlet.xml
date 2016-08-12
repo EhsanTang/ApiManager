@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/task
+    	http://www.springframework.org/schema/task/spring-task-4.0.xsd
+        ">
+    <tx:annotation-driven transaction-manager="transactionManager" />
+	<!--注解扫描范围 -->
+	<context:annotation-config />
+	<mvc:annotation-driven/>
+	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+	<!-- 采用注解的方式配置，在部分操作系统或tomcat中由于初始化顺序不一致，会报错 -->
+	<!-- 必须放在component-scan之上，优先创建该bean -->
+	<bean class="cn.crap.framework.SpringContextHolder" />
+	<context:component-scan base-package="cn.crap" />
+	<!-- 业务错误码 -->
+	<import resource="errorInfo.xml" />
+	<import resource="config.xml" />
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:jdbc.properties</value>
+		</property>
+	</bean>
+
+	<bean id="dataSource" destroy-method="close"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>cn.crap</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- org.hibernate.dialect.SQLServerDialect -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<!-- 配置数据源 -->
+				<prop key="hibernate.c3p0.max_size">50</prop>
+				<prop key="hibernate.c3p0.min_size">5</prop>
+				<prop key="hibernate.c3p0.acquire_increment">5</prop>
+				<prop key="hibernate.c3p0.max_statements">200</prop>
+				<prop key="hibernate.c3p0.idle_test_period">3000</prop>
+				<prop key="hibernate.c3p0.validate">false</prop>
+				<prop key="hibernate.c3p0.timeout">5000</prop>
+				<prop key="current_session_context_class">thread</prop> <!-- 设置是否可以获取currentSession -->
+			</props>
+		</property>
+	</bean>
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<mvc:interceptors>
+		<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<!-- 如果不定义 mvc:mapping path 将拦截所有的URL请求 -->
+		<bean class="cn.crap.framework.auth.AuthInterceptor"></bean>
+	</mvc:interceptors>
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<util:list id="beanList">
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</util:list>
+		</property>
+	</bean>
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<!-- <property name="suffix" value=".jsp"></property> -->
+	</bean> 
+
+	<!-- hibernate的事物管理sevices层面实现事物管理,而且达到和平台无关 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+ 	<!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+</beans>

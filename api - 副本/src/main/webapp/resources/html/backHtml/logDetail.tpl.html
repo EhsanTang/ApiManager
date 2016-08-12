@@ -1,0 +1,30 @@
+<div class="r0 p10 pt0 col-xs-12">
+<div class="col-xs-12 p0 mt10">
+		<table class="table table-bordered">
+			<tr>
+				<td class="w100">类型</td>
+				<td ng-bind="model.modelName"></td>
+			</tr>
+			<tr>
+				<td>备注</td>
+				<td ng-bind="model.remark"></td>
+			</tr>
+			<tr>
+				<td>操作人</td>
+				<td ng-bind="model.updateBy"></td>
+			</tr>
+			<tr>
+				<td>时间</td>
+				<td ng-bind="getDate(model.createTime)|date:'yyyy-MM-dd HH:mm'"></td>
+			</tr>
+			<tr>
+				<td>修改前的类容</td>
+				<td class="code">
+					<pre ng-bind="model.content"></pre>
+				</td>
+			</tr>
+	</table>
+</div>
+</div>
+<div class="cb"></div>
+

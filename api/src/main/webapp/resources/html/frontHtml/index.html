@@ -61,11 +61,12 @@
 			</div>
 		</div>
 	</nav>
-	<div class="def-bg main-bg h80 mb20">
-		<div class="container lh80 p0 main-bg">
+	<div class="def-bg main-bg h120 mb20 title-bg-img">
+		<div class="container p0">
 			<div class="row">
-				<div class="col-xs-6">
-					<ul class="nls m0 p0 f12 ACFFF fl">
+				<div class="col-xs-7">
+					<div class="pt30 CFFF"><h3>站内导航</h3></div>
+					<ul class="nls m0 p0 f12 ACFFF fl mt10">
 		 			 <li class="fl p0"><a href="index.do" class="ACFFF">首页</a></li>
 		 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
 		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name|cut:true:20:' ...'"></a>
@@ -73,8 +74,8 @@
 		 			 </li>
 					</ul>
 				</div>
-				<div class="col-xs-6">
-					<div class="form-group w300 fr mr10 mt20 search-section" ng-controller="frontSearchCtrl">
+				<div class="col-xs-5">
+					<div class="form-group w300 fr mr10 mt40 search-section" ng-controller="frontSearchCtrl">
 						<label class="sr-only">search</label>
 						<div class="input-group b0">
 							<input type="text" class="form-control input-xs dis-in-blo f12 w120 b0 no-radius o2 search-input C999" id="searchInput"

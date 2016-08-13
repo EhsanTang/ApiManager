@@ -42,14 +42,11 @@ blockquote{
 /*****登陆框*******/
 .login{
 	position: relative;
-	width: 460px;
+	width: 400px;
     margin-left: auto;
     margin-right: auto;
 }    
-/*****项目主页*****/
-.project-title{
-	background-image:url('../images/project.jpg'); background-position:center;
-}
+
 /*****左边菜单*****/
  .left-menu-border-top{
  	border-top: 1px solid #888!important;

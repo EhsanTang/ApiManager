@@ -59,7 +59,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             	// 删除cookie
             	MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
             	if(request.getRequestURI().endsWith("admin.do")){
-            		response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
+            		response.sendRedirect("loginOrRegister.do#/login");
             		return false;
             	}
             	else

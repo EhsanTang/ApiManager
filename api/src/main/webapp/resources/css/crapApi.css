@@ -93,7 +93,7 @@ blockquote{
 }
 
 .input-wrapper input {
-    padding: 30px 8px;
+    padding: 26px 8px;
     height: 48px;
     width: 100%;
     font-size: 16px;
@@ -183,6 +183,7 @@ blockquote{
     line-height: 26px;
     width: 100%;
 }
+
 #editForm table td{
 	padding:6px 8px;
 }

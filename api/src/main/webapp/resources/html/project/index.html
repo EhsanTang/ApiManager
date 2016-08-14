@@ -20,52 +20,12 @@
 <body class="BG_COLOR">
 	<div ng-include="'resources/html/subTpl/css.tpl.html'"></div>
 	<input type="hidden" id="projectId">
-	<!-- Top -->
-		<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR mb0">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand p0 pt10" href="index.do" target="_blank">
-					<img class="h30" ng-src="{{settings.LOGO}}" />
-				</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse p0">
-				<ul class="nav navbar-nav navbar-right ml20">
-					<li>
-	                	<a ng-href="#/project/{{projectId}}" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">项目首页</a>
-	                </li>
-	                
-					<li>
-	                	<a href="http://tools.crap.cn/index.jsp.do" class="menu-a ng-binding" target="_blank"
-	                	onclick="selectButton(this,'menu-a')" href="http://tools.crap.cn/index.jsp.do">在线工具</a>
-	                </li>
-	                
-					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
-	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="menu-a" onclick="selectButton(this,'menu-a')"></a>
-	                </li>
-	                
-	                <li class="dropdown" ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
-	                	 <a href="javascript:void(0)" class="dropdown-toggle menu-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'menu-a')">
-	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>
-	                 	 <ul class="dropdown-menu">
-	                    	<li ng-repeat="subItem in item.subMenu">
-	                    		<a ng-href="{{subItem.menuUrl}}" ng-bind="subItem.menuName"></a>
-	                    	</li>
-	                  </ul>
-	                </li>
-					<li ng-if="sessionAdminName==''"><a href="go.do?p=resources/html/backHtml/login.html#/preLogin"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
-					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-					<li ng-if="sessionAdminName!=''"><a href="javascript:void(0)" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+	
+	<!-- Top Nav -->
+	<div ng-include="'resources/html/subTpl/frontTopNav.tpl.html'"></div>
+	<!-- Top Nav End -->
+	
+	<!-- Top Search-->
 	<div class="h120 title-bg-img">
 		<div class="container p0 CFFF h">
 		<div class="row">
@@ -102,12 +62,7 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- End:top -->
-	
-	
-	
-	
+	<!-- Top Search End-->
 	
 	<div class="container p0 mt20">
 		<div class="row min-h p0 m0">

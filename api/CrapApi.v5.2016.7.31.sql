@@ -33,6 +33,10 @@ INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `status`, `type`,`
 ('e2a493a7-c888-4cbb-832f-4495a7074252', 'TITLEBG', 'resources/images/project.jpg', 
 '头部标题背景图：resources/images/project.jpg,为空则显示主色调', '1', 'IMAGE','0','100');
 
+ALTER TABLE `api`.`user` 
+ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
+
+
 
 
 

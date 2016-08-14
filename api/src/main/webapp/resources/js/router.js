@@ -17,8 +17,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/WELCOME');
 	}
 	/*********************后台*******************/
-	$stateProvider.state('preLogin', {
-		url : '/preLogin',
+	$stateProvider.state('loginOrRegister', {
+		url : '/login',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/login.tpl.html'
+			}
+		}
+	}).state('register', {
+		url : '/register',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/register.tpl.html'
+			}
+		}
 	}).state('menuList', {
 		url : '/menu/list/:parentId/:type/:menuName',
 		views : {
@@ -185,6 +197,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	})
+	
 	/*********************前端*******************/
 	$stateProvider.state('webSettingDetail', {
 		url : '/webSetting/detail/:key',

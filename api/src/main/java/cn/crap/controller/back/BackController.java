@@ -37,6 +37,12 @@ public class BackController extends BaseController<User> {
 		return "resources/html/backHtml/index.html";
 	}
 	
+	@RequestMapping("/loginOrRegister.do")
+	public String loginOrRegister() throws Exception {
+		return "resources/html/backHtml/loginOrRegister.html";
+	}
+	
+	
 	/**
 	 * 删除错误提示
 	 */

@@ -1,0 +1,53 @@
+
+<blockquote>
+	<sapn class="pl10 C000 f18 fb">用户登录</span>
+</blockquote>
+<input type="hidden" value="[ERROR][LOGINPAGE]" />
+<form class="form-horizontal p15 mt10" ng-submit="submitForm('login.do','','FLOAT')" ng-controller="preLoginCtrl">
+	<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
+	<div class="input-wrapper">
+		<input type="text" ng-model="model.userName" placeholder="用户名"
+			autocomplete="off" required>
+	</div>
+	<div class="input-wrapper">
+		<input type="password" ng-model="model.password"
+			placeholder="密码（不少于6位）" autocomplete="off" required>
+	</div>
+	<div class="input-wrapper"
+		ng-if="settings.VERIFICATIONCODE=='true'">
+		<input type="text" ng-model="model.verificationCode"
+			autocomplete="off" placeholder="图形验证码" required>
+
+		<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+			data-toggle="tooltip">
+			<img id="imgCode" width="80" height="30"
+				onclick="changeimg('imgCode','verificationCode')"
+				src="getImgCode.do">
+		</div>
+	</div>
+	<div class="form-group mt30 mb30">
+		<button type="submit"
+			class="btn btn-block btn-default r20 adorn-color">
+			登入<i class='iconfont mt-1 pl10'>&#xe601;</i>
+		</button>
+	</div>
+
+	<div class="form-group mb0 f12 C555 tr" id="remberPwd">
+		<div class="btn-group fr" data-toggle="buttons"">
+			<label
+				ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd != 'NO']"
+				ng-click="changeRadio('YES')"> <input type="radio"
+				name="remberPwd" ng-model="model.remberPwd" value="YES"> YES
+			</label> <label
+				ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd == 'NO']"
+				ng-click="changeRadio('NO')"> <input type="radio"
+				name="remberPwd" ng-model="model.remberPwd" value="NO"> NO
+			</label>
+		</div>
+		<div class="fr lab">记住密码?</div>
+		<div class="fl lab">
+			<a href="#/register">注册 →</a>
+		</div>
+	</div>
+</form>
+<div id="warnMessage" class="text-error mb15 mt10"></div>

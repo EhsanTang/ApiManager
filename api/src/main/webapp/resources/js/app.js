@@ -216,8 +216,6 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.logDetailFormat = function(){
 		$rootScope.model.content  = format($rootScope.model.content);
 	}
-	
-	
 	/**
 	 * 数据字典、文章编辑回调
 	 */

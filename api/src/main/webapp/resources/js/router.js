@@ -287,8 +287,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('project', {
-		url : '/project/:moduleId',
+	}).state('projectMain', {
+		url : '/:projectId/project',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -296,12 +296,32 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('projectMain', {
-		url : '/project/:moduleId/:projectId',
+	}).state('projectModule', {
+		url : '/:projectId/project/:moduleId',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/project/list.tpl.html';
+				}
+			}
+		}
+	}).state('projectDictionaryList', {
+		url : '/:projectId/project/dictionary/list',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/project/dictList.tpl.html';
+				}
+			},'page@projectDictionaryList' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
+	}).state('projectDicDetail', {
+		url : '/:projectId/project/dicDetail/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/project/dictDetail.tpl.html';
 				}
 			}
 		}

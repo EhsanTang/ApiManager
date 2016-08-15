@@ -11,18 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
 import cn.crap.model.User;
+import cn.crap.model.WebPage;
+import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 /**
@@ -41,6 +47,8 @@ public class FrontProjectController extends BaseController<User> {
 	private IInterfaceService interfaceService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private IWebPageService webPageService;
 	
 	/**
 	 * 前端项目主页
@@ -73,7 +81,7 @@ public class FrontProjectController extends BaseController<User> {
 			dc.setName("开放接口");
 			dc.setId("open");
 			dc.setRemark("由CrapApi&网友整理的常用免费接口");
-			return new JsonResult(1, map, page, Tools.getMap("module", dc));
+			return new JsonResult(1, map, page);
 			
 		}else{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
@@ -88,8 +96,25 @@ public class FrontProjectController extends BaseController<User> {
 			map.clear();
 			map.put("interfaces", interfaces);
 			map.put("modules", modules);
-			return new JsonResult(1, map, page, Tools.getMap("module", cacheService.getModule(interFace.getModuleId())));
+			map.put("project", dc);
+			return new JsonResult(1, map, page);
 		}
-		
 	}
+	
+	@RequestMapping("/front/webPage/diclist.do")
+	@ResponseBody
+	public JsonResult list(@RequestParam String moduleId){
+		map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name());
+		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page, null)  , page,
+				Tools.getMap("crumbs", Tools.getCrumbs( WebPageType.DICTIONARY.getName(), "void")) );
+	}
+	
+	@RequestMapping("/front/project/menu.do")
+	@ResponseBody
+	public JsonResult menu(@RequestParam String moduleId){
+		returnMap.put("project", dataCenterService.get(moduleId));
+		//map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name());
+		return new JsonResult(1,returnMap);
+	}
+	
 }

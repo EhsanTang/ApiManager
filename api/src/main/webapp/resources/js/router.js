@@ -52,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' : {
 				templateUrl : 'resources/html/backHtml/interfaceList.tpl.html'
 			},
-			'page@interfaceList' : {
+			'page@backInterfaceList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
@@ -294,6 +294,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/project/list.tpl.html';
 				}
+			},
+			'page@projectMain' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('projectModule', {
@@ -303,6 +306,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/project/list.tpl.html';
 				}
+			},
+			'page@projectModule' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('projectDictionaryList', {

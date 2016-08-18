@@ -106,8 +106,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 		});
 	}
 	$scope.loginOut = function(){
-		callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
-		location.href="index.do#/webWebPage/detail/PAGE/WELCOME";
+		callAjaxByName("iUrl=back/loginOut.do|iLoading=false|ishowMethod=doNothing");
 	}
 	$scope.createEditor = function(id,field){
 		createKindEditor(id,field);
@@ -120,7 +119,7 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 		if($rootScope.model && $rootScope.model.sessionAdminName){
 			window.location.href="admin.do";
 		}else if($rootScope.model && $rootScope.model.tipMessage){
-			showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
+			showMessage('warnMessage', $rootScope.model.tipMessage,true,5);
 		}else{
 			var params = "iUrl=back/preLogin.do|iLoading=FLOAT";
 			httpService.callHttpMethod($http,params).success(function(result) {
@@ -129,7 +128,10 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 					alert(isSuccess.replace('[ERROR]', ''));
 				 }else{
 					 $rootScope.model = result.data.model;
-					 $rootScope.fontSettings = result.data.settingMap;
+					 // 已经登陆成功，跳转至后台主页
+					 if($rootScope.model && $rootScope.model.sessionAdminName){
+							window.location.href="admin.do";
+					}
 					 showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
 				 }
 			});
@@ -138,6 +140,29 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
     $scope.changeRadio = function(value){
     	$rootScope.model.remberPwd = value;
     }
+    $scope.getData();
+});
+
+mainModule.controller('preRegisterCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function() {
+		if($rootScope.model && $rootScope.model.id){
+			$rootScope.model.tipMessage = "注册成功，请登录";
+			$rootScope.verificationCode = "";
+			window.location.href="loginOrRegister.do#/login";
+		}else if($rootScope.model && $rootScope.model.tipMessage){
+			showMessage('warnMessage', $rootScope.model.tipMessage,true,5);
+		}else{
+			var params = "iUrl=back/preRegister.do|iLoading=FLOAT";
+			httpService.callHttpMethod($http,params).success(function(result) {
+				var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
+				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+					alert(isSuccess.replace('[ERROR]', ''));
+				 }else{
+					 $rootScope.model = result.data;
+				 }
+			});
+		}
+    };
     $scope.getData();
 });
 

@@ -76,9 +76,70 @@ public class BackLoginController extends BaseController<User> {
 		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 		model.setSessionAdminName(user == null? null:user.getUserName());
 		
-		returnMap.put("settingMap", settingMap);
 		returnMap.put("model", model);
 		return new JsonResult(1, returnMap);
+	}
+	
+	/**
+	 * 登陆页面获取基础数据
+	 */
+	@RequestMapping("/back/preRegister.do")
+	@ResponseBody
+	public JsonResult preRegister() {
+		LoginDto model = new LoginDto();
+		return new JsonResult(1, model);
+	}
+	@RequestMapping("/back/register.do")
+	@ResponseBody
+	public JsonResult register(@ModelAttribute LoginDto model) throws MyException {
+		if( MyString.isEmpty(model.getUserName())){
+			model.setTipMessage("邮箱不能为空");
+			return new JsonResult(1, model);
+		}
+		if( MyString.isEmpty(model.getPassword()) || model.getPassword().length()<6 ){
+			model.setTipMessage("密码不能为空，且长度不能少于6位");
+			return new JsonResult(1, model);
+		}
+		if( !model.getPassword().equals(model.getRpassword()) ){
+			model.setTipMessage("两次输入密码不一致");
+			return new JsonResult(1, model);
+		}
+		
+		if (cacheService.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+			if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode(request))) {
+				model.setTipMessage("验证码有误");
+				return new JsonResult(1, model);
+			}
+		}
+		
+		if( userService.getCount(Tools.getMap("userName", model.getUserName())) >0 ){
+			model.setTipMessage("邮箱已经注册");
+			return new JsonResult(1, model);
+		}
+		
+		if( userService.getCount(Tools.getMap("email", model.getUserName())) >0 ){
+			model.setTipMessage("邮箱已经注册");
+			return new JsonResult(1, model);
+		}
+		
+		User user = new User();
+		try{
+			user.setUserName(model.getUserName());
+			user.setEmail(model.getUserName());
+			user.setPassword(MD5.encrytMD5(model.getPassword()));
+			user.setStatus(Byte.valueOf("1"));
+			user.setType(Byte.valueOf("1"));
+			userService.save(user);
+		}catch(Exception e){
+			e.printStackTrace();
+			model.setTipMessage(e.getMessage());
+			model.setId(null);
+			return new JsonResult(1, model);
+		}
+		
+		model.setId(user.getId());
+		return new JsonResult(1, model);
+		
 	}
 	
 	/**

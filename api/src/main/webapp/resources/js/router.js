@@ -17,8 +17,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		$urlRouterProvider.otherwise('/webWebPage/detail/PAGE/WELCOME');
 	}
 	/*********************后台*******************/
-	$stateProvider.state('preLogin', {
-		url : '/preLogin',
+	$stateProvider.state('loginOrRegister', {
+		url : '/login',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/login.tpl.html'
+			}
+		}
+	}).state('register', {
+		url : '/register',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/register.tpl.html'
+			}
+		}
 	}).state('menuList', {
 		url : '/menu/list/:parentId/:type/:menuName',
 		views : {
@@ -40,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' : {
 				templateUrl : 'resources/html/backHtml/interfaceList.tpl.html'
 			},
-			'page@interfaceList' : {
+			'page@backInterfaceList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
@@ -185,6 +197,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	})
+	
 	/*********************前端*******************/
 	$stateProvider.state('webSettingDetail', {
 		url : '/webSetting/detail/:key',
@@ -274,21 +287,47 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('project', {
-		url : '/project/:moduleId',
+	}).state('projectMain', {
+		url : '/:projectId/project',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/project/list.tpl.html';
 				}
+			},
+			'page@projectMain' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
-	}).state('projectMain', {
-		url : '/project/:moduleId/:projectId',
+	}).state('projectModule', {
+		url : '/:projectId/project/:moduleId',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/project/list.tpl.html';
+				}
+			},
+			'page@projectModule' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
+	}).state('projectDictionaryList', {
+		url : '/:projectId/project/dictionary/list',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/project/dictList.tpl.html';
+				}
+			},'page@projectDictionaryList' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
+	}).state('projectDicDetail', {
+		url : '/:projectId/project/dicDetail/:id',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/project/dictDetail.tpl.html';
 				}
 			}
 		}

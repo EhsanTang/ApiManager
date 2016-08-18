@@ -22,7 +22,8 @@ public class Page {
 		return currentPage;
 	}
 	public void setCurrentPage(Integer currentPage) {
-		this.currentPage = currentPage;
+		if(currentPage != null)
+			this.currentPage = currentPage;
 	}
 	public void setStrCurrentPage(String str) {
 		try{

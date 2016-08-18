@@ -7,11 +7,13 @@ public class LoginDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public String id;
 	public String userName;
 	public String password;
+	public String rpassword;
 	public String remberPwd;
 	public String verificationCode;
-	public String sessionAdminName; // 如果sessionAdminName 不为null，则表示已经扥该
+	public String sessionAdminName; // 如果sessionAdminName 不为null，则表示已经登陆
 	public String tipMessage;
 	
 	public String getUserName() {
@@ -49,6 +51,18 @@ public class LoginDto implements Serializable{
 	}
 	public void setTipMessage(String tipMessage) {
 		this.tipMessage = tipMessage;
+	}
+	public String getRpassword() {
+		return rpassword;
+	}
+	public void setRpassword(String rpassword) {
+		this.rpassword = rpassword;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

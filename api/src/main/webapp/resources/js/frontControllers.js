@@ -179,14 +179,6 @@ webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $s
  */
 webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
-		if($stateParams.projectId){
-			$rootScope.projectId= $stateParams.projectId;// 将项目主页存储至根对象上
-			addCookie("projectId", $stateParams.projectId);// 将项目主页存储至cookie中
-		}else{
-			$rootScope.projectId = getCookie("projectId");
-			if(!$stateParams.moduleId)
-				$stateParams.moduleId= getCookie("projectId");
-		}
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
 		var params ="&moduleId="+ $stateParams.moduleId;
@@ -197,6 +189,33 @@ webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $sta
     };
     $scope.getData();
 });
+mainModule.controller('frontProjectDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=front/webPage/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.projectId;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+mainModule.controller('frontProjectMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http,$location,httpService) {
+	$scope.getData = function(page) {
+		var url = $location.absUrl();
+		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
+		var params = "iUrl=front/project/menu.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+projectId;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.source = null;
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.project = result.data.project;
+			 }
+		});
+
+    };
+    $scope.getData();
+});
+
 
 /***
  * 前端页面初始化，加载系统设置，菜单等

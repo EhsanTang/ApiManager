@@ -27,13 +27,14 @@ public class User extends BaseModel implements Serializable{
 	/**
 	 * roleId(所属角色编码)
 	 * */
-	private String roleId;
+	private String roleId = "";
 	private String password;
 	private String trueName;
-	private String roleName;
-	private String auth;
-	private String authName;
+	private String roleName = "";
+	private String auth = "";
+	private String authName = "";
 	private byte type;
+	private String email;
 	
 	@Column(name="userName")
 	public String getUserName() {
@@ -105,6 +106,15 @@ public class User extends BaseModel implements Serializable{
 		this.type = type;
 	}
 	
+	@Column(name="email")
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Transient
 	public String getTypeName(){
 		return UserType.getNameByValue(type+"");

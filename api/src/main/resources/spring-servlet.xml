@@ -23,7 +23,10 @@
 	<!--注解扫描范围 -->
 	<context:annotation-config />
 	<mvc:annotation-driven/>
-	 <aop:aspectj-autoproxy proxy-target-class="true"/> 
+	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+	<!-- 采用注解的方式配置，在部分操作系统或tomcat中由于初始化顺序不一致，会报错 -->
+	<!-- 必须放在component-scan之上，优先创建该bean -->
+	<bean class="cn.crap.framework.SpringContextHolder" />
 	<context:component-scan base-package="cn.crap" />
 	<!-- 业务错误码 -->
 	<import resource="errorInfo.xml" />

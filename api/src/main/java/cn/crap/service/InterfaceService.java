@@ -1,5 +1,6 @@
 package cn.crap.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,16 +51,17 @@ public class InterfaceService extends BaseService<Interface>
 		}
 			
 		List<Interface> interfaces = findByMap(
-				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null);
+				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark)", page, null);
 		
-		List<DataCenter> modules = null;
-		// 搜索接口时，module为空
-		if (interFace.getModuleId() != null) {
+		List<DataCenter> modules = new ArrayList<DataCenter>();
+		// 搜索接口时，modules为空
+		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName())) {
 			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
 			if(moduleIds != null){
 				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
 				params.put("id|in", moduleIds);
 			}
+			params.put("id|!=", "top");// 顶级目录不显示
 			modules = dataCenterService.findByMap(params, null, null);
 		}
 		params.clear();

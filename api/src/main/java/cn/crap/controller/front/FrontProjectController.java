@@ -91,7 +91,7 @@ public class FrontProjectController extends BaseController<User> {
 			
 			map.clear();
 			map = Tools.getMap("moduleId", interFace.getModuleId());
-			interfaces = interfaceService.findByMap( map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime)", page, null );
+			interfaces = interfaceService.findByMap( map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark)", page, null );
 			
 			map.clear();
 			map.put("interfaces", interfaces);
@@ -101,18 +101,15 @@ public class FrontProjectController extends BaseController<User> {
 		}
 	}
 	
-	@RequestMapping("/front/webPage/diclist.do")
-	@ResponseBody
-	public JsonResult list(@RequestParam String moduleId){
-		map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name());
-		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page, null)  , page,
-				Tools.getMap("crumbs", Tools.getCrumbs( WebPageType.DICTIONARY.getName(), "void")) );
-	}
 	
 	@RequestMapping("/front/project/menu.do")
 	@ResponseBody
-	public JsonResult menu(@RequestParam String moduleId){
-		returnMap.put("project", dataCenterService.get(moduleId));
+	public JsonResult menu(@RequestParam String moduleId) throws MyException{
+		if( !Tools.moduleIdIsLegal(moduleId) ){
+			throw new MyException("000020");
+		}
+		returnMap.put("project", cacheService.getModule(moduleId));
+		returnMap.put("modules", dataCenterService.findByMap(Tools.getMap("parentId", moduleId), null, null));
 		//map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name());
 		return new JsonResult(1,returnMap);
 	}

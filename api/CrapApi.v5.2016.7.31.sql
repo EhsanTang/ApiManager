@@ -36,6 +36,12 @@ INSERT INTO `api`.`setting` (`id`, `mkey`, `value`, `remark`, `status`, `type`,`
 ALTER TABLE `api`.`user` 
 ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
 
+ALTER TABLE `api`.`webpage` 
+CHANGE COLUMN `moduleId` `moduleId` VARCHAR(50) NOT NULL DEFAULT 'top' ;
+
+update `api`.`webpage` set moduleId='top' where moduleId='';
+
+
 
 
 

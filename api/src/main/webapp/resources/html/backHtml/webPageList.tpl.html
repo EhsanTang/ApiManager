@@ -70,7 +70,7 @@
 					ng-click="detail('编辑【'+item.name+'】',1000,'webPage/detail.do?id='+item.id,'',getFields)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="#/webWebPage/detail/{{item.type}}/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/{{item.moduleId}}/webPage/detail/{{item.type}}/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation(item.type,item.moduleId);"

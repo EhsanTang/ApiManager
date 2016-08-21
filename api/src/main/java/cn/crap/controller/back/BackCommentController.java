@@ -47,20 +47,6 @@ public class BackCommentController extends BaseController<Comment> {
 		return new JsonResult(1, model);
 	}
 
-	@RequestMapping("/add.do")
-	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_COMMENT)
-	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		if (cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
-			if (!comment.getId().equals(Tools.getImgCode(request))) {
-				throw new MyException("000010");
-			}
-		}
-		comment.setId(null);
-		commentService.save(comment);
-		return new JsonResult(1, null);
-	}
-
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_COMMENT)

@@ -103,7 +103,7 @@ public class CacheService implements ICacheService {
 	
 	@Override
 	public String getModuleName(String moduleId){
-		String name = getModule(cacheModuleKeyPre + moduleId).getName();
+		String name = getModule(moduleId).getName();
 		if(MyString.isEmpty(name))
 			name = "无";
 		return name;

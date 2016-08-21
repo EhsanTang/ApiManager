@@ -69,11 +69,11 @@ public class WebPage extends BaseModel implements Serializable{
 		dto.setTitle(name);
 		dto.setType(WebPage.class.getSimpleName());
 		if(type.equals(WebPageType.ARTICLE.name()))
-			dto.setUrl("#/webWebPage/detail/ARTICLE/"+id);
+			dto.setUrl("#/"+getModuleId()+"/webPage/detail/ARTICLE/"+id);
 		else if(type.equals(WebPageType.DICTIONARY.name()))
-			dto.setUrl("#/webWebPage/detail/DICTIONARY/"+id);
+			dto.setUrl("#/"+getModuleId()+"/webPage/detail/DICTIONARY/"+id);
 		else if(type.equals(WebPageType.PAGE.name()))
-			dto.setUrl("#/webWebPage/detail/PAGE/"+key);
+			dto.setUrl("#/"+getModuleId()+"/webPage/detail/PAGE/"+key);
 		else
 			dto.setUrl("");
 		dto.setVersion("");

@@ -40,6 +40,8 @@ public class Const {
 	public static final String CACHE_ERROR_TIP = ":errorTip:";
 	public static final String CACHE_TUIJIAN_OPEN_MODULEIDS = ":openTuijianModuleIds:";
 	public static final String CACHE_ARTICLE_CATEGORY = ":article:category:";
+	public static final String CACHE_WEBPAGE = ":webPageDetail:";
+	public static final String CACHE_COMMENTLIST = ":commentList:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";
@@ -56,6 +58,10 @@ public class Const {
 	public static final String ADMIN_MODULE= "0";
 	public static final String TOP_MODULE= "top";
 	public static final String LEVEL_PRE = "- - ";
+	// url
+	public static final String FRONT_ERROR_URL = "#/%s/error/list";
+	public static final String FRONT_DICT_URL = "#/%s/webPage/list/DICTIONARY/";
+	public static final String FRONT_ARTICLE_URL = "#/%s/webPage/list/ARTICLE/%s";
 	
 	//系统设置
 	public static final String SETTING_SECRETKEY = "SECRETKEY";

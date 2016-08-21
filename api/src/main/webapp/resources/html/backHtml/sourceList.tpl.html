@@ -25,7 +25,7 @@
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增目录
 	</a>
 	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('SOURCE')"
-		ng-click="detail('新增文件',800,'source/detail.do?id=NULL','&directoryId='+$stateParams.directoryId)"> 
+		ng-click="detail('新增文件',800,'back/source/detail.do?id=NULL','&directoryId='+$stateParams.directoryId)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增文件
 	</a>
 </div>
@@ -55,7 +55,7 @@
 					data-toggle="tooltip" data-placement="top"
 					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="#/source/list/{{item.id}}/{{item.name}}"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/back/source/list/{{item.id}}/{{item.name}}"> 
 					<i class="iconfont f12">&#xe60f;查看文档</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('SOURCE')" ng-click="del('module/delete.do?id='+item.id,item.name)">
@@ -94,14 +94,14 @@
 				<td class="tc">{{getDate(item.updateTime)|date:'yyyy-MM-dd HH:mm'}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('SOURCE')"
-				ng-click="detail('编辑【'+item.name+'】',800,'source/detail.do?id='+item.id,'&directoryId='+$stateParams.directoryId)"> 
+				ng-click="detail('编辑【'+item.name+'】',800,'back/source/detail.do?id='+item.id,'&directoryId='+$stateParams.directoryId)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('SOURCE')"
-					ng-click="del('source/delete.do?id='+item.id,item.name)">
+					ng-click="del('back/source/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="#/webSource/detail/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/front/source/detail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<div class="w50 fr tl">

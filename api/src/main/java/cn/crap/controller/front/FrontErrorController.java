@@ -3,7 +3,6 @@ package cn.crap.controller.front;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,19 +35,19 @@ public class FrontErrorController extends BaseController<Error>{
 	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult list(@RequestParam String errorCode,@RequestParam String errorMsg, @RequestParam String moduleId, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		page.setCurrentPage(currentPage);
+		page.setSize(20);
 		
 		// 不允许查看根路径下所有项目
-		map = Tools.getMap(  "errorCode|like",error.getErrorCode(),  "errorMsg|like",error.getErrorMsg());
-		if( !Tools.moduleIdIsLegal(error.getModuleId()) ){
+		map = Tools.getMap(  "errorCode|like", errorCode,  "errorMsg|like", errorMsg);
+		if( !Tools.moduleIdIsLegal(moduleId) ){
 			throw new MyException("000020");
-		}else{
-			map.put( "moduleId", error.getModuleId() );
 		}
+		map.put( "moduleId", moduleId );
 		
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(moduleId), "void")));
 	}
 
 }

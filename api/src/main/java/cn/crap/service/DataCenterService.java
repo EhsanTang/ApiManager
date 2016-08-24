@@ -49,7 +49,7 @@ public class DataCenterService extends BaseService<DataCenter>
 			if(MyString.isEmpty(value))
 				pick = new PickDto(idPre+m.getId(), deep+m.getName());
 			else
-				pick = new PickDto(idPre+m.getId(), value.replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
+				pick = new PickDto(idPre+m.getId(), value.replace("projectId", m.getProjectId()).replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
 			picks.add(pick);
 			getDataCenterPick(picks, null, idPre,m.getId(), type, deep+Const.LEVEL_PRE , value,suffix);
 		}

@@ -21,7 +21,40 @@ webModule.filter("removeLast",function(){
  */
 webModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
 });
-
+webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		if(!$stateParams.keyword)
+			$stateParams.keyword ="";
+		params = "iUrl=frontSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**************************错误码列表****************************/
+mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&moduleId=" +
+			$stateParams.moduleId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/*************************数据字典列表******************************/
+mainModule.controller('frontDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=front/webPage/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.projectId+"&name="+$stateParams.search;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**************************WebPage列表****************************/
+mainModule.controller('fontWebPageCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=front/webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$stateParams.searchModuleId+"&category="+$stateParams.search;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 /**
  * webPage详情（数据字典，网站页面，文章）
  */
@@ -29,7 +62,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iLoading=FLOAT|iUrl=webPage/webDetail.do?id="+$stateParams.id;
+		var params = "iLoading=FLOAT|iUrl=front/webPage/detail.do?id="+$stateParams.id;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		httpService.callHttpMethod($http,params).success(function(result) {
@@ -55,48 +88,29 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
     };
     $scope.getData();
 });
-
-
-webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page,setPwd) {
-		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
-		if(setPwd) setPassword();
-		var params = "iLoading=FLOAT|iUrl=source/webDetail.do?id="+$stateParams.id;
-		params +="&password="+unescapeAndDecode('password');
-		params +="&visitCode="+unescapeAndDecode('visitCode');
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.source = null;
-			 }else{
-				 $rootScope.error = null;
-				 $rootScope.source = result.data;
-			 }
-		});
-    };
-    $scope.getData();
-});
 /**
- * 资源列表
+ * 接口列表
  */
-webModule.controller('webSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iUrl=back/source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
+		var params = "&interfaceName=" + $stateParams.interfaceName + "&url="+ $stateParams.url + "&moduleId="+ $stateParams.moduleId;
+		
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
+		params = "iUrl=front/interface/list.do|iLoading=FLOAT|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });
 
+
 /**
  * 接口详情
  * 不需要打开模态框，所以不能调用$rootScope中的getBaseData()
  */
-webModule.controller('frontInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -148,54 +162,7 @@ webModule.controller('frontInterfaceDetailCtrl', function($rootScope,$scope, $ht
     };
     $scope.getData();
 });
-/**
- * 接口列表
- */
-webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page,setPwd) {
-		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
-		if(setPwd) setPassword();
-		var params = "";
-		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
-			params += "&interfaceName=" + $("#interfaceName").val();
-			$stateParams.searchMenuName=$("#interfaceName").val();
-		}
-		if($("#url").val()!=null&&$("#url").val()!=''){
-			params += "&url=" + $("#url").val();
-			$stateParams.searchUrl=$("#url").val();
-		}
-		if(params==""){
-			params +="&moduleId="+ $stateParams.moduleId;
-		}
-		params +="&password="+unescapeAndDecode('password');
-		params +="&visitCode="+unescapeAndDecode('visitCode');
-		params = "iUrl=front/interface/list.do|iLoading=FLOAT|iParams="+params;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-/**
- * 项目列表
- */
-webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page,setPwd) {
-		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
-		if(setPwd) setPassword();
-		var params ="&moduleId="+ $stateParams.moduleId;
-		params +="&password="+unescapeAndDecode('password');
-		params +="&visitCode="+unescapeAndDecode('visitCode');
-		params = "iUrl=front/project/list.do|iLoading=FLOAT|iParams="+params;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-mainModule.controller('frontProjectDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=front/webPage/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.projectId;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
+
 mainModule.controller('frontProjectMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http,$location,httpService) {
 	$scope.getData = function(page) {
 		var url = $location.absUrl();
@@ -209,12 +176,50 @@ mainModule.controller('frontProjectMenuCtrl', function($rootScope,$scope, $http,
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.project = result.data.project;
+				 $rootScope.modules = result.data.modules;
 			 }
 		});
 
     };
     $scope.getData();
 });
+
+
+webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		var params = "iLoading=FLOAT|iUrl=back/source/webDetail.do?id="+$stateParams.id;
+		params +="&password="+unescapeAndDecode('password');
+		params +="&visitCode="+unescapeAndDecode('visitCode');
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.source = null;
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.source = result.data;
+			 }
+		});
+    };
+    $scope.getData();
+});
+/**
+ * 资源列表
+ */
+webModule.controller('frontSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		var params = "iUrl=back/source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
+		params +="&password="+unescapeAndDecode('password');
+		params +="&visitCode="+unescapeAndDecode('visitCode');
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+
 
 
 /***
@@ -239,30 +244,8 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
 	}
     $scope.getData();
 });
-webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		if(!$stateParams.keyword)
-			$stateParams.keyword ="";
-		params = "iUrl=frontSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-/**************************错误码列表****************************/
-mainModule.controller('frontErrorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&errorMsg=" + $("#searchMsg").val()+"&errorCode=" + $("#searchCode").val();
-		if($("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=''){
-			params += "&moduleId=" + $("#searchModuleId").val();
-			$stateParams.searchModuleId = $("#searchModuleId").val();
-		}else if($stateParams.moduleId){
-			$stateParams.searchModuleId=$stateParams.moduleId;
-			params += "&moduleId=" + $stateParams.moduleId;
-		}
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
+
+
 
 
 

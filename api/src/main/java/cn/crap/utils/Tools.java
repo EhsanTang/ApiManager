@@ -168,13 +168,12 @@ public class Tools {
 		List<String> removes = new ArrayList<String>();
 		for (Entry<String, Object> entry : map.entrySet()) {
 			String key = entry.getKey();
-			Object value = entry.getValue();
 			if (key.indexOf("|") > 0) {
 				String[] keys = key.split("\\|");
 				keys[0] = keys[0].replaceAll("\\.", "_");
 				
 				if (keys[1].equals("in")) {
-					hql.append(keys[0] + " in (:" + keys[0]+"_in".replaceAll("\\.", "_") + ") and ");
+					hql.append(keys[0] + " in (:" + keys[0]+"_in) and ");
 				} 
 				
 				else if (keys[1].equals(Const.NULL)) {
@@ -191,10 +190,7 @@ public class Tools {
 					hql.append(keys[0] + " ='' and ");
 					removes.add(key);
 				} else if (keys[1].equals("like")) {
-					if (!MyString.isEmpty(value.toString()))
-						hql.append(keys[0] + " like '%" + value.toString()
-								+ "%' and ");
-					removes.add(key);
+					hql.append(keys[0] + " like :" + keys[0] + " and ");
 				} else {
 					hql.append(keys[0] + " " + keys[1] + ":"+ keys[0]+ " and ");
 				}
@@ -222,12 +218,16 @@ public class Tools {
 			return;
 		for (Entry<String, Object> entry : map.entrySet()) {
 			String key = entry.getKey();
+			String operator = "";
 			if (key.indexOf("|") > 0) {
-				key = key.split("\\|")[0];
+				key = entry.getKey().split("\\|")[0];
+				operator = entry.getKey().split("\\|")[1];
 			}
 			Object value = entry.getValue();
 			key = key.replaceAll("\\.", "_");
-			if (value instanceof Integer) {
+			if (operator.toUpperCase().equals("LIKE")) {
+				query.setString(key, "%" + value.toString() +"%");
+			} else if (value instanceof Integer) {
 				query.setInteger(key, Integer.parseInt(value.toString()));
 			} else if (value instanceof String) {
 				query.setString(key, value.toString());

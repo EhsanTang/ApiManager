@@ -26,7 +26,7 @@
 	<!-- Top Nav End -->
 	
 	<!-- Top Search-->
-	<div class="h120 title-bg-img">
+	<div class="h120 title-bg-img w">
 		<div class="container p0 CFFF h">
 		<div class="row">
 			<div class="rel h col-xs-7" >
@@ -82,15 +82,31 @@
 					<div class=" fb f18 adorn-color fl">
 						<i class="iconfont">&#xe61f;</i>
 					</div>
-					<div class="fl f16 mt2 ml10" ng-bind="project.name"></div>
+					<a class="fl dis C000 f16 mt2 ml10" ng-href="#/{{project.id}}/interface/list/{{project.id}}/" ng-bind="project.name"></a>
 					<div class="cb"></div>
 					<div class="f12 C999 lh20 mt10" ng-bind="project.remark"></div>
 				
 				</div>
 				
-				<div class="mt20 r2 h100 p20 BGFFF ml15">
-					<a href="#/{{project.id}}/project/{{project.id}}" class="adorn-bg CFFF fl b1 p3 pl10 pr10 r12 mr10 f12 fn cursor b0 mt10 mb20">项目主页</a>
-					<a href="#/{{project.id}}/project/dictionary/list" class="adorn-bg CFFF fl b1 p3 pl10 pr10 r12 mr10 f12 fn cursor b0 mt10 mb20">数据字典</a>
+				<div class="mt20 r2 f14 p20 BGFFF ml15">
+					<ul class="l-s-n m0 p0">
+						<li class="pl10">
+							<a ng-href="#/{{project.id}}/interface/list/{{project.id}}/" class="dis w pl10 mt10 no_unl C000 adorn-bl-3">项目主页</a>
+							<ul ng-if="modules.length>0">
+								<li ng-repeat="item in modules" class="p3">
+									<a ng-href="#/{{item.projectId}}/interface/list/{{item.id}}/{{item.name}}"
+									ng-class="{true: 'adorn-color dis f12 w pl5 no_unl', false: ' dis f12 w pl5 no_unl C999'}[item.id == $stateParams.moduleId]"
+									 ng-bind="item.name"></a>
+								</li>
+							</ul>
+						</li>
+						<li class="pl10">
+							<a href="#/{{project.id}}/error/list" class="dis w pl10 mt10 no_unl C000 adorn-bl-3">项目错误码</a>
+						</li>
+						<!-- <li class="pl10">
+							<a href="#/{{project.id}}/webPage/list/DICTIONARY/" class="dis w pl10 mt10 no_unl C000 adorn-bl-3">数据字典</a>
+						</li> -->
+					</ul>
 				</div>
 				
 			</div>
@@ -109,7 +125,7 @@
 				©crap.cn &nbsp;版权所有
 				<ul class="dis-in-tab ml0">
 					<li class="dis-in-tab mr20"><a target="_blank"
-						href="http://api.crap.cn/index.do#/webWebPage/list/ARTICLE/帮助文档">帮助文档</a>
+						href="http://api.crap.cn/index.do#/webPage/list/ARTICLE/帮助文档">帮助文档</a>
 					</li>
 					<li class="dis-in-tab mr20"><a target="_blank"
 						href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a> <span
@@ -165,6 +181,7 @@
 	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
 	<script src="resources/js/app.js?v=2010"></script>
 	<script src="resources/js/services.js"></script>
+	<script src="resources/js/frontRouter.js"></script>
 	<script src="resources/js/router.js"></script>
 	<script src="resources/js/backControllers.js?v=2010"></script>
     <script src="resources/js/frontControllers.js?v=2010"></script>

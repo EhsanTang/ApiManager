@@ -10,7 +10,9 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 	 word-wrap:break-word;
 	 white-space: normal!important;
 }
+.l-s-n{list-style:none;}
 .o2{opacity:0.2}.o3{opacity:0.3}.o5{opacity:0.5}.o8{opacity:0.8}
+.no-b-s{-webkit-box-shadow: none; box-shadow: none; border: 1px solid #DDD;}
 .b0{border:0px!important;}
 .b1{border: 1px solid #DDD;}
 .dashed{border:1px dashed #DDD;}
@@ -170,7 +172,7 @@ table{border-collapse:collapse;border-spacing:0}
 
 /***********padding*******************/
 .p0{padding:0px!important}.p3{padding:3px!important}
-.p5{padding:5px!important}.p10{padding:10px!important}.p15{padding:15px!important}.p20{padding:20px!important}
+.p5{padding:5px!important}.p10{padding:10px!important}.p12{padding:12px!important}.p15{padding:15px!important}.p20{padding:20px!important}
 .p30{padding:30px!important}.p40{padding:30px!important}.p50{padding:30px!important}
 
 /***********padding-top*******************/

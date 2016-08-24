@@ -69,7 +69,10 @@
 									<a class="menu-a" target="_self" href="#/menu/list/0/FRONT/一级菜单" onclick="selectButton(this,'menu-a')">菜单管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/back/interface/list/top/根目录" onclick="selectButton(this,'menu-a')">项目&模块&接口管理</a>
+									<a class="menu-a" target="_self" href="#/back/interface/list/0/项目列表" onclick="selectButton(this,'menu-a')">系统项目列表</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/back/interface/list/privateModule/注册用户项目" onclick="selectButton(this,'menu-a')">注册用户项目列表</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
@@ -149,7 +152,10 @@
 						<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
-								<span ng-bind="error"></span>
+								<span ng-if="error.indexOf('CrapApi-400')>0">
+									404-抱歉，地址有误，网页找不到了
+								</span>
+								<span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
 							</button>
 						</div>
 						<div class="col-xs-12 f16 fb p0 mb5" ng-if="errorTips">
@@ -177,6 +183,7 @@
 	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
 	<script src="resources/js/app.js?v=2010"></script>
 	<script src="resources/js/services.js"></script>
+	<script src="resources/js/backRouter.js"></script>
 	<script src="resources/js/router.js"></script>
     <script src="resources/js/backControllers.js?v=2010"></script>
     <script src="resources/js/frontControllers.js?v=2010"></script>

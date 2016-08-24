@@ -140,7 +140,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 					Tools.getMap("moduleId",interFace.getModuleId(),"interfaceName",interFace.getInterfaceName(),"version|<>",interFace.getVersion()), null, null);
 			return new JsonResult(1, interFace, null, 
 					Tools.getMap("versions", versions, "crumbs",
-							Tools.getCrumbs( cacheService.getModuleName(interFace.getModuleId()), "#/front/interface/list/"+interFace.getModuleId() +"/" +cacheService.getModuleName(interFace.getModuleId())
+							Tools.getCrumbs( cacheService.getModuleName(interFace.getModuleId()), "#/"+interFace.getProjectId() +"/interface/list/" +interFace.getModuleId() +"/" +cacheService.getModuleName(interFace.getModuleId())
 							,interFace.getInterfaceName() , "void"), "module",cacheService.getModule(interFace.getModuleId()) ));
 		}else{
 			throw new MyException("000012");

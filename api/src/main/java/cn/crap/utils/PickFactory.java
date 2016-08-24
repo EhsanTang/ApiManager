@@ -44,11 +44,15 @@ public class PickFactory {
 		
 			PickDto pick = null;
 			switch (code) {
-				case "FRONTERRORMODULE": // 前端错误码模块列表
+				case "OPENPROJECT": // 所有管理员目录下的非私有的的项目（）
 					List<Byte> statuss = new ArrayList<Byte>();
 					statuss.add(Byte.valueOf("1"));
 					statuss.add(Byte.valueOf("3"));
-					for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE", "status|in", statuss ), null, null)) {
+					
+					List<String> modules = new ArrayList<String>();
+					modules.add(Const.TOP_MODULE);
+					modules.add(Const.PRIVATE_MODULE);
+					for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId|modules", modules, "type", "MODULE", "status|in", statuss ), null, null)) {
 						pick = new PickDto(m.getId(), m.getName());
 						picks.add(pick);
 					}
@@ -382,35 +386,63 @@ public class PickFactory {
 			
 			// 前端菜单url
 			else{
+				/**
+				 * 前端错误吗
+				 */
 				pick = new PickDto(Const.SEPARATOR, "前端错误码");
 				picks.add(pick);
-				preUrl = "#/webError/list/";
-				for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId", "0", "type", "MODULE"), null, null)) {
-					pick = new PickDto("e_" + m.getId(), preUrl + m.getId(), m.getName());
+				
+				List<Byte> statuss = new ArrayList<Byte>();
+				statuss.add(Byte.valueOf("1"));
+				statuss.add(Byte.valueOf("3"));
+				
+				List<String> parentIds = new ArrayList<String>();
+				parentIds.add(Const.ADMIN_MODULE);
+				parentIds.add(Const.PRIVATE_MODULE);
+				
+				for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId|in", parentIds, "type", "MODULE", "status|in", statuss), null, null)) {
+					pick = new PickDto( "e_" + m.getId(), String.format(Const.FRONT_ERROR_URL, m.getId()), m.getName());
 					picks.add(pick);
 				}
+				
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "前端模块");
 				picks.add(pick);
-				preUrl = "#/front/interface/list/";
-				dataCenter.getDataCenterPick(picks, null, "w_", Const.ADMIN_MODULE , Const.MODULE , "", preUrl + "moduleId/moduleName", "");
+				
+				
+				preUrl = "#/projectId/interface/list/moduleId/moduleName";
+				dataCenter.getDataCenterPick(picks, null, "w_", Const.ADMIN_MODULE , Const.MODULE , "", preUrl, "");
 				
 				pick = new PickDto(Const.SEPARATOR, "前端文档");
 				picks.add(pick);
-				preUrl = "#/webSource/list/";
+				preUrl = "#/front/source/list/moduleId/moduleName";
 				pick = new PickDto("source_0", preUrl + "0/根目录", "根目录");
 				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, null, "source_", "0", Const.DIRECTORY, "--", preUrl + "moduleId/moduleName", "");
+				dataCenter.getDataCenterPick(picks, null, "source_", "0", Const.DIRECTORY, "--", preUrl, "");
 				
+				
+				/**
+				 * 前端数据字典
+				 */
 				pick = new PickDto(Const.SEPARATOR, "前端数据字典列表");
 				picks.add(pick);
-				preUrl = "#/webWebPage/list/";
-				pick = new PickDto("DICTIONARY", preUrl + "DICTIONARY/null", "数据字典列表");
-				picks.add(pick);
+				
+				statuss = new ArrayList<Byte>();
+				statuss.add(Byte.valueOf("1"));
+				statuss.add(Byte.valueOf("3"));
+				
+				parentIds = new ArrayList<String>();
+				parentIds.add(Const.ADMIN_MODULE);
+				parentIds.add(Const.PRIVATE_MODULE);
+				
+				for (DataCenter m : dataCenter.findByMap(Tools.getMap("parentId|in", parentIds, "type", "MODULE", "status|in", statuss), null, null)) {
+					pick = new PickDto( "d_" + m.getId(), String.format(Const.FRONT_DICT_URL, m.getId()), m.getName());
+					picks.add(pick);
+				}
+				
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "前端文章类目列表");
 				picks.add(pick);
-				preUrl = "#/webWebPage/list/ARTICLE/";
 				int j = 0;
 				@SuppressWarnings("unchecked")
 				List<String> categorys2 = (List<String>) webPageService.queryByHql("select distinct category from WebPage", null);
@@ -418,16 +450,16 @@ public class PickFactory {
 					if (w == null)
 						continue;
 					j++;
-					pick = new PickDto("cat_" + j, preUrl + w, w);
+					pick = new PickDto("cat_" + j, String.format(Const.FRONT_ARTICLE_URL, Const.TOP_MODULE, w) , w);
 					picks.add(pick);
 				}
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "前端页面");
 				picks.add(pick);
-				preUrl = "#/webWebPage/detail/PAGE/";
+				preUrl = "#/%s/webPage/detail/PAGE/";
 				for (WebPage w : webPageService
 						.findByMap(Tools.getMap("key|" + Const.NOT_NULL, Const.NOT_NULL, "type", "PAGE"), null, null)) {
-					pick = new PickDto("wp_" + w.getKey(), preUrl + w.getKey(), w.getName());
+					pick = new PickDto("wp_" + w.getKey(), String.format( preUrl, w.getModuleId() ) + w.getKey(), w.getName());
 					picks.add(pick);
 				}
 				// 分割线

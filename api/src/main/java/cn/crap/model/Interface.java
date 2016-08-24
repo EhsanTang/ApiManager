@@ -14,6 +14,7 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
+import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 
 @Entity
@@ -44,7 +45,7 @@ public class Interface extends BaseModel implements Serializable{
 	public Interface(){}
 	
 	
-	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime) {
+	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime, String remark) {
 		super();
 		this.id = id;
 		this.moduleId = moduleId;
@@ -53,6 +54,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.createTime = createTime;
 		this.updateBy = updateBy;
 		this.updateTime = updateTime;
+		this.remark = remark;
 	}
 
 
@@ -247,6 +249,30 @@ public class Interface extends BaseModel implements Serializable{
 		this.header = header;
 	}
 	
-	
+	// 所在项目
+	@Transient
+	public String getProjectId(){
+		if(MyString.isEmpty(moduleId) || moduleId.equals(Const.TOP_MODULE)){
+			return "";
+		}
+		// 该模块为项目
+		if( moduleId.equals(Const.PRIVATE_MODULE) || moduleId.equals(Const.ADMIN_MODULE)){
+			return moduleId;
+		}
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		DataCenter module = cacheService.getModule(moduleId);
+		// 最多支持100层模块查询，防止死循环
+		for(int i=0; i<100; i++){
+			if(module.getParentId().equals(Const.PRIVATE_MODULE) || module.getParentId().equals(Const.ADMIN_MODULE)){
+				return module.getId();
+			}
+			
+			if(MyString.isEmpty(module.getParentId()) || module.getParentId().equals(module.getId())){
+				break;
+			}
+			module = cacheService.getModule(module.getParentId());
+		}
+		return "";
+	}
 
 }

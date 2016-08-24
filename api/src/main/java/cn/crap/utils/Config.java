@@ -13,7 +13,9 @@ public class Config {
 	public static String redisKeyPrefix;
 	public static int cacheTime;
 	public static int loginInforTime;
-	
+	public static int fileSize;
+	public static String imageType;
+	public static String fileType;
 	
 	public static String getByName(String name){
 		if( redisIp != null){
@@ -117,5 +119,30 @@ public class Config {
 	public static void setLoginInforTime(int loginInforTime) {
 		Config.loginInforTime = loginInforTime;
 	}
+
+	public static int getFileSize() {
+		return fileSize;
+	}
+
+	public static void setFileSize(int fileSize) {
+		Config.fileSize = fileSize;
+	}
+
+	public static String getImageType() {
+		return imageType;
+	}
+
+	public static void setImageType(String imageType) {
+		Config.imageType = imageType;
+	}
+
+	public static String getFileType() {
+		return fileType;
+	}
+
+	public static void setFileType(String fileType) {
+		Config.fileType = fileType;
+	}
+	
 	
 }

@@ -41,6 +41,10 @@ CHANGE COLUMN `moduleId` `moduleId` VARCHAR(50) NOT NULL DEFAULT 'top' ;
 
 update `api`.`webpage` set moduleId='top' where moduleId='';
 
+ALTER TABLE `api`.`webpage` 
+CHANGE COLUMN `content` `content` LONGTEXT NOT NULL ;
+
+
 
 
 

@@ -74,8 +74,10 @@ public class BackUserController extends BaseController<User>{
 		if(!MyString.isEmpty(user.getId())){
 			temp = userService.get(user.getId());
 		}
+		
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		LoginInfoDto cacheUser = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		
 		// 如果不是最高管理员，不允许修改权限、角色、类型
 		if((","+cacheUser.getRoleId()).indexOf(","+Const.SUPER+",") < 0){
 			if(temp != null){
@@ -94,14 +96,21 @@ public class BackUserController extends BaseController<User>{
 			
 		}
 		
+		
 		// 如果temp不为空，表示修改用户信息
 		if(temp != null){
 			// 如果密码为空，则设置为旧密码
 			if(MyString.isEmpty(user.getPassword())){
 				user.setPassword(temp.getPassword());
 			}
+			
+			if(MyString.isEmpty(user.getEmail())){
+				user.setEmail(null);
+			}
+			
 			userService.update(user);
 		}else{
+			user.setEmail(null);
 			user.setStatus(Byte.valueOf("1"));
 			user.setId(null);
 			userService.save(user);

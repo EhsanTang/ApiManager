@@ -101,6 +101,8 @@ public class BackWebPageController extends BaseController<WebPage>{
 			webPageService.save(webPage);
 			GetBeanBySetting.getSearchService().add(webPage.toSearchDto());
 		}
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
 		return new JsonResult(1,webPage);
 	}
 	
@@ -117,6 +119,9 @@ public class BackWebPageController extends BaseController<WebPage>{
 			throw new MyException("000009");
 		}
 		webPageService.delete(webPage);
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
+		
 		GetBeanBySetting.getSearchService().delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}

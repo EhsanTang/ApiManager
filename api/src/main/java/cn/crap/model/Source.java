@@ -115,7 +115,7 @@ public class Source extends BaseModel implements Serializable{
 		dto.setContent(remark == null? "":remark);
 		dto.setTitle(name);
 		dto.setType(Source.class.getSimpleName());
-		dto.setUrl("#/webSource/detail/"+id);
+		dto.setUrl("#/front/source/detail/"+id);
 		dto.setVersion("");
 		return dto;
 	}

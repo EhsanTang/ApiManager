@@ -32,7 +32,6 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/webPage")
 public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
 	private IDataCenterService moduleService;
@@ -43,7 +42,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
 	private ICacheService cacheService;
 
-	@RequestMapping("/list.do")
+	@RequestMapping("/webPage/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
@@ -51,12 +50,12 @@ public class BackWebPageController extends BaseController<WebPage>{
 		
 		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
 		
-		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page,null), page,
+		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null), page,
 				Tools.getMap("type", WebPageType.valueOf(webPage.getType()).getName(), "category", webPage.getCategory(), "crumbs", 
 						Tools.getCrumbs(MyString.isEmpty(webPage.getCategory()) ? WebPageType.valueOf( webPage.getType()).getName() : webPage.getCategory(), "void")));
 	}
 	
-	@RequestMapping("/detail.do")
+	@RequestMapping("/webPage/detail.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute WebPage webPage){
@@ -70,7 +69,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1,model);
 	}
 	
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/webPage/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
@@ -105,7 +104,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1,webPage);
 	}
 	
-	@RequestMapping("/delete.do")
+	@RequestMapping("/webPage/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
 		webPage = webPageService.get(webPage.getId());
@@ -122,7 +121,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1,null);
 	}
 	
-	@RequestMapping("/changeSequence.do")
+	@RequestMapping("/back/webPage/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
@@ -138,7 +137,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1, null);
 	}
 
-	@RequestMapping("/markdown.do")
+	@RequestMapping("/webPage/markdown.do")
 	public String markdown(@ModelAttribute WebPage webPage) throws Exception {
 		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());

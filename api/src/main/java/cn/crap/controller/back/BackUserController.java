@@ -26,7 +26,6 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/user")
 public class BackUserController extends BaseController<User>{
 
 	@Autowired
@@ -34,7 +33,7 @@ public class BackUserController extends BaseController<User>{
 	@Autowired
 	private ICacheService cacheService;
 	
-	@RequestMapping("/list.do")
+	@RequestMapping("/user/list.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult list(@ModelAttribute User user,@RequestParam(defaultValue="1") Integer currentPage){
@@ -42,7 +41,7 @@ public class BackUserController extends BaseController<User>{
 		map = Tools.getMap("trueName|like",user.getTrueName());
 		return new JsonResult(1,userService.findByMap(map,page,null),page);
 	}
-	@RequestMapping("/detail.do")
+	@RequestMapping("/user/detail.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult detail(@ModelAttribute User user){
@@ -55,7 +54,7 @@ public class BackUserController extends BaseController<User>{
 		return new JsonResult(1,user);
 	}
 	
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/user/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult addOrUpdate(@ModelAttribute User user) throws MyException{
@@ -119,7 +118,7 @@ public class BackUserController extends BaseController<User>{
 		return new JsonResult(1,user);
 	}
 	
-	@RequestMapping("/delete.do")
+	@RequestMapping("/user/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult delete(@ModelAttribute User user){

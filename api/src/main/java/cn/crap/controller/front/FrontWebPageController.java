@@ -63,7 +63,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		}
 		page.setCurrentPage(currentPage);
 		map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name(), "name|like", name);
-		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page, null)  , page,
+		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
 				Tools.getMap("crumbs", Tools.getCrumbs( WebPageType.DICTIONARY.getName() +"-" + cacheService.getModuleName(moduleId), "void")) );
 	}
 	
@@ -90,7 +90,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		}
 		// 
 		
-		List<WebPage> webPages = webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page,null);
+		List<WebPage> webPages = webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null);
 		return new JsonResult(1, webPages, page,
 				Tools.getMap("type", WebPageType.valueOf(type).getName(), "category", category, 
 						"crumbs", Tools.getCrumbs(category, "void"), "categorys", categorys));

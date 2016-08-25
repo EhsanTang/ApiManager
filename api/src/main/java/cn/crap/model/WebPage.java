@@ -41,9 +41,10 @@ public class WebPage extends BaseModel implements Serializable{
 	
 	public WebPage(){};
 	
-	public WebPage(String id, String type, String name, int click, String category, String createTime, String key, String moduleId, String brief) {
+	public WebPage(String id, String type, String name, int click, String category, String createTime, String key, String moduleId, String brief, int sequence) {
 		this(id, type, name, click, category, createTime, key, moduleId);
 		this.brief = brief;
+		this.sequence = sequence;
 	}
 	
 	public WebPage(String id, String type, String name, int click, String category, String createTime, String key, String moduleId) {

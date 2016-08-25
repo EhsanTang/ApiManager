@@ -51,7 +51,7 @@ public class InterfaceService extends BaseService<Interface>
 		}
 			
 		List<Interface> interfaces = findByMap(
-				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark)", page, null);
+				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
 		
 		List<DataCenter> modules = new ArrayList<DataCenter>();
 		// 搜索接口时，modules为空

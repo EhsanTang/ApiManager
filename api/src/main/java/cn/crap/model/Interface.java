@@ -45,7 +45,7 @@ public class Interface extends BaseModel implements Serializable{
 	public Interface(){}
 	
 	
-	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime, String remark) {
+	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime, String remark, int sequence) {
 		super();
 		this.id = id;
 		this.moduleId = moduleId;
@@ -55,6 +55,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.updateBy = updateBy;
 		this.updateTime = updateTime;
 		this.remark = remark;
+		this.sequence = sequence;
 	}
 
 

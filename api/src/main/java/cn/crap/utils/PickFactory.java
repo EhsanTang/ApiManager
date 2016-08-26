@@ -343,33 +343,33 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "后台");
 				picks.add(pick);
 				// 后端错误码管理
-				pick = new PickDto("h_e_0", "#/back/error/list", "错误码列表");
+				pick = new PickDto("h_e_0", "#/error/list", "错误码列表");
 				picks.add(pick);
 				// 后端用户管理
-				pick = new PickDto("h_u_0", "#/back/user/list", "用户列表");
+				pick = new PickDto("h_u_0", "#/user/list", "用户列表");
 				picks.add(pick);
 				// 后端角色管理
-				pick = new PickDto("h_r_0", "#/back/role/list", "角色列表");
+				pick = new PickDto("h_r_0", "#/role/list", "角色列表");
 				picks.add(pick);
 				// 后端PDF、DOC等文档管理
 				pick = new PickDto("h_sorce_0", "#/back/source/list/0/根目录", "PDF、DOC等文档列表");
 				picks.add(pick);
 				// 后端系统设置
-				pick = new PickDto("h_s_0", "#/back/setting/list/null", "系统设置列表");
+				pick = new PickDto("h_s_0", "#/setting/list/null", "系统设置列表");
 				picks.add(pick);
-				pick = new PickDto("h_l_0", "#/back/log/list", "日志列表");
+				pick = new PickDto("h_l_0", "#/log/list", "日志列表");
 				picks.add(pick);
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
 				picks.add(pick);
 				for (MenuType type : MenuType.values()) {
-					pick = new PickDto("h_m_" + type.name(), "#/back/menu/list/0/" + type.name() + "/一级菜单",
+					pick = new PickDto("h_m_" + type.name(), "#/menu/list/0/" + type.name() + "/一级菜单",
 							type.getName());
 					picks.add(pick);
 				}
 				pick = new PickDto(Const.SEPARATOR, "后台数据字典&页面&文章管理");
 				picks.add(pick);
-				preUrl = "#/back/webPage/list/";
+				preUrl = "#/webPage/list/";
 				
 				for (WebPageType webPage : WebPageType.values()) {
 					pick = new PickDto("h_" + webPage.name(), preUrl + webPage.name(), webPage.getName());

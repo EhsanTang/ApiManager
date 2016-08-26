@@ -37,6 +37,7 @@ public class Const {
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
 	public static final String CACHE_SEARCH_WORDS = ":searchWords";
 	public static final String CACHE_MODULEIDS = ":moduleIds:";
+	public static final String CACHE_ALL_DATACENTER = ":all:datacenter:";
 	public static final String CACHE_ERROR_TIP = ":errorTip:";
 	public static final String CACHE_TUIJIAN_OPEN_MODULEIDS = ":openTuijianModuleIds:";
 	public static final String CACHE_ARTICLE_CATEGORY = ":article:category:";

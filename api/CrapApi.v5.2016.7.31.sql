@@ -44,6 +44,13 @@ update `api`.`webpage` set moduleId='top' where moduleId='';
 ALTER TABLE `api`.`webpage` 
 CHANGE COLUMN `content` `content` LONGTEXT NOT NULL ;
 
+UPDATE api.menu SET menuUrl = replace(menuUrl, 'index.do#', '#');
+
+UPDATE api.menu SET menuUrl = replace(menuUrl, 'source/list/0', 'back/source/list/0');
+
+UPDATE api.menu SET menuUrl = replace(menuUrl, 'interface/list/0', 'back/interface/list/0');
+
+
 
 
 

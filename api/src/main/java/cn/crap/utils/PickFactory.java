@@ -1,6 +1,7 @@
 package cn.crap.utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import cn.crap.dto.LoginInfoDto;
@@ -127,8 +128,7 @@ public class PickFactory {
 				// 如果用户为普通用户，则只能查看自己的模块
 				moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
 				moduleIds.add("NULL");
-				
-				dataCenter.getDataCenterPick(picks, Tools.getMap("id|in", moduleIds) , "", Const.PRIVATE_MODULE , key,  Const.LEVEL_PRE , "", "");
+				dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
 				picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
 				return true;
 				// 枚举 模块类型（公开、私有）
@@ -165,6 +165,7 @@ public class PickFactory {
 	 * @throws MyException 
 	 */
 
+	@SuppressWarnings("unchecked")
 	private static void getBackPickList(List<PickDto> picks, String code, String key, 
 			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, 
 			IWebPageService webPageService) throws MyException {
@@ -183,18 +184,21 @@ public class PickFactory {
 			
 		// 权限
 		case "AUTH":
-			pick = new PickDto(DataType.VIEW.name() + "_0", DataType.VIEW.getName());
+			List<DataCenter> modules = dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null);
+			pick = new PickDto(Const.SEPARATOR, "项目管理");
 			picks.add(pick);
-			pick = new PickDto(DataType.MODULE.name() + "_0", "项目管理");
+			pick = new PickDto(DataType.MODULE.name() + "_0", "项目管理（系统项目）");
+			picks.add(pick);
+			pick = new PickDto(DataType.MODULE.name() + "_" + Const.PRIVATE_MODULE, "项目管理（注册用户项目）");
 			picks.add(pick);
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, null, "m_", "0", "MODULE", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
+			dataCenter.getDataCenterPick(picks, modules, "m_", "0", "", DataType.MODULE.name() + "_moduleId", "--【模块】", new HashSet<String>());
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "接口管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, null, "i_", "0", "MODULE", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
+			dataCenter.getDataCenterPick(picks, modules, "i_", "0", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】", new HashSet<String>());
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
@@ -380,7 +384,7 @@ public class PickFactory {
 				picks.add(pick);
 				// 后端接口&模块管理
 				preUrl = "#/back/interface/list/";
-				dataCenter.getDataCenterPick(picks, null, "h_", "top", "MODULE", Const.LEVEL_PRE, preUrl + "moduleId/moduleName","");
+				dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null), "h_", "top", Const.LEVEL_PRE, preUrl + "moduleId/moduleName","", new HashSet<String>());
 				return;
 			}
 			
@@ -411,14 +415,14 @@ public class PickFactory {
 				
 				
 				preUrl = "#/projectId/interface/list/moduleId/moduleName";
-				dataCenter.getDataCenterPick(picks, null, "w_", Const.ADMIN_MODULE , Const.MODULE , "", preUrl, "");
+				dataCenter.getDataCenterPick(picks, dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null), "w_", Const.ADMIN_MODULE , "", preUrl, "", new HashSet<String>());
 				
 				pick = new PickDto(Const.SEPARATOR, "前端文档");
 				picks.add(pick);
 				preUrl = "#/front/source/list/moduleId/moduleName";
 				pick = new PickDto("source_0", preUrl + "0/根目录", "根目录");
 				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, null, "source_", "0", Const.DIRECTORY, "--", preUrl, "");
+				dataCenter.getDataCenterPick(picks, dataCenter.findByMap(Tools.getMap("type", Const.DIRECTORY), null, null), "source_", "0", "--", preUrl, "", new HashSet<String>());
 				
 				
 				/**
@@ -467,14 +471,12 @@ public class PickFactory {
 			}
 						
 		case "DATACENTER":// 所有数据
-			dataCenter.getDataCenterPick(picks, null, "", Const.ADMIN_MODULE, key,  "" , "", "");
+			//dataCenter.getDataCenterPick(picks, null, "", Const.ADMIN_MODULE, key,  "" , "", "");
 			picks.add(0,new PickDto(Const.ADMIN_MODULE, "根目录（管理员）"));
 			return;
 		case "LEAFMODULE":// 查询叶子模块
-			@SuppressWarnings("unchecked")
-			List<DataCenter> modules = (List<DataCenter>) dataCenter
-					.queryByHql("from Module m where type='MODULE' and m.id not in (select m2.parentId from Module m2)",null);
-			for (DataCenter m : modules) {
+			for (DataCenter m : (List<DataCenter>) dataCenter
+					.queryByHql("from Module m where type='MODULE' and m.id not in (select m2.parentId from Module m2)",null)) {
 				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}

@@ -3,6 +3,7 @@ package cn.crap.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -32,23 +33,13 @@ public class DataCenterService extends BaseService<DataCenter>
 		super.setDao(dao, new DataCenter());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public void getDataCenterPick(List<PickDto> picks,Map<String,Object> map, String idPre,String parentId,String type, String deep,String value,String suffix){
-		if(MyString.isEmpty(type)){
-			type = "MODULE";
-		}
-		
-		List<DataCenter> modules = (List<DataCenter>) cacheDao.getObj(Const.CACHE_ALL_DATACENTER + type);
-		if(modules == null){
-			modules = findByMap(Tools.getMap("type",type), null,null);
-			cacheDao.setObj(Const.CACHE_ALL_DATACENTER + type, modules, 60);//缓存60s
-		}
-		
+	public void getDataCenterPick(List<PickDto> picks,List<DataCenter> modules, String idPre,String parentId, String deep,String value,String suffix, Set<String> moduleIds){
 		PickDto pick = null;
 		for (DataCenter m : modules) {
-			if(m.getParentId().equals(parentId)){
+			if(m.getParentId().equals(parentId) && !moduleIds.contains(m.getId())){
+					moduleIds.add(m.getId());
 					// top父模块为top
 					if(m.getId().equals(Const.TOP_MODULE))
 						continue;
@@ -57,7 +48,7 @@ public class DataCenterService extends BaseService<DataCenter>
 					else
 						pick = new PickDto(idPre+m.getId(), value.replace("projectId", m.getProjectId()).replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
 					picks.add(pick);
-					getDataCenterPick(picks, null, idPre,m.getId(), type, deep+Const.LEVEL_PRE , value,suffix);
+					getDataCenterPick(picks, modules, idPre,m.getId(), deep+Const.LEVEL_PRE , value,suffix, moduleIds);
 			}
 		}
 	}

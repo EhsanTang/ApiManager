@@ -272,6 +272,9 @@ public class Interface extends BaseModel implements Serializable{
 				break;
 			}
 			module = cacheService.getModule(module.getParentId());
+			if(i==90){
+				System.out.println("接口projectId异常："+ moduleId);
+			}
 		}
 		return "";
 	}

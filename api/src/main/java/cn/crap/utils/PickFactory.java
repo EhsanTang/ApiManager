@@ -125,12 +125,22 @@ public class PickFactory {
 				}
 				return true;
 			case "DATACENTER":// 所有数据
-				// 如果用户为普通用户，则只能查看自己的模块
-				moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
-				moduleIds.add("NULL");
-				dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
-				picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
-				return true;
+				if(user.getType() == Byte.valueOf(UserType.普通用户.getName())){
+					// 如果用户为普通用户，则只能查看自己的模块
+					moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+					moduleIds.add("NULL");
+					dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
+					picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
+					return true;
+				}
+			case "INTERFACEMODULE":// 即可模块
+				if(user.getType() == Byte.valueOf(UserType.普通用户.getName())){
+					// 如果用户为普通用户，则只能查看自己的模块
+					moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+					moduleIds.add("NULL");
+					dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
+					return true;
+				}
 				// 枚举 模块类型（公开、私有）
 			case "MODULESTATUS":
 				for (ModuleStatus status : ModuleStatus.values()) {
@@ -236,7 +246,7 @@ public class PickFactory {
 			for (WebPageType w : WebPageType.values()) {
 				if (w.equals(WebPageType.DICTIONARY))
 					continue;
-				pick = new PickDto("w_w_" + w.name(), w.name(), w.getName());
+				pick = new PickDto("w_w_" + w.name(), w.name()  + "_top", w.getName());
 				picks.add(pick);
 			}
 
@@ -471,8 +481,16 @@ public class PickFactory {
 			}
 						
 		case "DATACENTER":// 所有数据
-			//dataCenter.getDataCenterPick(picks, null, "", Const.ADMIN_MODULE, key,  "" , "", "");
+			if(MyString.isEmpty(key)){
+				key = Const.MODULE;
+			}
+			dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", key), null, null) 
+					, "", Const.ADMIN_MODULE,  Const.LEVEL_PRE , "",  "", new HashSet<String>());
 			picks.add(0,new PickDto(Const.ADMIN_MODULE, "根目录（管理员）"));
+			return;
+		case "INTERFACEMODULE":// 接口模块
+			dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null) 
+					, "", Const.ADMIN_MODULE, "" , "",  "", new HashSet<String>());
 			return;
 		case "LEAFMODULE":// 查询叶子模块
 			for (DataCenter m : (List<DataCenter>) dataCenter

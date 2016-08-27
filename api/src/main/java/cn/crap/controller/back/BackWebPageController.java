@@ -1,7 +1,6 @@
 package cn.crap.controller.back;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
@@ -20,14 +20,10 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IWebPageService;
-import cn.crap.model.Comment;
-import cn.crap.model.DataCenter;
 import cn.crap.model.WebPage;
-import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
@@ -72,16 +68,14 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webPage/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
-			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
-		}else{
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
-		}
-		if(MyString.isEmpty(webPage.getKey())){
-			webPage.setKey(null);
-		}
 		if(MyString.isEmpty(webPage.getModuleId())){
 			webPage.setModuleId(Const.TOP_MODULE);
+		}
+		
+		Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name() +"_" + Const.MODULEID,  webPage.getModuleId());
+		
+		if(MyString.isEmpty(webPage.getKey())){
+			webPage.setKey(null);
 		}
 		
 		webPage.setCanDelete(Byte.valueOf("1"));
@@ -109,11 +103,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webPage/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		webPage = webPageService.get(webPage.getId());
-		if(webPage.getType().equals(WebPageType.DICTIONARY.name()))
-			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
-		else
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
+		Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name() + "_" + Const.MODULEID,  webPage.getModuleId());
 		model = webPageService.get(webPage.getId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");

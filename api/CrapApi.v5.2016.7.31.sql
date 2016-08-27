@@ -50,6 +50,7 @@ UPDATE api.menu SET menuUrl = replace(menuUrl, 'source/list/0', 'back/source/lis
 
 UPDATE api.menu SET menuUrl = replace(menuUrl, 'interface/list/0', 'back/interface/list/0');
 
+UPDATE api.webpage SET moduleId='top' where type='ARTICLE';
 
 
 

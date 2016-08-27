@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
@@ -86,7 +87,10 @@ public class BackMenuController extends BaseController<Menu> {
 	@RequestMapping("/menu/delete.do")
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_MENU)
-	public JsonResult delete(@ModelAttribute Menu menu) {
+	public JsonResult delete(@ModelAttribute Menu menu) throws MyException {
+		if(menuService.getCount(Tools.getMap("parentId", menu.getId())) > 0){
+			throw new MyException("000025");
+		}
 		menuService.delete(menu);
 		// 清除缓存
 		cacheService.delObj("cache:leftMenu");

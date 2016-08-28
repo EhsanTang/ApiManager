@@ -1,7 +1,6 @@
 package cn.crap.controller.back;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
@@ -20,19 +20,14 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IWebPageService;
-import cn.crap.model.Comment;
-import cn.crap.model.DataCenter;
 import cn.crap.model.WebPage;
-import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/webPage")
 public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
 	private IDataCenterService moduleService;
@@ -43,7 +38,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
 	private ICacheService cacheService;
 
-	@RequestMapping("/list.do")
+	@RequestMapping("/webPage/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
@@ -51,12 +46,12 @@ public class BackWebPageController extends BaseController<WebPage>{
 		
 		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
 		
-		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief) ", page,null), page,
+		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null), page,
 				Tools.getMap("type", WebPageType.valueOf(webPage.getType()).getName(), "category", webPage.getCategory(), "crumbs", 
 						Tools.getCrumbs(MyString.isEmpty(webPage.getCategory()) ? WebPageType.valueOf( webPage.getType()).getName() : webPage.getCategory(), "void")));
 	}
 	
-	@RequestMapping("/detail.do")
+	@RequestMapping("/webPage/detail.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute WebPage webPage){
@@ -70,19 +65,17 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1,model);
 	}
 	
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/webPage/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		if(webPage.getType().equals(WebPageType.DICTIONARY.name())){
-			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
-		}else{
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
-		}
-		if(MyString.isEmpty(webPage.getKey())){
-			webPage.setKey(null);
-		}
 		if(MyString.isEmpty(webPage.getModuleId())){
 			webPage.setModuleId(Const.TOP_MODULE);
+		}
+		
+		Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name() +"_" + Const.MODULEID,  webPage.getModuleId());
+		
+		if(MyString.isEmpty(webPage.getKey())){
+			webPage.setKey(null);
 		}
 		
 		webPage.setCanDelete(Byte.valueOf("1"));
@@ -102,27 +95,28 @@ public class BackWebPageController extends BaseController<WebPage>{
 			webPageService.save(webPage);
 			GetBeanBySetting.getSearchService().add(webPage.toSearchDto());
 		}
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
 		return new JsonResult(1,webPage);
 	}
 	
-	@RequestMapping("/delete.do")
+	@RequestMapping("/webPage/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		webPage = webPageService.get(webPage.getId());
-		if(webPage.getType().equals(WebPageType.DICTIONARY.name()))
-			Tools.hasAuth(Const.AUTH_DICTIONARY,  webPage.getModuleId());
-		else
-			Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name(),  "");
+		Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name() + "_" + Const.MODULEID,  webPage.getModuleId());
 		model = webPageService.get(webPage.getId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
 		}
 		webPageService.delete(webPage);
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
+		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
+		
 		GetBeanBySetting.getSearchService().delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}
 	
-	@RequestMapping("/changeSequence.do")
+	@RequestMapping("/back/webPage/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
@@ -138,7 +132,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		return new JsonResult(1, null);
 	}
 
-	@RequestMapping("/markdown.do")
+	@RequestMapping("/webPage/markdown.do")
 	public String markdown(@ModelAttribute WebPage webPage) throws Exception {
 		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());

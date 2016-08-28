@@ -81,7 +81,7 @@ function uploadImage(id,size,form){
 		return false;
 	 }
      var fileSize =document.getElementById(id).files[0].size;
-     if(fileSize>size*1024){       
+     if(size > 0 && fileSize>size*1024){       
           alert("图片不能大于"+size+"kb,约"+(Math.round(size*1000/1024)/1000)+"M"); 
           return false; 
      } 

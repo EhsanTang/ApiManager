@@ -1,6 +1,7 @@
 package cn.crap.utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import cn.crap.dto.LoginInfoDto;
@@ -124,13 +125,22 @@ public class PickFactory {
 				}
 				return true;
 			case "DATACENTER":// 所有数据
-				// 如果用户为普通用户，则只能查看自己的模块
-				moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
-				moduleIds.add("NULL");
-				
-				dataCenter.getDataCenterPick(picks, Tools.getMap("id|in", moduleIds) , "", Const.PRIVATE_MODULE , key,  Const.LEVEL_PRE , "", "");
-				picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
-				return true;
+				if(user.getType() == Byte.valueOf(UserType.普通用户.getName())){
+					// 如果用户为普通用户，则只能查看自己的模块
+					moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+					moduleIds.add("NULL");
+					dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
+					picks.add(0,new PickDto(Const.PRIVATE_MODULE, "根目录（用户）"));
+					return true;
+				}
+			case "INTERFACEMODULE":// 即可模块
+				if(user.getType() == Byte.valueOf(UserType.普通用户.getName())){
+					// 如果用户为普通用户，则只能查看自己的模块
+					moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
+					moduleIds.add("NULL");
+					dataCenter.getDataCenterPick(picks, dataCenterService.findByMap(Tools.getMap("id|in", moduleIds, "type", key), null, null) , "", Const.PRIVATE_MODULE ,  Const.LEVEL_PRE , "", "", new HashSet<String>());
+					return true;
+				}
 				// 枚举 模块类型（公开、私有）
 			case "MODULESTATUS":
 				for (ModuleStatus status : ModuleStatus.values()) {
@@ -165,6 +175,7 @@ public class PickFactory {
 	 * @throws MyException 
 	 */
 
+	@SuppressWarnings("unchecked")
 	private static void getBackPickList(List<PickDto> picks, String code, String key, 
 			IMenuService menuService, IDataCenterService dataCenter, IErrorService errorService, IRoleService roleService, 
 			IWebPageService webPageService) throws MyException {
@@ -183,18 +194,21 @@ public class PickFactory {
 			
 		// 权限
 		case "AUTH":
-			pick = new PickDto(DataType.VIEW.name() + "_0", DataType.VIEW.getName());
+			List<DataCenter> modules = dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null);
+			pick = new PickDto(Const.SEPARATOR, "项目管理");
 			picks.add(pick);
-			pick = new PickDto(DataType.MODULE.name() + "_0", "项目管理");
+			pick = new PickDto(DataType.MODULE.name() + "_0", "项目管理（系统项目）");
+			picks.add(pick);
+			pick = new PickDto(DataType.MODULE.name() + "_" + Const.PRIVATE_MODULE, "项目管理（注册用户项目）");
 			picks.add(pick);
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "模块管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, null, "m_", "0", "MODULE", "", DataType.MODULE.name() + "_moduleId", "--【模块】");
+			dataCenter.getDataCenterPick(picks, modules, "m_", "0", "", DataType.MODULE.name() + "_moduleId", "--【模块】", new HashSet<String>());
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "接口管理");
 			picks.add(pick);
-			dataCenter.getDataCenterPick(picks, null, "i_", "0", "MODULE", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】");
+			dataCenter.getDataCenterPick(picks, modules, "i_", "0", "", DataType.INTERFACE.name() + "_moduleId", "--【接口】", new HashSet<String>());
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "错误码管理");
 			picks.add(pick);
@@ -232,7 +246,7 @@ public class PickFactory {
 			for (WebPageType w : WebPageType.values()) {
 				if (w.equals(WebPageType.DICTIONARY))
 					continue;
-				pick = new PickDto("w_w_" + w.name(), w.name(), w.getName());
+				pick = new PickDto("w_w_" + w.name(), w.name()  + "_top", w.getName());
 				picks.add(pick);
 			}
 
@@ -343,33 +357,33 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "后台");
 				picks.add(pick);
 				// 后端错误码管理
-				pick = new PickDto("h_e_0", "#/back/error/list", "错误码列表");
+				pick = new PickDto("h_e_0", "#/error/list", "错误码列表");
 				picks.add(pick);
 				// 后端用户管理
-				pick = new PickDto("h_u_0", "#/back/user/list", "用户列表");
+				pick = new PickDto("h_u_0", "#/user/list", "用户列表");
 				picks.add(pick);
 				// 后端角色管理
-				pick = new PickDto("h_r_0", "#/back/role/list", "角色列表");
+				pick = new PickDto("h_r_0", "#/role/list", "角色列表");
 				picks.add(pick);
 				// 后端PDF、DOC等文档管理
 				pick = new PickDto("h_sorce_0", "#/back/source/list/0/根目录", "PDF、DOC等文档列表");
 				picks.add(pick);
 				// 后端系统设置
-				pick = new PickDto("h_s_0", "#/back/setting/list/null", "系统设置列表");
+				pick = new PickDto("h_s_0", "#/setting/list/null", "系统设置列表");
 				picks.add(pick);
-				pick = new PickDto("h_l_0", "#/back/log/list", "日志列表");
+				pick = new PickDto("h_l_0", "#/log/list", "日志列表");
 				picks.add(pick);
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
 				picks.add(pick);
 				for (MenuType type : MenuType.values()) {
-					pick = new PickDto("h_m_" + type.name(), "#/back/menu/list/0/" + type.name() + "/一级菜单",
+					pick = new PickDto("h_m_" + type.name(), "#/menu/list/0/" + type.name() + "/一级菜单",
 							type.getName());
 					picks.add(pick);
 				}
 				pick = new PickDto(Const.SEPARATOR, "后台数据字典&页面&文章管理");
 				picks.add(pick);
-				preUrl = "#/back/webPage/list/";
+				preUrl = "#/webPage/list/";
 				
 				for (WebPageType webPage : WebPageType.values()) {
 					pick = new PickDto("h_" + webPage.name(), preUrl + webPage.name(), webPage.getName());
@@ -380,7 +394,7 @@ public class PickFactory {
 				picks.add(pick);
 				// 后端接口&模块管理
 				preUrl = "#/back/interface/list/";
-				dataCenter.getDataCenterPick(picks, null, "h_", "top", "MODULE", Const.LEVEL_PRE, preUrl + "moduleId/moduleName","");
+				dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null), "h_", "top", Const.LEVEL_PRE, preUrl + "moduleId/moduleName","", new HashSet<String>());
 				return;
 			}
 			
@@ -411,14 +425,14 @@ public class PickFactory {
 				
 				
 				preUrl = "#/projectId/interface/list/moduleId/moduleName";
-				dataCenter.getDataCenterPick(picks, null, "w_", Const.ADMIN_MODULE , Const.MODULE , "", preUrl, "");
+				dataCenter.getDataCenterPick(picks, dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null), "w_", Const.ADMIN_MODULE , "", preUrl, "", new HashSet<String>());
 				
 				pick = new PickDto(Const.SEPARATOR, "前端文档");
 				picks.add(pick);
 				preUrl = "#/front/source/list/moduleId/moduleName";
 				pick = new PickDto("source_0", preUrl + "0/根目录", "根目录");
 				picks.add(pick);
-				dataCenter.getDataCenterPick(picks, null, "source_", "0", Const.DIRECTORY, "--", preUrl, "");
+				dataCenter.getDataCenterPick(picks, dataCenter.findByMap(Tools.getMap("type", Const.DIRECTORY), null, null), "source_", "0", "--", preUrl, "", new HashSet<String>());
 				
 				
 				/**
@@ -467,14 +481,20 @@ public class PickFactory {
 			}
 						
 		case "DATACENTER":// 所有数据
-			dataCenter.getDataCenterPick(picks, null, "", Const.ADMIN_MODULE, key,  "" , "", "");
+			if(MyString.isEmpty(key)){
+				key = Const.MODULE;
+			}
+			dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", key), null, null) 
+					, "", Const.ADMIN_MODULE,  Const.LEVEL_PRE , "",  "", new HashSet<String>());
 			picks.add(0,new PickDto(Const.ADMIN_MODULE, "根目录（管理员）"));
 			return;
+		case "INTERFACEMODULE":// 接口模块
+			dataCenter.getDataCenterPick(picks,  dataCenter.findByMap(Tools.getMap("type", "MODULE"), null, null) 
+					, "", Const.ADMIN_MODULE, "" , "",  "", new HashSet<String>());
+			return;
 		case "LEAFMODULE":// 查询叶子模块
-			@SuppressWarnings("unchecked")
-			List<DataCenter> modules = (List<DataCenter>) dataCenter
-					.queryByHql("from Module m where type='MODULE' and m.id not in (select m2.parentId from Module m2)",null);
-			for (DataCenter m : modules) {
+			for (DataCenter m : (List<DataCenter>) dataCenter
+					.queryByHql("from Module m where type='MODULE' and m.id not in (select m2.parentId from Module m2)",null)) {
 				pick = new PickDto(m.getId(), m.getName());
 				picks.add(pick);
 			}

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
@@ -20,7 +21,7 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/menu")
+@RequestMapping
 public class BackMenuController extends BaseController<Menu> {
 	@Autowired
 	IMenuService menuService;
@@ -32,7 +33,7 @@ public class BackMenuController extends BaseController<Menu> {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/list.do")
+	@RequestMapping("/menu/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute Menu menu, @RequestParam(defaultValue = "1") Integer currentPage) {
 		page.setCurrentPage(currentPage);
@@ -40,7 +41,7 @@ public class BackMenuController extends BaseController<Menu> {
 		return new JsonResult(1, menuService.findByMap(map, page, null), page);
 	}
 
-	@RequestMapping("/detail.do")
+	@RequestMapping("/menu/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu) {
 		if (!menu.getId().equals(Const.NULL_ID)) {
@@ -59,7 +60,7 @@ public class BackMenuController extends BaseController<Menu> {
 	 * @param menu
 	 * @return
 	 */
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/menu/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult addOrUpdate(@ModelAttribute Menu menu) {
@@ -83,10 +84,13 @@ public class BackMenuController extends BaseController<Menu> {
 		return new JsonResult(1, menu);
 	}
 
-	@RequestMapping("/delete.do")
+	@RequestMapping("/menu/delete.do")
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_MENU)
-	public JsonResult delete(@ModelAttribute Menu menu) {
+	public JsonResult delete(@ModelAttribute Menu menu) throws MyException {
+		if(menuService.getCount(Tools.getMap("parentId", menu.getId())) > 0){
+			throw new MyException("000025");
+		}
 		menuService.delete(menu);
 		// 清除缓存
 		cacheService.delObj("cache:leftMenu");
@@ -96,7 +100,7 @@ public class BackMenuController extends BaseController<Menu> {
 	/****
 	 * 后台加载菜单列表
 	 */
-	@RequestMapping("/menu.do")
+	@RequestMapping("/menu/menu.do")
 	@ResponseBody
 	public JsonResult menu() {
 		return new JsonResult(1, menuService.getLeftMenu(map));
@@ -104,7 +108,7 @@ public class BackMenuController extends BaseController<Menu> {
 
 	
 	
-	@RequestMapping("/changeSequence.do")
+	@RequestMapping("/back/menu/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {

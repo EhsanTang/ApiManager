@@ -3,6 +3,7 @@ package cn.crap.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -15,6 +16,7 @@ import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.ICacheDao;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.DataCenter;
+import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
@@ -33,25 +35,21 @@ public class DataCenterService extends BaseService<DataCenter>
 	
 	@Override
 	@Transactional
-	public void getDataCenterPick(List<PickDto> picks,Map<String,Object> map, String idPre,String parentId,String type, String deep,String value,String suffix){
-		if(MyString.isEmpty(type)){
-			type = "MODULE";
-		}
+	public void getDataCenterPick(List<PickDto> picks,List<DataCenter> modules, String idPre,String parentId, String deep,String value,String suffix, Set<String> moduleIds){
 		PickDto pick = null;
-		
-		if(map == null){
-			map = Tools.getMap("parentId",parentId,"type", type);
-		}else{
-			map.putAll(Tools.getMap("parentId",parentId,"type", type));
-		}
-			
-		for (DataCenter m : findByMap(map, null,null)) {
-			if(MyString.isEmpty(value))
-				pick = new PickDto(idPre+m.getId(), deep+m.getName());
-			else
-				pick = new PickDto(idPre+m.getId(), value.replace("projectId", m.getProjectId()).replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
-			picks.add(pick);
-			getDataCenterPick(picks, null, idPre,m.getId(), type, deep+Const.LEVEL_PRE , value,suffix);
+		for (DataCenter m : modules) {
+			if(m.getParentId().equals(parentId) && !moduleIds.contains(m.getId())){
+					moduleIds.add(m.getId());
+					// top父模块为top
+					if(m.getId().equals(Const.TOP_MODULE))
+						continue;
+					if(MyString.isEmpty(value))
+						pick = new PickDto(idPre+m.getId(), deep+m.getName());
+					else
+						pick = new PickDto(idPre+m.getId(), value.replace("projectId", m.getProjectId()).replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
+					picks.add(pick);
+					getDataCenterPick(picks, modules, idPre,m.getId(), deep+Const.LEVEL_PRE , value,suffix, moduleIds);
+			}
 		}
 	}
 

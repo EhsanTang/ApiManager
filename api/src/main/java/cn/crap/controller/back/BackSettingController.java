@@ -24,7 +24,6 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/setting")
 public class BackSettingController extends BaseController<Setting>{
 
 	@Autowired
@@ -38,7 +37,7 @@ public class BackSettingController extends BaseController<Setting>{
 	 * @param pageSize 每页显示多少条，-1表示查询全部
 	 * @return
 	 */
-	@RequestMapping("/list.do")
+	@RequestMapping("/setting/list.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
@@ -48,7 +47,7 @@ public class BackSettingController extends BaseController<Setting>{
 		return new JsonResult(1,  settingService.findByMap(map, page, null)   , page);
 	}
 	
-	@RequestMapping("/detail.do")
+	@RequestMapping("/setting/detail.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult detail(@ModelAttribute Setting setting){
@@ -67,7 +66,7 @@ public class BackSettingController extends BaseController<Setting>{
 		return new JsonResult(1,model);
 	}
 	
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/setting/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult addOrUpdate(@ModelAttribute Setting setting){
@@ -86,7 +85,7 @@ public class BackSettingController extends BaseController<Setting>{
 			cacheService.delObj(CacheService.cacheSettingList);
 		return new JsonResult(1,setting);
 	}
-	@RequestMapping("/delete.do")
+	@RequestMapping("/setting/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
@@ -101,7 +100,7 @@ public class BackSettingController extends BaseController<Setting>{
 		return new JsonResult(1,null);
 	}
 	
-	@RequestMapping("/changeSequence.do")
+	@RequestMapping("/back/setting/changeSequence.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {

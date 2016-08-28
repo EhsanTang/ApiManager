@@ -36,17 +36,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
-	}).state('webPageList', {
-		url : '/:projectId/webPage/list/:type/:search',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/html/frontHtml/webPageList_'+$stateParems.type+'.tpl.html';
-				}
-			},'page@webPageList' : {
-				templateUrl : 'resources/html/frontHtml/page.tpl.html'
-			}
-		}
 	}).state('frontInterfaceCtrl', {
 		url : '/:projectId/interface/list/:moduleId/:moduleName',
 		views : {

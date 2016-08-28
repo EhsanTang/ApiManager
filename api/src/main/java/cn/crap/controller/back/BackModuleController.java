@@ -27,7 +27,6 @@ import cn.crap.utils.Tools;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/module")
 public class BackModuleController extends BaseController<DataCenter>{
 
 	@Autowired
@@ -41,7 +40,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	
-	@RequestMapping("/detail.do")
+	@RequestMapping("/module/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute DataCenter module) throws MyException{
 		if(!module.getId().equals(Const.NULL_ID)){
@@ -59,7 +58,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		return new JsonResult(1,model);
 	}
 	
-	@RequestMapping("/addOrUpdate.do")
+	@RequestMapping("/module/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws Exception{
 		
@@ -129,7 +128,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		return new JsonResult(1,module);
 	}
 	
-	@RequestMapping("/delete.do")
+	@RequestMapping("/module/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute DataCenter module) throws Exception{
 		// 系统私有模块，不允许删除
@@ -166,7 +165,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		return new JsonResult(1,null);
 	}
 	
-	@RequestMapping("/changeSequence.do")
+	@RequestMapping("/back/module/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {

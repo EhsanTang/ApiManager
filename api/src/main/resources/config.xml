@@ -20,5 +20,13 @@
 		
 		<!-- 用户登录信息缓存时间（最后一次后台操作时间超过该时间，登录信息将失效）：s -->
 		<property name="loginInforTime" value="3600"/>
+		
+		<!-- 上传文件大小限制，单位：M -->
+		<property name="fileSize" value="20"/>
+		
+		<!-- 允许上传的文件类型 -->
+		<property name="fileType" value=",gif,jpg,jpeg,png,bmp,ico,"/>
+		<!-- 允许上传的图片类型 -->
+		<property name="imageType" value=",txt,doc,xls,xlsx,rar,zip,pdf,docx,"/>
 	</bean>
 </beans>

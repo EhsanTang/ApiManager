@@ -58,18 +58,43 @@
 						<!-- 该菜单只有超级管理员才能查看 -->
 						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel2">
 									<div class="f14 mt-3 fl mr10">
 										<i class="iconfont">&#xe60f;</i>
+									</div> <span class="hidden-xs">菜单管理</span>
+								</div>
+							</div>
+							<div id="panel2" class="panel-collapse BGEEE collapse">
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/FRONT/前端左侧菜单" onclick="selectButton(this,'menu-a')">前端左侧菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/BOTTOM/前端底部菜单" onclick="selectButton(this,'menu-a')">前端底部菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/TOP/前端顶部菜单" onclick="selectButton(this,'menu-a')">前端顶部菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/FRIEND/底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/BACK/管理员菜单" onclick="selectButton(this,'menu-a')">后台管理员菜单</a>
+								</div>
+							</div>
+						</div>
+						
+						<!-- 该菜单只有超级管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
+									<div class="f14 mt-3 fl mr10">
+										<i class="iconfont">&#xe61a;</i>
 									</div> <span class="hidden-xs">系统管理</span>
 								</div>
 							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse in">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/FRONT/一级菜单" onclick="selectButton(this,'menu-a')">菜单管理</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/back/interface/list/0/项目列表" onclick="selectButton(this,'menu-a')">系统项目列表</a>
+									<a class="menu-a" target="_self" href="#/back/interface/list/0/项目列表" onclick="selectButton(this,'menu-a')">管理员项目列表</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/back/interface/list/privateModule/注册用户项目" onclick="selectButton(this,'menu-a')">注册用户项目列表</a>

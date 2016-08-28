@@ -12,20 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
+import cn.crap.utils.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
 public class BackFileController extends BaseController <User>{
-	private HashMap<String, String> extMap = new HashMap<String, String>();
-	public BackFileController(){
-		/**
-		 * 允许上传的图片类型
-		 */
-		extMap.put("image", ",gif,jpg,jpeg,png,bmp,ico");
-		extMap.put("files", ",txt,doc,xls,xlsx,rar,zip,pdf,docx");
-	}
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_ADMIN)
@@ -39,16 +32,16 @@ public class BackFileController extends BaseController <User>{
 	    /**
 	     * 文件大小拦截，不能超过20M
 	     */
-	    if(file.getSize()>2*1024*1024*20){
+	    if(file.getSize() > 1024*1024 * Config.getFileSize()){
 	    	obj.put("error", 1);
-	    	result = "[ERROR]文件超过最大限制，请上传小于20M";
-	    }else if(extMap.get("image").indexOf(suffix)<0 && extMap.get("files").indexOf(suffix)<0){
+	    	result = "[ERROR]文件超过最大限制，请上传小于" +Config.getFileSize() +"M的文件";
+	    }else if( Config.getImageType().indexOf(suffix)<0 && Config.getFileType().indexOf(suffix)<0 ){
 	    	 //检查扩展名
 	    	obj.put("error", 1);
-	    	result = "[ERROR]上传文件扩展名是不允许的扩展名";
+	    	result = "[ERROR]上传文件格式不对";
 	    }else{
 	    	//检查扩展名
-	    	if(extMap.get("image").indexOf(suffix)>=0){
+	    	if( Config.getImageType().indexOf(suffix)>=0 ){
 	    		saveUrl +="resources/upload/images";
 	    	}else{
 	    		saveUrl +="resources/upload/files";

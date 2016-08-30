@@ -20,10 +20,6 @@ public class FrontMockController extends BaseController<Interface>{
 
 	@Autowired
 	private IInterfaceService interfaceService;
-	@Autowired
-	private IDataCenterService dataCenterService;
-	@Autowired
-	private ICacheService cacheService;
 	
 	@RequestMapping("/trueExam.do")
 	@ResponseBody

@@ -103,8 +103,8 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webPage/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		Tools.hasAuth(WebPageType.valueOf(webPage.getType()).name() + "_" + Const.MODULEID,  webPage.getModuleId());
 		model = webPageService.get(webPage.getId());
+		Tools.hasAuth(WebPageType.valueOf(model.getType()).name() + "_" + Const.MODULEID,  model.getModuleId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
 		}

@@ -143,6 +143,4 @@ public class Config {
 	public static void setFileType(String fileType) {
 		Config.fileType = fileType;
 	}
-	
-	
 }

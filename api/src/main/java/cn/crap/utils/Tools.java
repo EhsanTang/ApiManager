@@ -273,6 +273,18 @@ public class Tools {
 		}
 		return temp;
 	}
+	
+	public static boolean isEmail(String email) {
+		if (null == email || "".equals(email))
+			return false;
+		// Pattern p = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}");
+		Pattern p = Pattern
+				.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+		Matcher m = p.matcher(email);
+		return m.matches();
+	}
+	
+	
 	public static HttpServletResponse getResponse(){
 		HttpServletResponse response=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();;
 		response.setContentType( "text/html" );

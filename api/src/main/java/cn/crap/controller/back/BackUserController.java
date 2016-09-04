@@ -16,6 +16,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.IEmailService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.utils.Const;

@@ -1,24 +1,32 @@
 package cn.crap.controller.back;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.MailBean;
+import cn.crap.enumeration.UserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IEmailService;
 import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
@@ -45,6 +53,9 @@ public class BackLoginController extends BaseController<User> {
 	private IRoleService roleService;
 	@Autowired
 	private IDataCenterService dataCenterService;
+	@Autowired
+	private IEmailService emailService;
+	
 	/**
 	 * 退出登录
 	 */
@@ -89,9 +100,53 @@ public class BackLoginController extends BaseController<User> {
 		LoginDto model = new LoginDto();
 		return new JsonResult(1, model);
 	}
+	
+	/**
+	 * 发送验证邮件
+	 * @return
+	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/back/validateEmail.do")
+	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException {
+		String id =  Aes.desEncrypt(i);
+		String code = cacheService.getStr(i);
+		cacheService.delStr(i);
+		if(code == null || !code.equals(Const.REGISTER)){
+			request.setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
+		}else{
+			User user = userService.get(id);
+			if(user.getId() != null){
+				user.setStatus( Byte.valueOf("2") );
+				userService.update(user);
+				request.setAttribute("result", "验证通过！");
+			}else{
+				request.setAttribute("result", "抱歉，账号不存在！");
+			}
+		}
+		return "WEB-INF/views/result.jsp";
+	}
+	
+
+	/**
+	 * 发送验证邮件
+	 * @return
+	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/back/sendValidateEmail.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult sendValidateEmail() throws UnsupportedEncodingException, MessagingException {
+		LoginInfoDto user = Tools.getUser();
+		emailService.sendRegisterMain(user.getUserName(), user.getId());
+		return new JsonResult(1, model);
+	}
+	
+	
 	@RequestMapping("/back/register.do")
 	@ResponseBody
-	public JsonResult register(@ModelAttribute LoginDto model) throws MyException {
+	public JsonResult register(@ModelAttribute LoginDto model) throws MyException, UnsupportedEncodingException, MessagingException {
 		if( MyString.isEmpty(model.getUserName())){
 			model.setTipMessage("邮箱不能为空");
 			return new JsonResult(1, model);
@@ -136,7 +191,11 @@ public class BackLoginController extends BaseController<User> {
 			model.setId(null);
 			return new JsonResult(1, model);
 		}
-		
+		try{
+			emailService.sendRegisterMain(user.getUserName(), user.getId());
+		}catch(Exception e){
+			log.error("注册验证邮件发送失败:" + user.getUserName(), e);
+		}
 		model.setId(user.getId());
 		return new JsonResult(1, model);
 		

@@ -3,7 +3,7 @@
   						<span class="pl10 C000 f18 fb">注册：Join Us,Code to Change!</a>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
-					<form class="form-horizontal p15 mt10" ng-submit="submitForm('back/register.do',register,'FLOAT')" ng-controller="preRegisterCtrl">
+					<form class="form-horizontal p15 mt10" ng-submit="submitForm('back/register.do','','FLOAT')" ng-controller="preRegisterCtrl">
 						<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
 						<div class="input-wrapper ">
 							    <input type="email" ng-model="model.userName" placeholder="邮箱"  autocomplete="off" required>
@@ -31,3 +31,5 @@
 						</div>
 					</form>
 					<div id="warnMessage" class="text-error mb15 mt10"></div>
+					<div class="text-error mb15 mt10 dis" ng-if="error" ng-bind="error"></div>
+					

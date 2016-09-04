@@ -43,6 +43,13 @@ public class JsonResult implements Serializable {
 		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention())));
 	}
 	
+	public JsonResult(String errorCode){
+		this.data = null;
+		this.success = 0;
+		String errorMsg =  ErrorInfos.getMessage(errorCode);
+		this.setError( new ErrorMessage(errorCode,errorMsg) );
+	}
+	
 	
 	public Integer getSuccess() {
 		return success;

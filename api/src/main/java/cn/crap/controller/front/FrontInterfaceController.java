@@ -150,9 +150,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	@RequestMapping("/debug.do")
 	@ResponseBody
 	public JsonResult debug(@RequestParam String params, @RequestParam String headers, @RequestParam(defaultValue="") String customParams,
-			@RequestParam String debugMethod,@RequestParam String url, String moduleUrl) throws Exception {
-		if(!MyString.isEmpty(moduleUrl))
-			url = moduleUrl + url;
+			@RequestParam String debugMethod,@RequestParam String fullUrl) throws Exception {
 		
 		JSONArray jsonParams = JSONArray.fromObject(params);
 		JSONArray jsonHeaders = JSONArray.fromObject(headers);
@@ -160,8 +158,8 @@ public class FrontInterfaceController extends BaseController<Interface>{
 		for(int i=0;i<jsonParams.size();i++){
 			JSONObject param = jsonParams.getJSONObject(i);
 			for(Object paramKey:param.keySet()){
-				if(url.contains("{"+paramKey.toString()+"}")){
-					url = url.replace("{"+paramKey.toString()+"}", param.getString(paramKey.toString()));
+				if(fullUrl.contains("{"+paramKey.toString()+"}")){
+					fullUrl = fullUrl.replace("{"+paramKey.toString()+"}", param.getString(paramKey.toString()));
 				}else{
 					httpParams.put(paramKey.toString(), param.getString(paramKey.toString()));
 				}
@@ -178,25 +176,25 @@ public class FrontInterfaceController extends BaseController<Interface>{
 		}
 		// 如果自定义参数不为空，则表示需要使用post发送自定义包体
 		if(!MyString.isEmpty(customParams)){
-			return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.postBody(url, customParams, httpHeaders)));
+			return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.postBody(fullUrl, customParams, httpHeaders)));
 		}
 		
 		try{
 			switch(debugMethod){
 			case "POST":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.post(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.post(fullUrl, httpParams, httpHeaders)));
 			case "GET":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.get(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.get(fullUrl, httpParams, httpHeaders)));
 			case "PUT":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.put(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.put(fullUrl, httpParams, httpHeaders)));
 			case "DELETE":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.delete(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.delete(fullUrl, httpParams, httpHeaders)));
 			case "HEAD":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.head(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.head(fullUrl, httpParams, httpHeaders)));
 			case "OPTIONS":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.options(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.options(fullUrl, httpParams, httpHeaders)));
 			case "TRACE":
-				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.trace(url, httpParams, httpHeaders)));
+				return new JsonResult(1, Tools.getMap("debugResult",HttpPostGet.trace(fullUrl, httpParams, httpHeaders)));
 			default:
 				return new JsonResult(1, Tools.getMap("debugResult","不支持的请求方法："+debugMethod));
 		}

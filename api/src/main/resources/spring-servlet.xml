@@ -34,7 +34,7 @@
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
-			<value>classpath:jdbc.properties</value>
+			<value>classpath:config.properties</value>
 		</property>
 	</bean>
 
@@ -116,4 +116,17 @@
 	</bean>
  	<!-- 支持上传文件 -->  
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    
+    <!-- 邮件类 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+        <property name="username"><value>${mail.username}</value></property>  
+        <property name="password"><value>${mail.password}</value></property>  
+        <property name="host"><value>${mail.host}</value></property>  
+        <property name="javaMailProperties">  
+            <props>  
+                <prop key="mail.smtp.auth">${mail.auth}</prop>  
+                <prop key="mail.smtp.timeout">${mail.timeout}</prop>  
+            </props>  
+        </property>  
+	</bean> 
 </beans>

@@ -4,8 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>CrapApi|接口、文档管理系统—MarkDown</title>
     <link rel="stylesheet" href="../resources/markdown/dist/markdown-plus.min.css"/>
     <script src="../resources/markdown/dist/markdown-plus.min.js" charset="utf-8"></script>

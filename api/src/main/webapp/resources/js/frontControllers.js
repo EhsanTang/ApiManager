@@ -125,6 +125,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.model = result.data;
+				 $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
 				 $rootScope.versions = result.others.versions;
 				 $rootScope.errors = eval("("+result.data.errors+")");
 				 

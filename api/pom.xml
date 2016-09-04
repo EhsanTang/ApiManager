@@ -89,6 +89,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
+		
+<dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-context-support</artifactId>  
+        <version>${spring_version}</version>  
+     </dependency>  
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -254,6 +260,13 @@
     <artifactId>commons-configuration</artifactId>
     <version>1.10</version>
 </dependency>
+<!-- 发送邮件 -->
+<dependency>  
+    <groupId>javax.mail</groupId>  
+    <artifactId>mail</artifactId>  
+    <version>1.4.7</version>  
+</dependency> 
+
 <!-- End:读取xml配置 -->
 	</dependencies>
 	<build>

@@ -130,6 +130,9 @@
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
+					<i class="iconfont">&#xe625;&nbsp;</i>调试
+				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('INTERFACE',$stateParams.moduleId)"
 					ng-click="del('back/interface/delete.do?id='+item.id,item.interfaceName)">
 					<i class="iconfont f12">&#xe60e;删除</i>

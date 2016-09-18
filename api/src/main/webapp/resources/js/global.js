@@ -56,6 +56,13 @@ function closeMyDialog(tagDiv){
 	iClose(tagDiv);
 	iClose('fade');
 }
+function fullMyDialog(tagDiv){
+	$("#"+tagDiv).css("top","0px");
+	$("#"+tagDiv).css("left","0px");
+	$("#"+tagDiv).css("height","100%");
+	$("#"+tagDiv).css("width","100%");
+	$("#myDialogContent").css("max-height","100%");
+}
 function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
 	/***********加载选择对话框********************/
 	if(!params)

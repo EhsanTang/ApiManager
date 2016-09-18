@@ -238,19 +238,10 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		        });  
 	    	}
 	    };
-	$rootScope.setValueForModel = function(id,transform){
-		var result= $("#"+id).val();
-		if(transform){
-			result = format(result);
-		}
+	$rootScope.jsonformat = function(id,tiperror){
+		var result = format($rootScope.model[id],tiperror);
 		if(result){
-			if(id=="falseExam"){
-				$rootScope.model.falseExam = result;
-			}else if(id=="trueExam"){
-				$rootScope.model.trueExam = result;
-			}if(id=="settingValue"){
-				$rootScope.model.value = result;
-			}
+			$rootScope.model[id] = result;
 		}
 	}
 	/**************markdown*************/

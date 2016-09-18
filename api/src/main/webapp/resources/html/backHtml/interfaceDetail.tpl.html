@@ -69,7 +69,7 @@
 					<td class="tc" colspan="3">
 					    <div ng-class="{true: 'input-group w', false: 'w'}[model.moduleUrl!='']">
 					      <div class="input-group-addon" ng-bind="model.moduleUrl" ng-if="model.moduleUrl"></div>
-					      <input type="text" class="form-control" ng-model="model.url" required maxlength="100"
+					      <input type="text" class="form-control" ng-model="model.url" required maxlength="200"
 						placeholder="示例：http://api.crap.cn/CustomerOrder/{id}">
 					    </div>
 					</td>
@@ -115,8 +115,24 @@
 									<tbody>
 										<tr ng-repeat="item in model.headers track by $index">
 											<td><input class="form-control" type="text" name="name" value="{{item.name}}" placeholder="参数名：必填"></td>
-											<td><input class="form-control" type="text" name="necessary" id="necessary{{$index}}" value="{{item.necessary}}" ng-focus="loadPick($event,200,250,'true','necessary'+$index,'TRUEORFALSE','','','',5);" placeholder="点击输入框选择"></td>
-											<td><input class="form-control" type="text" name="type" value="{{item.type}}" placeholder="类型：必填"></td>
+											<td class="w100">
+												<select name="necessary" class="form-control">
+													<option value="true" ng-selected="item.necessary=='true'">true</option>
+													<option value="false" ng-selected="item.necessary=='false'">false</option>
+												</select>
+											</td>
+											<td class="w100">
+												<select name="type" class="form-control">
+													<option value="string" ng-selected="item.type=='string'">string</option>
+													<option value="int" ng-selected="item.type=='int'">int</option>
+													<option value="float" ng-selected="item.type=='float'">float</option>
+													<option value="long"  ng-selected="item.type=='long'">long</option>
+													<option value="byte"  ng-selected="item.type=='byte'">byte</option>
+													<option value="double"  ng-selected="item.type=='double'">double</option>
+													<option value="boolean"  ng-selected="item.type=='boolean'">boolean</option>
+													<option value="file"  ng-selected="item.type=='file'">file</option>
+												</select>
+											</td>
 											<td><input class="form-control" type="text" name="def" value="{{item.def}}" placeholder="默认值"></td>
 											<td><input class="form-control" type="text" name="remark" value="{{item.remark}}"></td>
 											<td class="cursor text-danger"><i class="iconfont" onclick="deleteOneParam(this)">&#xe60e;</i></td>
@@ -170,7 +186,12 @@
 									<tbody>
 										<tr ng-repeat="item in model.params track by $index">
 											<td><input class="form-control" type="text" name="name" value="{{item.name}}" placeholder="参数名：必填"></td>
-											<td><input class="form-control" type="text" name="necessary" id="param_necessary{{$index}}" value="{{item.necessary}}" ng-focus="loadPick($event,200,250,'true','param_necessary'+$index,'TRUEORFALSE','','','',5);" placeholder="点击输入框选择"></td>
+											<td class="w100">
+												<select name="necessary" class="form-control">
+													<option value="true" ng-selected="item.necessary=='true'">true</option>
+													<option value="false" ng-selected="item.necessary=='false'">false</option>
+												</select>
+											</td>
 											<td class="w100">
 												<select name="inUrl" ng-if="item.inUrl && item.inUrl=='false'" class="form-control">
 													<option value="false" selected="selected">普通参数</option>
@@ -181,7 +202,19 @@
 													<option value="true" selected="selected">URL路径</option>
 												</select>
 											</td>
-											<td><input class="form-control" type="text" name="type" value="{{item.type}}" placeholder="类型：必填"></td>
+											<td class="w100">
+												<select name="type" class="form-control">
+													<option value="string" ng-selected="item.type=='string'">string</option>
+													<option value="int" ng-selected="item.type=='int'">int</option>
+													<option value="float" ng-selected="item.type=='float'">float</option>
+													<option value="long"  ng-selected="item.type=='long'">long</option>
+													<option value="byte"  ng-selected="item.type=='byte'">byte</option>
+													<option value="double"  ng-selected="item.type=='double'">double</option>
+													<option value="boolean"  ng-selected="item.type=='boolean'">boolean</option>
+													<option value="file"  ng-selected="item.type=='file'">file</option>
+												</select>
+												
+											</td>
 											<td><input class="form-control" type="text" name="def" value="{{item.def}}" placeholder="默认值"></td>
 											<td><input class="form-control" type="text" name="remark" value="{{item.remark}}"></td>
 											<td class="cursor text-danger"><i class="iconfont" onclick="deleteOneParam(this)">&#xe60e;</i></td>
@@ -232,7 +265,18 @@
 								</thead>
 									<tr ng-repeat="item in model.responseParams track by $index">
 										<td><input class="form-control" type="text" name="name" value="{{item.name}}" placeholder="参数名：必填"></td>
-										<td><input class="form-control" type="text" name="type" value="{{item.type}}" placeholder="类型：必填"></td>
+										<td class="w100">
+												<select name="type" class="form-control">
+													<option value="string" ng-selected="item.type=='string'">string</option>
+													<option value="int" ng-selected="item.type=='int'">int</option>
+													<option value="float" ng-selected="item.type=='float'">float</option>
+													<option value="long"  ng-selected="item.type=='long'">long</option>
+													<option value="byte"  ng-selected="item.type=='byte'">byte</option>
+													<option value="double"  ng-selected="item.type=='double'">double</option>
+													<option value="boolean"  ng-selected="item.type=='boolean'">boolean</option>
+													<option value="file"  ng-selected="item.type=='file'">file</option>
+												</select>
+										</td>
 										<td><input class="form-control" type="text" name="remark" value="{{item.remark}}"></td>
 										<td class="cursor text-danger"><i class="iconfont" onclick="deleteOneParam(this)">&#xe60e;</i></td>
 									</tr>
@@ -268,10 +312,9 @@
 				<tr>
 					<td class="tc">正确返回示例<br> 
 					<input type="button" class="btn btn-default btn-sm w100 mt10" value="格式化数据"
-						ng-click="setValueForModel('trueExam',true)">
+						ng-click="jsonformat('trueExam',true)">
 					</td>
-					<td class="tc"><textarea class="form-control no-resize"
-							id="trueExam" ng-model="model.trueExam" rows="10"
+					<td class="tc"><textarea class="form-control no-resize" ng-model="model.trueExam" rows="10"
 							placeholder='请用标准json结构
 示例：	{
 			"success": 1,			
@@ -288,9 +331,8 @@
 					</td>
 					<td class="tc">错误返回示例<br> <input type="button"
 						class="btn btn-default btn-sm" value="格式化数据"
-						ng-click="setValueForModel('falseExam',true)"></td>
-					<td class="tc"><textarea class="form-control no-resize"
-							id="falseExam" ng-model="model.falseExam" rows="10"
+						ng-click="jsonformat('falseExam',true)"></td>
+					<td class="tc"><textarea class="form-control no-resize" ng-model="model.falseExam" rows="10"
 							placeholder='请用标准json结构
 示例：	{
 			"success": 0,

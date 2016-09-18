@@ -21,13 +21,13 @@ blockquote{
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1467531606_3978436.eot'); /* IE9*/
-  src: url('//at.alicdn.com/t/font_1467531606_3978436.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('//at.alicdn.com/t/font_1467531606_3978436.woff') format('woff'), /* chrome、firefox */
-  url('//at.alicdn.com/t/font_1467531606_3978436.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-  url('//at.alicdn.com/t/font_1467531606_3978436.svg#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('//at.alicdn.com/t/font_1474208119_2872944.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1474208119_2872944.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1474208119_2872944.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1474208119_2872944.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1474208119_2872944.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
-                    
+                                      
                     
 /***默认颜色**/
 .def-bg{
@@ -115,7 +115,8 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#editParamTable select,#content input,#editHeaderTable input, #editResponseParamTable input,.tableInupt input{
+#editParamTable input,#editParamTable select,#content input,#editHeaderTable input, #editHeaderTable select,
+#editResponseParamTable input,#editResponseParamTable select,.tableInupt input{
     border: 1px solid #DDD;
     border-radius: 2px;
     -webkit-box-shadow: none;
@@ -326,6 +327,15 @@ blockquote{
   cursor: pointer;
   color:#999;
 }
+
+.look-up .i-full {
+  position: absolute;
+  top: 12px;
+  right: 42px;
+  font-size: 14px;
+  cursor: pointer;
+  color:#999;
+}
 #myDialog{
 	color: #fff;
 	 z-index: 1051;
@@ -351,6 +361,9 @@ blockquote{
   font-size: 14px;
 }
 .look-up .i-close:hover {
+  color: #B20000;
+}
+.look-up .i-full:hover {
   color: #B20000;
 }
 /*******************End:left**********************/

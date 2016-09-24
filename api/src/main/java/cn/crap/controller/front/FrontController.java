@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +28,9 @@ import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 public class FrontController extends BaseController<User> {
 	@Autowired
@@ -45,7 +45,7 @@ public class FrontController extends BaseController<User> {
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")
-	public void home(HttpServletResponse response) throws Exception {
+	public void home() throws Exception {
 		response.sendRedirect("index.do");
 	}
 	
@@ -98,11 +98,12 @@ public class FrontController extends BaseController<User> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/front/init.do")
 	@ResponseBody
-	public JsonResult frontInit() throws Exception {
+	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
 		
 		// 从缓存中获取菜单
@@ -112,7 +113,7 @@ public class FrontController extends BaseController<User> {
 			synchronized (FrontController.class) {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
-					menus = menuService.getLeftMenu(map);
+					menus = menuService.getLeftMenu(null);
 					cacheService.setObj("cache:leftMenu", menus, Config.getCacheTime());//缓存10分钟
 				}else{
 					menus = (List<MenuDto>) objMenus;
@@ -136,9 +137,11 @@ public class FrontController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
 		keyword = keyword.trim();
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		page.setSize(10);
 		List<SearchDto> searchResults = GetBeanBySetting.getSearchService().search(keyword, page);
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
 		
 		// 将搜索的内容记入内存

@@ -1,10 +1,10 @@
 package cn.crap.controller.front;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
@@ -24,8 +23,6 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
 import cn.crap.model.DataCenter;
-import cn.crap.model.Interface;
-import cn.crap.model.User;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Config;
 import cn.crap.utils.Const;
@@ -38,7 +35,6 @@ import cn.crap.utils.Tools;
  * @author Ehsan
  *
  */
-@Scope("prototype")
 @Controller
 public class FrontWebPageController extends BaseController<WebPage> {
 	@Autowired
@@ -61,8 +57,9 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		if( !Tools.moduleIdIsLegal(moduleId) ){
 			throw new MyException("000020");
 		}
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name(), "name|like", name);
+		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name(), "name|like", name);
 		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
 				Tools.getMap("crumbs", Tools.getCrumbs( WebPageType.DICTIONARY.getName() +"-" + cacheService.getModuleName(moduleId), "void")) );
 	}
@@ -72,10 +69,12 @@ public class FrontWebPageController extends BaseController<WebPage> {
 	@RequestMapping("/front/webPage/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam(defaultValue="1") Integer currentPage, String moduleId, @RequestParam String type,@RequestParam String category){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		/**
 		 * 模块不能为空，为空则查询WebPage中module=' '的数据
 		 */
+		Map<String,Object> map;
 		if(MyString.isEmpty(moduleId)){
 			map = Tools.getMap("moduleId", Const.TOP_MODULE, "type", type, "category", category);
 		}else{
@@ -99,7 +98,9 @@ public class FrontWebPageController extends BaseController<WebPage> {
 	@RequestMapping("/front/webPage/detail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
-		model = (WebPage) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		WebPage model = (WebPage) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
+		Map<String,Object> map;
 		if(model == null){
 			// 根据key查询webPage
 			if(webPage.getId().length()<21){

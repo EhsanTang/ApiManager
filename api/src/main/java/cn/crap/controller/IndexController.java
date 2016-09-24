@@ -3,13 +3,15 @@ package cn.crap.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.ServletOutputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
@@ -25,7 +27,6 @@ import cn.crap.utils.ValidateCodeService;
  * @author Ehsan
  *
  */
-@Scope("prototype")
 @Controller
 public class IndexController extends BaseController<User> {
 	@Autowired

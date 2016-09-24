@@ -2,14 +2,17 @@ package cn.crap.controller.back;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.DataCeneterType;
@@ -29,10 +32,10 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/back/interface")
 public class BackInterfaceController extends BaseController<Interface>{
@@ -52,6 +55,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage){
+		Page page= new Page(15);
 		
 		List<String> moduleIds = null;
 		// 如果用户为普通用户，则只能查看自己的模块
@@ -66,6 +70,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Interface interFace) throws MyException {
+		Interface model;
 		if(!interFace.getId().equals(Const.NULL_ID)){
 			model= interfaceService.get(interFace.getId());
 			Tools.hasAuth("", model.getModuleId() );
@@ -123,7 +128,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 		 */
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
-			map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
+			Map<String,Object> map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
 
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			while (!MyString.isEmpty(dc.getId()) && !dc.getParentId().equals("0") && !dc.getParentId().equals(Const.PRIVATE_MODULE)) {
@@ -194,7 +199,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		Interface change = interfaceService.get(changeId);
-		model = interfaceService.get(id);
+		Interface model = interfaceService.get(id);
 		Tools.hasAuth(Const.AUTH_INTERFACE, model.getModuleId());
 		
 		int modelSequence = model.getSequence();
@@ -205,5 +210,8 @@ public class BackInterfaceController extends BaseController<Interface>{
 		interfaceService.update(model);
 		interfaceService.update(change);
 		return new JsonResult(1, null);
+	}
+	public HttpServletResponse getResponse(){
+		return response;
 	}
 }

@@ -1,7 +1,8 @@
 package cn.crap.controller.back;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,9 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.model.Menu;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping
 public class BackMenuController extends BaseController<Menu> {
@@ -36,14 +37,16 @@ public class BackMenuController extends BaseController<Menu> {
 	@RequestMapping("/menu/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute Menu menu, @RequestParam(defaultValue = "1") Integer currentPage) {
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("parentId", menu.getParentId(), "menuName|like", menu.getMenuName(), "type", menu.getType());
+		Map<String,Object> map = Tools.getMap("parentId", menu.getParentId(), "menuName|like", menu.getMenuName(), "type", menu.getType());
 		return new JsonResult(1, menuService.findByMap(map, page, null), page);
 	}
 
 	@RequestMapping("/menu/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Menu menu) {
+		Menu model;
 		if (!menu.getId().equals(Const.NULL_ID)) {
 			model = menuService.get(menu.getId());
 		} else {
@@ -103,7 +106,7 @@ public class BackMenuController extends BaseController<Menu> {
 	@RequestMapping("/menu/menu.do")
 	@ResponseBody
 	public JsonResult menu() {
-		return new JsonResult(1, menuService.getLeftMenu(map));
+		return new JsonResult(1, menuService.getLeftMenu(null));
 	}
 
 	
@@ -113,7 +116,7 @@ public class BackMenuController extends BaseController<Menu> {
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Menu change = menuService.get(changeId);
-		model = menuService.get(id);
+		Menu model = menuService.get(id);
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());

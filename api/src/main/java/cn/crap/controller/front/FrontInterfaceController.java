@@ -12,7 +12,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +35,11 @@ import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/front/interface")
 public class FrontInterfaceController extends BaseController<Interface>{
@@ -106,6 +105,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
+		Page page= new Page(15);
 		// 查询公开和推荐的接口
 		if(!Tools.moduleIdIsLegal(interFace.getModuleId())){
 			@SuppressWarnings("unchecked")

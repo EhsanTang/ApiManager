@@ -1,9 +1,9 @@
 package cn.crap.controller.back;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +24,9 @@ import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
@@ -42,9 +42,10 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute WebPage webPage,@RequestParam(defaultValue="1") Integer currentPage){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
-		map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
+		Map<String,Object> map = Tools.getMap("name|like",webPage.getName(),"moduleId",webPage.getModuleId(),"type", webPage.getType(),"category",webPage.getCategory());
 		
 		return new JsonResult(1,webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null), page,
 				Tools.getMap("type", WebPageType.valueOf(webPage.getType()).getName(), "category", webPage.getCategory(), "crumbs", 
@@ -55,6 +56,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute WebPage webPage){
+		WebPage model;
 		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());
 		}else{
@@ -83,7 +85,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 			/**
 			 * 判断是否为系统数据，系统数据不允许修改可以和canDelete字段
 			 */
-			model = webPageService.get(webPage.getId());
+			WebPage model = webPageService.get(webPage.getId());
 			if(model.getCanDelete()!=1){
 				webPage.setKey(model.getKey());
 				webPage.setCanDelete(Byte.valueOf("0"));
@@ -103,7 +105,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@RequestMapping("/webPage/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute WebPage webPage) throws MyException, IOException{
-		model = webPageService.get(webPage.getId());
+		WebPage model = webPageService.get(webPage.getId());
 		Tools.hasAuth(WebPageType.valueOf(model.getType()).name() + "_" + Const.MODULEID,  model.getModuleId());
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
@@ -121,7 +123,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		WebPage change = webPageService.get(changeId);
-		model = webPageService.get(id);
+		WebPage model = webPageService.get(id);
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());
@@ -134,6 +136,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 
 	@RequestMapping("/webPage/markdown.do")
 	public String markdown(@ModelAttribute WebPage webPage) throws Exception {
+		WebPage model;
 		if(!webPage.getId().equals(Const.NULL_ID)){
 			model= webPageService.get(webPage.getId());
 		}else{

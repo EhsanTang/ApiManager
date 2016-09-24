@@ -89,12 +89,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
-		
-<dependency>  
-        <groupId>org.springframework</groupId>  
-        <artifactId>spring-context-support</artifactId>  
-        <version>${spring_version}</version>  
-     </dependency>  
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -176,11 +176,11 @@
 			<artifactId>itext</artifactId>
 			<version>4.2.1</version>
 		</dependency>
-		<dependency>  
-   			<groupId>com.itextpdf</groupId>  
-  		 <artifactId>itext-asian</artifactId>  
-   		<version>5.2.0</version>  
-	</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext-asian</artifactId>
+			<version>5.2.0</version>
+		</dependency>
 		<!-- End:pdf导出 -->
 		<!-- lucene -->
 		<dependency>
@@ -204,86 +204,108 @@
 			<version>5.5.1</version>
 		</dependency>
 		<dependency>
-   		 	<groupId>org.apache.lucene</groupId>
-   			<artifactId>lucene-backward-codecs</artifactId>
-    		<version>5.5.1</version>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-backward-codecs</artifactId>
+			<version>5.5.1</version>
 		</dependency>
 		<!-- End:lucene -->
-		<!-- solr support -->
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>6.0.1</version>
-		</dependency>
+		<!-- solr support <dependency> <groupId>org.apache.solr</groupId> <artifactId>solr-solrj</artifactId> 
+			<version>6.0.1</version> </dependency> -->
 		<!-- End:solr support -->
 		<!-- get text from pdf -->
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>pdfbox</artifactId>			
+			<artifactId>pdfbox</artifactId>
 			<version>2.0.2</version>
 		</dependency>
 		<!-- End:get text from pdf -->
 		<!-- get text from doc -->
 		<dependency>
-    		<groupId>org.apache.poi</groupId>
-   		 	<artifactId>poi-scratchpad</artifactId>
-    		<version>3.10-FINAL</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.10-FINAL</version>
 		</dependency>
 		<!-- End:get text from doc -->
 		<!-- get text from excel -->
-	<dependency>  
-      <groupId>org.apache.poi</groupId>  
-      <artifactId>poi</artifactId>  
-      <version>3.10-FINAL</version>  
-    </dependency>  
-    <dependency>  
-      <groupId>org.apache.poi</groupId>  
-      <artifactId>poi-ooxml</artifactId>  
-      <version>3.10-FINAL</version>  
-    </dependency>  
-    <dependency>  
-      <groupId>org.apache.poi</groupId>  
-      <artifactId>poi-examples</artifactId>  
-      <version>3.10-FINAL</version>  
-    </dependency>  
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-examples</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
 		<!-- End:get text from excel -->
-	<!-- jedis -->
-	<dependency>
+		<!-- jedis -->
+		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			 <version>2.8.0</version>
-	</dependency>
-	<!-- End:jedis -->
-	<!-- 读取xml配置 -->
-	<dependency>
-    <groupId>commons-configuration</groupId>
-    <artifactId>commons-configuration</artifactId>
-    <version>1.10</version>
-</dependency>
-<!-- 发送邮件 -->
-<dependency>  
-    <groupId>javax.mail</groupId>  
-    <artifactId>mail</artifactId>  
-    <version>1.4.7</version>  
-</dependency> 
+			<version>2.8.0</version>
+		</dependency>
+		<!-- End:jedis -->
+		<!-- 读取xml配置 -->
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
+		</dependency>
+		<!-- 发送邮件 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<!-- Sprint-test 相关测试包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring_version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
+		</dependency>
 
-<!-- End:读取xml配置 -->
+
+		<!-- End:读取xml配置 -->
 	</dependencies>
 	<build>
-		 <finalName>api</finalName>
-		 <!-- 设置项目jdk版本，编码 -->
-		 <plugins> 
-	         <plugin> 
-	            <groupId>org.apache.maven.plugins</groupId> 
-	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>3.1</version> 
-	            <configuration> 
-	                <source>1.7</source> 
-	                <target>1.7</target> 
-	                <encoding>UTF8</encoding> 
-	            </configuration> 
-	         </plugin> 
-    	</plugins>
-		
+		<finalName>api</finalName>
+		<!-- 设置项目jdk版本，编码 -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+
 	</build>
 </project>

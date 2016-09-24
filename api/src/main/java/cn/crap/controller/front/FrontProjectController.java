@@ -1,20 +1,19 @@
 package cn.crap.controller.front;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
@@ -24,10 +23,6 @@ import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
 import cn.crap.model.User;
-import cn.crap.model.WebPage;
-import cn.crap.utils.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -36,7 +31,6 @@ import cn.crap.utils.Tools;
  * @author Ehsan
  *
  */
-@Scope("prototype")
 @Controller
 public class FrontProjectController extends BaseController<User> {
 	@Autowired
@@ -65,9 +59,11 @@ public class FrontProjectController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		List<DataCenter> modules = null;
 		List<Interface> interfaces = null;
+		Map<String,Object> map = null;
 		if( !Tools.moduleIdIsLegal(interFace.getModuleId()) || interFace.getModuleId().equals("open")){
 			// 查询所有推荐的
 			map = Tools.getMap( "status", Byte.valueOf("3"), "type", "MODULE");
@@ -108,6 +104,7 @@ public class FrontProjectController extends BaseController<User> {
 		if( !Tools.moduleIdIsLegal(moduleId) ){
 			throw new MyException("000020");
 		}
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("project", cacheService.getModule(moduleId));
 		returnMap.put("modules", dataCenterService.findByMap(Tools.getMap("parentId", moduleId), null, null));
 		//map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name());

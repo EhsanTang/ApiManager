@@ -1,7 +1,6 @@
 package cn.crap.controller.front;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/front/comment")
 public class FrontCommentController extends BaseController<Comment> {

@@ -1,14 +1,16 @@
 package cn.crap.controller.back;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -23,9 +25,9 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/back/source")
 public class BackSourceController extends BaseController<Source>{
@@ -47,10 +49,12 @@ public class BackSourceController extends BaseController<Source>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		// 搜索条件
-		map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
 		//returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("sources", sourceService.findByMap(map, page, null));
 
 		map.clear();
@@ -63,6 +67,7 @@ public class BackSourceController extends BaseController<Source>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Source source){
+		Source model;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.get(source.getId());
 		}else{
@@ -75,6 +80,7 @@ public class BackSourceController extends BaseController<Source>{
 	@RequestMapping("/webDetail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute Source source,String password,String visitCode) throws MyException{
+		Source model;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.get(source.getId());
 		}else{
@@ -89,10 +95,11 @@ public class BackSourceController extends BaseController<Source>{
 	public JsonResult webList(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage,String password,String visitCode,
 			@RequestParam(defaultValue="无") String directoryName) throws MyException{
 		Tools.canVisitModule(cacheService.getModule(source.getDirectoryId()).getPassword(), password, visitCode, request);
-		
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		// 搜索条件
-		map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
 
 		map.clear();
@@ -179,7 +186,7 @@ public class BackSourceController extends BaseController<Source>{
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Source change = sourceService.get(changeId);
-		model = sourceService.get(id);
+		Source model = sourceService.get(id);
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());

@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.MailBean;
-import cn.crap.enumeration.UserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -40,7 +37,6 @@ import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 public class BackLoginController extends BaseController<User> {
 	@Autowired
@@ -86,7 +82,7 @@ public class BackLoginController extends BaseController<User> {
 		model.setTipMessage("");
 		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 		model.setSessionAdminName(user == null? null:user.getUserName());
-		
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("model", model);
 		return new JsonResult(1, returnMap);
 	}
@@ -140,7 +136,7 @@ public class BackLoginController extends BaseController<User> {
 	public JsonResult sendValidateEmail() throws UnsupportedEncodingException, MessagingException {
 		LoginInfoDto user = Tools.getUser();
 		emailService.sendRegisterMain(user.getUserName(), user.getId());
-		return new JsonResult(1, model);
+		return new JsonResult(1, null);
 	}
 	
 	

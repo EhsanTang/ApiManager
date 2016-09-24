@@ -1,9 +1,9 @@
 package cn.crap.controller.back;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +16,15 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IEmailService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 public class BackUserController extends BaseController<User>{
 
@@ -38,8 +37,9 @@ public class BackUserController extends BaseController<User>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult list(@ModelAttribute User user,@RequestParam(defaultValue="1") Integer currentPage){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("trueName|like",user.getTrueName());
+		Map<String,Object> map = Tools.getMap("trueName|like",user.getTrueName());
 		return new JsonResult(1,userService.findByMap(map,page,null),page);
 	}
 	@RequestMapping("/user/detail.do")

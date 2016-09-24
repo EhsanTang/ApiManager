@@ -33,6 +33,7 @@ public class DataCenter extends BaseModel implements Serializable{
 	private String type;
 	private String remark;
 	private String userId;
+	private String projectId;
 	
 
 	public DataCenter(){};
@@ -129,30 +130,14 @@ public class DataCenter extends BaseModel implements Serializable{
 		}
 		return "";
 	}
-	// 所在项目
-	@Transient
+	
+	
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	
+	@Column(name="projectId")
 	public String getProjectId(){
-		if(MyString.isEmpty(parentId) || parentId.equals(Const.TOP_MODULE)){
-			return "";
-		}
-		// 该模块为项目
-		if( parentId.equals(Const.PRIVATE_MODULE) || parentId.equals(Const.ADMIN_MODULE)){
-			return id;
-		}
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		DataCenter module = cacheService.getModule(parentId);
-		// 最多支持100层模块查询，防止死循环
-		for(int i=0; i<100; i++){
-			if(module.getParentId().equals(Const.PRIVATE_MODULE) || module.getParentId().equals(Const.ADMIN_MODULE)){
-				return module.getId();
-			}
-			
-			if(MyString.isEmpty(module.getParentId()) || module.getParentId().equals(module.getId())){
-				break;
-			}
-			
-			module = cacheService.getModule(module.getParentId());
-		}
-		return "";
+		return this.projectId;
 	}
 }

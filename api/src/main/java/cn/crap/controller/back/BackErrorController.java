@@ -1,9 +1,9 @@
 package cn.crap.controller.back;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +22,9 @@ import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/back/error")
 public class BackErrorController extends BaseController<Error>{
@@ -43,6 +43,7 @@ public class BackErrorController extends BaseController<Error>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
 		// 如果用户为普通用户，则只能查看自己的模块
@@ -52,8 +53,7 @@ public class BackErrorController extends BaseController<Error>{
 			moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
 			moduleIds.add("NULL");
 		}
-		
-		map = Tools.getMap("moduleId|in", moduleIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
+		Map<String,Object> map = Tools.getMap("moduleId|in", moduleIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
 				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
 	}
@@ -62,6 +62,7 @@ public class BackErrorController extends BaseController<Error>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Error error) throws MyException{
+		Error model;
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());
 			Tools.hasAuth(Const.AUTH_ERROR, model.getModuleId());

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +19,6 @@ import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 
-@Scope("prototype")
 @Controller
 public class BackController extends BaseController<User> {
 	@Autowired
@@ -66,8 +64,9 @@ public class BackController extends BaseController<User> {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
-		returnMap.put("menuList", menuService.getLeftMenu(map));
+		returnMap.put("menuList", menuService.getLeftMenu(null));
 		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
 		returnMap.put("sessionAdminName", user.getUserName());
 		returnMap.put("sessionAdminAuthor", user.getAuthStr());

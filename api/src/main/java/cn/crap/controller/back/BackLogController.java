@@ -1,7 +1,8 @@
 package cn.crap.controller.back;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +15,9 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ILogService;
 import cn.crap.model.Log;
 import cn.crap.utils.Const;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/log")
 public class BackLogController extends BaseController<Log>{
@@ -27,14 +28,16 @@ public class BackLogController extends BaseController<Log>{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute Log log,@RequestParam(defaultValue="1") Integer currentPage){
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		map = Tools.getMap("modelName",log.getModelName());
+		Map<String,Object> map = Tools.getMap("modelName",log.getModelName());
 		return new JsonResult(1,logService.findByMap(map,page,null),page);
 	}
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Log log){
+		Log model;
 		if(!log.getId().equals(Const.NULL_ID)){
 			model= logService.get(log.getId());
 		}else{

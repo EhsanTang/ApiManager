@@ -1,7 +1,8 @@
 package cn.crap.controller.front;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.model.Error;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 @RequestMapping("/front/error")
 public class FrontErrorController extends BaseController<Error>{
@@ -36,11 +37,12 @@ public class FrontErrorController extends BaseController<Error>{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String errorCode,@RequestParam String errorMsg, @RequestParam String moduleId, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		page.setSize(20);
 		
 		// 不允许查看根路径下所有项目
-		map = Tools.getMap(  "errorCode|like", errorCode,  "errorMsg|like", errorMsg);
+		Map<String,Object> map = Tools.getMap(  "errorCode|like", errorCode,  "errorMsg|like", errorMsg);
 		if( !Tools.moduleIdIsLegal(moduleId) ){
 			throw new MyException("000020");
 		}

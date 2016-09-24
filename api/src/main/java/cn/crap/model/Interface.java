@@ -14,13 +14,12 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
-import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 
 @Entity
-@Table(name="interface")
-@GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Interface extends BaseModel implements Serializable{
+@Table(name = "interface")
+@GenericGenerator(name = "Generator", strategy = "cn.crap.framework.IdGenerator")
+public class Interface extends BaseModel implements Serializable {
 	/**
 	 * 
 	 */
@@ -37,15 +36,16 @@ public class Interface extends BaseModel implements Serializable{
 	private String interfaceName;
 	private String updateBy;
 	private String updateTime;
-	private String remark;//备注
+	private String remark;// 备注
 	private String errors;
-	private String version;//版本号
-	private String header;//请求头
-	
-	public Interface(){}
-	
-	
-	public Interface(String id, String moduleId, String interfaceName, String version, String createTime, String updateBy, String updateTime, String remark, int sequence) {
+	private String version;// 版本号
+	private String header;// 请求头
+
+	public Interface() {
+	}
+
+	public Interface(String id, String moduleId, String interfaceName, String version, String createTime,
+			String updateBy, String updateTime, String remark, int sequence) {
 		super();
 		this.id = id;
 		this.moduleId = moduleId;
@@ -58,9 +58,8 @@ public class Interface extends BaseModel implements Serializable{
 		this.sequence = sequence;
 	}
 
-
 	@Transient
-	public SearchDto toSearchDto(){
+	public SearchDto toSearchDto() {
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
 		dto.setCreateTime(createTime);
@@ -68,42 +67,41 @@ public class Interface extends BaseModel implements Serializable{
 		dto.setModuleName(getModuleName());
 		dto.setTitle(interfaceName);
 		dto.setType(Interface.class.getSimpleName());
-		dto.setUrl("#/font/interfaceDetail/"+id);
+		dto.setUrl("#/font/interfaceDetail/" + id);
 		dto.setVersion(version);
 		return dto;
-		
+
 	}
-	
-	
+
 	@Transient
 	@Override
-	public String getLogRemark(){
+	public String getLogRemark() {
 		return interfaceName;
 	}
-	
+
 	@Transient
-	public String getModuleName(){
-		if(!MyString.isEmpty(moduleId)){
+	public String getModuleName() {
+		if (!MyString.isEmpty(moduleId)) {
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			DataCenter module = cacheService.getModule(moduleId);
-			if(module!=null)
+			if (module != null)
 				return module.getName();
 		}
 		return "";
 	}
-	
+
 	@Transient
-	public String getModuleUrl(){
-		if(!MyString.isEmpty(moduleId)){
+	public String getModuleUrl() {
+		if (!MyString.isEmpty(moduleId)) {
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			DataCenter module = cacheService.getModule(moduleId);
-			if(module!=null)
-				return MyString.isEmpty(module.getUrl())?"":module.getUrl();
+			if (module != null)
+				return MyString.isEmpty(module.getUrl()) ? "" : module.getUrl();
 		}
 		return "";
 	}
-	
-	@Column(name="errors")
+
+	@Column(name = "errors")
 	public String getErrors() {
 		return errors;
 	}
@@ -112,7 +110,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.errors = errors;
 	}
 
-	@Column(name="url")
+	@Column(name = "url")
 	public String getUrl() {
 		return url;
 	}
@@ -121,7 +119,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.url = url;
 	}
 
-	@Column(name="method")
+	@Column(name = "method")
 	public String getMethod() {
 		return method;
 	}
@@ -130,9 +128,9 @@ public class Interface extends BaseModel implements Serializable{
 		this.method = method;
 	}
 
-	@Column(name="param")
+	@Column(name = "param")
 	public String getParam() {
-		if(MyString.isEmpty(param))
+		if (MyString.isEmpty(param))
 			return "form=[]";
 		return param;
 	}
@@ -141,7 +139,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.param = param;
 	}
 
-	@Column(name="requestExam")
+	@Column(name = "requestExam")
 	public String getRequestExam() {
 		return requestExam;
 	}
@@ -150,9 +148,9 @@ public class Interface extends BaseModel implements Serializable{
 		this.requestExam = requestExam;
 	}
 
-	@Column(name="responseParam")
+	@Column(name = "responseParam")
 	public String getResponseParam() {
-		if(MyString.isEmpty(responseParam))
+		if (MyString.isEmpty(responseParam))
 			return "[]";
 		return responseParam;
 	}
@@ -161,7 +159,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.responseParam = responseParam;
 	}
 
-	@Column(name="errorList")
+	@Column(name = "errorList")
 	public String getErrorList() {
 		return errorList;
 	}
@@ -170,7 +168,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.errorList = errorList;
 	}
 
-	@Column(name="trueExam")
+	@Column(name = "trueExam")
 	public String getTrueExam() {
 		return trueExam;
 	}
@@ -179,7 +177,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.trueExam = trueExam;
 	}
 
-	@Column(name="falseExam")
+	@Column(name = "falseExam")
 	public String getFalseExam() {
 		return falseExam;
 	}
@@ -188,7 +186,7 @@ public class Interface extends BaseModel implements Serializable{
 		this.falseExam = falseExam;
 	}
 
-	@Column(name="moduleId")
+	@Column(name = "moduleId")
 	public String getModuleId() {
 		return moduleId;
 	}
@@ -196,8 +194,8 @@ public class Interface extends BaseModel implements Serializable{
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
 	}
-	
-	@Column(name="interfaceName")
+
+	@Column(name = "interfaceName")
 	public String getInterfaceName() {
 		return interfaceName;
 	}
@@ -205,8 +203,8 @@ public class Interface extends BaseModel implements Serializable{
 	public void setInterfaceName(String interfaceName) {
 		this.interfaceName = interfaceName;
 	}
-	
-	@Column(name="remark")
+
+	@Column(name = "remark")
 	public String getRemark() {
 		return remark;
 	}
@@ -214,7 +212,8 @@ public class Interface extends BaseModel implements Serializable{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	@Column(name="updateBy")
+
+	@Column(name = "updateBy")
 	public String getUpdateBy() {
 		return updateBy;
 	}
@@ -222,7 +221,8 @@ public class Interface extends BaseModel implements Serializable{
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
 	}
-	@Column(name="updateTime")
+
+	@Column(name = "updateTime")
 	public String getUpdateTime() {
 		return updateTime;
 	}
@@ -239,9 +239,9 @@ public class Interface extends BaseModel implements Serializable{
 		this.version = version;
 	}
 
-	@Column(name="header")
+	@Column(name = "header")
 	public String getHeader() {
-		if(MyString.isEmpty(header))
+		if (MyString.isEmpty(header))
 			return "[]";
 		return header;
 	}
@@ -249,32 +249,14 @@ public class Interface extends BaseModel implements Serializable{
 	public void setHeader(String header) {
 		this.header = header;
 	}
-	
-	// 所在项目
+
 	@Transient
-	public String getProjectId(){
-		if(MyString.isEmpty(moduleId) || moduleId.equals(Const.TOP_MODULE)){
-			return "";
-		}
-		// 该模块为项目
-		if( moduleId.equals(Const.PRIVATE_MODULE) || moduleId.equals(Const.ADMIN_MODULE)){
-			return moduleId;
-		}
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		DataCenter module = cacheService.getModule(moduleId);
-		// 最多支持100层模块查询，防止死循环
-		for(int i=0; i<100; i++){
-			if(module.getParentId().equals(Const.PRIVATE_MODULE) || module.getParentId().equals(Const.ADMIN_MODULE)){
-				return module.getId();
-			}
-			
-			if(MyString.isEmpty(module.getParentId()) || module.getParentId().equals(module.getId())){
-				break;
-			}
-			module = cacheService.getModule(module.getParentId());
-			if(i==90){
-				System.out.println("接口projectId异常："+ moduleId);
-			}
+	public String getProjectId() {
+		if (!MyString.isEmpty(moduleId)) {
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			DataCenter module = cacheService.getModule(moduleId);
+			if (module != null)
+				return module.getProjectId();
 		}
 		return "";
 	}

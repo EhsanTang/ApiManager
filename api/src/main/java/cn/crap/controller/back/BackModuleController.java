@@ -1,7 +1,6 @@
 package cn.crap.controller.back;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -25,7 +25,6 @@ import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
-@Scope("prototype")
 @Controller
 public class BackModuleController extends BaseController<DataCenter>{
 
@@ -43,6 +42,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 	@RequestMapping("/module/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute DataCenter module) throws MyException{
+		DataCenter model;
 		if(!module.getId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getId());
 			Tools.hasAuth("", module.getId());
@@ -61,6 +61,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 	@RequestMapping("/module/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws Exception{
+		
 		
 		// 修改
 		if(!MyString.isEmpty(module.getId())){
@@ -108,6 +109,22 @@ public class BackModuleController extends BaseController<DataCenter>{
 				Tools.hasAuth(Const.AUTH_SOURCE,  "");
 			}
 		}
+		
+		// 更新子模块模块对应的项目
+		if( module.getType().equals(DataCeneterType.MODULE.name()) ){
+			if(module.getParentId().equals(Const.TOP_MODULE) || module.getParentId().equals(Const.PRIVATE_MODULE) || module.getParentId().equals(Const.ADMIN_MODULE)){
+				if(!MyString.isEmpty(module.getId())){
+					moduleService.update("update DataCenter set projectId=:newProject where projectId=:oldProject", Tools.getMap("newProject",module.getId(),"oldProject",module.getProjectId()));
+				}
+				module.setProjectId(module.getId());
+			}else{
+				if(!MyString.isEmpty(module.getId())){
+					moduleService.update("update DataCenter set projectId=:newProject where projectId=:oldProject", Tools.getMap("newProject", cacheService.getModule(module.getParentId()).getProjectId() ,"oldProject",module.getProjectId()));
+				}
+				module.setProjectId( cacheService.getModule(module.getParentId()).getProjectId() );
+			}
+		}
+		
 		
 		if(!MyString.isEmpty(module.getId())){
 			moduleService.update(module);
@@ -170,7 +187,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		DataCenter change = moduleService.get(changeId);
-		model = moduleService.get(id);
+		DataCenter model = moduleService.get(id);
 		
 		if(Tools.getUser().getType() == 100){
 			Tools.hasAuth(Const.AUTH_MODULE,  model.getParentId());

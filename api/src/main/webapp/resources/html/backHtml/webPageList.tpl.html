@@ -77,6 +77,9 @@
 					ng-click="del('webPage/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="#/{{item.moduleId}}/comment/list/{{item.id}}"> 
+					<i class="iconfont f12">&#xe60f;评论列表</i>
+				</a>
 				<div class="w50 fr tl">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('webPage',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>

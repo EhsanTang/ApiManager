@@ -15,10 +15,12 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
+import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/back/comment")
 public class BackCommentController extends BaseController<Comment> {
 	@Autowired
 	private ICacheService cacheService;
@@ -32,7 +34,7 @@ public class BackCommentController extends BaseController<Comment> {
 	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		return new JsonResult(1, commentService.findByMap(null, page, null), page);
+		return new JsonResult(1, commentService.findByMap(Tools.getMap("webpageId", comment.getWebpageId()), page, " createTime desc"), page);
 	}
 
 	@RequestMapping("/detail.do")
@@ -46,6 +48,15 @@ public class BackCommentController extends BaseController<Comment> {
 			model = new Comment();
 		}
 		return new JsonResult(1, model);
+	}
+	
+	@RequestMapping("/addOrUpdate.do")
+	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_ADMIN)
+	public JsonResult addOrUpdate(@ModelAttribute Comment comment) {
+		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+		commentService.update(comment);
+		return new JsonResult(1, null);
 	}
 
 	@RequestMapping("/delete.do")

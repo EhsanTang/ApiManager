@@ -22,7 +22,8 @@ public class Comment extends BaseModel implements Serializable{
 	private String userId;
 	private String parentId;
 	private String content;
-	
+	private String reply;
+	private String updateTime;
 	public Comment(){}
 	public Comment(String webpageId){
 		this.webpageId = webpageId;
@@ -59,5 +60,23 @@ public class Comment extends BaseModel implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	@Column(name="reply")
+	public String getReply() {
+		return reply;
+	}
+	public void setReply(String reply) {
+		this.reply = reply;
+	}
+	
+	@Column(name="updateTime")
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	
+	
 	
 }

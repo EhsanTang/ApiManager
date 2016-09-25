@@ -1,0 +1,59 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="backCommentCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">评论管理</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
+	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+</div>
+<!--  <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
+		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
+			<i class="iconfont">&#xe60d;</i>&nbsp;查询
+		</button>
+		<div class="form-group w200 fr">
+			<label class="sr-only" for="">文章</label>
+			<div class="input-group">
+				<div class="input-group-addon">真实名称</div>
+				<input type="text" class="form-control input-xs dis-in-blo w120"
+					placeholder="名称" id="trueName">
+			</div>
+		</div>
+		<div class="cb"></div>
+</div>-->
+<div class="col-xs-12 f16 fb pl0 mb10 pb5 mt20">评论列表</div>
+
+
+<div class="col-xs-12 p0">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">内容</th>
+				<th class="tc w200">回复</th>
+				<th class="tc w100">时间</th>
+				<th class="w200 tc">操作</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr ng-repeat="item in list">
+				<td class="tc">{{item.content| cut:true:25:' ...'}}</td>
+				<td class="tc w10w2000">{{item.reply| cut:true:15:' ...'}}</td>
+				<td class="tc">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</td>
+				<td class="tc w100">
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('COMMENT','');"
+					ng-click="detail('编辑【'+item.content+'】',700,'back/comment/detail.do?id='+item.id)"
+					data-toggle="tooltip" data-placement="top"
+					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
+				</a>
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('COMMENT','');"
+					ng-click="del('back/comment/delete.do?id='+item.id,item.content)">
+					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

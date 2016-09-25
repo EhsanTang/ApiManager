@@ -198,6 +198,14 @@ mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, 
     };
     $scope.getData();
 });
+mainModule.controller('backCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=back/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&webpageId="+$stateParams.webpageId;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {

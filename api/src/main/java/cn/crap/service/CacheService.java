@@ -128,4 +128,14 @@ public class CacheService implements ICacheService {
 	public boolean flushDB() {
 		return cacheDao.flushDB();
 	}
+
+	@Override
+	public Object setObj(String key, String field, Object value, int expireTime) {
+		return cacheDao.setObj(key, field, value, expireTime);
+	}
+
+	@Override
+	public Object getObj(String key, String field) {
+		return cacheDao.getObj(key, field);
+	}
 }

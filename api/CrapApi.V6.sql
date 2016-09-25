@@ -10,4 +10,11 @@ DROP INDEX `url` ;
 ALTER TABLE `api`.`interface` 
 ADD COLUMN `fullUrl` VARCHAR(255) NOT NULL DEFAULT '' AFTER `header`;
 
+ALTER TABLE `api`.`comment` 
+ADD COLUMN `reply` VARCHAR(200) NOT NULL DEFAULT '' AFTER `sequence`;
+
+ALTER TABLE `api`.`comment` 
+ADD COLUMN `updateTime` TIMESTAMP NOT NULL DEFAULT '2016-01-01 01:40:00' AFTER `reply`;
+
+
 

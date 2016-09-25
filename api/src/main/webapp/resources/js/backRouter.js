@@ -118,6 +118,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('commentList', {
+		url : '/:projectId/comment/list/:webpageId',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/backHtml/commentList.tpl.html'
+			},
+			'page@commentList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/backHtml/commentDetail.tpl.html';
+				}
+			}
+		}
 	}).state('roleList', {
 		url : '/role/list',
 		views : {

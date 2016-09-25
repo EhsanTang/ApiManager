@@ -43,6 +43,7 @@ public class Const {
 	public static final String CACHE_ARTICLE_CATEGORY = ":article:category:";
 	public static final String CACHE_WEBPAGE = ":webPageDetail:";
 	public static final String CACHE_COMMENTLIST = ":commentList:";
+	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";

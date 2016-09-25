@@ -97,7 +97,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 	
 	@RequestMapping("/front/webPage/detail.do")
 	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode) throws MyException{
+	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		WebPage model = (WebPage) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
 		Map<String,Object> map;
@@ -152,18 +152,23 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		returnMap.put("comment", new Comment(model.getId()));
 		map = Tools.getMap("webpageId", model.getId());
 		
+		Page page= (Page) cacheService.getObj(Const.CACHE_COMMENT_PAGE + model.getId(), currentPage + "");
 		@SuppressWarnings("unchecked")
-		List<Comment> comments = (List<Comment>) cacheService.getObj(Const.CACHE_COMMENTLIST + model.getId());
-		if( comments == null){
-			comments = commentService.findByMap(map, null, null);
-			cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId(), comments, Config.getCacheTime());
+		List<Comment> comments = (List<Comment>) cacheService.getObj(Const.CACHE_COMMENTLIST + model.getId(), currentPage+"");
+		if( comments == null || page == null){
+			page = new Page(10);
+			page.setCurrentPage(currentPage);
+			comments = commentService.findByMap(map, page, "createTime desc");
+			cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId() , currentPage + "", comments, Config.getCacheTime());
+			cacheService.setObj(Const.CACHE_COMMENT_PAGE + model.getId() , currentPage + "", page, Config.getCacheTime());
 		}
+		
 				
 		returnMap.put("comments", comments);
 		returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
 		// 更新点击量
 		webPageService.update("update WebPage set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
-		return new JsonResult(1, model, null, returnMap);
+		return new JsonResult(1, model, page, returnMap);
 	}
 	
 }

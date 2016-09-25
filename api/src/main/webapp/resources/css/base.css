@@ -2,6 +2,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 {margin:0;padding:0;font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif;}
 .fm{font-family: Tahoma,"\5b8b\4f53",Arial,Helvetica,Arial,sans-serif;}
 .roman {font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif!important;}
+.ftime {font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif!important;}
 .transition{transition: all 0.2s ease-in-out;-moz-transition: all 0.2s ease-in-out;-webkit-transition: all 0.2s ease-in-out;}
 .cursor{cursor:pointer;}
 .nls{list-style: none}
@@ -18,6 +19,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 .dashed{border:1px dashed #DDD;}
 .dashed-t{border-top:1px dashed #DDD;}
 .dashed-b{border-bottom:1px dashed #DDD;}
+.bl3{border-left: 3px solid #eeeeee;}
 .bl1{border-left: 1px solid #DDD;}
 .bt1{border-top: 1px solid #DDD;}
 .bt0{border-top:0px!important;}
@@ -70,7 +72,8 @@ table{border-collapse:collapse;border-spacing:0}
 .BG999{background-color:#999!important;}.BGEEE{background-color:#EEE;}.BGFFF{background-color:#FFF;}
 .BGF5{background-color:#f5f5f5}.BGF9{background-color:#f9f9f9}
 .BGBBB{background-color:#BBB!important;}
-.C999{color:#999}.C555{color:#555}.C333{color:#333}.CEEE{color:#EEE}.CFFF{color:#FFF;}.C000{color:#000}
+.C999{color:#999}.C555{color:#555}.C333{color:#333}.CAAA{color:#AAA}.CEEE{color:#EEE}.CFFF{color:#FFF;}.C000{color:#000}
+.c-time{color:#b1b1b1}
 .ACFFF{color:#FFF;}.ACFFF:hover{color:#FFF;}
 .f9{font-size:9px}
 .f10{font-size:10px}

@@ -62,7 +62,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iLoading=FLOAT|iUrl=front/webPage/detail.do?id="+$stateParams.id;
+		var params = "iLoading=FLOAT|iUrl=front/webPage/detail.do?id="+$stateParams.id+"&currentPage="+page;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		httpService.callHttpMethod($http,params).success(function(result) {
@@ -75,6 +75,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.webpage = result.data;
+				 $rootScope.page = result.page;
 				 $rootScope.model = result.others.comment;//初始化评论对象
 				 $rootScope.comments = result.others.comments;//评论列表
 				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
@@ -86,7 +87,7 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
 			 }
 		});
     };
-    $scope.getData();
+    $scope.getData(1);
 });
 /**
  * 接口列表

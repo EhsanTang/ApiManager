@@ -29,7 +29,13 @@ blockquote{
 }
                     
                                       
-                    
+.pager-sm li > a, .pager-sm li > span {
+    padding: 1px 8px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    font-size:12px;
+    border-radius: 10px;
+}                    
 /***默认颜色**/
 .def-bg{
 	background:#cccccc;

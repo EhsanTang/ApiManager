@@ -13,6 +13,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			},'addComment@webPageDetail' : {
 				templateUrl : 'resources/html/frontHtml/addComment.tpl.html'
+			},'page@webPageDetail' : {
+				templateUrl : 'resources/html/frontHtml/page_xs.tpl.html'
 			}
 		}
 	}).state('frontWebPageList', {

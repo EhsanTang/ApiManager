@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -13,6 +14,7 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ICommentService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
+import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
@@ -32,9 +34,17 @@ public class FrontCommentController extends BaseController<Comment> {
 				throw new MyException("000010");
 			}
 		}
+		LoginInfoDto user = Tools.getUser();
+		if(user != null)
+			comment.setUserId(user.getId());
+		
 		comment.setId(null);
+		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.save(comment);
-		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getWebpageId() );
+		
+		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getWebpageId());
+		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getWebpageId());
+		
 		return new JsonResult(1, null);
 	}
 }

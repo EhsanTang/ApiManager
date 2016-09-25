@@ -16,8 +16,13 @@
 	</div>
 </form>
 <div class="cb"></div>
-<div ng-repeat="item in comments" class="p10 BGF9 mt10 r5 lh20">
-	<div class="fb">匿名<br>{{item.content}}</div>
-	<div class="f12 C999 fr">{{getDate(item.createTime)|date:'yyyy-MM-dd HH:mm'}}</div>
-	<div class="cb"></div>
+<div ng-repeat="item in comments" class="p10 dashed-t mt10 lh20">
+	<div class="f12 text-primary">匿名 · <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
+	<div class="fn lh20 mt5 C555 f14">{{item.content}}</div>
+	<div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
+		<span class="text-primary">回复</span>:  {{item.reply}}<br>
+		<span class="c-time ftime">{{getDate(item.updateTime)|date:'yyyy.MM.dd HH:mm'}}</span>
+	</div>
 </div>
+<div ui-view="page" ng-if="comments.length>0"></div>
+<div class="cb"></div>

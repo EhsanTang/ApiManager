@@ -13,6 +13,16 @@ public class MemoryCacheDao implements ICacheDao {
 	private static ConcurrentHashMap<String,String> stringCache=new ConcurrentHashMap<String,String>();// 缓存
 	
 	@Override
+	public boolean flushDB() {
+		cacheTime.clear();
+		objectCache.clear();
+		objectMapCache.clear();
+		stringCache.clear();
+		return false;
+	} 
+	
+	
+	@Override
 	public String getStr(String key){
 		// 缓存过期
 		if( cacheTime.get(key) != null && cacheTime.get(key) < System.currentTimeMillis()){
@@ -99,6 +109,6 @@ public class MemoryCacheDao implements ICacheDao {
 		}
 		cacheTime.remove(key+"_" +field);
 		return false;
-	} 
+	}
 
 }

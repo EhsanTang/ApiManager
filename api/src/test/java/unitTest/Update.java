@@ -15,6 +15,7 @@ import cn.crap.inter.service.IInterfaceService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.DataCenter;
+import cn.crap.model.Interface;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -74,6 +75,12 @@ public class Update {
 					moduleService.delete(dc);
 				}
 			}
+		}
+		
+		// 补全接口中的fullUrl
+		for(Interface i : interfaceService.findByMap(null, null, null)){
+			i.setFullUrl(i.getModuleUrl() + i.getUrl());
+			interfaceService.update(i);
 		}
 		
 		

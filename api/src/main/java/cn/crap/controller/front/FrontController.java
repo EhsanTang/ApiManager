@@ -21,11 +21,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Config;
 import cn.crap.utils.Const;
-import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -37,6 +37,8 @@ public class FrontController extends BaseController<User> {
 	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private ISearchService luceneService;
 	
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
@@ -140,7 +142,7 @@ public class FrontController extends BaseController<User> {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		page.setSize(10);
-		List<SearchDto> searchResults = GetBeanBySetting.getSearchService().search(keyword, page);
+		List<SearchDto> searchResults = luceneService.search(keyword, page);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
 		

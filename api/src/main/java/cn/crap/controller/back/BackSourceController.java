@@ -18,12 +18,11 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.inter.service.ISourceService;
 import cn.crap.model.Source;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.GetBeanBySetting;
-import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -38,6 +37,8 @@ public class BackSourceController extends BaseController<Source>{
 	private IDataCenterService dataCenterService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private ISearchService luceneService;
 	/**
 	 * 
 	 * @param source
@@ -152,12 +153,7 @@ public class BackSourceController extends BaseController<Source>{
 				}
 			}
 			
-			String docContent = GetTextFromFile.getText(source.getFilePath());
-			
-			//如果备注为空，则提取文档内容前2500 个字
-			if( MyString.isEmpty(source.getRemark()) ){
-				source.setRemark(docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
-			}
+			SearchDto searchDto = source.toSearchDto(null);
 			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
 				sourceService.update(source);
@@ -166,10 +162,8 @@ public class BackSourceController extends BaseController<Source>{
 				sourceService.save(source);
 			}
 			
-			SearchDto searchDto = source.toSearchDto();
-			//索引内容 = 备注内容 + 文档内容
-			searchDto.setContent(searchDto.getContent() + docContent);
-			GetBeanBySetting.getSearchService().update(searchDto);
+			
+			luceneService.update(searchDto);
 			return new JsonResult(1,source);
 	}
 	@RequestMapping("/delete.do")
@@ -177,7 +171,7 @@ public class BackSourceController extends BaseController<Source>{
 	@AuthPassport(authority = Const.AUTH_SOURCE)
 	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
 		sourceService.delete(source);
-		GetBeanBySetting.getSearchService().delete(new SearchDto(source.getId()));
+		luceneService.delete(new SearchDto(source.getId()));
 		return new JsonResult(1,null);
 	}
 	

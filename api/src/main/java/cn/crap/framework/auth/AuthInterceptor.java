@@ -47,7 +47,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             // 前端没有传递token，未登录
             if(MyString.isEmpty(token)){
             	if(request.getRequestURI().endsWith("admin.do"))
-            		response.sendRedirect("go.do?p=resources/html/backHtml/login.html#/preLogin");
+            		response.sendRedirect("loginOrRegister.do#/login");
             	else
             		throw new MyException("000021");
             }

@@ -190,4 +190,20 @@ public class RedisCacheDao implements ICacheDao{
 			}
 		}
 
+		@Override
+		public boolean flushDB() {
+			Jedis jedis = null;
+			try {
+				jedis = pool.getResource();
+				jedis.flushDB();
+				return true;
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				if (jedis != null) {
+					jedis.close();
+				}
+			}
+		}
+
 	}

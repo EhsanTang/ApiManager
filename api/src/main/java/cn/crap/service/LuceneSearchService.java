@@ -1,5 +1,6 @@
 package cn.crap.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -33,8 +34,11 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.ILuceneService;
 import cn.crap.inter.service.ISearchService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -43,13 +47,18 @@ import cn.crap.utils.Tools;
 
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
-	/**
-	 * 搜索
-	 * 
-	 * @throws Exception
-	 */
+	
 	@Autowired
 	private ICacheService cacheService;
+	
+	/**
+	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个
+	 * @Autowired(required = false)，这等于告诉 Spring：在找不到匹配 Bean 时也不报错
+	 */
+	@SuppressWarnings("rawtypes")
+	@Autowired(required=false)
+	private ILuceneService[] luceneServices;
+	
 
 	@Override
 	public List<SearchDto> search(String keyword, Page page) throws Exception {
@@ -196,9 +205,15 @@ public class LuceneSearchService implements ISearchService {
 	}
 
 	@Override
-	public boolean add(SearchDto searchDto) throws IOException {
+	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
+			
+			if(!searchDto.isNeedCreateIndex()){
+				delete(searchDto);
+				return true;
+			}
+			
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
@@ -209,7 +224,11 @@ public class LuceneSearchService implements ISearchService {
 			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
 		} finally {
 			if (writer != null) {
-				writer.close();
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return true;
@@ -219,6 +238,11 @@ public class LuceneSearchService implements ISearchService {
 	public boolean update(SearchDto searchDto) throws IOException {
 		IndexWriter writer = null;
 		try {
+			if(!searchDto.isNeedCreateIndex()){
+				delete(searchDto);
+				return true;
+			}
+			
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
@@ -235,4 +259,23 @@ public class LuceneSearchService implements ISearchService {
 		return true;
 	}
 
+	/**
+	 * 重建系统索引
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean rebuild(){
+		File file = new File(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue());
+		File[] tempList = file.listFiles();
+	    for (int i = 0; i < tempList.length; i++) {
+	    	tempList[i].delete();
+	    }
+	    
+	    for(ILuceneService<ILuceneDto> service:luceneServices){
+	    	for (ILuceneDto dto : service.getAll()) {
+				add(dto.toSearchDto(cacheService));
+			}
+	    }
+	    return true;
+	}
 }

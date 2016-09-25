@@ -123,4 +123,9 @@ public class CacheService implements ICacheService {
 	public void delStr(String key) {
 		cacheDao.delStr(key);
 	}
+
+	@Override
+	public boolean flushDB() {
+		return cacheDao.flushDB();
+	}
 }

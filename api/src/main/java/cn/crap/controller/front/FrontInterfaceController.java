@@ -122,7 +122,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
 			
-			return interfaceService.getInterfaceList(page, null,interFace, currentPage);
+			return interfaceService.getInterfaceList(page, null, interFace, currentPage);
 		}
 		
 	}

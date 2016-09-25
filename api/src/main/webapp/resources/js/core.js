@@ -106,7 +106,7 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 					if(data.indexOf('[ERRORPAGE]') >= 0){
 						data = "[ERROR]抱歉，系统繁忙，请稍后再试！";
 					}
-					if(data.indexOf('[LOGINPAGE]') >= 0){
+					if(data.indexOf('[LOGINPAGE]') >= 0 || data.indexOf('"code":"000021"') >= 0){
 						data = "[ERROR]尚未登录，请登录后再试！";
 					}
 					//当返回失败页面时需将data替换成提示语句
@@ -245,6 +245,7 @@ function closeTip(data,iLoading,tipTime){
 			isFloat = false;
 			floatOrPropUp = true;
 		}
+		iClose('lookUp');
 	}
 }
 /** *********************页面提示信息显示方法************************* */

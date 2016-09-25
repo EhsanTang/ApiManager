@@ -327,7 +327,6 @@ public class PickFactory {
 			return;
 		case "CATEGORY":
 			int i = 0;
-			@SuppressWarnings("unchecked")
 			List<String> categorys = (List<String>) webPageService.queryByHql("select distinct category from WebPage", null);
 			for (String w : categorys) {
 				if (w == null)
@@ -339,7 +338,6 @@ public class PickFactory {
 			return;
 		case "MODELNAME":// 数据类型
 			i = 0;
-			@SuppressWarnings("unchecked")
 			List<String> modelNames = (List<String>) webPageService.queryByHql("select distinct modelName from Log", null);
 			for (String w : modelNames) {
 				if (w == null)
@@ -458,7 +456,6 @@ public class PickFactory {
 				pick = new PickDto(Const.SEPARATOR, "前端文章类目列表");
 				picks.add(pick);
 				int j = 0;
-				@SuppressWarnings("unchecked")
 				List<String> categorys2 = (List<String>) webPageService.queryByHql("select distinct category from WebPage", null);
 				for (String w : categorys2) {
 					if (w == null)

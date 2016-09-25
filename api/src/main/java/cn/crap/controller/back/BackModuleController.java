@@ -113,20 +113,17 @@ public class BackModuleController extends BaseController<DataCenter>{
 		// 更新子模块模块对应的项目
 		if( module.getType().equals(DataCeneterType.MODULE.name()) ){
 			if(module.getParentId().equals(Const.TOP_MODULE) || module.getParentId().equals(Const.PRIVATE_MODULE) || module.getParentId().equals(Const.ADMIN_MODULE)){
-				if(!MyString.isEmpty(module.getId())){
-					moduleService.update("update DataCenter set projectId=:newProject where projectId=:oldProject", Tools.getMap("newProject",module.getId(),"oldProject",module.getProjectId()));
-				}
 				module.setProjectId(module.getId());
 			}else{
-				if(!MyString.isEmpty(module.getId())){
-					moduleService.update("update DataCenter set projectId=:newProject where projectId=:oldProject", Tools.getMap("newProject", cacheService.getModule(module.getParentId()).getProjectId() ,"oldProject",module.getProjectId()));
-				}
 				module.setProjectId( cacheService.getModule(module.getParentId()).getProjectId() );
 			}
 		}
 		
 		
 		if(!MyString.isEmpty(module.getId())){
+			// 更新该模块下的所有接口的fullUrl
+			interfaceService.update("update Interface set fullUrl=:moduleUrl + url where moduleId = :moduleId", 
+					Tools.getMap("moduleUrl", module.getUrl() == null? "":module.getUrl(), "moduleId", module.getId()));
 			moduleService.update(module);
 		}else{
 			module.setId(null);

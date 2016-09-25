@@ -35,4 +35,10 @@ public interface ISearchService{
 
 	boolean update(SearchDto searchDto) throws IOException;
 
+	/**
+	 * 重建索引
+	 * @return
+	 */
+	boolean rebuild();
+
 }

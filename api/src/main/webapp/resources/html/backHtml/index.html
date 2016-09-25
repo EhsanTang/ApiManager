@@ -128,6 +128,27 @@
 								</div>
 							</div>
 						</div>
+						<!-- 该菜单只有超级管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel3">
+									<div class="f14 mt-3 fl mr10">
+										<i class="iconfont">&#xe611;</i>
+									</div> <span class="hidden-xs">故障恢复</span>
+								</div>
+							</div>
+							<div id="panel3" class="panel-collapse BGEEE collapse">
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="javascrpit:void(0);"
+									onclick="selectButton(this,'menu-a');callAjaxByName('iUrl=back/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，请稍后...|ishowMethod=updateDivWithImg');">重建Lucene索引</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="javascrpit:void(0);"
+									onclick="selectButton(this,'menu-a');callAjaxByName('iUrl=back/flushDB.do|iLoading=PROPUPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');">刷新缓存</a>
+								</div>
+								
+							</div>
+						</div>
 					
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-repeat="item in backMenus" ng-if="canSeeMenu(item.menu.id,item.menu.type);">
 						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">

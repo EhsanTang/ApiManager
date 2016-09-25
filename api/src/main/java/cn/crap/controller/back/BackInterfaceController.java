@@ -24,12 +24,12 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IInterfaceService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -48,6 +48,8 @@ public class BackInterfaceController extends BaseController<Interface>{
 	private IErrorService errorService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private ISearchService luceneService;
 	
 	
 	@RequestMapping("/list.do")
@@ -93,12 +95,13 @@ public class BackInterfaceController extends BaseController<Interface>{
 		//判断是否拥有该模块的权限
 		Tools.hasAuth("", interFace.getModuleId());
 		
-		if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
+		if(interfaceService.getCount(Tools.getMap("fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
 		interFace.setId(null);
+		interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());
 		interfaceService.save(interFace);
-		GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
+		luceneService.add(interFace.toSearchDto(cacheService));
 		return new JsonResult(1, interFace);
 	}
 	
@@ -156,31 +159,24 @@ public class BackInterfaceController extends BaseController<Interface>{
 			// 判断是否有修改模块的权限
 			Tools.hasAuth(Const.AUTH_INTERFACE, interfaceService.get(interFace.getId()).getModuleId());
 			
-			if( interfaceService.getCount(Tools.getMap("url",interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
+			if( interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
 			interfaceService.update(interFace, "接口", "");
-			if(cacheService.getModule(interFace.getModuleId()).getStatus() == 2){// 私有，删除缓存
-				GetBeanBySetting.getSearchService().delete(interFace.toSearchDto());
-			}else{
-				GetBeanBySetting.getSearchService().update(interFace.toSearchDto());
-			}
+			interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());
+			luceneService.update(interFace.toSearchDto(cacheService));
 			
 		} else {
 			// 判断是否有新建模块的权限
 			Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
 			
 			interFace.setId(null);
-			if(interfaceService.getCount(Tools.getMap("url",interFace.getUrl()))>0){
+			if(interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
+			interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());
 			interfaceService.save(interFace);
-			
-			if(cacheService.getModule(interFace.getModuleId()).getStatus() == 2){// 私有，删除缓存
-				GetBeanBySetting.getSearchService().delete(interFace.toSearchDto());
-			}else{
-				GetBeanBySetting.getSearchService().add(interFace.toSearchDto());
-			}
+			luceneService.add(interFace.toSearchDto(cacheService));
 		}
 		return new JsonResult(1, interFace);
 	}
@@ -191,7 +187,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 		interFace = interfaceService.get(interFace.getId());
 		Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
 		interfaceService.delete(interFace, "接口", "");
-		GetBeanBySetting.getSearchService().delete(new SearchDto(interFace.getId()));
+		luceneService.delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);
 	}
 

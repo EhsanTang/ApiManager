@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
@@ -19,7 +20,7 @@ import cn.crap.utils.MyString;
 @Entity
 @Table(name = "interface")
 @GenericGenerator(name = "Generator", strategy = "cn.crap.framework.IdGenerator")
-public class Interface extends BaseModel implements Serializable {
+public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	/**
 	 * 
 	 */
@@ -40,6 +41,7 @@ public class Interface extends BaseModel implements Serializable {
 	private String errors;
 	private String version;// 版本号
 	private String header;// 请求头
+	private String fullUrl;// 完整的url = moduleUrl + url
 
 	public Interface() {
 	}
@@ -59,7 +61,7 @@ public class Interface extends BaseModel implements Serializable {
 	}
 
 	@Transient
-	public SearchDto toSearchDto() {
+	public SearchDto toSearchDto(ICacheService cacheService) {
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
 		dto.setCreateTime(createTime);
@@ -69,6 +71,10 @@ public class Interface extends BaseModel implements Serializable {
 		dto.setType(Interface.class.getSimpleName());
 		dto.setUrl("#/font/interfaceDetail/" + id);
 		dto.setVersion(version);
+		// 私有项目不能建立索引
+		if(cacheService.getModule(this.moduleId).getStatus() == 2){
+			dto.setNeedCreateIndex(false);
+		}
 		return dto;
 
 	}
@@ -81,24 +87,16 @@ public class Interface extends BaseModel implements Serializable {
 
 	@Transient
 	public String getModuleName() {
-		if (!MyString.isEmpty(moduleId)) {
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			DataCenter module = cacheService.getModule(moduleId);
-			if (module != null)
-				return module.getName();
-		}
-		return "";
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		DataCenter module = cacheService.getModule(moduleId);
+		return MyString.isEmpty(module.getName()) ? "" : module.getName();
 	}
 
 	@Transient
 	public String getModuleUrl() {
-		if (!MyString.isEmpty(moduleId)) {
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			DataCenter module = cacheService.getModule(moduleId);
-			if (module != null)
-				return MyString.isEmpty(module.getUrl()) ? "" : module.getUrl();
-		}
-		return "";
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		DataCenter module = cacheService.getModule(moduleId);
+		return MyString.isEmpty(module.getUrl()) ? "" : module.getUrl();
 	}
 
 	@Column(name = "errors")
@@ -250,6 +248,15 @@ public class Interface extends BaseModel implements Serializable {
 		this.header = header;
 	}
 
+	@Column(name = "fullUrl")
+	public String getFullUrl() {
+		return fullUrl;
+	}
+
+	public void setFullUrl(String fullUrl) {
+		this.fullUrl = fullUrl;
+	}
+
 	@Transient
 	public String getProjectId() {
 		if (!MyString.isEmpty(moduleId)) {
@@ -260,5 +267,4 @@ public class Interface extends BaseModel implements Serializable {
 		}
 		return "";
 	}
-
 }

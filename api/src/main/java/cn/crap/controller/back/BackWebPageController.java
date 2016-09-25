@@ -17,12 +17,10 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.ICommentService;
-import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.ISearchService;
 import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.WebPage;
 import cn.crap.utils.Const;
-import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -30,13 +28,11 @@ import cn.crap.utils.Tools;
 @Controller
 public class BackWebPageController extends BaseController<WebPage>{
 	@Autowired
-	private IDataCenterService moduleService;
-	@Autowired
 	private IWebPageService webPageService;
 	@Autowired
-	private ICommentService commentService;
-	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private ISearchService luceneService;
 
 	@RequestMapping("/webPage/list.do")
 	@ResponseBody
@@ -91,11 +87,11 @@ public class BackWebPageController extends BaseController<WebPage>{
 				webPage.setCanDelete(Byte.valueOf("0"));
 			}
 			webPageService.update(webPage);
-			GetBeanBySetting.getSearchService().update(webPage.toSearchDto());
+			luceneService.update(webPage.toSearchDto(null));
 		}else{
 			webPage.setId(null);
 			webPageService.save(webPage);
-			GetBeanBySetting.getSearchService().add(webPage.toSearchDto());
+			luceneService.add(webPage.toSearchDto(null));
 		}
 		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
 		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
@@ -114,7 +110,7 @@ public class BackWebPageController extends BaseController<WebPage>{
 		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getId());
 		cacheService.delObj(Const.CACHE_WEBPAGE + webPage.getKey());
 		
-		GetBeanBySetting.getSearchService().delete(new SearchDto(webPage.getId()));
+		luceneService.delete(new SearchDto(webPage.getId()));
 		return new JsonResult(1,null);
 	}
 	

@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.WebPageType;
 import cn.crap.framework.SpringContextHolder;
@@ -20,7 +21,7 @@ import cn.crap.utils.MyString;
 @Entity
 @Table(name="webpage")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class WebPage extends BaseModel implements Serializable{
+public class WebPage extends BaseModel implements Serializable,ILuceneDto{
 	/**
 	 * 
 	 */
@@ -61,7 +62,7 @@ public class WebPage extends BaseModel implements Serializable{
 
 
 	@Transient
-	public SearchDto toSearchDto(){
+	public SearchDto toSearchDto(ICacheService cacheService){
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
 		dto.setCreateTime(createTime);

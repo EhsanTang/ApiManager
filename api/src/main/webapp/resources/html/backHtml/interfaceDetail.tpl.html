@@ -12,14 +12,17 @@
 				<tr>
 					<td class="tc">父模块</td>
 					<td class="tc" colspan="3">
-						<input  class="form-control"  id="parentName" type="text" ng-model="model.parentName" required placeholder="点击输入框选择模块"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=parentName|tag=parentId|code=DATACENTER|def='+model.parentId,$event)">
+						<input  class="form-control"  id="parentName" type="text" ng-model="model.parentName" required placeholder="点击输入框选择模块" readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">Url</td>
 					<td class="tc" colspan="3">
-						<input  class="form-control" type="text" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
+						<div class="input-group w">
+							<input  class="form-control" type="text" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
+							<div class="btn input-group-addon adorn-color p0 f30" onclick="tooltip('url-helf')" id="url-helf" data-toggle="tooltip" 
+							title="该URL设置只对当前模块下的所有接口有效"><i class="iconfont">&#xe630;</div></div>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -103,7 +106,7 @@
 							<div id="eheader" class="none">
 								<table class="table table-hover" id="editHeaderTable">
 									<thead>
-										<tr class="btn-purple">
+										<tr class="btn-main">
 											<th>名称</th>
 											<th>是否必须</th>
 											<th>类型</th>
@@ -151,7 +154,7 @@
 							<div class="input-group w" id="header">
 								<textarea class="form-control no-resize" ng-model="model.header"
 									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
-								<div class="input-group-addon cursor btn-purple"
+								<div class="input-group-addon cursor btn-main"
 									ng-click="editerParam('eheader','header',model,'editHeaderTable');">
 									编辑</div>
 							</div>
@@ -173,7 +176,7 @@
 							<div id="eparam" class="none">
 								<table class="table table-hover" id="editParamTable">
 									<thead>
-										<tr class="btn-purple">
+										<tr class="btn-main">
 											<th>名称</th>
 											<th>是否必须</th>
 											<th>位置</th>
@@ -233,7 +236,7 @@
 							<div class="input-group w" id="param">
 								<textarea class="form-control no-resize" ng-model="model.param"
 									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
-								<div class="input-group-addon cursor btn-purple"
+								<div class="input-group-addon cursor btn-main"
 									ng-click="editerParam('eparam','param',model,'editParamTable');">
 									编辑</div>
 							</div>
@@ -256,7 +259,7 @@
 						<div id="responseEparam" class="none">
 							<table class="table table-hover" id="editResponseParamTable">
 								<thead>
-									<tr class="btn-purple">
+									<tr class="btn-main">
 										<th>名称</th>
 										<th>类型</th>
 										<th>备注</th>
@@ -297,7 +300,7 @@
 							<textarea class="form-control no-resize"
 								ng-model="model.responseParam" rows="6" readonly
 								placeholder="请点击“编辑”按钮编辑返回参数"></textarea>
-							<div class="input-group-addon cursor btn-purple"
+							<div class="input-group-addon cursor btn-main"
 								ng-click="editerParam('responseEparam','responseParam',model,'editResponseParamTable');">
 								编辑</div>
 						</div>
@@ -365,7 +368,7 @@
 键盘输入可快速定位错误码
 退格键可删除输入"
 								ng-model="model.errorList" rows="5" readonly></textarea>
-							<div class="input-group-addon cursor btn-purple"
+							<div class="input-group-addon cursor btn-adorn"
 								ng-click="loadPick($event,300,400,'false','errorList','ERRORCODE','',model.errorList,'&key='+model.moduleId,0);">
 								选择</div>
 						</div>
@@ -384,7 +387,7 @@
 							placeholder="示例：http://api.biyao.com/CustomerOrder/GetMyOrderList">
 			<input  class="form-control mb10" id="moduleName2" type="text" ng-model="model.moduleName" required placeholder="点击输入框选择模块"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=moduleName2|tag=moduleId|code=DATACENTER|def='+model.moduleId,$event)">
-			<button type="submit" class="btn btn-purple fr">拷贝</button>
+			<button type="submit" class="btn btn-adorn fr">拷贝</button>
 		</form>
 	</div>
 	

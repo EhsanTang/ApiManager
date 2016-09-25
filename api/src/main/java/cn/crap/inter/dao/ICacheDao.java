@@ -73,5 +73,10 @@ public interface ICacheDao {
 	 * @return
 	 */
 	Object getObj(String key, String field);
+	/**
+	 * 清空缓存
+	 * @return
+	 */
+	boolean flushDB();
 
 }

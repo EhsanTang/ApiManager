@@ -16,6 +16,10 @@ function getMarkdownText(html){
 	// 从markdown编辑器中提取文本
 	return replaceAll(html,"ace_line_group","\">\n<\"").replace(/<[^>]+>/g,"") ;
 }
+function tooltip(id){
+	 $("[data-toggle='tooltip']").tooltip(); 
+	 $("#"+id).tooltip('show');
+}
 
 /**
  * 替换字符串中自定的字符

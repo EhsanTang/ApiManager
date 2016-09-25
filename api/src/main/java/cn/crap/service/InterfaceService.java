@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.inter.dao.IInterfaceDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IInterfaceService;
+import cn.crap.inter.service.ILuceneService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
 import cn.crap.utils.MyString;
@@ -26,12 +28,13 @@ import net.sf.json.JSONObject;
 
 @Service
 public class InterfaceService extends BaseService<Interface>
-		implements IInterfaceService {
-	
+		implements IInterfaceService ,ILuceneService<Interface>{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IDataCenterService dataCenterService;
+	@Resource(name="interfaceDao")
+	IInterfaceDao interfaceDao;
 	
 	@Resource(name="interfaceDao")
 	public void setDao(IBaseDao<Interface> dao) {
@@ -44,7 +47,7 @@ public class InterfaceService extends BaseService<Interface>
 		page.setCurrentPage(currentPage);
 		
 		Map<String, Object> params = Tools.getMap("moduleId", interFace.getModuleId(),
-				"interfaceName|like", interFace.getInterfaceName(),"url|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
+				"interfaceName|like", interFace.getInterfaceName(),"fullUrl|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
 		if(moduleIds != null){
 			moduleIds.add("NULL");// 防止长度为0，导致in查询报错
 			params.put("moduleId|in", moduleIds);
@@ -55,7 +58,7 @@ public class InterfaceService extends BaseService<Interface>
 		
 		List<DataCenter> modules = new ArrayList<DataCenter>();
 		// 搜索接口时，modules为空
-		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName())) {
+		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName()) && MyString.isEmpty(interFace.getUrl()) ) {
 			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
 			if(moduleIds != null){
 				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
@@ -105,5 +108,11 @@ public class InterfaceService extends BaseService<Interface>
 				}
 			}
 			interFace.setRequestExam(interFace.getRequestExam()+strHeaders.toString()+strParams.toString());
+	}
+
+	@Override
+	@Transactional
+	public List<Interface> getAll() {
+		return interfaceDao.findByMap(null, null, null);
 	}
 }

@@ -25,4 +25,6 @@ public interface ICacheService{
 
 	Object setObj(String key, Object value, int expireTime);
 	void delStr(String string);
+	
+	boolean flushDB();
 }

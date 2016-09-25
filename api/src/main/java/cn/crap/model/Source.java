@@ -9,11 +9,13 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
+import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 
 
@@ -23,7 +25,7 @@ import cn.crap.utils.MyString;
 @Entity
 @Table(name="source")
 @GenericGenerator(name="Generator", strategy="cn.crap.framework.IdGenerator")
-public class Source extends BaseModel implements Serializable{
+public class Source extends BaseModel implements Serializable,ILuceneDto{
 	/**
 	 * 
 	 */
@@ -108,15 +110,26 @@ public class Source extends BaseModel implements Serializable{
 	}
 
 	@Transient
-	public SearchDto toSearchDto(){
+	public SearchDto toSearchDto(ICacheService service){
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
 		dto.setCreateTime(createTime);
-		dto.setContent(remark == null? "":remark);
 		dto.setTitle(name);
 		dto.setType(Source.class.getSimpleName());
 		dto.setUrl("#/front/source/detail/"+id);
 		dto.setVersion("");
+		//索引内容 = 备注内容 + 文档内容
+		String docContent = "";
+		try {
+			docContent = GetTextFromFile.getText(this.filePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dto.setContent(remark + docContent);
+		//如果备注为空，则提取文档内容前2500 个字
+		if( MyString.isEmpty(this.remark) ){
+			this.remark = docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent;
+		}
 		return dto;
 	}
 	

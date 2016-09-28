@@ -198,7 +198,7 @@
 				
 				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
 					<div class="BGFFF m20 BGFFF p10 r5">
-						<div class="col-xs-12 f16 fb p0 mb5" ng-if="error">
+						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-if="error.indexOf('CrapApi-400')>0">
@@ -207,7 +207,7 @@
 								<span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
 							</button>
 						</div>
-						<div class="col-xs-12 f16 fb p0 mb5" ng-if="errorTips">
+						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-bind="errorTips"></span>
@@ -264,7 +264,7 @@
 		<div id="myDialog-title" class="CFFF f20 fb shadow" style="margin-top:-50px;line-height:50px;padding-left:20px;height:50px;">
 		</div>
 		<div id="myDialogContent" class="look-up-content b0 f12 tl p30 BGFFF bottom-radius">
-			<button type="button" class="btn btn-danger btn-xs break-word ml10 mb10" ng-if="error">
+			<button type="button" class="btn btn-danger btn-xs break-word ml10 mb10 ndis" id="dialog-error" ng-if="hasError(error,'dialog-error')">
 					<span class="glyphicon glyphicon-remove"></span>
 					<span ng-bind="error"></span>
 			</button>

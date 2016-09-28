@@ -122,8 +122,8 @@ public class BackModuleController extends BaseController<DataCenter>{
 		
 		if(!MyString.isEmpty(module.getId())){
 			// 更新该模块下的所有接口的fullUrl
-			interfaceService.update("update Interface set fullUrl=:moduleUrl + url where moduleId = :moduleId", 
-					Tools.getMap("moduleUrl", module.getUrl() == null? "":module.getUrl(), "moduleId", module.getId()));
+			interfaceService.update("update Interface set fullUrl=CONCAT('"+(module.getUrl() == null? "":module.getUrl())+
+					"',url) where moduleId ='"+module.getId()+"'", null);
 			moduleService.update(module);
 		}else{
 			module.setId(null);

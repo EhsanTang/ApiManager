@@ -12,6 +12,7 @@ import cn.crap.enumeration.FontFamilyType;
 import cn.crap.enumeration.InterfaceStatus;
 import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ModuleStatus;
+import cn.crap.enumeration.MonitorType;
 import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.TrueOrFalse;
@@ -74,6 +75,12 @@ public class PickFactory {
 				case "TRUEORFALSE":// 枚举true or false
 					for (TrueOrFalse status : TrueOrFalse.values()) {
 						pick = new PickDto(status.getName(), status.name());
+						picks.add(pick);
+					}
+					return;
+				case "MONITORTYPE":// 监控类型
+					for (MonitorType monitorType : MonitorType.values()) {
+						pick = new PickDto(monitorType.name(), monitorType.getValue()+"", monitorType.getName());
 						picks.add(pick);
 					}
 					return;

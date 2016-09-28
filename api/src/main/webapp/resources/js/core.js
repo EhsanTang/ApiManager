@@ -245,7 +245,6 @@ function closeTip(data,iLoading,tipTime){
 			isFloat = false;
 			floatOrPropUp = true;
 		}
-		iClose('lookUp');
 	}
 }
 /** *********************页面提示信息显示方法************************* */

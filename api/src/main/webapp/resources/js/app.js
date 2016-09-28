@@ -184,6 +184,17 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		});;
 	}
 	/***********************是否显示操作按钮************/
+	
+	$rootScope.hasError = function(error,id){
+		if(error && error!=''){
+			$("#"+id).removeClass("ndis");
+			return true;
+		}else{
+			if(!$("#"+id).hasClass("ndis"))
+				$("#"+id).addClass("ndis");
+			return false;
+		}
+	}
 	$rootScope.showOperation = function(dataType,moduleId){
 		var userRole = $("#sessionRoleIds").val();
 		if((","+userRole+",").indexOf(",super,")>=0){

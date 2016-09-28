@@ -80,7 +80,7 @@
 				<tr>
 					<td class="tc w80">请求方式</td>
 					<td class="tc">
-						<input class="form-control cursor" type="text" id="method" placeholder="请点击输入框选择" required ng-model="model.method"
+						<input class="form-control cursor" type="text"  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
 							ng-focus="loadPickByName('iwidth=220|radio=false|iheight=250|tag=method|code=REQUESTMETHOD|def='+model.method,$event)">
 					</td>
 					<td class="tc">状态</td>
@@ -94,12 +94,27 @@
 					<td class="tc w80">版本号</td>
 					<td class="tc"><input class="form-control" type="text"
 						ng-model="model.version" required></td>
-					<td>排序</td>
+					<td class="tc">排序</td>
 					<td class="tc">
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
-				
-				
+				<tr>
+					<td class="tc w80">监控类型</td>
+					<td class="tc">
+					<input  class="form-control" type="text" ng-model="model.monitorTypeName" id="monitorTypeName" required placeholder="点击选择"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITORTYPE|def='+model.monitorType,$event)">
+					</td>
+					<td class="tc"></td>
+					<td class="tc"></td>
+				</tr>
+				<tr ng-if="model.monitorType>1">
+					<td class="tc">正确返回示例</td>
+					<td class="tc" colspan="3">
+						<textarea class="form-control no-resize" ng-model="model.monitorText" rows="8"
+							placeholder="请输入监控比较的内容" max="250">
+						</textarea>
+					</td>
+				</tr>
 				<tr>
 					<td class="tc">请求头</td>
 					<td class="tc" colspan="3">

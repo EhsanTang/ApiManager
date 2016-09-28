@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.MonitorType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
@@ -42,7 +43,8 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	private String version;// 版本号
 	private String header;// 请求头
 	private String fullUrl;// 完整的url = moduleUrl + url
-
+	private int monitorType;
+	private String monitorText;
 	public Interface() {
 	}
 
@@ -256,6 +258,24 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	public void setFullUrl(String fullUrl) {
 		this.fullUrl = fullUrl;
 	}
+	
+	@Column(name = "monitorType")
+	public int getMonitorType() {
+		return monitorType;
+	}
+
+	public void setMonitorType(int monitorType) {
+		this.monitorType = monitorType;
+	}
+
+	@Column(name = "monitorText")
+	public String getMonitorText() {
+		return monitorText;
+	}
+
+	public void setMonitorText(String monitorText) {
+		this.monitorText = monitorText;
+	}
 
 	@Transient
 	public String getProjectId() {
@@ -266,5 +286,9 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 				return module.getProjectId();
 		}
 		return "";
+	}
+	@Transient
+	public String getMonitorTypeName(){
+		return MonitorType.getName(monitorType);
 	}
 }

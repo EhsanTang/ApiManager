@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.UserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
+import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
-import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -32,6 +35,12 @@ public class BackUserController extends BaseController<User>{
 	private IUserService userService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private IRoleService roleService;
+	@Autowired
+	private IDataCenterService dataCenterService;
+	@Autowired
+	private Config config;
 	
 	@RequestMapping("/user/list.do")
 	@ResponseBody
@@ -75,8 +84,7 @@ public class BackUserController extends BaseController<User>{
 			temp = userService.get(user.getId());
 		}
 		
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		LoginInfoDto cacheUser = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto cacheUser = (LoginInfoDto) Tools.getUser();
 		
 		// 如果不是最高管理员，不允许修改权限、角色、类型
 		if((","+cacheUser.getRoleId()).indexOf(","+Const.SUPER+",") < 0){
@@ -86,6 +94,10 @@ public class BackUserController extends BaseController<User>{
 				user.setRoleId(temp.getRoleId());
 				user.setRoleName(temp.getRoleName());
 				user.setType(temp.getType());
+				if(!user.getEmail().equals(temp.getEmail())){
+					user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
+					cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
+				}
 			}else{
 				user.setAuth("");
 				user.setAuthName("");

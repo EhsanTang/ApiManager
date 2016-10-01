@@ -1,17 +1,18 @@
 package cn.crap.framework.auth;
 import java.net.InetAddress;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import cn.crap.beans.Config;
+import cn.crap.beans.GetBeanByConfig;
 import cn.crap.framework.MyException;
 import cn.crap.inter.dao.ICacheDao;
-import cn.crap.utils.Config2;
+import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
-import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -24,13 +25,16 @@ import cn.crap.utils.Tools;
  *
  */
 public class AuthInterceptor extends HandlerInterceptorAdapter {
+	@Autowired
+	private GetBeanByConfig getBEanByConfig;
+	@Autowired
+	private Config config;
 	
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(handler.getClass().isAssignableFrom(HandlerMethod.class)){
         	AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
-        	
-        	String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+        
         	
         	 // 未登陆用户唯一识别
         	String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
@@ -44,8 +48,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             if(authPassport == null || authPassport.validate() == false)
                 return true;
             
+        	
+        	String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
+        	String uid = MyCookie.getCookie(Const.COOKIE_USERID, false, request);
             // 前端没有传递token，未登录
-            if(MyString.isEmpty(token)){
+            if(MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)){
             	if(request.getRequestURI().endsWith("admin.do"))
             		response.sendRedirect("loginOrRegister.do#/login");
             	else
@@ -53,8 +60,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
             
             // 后端没登录信息：登录超时
-            ICacheDao cacheDao = GetBeanBySetting.getCacheDao();
-            Object obj = cacheDao.getObj(Const.CACHE_USER + token);
+            ICacheDao cacheDao = getBEanByConfig.getCacheDao();
+            Object obj = cacheDao.getObj(Const.CACHE_USER + uid);
             if(obj == null){
             	// 删除cookie
             	MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
@@ -67,7 +74,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
             
             // 每次访问，将用户登录有效信息延长
-            cacheDao.setObj(Const.CACHE_USER + token, obj, Config2.getLoginInforTime());
+            cacheDao.setObj(Const.CACHE_USER + uid, obj, config.getLoginInforTime());
             
             if(!authPassport.authority().equals("")){
             	return Tools.hasAuth(authPassport.authority(), MyString.getValueFromRequest(request, "moduleId"), request);

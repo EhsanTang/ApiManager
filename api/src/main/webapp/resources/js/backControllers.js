@@ -54,12 +54,22 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 		});
     };
     // 判断是否是最高管理员
-    $scope.isSupperAdmin = function (){
+    $scope.isSupperAdmin = function (id){
     	if($rootScope.sessionAdminRoleIds){
     		var roles = ","+$rootScope.sessionAdminRoleIds+",";
     		if(roles.indexOf(',super,')>=0){
+    			if(id)
+    				$("#"+id).removeClass("ndis");
     			return true;
+    		}else{
+    			if(id){
+    				if(!$("#"+id).hasClass("ndis"))
+        				$("#"+id).addClass("ndis");
+    			}
+    			
+    			return false;
     		}
+
     	}
     	return false;
     }

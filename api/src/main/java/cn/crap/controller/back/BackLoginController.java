@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
@@ -30,7 +31,6 @@ import cn.crap.inter.service.IUserService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Aes;
-import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
@@ -47,14 +47,20 @@ public class BackLoginController extends BaseController<User> {
 	private IUserService userService;
 	@Autowired
 	private IEmailService emailService;
+	@Autowired
+	private IRoleService roleService;
+	@Autowired
+	private IDataCenterService dataCenterService;
+	@Autowired
+	private Config config;
 	
 	/**
 	 * 退出登录
 	 */
 	@RequestMapping("/back/loginOut.do")
 	public String loginOut() throws IOException {
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		cacheService.delObj(Const.CACHE_USER + token);
+		String uid = MyCookie.getCookie(Const.COOKIE_USERID, false, request);
+		cacheService.delObj(Const.CACHE_USER + uid);
 		MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
 		return "resources/html/frontHtml/index.html";
 	}
@@ -70,13 +76,12 @@ public class BackLoginController extends BaseController<User> {
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		LoginDto model = new LoginDto();
 		model.setUserName(MyCookie.getCookie(Const.COOKIE_USERNAME, request));
 		model.setPassword(MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		model.setRemberPwd(MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
 		model.setTipMessage("");
-		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		model.setSessionAdminName(user == null? null:user.getUserName());
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("model", model);
@@ -111,6 +116,7 @@ public class BackLoginController extends BaseController<User> {
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
+				cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
 				request.setAttribute("result", "验证通过！");
 			}else{
 				request.setAttribute("result", "抱歉，账号不存在！");
@@ -131,7 +137,7 @@ public class BackLoginController extends BaseController<User> {
 	@AuthPassport
 	public JsonResult sendValidateEmail() throws UnsupportedEncodingException, MessagingException {
 		LoginInfoDto user = Tools.getUser();
-		emailService.sendRegisterMain(user.getUserName(), user.getId());
+		emailService.sendRegisterMain(user.getEmail(), user.getId());
 		return new JsonResult(1, null);
 	}
 	

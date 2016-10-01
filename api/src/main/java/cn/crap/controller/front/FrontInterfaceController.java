@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
@@ -30,7 +31,6 @@ import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
-import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
@@ -50,6 +50,8 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	private IDataCenterService dataCenterService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private Config config;
 	
 	@RequestMapping("/detail/pdf.do")
 	public String pdf(@ModelAttribute Interface interFace) throws Exception {
@@ -115,7 +117,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 				statuss.add(Byte.valueOf("1"));
 				statuss.add(Byte.valueOf("3"));
 				moduleIds = dataCenterService.getListByStatuss(statuss, DataCeneterType.MODULE.name(), null);
-				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, Config2.getCacheTime());
+				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, config.getCacheTime());
 			}
 			return interfaceService.getInterfaceList(page, moduleIds ,interFace, currentPage);
 		}else{

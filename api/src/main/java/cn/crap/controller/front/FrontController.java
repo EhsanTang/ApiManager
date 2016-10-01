@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.SearchDto;
@@ -24,9 +25,7 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
-import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -39,7 +38,8 @@ public class FrontController extends BaseController<User> {
 	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
-	
+	@Autowired
+	private Config config;
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -116,7 +116,7 @@ public class FrontController extends BaseController<User> {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
 					menus = menuService.getLeftMenu(null);
-					cacheService.setObj("cache:leftMenu", menus, Config2.getCacheTime());//缓存10分钟
+					cacheService.setObj("cache:leftMenu", menus, config.getCacheTime());//缓存10分钟
 				}else{
 					menus = (List<MenuDto>) objMenus;
 				}
@@ -127,8 +127,7 @@ public class FrontController extends BaseController<User> {
 		}
 		
 		returnMap.put("menuList", menus);
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 
 		returnMap.put("sessionAdminName", user == null? "": user.getUserName());
 		return new JsonResult(1, returnMap);

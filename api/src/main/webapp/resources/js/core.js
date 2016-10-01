@@ -109,6 +109,9 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 					if(data.indexOf('[LOGINPAGE]') >= 0 || data.indexOf('"code":"000021"') >= 0){
 						data = "[ERROR]尚未登录，请登录后再试！";
 					}
+					if(data.indexOf('"success":0') >= 0){
+						data = "[ERROR]"+ eval("(" + data + ")").error.message;
+					}
 					//当返回失败页面时需将data替换成提示语句
 					if (isHowMethod == '1' || isHowMethod == 'updateInput') 
 					{

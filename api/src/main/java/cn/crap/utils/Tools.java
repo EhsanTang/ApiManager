@@ -344,7 +344,8 @@ public class Tools {
 	 */
 	public static LoginInfoDto getUser(){
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + MyCookie.getCookie(Const.COOKIE_TOKEN, false, Tools.getRequest()));
+		String uId = MyCookie.getCookie(Const.COOKIE_USERID, false, Tools.getRequest());
+		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + uId);
 	}
 	/**
 	 * 判断模块id是否合法：top，0，privateModule则不合法，不允许查看所有项目

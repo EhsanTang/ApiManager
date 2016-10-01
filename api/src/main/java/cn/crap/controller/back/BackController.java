@@ -20,7 +20,7 @@ import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
+import cn.crap.utils.Tools;
 
 @Controller
 public class BackController extends BaseController<User> {
@@ -68,11 +68,10 @@ public class BackController extends BaseController<User> {
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
 		returnMap.put("menuList", menuService.getLeftMenu(null));
-		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		returnMap.put("sessionAdminName", user.getUserName());
 		returnMap.put("sessionAdminAuthor", user.getAuthStr());
 		returnMap.put("sessionAdminRoleIds", user.getRoleId());

@@ -47,6 +47,7 @@ public class Const {
 	public static final String CACHE_AUTHORIZE = ":authorize:";
 	
 	//常量
+	public static final String COOKIE_USERID = "cookieUserId";
 	public static final String COOKIE_USERNAME = "cookieUserName";
 	public static final String COOKIE_PASSWORD = "cookiePassword";
 	public static final String COOKIE_TOKEN= "token";

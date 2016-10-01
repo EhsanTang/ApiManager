@@ -56,7 +56,7 @@
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
 						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isSupperAdmin('adminMenu0')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel2">
 									<div class="f14 mt-3 fl mr10">
@@ -84,7 +84,7 @@
 						</div>
 						
 						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isSupperAdmin('adminMenu1')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
 									<div class="f14 mt-3 fl mr10">
@@ -132,7 +132,7 @@
 							</div>
 						</div>
 						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isSupperAdmin()">
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu2" ng-if="isSupperAdmin('adminMenu2')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel3">
 									<div class="f14 mt-3 fl mr10">

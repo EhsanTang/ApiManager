@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
@@ -20,7 +21,6 @@ import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.DataCenter;
 import cn.crap.utils.Aes;
-import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -38,6 +38,8 @@ public class BackModuleController extends BaseController<DataCenter>{
 	private IUserService userService;
 	@Autowired
 	private IInterfaceService interfaceService;
+	@Autowired
+	private Config config;
 	
 	@RequestMapping("/module/detail.do")
 	@ResponseBody
@@ -136,9 +138,8 @@ public class BackModuleController extends BaseController<DataCenter>{
 		 * 刷新用户权限
 		 */
 		LoginInfoDto user = Tools.getUser();
-		String token  = Aes.encrypt(user.getId());
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(userService.get(user.getId()), roleService, moduleService), Config2.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, moduleService), config.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
 	

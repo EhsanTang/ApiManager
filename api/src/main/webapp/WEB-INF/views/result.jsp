@@ -13,7 +13,7 @@
   	<div class="BGFFF r5 h100 w400 mt50 p50" style="margin:0 auto;">
 		${result}
 		<br/>
-		<a  class="dis fr mt20" href="index.do">返回首页</a>
+		<a  class="dis fr mt20" href="<%=request.getContextPath()%>/index.do">返回首页</a>
 	</div>
   
   </body>

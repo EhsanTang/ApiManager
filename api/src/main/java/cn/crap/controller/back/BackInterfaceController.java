@@ -30,7 +30,6 @@ import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -145,8 +144,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 			interFace.setErrors("[]");
 		}
 		
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-		LoginInfoDto user = (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + token);
+		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));
 		

@@ -41,6 +41,8 @@ public class MyCookie {
 		}
 		Cookie myCookie=new Cookie(key,value);
 		myCookie.setMaxAge(time);
+		// 多个路径下可以共享cookie
+		myCookie.setPath("/");
 		response.addCookie(myCookie);
 	}
 	public static String getCookie(String key,HttpServletRequest request){

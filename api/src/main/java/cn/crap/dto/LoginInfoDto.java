@@ -22,6 +22,7 @@ public class LoginInfoDto implements Serializable{
 	private String roleId; 
 	private String id;
 	private byte type;
+	private String email;
 	
 	public LoginInfoDto(User user, IRoleService roleService, IDataCenterService dataCenterService){
 		this.userName = user.getUserName();
@@ -29,6 +30,7 @@ public class LoginInfoDto implements Serializable{
 		this.roleId = user.getRoleId();
 		this.id = user.getId();
 		this.type = user.getType();
+		this.email = user.getEmail();
 		
 		StringBuilder sb = new StringBuilder(",");
 		roleService.getAuthFromAuth(sb, user.getAuth());
@@ -85,5 +87,14 @@ public class LoginInfoDto implements Serializable{
 	public byte getType(){
 		return type;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 
 }

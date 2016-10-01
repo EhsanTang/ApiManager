@@ -30,7 +30,6 @@
 	<context:component-scan base-package="cn.crap" />
 	<!-- 业务错误码 -->
 	<import resource="errorInfo.xml" />
-	<import resource="config.xml" />
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<value>classpath:config.properties</value>

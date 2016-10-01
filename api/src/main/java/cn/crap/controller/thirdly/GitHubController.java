@@ -1,9 +1,6 @@
 package cn.crap.controller.thirdly;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-
-import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
-import cn.crap.dto.thirdly.GitHubAccessToken;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
@@ -20,9 +16,7 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.service.thirdly.GitHubService;
-import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
-import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -50,14 +44,14 @@ public class GitHubController extends BaseController<User> {
 	 * gitHub授权
 	 * @throws Exception
 	 */
-	@RequestMapping("/githubAuthorize.do")
+	@RequestMapping("/github/authorize.do")
 	public void authorize() throws Exception {
 		String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
 		String state = Tools.getChar(20);
 		cacheService.setStr( MyCookie.getCookie(Const.COOKIE_TOKEN, false, request) + Const.CACHE_AUTHORIZE, state, 10*60);
 		response.sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
 	}
-	@RequestMapping("/githubLogin.do")
+	@RequestMapping("/github/login.do")
 	public String login(@RequestParam String code,@RequestParam String state) throws Exception {
 		String myState = cacheService.getStr(MyCookie.getCookie(Const.COOKIE_TOKEN, false, request) + Const.CACHE_AUTHORIZE);
 		if(myState == null || !myState.equals(state)){
@@ -89,7 +83,7 @@ public class GitHubController extends BaseController<User> {
 			model.setRemberPwd("NO");
 			userService.login(model, user, request, response);
 			
-			response.sendRedirect("admin.do");
+			response.sendRedirect("../admin.do");
 		}
 		return "";
 	}

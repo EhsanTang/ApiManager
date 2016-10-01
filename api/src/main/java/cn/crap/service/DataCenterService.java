@@ -16,7 +16,7 @@ import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.ICacheDao;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.model.DataCenter;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;

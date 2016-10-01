@@ -30,7 +30,7 @@ import cn.crap.inter.service.IUserService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.utils.Aes;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyCookie;
@@ -45,10 +45,6 @@ public class BackLoginController extends BaseController<User> {
 	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private IDataCenterService dataCenterService;
 	@Autowired
 	private IEmailService emailService;
 	
@@ -98,7 +94,7 @@ public class BackLoginController extends BaseController<User> {
 	}
 	
 	/**
-	 * 发送验证邮件
+	 * 验证邮箱是否正确
 	 * @return
 	 * @throws MessagingException 
 	 * @throws UnsupportedEncodingException 
@@ -218,21 +214,7 @@ public class BackLoginController extends BaseController<User> {
 			if (users.size() > 0) {
 				User user = users.get(0);
 				if (model.getUserName().equals(user.getUserName()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword())) {
-					String token  = Aes.encrypt(user.getId());
-					MyCookie.addCookie(Const.COOKIE_TOKEN, token, response);
-					
-					// 将用户信息存入缓存
-					cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(user, roleService, dataCenterService), Config.getLoginInforTime());
-					
-					MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
-					MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);
-					
-					if (model.getRemberPwd().equals("YES")) {
-						MyCookie.addCookie(Const.COOKIE_PASSWORD, model.getPassword(), true, response);
-					} else {
-						MyCookie.deleteCookie(Const.COOKIE_PASSWORD, request, response);
-					}
-					model.setSessionAdminName(model.getUserName());
+					userService.login(model, user, request, response);
 					return new JsonResult(1, model);
 				}
 				model.setTipMessage("用户密码有误");
@@ -242,5 +224,6 @@ public class BackLoginController extends BaseController<User> {
 				return new JsonResult(1, model);
 			}
 	}
+	
 	
 }

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
@@ -31,16 +31,16 @@ public class BackFileController extends BaseController <User>{
 	    /**
 	     * 文件大小拦截，不能超过20M
 	     */
-	    if(file.getSize() > 1024*1024 * Config.getFileSize()){
+	    if(file.getSize() > 1024*1024 * Config2.getFileSize()){
 	    	obj.put("error", 1);
-	    	result = "[ERROR]文件超过最大限制，请上传小于" +Config.getFileSize() +"M的文件";
-	    }else if( Config.getImageType().indexOf(suffix)<0 && Config.getFileType().indexOf(suffix)<0 ){
+	    	result = "[ERROR]文件超过最大限制，请上传小于" +Config2.getFileSize() +"M的文件";
+	    }else if( Config2.getImageType().indexOf(suffix)<0 && Config2.getFileType().indexOf(suffix)<0 ){
 	    	 //检查扩展名
 	    	obj.put("error", 1);
 	    	result = "[ERROR]上传文件格式不对";
 	    }else{
 	    	//检查扩展名
-	    	if( Config.getImageType().indexOf(suffix)>=0 ){
+	    	if( Config2.getImageType().indexOf(suffix)>=0 ){
 	    		saveUrl +="resources/upload/images";
 	    	}else{
 	    		saveUrl +="resources/upload/files";

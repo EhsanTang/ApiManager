@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 <beans>
-	<bean id="config" class="cn.crap.utils.Config">
+	<bean id="config2" class="cn.crap.utils.Config2">
 		<!-- ip为空，则使用内存缓存，否则使用reids缓存，测试redis：60.28.29.22 -->
 		<property name="redisIp" value=""/>
 		

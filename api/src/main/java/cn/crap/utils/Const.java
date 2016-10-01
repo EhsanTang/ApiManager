@@ -44,6 +44,7 @@ public class Const {
 	public static final String CACHE_WEBPAGE = ":webPageDetail:";
 	public static final String CACHE_COMMENTLIST = ":commentList:";
 	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
+	public static final String CACHE_AUTHORIZE = ":authorize:";
 	
 	//常量
 	public static final String COOKIE_USERNAME = "cookieUserName";
@@ -61,6 +62,7 @@ public class Const {
 	public static final String TOP_MODULE= "top";
 	public static final String LEVEL_PRE = "- - ";
 	public static final String REGISTER = "register";
+	public static final String GITHUB = "gitHub:";
 	// url
 	public static final String FRONT_ERROR_URL = "#/%s/error/list";
 	public static final String FRONT_DICT_URL = "#/%s/webPage/list/DICTIONARY/";

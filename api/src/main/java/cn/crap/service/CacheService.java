@@ -13,7 +13,7 @@ import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Setting;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -58,7 +58,7 @@ public class CacheService implements ICacheService {
 		if(obj == null){
 			List<Setting> settings = settingDao.findByMap(Tools.getMap("key",key), null, null);
 			if(settings.size() > 0){
-				cacheDao.setObj(cacheSettingKeyPre, key, settings.get(0), Config.getCacheTime());
+				cacheDao.setObj(cacheSettingKeyPre, key, settings.get(0), Config2.getCacheTime());
 				return settings.get(0);
 			}
 		}else{
@@ -75,7 +75,7 @@ public class CacheService implements ICacheService {
 		
 		if(obj == null){
 			List<Setting> settings = settingDao.findByMap(null, null, null);
-			cacheDao.setObj(cacheSettingList, settings, Config.getCacheTime());
+			cacheDao.setObj(cacheSettingList, settings, Config2.getCacheTime());
 			return settings;
 		}else{
 			return (List<Setting>) obj;
@@ -94,7 +94,7 @@ public class CacheService implements ICacheService {
 			DataCenter module = dataCenterDao.get(moduleId);
 			if(module == null)
 				module = new DataCenter();
-			cacheDao.setObj(cacheModuleKeyPre + moduleId, module, Config.getCacheTime());
+			cacheDao.setObj(cacheModuleKeyPre + moduleId, module, Config2.getCacheTime());
 			return module;
 				
 		}

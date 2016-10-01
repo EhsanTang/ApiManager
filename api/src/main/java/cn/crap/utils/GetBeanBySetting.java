@@ -6,7 +6,7 @@ import cn.crap.inter.dao.ICacheDao;
 
 public class GetBeanBySetting {
 	 public static ICacheDao getCacheDao(){
-	        if( Config.getRedisIp().trim().equals("") ){
+	        if( Config2.getRedisIp().trim().equals("") ){
 	            return SpringContextHolder.getBean("memoryCacheDao",ICacheDao.class);
 	        }else{
 	            return SpringContextHolder.getBean("redisCacheDao",ICacheDao.class);

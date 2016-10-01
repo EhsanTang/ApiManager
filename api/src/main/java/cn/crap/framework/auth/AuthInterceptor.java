@@ -9,7 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.crap.framework.MyException;
 import cn.crap.inter.dao.ICacheDao;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.GetBeanBySetting;
 import cn.crap.utils.MyCookie;
@@ -67,7 +67,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
             
             // 每次访问，将用户登录有效信息延长
-            cacheDao.setObj(Const.CACHE_USER + token, obj, Config.getLoginInforTime());
+            cacheDao.setObj(Const.CACHE_USER + token, obj, Config2.getLoginInforTime());
             
             if(!authPassport.authority().equals("")){
             	return Tools.hasAuth(authPassport.authority(), MyString.getValueFromRequest(request, "moduleId"), request);

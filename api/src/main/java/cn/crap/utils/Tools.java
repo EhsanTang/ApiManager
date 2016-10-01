@@ -138,6 +138,20 @@ public class Tools {
 
 	}
 	
+	public static Map<String, String> getStrMap(String... params) {
+		if (params.length == 0 || params.length % 2 != 0) {
+			return null;
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		for (int i = 0; i < params.length; i = i + 2) {
+			if (!MyString.isEmpty(params[i + 1]))
+				map.put(params[i].toString(), params[i + 1]);
+		}
+		return map;
+
+	}
+	
+	
 	/**
 	 * 构造导航条
 	 */

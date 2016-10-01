@@ -35,6 +35,10 @@ public class User extends BaseModel implements Serializable{
 	private String authName = "";
 	private byte type;
 	private String email;
+	private String avatarUrl;
+	private int loginType;
+	private String thirdlyId;
+	
 	
 	@Column(name="userName")
 	public String getUserName() {
@@ -113,6 +117,31 @@ public class User extends BaseModel implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Column(name="avatarUrl")
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+	@Column(name="loginType")
+	public int getLoginType() {
+		return loginType;
+	}
+
+	public void setLoginType(int loginType) {
+		this.loginType = loginType;
+	}
+	@Column(name="thirdlyId")
+	public String getThirdlyId() {
+		return thirdlyId;
+	}
+
+	public void setThirdlyId(String thirdlyId) {
+		this.thirdlyId = thirdlyId;
 	}
 
 	@Transient

@@ -24,7 +24,7 @@ import cn.crap.inter.service.IWebPageService;
 import cn.crap.model.Comment;
 import cn.crap.model.DataCenter;
 import cn.crap.model.WebPage;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -85,7 +85,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY);
 		if( categorys == null){
 			categorys = (List<String>) webPageService.queryByHql("select distinct category from WebPage where type ='ARTICLE'", null, new Page(20));
-			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, Config.getCacheTime());
+			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, Config2.getCacheTime());
 		}
 		// 
 		
@@ -115,7 +115,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 			}
 			if(model == null)
 				throw new MyException("000020");
-			cacheService.setObj( Const.CACHE_WEBPAGE + webPage.getId(), model, Config.getCacheTime());
+			cacheService.setObj( Const.CACHE_WEBPAGE + webPage.getId(), model, Config2.getCacheTime());
 		}
 		
 		
@@ -143,7 +143,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 			categorys = cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY);
 			if( categorys == null){
 				categorys = webPageService.queryByHql("select distinct category from WebPage where type ='ARTICLE'", null, new Page(20));
-				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, Config.getCacheTime());
+				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, Config2.getCacheTime());
 			}
 			returnMap.put("categorys", categorys);
 			returnMap.put("category", model.getCategory());
@@ -159,8 +159,8 @@ public class FrontWebPageController extends BaseController<WebPage> {
 			page = new Page(10);
 			page.setCurrentPage(currentPage);
 			comments = commentService.findByMap(map, page, "createTime desc");
-			cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId() , currentPage + "", comments, Config.getCacheTime());
-			cacheService.setObj(Const.CACHE_COMMENT_PAGE + model.getId() , currentPage + "", page, Config.getCacheTime());
+			cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId() , currentPage + "", comments, Config2.getCacheTime());
+			cacheService.setObj(Const.CACHE_COMMENT_PAGE + model.getId() , currentPage + "", page, Config2.getCacheTime());
 		}
 		
 				

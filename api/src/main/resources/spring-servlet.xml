@@ -31,11 +31,11 @@
 	<!-- 业务错误码 -->
 	<import resource="errorInfo.xml" />
 	<import resource="config.xml" />
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<value>classpath:config.properties</value>
 		</property>
+		<property name="fileEncoding" value="utf-8"/>
 	</bean>
 
 	<bean id="dataSource" destroy-method="close"

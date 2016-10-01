@@ -20,7 +20,7 @@ import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.DataCenter;
 import cn.crap.utils.Aes;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -138,7 +138,7 @@ public class BackModuleController extends BaseController<DataCenter>{
 		LoginInfoDto user = Tools.getUser();
 		String token  = Aes.encrypt(user.getId());
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(userService.get(user.getId()), roleService, moduleService), Config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + token, new LoginInfoDto(userService.get(user.getId()), roleService, moduleService), Config2.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
 	

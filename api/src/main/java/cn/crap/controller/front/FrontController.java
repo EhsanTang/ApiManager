@@ -24,7 +24,7 @@ import cn.crap.inter.service.IMenuService;
 import cn.crap.inter.service.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
@@ -116,7 +116,7 @@ public class FrontController extends BaseController<User> {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
 					menus = menuService.getLeftMenu(null);
-					cacheService.setObj("cache:leftMenu", menus, Config.getCacheTime());//缓存10分钟
+					cacheService.setObj("cache:leftMenu", menus, Config2.getCacheTime());//缓存10分钟
 				}else{
 					menus = (List<MenuDto>) objMenus;
 				}

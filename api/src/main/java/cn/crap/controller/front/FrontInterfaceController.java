@@ -30,7 +30,7 @@ import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IInterfaceService;
 import cn.crap.model.DataCenter;
 import cn.crap.model.Interface;
-import cn.crap.utils.Config;
+import cn.crap.utils.Config2;
 import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
@@ -115,7 +115,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 				statuss.add(Byte.valueOf("1"));
 				statuss.add(Byte.valueOf("3"));
 				moduleIds = dataCenterService.getListByStatuss(statuss, DataCeneterType.MODULE.name(), null);
-				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, Config.getCacheTime());
+				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, Config2.getCacheTime());
 			}
 			return interfaceService.getInterfaceList(page, moduleIds ,interFace, currentPage);
 		}else{

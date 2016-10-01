@@ -4,7 +4,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 
-public class Config {
+public class Config2 {
 	
 	public static String redisIp;
 	public static int redisPort;
@@ -51,7 +51,7 @@ public class Config {
 	}
 
 	public static void setRedisIp(String redisIp) {
-		Config.redisIp = redisIp;
+		Config2.redisIp = redisIp;
 	}
 
 
@@ -63,7 +63,7 @@ public class Config {
 
 
 	public static void setRedisPort(int redisPort) {
-		Config.redisPort = redisPort;
+		Config2.redisPort = redisPort;
 	}
 
 
@@ -75,7 +75,7 @@ public class Config {
 
 
 	public static void setRedisPwd(String redisPwd) {
-		Config.redisPwd = redisPwd;
+		Config2.redisPwd = redisPwd;
 	}
 
 
@@ -87,7 +87,7 @@ public class Config {
 
 
 	public static void setRedisPoolSize(int redisPoolSize) {
-		Config.redisPoolSize = redisPoolSize;
+		Config2.redisPoolSize = redisPoolSize;
 	}
 
 
@@ -97,7 +97,7 @@ public class Config {
 
 
 	public static void setRedisKeyPrefix(String redisKeyPrefix) {
-		Config.redisKeyPrefix = redisKeyPrefix;
+		Config2.redisKeyPrefix = redisKeyPrefix;
 	}
 
 
@@ -107,7 +107,7 @@ public class Config {
 
 
 	public static void setCacheTime(int cacheTime) {
-		Config.cacheTime = cacheTime;
+		Config2.cacheTime = cacheTime;
 	}
 
 
@@ -117,7 +117,7 @@ public class Config {
 
 
 	public static void setLoginInforTime(int loginInforTime) {
-		Config.loginInforTime = loginInforTime;
+		Config2.loginInforTime = loginInforTime;
 	}
 
 	public static int getFileSize() {
@@ -125,7 +125,7 @@ public class Config {
 	}
 
 	public static void setFileSize(int fileSize) {
-		Config.fileSize = fileSize;
+		Config2.fileSize = fileSize;
 	}
 
 	public static String getImageType() {
@@ -133,7 +133,7 @@ public class Config {
 	}
 
 	public static void setImageType(String imageType) {
-		Config.imageType = imageType;
+		Config2.imageType = imageType;
 	}
 
 	public static String getFileType() {
@@ -141,6 +141,6 @@ public class Config {
 	}
 
 	public static void setFileType(String fileType) {
-		Config.fileType = fileType;
+		Config2.fileType = fileType;
 	}
 }

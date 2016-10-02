@@ -159,7 +159,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.error = null;
 				 $rootScope.model.debugResult = result.data.debugResult;
 				 
-				 jsonformat("debugResult",false);
+				 $rootScope.jsonformat("debugResult",false);
 				 $rootScope.others = result.others;
 			 }
 		});

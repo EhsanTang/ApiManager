@@ -131,6 +131,8 @@ public class BackModuleController extends BaseController<DataCenter>{
 			module.setId(null);
 			module.setUserId(Tools.getUser().getId());
 			moduleService.save(module);
+			module.setProjectId(module.getId());
+			moduleService.update(module);
 		}
 		cacheService.delObj("cache:model:"+module.getId());
 		

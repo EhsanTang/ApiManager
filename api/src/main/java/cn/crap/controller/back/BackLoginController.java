@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.LoginType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -165,19 +166,19 @@ public class BackLoginController extends BaseController<User> {
 			}
 		}
 		
-		if( userService.getCount(Tools.getMap("userName", model.getUserName())) >0 ){
-			model.setTipMessage("邮箱已经注册");
-			return new JsonResult(1, model);
-		}
-		
-		if( userService.getCount(Tools.getMap("email", model.getUserName())) >0 ){
+		if( userService.getCount(Tools.getMap("email", model.getUserName().toLowerCase())) >0 ){
 			model.setTipMessage("邮箱已经注册");
 			return new JsonResult(1, model);
 		}
 		
 		User user = new User();
 		try{
-			user.setUserName(model.getUserName());
+			user.setUserName(model.getUserName().split("@")[0]);
+			// 判断用户名是否重名，重名则修改昵称
+			if( userService.getCount(Tools.getMap("userName", user.getUserName())) >0 ){
+				user.setUserName("ca_"+ model.getUserName().split("@")[0]);
+			}
+			
 			user.setEmail(model.getUserName());
 			user.setPassword(MD5.encrytMD5(model.getPassword()));
 			user.setStatus(Byte.valueOf("1"));
@@ -190,7 +191,7 @@ public class BackLoginController extends BaseController<User> {
 			return new JsonResult(1, model);
 		}
 		try{
-			emailService.sendRegisterMain(user.getUserName(), user.getId());
+			emailService.sendRegisterMain(user.getEmail(), user.getId());
 		}catch(Exception e){
 			log.error("注册验证邮件发送失败:" + user.getUserName(), e);
 		}
@@ -216,10 +217,18 @@ public class BackLoginController extends BaseController<User> {
 				}
 			}
 
-			List<User> users = userService.findByMap(Tools.getMap("userName", model.getUserName()), null, null);
-			if (users.size() > 0) {
+			// 只允许普通账号方式登陆，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登陆
+			List<User> users = null;
+			if(model.getUserName().indexOf("@")>0){
+				users =  userService.findByMap(Tools.getMap("email", model.getUserName(),"loginType" , LoginType.COMMON.getValue()), null, null);
+			}else{
+				users =  userService.findByMap(Tools.getMap("userName", model.getUserName(),"loginType" , LoginType.COMMON.getValue()), null, null);
+			}
+			
+			if (users.size() == 1) {
 				User user = users.get(0);
-				if (model.getUserName().equals(user.getUserName()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword())) {
+				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword()) && 
+						(model.getUserName().equals(user.getUserName()) || model.getUserName().equals(user.getEmail())) ) {
 					userService.login(model, user, request, response);
 					return new JsonResult(1, model);
 				}

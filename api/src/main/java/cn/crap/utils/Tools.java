@@ -355,5 +355,10 @@ public class Tools {
 		return !(MyString.isEmpty(moduleId) || moduleId.equals(Const.ADMIN_MODULE) || moduleId.equals(Const.TOP_MODULE) || moduleId.equals(Const.PRIVATE_MODULE));
 	}
 	
+	public static boolean checkUserName(String userName){
+		String regex = "^[0-9A-Za-z]{6,20}$";		
+		return userName.matches(regex);
+	}
+	
 	
 }

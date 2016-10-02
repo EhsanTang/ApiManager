@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.LoginType;
 import cn.crap.enumeration.UserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -73,6 +74,12 @@ public class BackUserController extends BaseController<User>{
 		if(users.size()>0 && !users.get(0).getId().equals(user.getId())){
 			throw new MyException("000015");
 		}
+	
+		if(user.getUserName().isEmpty() || !Tools.checkUserName(user.getUserName())){
+			throw new MyException("000028");
+		}
+		
+		
 		
 		// 如果前端设置了密码，则修改密码，否者使用就密码
 		if(!MyString.isEmpty(user.getPassword())){
@@ -94,7 +101,7 @@ public class BackUserController extends BaseController<User>{
 				user.setRoleId(temp.getRoleId());
 				user.setRoleName(temp.getRoleName());
 				user.setType(temp.getType());
-				if(!user.getEmail().equals(temp.getEmail())){
+				if( !MyString.isEmpty(user.getEmail()) && ( MyString.isEmpty(temp.getEmail()) || !user.getEmail().equals(temp.getEmail()) )){
 					user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
 					cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
 				}
@@ -113,6 +120,10 @@ public class BackUserController extends BaseController<User>{
 		if(temp != null){
 			// 如果密码为空，则设置为旧密码
 			if(MyString.isEmpty(user.getPassword())){
+				// 如果设置了密码，则修改为普通登陆
+				if(temp.getLoginType() != LoginType.COMMON.getValue()){
+					user.setLoginType(LoginType.COMMON.getValue());
+				}
 				user.setPassword(temp.getPassword());
 			}
 			

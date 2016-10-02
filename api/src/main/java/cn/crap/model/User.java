@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.base.BaseModel;
+import cn.crap.utils.MyString;
 
 
 @Entity
@@ -67,6 +68,8 @@ public class User extends BaseModel implements Serializable{
 	}
 	@Column(name="trueName")
 	public String getTrueName() {
+		if(MyString.isEmpty(trueName))
+			return "";
 		return trueName;
 	}
 
@@ -112,7 +115,9 @@ public class User extends BaseModel implements Serializable{
 	
 	@Column(name="email")
 	public String getEmail() {
-		return email;
+		if(!MyString.isEmpty(email))
+			return email.toLowerCase();
+		return null;
 	}
 
 	public void setEmail(String email) {
@@ -121,6 +126,8 @@ public class User extends BaseModel implements Serializable{
 
 	@Column(name="avatarUrl")
 	public String getAvatarUrl() {
+		if(MyString.isEmpty(avatarUrl))
+			return "";
 		return avatarUrl;
 	}
 

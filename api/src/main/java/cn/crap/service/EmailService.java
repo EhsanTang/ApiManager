@@ -16,6 +16,7 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IEmailService;
 import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
+import cn.crap.utils.Tools;
 
 @Service
 public class EmailService implements IEmailService {
@@ -39,7 +40,7 @@ public class EmailService implements IEmailService {
 	}
 	
 	@Override
-	public void sendRegisterMain(String eamil, String id) throws UnsupportedEncodingException, MessagingException{
+	public void sendRegisterEmail(String eamil, String id) throws UnsupportedEncodingException, MessagingException{
 		String code =  Aes.encrypt(id);
 		String domain = config.getDomain() + "/back/validateEmail.do?i=" + code;
 		MailBean mailBean = new MailBean();
@@ -48,6 +49,17 @@ public class EmailService implements IEmailService {
 		mailBean.setSubject("注册邮箱验证");
 		sendMail(mailBean);
 		cacheService.setStr(code, Const.REGISTER, 10 * 60);
+	}
+	
+	@Override
+	public void sendFindPwdEmail(String eamil) throws UnsupportedEncodingException, MessagingException{
+		MailBean mailBean = new MailBean();
+		String code = Tools.getChar(6);
+		mailBean.setContext( getMtml(eamil, "找回密码", "邮件验证码为："+code));
+		mailBean.setToEmail(eamil);
+		mailBean.setSubject("找回密码");
+		sendMail(mailBean);
+		cacheService.setStr(Const.CACHE_FINDPWD+ eamil, code, 10 * 60);
 	}
 	
 	private String getMtml(String eamil, String title, String content){

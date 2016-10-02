@@ -1,8 +1,11 @@
 package cn.crap.dao;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Repository;
+
 import cn.crap.inter.dao.ICacheDao;
 
 @Repository("memoryCacheDao")
@@ -11,6 +14,25 @@ public class MemoryCacheDao implements ICacheDao {
 	private static ConcurrentHashMap<String,Object> objectCache=new ConcurrentHashMap<String,Object>();// 缓存
 	private static ConcurrentHashMap<String,HashMap<String,Object>> objectMapCache=new ConcurrentHashMap<String,HashMap<String,Object>>();// 缓存
 	private static ConcurrentHashMap<String,String> stringCache=new ConcurrentHashMap<String,String>();// 缓存
+	
+	// 清除无用的key
+	private void removeKey(String key){
+		cacheTime.remove(key);
+		objectCache.remove(key);
+		objectMapCache.remove(key);
+		stringCache.remove(key);
+		if(cacheTime.size()>10000){
+			Set<String> timeKeys= cacheTime.keySet();
+			for(String timeKey:timeKeys){
+				if(cacheTime.get(timeKey) < System.currentTimeMillis()){
+					cacheTime.remove(timeKey);
+					objectCache.remove(timeKey);
+					objectMapCache.remove(timeKey);
+					stringCache.remove(timeKey);
+				}
+			}
+		}
+	}
 	
 	@Override
 	public boolean flushDB() {
@@ -26,6 +48,7 @@ public class MemoryCacheDao implements ICacheDao {
 	public String getStr(String key){
 		// 缓存过期
 		if( cacheTime.get(key) != null && cacheTime.get(key) < System.currentTimeMillis()){
+			removeKey(key);
 			return null;
 		}
 		return  stringCache.get(key);
@@ -44,6 +67,7 @@ public class MemoryCacheDao implements ICacheDao {
 	public Object getObj(String key){
 		// 缓存过期
 		if( cacheTime.get(key) != null && cacheTime.get(key) < System.currentTimeMillis()){
+			removeKey(key);
 			return null;
 		}
 		return  objectCache.get(key);
@@ -53,6 +77,7 @@ public class MemoryCacheDao implements ICacheDao {
 	public Object getObj(String key, String field){
 		// 缓存过期
 		if( cacheTime.get(key+"_"+field) != null && cacheTime.get(key+"_"+field) < System.currentTimeMillis()){
+			removeKey(key);
 			return null;
 		}
 		if(objectMapCache.containsKey(key)){

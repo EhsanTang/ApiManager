@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.user;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.beans.Config;
+import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.LoginType;
@@ -39,7 +40,7 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackLoginController extends BaseController<User> {
+public class LoginController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
@@ -138,8 +139,58 @@ public class BackLoginController extends BaseController<User> {
 	@AuthPassport
 	public JsonResult sendValidateEmail() throws UnsupportedEncodingException, MessagingException {
 		LoginInfoDto user = Tools.getUser();
-		emailService.sendRegisterMain(user.getEmail(), user.getId());
+		emailService.sendRegisterEmail(user.getEmail(), user.getId());
 		return new JsonResult(1, null);
+	}
+	
+	/**
+	 * 找回密码发送邮件
+	 * @return
+	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
+	 * @throws MyException 
+	 */
+	@RequestMapping("/account/findPwd/sendEmail.do")
+	@ResponseBody
+	public JsonResult findPwdSendEmail(@RequestParam String email, @RequestParam String imgCode) throws UnsupportedEncodingException, MessagingException, MyException{
+		
+		if (MyString.isEmpty(imgCode) || !imgCode.equals(Tools.getImgCode(request))) {
+			throw new MyException("000010");
+		}
+		
+		List<User> user = userService.findByMap(Tools.getMap("email",email,"loginType", LoginType.COMMON.getValue()), null, null);
+		if(user.size()!=1){
+			throw new MyException("000030");
+		}
+		emailService.sendFindPwdEmail(user.get(0).getEmail());
+		return new JsonResult(1, user.get(0));
+	}
+	
+	/**
+	 * 找回密码：重置密码
+	 * @param email
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws MessagingException
+	 * @throws MyException 
+	 */
+	@RequestMapping("/account/findPwd/reset.do")
+	@ResponseBody
+	public JsonResult reset(@ModelAttribute FindPwdDto findPwdDto) throws UnsupportedEncodingException, MessagingException, MyException{
+		findPwdDto.check();
+		
+		String code = cacheService.getStr(Const.CACHE_FINDPWD + findPwdDto.getEmail());
+		if(code == null || !code.equals(findPwdDto.getCode())){
+			throw new MyException("000031");
+		}
+		
+		List<User> user = userService.findByMap(Tools.getMap("email",findPwdDto.getEmail(), "loginType", LoginType.COMMON.getValue()), null, null);
+		if(user.size()!=1){
+			throw new MyException("000030");
+		}
+		user.get(0).setPassword( MD5.encrytMD5(findPwdDto.getNewPwd()) );
+		userService.update(user.get(0));
+		return new JsonResult(1, user.get(0));
 	}
 	
 	
@@ -191,7 +242,7 @@ public class BackLoginController extends BaseController<User> {
 			return new JsonResult(1, model);
 		}
 		try{
-			emailService.sendRegisterMain(user.getEmail(), user.getId());
+			emailService.sendRegisterEmail(user.getEmail(), user.getId());
 		}catch(Exception e){
 			log.error("注册验证邮件发送失败:" + user.getUserName(), e);
 		}

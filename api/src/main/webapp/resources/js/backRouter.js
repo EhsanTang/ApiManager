@@ -24,6 +24,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/backHtml/register.tpl.html'
 			}
 		}
+	}).state('findPwd', {
+		url : '/findPwd',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/user/findPwd.tpl.html'
+			}
+		}
 	}).state('menuList', {
 		url : '/menu/list/:parentId/:type/:menuName',
 		views : {

@@ -45,6 +45,7 @@ public class Const {
 	public static final String CACHE_COMMENTLIST = ":commentList:";
 	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
 	public static final String CACHE_AUTHORIZE = ":authorize:";
+	public static final String CACHE_FINDPWD= ":findPwd:";
 	
 	//常量
 	public static final String COOKIE_USERID = "cookieUserId";

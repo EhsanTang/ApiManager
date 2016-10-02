@@ -10,6 +10,8 @@ public interface IEmailService {
 
 	void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException;
 
-	void sendRegisterMain(String eamil, String id) throws UnsupportedEncodingException, MessagingException;
+	void sendRegisterEmail(String eamil, String id) throws UnsupportedEncodingException, MessagingException;
+
+	void sendFindPwdEmail(String eamil) throws UnsupportedEncodingException, MessagingException;
 
 }

@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.MailBean;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IEmailService;
@@ -22,6 +23,8 @@ public class EmailService implements IEmailService {
 	private JavaMailSenderImpl mailSenderService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private Config config;
 	
 	@Override
 	public void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException{
@@ -38,7 +41,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public void sendRegisterMain(String eamil, String id) throws UnsupportedEncodingException, MessagingException{
 		String code =  Aes.encrypt(id);
-		String domain = cacheService.getSetting( Const.SETTING_DOMAIN ).getValue() + "/back/validateEmail.do?i=" + code;
+		String domain = config.getDomain() + "/back/validateEmail.do?i=" + code;
 		MailBean mailBean = new MailBean();
 		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "<a href=\""+domain+"\">"+domain+"</a>"));
 		mailBean.setToEmail(eamil);

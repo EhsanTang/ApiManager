@@ -95,7 +95,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
         } 
-        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req,interFace.getId())));
+        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, interFace.getId())));
         ut = response.getOutputStream();  
         while ((len = br.read(buf)) != -1)  
              ut.write(buf, 0, len);

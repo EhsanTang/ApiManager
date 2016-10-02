@@ -162,6 +162,9 @@ public class BackInterfaceController extends BaseController<Interface>{
 			}
 			interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());
 			interfaceService.update(interFace, "接口", "");
+			if(interFace.getId().equals(interFace.getProjectId())){
+				throw new MyException("000027");
+			}
 			luceneService.update(interFace.toSearchDto(cacheService));
 			
 		} else {

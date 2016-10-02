@@ -57,17 +57,25 @@ public class Update {
 					moduleService.delete(dc);
 					break;
 				}
-				
+				int i=0;
 				while( !parent.getParentId().equals(Const.PRIVATE_MODULE) && !parent.getParentId().equals(Const.ADMIN_MODULE) ){
 					DataCenter temp =  moduleService.get(parent.getParentId());
 					if(temp == null || MyString.isEmpty(temp.getId())){
 						moduleService.delete(dc);
 						break;
 					}else{
+						i++;
+						if(i>900){
+							System.out.print("'"+temp.getId()+"',");
+						}
+						if(i>1000){
+							System.out.println("模块表存在循环依赖，更新出现异常!!");
+							return;
+						}
 						parent = temp;
 					}
 				}
-				
+				// 项目的根项目是私有项目或管理员项目则跟新
 				if(parent.getParentId().equals(Const.PRIVATE_MODULE) || parent.getParentId().equals(Const.ADMIN_MODULE)){
 					dc.setProjectId(parent.getId());
 					moduleService.update(dc);
@@ -82,7 +90,7 @@ public class Update {
 			i.setFullUrl(i.getModuleUrl() + i.getUrl());
 			interfaceService.update(i);
 		}
-		
+		interfaceService.update("delete from Interface where moduleId not in(select id from DataCenter where type='MODULE')", null);
 		
 	}
 }

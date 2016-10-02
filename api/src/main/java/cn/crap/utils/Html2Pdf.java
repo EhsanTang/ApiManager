@@ -10,9 +10,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-import cn.crap.framework.SpringContextHolder;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.service.CacheService;
+import cn.crap.beans.Config;
 
 public class Html2Pdf {
 	/**
@@ -21,7 +19,7 @@ public class Html2Pdf {
 	 * @throws Exception
 	 */
 
-	public static String createPdf(HttpServletRequest request, String interFaceId) throws Exception {
+	public static String createPdf(HttpServletRequest request, Config config, String interFaceId) throws Exception {
 		try {
 			String destDir = Tools.getServicePath(request) + "resources/upload/pdf";
 			// 根据当前时间获取文件夹名（0/1）
@@ -43,9 +41,8 @@ public class Html2Pdf {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(destDir));
 			document.open();
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString(
-					cacheService.getSetting(Const.SETTING_DOMAIN).getValue() + "/front/interface/detail/pdf.do?id=" + interFaceId),
+					config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId),
 					Charset.forName("UTF-8"), new ChinaFont());
 			document.close();
 			return destDir;

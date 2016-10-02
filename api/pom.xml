@@ -247,24 +247,24 @@
 			<version>2.8.0</version>
 		</dependency>
 		<!-- End:jedis -->
-		<!-- 读取xml配置 -->
+		<!-- 读取xml配置 
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>1.10</version>
-		</dependency>
+		</dependency>-->
 		<!-- 发送邮件 -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-		<!-- fastjson -->
+		<!-- fastjson-->
 		<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.7</version>
-        </dependency>
+        </dependency> 
 		<!-- Sprint-test 相关测试包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>

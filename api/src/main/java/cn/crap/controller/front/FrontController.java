@@ -105,6 +105,8 @@ public class FrontController extends BaseController<User> {
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
+		settingMap.put(Const.DOMAIN, config.getDomain());
+		
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
 		

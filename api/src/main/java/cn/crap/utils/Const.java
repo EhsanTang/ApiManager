@@ -64,6 +64,7 @@ public class Const {
 	public static final String LEVEL_PRE = "- - ";
 	public static final String REGISTER = "register";
 	public static final String GITHUB = "gitHub:";
+	public static final String DOMAIN = "DOMAIN";
 	// url
 	public static final String FRONT_ERROR_URL = "#/%s/error/list";
 	public static final String FRONT_DICT_URL = "#/%s/webPage/list/DICTIONARY/";
@@ -73,7 +74,6 @@ public class Const {
 	public static final String SETTING_SECRETKEY = "SECRETKEY";
 	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";
 	public final static String SETTING_VISITCODE = "VISITCODE";
-	public final static String SETTING_DOMAIN = "DOMAIN";
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
 	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
 	public static final String SETTING_TITLE = "TITLE";

@@ -220,7 +220,7 @@ public class BackLoginController extends BaseController<User> {
 			// 只允许普通账号方式登陆，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登陆
 			List<User> users = null;
 			if(model.getUserName().indexOf("@")>0){
-				users =  userService.findByMap(Tools.getMap("email", model.getUserName(),"loginType" , LoginType.COMMON.getValue()), null, null);
+				users =  userService.findByMap(Tools.getMap("email", model.getUserName().toLowerCase(),"loginType" , LoginType.COMMON.getValue()), null, null);
 			}else{
 				users =  userService.findByMap(Tools.getMap("userName", model.getUserName(),"loginType" , LoginType.COMMON.getValue()), null, null);
 			}
@@ -228,7 +228,7 @@ public class BackLoginController extends BaseController<User> {
 			if (users.size() == 1) {
 				User user = users.get(0);
 				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword()) && 
-						(model.getUserName().equals(user.getUserName()) || model.getUserName().equals(user.getEmail())) ) {
+						(model.getUserName().equals(user.getUserName()) || model.getUserName().toLowerCase().equals(user.getEmail())) ) {
 					userService.login(model, user, request, response);
 					return new JsonResult(1, model);
 				}

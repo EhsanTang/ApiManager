@@ -1,48 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	<context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-			classpath:spring-servlet.xml		
-        </param-value>
-    </context-param>
-    
-    <listener>  
-   		<listener-class>  
-       		org.springframework.web.context.ContextLoaderListener  
-    	</listener-class>  
-	</listener> 
-	<listener>  
-        <listener-class>  
-            org.springframework.web.context.request.RequestContextListener  
-        </listener-class>  
-</listener>  
-	<!-- 转码处理 -->
+	<!-- 设置中文字符集 -->
 	<filter>
-	    <filter-name>CharactorEncodingFilter</filter-name>
-	    <filter-class>cn.crap.framework.CharactorEncodingFilter</filter-class>
-  	</filter>
-  	<filter-mapping>
-    	<filter-name>CharactorEncodingFilter</filter-name>
-    	<url-pattern>*</url-pattern>
-  	</filter-mapping>
-	
-	<!-- 加载spring配置文件 -->
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
+
+	<!-- spring配置 -->
 	<servlet>
-	    <servlet-name>dispatch</servlet-name>
-	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	    <init-param>
-	        <param-name>contextConfigLocation</param-name>
-	        <param-value>classpath:spring-servlet.xml</param-value>
-	    </init-param>
-	    <load-on-startup>1</load-on-startup>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springMVC.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-	    <servlet-name>dispatch</servlet-name>
-	    <url-pattern>*.do</url-pattern>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
-	<display-name></display-name>  
+	<!-- 加载spring配置文件 -->
+	<display-name>CrapApi</display-name>  
 	 <welcome-file-list>
 	    <welcome-file>home.do</welcome-file>
 	 </welcome-file-list>

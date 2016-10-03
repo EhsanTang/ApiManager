@@ -265,6 +265,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.7</version>
         </dependency> 
+        <!-- 定时认为quartz -->
+        <dependency>
+    		<groupId>org.quartz-scheduler</groupId>
+   	 		<artifactId>quartz</artifactId>
+    		<version>2.2.1</version>
+		</dependency>
 		<!-- Sprint-test 相关测试包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -292,7 +298,6 @@
 		</dependency>
 
 
-		<!-- End:读取xml配置 -->
 	</dependencies>
 	<build>
 		<finalName>api</finalName>

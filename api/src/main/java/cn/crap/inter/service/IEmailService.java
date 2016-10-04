@@ -14,4 +14,6 @@ public interface IEmailService {
 
 	void sendFindPwdEmail(String eamil) throws UnsupportedEncodingException, MessagingException;
 
+	boolean sendMail(String subject, String toEmail, String context);
+
 }

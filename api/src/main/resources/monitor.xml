@@ -14,7 +14,7 @@
 		<property name="jobDetail" ref="interfaceJobDetail">
 		</property>
 		<property name="cronExpression">
-			<value>0 */1 * * * ?</value><!-- 每分钟执行一次 -->
+			<value>*/30 * * * * ?</value><!-- 每分钟执行一次 -->
 		</property>
 	</bean>
 	<bean id="interfaceJobDetail"
@@ -24,5 +24,5 @@
 		<property name="targetMethod" value="doTask" />
 		<property name="concurrent" value="false" /> <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
-	<bean id="interfaceMonitor" class="cn.crap.monitor.InterfaceMonitor" />
+	<bean id="interfaceMonitor" class="cn.crap.schedule.InterfaceMonitor" />
 </beans>

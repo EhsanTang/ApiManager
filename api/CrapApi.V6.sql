@@ -44,6 +44,9 @@ CHANGE COLUMN `avatarUrl` `avatarUrl` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '
 
 ALTER TABLE `api`.`user` 
 CHANGE COLUMN `password` `password` VARCHAR(50) NOT NULL DEFAULT '' ;
-delete from `api`.`setting` where mkey in('SOLR_URL','SEARCH_TYPE','SOLR_QUEUESIZE','SOLR_THREADCOUNT','DOMAIN')
+delete from `api`.`setting` where mkey in('SOLR_URL','SEARCH_TYPE','SOLR_QUEUESIZE','SOLR_THREADCOUNT','DOMAIN');
+
+ALTER TABLE `api`.`interface` 
+ADD COLUMN `monitorEmails` VARCHAR(200) NULL AFTER `monitorText`;
 
 

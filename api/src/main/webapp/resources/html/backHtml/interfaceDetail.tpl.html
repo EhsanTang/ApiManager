@@ -108,10 +108,18 @@
 					<td class="tc"></td>
 				</tr>
 				<tr ng-if="model.monitorType>1">
-					<td class="tc">正确返回示例</td>
+					<td class="tc">监控内容<br/>符合该条件则会发送邮件告警</td>
 					<td class="tc" colspan="3">
 						<textarea class="form-control no-resize" ng-model="model.monitorText" rows="8"
 							placeholder="请输入监控比较的内容" max="250">
+						</textarea>
+					</td>
+				</tr>
+				<tr ng-if="model.monitorType>1">
+					<td class="tc">告警发送邮箱<br/>多个邮箱用;分割</td>
+					<td class="tc" colspan="3">
+						<textarea class="form-control no-resize" ng-model="model.monitorEmails" rows="4"
+							placeholder="告警邮箱" max="250">
 						</textarea>
 					</td>
 				</tr>

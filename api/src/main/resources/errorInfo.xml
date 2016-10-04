@@ -35,6 +35,7 @@
 				<entry key="000029" value="参数有误，操作失败" />
 				<entry key="000030" value="该邮箱尚未注册，操作失败" />
 				<entry key="000031" value="邮箱验证码有误，请重新发送验证码" />
+				<entry key="000032" value="邮箱格式不正确能" />
 			</map>
 		</property>
 	</bean>

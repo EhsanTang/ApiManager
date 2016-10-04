@@ -1,4 +1,4 @@
-package cn.crap.monitor;
+package cn.crap.schedule;
 
 public interface Task {
 

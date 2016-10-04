@@ -46,6 +46,10 @@ public class Const {
 	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
 	public static final String CACHE_AUTHORIZE = ":authorize:";
 	public static final String CACHE_FINDPWD= ":findPwd:";
+	public static final String CACHE_MONITOR_INTERFACES = ":monitor:interfaces";
+	public static final String CACHE_MONITOR_INTERFACES_HAS_SEND_EMAIL = ":monitor:interfaces:hasSendEmail";// 是否已经发送了告警邮件
+	public static final String CACHE_MONITOR_INTERFACES_EMAIL_TIMES = ":monitor:interfaces:emailTimes";// 发送邮件次数
+	
 	
 	//常量
 	public static final String COOKIE_USERID = "cookieUserId";

@@ -7,7 +7,8 @@ public enum MonitorType {
 	Network("网络异常",1),
 	NetworkInclude("网络异常、包含指定字符串",2),
 	NetworkNotInclude("网络异常、不包含指定字符串",3),
-	NetworkNotEqual("网络异常、不包含指定字符串",4);
+	NetworkNotEqual("网络异常、不等于指定字符串",4),
+	NetworkEqual("网络异常、等于指定字符串",5);
 	
 	private String name;
 	private int value;

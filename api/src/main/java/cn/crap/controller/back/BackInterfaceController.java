@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.DataCeneterType;
+import cn.crap.enumeration.MonitorType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -119,6 +120,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult addOrUpdate(
 			@ModelAttribute Interface interFace) throws IOException, MyException {
 		if(MyString.isEmpty(interFace.getUrl()))
@@ -152,6 +154,20 @@ public class BackInterfaceController extends BaseController<Interface>{
 		if(MyString.isEmpty(interFace.getRequestExam())){
 			interfaceService.getInterFaceRequestExam(interFace);
 		}
+		
+		//检查邮件格式是否正确
+		if(interFace.getMonitorType() != MonitorType.No.getValue()){
+			if(!MyString.isEmpty(interFace.getMonitorEmails())){
+				for(String email : interFace.getMonitorEmails().split(";")){
+					if( !Tools.checkEmail(email) ){
+						throw new MyException("000032");
+					}
+				}
+			}else{
+				throw new MyException("000032");
+			}
+		}
+		
 		
 		if (!MyString.isEmpty(interFace.getId())) {
 			// 判断是否有修改模块的权限

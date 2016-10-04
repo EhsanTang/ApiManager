@@ -38,8 +38,8 @@ public class HttpPostGet {
 	public static String get(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		path = gethPath(path, params);
 		HttpGet method = new HttpGet(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getMethod(method, headers);
 	}
@@ -47,8 +47,8 @@ public class HttpPostGet {
 	public static String delete(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		path = gethPath(path, params);
 		HttpDelete method = new HttpDelete(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getMethod(method, headers);
 	}
@@ -56,8 +56,8 @@ public class HttpPostGet {
 	public static String options(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		path = gethPath(path, params);
 		HttpOptions method = new HttpOptions(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getMethod(method, headers);
 	}
@@ -65,8 +65,8 @@ public class HttpPostGet {
 	public static String trace(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		path = gethPath(path, params);
 		HttpTrace method = new HttpTrace(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getMethod(method, headers);
 	}
@@ -74,16 +74,16 @@ public class HttpPostGet {
 	public static String head(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		path = gethPath(path, params);
 		HttpHead method = new HttpHead(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getHead(method, headers);
 	}
 
 	public static String put(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		HttpPut method = new HttpPut(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		// 请求的参数信息传递
 		List<NameValuePair> paires = new ArrayList<NameValuePair>();
 		if (params != null) {
@@ -104,8 +104,8 @@ public class HttpPostGet {
 	
 	public static String post(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
 		HttpPost method = new HttpPost(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(150000).setConnectTimeout(150000)
-				.setConnectionRequestTimeout(150000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
 		// 请求的参数信息传递
 		List<NameValuePair> paires = new ArrayList<NameValuePair>();
 		if (params != null) {

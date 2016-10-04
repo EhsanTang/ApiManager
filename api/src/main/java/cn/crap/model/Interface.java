@@ -45,6 +45,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	private String fullUrl;// 完整的url = moduleUrl + url
 	private int monitorType;
 	private String monitorText;
+	private String monitorEmails;
 	public Interface() {
 	}
 
@@ -275,6 +276,17 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 
 	public void setMonitorText(String monitorText) {
 		this.monitorText = monitorText;
+	}
+
+	@Column(name = "monitorEmails")
+	public String getMonitorEmails() {
+		if(monitorEmails == null)
+			return "";
+		return monitorEmails;
+	}
+
+	public void setMonitorEmails(String monitorEmails) {
+		this.monitorEmails = monitorEmails;
 	}
 
 	@Transient

@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,10 +18,13 @@ import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IEmailService;
 import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
+import cn.crap.utils.SerializeUtil;
 import cn.crap.utils.Tools;
 
 @Service
 public class EmailService implements IEmailService {
+	private Log logger = LogFactory.getLog(IEmailService.class);// 日志类
+
 	@Autowired
 	private JavaMailSenderImpl mailSenderService;
 	@Autowired
@@ -37,6 +42,25 @@ public class EmailService implements IEmailService {
 		messageHelper.setTo(mailBean.getToEmail());  
 		messageHelper.setText(mailBean.getContext(), true);// html: true  
 		mailSenderService.send(mimeMessage);
+	}
+	
+	@Override
+	public boolean sendMail(String subject, String toEmail, String context) {
+		try {
+			String fromName = cacheService.getSetting(Const.SETTING_TITLE).getValue();
+			MimeMessage mimeMessage = mailSenderService.createMimeMessage();
+			MimeMessageHelper messageHelper;
+			messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+			messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
+			messageHelper.setSubject(subject);  
+			messageHelper.setTo(toEmail);  
+			messageHelper.setText(context, true);// html: true 
+			mailSenderService.send(mimeMessage);
+			return true;
+		} catch (Exception e) {
+			logger.error("邮件发送失败：subject="+subject+"，toEmail="+toEmail, e);
+			return false;
+		}
 	}
 	
 	@Override

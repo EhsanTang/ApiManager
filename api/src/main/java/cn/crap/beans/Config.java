@@ -16,34 +16,46 @@ public class Config{
 	private String domain;
 	
 	@Value("${web.redisIp}")
-	public String redisIp;
+	private String redisIp;
 	
 	@Value("${web.redisPort}")
-	public int redisPort;
+	private int redisPort;
 	
 	@Value("${web.redisPwd}")
-	public String redisPwd;
+	private String redisPwd;
 	
 	@Value("${web.redisPoolSize}")
-	public int redisPoolSize;
+	private int redisPoolSize;
 	
 	@Value("${web.redisKeyPrefix}")
-	public String redisKeyPrefix;
+	private String redisKeyPrefix;
 	
 	@Value("${web.cacheTime}")
-	public int cacheTime;
+	private int cacheTime;
 	
 	@Value("${web.loginInforTime}")
-	public int loginInforTime;
+	private int loginInforTime;
 	
 	@Value("${web.fileSize}")
-	public int fileSize;
+	private int fileSize;
 	
 	@Value("${web.imageType}")
-	public String imageType;
+	private String imageType;
 	
 	@Value("${web.fileType}")
-	public String fileType;
+	private String fileType;
+	
+	@Value("${web.monitorThreadNum}")
+	private int monitorThreadNum;
+	
+	@Value("${web.monitorCacheTime}")
+	private int monitorCacheTime;
+	
+	@Value("${web.monitorTryTimes}")
+	private int monitorTryTimes;
+	
+	@Value("${web.monitorEmailSendIndex}")
+	private int monitorEmailSendIndex;
 	
 	public String getClientID() {
 		return clientID;
@@ -97,5 +109,33 @@ public class Config{
 		return fileType;
 	}
 
+	public int getMonitorThreadNum() {
+		if(monitorThreadNum > 1000){
+			return 1000;
+		}
+		return monitorThreadNum;
+	}
+	
+	public int getMonitorCacheTime() {
+		return monitorCacheTime;
+	}
+	
+	public int getMonitorTryTimes(){
+		if(monitorTryTimes > 100)
+			return 100;
+		if(monitorTryTimes<1)
+			return 1;
+		return monitorTryTimes;
+	}
+	
+	public int getMonitorEmailSendIndex(){
+		if(monitorEmailSendIndex<2){
+			return 2;
+		}
+		if(monitorEmailSendIndex>10){
+			return 10;
+		}
+		return monitorEmailSendIndex;
+	}
 	
 }

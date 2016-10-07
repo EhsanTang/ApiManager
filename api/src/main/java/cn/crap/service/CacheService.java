@@ -12,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.beans.Config;
 import cn.crap.inter.dao.ICacheDao;
 import cn.crap.inter.dao.IDataCenterDao;
+import cn.crap.inter.dao.IProjectDao;
 import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.model.DataCenter;
+import cn.crap.model.Project;
 import cn.crap.model.Setting;
+import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -34,10 +37,11 @@ public class CacheService implements ICacheService {
 	@Resource(name="redisCacheDao")
 	private ICacheDao redisCacheDao;
 	
+	@Resource(name="projectDao")
+	private IProjectDao projectDao;
 	
-	private static String cacheModuleKeyPre = "cache:model:";
-	public static String cacheSettingKeyPre = "cache:setting";
-	public static String cacheSettingList = "cache:settingList";
+	
+	
 	
 	private ICacheDao getDao(){
 		if( config.getRedisIp().trim().equals("") ){
@@ -70,12 +74,12 @@ public class CacheService implements ICacheService {
 	@Override
 	@Transactional
 	public Setting getSetting(String key){
-		Object obj = getDao().getObj(cacheSettingKeyPre , key);
+		Object obj = getDao().getObj(Const.CACHE_AUTHORIZE , key);
 		
 		if(obj == null){
 			List<Setting> settings = settingDao.findByMap(Tools.getMap("key",key), null, null);
 			if(settings.size() > 0){
-				getDao().setObj(cacheSettingKeyPre, key, settings.get(0), config.getCacheTime());
+				getDao().setObj(Const.CACHE_SETTING, key, settings.get(0), config.getCacheTime());
 				return settings.get(0);
 			}
 		}else{
@@ -88,11 +92,11 @@ public class CacheService implements ICacheService {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Setting> getSetting(){
-		Object obj = getDao().getObj(cacheSettingList);
+		Object obj = getDao().getObj(Const.CACHE_SETTINGLIST);
 		
 		if(obj == null){
 			List<Setting> settings = settingDao.findByMap(null, null, null);
-			getDao().setObj(cacheSettingList, settings, config.getCacheTime());
+			getDao().setObj(Const.CACHE_SETTINGLIST, settings, config.getCacheTime());
 			return settings;
 		}else{
 			return (List<Setting>) obj;
@@ -106,16 +110,35 @@ public class CacheService implements ICacheService {
 			return new DataCenter();
 		}
 		
-		Object obj = getDao().getObj(cacheModuleKeyPre + moduleId);
+		Object obj = getDao().getObj(Const.CACHE_MODULE + moduleId);
 		if(obj == null){
 			DataCenter module = dataCenterDao.get(moduleId);
 			if(module == null)
 				module = new DataCenter();
-			getDao().setObj(cacheModuleKeyPre + moduleId, module, config.getCacheTime());
+			getDao().setObj(Const.CACHE_MODULE + moduleId, module, config.getCacheTime());
 			return module;
 				
 		}
 		return (DataCenter) obj;
+	}
+	
+	@Override
+	@Transactional
+	public Project getProject(String projectId){
+		if(MyString.isEmpty(projectId)){
+			return new Project();
+		}
+		
+		Object obj = getDao().getObj(Const.CACHE_PROJECT + projectId);
+		if(obj == null){
+			Project project = projectDao.get(projectId);
+			if(project == null)
+				project = new Project();
+			getDao().setObj(Const.CACHE_PROJECT + projectId, project, config.getCacheTime());
+			return project;
+				
+		}
+		return (Project) obj;
 	}
 	
 	@Override

@@ -1,0 +1,82 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="userProjectListCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">项目管理：{{$stateParams.name}}</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
+	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+</div>
+<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
+		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
+			<i class="iconfont">&#xe610;</i>&nbsp;查询
+		</button>
+		<div class="form-group w200 fr">
+			<label class="sr-only" for="">名称</label>
+			<div class="input-group">
+				<div class="input-group-addon">项目名称</div>
+				<input type="text" class="form-control input-xs dis-in-blo w120" placeholder="项目名称" ng-model="$stateParams.name">
+			</div>
+			<!-- 根据type查看项目 -->
+		</div>
+		<div class="cb"></div>
+</div>
+<div class="col-xs-12 mt20 p0 mb10 f14 tr">
+	<a type="button" class="btn btn-success btn-sm cursor"
+		ng-click="detail('新增项目',700,'user/project/detail.do?id=NULL')"> 
+		<i class="iconfont fb">&#xe604;</i>&nbsp;
+		<span>新增项目</span>
+	</a>
+</div>
+
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">
+	<span>项目列表</span>
+</div>
+<div class="col-xs-12 p0">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">名称</th>
+				<td class="tc">类型</td>
+				<td class="tc">排序</td>
+				<th class="w300 tc">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list">
+				<td class="tc">{{item.name}}</td>
+				<td class="tc">{{item.typeName}}</td>
+				<td class="tc">{{item.sequence}}</td>
+				<td class="tc w400">
+				
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
+					<i class="iconfont f12">&#xe60f;查看模块</i>
+				</a>
+				
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+					ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id)"> 
+					<i class="iconfont f12">&#xe618;修改</i>
+				</a>
+			
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.id)"
+					ng-click="del('user/project/delete.do?id='+item.id,item.name)">
+					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list/{{item.id}}/" target="_blank"> 
+					<i class="iconfont f12 adorn-color">&#xe613;项目主页</i>
+				</a>
+				
+				<div class="w50 fr tl">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list.modules[$index-1].id)" ng-if="$index>0">
+						<i class="iconfont f12">&#xe623;</i>
+					</a>
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list.modules[$index+1].id)" ng-if="$index<list.modules.length-1">
+						<i class="iconfont f12">&#xe624;</i>
+					</a>
+				</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

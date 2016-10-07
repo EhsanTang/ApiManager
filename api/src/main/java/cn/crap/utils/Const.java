@@ -18,18 +18,15 @@ public class Const {
 	public static final String DEF_MODULEID = "defaultModuleId";
 	public static final String SUPER = "super"; 
 	public static final String MODULEID = "MODULEID"; 
+	public static final String PROJECTID = "PROJECTID"; 
 	public static final String AUTH_USER = "USER";
 	public static final String AUTH_MENU = "MENU";
 	public static final String AUTH_SETTING = "SETTING";
 	public static final String AUTH_COMMENT = "COMMENT";
 	public static final String AUTH_ADMIN = "ADMIN";// 管理员
-	public static final String AUTH_ERROR = "ERROR_"+MODULEID;
-	public static final String AUTH_DICTIONARY = "DICTIONARY_"+MODULEID;
-	public static final String AUTH_INTERFACE = "INTERFACE_"+MODULEID;
-	public static final String AUTH_MODULE = "MODULE_"+MODULEID;
 	public static final String AUTH_ROLE = "ROLE";
 	public static final String AUTH_LOG = "LOG";
-	public static final String AUTH_SOURCE = "SOURCE";
+	public static final String AUTH_PROJECT = "PROJECT_"+PROJECTID;
 	// 缓存
 	public static final String CACHE_USER= ":user";
 	public static final String CACHE_IMGCODE = ":imgCode";
@@ -49,6 +46,10 @@ public class Const {
 	public static final String CACHE_MONITOR_INTERFACES = ":monitor:interfaces";
 	public static final String CACHE_MONITOR_INTERFACES_HAS_SEND_EMAIL = ":monitor:interfaces:hasSendEmail";// 是否已经发送了告警邮件
 	public static final String CACHE_MONITOR_INTERFACES_EMAIL_TIMES = ":monitor:interfaces:emailTimes";// 发送邮件次数
+	public static final String CACHE_PROJECT = ":project:";
+	public static final String CACHE_MODULE = "cache:model:";
+	public static final String CACHE_SETTING = "cache:setting";
+	public static final String CACHE_SETTINGLIST = "cache:settingList";
 	
 	
 	//常量
@@ -63,7 +64,6 @@ public class Const {
 	public static final String DIRECTORY = "DIRECTORY";
 	public static final String SOURCE = "SOURCE";
 	public static final String SEPARATOR = "SEPARATOR";
-	public static final String PRIVATE_MODULE= "privateModule";
 	public static final String ADMIN_MODULE= "0";
 	public static final String TOP_MODULE= "top";
 	public static final String LEVEL_PRE = "- - ";

@@ -50,9 +50,6 @@ public class FrontWebPageController extends BaseController<WebPage> {
 	@RequestMapping("/front/webPage/diclist.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
-		if( !Tools.moduleIdIsLegal(moduleId) ){
-			throw new MyException("000020");
-		}
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name(), "name|like", name);

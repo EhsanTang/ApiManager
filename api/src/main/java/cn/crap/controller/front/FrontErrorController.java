@@ -41,11 +41,7 @@ public class FrontErrorController extends BaseController<Error>{
 		page.setCurrentPage(currentPage);
 		page.setSize(20);
 		
-		// 不允许查看根路径下所有项目
 		Map<String,Object> map = Tools.getMap(  "errorCode|like", errorCode,  "errorMsg|like", errorMsg);
-		if( !Tools.moduleIdIsLegal(moduleId) ){
-			throw new MyException("000020");
-		}
 		map.put( "moduleId", moduleId );
 		
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,

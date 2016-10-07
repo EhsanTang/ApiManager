@@ -347,13 +347,6 @@ public class Tools {
 		String uId = MyCookie.getCookie(Const.COOKIE_USERID, false, Tools.getRequest());
 		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + uId);
 	}
-	/**
-	 * 判断模块id是否合法：top，0，privateModule则不合法，不允许查看所有项目
-	 * @param moduleId
-	 */
-	public static boolean moduleIdIsLegal(String moduleId){
-		return !(MyString.isEmpty(moduleId) || moduleId.equals(Const.ADMIN_MODULE) || moduleId.equals(Const.TOP_MODULE) || moduleId.equals(Const.PRIVATE_MODULE));
-	}
 	
 	public static boolean checkUserName(String userName){
 		String regex = "^[0-9A-Za-z]{6,20}$";		

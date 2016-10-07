@@ -1,6 +1,6 @@
-<div class="r0 p10 pt0 col-xs-12" ng-controller="backErrorCtrl">
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
 <div class="col-xs-12 p0 mt10">
-	<form ng-submit="submitForm('back/error/addOrUpdate.do')">
+	<form ng-submit="submitForm('user/error/addOrUpdate.do')">
 		<table class="table table-bordered">
 			<tr>
 				<td class="tc w80">Code</td>
@@ -14,10 +14,9 @@
 				<td class="tc"><input  class="form-control"  type="text" ng-model="model.errorMsg" required></td>
 			</tr>
 			<tr>
-				<td class="tc">模块</td>
+				<td class="tc">项目</td>
 				<td class="tc">
-					<input  class="form-control"  id="moduleName" type="text" ng-model="model.moduleName" required placeholder="点击输入框选择模块"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=moduleName|tag=moduleId|code=TOPMODULE|def='+model.moduleId,$event)">
+					<input  class="form-control" type="text" ng-model="model.projectName" required readonly>
 				</td>
 			</tr>
 	</table>

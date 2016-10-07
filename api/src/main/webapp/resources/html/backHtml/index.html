@@ -55,6 +55,25 @@
 				<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h">
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
+					
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel-myproject">
+								<div class="f14 mt-3 fl mr10"><i class="iconfont">&#xe61f;</i></div> 
+								<span class="hidden-xs">我的项目</span> 
+							</div>
+						</div>
+						<div id="panel-myproject" class="panel-collapse BGEEE collapse in">
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_self" ng-href="#/user/project/list/true/-1" onclick="selectButton(this,'menu-a')">我的项目</a>
+							</div>
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_self" ng-href="#/user/error/list/true/-1" onclick="selectButton(this,'menu-a')">错误码管理</a>
+							</div>
+						</div>
+					</div>
+					
+					
 						<!-- 该菜单只有超级管理员才能查看 -->
 						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isSupperAdmin('adminMenu0')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
@@ -92,12 +111,9 @@
 									</div> <span class="hidden-xs">系统管理</span>
 								</div>
 							</div>
-							<div id="panel1" class="panel-collapse BGEEE collapse in">
+							<div id="panel1" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/back/interface/list/0/项目列表" onclick="selectButton(this,'menu-a')">管理员项目列表</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/back/interface/list/privateModule/注册用户项目" onclick="selectButton(this,'menu-a')">注册用户项目列表</a>
+									<a class="menu-a" target="_self" href="#/user/project/list/false/-1" onclick="selectButton(this,'menu-a')">所有项目列表</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
@@ -109,7 +125,7 @@
 									<a class="menu-a" target="_self" href="#/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/error/list" onclick="selectButton(this,'menu-a')">错误码管理</a>
+									<a class="menu-a" target="_self" href="#/user/error/list/false/-1" onclick="selectButton(this,'menu-a')">错误码管理</a>
 								</div>
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/setting/list/null" onclick="selectButton(this,'menu-a')">系统设置管理</a>
@@ -163,23 +179,6 @@
 						<div id="panel{{item.menu.id}}" class="panel-collapse BGEEE collapse">
 							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
 								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" onclick="selectButton(this,'menu-a')" ng-bind="subItem.menuName"></a>
-							</div>
-						</div>
-					</div>
-					
-					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-if="isUser()">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel-myproject">
-								<div class="f14 mt-3 fl mr10"><i class="iconfont">&#xe61f;</i></div> 
-								<span class="hidden-xs">我的项目</span> 
-							</div>
-						</div>
-						<div id="panel-myproject" class="panel-collapse BGEEE collapse in">
-							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_self" ng-href="#/back/interface/list/privateModule/我的项目" onclick="selectButton(this,'menu-a')">我的项目</a>
-							</div>
-							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_self" ng-href="#/error/list" onclick="selectButton(this,'menu-a')">错误码管理</a>
 							</div>
 						</div>
 					</div>

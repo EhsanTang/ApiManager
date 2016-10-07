@@ -1,0 +1,50 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+	<div class="col-xs-12 p0">
+		<form ng-submit="submitForm('user/module/addOrUpdate.do')">
+			<table class="table table-bordered">
+<tr>
+					<td class="tc">名称</td>
+					<td class="tc" colspan="3">
+						<input  class="form-control"  type="text" ng-model="model.name" required placeholder="模块名">
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">项目</td>
+					<td class="tc" colspan="3">
+						<input  class="form-control" type="text" ng-model="model.projectName" required readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">Url</td>
+					<td class="tc" colspan="3">
+						<div class="input-group w">
+							<input  class="form-control" type="text" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
+							<div class="btn input-group-addon adorn-color p0 f30" onclick="tooltip('url-helf')" id="url-helf" data-toggle="tooltip" 
+							title="该URL设置只对当前模块下的所有接口有效"><i class="iconfont">&#xe630;</div></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">访问密码</td>
+					<td class="tc" colspan="3"><input class="form-control"
+						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
+				</tr>
+				<tr>
+					<td class="tc">项目简介</td>
+					<td class="tc" colspan="3">
+						<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
+				</tr>
+				<tr>
+					<td class="tc">排序</td>
+					<td class="tc" colspan="3">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-success fr">提交</button>
+		</form>
+
+		
+	</div>
+</div>
+<div class="cb"></div>
+

@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,7 +21,6 @@ import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.ISearchService;
 import cn.crap.inter.service.ISourceService;
 import cn.crap.model.Source;
-import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -29,7 +28,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/back/source")
-public class BackSourceController extends BaseController<Source>{
+public class SourceController extends BaseController<Source>{
 
 	@Autowired
 	private ISourceService sourceService;
@@ -113,8 +112,10 @@ public class BackSourceController extends BaseController<Source>{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_SOURCE)
+	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
+		
+			// TODO 权限
 			if(MyString.isEmpty(source.getFilePath())){
 				throw new MyException("000016");
 			}
@@ -168,8 +169,9 @@ public class BackSourceController extends BaseController<Source>{
 	}
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_SOURCE)
+	@AuthPassport
 	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
+		// TODO 权限
 		sourceService.delete(source);
 		luceneService.delete(new SearchDto(source.getId()));
 		return new JsonResult(1,null);

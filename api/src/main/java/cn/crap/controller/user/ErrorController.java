@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.user;
 
 import java.util.List;
 import java.util.Map;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.DataCeneterType;
+import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IErrorService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -26,14 +26,14 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-@RequestMapping("/back/error")
-public class BackErrorController extends BaseController<Error>{
+@RequestMapping("/user/error")
+public class ErrorController extends BaseController<Error>{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IProjectService projectService;
 
 	/**
 	 * @return 
@@ -42,20 +42,22 @@ public class BackErrorController extends BaseController<Error>{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage,
+			@RequestParam(defaultValue="false") boolean myself){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
-		// 如果用户为普通用户，则只能查看自己的模块
+		// 普通用户，管理员我的项目菜单只能查看自己的项目
 		LoginInfoDto user = Tools.getUser();
-		List<String> moduleIds = null;
-		if(user != null && user.getType() == 1){
-			moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
-			moduleIds.add("NULL");
+		List<String> projectIds = null;
+		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
+			projectIds = projectService.getProjectIdByUid(user.getId());
+			projectIds.add("NULL");
 		}
-		Map<String,Object> map = Tools.getMap("moduleId|in", moduleIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"moduleId",error.getModuleId());
+		
+		Map<String,Object> map = Tools.getMap("projectId|in", projectIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"projectId",error.getProjectId());
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getModuleName(error.getModuleId()), "void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getProject(error.getProjectId()).getName(), "void")));
 	}
 	
 	@RequestMapping("/detail.do")
@@ -65,10 +67,10 @@ public class BackErrorController extends BaseController<Error>{
 		Error model;
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());
-			Tools.hasAuth(Const.AUTH_ERROR, model.getModuleId());
+			hasPermission(cacheService.getProject(model.getProjectId()));
 		}else{
 			model=new Error();
-			model.setModuleId(error.getModuleId());
+			model.setProjectId(error.getProjectId());
 		}
 		return new JsonResult(1,model);
 	}
@@ -77,28 +79,18 @@ public class BackErrorController extends BaseController<Error>{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Error error) throws MyException{
 		
-		// 修改错误码需要判断是否有原有模块的权限、是否有新模块的权限，新增错误码需要判断是否有该模块的权限
+		hasPermission(cacheService.getProject(error.getProjectId()));
+				
 		if(!MyString.isEmpty(error.getId())){
-			Error oldError = errorService.get(error.getId());
-			Tools.hasAuth(Const.AUTH_ERROR, oldError.getModuleId());
-			Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
+			// 不允许修改项目
+			error.setProjectId( errorService.get(error.getId()).getProjectId() );
+			errorService.update(error);
 		}else{
-			Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
-		}
-		
-		try{
-			if(!MyString.isEmpty(error.getId())){
-				errorService.update(error);
+			if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"projectId",error.getProjectId()))==0){
+				errorService.save(error);
 			}else{
-				error.setId(null);
-				if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"moduleId",error.getModuleId()))==0){
-					errorService.save(error);
-				}else{
-					return new JsonResult(new MyException("000002"));
-				}
+				return new JsonResult(new MyException("000002"));
 			}
-		}catch(Exception e){
-			e.printStackTrace();
 		}
 		return new JsonResult(1,error);
 	}
@@ -107,7 +99,7 @@ public class BackErrorController extends BaseController<Error>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
 		error = errorService.get(error.getId());
-		Tools.hasAuth(Const.AUTH_ERROR, error.getModuleId());
+		hasPermission(cacheService.getProject(error.getProjectId()));
 		errorService.delete(error);
 		return new JsonResult(1,null);
 	}

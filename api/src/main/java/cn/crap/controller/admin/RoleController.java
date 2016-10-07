@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/role")
-public class BackRoleController extends BaseController<Role>{
+public class RoleController extends BaseController<Role>{
 
 	@Autowired
 	private IRoleService roleService;

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.enumeration.ModuleStatus;
@@ -13,8 +14,6 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
 
 
 @Entity
@@ -26,7 +25,6 @@ public class DataCenter extends BaseModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private String parentId;
 	private String password;
 	private String url;
 	private byte canDelete;
@@ -37,8 +35,7 @@ public class DataCenter extends BaseModel implements Serializable{
 	
 
 	public DataCenter(){};
-	public DataCenter(String parentId, String name) {
-		this.parentId = parentId;
+	public DataCenter(String name) {
 		this.name = name;
 		this.userId = "superAdmin";
 	}
@@ -61,16 +58,6 @@ public class DataCenter extends BaseModel implements Serializable{
 		this.name = name;
 	}
 
-	@Column(name="parentId")
-	public String getParentId() {
-		if(parentId == null)
-			return "";
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
 
 	@Column(name="url")
 	public String getUrl() {
@@ -117,20 +104,6 @@ public class DataCenter extends BaseModel implements Serializable{
 		return ModuleStatus.getNameByValue(status+"");
 	}
 	
-	@Transient
-	public String getParentName(){
-		if(!MyString.isEmpty(parentId)){
-			if(parentId != null && parentId.equals("0") && type != null && type.equals(Const.DIRECTORY)){
-				return "根目录";
-			}
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			DataCenter module = cacheService.getModule(parentId);
-			if(module!=null)
-				return module.getName();
-		}
-		return "";
-	}
-	
 	
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
@@ -140,4 +113,11 @@ public class DataCenter extends BaseModel implements Serializable{
 	public String getProjectId(){
 		return this.projectId;
 	}
+	
+	@Transient
+	public String getProjectName(){
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		return cacheService.getProject(projectId).getName();
+	}
 }
+	

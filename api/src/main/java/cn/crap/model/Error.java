@@ -13,7 +13,6 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.service.CacheService;
-import cn.crap.utils.MyString;
 
 @Entity
 @Table(name="error")
@@ -25,19 +24,8 @@ public class Error extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String errorCode;
 	private String errorMsg;
-	private String moduleId;
+	private String projectId;
 	
-	@Transient
-	public String getModuleName(){
-		if(!MyString.isEmpty(moduleId)){
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			DataCenter module = cacheService.getModule(moduleId);
-			if(module!=null)
-				return module.getName();
-		}
-		return "";
-	}
-
 	@Column(name="errorCode")
 	public String getErrorCode() {
 		return errorCode;
@@ -57,13 +45,20 @@ public class Error extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="moduleId")
-	public String getModuleId() {
-		return moduleId;
+	public String getProjectId() {
+		if(projectId == null || projectId.equals("-1"))
+			return "";
+		return projectId;
 	}
 
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 	
+	@Transient
+	public String getProjectName(){
+		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+		return cacheService.getProject(projectId).getName();
+	}
 	
 }

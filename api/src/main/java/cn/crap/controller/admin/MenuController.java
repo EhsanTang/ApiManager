@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping
-public class BackMenuController extends BaseController<Menu> {
+public class MenuController extends BaseController<Menu> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired

@@ -62,10 +62,10 @@
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				<div class="w50 fr tl">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('module',item.id,list.directorys[$index-1].id)" ng-if="$index>0">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('back/module/changeSequence.do',item.id,list.directorys[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('module',item.id,list.directorys[$index+1].id)" ng-if="$index<list.directorys.length-1">
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('back/module/changeSequence.do',item.id,list.directorys[$index+1].id)" ng-if="$index<list.directorys.length-1">
 						<i class="iconfont f12">&#xe624;</i>
 					</a>
 				</div>
@@ -105,10 +105,10 @@
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<div class="w50 fr tl">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('source',item.id,list.sources[$index-1].id)" ng-if="$index>0">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('back/source/changeSequence.do',item.id,list.sources[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('source',item.id,list.sources[$index+1].id)" ng-if="$index<list.sources.length-1">
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('back/source/changeSequence.do',item.id,list.sources[$index+1].id)" ng-if="$index<list.sources.length-1">
 						<i class="iconfont f12">&#xe624;</i>
 					</a>
 				</div>

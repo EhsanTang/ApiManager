@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackController extends BaseController<User> {
+public class MainController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired

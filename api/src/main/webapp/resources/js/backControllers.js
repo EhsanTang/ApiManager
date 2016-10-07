@@ -73,14 +73,6 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
     	}
     	return false;
     }
-    // 是否为用户
-    $scope.isUser = function (){
-    	var auth = $("#sessionAuth").val();
-    	if(auth.indexOf(',ADMIN,')<0){
-    		return true;
-    	}
-    	return false;
-    }
     /***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
 	$scope.canSeeMenu = function(id,type){
 		if(!id||id==""||type!="BACK")
@@ -249,40 +241,6 @@ mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
     $scope.getData();
 });
 
-/**************************错误码列表****************************/
-mainModule.controller('backErrorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=back/error/list.do|iLoading=FLOAT|iParams=&errorMsg=" + $("#searchMsg").val()+"&errorCode=" + $("#searchCode").val();
-		if($("#searchModuleId").val()!=null&&$("#searchModuleId").val()!=''){
-			params += "&moduleId=" + $("#searchModuleId").val();
-			$stateParams.searchModuleId = $("#searchModuleId").val();
-		}else if($stateParams.moduleId){
-			$stateParams.searchModuleId=$stateParams.moduleId;
-			params += "&moduleId=" + $stateParams.moduleId;
-		}
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-/**************************后端接口列表****************************/
-mainModule.controller('backInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
-	$scope.getData = function(page) {
-		var params = "";
-		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
-			params += "&interfaceName=" + $("#interfaceName").val();
-		}
-		if($("#url").val()!=null&&$("#url").val()!=''){
-			params += "&url=" + $("#url").val();
-		}
-		if(params==""){
-			params +="&moduleId="+ $stateParams.moduleId;
-		}
-		params = "iUrl=back/interface/list.do|iLoading=FLOAT|iParams="+params;
-		$rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-
 mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
 		var params = "iUrl=back/source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&directoryId="+$stateParams.directoryId;
@@ -394,3 +352,52 @@ mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $sta
     };
     $scope.getData();
 });
+/*************************项目列表************************/
+mainModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&myself="+$stateParams.myself;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/*************************模块列表**********************/
+mainModule.controller('userModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**************************后端接口列表****************************/
+mainModule.controller('userInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "";
+		if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
+			params += "&interfaceName=" + $("#interfaceName").val();
+		}
+		if($("#url").val()!=null&&$("#url").val()!=''){
+			params += "&url=" + $("#url").val();
+		}
+		if(params==""){
+			params +="&moduleId="+ $stateParams.moduleId;
+		}
+		params = "iUrl=user/interface/list.do|iLoading=FLOAT|iParams="+params;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**************************错误码列表****************************/
+mainModule.controller('userErrorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=user/error/list.do|iLoading=FLOAT|iParams=";
+		params += "&projectId=" + $stateParams.projectId;
+		params += "&myself=" + $stateParams.myself;
+		params += "&errorMsg=" + $stateParams.errorMsg;
+		params += "&errorCode=" + $stateParams.errorCode;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+
+
+

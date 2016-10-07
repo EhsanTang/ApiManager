@@ -14,6 +14,7 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
@@ -29,9 +30,9 @@ public class UserService extends BaseService<User>
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IDataCenterService dataCenterService;
-	@Autowired
 	private Config config;
+	@Autowired
+	private IProjectService projectService;
 	
 	@Resource(name="userDao")
 	public void setDao(IBaseDao<User> dao) {
@@ -43,7 +44,7 @@ public class UserService extends BaseService<User>
 		String token  = Aes.encrypt(user.getId());
 		MyCookie.addCookie(Const.COOKIE_TOKEN, token, response);
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
 		MyCookie.addCookie(Const.COOKIE_USERID, user.getId(), response);
 		MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
 		MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);

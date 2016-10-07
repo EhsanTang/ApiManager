@@ -46,18 +46,63 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('backInterfaceList', {
-		url : '/back/interface/list/:moduleId/:moduleName',
+	}).state('projectList', {
+		url : '/user/project/list/:myself/:type',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/user/projectList.tpl.html';
+				}
+			},'page@projectList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/user/projectDetail.tpl.html';
+				}
+			}
+		}
+	}).state('moduleList', {
+		url : '/user/module/list/:projectId',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/backHtml/interfaceList.tpl.html'
+				templateUrl : 'resources/html/user/moduleList.tpl.html'
 			},
-			'page@backInterfaceList' : {
+			'page@moduleList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/backHtml/interfaceDetail.tpl.html';
+					return 'resources/html/user/moduleDetail.tpl.html';
+				}
+			}
+		}
+	}).state('interfaceList', {
+		url : '/user/interface/list/:projectId/:moduleId/:moduleName',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/user/interfaceList.tpl.html'
+			},
+			'page@interfaceList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/user/interfaceDetail.tpl.html';
+				}
+			}
+		}
+	}).state('errorList', {
+		url : '/user/error/list/:myself/:projectId',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/user/errorList.tpl.html'
+			},
+			'page@errorList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/user/errorDetail.tpl.html';
 				}
 			}
 		}
@@ -152,21 +197,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'detail' : {
 				templateUrl : function($stateParems){
 					return 'resources/html/backHtml/roleDetail.tpl.html';
-				}
-			}
-		}
-	}).state('errorList', {
-		url : '/error/list',
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/backHtml/errorList.tpl.html'
-			},
-			'page@errorList' : {
-				templateUrl : 'resources/html/backHtml/page.tpl.html'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/backHtml/errorDetail.tpl.html';
 				}
 			}
 		}

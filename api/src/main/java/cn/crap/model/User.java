@@ -153,7 +153,7 @@ public class User extends BaseModel implements Serializable{
 
 	@Transient
 	public String getTypeName(){
-		return UserType.getNameByValue(type+"");
+		return UserType.getNameByValue(type);
 	}
 	
 }

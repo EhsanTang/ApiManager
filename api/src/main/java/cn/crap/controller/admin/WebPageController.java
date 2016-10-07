@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,7 +26,7 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackWebPageController extends BaseController<WebPage>{
+public class WebPageController extends BaseController<WebPage>{
 	@Autowired
 	private IWebPageService webPageService;
 	@Autowired

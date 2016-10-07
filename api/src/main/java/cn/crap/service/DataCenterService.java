@@ -2,7 +2,6 @@ package cn.crap.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -30,20 +29,22 @@ public class DataCenterService extends BaseService<DataCenter>
 	
 	@Override
 	@Transactional
-	public void getDataCenterPick(List<PickDto> picks,List<DataCenter> modules, String idPre,String parentId, String deep,String value,String suffix, Set<String> moduleIds){
+	public void getDataCenterPick(List<PickDto> picks,List<String> projectIds, String type, String idPre, String value,String suffix){
+		if(MyString.isEmpty(suffix))
+			suffix = "";
 		PickDto pick = null;
-		for (DataCenter m : modules) {
-			if(m.getParentId().equals(parentId) && !moduleIds.contains(m.getId())){
-					moduleIds.add(m.getId());
-					// top父模块为top
-					if(m.getId().equals(Const.TOP_MODULE))
-						continue;
-					if(MyString.isEmpty(value))
-						pick = new PickDto(idPre+m.getId(), deep+m.getName());
-					else
-						pick = new PickDto(idPre+m.getId(), value.replace("projectId", m.getProjectId()).replace("moduleId", m.getId()).replace("moduleName", m.getName()),deep+m.getName()+suffix);
-					picks.add(pick);
-					getDataCenterPick(picks, modules, idPre,m.getId(), deep+Const.LEVEL_PRE , value,suffix, moduleIds);
+		for (String projectId : projectIds) {
+			List<DataCenter> dcs = findByMap(Tools.getMap("projectId", projectId, "type", type), null, null);
+			if(dcs.size()>0){
+				pick = new PickDto(Const.SEPARATOR, dcs.get(0).getProjectName());
+				picks.add(pick);
+			}
+			
+			for(DataCenter dc : dcs){
+				if(MyString.isEmpty(value))
+					pick = new PickDto(idPre+dc.getId(), Const.LEVEL_PRE+dc.getName()+suffix);
+				else
+					pick = new PickDto(idPre+dc.getId(), value.replace("moduleId", dc.getId()).replace("moduleName", dc.getName()).replace("projectId", projectId), Const.LEVEL_PRE+dc.getName()+suffix);
 			}
 		}
 	}

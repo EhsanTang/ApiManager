@@ -49,4 +49,3 @@ delete from `api`.`setting` where mkey in('SOLR_URL','SEARCH_TYPE','SOLR_QUEUESI
 ALTER TABLE `api`.`interface` 
 ADD COLUMN `monitorEmails` VARCHAR(200) NULL AFTER `monitorText`;
 
-

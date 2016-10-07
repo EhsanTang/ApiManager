@@ -108,25 +108,9 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
 		Page page= new Page(15);
-		// 查询公开和推荐的接口
-		if(!Tools.moduleIdIsLegal(interFace.getModuleId())){
-			@SuppressWarnings("unchecked")
-			List<String> moduleIds = (List<String>) cacheService.getObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS);
-			if(moduleIds == null){
-				List<Byte> statuss = new ArrayList<Byte>();
-				statuss.add(Byte.valueOf("1"));
-				statuss.add(Byte.valueOf("3"));
-				moduleIds = dataCenterService.getListByStatuss(statuss, DataCeneterType.MODULE.name(), null);
-				cacheService.setObj(Const.CACHE_TUIJIAN_OPEN_MODULEIDS, moduleIds, config.getCacheTime());
-			}
-			return interfaceService.getInterfaceList(page, moduleIds ,interFace, currentPage);
-		}else{
-			DataCenter dc = dataCenterService.get(interFace.getModuleId());
-			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
-			
-			return interfaceService.getInterfaceList(page, null, interFace, currentPage);
-		}
-		
+		DataCenter dc = dataCenterService.get(interFace.getModuleId());
+		Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
+		return interfaceService.getInterfaceList(page, null, interFace, currentPage);
 	}
 
 	@RequestMapping("/detail.do")

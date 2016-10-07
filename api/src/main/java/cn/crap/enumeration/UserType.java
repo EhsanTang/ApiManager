@@ -1,20 +1,27 @@
 package cn.crap.enumeration;
 
 public enum UserType {
-	管理员("100"),普通用户("1");
+	ADMIN("管理员", Byte.valueOf("100")),USER("普通用户",Byte.valueOf("1"));
+	private final byte type;
 	private final String name;
 	
-	public static String getNameByValue(String value){
-		for(UserType type : UserType.values()){
-			if(type.getName().equals(value))
-				return type.name();
+	UserType(String name, byte type){
+		this.type = type;
+		this.name = name;
+	}
+	
+	public static String getNameByValue(byte type){
+		for(UserType userType : UserType.values()){
+			if(userType.getType() == type)
+				return userType.name();
 		}
 		return "";
 	}
 	
-	private UserType(String name){
-		this.name = name;
+	public byte getType(){
+		return type;
 	}
+	
 	public String getName(){
 		return name;
 	}

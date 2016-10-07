@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +20,7 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.User;
@@ -30,7 +31,7 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackUserController extends BaseController<User>{
+public class UserController extends BaseController<User>{
 
 	@Autowired
 	private IUserService userService;
@@ -42,6 +43,8 @@ public class BackUserController extends BaseController<User>{
 	private IDataCenterService dataCenterService;
 	@Autowired
 	private Config config;
+	@Autowired
+	private IProjectService projectService;
 	
 	@RequestMapping("/user/list.do")
 	@ResponseBody
@@ -103,7 +106,7 @@ public class BackUserController extends BaseController<User>{
 				user.setType(temp.getType());
 				if( !MyString.isEmpty(user.getEmail()) && ( MyString.isEmpty(temp.getEmail()) || !user.getEmail().equals(temp.getEmail()) )){
 					user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
-					cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
+					cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
 				}
 			}else{
 				user.setAuth("");

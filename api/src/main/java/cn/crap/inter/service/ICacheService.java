@@ -3,6 +3,7 @@ package cn.crap.inter.service;
 import java.util.List;
 
 import cn.crap.model.DataCenter;
+import cn.crap.model.Project;
 import cn.crap.model.Setting;
 
 public interface ICacheService{
@@ -29,4 +30,5 @@ public interface ICacheService{
 	
 	boolean flushDB();
 	Object getObj(String string, String string2);
+	Project getProject(String projectId);
 }

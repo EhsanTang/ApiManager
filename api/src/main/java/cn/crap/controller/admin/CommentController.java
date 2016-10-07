@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/back/comment")
-public class BackCommentController extends BaseController<Comment> {
+public class CommentController extends BaseController<Comment> {
 	@Autowired
 	private ICommentService commentService;
 
@@ -57,7 +57,7 @@ public class BackCommentController extends BaseController<Comment> {
 
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_COMMENT)
+	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult delete(@ModelAttribute Comment comment) throws MyException {
 		comment = commentService.get(comment.getId());
 		commentService.delete(comment);

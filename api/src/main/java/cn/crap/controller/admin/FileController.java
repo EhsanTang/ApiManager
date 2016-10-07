@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackFileController extends BaseController <User>{
+public class FileController extends BaseController <User>{
 	@Autowired
 	private Config config;
 	

@@ -17,6 +17,7 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.IErrorService;
 import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IWebPageService;
@@ -39,6 +40,9 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	private IWebPageService webPageService;
 	@Autowired
 	private IDataCenterService dataCenterService;
+	@Autowired
+	private IProjectService projectService;
+
 	
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
@@ -83,7 +87,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		
 		// 根据code，key加载pick列表
-		PickFactory.getFrontPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService, dataCenterService);
+		PickFactory.getFrontPickList(picks, code, key, this, dataCenter, errorService, roleService, webPageService, dataCenterService, projectService);
 		
 		// 组装字符串，返回至前端页面
 		if (!radio.equals("")) {

@@ -3,11 +3,11 @@ package cn.crap.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.crap.enumeration.DataCeneterType;
 import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.UserType;
-import cn.crap.inter.service.IDataCenterService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.inter.service.IRoleService;
+import cn.crap.model.Project;
 import cn.crap.model.Role;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
@@ -24,7 +24,7 @@ public class LoginInfoDto implements Serializable{
 	private byte type;
 	private String email;
 	
-	public LoginInfoDto(User user, IRoleService roleService, IDataCenterService dataCenterService){
+	public LoginInfoDto(User user, IRoleService roleService, IProjectService projectService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
@@ -33,31 +33,24 @@ public class LoginInfoDto implements Serializable{
 		this.email = user.getEmail();
 		
 		StringBuilder sb = new StringBuilder(",");
-		roleService.getAuthFromAuth(sb, user.getAuth());
-		if (user.getRoleId() != null && !user.getRoleId().equals("")) {
-			List<Role> roles = roleService.findByMap(
-					Tools.getMap("id|in", Tools.getIdsFromField(user.getRoleId())), null, null);
-			// 递归将子模块权限添加至用户权限中
-			for (Role role : roles) {
-				roleService.getAuthFromAuth(sb, role.getAuth());
-			}
-		}
-		
 		// 将用户的自己的模块添加至权限中
-		List<String> moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), user.getId() );
-		for(String moduleId:moduleIds){
-			sb.append(DataType.MODULE.name()+"_" + moduleId+",");
-			sb.append(DataType.INTERFACE.name()+"_" + moduleId+",");
-			sb.append(DataType.ERROR.name()+"_" + moduleId+",");
-			roleService.getSubAuth(DataType.MODULE, sb, moduleId);
-			roleService.getSubAuth(DataType.INTERFACE,sb, moduleId);
+		List<Project> projects = projectService.findByMap(Tools.getMap("userId", user.getId()), null, null);
+		for(Project project:projects){
+			sb.append(DataType.PROJECT.name()+"_" + project.getId()+",");
 		}
 		
 		// 100
-		if( (user.getType() + "").equals(UserType.管理员.getName()) ){
+		if( (user.getType() + "").equals(UserType.ADMIN.getType()) ){
 			sb.append(Const.AUTH_ADMIN+",");
-		}else{
-			sb.append("MODULE_privateModule,");
+			sb.append(user.getAuth()+",");
+			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
+				List<Role> roles = roleService.findByMap(
+						Tools.getMap("id|in", Tools.getIdsFromField(user.getRoleId())), null, null);
+				// 将角色中的权限添加至用户权限中
+				for (Role role : roles) {
+					sb.append(role.getAuth()+",");
+				}
+			}
 		}
 		this.authStr = sb.toString();
 	}

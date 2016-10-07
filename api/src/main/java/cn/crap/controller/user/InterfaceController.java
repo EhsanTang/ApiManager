@@ -1,21 +1,17 @@
-package cn.crap.controller.back;
+package cn.crap.controller.user;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.DataCeneterType;
 import cn.crap.enumeration.MonitorType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -37,8 +33,8 @@ import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 
 @Controller
-@RequestMapping("/back/interface")
-public class BackInterfaceController extends BaseController<Interface>{
+@RequestMapping("/user/interface")
+public class InterfaceController extends BaseController<Interface>{
 
 	@Autowired
 	private IInterfaceService interfaceService;
@@ -56,17 +52,19 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
-			@RequestParam(defaultValue = "1") Integer currentPage){
+			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
 		Page page= new Page(15);
 		
-		List<String> moduleIds = null;
-		// 如果用户为普通用户，则只能查看自己的模块
-		LoginInfoDto user = Tools.getUser();
-		if(user != null && user.getType() == 1){
-			moduleIds = dataCenterService.getList(  null, DataCeneterType.MODULE.name(), Tools.getUser().getId() );
-		}
+		hasPermission(cacheService.getProject(interFace.getProjectId()));
 		
-		return interfaceService.getInterfaceList(page, moduleIds, interFace, currentPage);
+		List<Interface> interfaces = interfaceService.findByMap( 
+				Tools.getMap("moduleId", interFace.getModuleId(), "interfaceName|like", interFace.getInterfaceName(), "fullUrl|like", interFace.getUrl()), 
+				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
+		
+		return new JsonResult(1, interfaces, page, 
+				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
+						"module",cacheService.getModule(interFace.getModuleId())));
+		
 	}
 
 	@RequestMapping("/detail.do")
@@ -75,7 +73,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 		Interface model;
 		if(!interFace.getId().equals(Const.NULL_ID)){
 			model= interfaceService.get(interFace.getId());
-			Tools.hasAuth("", model.getModuleId() );
+			hasPermission(cacheService.getProject(interFace.getProjectId()));
 		}else{
 			model = new Interface();
 			model.setModuleId(interFace.getModuleId());
@@ -93,8 +91,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
-		Tools.hasAuth("", interFace.getModuleId());
-		
+		hasPermission(cacheService.getProject(interFace.getProjectId()));
 		if(interfaceService.getCount(Tools.getMap("fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
@@ -125,6 +122,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 			@ModelAttribute Interface interFace) throws IOException, MyException {
 		if(MyString.isEmpty(interFace.getUrl()))
 			return new JsonResult(new MyException("000005"));
+		
 		interFace.setUrl(interFace.getUrl().trim());
 		
 		/**
@@ -132,15 +130,8 @@ public class BackInterfaceController extends BaseController<Interface>{
 		 */
 		String errorIds = interFace.getErrorList();
 		if (errorIds != null && !errorIds.equals("")) {
-			Map<String,Object> map = Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds));
-
-			DataCenter dc = dataCenterService.get(interFace.getModuleId());
-			while (!MyString.isEmpty(dc.getId()) && !dc.getParentId().equals("0") && !dc.getParentId().equals(Const.PRIVATE_MODULE)) {
-				dc = dataCenterService.get(dc.getParentId());
-			}
-			map.put("moduleId", dc.getId());
-			List<Error> errors = errorService.findByMap(map, null,
-					null);
+			List<Error> errors = errorService.findByMap(
+					 Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds), "moduleId", interFace.getProjectId()), null,null);
 			interFace.setErrors(JSONArray.fromObject(errors).toString());
 		}else{
 			interFace.setErrors("[]");
@@ -168,14 +159,18 @@ public class BackInterfaceController extends BaseController<Interface>{
 			}
 		}
 		
+		// 判断是否有新建模块的权限
+		hasPermission(cacheService.getProject( interFace.getProjectId() ));
 		
 		if (!MyString.isEmpty(interFace.getId())) {
 			// 判断是否有修改模块的权限
-			Tools.hasAuth(Const.AUTH_INTERFACE, interfaceService.get(interFace.getId()).getModuleId());
+			hasPermission(cacheService.getProject( interfaceService.get(interFace.getId()).getProjectId() ));
 			
+			// url 重复
 			if( interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
+			
 			interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());
 			interfaceService.update(interFace, "接口", "");
 			if(interFace.getId().equals(interFace.getProjectId())){
@@ -184,9 +179,6 @@ public class BackInterfaceController extends BaseController<Interface>{
 			luceneService.update(interFace.toSearchDto(cacheService));
 			
 		} else {
-			// 判断是否有新建模块的权限
-			Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
-			
 			interFace.setId(null);
 			if(interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
@@ -202,7 +194,7 @@ public class BackInterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException, IOException {
 		interFace = interfaceService.get(interFace.getId());
-		Tools.hasAuth(Const.AUTH_INTERFACE, interFace.getModuleId());
+		hasPermission(cacheService.getProject( interFace.getProjectId() ));
 		interfaceService.delete(interFace, "接口", "");
 		luceneService.delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);
@@ -213,7 +205,8 @@ public class BackInterfaceController extends BaseController<Interface>{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		Interface change = interfaceService.get(changeId);
 		Interface model = interfaceService.get(id);
-		Tools.hasAuth(Const.AUTH_INTERFACE, model.getModuleId());
+		hasPermission(cacheService.getProject( model.getProjectId() ));
+		hasPermission(cacheService.getProject( change.getProjectId() ));
 		
 		int modelSequence = model.getSequence();
 		

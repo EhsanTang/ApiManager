@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.List;
 import java.util.Map;
@@ -17,14 +17,13 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
 import cn.crap.inter.service.ISettingService;
 import cn.crap.model.Setting;
-import cn.crap.service.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-public class BackSettingController extends BaseController<Setting>{
+public class SettingController extends BaseController<Setting>{
 
 	@Autowired
 	private ISettingService settingService;
@@ -83,8 +82,8 @@ public class BackSettingController extends BaseController<Setting>{
 					return new JsonResult(new MyException("000006"));
 				}
 			}
-			cacheService.delObj(CacheService.cacheSettingKeyPre);
-			cacheService.delObj(CacheService.cacheSettingList);
+			cacheService.delObj(Const.CACHE_SETTING);
+			cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/setting/delete.do")
@@ -97,8 +96,8 @@ public class BackSettingController extends BaseController<Setting>{
 		}
 		Tools.hasAuth(Const.AUTH_SETTING, "");
 		settingService.delete(setting);
-		cacheService.delObj(CacheService.cacheSettingKeyPre,setting.getKey());
-		cacheService.delObj(CacheService.cacheSettingList);
+		cacheService.delObj(Const.CACHE_SETTING);
+		cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1,null);
 	}
 	
@@ -115,8 +114,8 @@ public class BackSettingController extends BaseController<Setting>{
 		
 		settingService.update(model);
 		settingService.update(change);
-		cacheService.delObj(CacheService.cacheSettingKeyPre);
-		cacheService.delObj(CacheService.cacheSettingList);
+		cacheService.delObj(Const.CACHE_SETTING);
+		cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1, null);
 	}
 

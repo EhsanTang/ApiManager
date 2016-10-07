@@ -5,16 +5,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.beans.Config;
 import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
@@ -25,9 +22,9 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
 import cn.crap.inter.service.IEmailService;
 import cn.crap.inter.service.IMenuService;
+import cn.crap.inter.service.IProjectService;
 import cn.crap.inter.service.IRoleService;
 import cn.crap.inter.service.IUserService;
 import cn.crap.model.Setting;
@@ -52,7 +49,7 @@ public class LoginController extends BaseController<User> {
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IProjectService projectService;
 	@Autowired
 	private Config config;
 	
@@ -118,7 +115,7 @@ public class LoginController extends BaseController<User> {
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
-				cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, dataCenterService), config.getLoginInforTime());
+				cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
 				request.setAttribute("result", "验证通过！");
 			}else{
 				request.setAttribute("result", "抱歉，账号不存在！");

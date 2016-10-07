@@ -55,55 +55,49 @@ public class FrontProjectController extends BaseController<User> {
 		return "resources/html/project/index.html";
 	}
 	
-	@RequestMapping("/front/project/list.do")
+	@RequestMapping("/front/project/module/list.do")
+	@ResponseBody
+	public JsonResult moduleList(@ModelAttribute Interface interFace,
+			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
+		Page page= new Page(15);
+		page.setCurrentPage(currentPage);
+		List<DataCenter> modules = null;
+		Map<String,Object> map = null;
+		DataCenter dc = dataCenterService.get(interFace.getModuleId());
+		Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
+		map = Tools.getMap("parentId", interFace.getModuleId());
+		modules = dataCenterService.findByMap(map, null, null);
+			
+		map.clear();
+		map.put("modules", modules);
+		map.put("project", dc);
+		return new JsonResult(1, map, page);
+	}
+	
+	
+	@RequestMapping("/front/project/interface/List.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		List<DataCenter> modules = null;
 		List<Interface> interfaces = null;
 		Map<String,Object> map = null;
-		if( !Tools.moduleIdIsLegal(interFace.getModuleId()) || interFace.getModuleId().equals("open")){
-			// 查询所有推荐的
-			map = Tools.getMap( "status", Byte.valueOf("3"), "type", "MODULE");
-			modules = dataCenterService.findByMap(map, null, null);
-			interfaces = new ArrayList<Interface>();
-			
-			map.clear();
-			map.put("interfaces", interfaces);
-			map.put("modules", modules);
-			DataCenter dc = new DataCenter();
-			dc.setName("开放接口");
-			dc.setId("open");
-			dc.setRemark("由CrapApi&网友整理的常用免费接口");
-			return new JsonResult(1, map, page);
-			
-		}else{
 			DataCenter dc = dataCenterService.get(interFace.getModuleId());
 			Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
-			map = Tools.getMap("parentId", interFace.getModuleId());
-			modules = dataCenterService.findByMap(map, null, null);
-			
-			map.clear();
 			map = Tools.getMap("moduleId", interFace.getModuleId());
 			interfaces = interfaceService.findByMap( map, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark)", page, null );
 			
 			map.clear();
 			map.put("interfaces", interfaces);
-			map.put("modules", modules);
 			map.put("project", dc);
 			return new JsonResult(1, map, page);
-		}
 	}
 	
 	
 	@RequestMapping("/front/project/menu.do")
 	@ResponseBody
 	public JsonResult menu(@RequestParam String moduleId) throws MyException{
-		if( !Tools.moduleIdIsLegal(moduleId) ){
-			throw new MyException("000020");
-		}
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("project", cacheService.getModule(moduleId));
 		returnMap.put("modules", dataCenterService.findByMap(Tools.getMap("parentId", moduleId), null, null));

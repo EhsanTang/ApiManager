@@ -1,4 +1,4 @@
-package cn.crap.controller.back;
+package cn.crap.controller.admin;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/log")
-public class BackLogController extends BaseController<Log>{
+public class LogController extends BaseController<Log>{
 
 	@Autowired
 	private ILogService logService;

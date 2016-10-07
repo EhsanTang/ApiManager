@@ -42,55 +42,55 @@ public class Update {
 	 */
 	@Test
 	public void v5ToV6() throws MyException, IOException{
-		// 模块中补全项目字段
-		for(DataCenter dc: moduleService.findByMap(Tools.getMap("type","MODULE"), null, null)){
-			
-			if(dc.getParentId().equals(Const.TOP_MODULE) || dc.getParentId().equals(Const.PRIVATE_MODULE) || dc.getParentId().equals(Const.ADMIN_MODULE)){
-				dc.setProjectId(dc.getId());
-				moduleService.update(dc);
-			}
-			
-			else{
-				DataCenter parent = moduleService.get(dc.getParentId());
-				// 父模块不存在，删除模块
-				if(parent == null || MyString.isEmpty(parent.getId())){
-					moduleService.delete(dc);
-					break;
-				}
-				int i=0;
-				while( !parent.getParentId().equals(Const.PRIVATE_MODULE) && !parent.getParentId().equals(Const.ADMIN_MODULE) ){
-					DataCenter temp =  moduleService.get(parent.getParentId());
-					if(temp == null || MyString.isEmpty(temp.getId())){
-						moduleService.delete(dc);
-						break;
-					}else{
-						i++;
-						if(i>900){
-							System.out.print("'"+temp.getId()+"',");
-						}
-						if(i>1000){
-							System.out.println("模块表存在循环依赖，更新出现异常!!");
-							return;
-						}
-						parent = temp;
-					}
-				}
-				// 项目的根项目是私有项目或管理员项目则跟新
-				if(parent.getParentId().equals(Const.PRIVATE_MODULE) || parent.getParentId().equals(Const.ADMIN_MODULE)){
-					dc.setProjectId(parent.getId());
-					moduleService.update(dc);
-				}else{
-					moduleService.delete(dc);
-				}
-			}
-		}
-		
-		// 补全接口中的fullUrl
-		for(Interface i : interfaceService.findByMap(null, null, null)){
-			i.setFullUrl(i.getModuleUrl() + i.getUrl());
-			interfaceService.update(i);
-		}
-		interfaceService.update("delete from Interface where moduleId not in(select id from DataCenter where type='MODULE')", null);
-		
+//		// 模块中补全项目字段
+//		for(DataCenter dc: moduleService.findByMap(Tools.getMap("type","MODULE"), null, null)){
+//			
+//			if(dc.getParentId().equals(Const.TOP_MODULE) || dc.getParentId().equals(Const.PRIVATE_MODULE) || dc.getParentId().equals(Const.ADMIN_MODULE)){
+//				dc.setProjectId(dc.getId());
+//				moduleService.update(dc);
+//			}
+//			
+//			else{
+//				DataCenter parent = moduleService.get(dc.getParentId());
+//				// 父模块不存在，删除模块
+//				if(parent == null || MyString.isEmpty(parent.getId())){
+//					moduleService.delete(dc);
+//					break;
+//				}
+//				int i=0;
+//				while( !parent.getParentId().equals(Const.PRIVATE_MODULE) && !parent.getParentId().equals(Const.ADMIN_MODULE) ){
+//					DataCenter temp =  moduleService.get(parent.getParentId());
+//					if(temp == null || MyString.isEmpty(temp.getId())){
+//						moduleService.delete(dc);
+//						break;
+//					}else{
+//						i++;
+//						if(i>900){
+//							System.out.print("'"+temp.getId()+"',");
+//						}
+//						if(i>1000){
+//							System.out.println("模块表存在循环依赖，更新出现异常!!");
+//							return;
+//						}
+//						parent = temp;
+//					}
+//				}
+//				// 项目的根项目是私有项目或管理员项目则跟新
+//				if(parent.getParentId().equals(Const.PRIVATE_MODULE) || parent.getParentId().equals(Const.ADMIN_MODULE)){
+//					dc.setProjectId(parent.getId());
+//					moduleService.update(dc);
+//				}else{
+//					moduleService.delete(dc);
+//				}
+//			}
+//		}
+//		
+//		// 补全接口中的fullUrl
+//		for(Interface i : interfaceService.findByMap(null, null, null)){
+//			i.setFullUrl(i.getModuleUrl() + i.getUrl());
+//			interfaceService.update(i);
+//		}
+//		interfaceService.update("delete from Interface where moduleId not in(select id from DataCenter where type='MODULE')", null);
+//		
 	}
 }

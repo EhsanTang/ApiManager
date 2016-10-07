@@ -10,8 +10,13 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.model.Project;
+import cn.crap.utils.Const;
+import cn.crap.utils.Tools;
 
 public abstract class BaseController<T extends BaseModel> {
 	protected HttpServletRequest request;
@@ -90,6 +95,36 @@ public abstract class BaseController<T extends BaseModel> {
 			}
 		}
 	 
+	 /**
+		 * 权限检查
+		 * @param project
+		 * @throws MyException
+		 */
+		protected void hasPermission(Project project) throws MyException{
+			LoginInfoDto user = Tools.getUser();
+			if(user != null ){
+				
+				// 修改自己的项目
+				if( user.getId().equals(project.getUserId())){
+					return;
+				}
+				
+				// 最高管理员修改项目
+				if( user != null && (","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
+					return;
+				}
+
+				// 拥有项目权限的普通管理员修改项目
+				String authority = user.getAuthStr();
+				if(authority.indexOf(","+Const.AUTH_PROJECT+project.getId()+",") >=0){
+					return;
+				}
+				
+				// TODO 项目成员修改项目
+				
+			}
+			throw new MyException("000003");
+		}
 //	 protected void handleBindingValidation(BindingResult bindingResult) throws MyException{
 //	        if(bindingResult.hasErrors()){
 //	            List<ObjectError> list = bindingResult.getAllErrors();

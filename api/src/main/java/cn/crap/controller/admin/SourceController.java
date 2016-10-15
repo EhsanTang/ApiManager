@@ -16,10 +16,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.ISearchService;
-import cn.crap.inter.service.ISourceService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.ISourceService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Source;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
@@ -33,7 +33,7 @@ public class SourceController extends BaseController<Source>{
 	@Autowired
 	private ISourceService sourceService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IModuleService dataCenterService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -52,14 +52,14 @@ public class SourceController extends BaseController<Source>{
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		// 搜索条件
-		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId());
 		//returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("sources", sourceService.findByMap(map, page, null));
 
 		map.clear();
-		map = Tools.getMap("parentId", source.getDirectoryId(), "type", "DIRECTORY");
-		returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
+		//map = Tools.getMap("projectId", source.getm, "type", "DIRECTORY");
+		//returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
 		return new JsonResult(1, returnMap, page);
 	}
 	
@@ -72,7 +72,7 @@ public class SourceController extends BaseController<Source>{
 			model = sourceService.get(source.getId());
 		}else{
 			model=new Source();
-			model.setDirectoryId(source.getDirectoryId());
+			model.setModuleId(source.getModuleId());
 		}
 		return new JsonResult(1,model);
 		
@@ -86,7 +86,7 @@ public class SourceController extends BaseController<Source>{
 		}else{
 			throw new MyException("000020");
 		}
-		Tools.canVisitModule(cacheService.getModule(model.getDirectoryId()).getPassword(), password, visitCode, request);
+		Tools.canVisitModule(cacheService.getModule(model.getModuleId()).getPassword(), password, visitCode, request);
 		return new JsonResult(1,model);
 	}
 	
@@ -94,16 +94,16 @@ public class SourceController extends BaseController<Source>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage,String password,String visitCode,
 			@RequestParam(defaultValue="无") String directoryName) throws MyException{
-		Tools.canVisitModule(cacheService.getModule(source.getDirectoryId()).getPassword(), password, visitCode, request);
+		Tools.canVisitModule(cacheService.getModule(source.getModuleId()).getPassword(), password, visitCode, request);
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		// 搜索条件
-		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getDirectoryId());
+		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getModuleId());
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
 
 		map.clear();
-		map = Tools.getMap("parentId", source.getDirectoryId(), "type", "DIRECTORY");
+		map = Tools.getMap("parentId", source.getModuleId(), "type", "DIRECTORY");
 		returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
 		
 		return new JsonResult(1, returnMap, page, 

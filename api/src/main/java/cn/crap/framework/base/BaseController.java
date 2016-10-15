@@ -104,11 +104,6 @@ public abstract class BaseController<T extends BaseModel> {
 			LoginInfoDto user = Tools.getUser();
 			if(user != null ){
 				
-				// 修改自己的项目
-				if( user.getId().equals(project.getUserId())){
-					return;
-				}
-				
 				// 最高管理员修改项目
 				if( user != null && (","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
 					return;
@@ -116,11 +111,14 @@ public abstract class BaseController<T extends BaseModel> {
 
 				// 拥有项目权限的普通管理员修改项目
 				String authority = user.getAuthStr();
-				if(authority.indexOf(","+Const.AUTH_PROJECT+project.getId()+",") >=0){
+				if(authority.indexOf(","+Const.PROJECTID+",") >=0){
 					return;
 				}
 				
-				// TODO 项目成员修改项目
+				// 修改自己的项目
+				if( user.getId().equals(project.getUserId())){
+					return;
+				}
 				
 			}
 			throw new MyException("000003");

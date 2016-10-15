@@ -27,9 +27,7 @@ mainModule.filter('cut', function () {
 	  };
 });
 
-mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
-	
-});
+mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {});
 
 /***
  * 后台初始化，加载系统设置，菜单等
@@ -192,10 +190,12 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
     };
     $scope.getData();
 });
-/**************************WebPage列表****************************/
-mainModule.controller('webPageCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+/**************************article列表****************************/
+mainModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=webPage/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type+"&moduleId="+$stateParams.searchModuleId+"&category="+$stateParams.searchCategory+"&name="+$stateParams.searchName;
+		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" 
+			+ $stateParams.type+"&moduleId="+$stateParams.moduleId+
+			"&category="+$stateParams.category+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -391,7 +391,6 @@ mainModule.controller('userErrorCtrl', function($rootScope,$scope, $http, $state
 	$scope.getData = function(page) {
 		var params = "iUrl=user/error/list.do|iLoading=FLOAT|iParams=";
 		params += "&projectId=" + $stateParams.projectId;
-		params += "&myself=" + $stateParams.myself;
 		params += "&errorMsg=" + $stateParams.errorMsg;
 		params += "&errorCode=" + $stateParams.errorCode;
 		$rootScope.getBaseData($scope,$http,params,page);

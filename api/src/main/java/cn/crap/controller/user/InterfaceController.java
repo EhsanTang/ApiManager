@@ -17,12 +17,12 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IErrorService;
-import cn.crap.inter.service.IInterfaceService;
-import cn.crap.inter.service.ISearchService;
-import cn.crap.model.DataCenter;
+import cn.crap.inter.service.table.IErrorService;
+import cn.crap.inter.service.table.IInterfaceService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.inter.service.tool.ISearchService;
+import cn.crap.model.Module;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.utils.Const;
@@ -39,7 +39,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IModuleService dataCenterService;
 	@Autowired
 	private IErrorService errorService;
 	@Autowired

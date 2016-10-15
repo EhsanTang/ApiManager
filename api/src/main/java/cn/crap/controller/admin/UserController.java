@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.LoginType;
 import cn.crap.enumeration.UserStatus;
@@ -18,12 +17,13 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IProjectService;
-import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.IUserService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.IUserService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.User;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
@@ -40,7 +40,7 @@ public class UserController extends BaseController<User>{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IModuleService dataCenterService;
 	@Autowired
 	private Config config;
 	@Autowired

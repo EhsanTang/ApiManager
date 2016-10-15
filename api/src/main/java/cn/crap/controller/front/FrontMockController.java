@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.IInterfaceService;
+import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.model.Interface;
 
 @Controller

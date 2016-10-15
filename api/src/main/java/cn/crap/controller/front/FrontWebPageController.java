@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.beans.Config;
-import cn.crap.enumeration.WebPageType;
+import cn.crap.enumeration.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.ICommentService;
-import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IWebPageService;
+import cn.crap.inter.service.table.IArticleService;
+import cn.crap.inter.service.table.ICommentService;
+import cn.crap.inter.service.table.IMenuService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Comment;
-import cn.crap.model.DataCenter;
-import cn.crap.model.WebPage;
+import cn.crap.model.Module;
+import cn.crap.springbeans.Config;
+import cn.crap.model.Article;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -34,13 +34,13 @@ import cn.crap.utils.Tools;
  *
  */
 @Controller
-public class FrontWebPageController extends BaseController<WebPage> {
+public class FrontWebPageController extends BaseController<Article> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IWebPageService webPageService;
+	private IArticleService webPageService;
 	@Autowired
 	private ICommentService commentService;
 	@Autowired
@@ -52,9 +52,9 @@ public class FrontWebPageController extends BaseController<WebPage> {
 	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", WebPageType.DICTIONARY.name(), "name|like", name);
-		return new JsonResult(1,   webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
-				Tools.getMap("crumbs", Tools.getCrumbs( WebPageType.DICTIONARY.getName() +"-" + cacheService.getModuleName(moduleId), "void")) );
+		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", ArticleType.DICTIONARY.name(), "name|like", name);
+		return new JsonResult(1,   webPageService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
+				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + cacheService.getModuleName(moduleId), "void")) );
 	}
 	
 
@@ -69,7 +69,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		 */
 		Map<String,Object> map;
 		if(MyString.isEmpty(moduleId)){
-			map = Tools.getMap("moduleId", Const.TOP_MODULE, "type", type, "category", category);
+			map = Tools.getMap("moduleId", Const.WEB_MODULE, "type", type, "category", category);
 		}else{
 			map = Tools.getMap("moduleId", moduleId, "type", type, "category", category);
 		}
@@ -77,28 +77,28 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		// 选择分类，最多显示前20个
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY);
 		if( categorys == null){
-			categorys = (List<String>) webPageService.queryByHql("select distinct category from WebPage where type ='ARTICLE'", null, new Page(20));
+			categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type ='ARTICLE'", null, new Page(20));
 			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, config.getCacheTime());
 		}
 		// 
 		
-		List<WebPage> webPages = webPageService.findByMap(map, " new WebPage(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null);
+		List<Article> webPages = webPageService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null);
 		return new JsonResult(1, webPages, page,
-				Tools.getMap("type", WebPageType.valueOf(type).getName(), "category", category, 
+				Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, 
 						"crumbs", Tools.getCrumbs(category, "void"), "categorys", categorys));
 	}
 	
 	@RequestMapping("/front/webPage/detail.do")
 	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute WebPage webPage,String password,String visitCode, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult webDetail(@ModelAttribute Article webPage,String password,String visitCode, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Map<String,Object> returnMap = new HashMap<String,Object>();
-		WebPage model = (WebPage) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
+		Article model = (Article) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
 		Map<String,Object> map;
 		if(model == null){
 			// 根据key查询webPage
 			if(webPage.getId().length()<21){
 				map = Tools.getMap("key", webPage.getId());
-				List<WebPage>models=webPageService.findByMap(map, null, null);
+				List<Article>models=webPageService.findByMap(map, null, null);
 				if(models.size()>0)
 					model = models.get(0);
 			}
@@ -113,16 +113,16 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		
 		
 		// 文章访问密码
-		if(model.getType().equals(WebPageType.ARTICLE.name())){
+		if(model.getType().equals(ArticleType.ARTICLE.name())){
 			returnMap.put("crumbs", Tools.getCrumbs(model.getCategory(),"#/"+webPage.getModuleId()+"/webPage/list/ARTICLE/"+model.getCategory(), model.getName(), "void"));
 			Tools.canVisitModule(model.getPassword(), password, visitCode, request);
 		}
 		
 		// 数据字典密码访问由模块决定
-		else if(model.getType().equals(WebPageType.DICTIONARY.name())){
+		else if(model.getType().equals(ArticleType.DICTIONARY.name())){
 			// 需要改造，项目id放在#/后面
 			//returnMap.put("crumbs", Tools.getCrumbs("数据字典列表", "#/webPage/list/DICTIONARY/null", model.getName(), "void"));
-			DataCenter module = cacheService.getModule(model.getModuleId());
+			Module module = cacheService.getModule(model.getModuleId());
 			Tools.canVisitModule(module.getPassword(), password, visitCode, request);
 		}
 		
@@ -130,12 +130,12 @@ public class FrontWebPageController extends BaseController<WebPage> {
 			returnMap.put("crumbs", Tools.getCrumbs(model.getName(), "void"));
 		}
 		
-		if(!model.getType().equals(WebPageType.DICTIONARY.name())){
+		if(!model.getType().equals(ArticleType.DICTIONARY.name())){
 			Object categorys = null;
 			// 选择分类，最多显示前20个
 			categorys = cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY);
 			if( categorys == null){
-				categorys = webPageService.queryByHql("select distinct category from WebPage where type ='ARTICLE'", null, new Page(20));
+				categorys = webPageService.queryByHql("select distinct category from Article where type ='ARTICLE'", null, new Page(20));
 				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY, categorys, config.getCacheTime());
 			}
 			returnMap.put("categorys", categorys);
@@ -160,7 +160,7 @@ public class FrontWebPageController extends BaseController<WebPage> {
 		returnMap.put("comments", comments);
 		returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
 		// 更新点击量
-		webPageService.update("update WebPage set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
+		webPageService.update("update Article set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
 		return new JsonResult(1, model, page, returnMap);
 	}
 	

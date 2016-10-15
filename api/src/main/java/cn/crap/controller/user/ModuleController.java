@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IInterfaceService;
-import cn.crap.inter.service.IProjectService;
-import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.IUserService;
-import cn.crap.model.DataCenter;
+import cn.crap.inter.service.table.IInterfaceService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.IUserService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Module;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -30,10 +30,10 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController<DataCenter>{
+public class ModuleController extends BaseController<Module>{
 
 	@Autowired
-	private IDataCenterService moduleService;
+	private IModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -50,7 +50,7 @@ public class ModuleController extends BaseController<DataCenter>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute  DataCenter module, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+	public JsonResult list(@ModelAttribute  Module module, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 			Page page= new Page(15);
 			page.setCurrentPage(currentPage);
 			Map<String,Object> map = Tools.getMap("projectId", module.getProjectId());
@@ -66,18 +66,14 @@ public class ModuleController extends BaseController<DataCenter>{
 		}	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute DataCenter module) throws MyException{
-		DataCenter model;
+	public JsonResult detail(@ModelAttribute Module module) throws MyException{
+		Module model;
 		if(!module.getId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getId());
 			hasPermission(cacheService.getProject(model.getProjectId()));
 		}else{
 			hasPermission(cacheService.getProject(module.getProjectId()));
-			model=new DataCenter();
-			if(MyString.isEmpty((module.getType())))
-				model.setType("MODULE");
-			else
-				model.setType(module.getType());
+			model=new Module();
 			model.setStatus(Byte.valueOf("1"));
 			model.setProjectId(module.getProjectId());
 		}
@@ -86,15 +82,17 @@ public class ModuleController extends BaseController<DataCenter>{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute DataCenter module) throws Exception{
-		
+	public JsonResult addOrUpdate(@ModelAttribute Module module) throws Exception{
+		// 系统数据，不允许删除
+		if(module.getId().equals("web"))
+			throw new MyException("000009");
+				
 		hasPermission(cacheService.getProject( module.getProjectId() ));
 		
 		// 修改
 		if(!MyString.isEmpty(module.getId())){
-			DataCenter oldDataCenter = cacheService.getModule(module.getId());
+			Module oldDataCenter = cacheService.getModule(module.getId());
 			hasPermission(cacheService.getProject( oldDataCenter.getProjectId() ));
-			module.setType(oldDataCenter.getType());
 		}
 		
 		
@@ -122,9 +120,12 @@ public class ModuleController extends BaseController<DataCenter>{
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute DataCenter module) throws Exception{
-		
-		DataCenter oldDataCenter = cacheService.getModule(module.getId());
+	public JsonResult delete(@ModelAttribute Module module) throws Exception{
+		// 系统数据，不允许删除
+		if(module.getId().equals("web"))
+			throw new MyException("000009");
+				
+		Module oldDataCenter = cacheService.getModule(module.getId());
 		hasPermission(cacheService.getProject( oldDataCenter.getProjectId() ));
 		
 		// 只有接口数量为0，才允许删除模块
@@ -142,8 +143,8 @@ public class ModuleController extends BaseController<DataCenter>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		DataCenter change = moduleService.get(changeId);
-		DataCenter model = moduleService.get(id);
+		Module change = moduleService.get(changeId);
+		Module model = moduleService.get(id);
 		
 		hasPermission(cacheService.getProject( change.getProjectId() ));
 		hasPermission(cacheService.getProject( model.getProjectId() ));

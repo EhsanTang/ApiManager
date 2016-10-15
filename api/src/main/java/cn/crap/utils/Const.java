@@ -65,7 +65,7 @@ public class Const {
 	public static final String SOURCE = "SOURCE";
 	public static final String SEPARATOR = "SEPARATOR";
 	public static final String ADMIN_MODULE= "0";
-	public static final String TOP_MODULE= "top";
+	public static final String WEB_MODULE= "web";
 	public static final String LEVEL_PRE = "- - ";
 	public static final String REGISTER = "register";
 	public static final String GITHUB = "gitHub:";

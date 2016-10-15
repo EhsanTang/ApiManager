@@ -10,7 +10,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-import cn.crap.beans.Config;
+import cn.crap.springbeans.Config;
 
 public class Html2Pdf {
 	/**

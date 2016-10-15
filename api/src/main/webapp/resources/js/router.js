@@ -3,28 +3,30 @@
  * 前后台共有的路由
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	/*********************后台*******************/
-	$stateProvider.state('webPageDetail', {
-		url : '/:projectId/webPage/detail/:type/:id',
+	$stateProvider.state('frontArticleDetail', {
+		url : '/:projectId/article/detail/:type/:id',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/frontHtml/webPageDetail_'+$stateParems.type+'.tpl.html';
+					if($stateParems.type == 'PROJECTARTICLE')
+						return 'resources/html/frontHtml/articleDetail_ARTICLE.tpl.html';
+					else
+						return 'resources/html/frontHtml/articleDetail_'+$stateParems.type+'.tpl.html';
 				}
-			},'addComment@webPageDetail' : {
+			},'addComment@frontArticleDetail' : {
 				templateUrl : 'resources/html/frontHtml/addComment.tpl.html'
-			},'page@webPageDetail' : {
+			},'page@frontArticleDetail' : {
 				templateUrl : 'resources/html/frontHtml/page_xs.tpl.html'
 			}
 		}
-	}).state('frontWebPageList', {
+	}).state('frontArticleList', {
 		url : '/:projectId/webPage/list/:type/:search',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/frontHtml/webPageList_'+$stateParems.type+'.tpl.html';
 				}
-			},'page@frontWebPageList' : {
+			},'page@frontArticleList' : {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}

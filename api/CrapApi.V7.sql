@@ -12,3 +12,26 @@ CREATE TABLE `api`.`project` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `api`.`datacenter` 
+RENAME TO  `api`.`module` ;
+
+ALTER TABLE `api`.`module` 
+DROP COLUMN `type`,
+DROP INDEX `TYPE` ;
+
+ALTER TABLE `api`.`source` 
+CHANGE COLUMN `directoryId` `moduleId` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '模块ID' ;
+
+ALTER TABLE `api`.`webpage` 
+RENAME TO  `api`.`article` ;
+
+UPDATE `api`.`module` SET `id`='web',`projectId`='web' `name`='站点默认模块', `parentId`='web' WHERE `id`='0';
+
+INSERT INTO `api`.`project` (`id`, `name`, `createTime`, `status`, `sequence`, `remark`, `userId`, `type`) VALUES ('web', '站点默认项目', '2016-10-04 23:02:10', '0', '1', '站点默认项目，请勿删除', 'admin', '1');
+
+UPDATE `api`.`article` SET `moduleId`='web' WHERE `moduleId`='top';
+
+ALTER TABLE `api`.`module` 
+DROP COLUMN `parentId`;
+
+

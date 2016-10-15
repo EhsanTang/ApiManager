@@ -14,8 +14,8 @@ import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.MonitorType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.service.CacheService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.tool.CacheService;
 import cn.crap.utils.MyString;
 
 @Entity
@@ -91,14 +91,14 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	@Transient
 	public String getModuleName() {
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		DataCenter module = cacheService.getModule(moduleId);
+		Module module = cacheService.getModule(moduleId);
 		return MyString.isEmpty(module.getName()) ? "" : module.getName();
 	}
 
 	@Transient
 	public String getModuleUrl() {
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		DataCenter module = cacheService.getModule(moduleId);
+		Module module = cacheService.getModule(moduleId);
 		return MyString.isEmpty(module.getUrl()) ? "" : module.getUrl();
 	}
 
@@ -293,7 +293,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	public String getProjectId() {
 		if (!MyString.isEmpty(moduleId)) {
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			DataCenter module = cacheService.getModule(moduleId);
+			Module module = cacheService.getModule(moduleId);
 			if (module != null)
 				return module.getProjectId();
 		}

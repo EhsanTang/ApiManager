@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.thirdly.GitHubAccessToken;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.framework.MyException;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.Tools;
 

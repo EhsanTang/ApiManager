@@ -16,9 +16,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IErrorService;
-import cn.crap.inter.service.IProjectService;
+import cn.crap.inter.service.table.IErrorService;
+import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -37,25 +37,23 @@ public class ErrorController extends BaseController<Error>{
 
 	/**
 	 * @return 
+	 * @throws MyException 
 	 * @throws Exception 
 	 * */
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage,
-			@RequestParam(defaultValue="false") boolean myself){
+	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+		hasPermission(cacheService.getProject(error.getProjectId()));
+		
+		if(MyString.isEmpty(error.getProjectId())){
+			throw new MyException("000020");
+		}
+		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
-		// 普通用户，管理员我的项目菜单只能查看自己的项目
-		LoginInfoDto user = Tools.getUser();
-		List<String> projectIds = null;
-		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
-			projectIds = projectService.getProjectIdByUid(user.getId());
-			projectIds.add("NULL");
-		}
-		
-		Map<String,Object> map = Tools.getMap("projectId|in", projectIds,"errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"projectId",error.getProjectId());
+		Map<String,Object> map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"projectId",error.getProjectId());
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
 				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getProject(error.getProjectId()).getName(), "void")));
 	}

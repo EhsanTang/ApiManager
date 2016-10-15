@@ -11,7 +11,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICommentService;
+import cn.crap.inter.service.table.ICommentService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;

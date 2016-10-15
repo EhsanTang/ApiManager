@@ -5,8 +5,8 @@ import java.util.List;
 
 import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.UserType;
-import cn.crap.inter.service.IProjectService;
-import cn.crap.inter.service.IRoleService;
+import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IRoleService;
 import cn.crap.model.Project;
 import cn.crap.model.Role;
 import cn.crap.model.User;

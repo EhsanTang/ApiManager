@@ -1,0 +1,33 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="frontModuleCtrl">
+	<button type="button" class="ndis" id="refresh"
+		ng-click="getData(1,true);"></button>
+		
+	
+	<div ng-if="list.length==0" class="col-xs-12 tc mt10 mb10 C999">
+			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>抱歉，没有模块
+	</div>
+	
+	
+	<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt10 mb20 adorn-bl-3"
+		ng-if="list.length>0">模块列表</div>
+	<div class="col-xs-12 p0 dashed-t" ng-if="list.length>0">
+		<div class="col-sm-4 col-md-3 m0 p0" ng-repeat="item in list">
+			<div class="b1 tc r3 h220 m15 p10">
+				<i class="iconfont adorn-color f40 dis">&#xe61f;</i>
+				<div class="h30 of-h f16 C000 p10"
+					ng-bind="item.name|cut:true:8:' ...'"></div>
+				<div class="h70 of-h C555 p10"
+					ng-bind="item.remark|cut:true:20:' ...'"></div>
+				<a class="btn btn-default"
+					ng-href="#/{{item.projectId}}/interface/list/{{item.id}}/{{item.moduleName}}">
+					<i class="iconfont f12">&#xe60a;&nbsp;查看接口</i>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div ui-view="page" ng-if="list.length>0"></div>
+
+</div>
+<div class="cb"></div>
+

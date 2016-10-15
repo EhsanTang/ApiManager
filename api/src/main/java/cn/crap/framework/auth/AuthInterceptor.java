@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import cn.crap.beans.Config;
-import cn.crap.beans.GetBeanByConfig;
 import cn.crap.framework.MyException;
 import cn.crap.inter.dao.ICacheDao;
+import cn.crap.springbeans.Config;
+import cn.crap.springbeans.GetBeanByConfig;
 import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;

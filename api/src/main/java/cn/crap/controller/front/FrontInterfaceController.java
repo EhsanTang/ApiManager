@@ -3,7 +3,6 @@ package cn.crap.controller.front;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,20 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.ErrorDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
-import cn.crap.enumeration.DataCeneterType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IInterfaceService;
-import cn.crap.model.DataCenter;
+import cn.crap.inter.service.table.IInterfaceService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Interface;
-import cn.crap.utils.Const;
+import cn.crap.model.Module;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
@@ -47,7 +44,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IDataCenterService dataCenterService;
+	private IModuleService dataCenterService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -108,7 +105,7 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	public JsonResult webList(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
 		Page page= new Page(15);
-		DataCenter dc = dataCenterService.get(interFace.getModuleId());
+		Module dc = dataCenterService.get(interFace.getModuleId());
 		Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
 		return interfaceService.getInterfaceList(page, null, interFace, currentPage);
 	}

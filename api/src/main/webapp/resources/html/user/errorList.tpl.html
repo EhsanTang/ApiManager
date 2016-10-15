@@ -12,23 +12,14 @@
 			<label class="sr-only" for="">Code</label>
 			<div class="input-group">
 				<div class="input-group-addon">Code</div>
-				<input type="text" class="form-control input-xs dis-in-blo" placeholder="Code" ng-model="errorCode">
+				<input type="text" class="form-control input-xs dis-in-blo" placeholder="Code" ng-model="$stateParams.errorCode">
 			</div>
 		</div>
 		<div class="form-group w200 fr mr10">
 			<label class="sr-only" for="">Msg</label>
 			<div class="input-group">
 				<div class="input-group-addon">Msg</div>
-				<input type="text" class="form-control input-xs dis-in-blo w120" ng-model="errorMsg">
-			</div>
-		</div>
-		<div class="form-group w200 fr mr10">
-			<input type="hidden" class="form-control dis-in-blo w120" id="projectId">
-			<label class="sr-only" for="">项目</label>
-			<div class="input-group">
-				<div class="input-group-addon">项目</div>
-				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选着项目" id="projectName"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=projectName|tag=projectId|code=MYPROJECT|def='+$stateParams.projectId,$event);">
+				<input type="text" class="form-control input-xs dis-in-blo w120" ng-model="$stateParams.errorMsg">
 			</div>
 		</div>
 		<div class="cb"></div>

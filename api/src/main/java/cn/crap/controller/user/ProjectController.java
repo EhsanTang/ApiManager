@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.crap.beans.Config;
+
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.enumeration.UserType;
@@ -16,13 +16,14 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IMenuService;
-import cn.crap.inter.service.IProjectService;
-import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.IUserService;
+import cn.crap.inter.service.table.IMenuService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.IUserService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Project;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -42,7 +43,7 @@ public class ProjectController extends BaseController<Project> {
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IDataCenterService moduleService;
+	private IModuleService moduleService;
 	@Autowired
 	private Config config;
 	
@@ -88,6 +89,9 @@ public class ProjectController extends BaseController<Project> {
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Project project) throws Exception{
+		// 系统数据，不允许删除
+		if(project.getId().equals("web"))
+			throw new MyException("000009");
 		
 		Project model;
 		LoginInfoDto user = Tools.getUser();
@@ -135,6 +139,11 @@ public class ProjectController extends BaseController<Project> {
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Project project) throws Exception{
+		// 系统数据，不允许删除
+		if(project.getId().equals("web"))
+			throw new MyException("000009");
+
+				
 		Project model= projectService.get(project.getId());
 		hasPermission(model);
 		

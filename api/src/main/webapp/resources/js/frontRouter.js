@@ -26,13 +26,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
-	}).state('webError', {
-		url : '/:moduleId/error/list',
+	}).state('frontError', {
+		url : '/:projectId/error/list',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/errorList.tpl.html'
 			},
-			'page@webError' : {
+			'page@frontError' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
+	}).state('frontModuleCtrl', {
+		url : '/:projectId/module/list',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/frontHtml/moduleList.tpl.html'
+			},
+			'page@frontModuleCtrl' : {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}

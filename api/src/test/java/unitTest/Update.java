@@ -9,12 +9,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.crap.framework.MyException;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.inter.service.IDataCenterService;
-import cn.crap.inter.service.IInterfaceService;
-import cn.crap.inter.service.IRoleService;
-import cn.crap.inter.service.IUserService;
-import cn.crap.model.DataCenter;
+import cn.crap.inter.service.table.IInterfaceService;
+import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.IUserService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Module;
 import cn.crap.model.Interface;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -24,7 +24,7 @@ import cn.crap.utils.Tools;
 @ContextConfiguration(locations={"classpath:spring-servlet.xml"})
 public class Update {
 	@Autowired
-	private IDataCenterService moduleService;
+	private IModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

@@ -26,8 +26,8 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.service.CacheService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.tool.CacheService;
 
 
 public class Tools {

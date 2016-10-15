@@ -11,8 +11,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.inter.service.ICacheService;
-import cn.crap.service.CacheService;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.tool.CacheService;
 
 @Entity
 @Table(name="error")

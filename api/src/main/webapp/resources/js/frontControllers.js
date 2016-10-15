@@ -33,8 +33,8 @@ webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $stat
 /**************************错误码列表****************************/
 mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&moduleId=" +
-			$stateParams.moduleId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode;
+		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&projectId=" +
+			$stateParams.projectId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -89,6 +89,9 @@ webModule.controller('webPageDetailCtrl', function($rootScope,$scope, $http, $st
     };
     $scope.getData(1);
 });
+/**
+ * 模块列表
+ */
 /**
  * 接口列表
  */
@@ -171,7 +174,7 @@ mainModule.controller('frontProjectMenuCtrl', function($rootScope,$scope, $http,
 	$scope.getData = function(page) {
 		var url = $location.absUrl();
 		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
-		var params = "iUrl=front/project/menu.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+projectId;
+		var params = "iUrl=front/project/menu.do|iLoading=FLOAT|iPost=POST|iParams=&projectId="+projectId;
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

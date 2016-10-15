@@ -47,7 +47,10 @@
 				<td class="tc w400">
 				
 				<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
-					<i class="iconfont f12">&#xe60f;查看模块</i>
+					<i class="iconfont f12">&#xe60f;模块</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 
+					<i class="iconfont f12">&#xe60f;错误码</i>
 				</a>
 				
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
@@ -59,15 +62,15 @@
 					ng-click="del('user/project/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list/{{item.id}}/" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list" target="_blank"> 
 					<i class="iconfont f12 adorn-color">&#xe613;项目主页</i>
 				</a>
 				
 				<div class="w50 fr tl">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list.modules[$index-1].id)" ng-if="$index>0">
+					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list.modules[$index+1].id)" ng-if="$index<list.modules.length-1">
+					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
 						<i class="iconfont f12">&#xe624;</i>
 					</a>
 				</div>

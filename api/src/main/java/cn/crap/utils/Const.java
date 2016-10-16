@@ -71,9 +71,7 @@ public class Const {
 	public static final String GITHUB = "gitHub:";
 	public static final String DOMAIN = "DOMAIN";
 	// url
-	public static final String FRONT_ERROR_URL = "#/%s/error/list";
-	public static final String FRONT_DICT_URL = "#/%s/webPage/list/DICTIONARY/";
-	public static final String FRONT_ARTICLE_URL = "#/%s/webPage/list/ARTICLE/%s";
+	public static final String FRONT_ARTICLE_URL = "#%s/article/list/%s/ARTICLE/%s/NULL";
 	
 	//系统设置
 	public static final String SETTING_SECRETKEY = "SECRETKEY";

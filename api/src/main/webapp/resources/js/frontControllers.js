@@ -116,17 +116,42 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.moduleList = null;
-				 $rootScope.project = null;
 			 }else{
 				 $rootScope.error = null;
 				 $rootScope.moduleList = result.data;
-				 $rootScope.project = result.others.project;
 				 $rootScope.others = result.others;
 			 }
 		});
     };
     $scope.getData();
 });
+/**
+ * 模块列表
+ */
+webModule.controller('frontModuleMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		
+		var url = $location.absUrl();
+		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
+		var params = "iUrl=front/module/menu.do|iLoading=FLOAT|iParams="+ "&projectId=" + projectId;
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 $rootScope.projectMenu = null;
+				 $rootScope.project = null;
+			 }else{
+				 $rootScope.error = null;
+				 $rootScope.projectMenu = result.data;
+				 $rootScope.project = result.others.project;
+			 }
+		});
+    };
+    $scope.getData();
+});
+
 
 /**
  * 接口列表

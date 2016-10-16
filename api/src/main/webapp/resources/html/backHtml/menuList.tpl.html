@@ -53,7 +53,7 @@
 					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
 				</a>
 				<!-- 菜单只有两级，只有parentId=0的菜单才能查看子菜单 -->
-				<a class="f12 text-primary mr10 cursor" ng-href="#/menu/list/{{item.id}}/null/{{item.menuName}}" ng-if="item.parentId=='0'"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/menu/list/{{item.id}}/null/{{item.menuName}}" ng-if="item.parentId=='0' && $stateParams.type!='FRIEND' && $stateParams.type!='BOTTOM'"> 
 					<i class="iconfont f12">&#xe60f;子菜单</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除"

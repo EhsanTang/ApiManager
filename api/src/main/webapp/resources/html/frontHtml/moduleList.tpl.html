@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="frontModuleCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 		
 	<div ng-if="moduleList.length==0" class="col-xs-12 tc mt10 mb10 C999">
@@ -25,7 +25,7 @@
 					<i class="iconfont f12">&#xe60f;文章</i>
 				</a>
 				
-				<a class="f12 text-primary mr5 cursor" ng-href="#/user/article/list/{{item.id}}/DICTIONARY"> 
+				<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL"> 
 					<i class="iconfont f12">&#xe60f;字典</i>
 				</a>
 			</div>

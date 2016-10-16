@@ -32,7 +32,7 @@
 					<input  class="form-control" type="text" ng-model="model.typeName" readonly>
 				</td>
 			</tr>
-			<tr>
+			<tr ng-if="!(model.parentId=='0' && (model.type=='FRONT' || model.type=='BACK'))">
 				<td class="tc">链接</td>
 				<td class="tc">
 					<div class="input-group w">
@@ -49,7 +49,7 @@
 					<td class="tc" colspan="3">
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 			</tr>
-			<tr>
+			<tr ng-if="model.parentId=='0'">
 				<td class="tc" rowspan="2" ng-if="model.parentId=='0'">图标</td>
 				<td class="tc" rowspan="2" ng-if="model.parentId!='0'">备注</td>
 				<td class="tc">

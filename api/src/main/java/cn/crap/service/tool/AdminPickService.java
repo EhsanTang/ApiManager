@@ -240,53 +240,36 @@ public class AdminPickService implements IPickService{
 			
 			// 前端菜单url
 			else{
-				/**
-				 * 前端错误吗
-				 */
-				pick = new PickDto(Const.SEPARATOR, "前端错误码");
+				// 分割线
+				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
-				
-				for (Project p : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType() ), null, null)) {
-					pick = new PickDto( "e_" + p.getId(), String.format(Const.FRONT_ERROR_URL, p.getId()), p.getName());
+				preUrl = "#/%s/module/list";
+				for(Project project: projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)){
+					pick = new PickDto(project.getId() , String.format(preUrl, project.getId()) , project.getName());
 					picks.add(pick);
 				}
 				
 				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "前端模块");
-				picks.add(pick);
-				preUrl = "#/projectId/interface/list/moduleId/moduleName";
-				moduleService.getDataCenterPick(picks, projectService.getProjectIdByType(ProjectType.RECOMMEND.getType()), "m_", preUrl, "");
-				
-				
-				/**
-				 * 前端数据字典
-				 */
-				pick = new PickDto(Const.SEPARATOR, "前端数据字典列表");
-				picks.add(pick);
-				for (Project p : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)) {
-					pick = new PickDto( "t_" + p.getId(), String.format(Const.FRONT_DICT_URL, p.getId()), p.getName());
-					picks.add(pick);
-				}
-				
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "前端文章类目列表");
+				pick = new PickDto(Const.SEPARATOR, "文章列表【站点文章】");
 				picks.add(pick);
 				int j = 0;
-				List<String> categorys2 = (List<String>) articleService.queryByHql("select distinct category from Article", null);
-				for (String w : categorys2) {
-					if (w == null)
+				@SuppressWarnings("unchecked")
+				List<String> categorys2 = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null);
+				for (String article : categorys2) {
+					if (MyString.isEmpty(article))
 						continue;
 					j++;
-					pick = new PickDto("cat_" + j, String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE, w) , w);
+					pick = new PickDto("cat_" + j, String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE,  Const.WEB_MODULE, article) , article);
 					picks.add(pick);
 				}
+				
 				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "前端页面");
+				pick = new PickDto(Const.SEPARATOR, "页面【站点页面】");
 				picks.add(pick);
-				preUrl = "#/%s/webPage/detail/PAGE/";
+				preUrl = "#/web/article/detail/web/PAGE/";
 				for (Article w : articleService
 						.findByMap(Tools.getMap("key|" + Const.NOT_NULL, Const.NOT_NULL, "type", "PAGE"), null, null)) {
-					pick = new PickDto("wp_" + w.getKey(), String.format( preUrl, w.getModuleId() ) + w.getKey(), w.getName());
+					pick = new PickDto("wp_" + w.getKey(), preUrl + w.getKey(), w.getName());
 					picks.add(pick);
 				}
 				// 分割线

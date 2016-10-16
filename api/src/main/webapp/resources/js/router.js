@@ -8,7 +8,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					if($stateParems.type == 'PROJECTARTICLE')
+					if($stateParems.type != 'DICTIONARY')
 						return 'resources/html/frontHtml/articleDetail_ARTICLE.tpl.html';
 					else
 						return 'resources/html/frontHtml/articleDetail_'+$stateParems.type+'.tpl.html';
@@ -24,7 +24,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					if($stateParems.type == "PROJECTARTICLE")
+					if($stateParems.type != "DICTIONARY")
 						return 'resources/html/frontHtml/articleList_ARTICLE.tpl.html';
 					else
 						return 'resources/html/frontHtml/articleList_'+$stateParems.type+'.tpl.html';

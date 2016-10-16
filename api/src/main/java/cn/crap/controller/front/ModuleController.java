@@ -27,13 +27,22 @@ public class ModuleController extends BaseController<Module>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId,String password, String visitCode, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+	public JsonResult list(@RequestParam String projectId,String password, String visitCode) throws MyException{
 		if( MyString.isEmpty(projectId) ){
 			throw new MyException("000020");
 		}
 		Project project = projectService.get(projectId);
+		Tools.canVisitModule(project.getPassword(), password, visitCode, request);
 		
 		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, 
-				Tools.getMap("project", project, "crumbs", Tools.getCrumbs( project.getName(), "void") )  );
+				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void") )  );
+	}	
+	@RequestMapping("/menu.do")
+	@ResponseBody
+	public JsonResult menu(@RequestParam String projectId) throws MyException{
+		if( MyString.isEmpty(projectId) ){
+			throw new MyException("000020");
+		}
+		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, Tools.getMap("project",  projectService.get(projectId)) );
 	}	
 }

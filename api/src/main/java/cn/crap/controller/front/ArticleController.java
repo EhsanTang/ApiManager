@@ -78,7 +78,7 @@ public class ArticleController extends BaseController<Article> {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
-		Map<String,Object> map = Tools.getMap("moduleId", moduleId, "type", type, "category", category);
+		Map<String,Object> map = Tools.getMap("moduleId", moduleId, "type", type.equals("PAGE")? "ARTICLE":type, "category", category);
 		
 		Module module = cacheService.getModule(moduleId);
 		Project project = projectService.get(module.getProjectId());

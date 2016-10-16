@@ -251,7 +251,7 @@ mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $
 
 mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
     $scope.getRequestExam = function(editerId,targetId,item,tableId) {
-    	var params = "iUrl=back/interface/getRequestExam.do|iLoading=FLOAT|iPost=true|iParams=&"+$.param($rootScope.model);
+    	var params = "iUrl=user/interface/getRequestExam.do|iLoading=FLOAT|iPost=true|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

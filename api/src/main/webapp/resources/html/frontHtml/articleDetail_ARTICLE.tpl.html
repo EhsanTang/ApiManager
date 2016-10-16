@@ -7,10 +7,9 @@
 	ng-class="{true: ' CFFF adorn-bg b0', false: ' C999'}[item == others.category]"></a>
 </div>
 <div class="col-xs-12 p0 f12 lh26 code dashed-t pt20">
-	<!-- <div class="f14 mt10 mb20 b1 bl-5 p0 r3 no-right-radius BCEEE" ng-if="webpage.brief!=''">
-		<pre ng-bind="webpage.brief" class="b0 p10 BGFFF">
-		</pre>
-	</div> -->
+	<div class="f14 mt10 mb20 b1 bl-5 p0 r3 no-right-radius BCEEE" ng-if="webpage.brief!='' && webpage.type=='PAGE'">
+			<pre ng-bind="webpage.brief" class="b0 p10 BGFFF"></pre>
+	</div>	
 	<div class="f14 mt-3 imgCenter" ng-bind-html="webpage.content|trustHtml"></div>
 	
 	<div ui-view="addComment"></div>

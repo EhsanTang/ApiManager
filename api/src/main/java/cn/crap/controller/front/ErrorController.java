@@ -18,9 +18,9 @@ import cn.crap.model.Error;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Controller
+@Controller("frontErrorController")
 @RequestMapping("/front/error")
-public class FrontErrorController extends BaseController<Error>{
+public class ErrorController extends BaseController<Error>{
 
 	@Autowired
 	private ICacheService cacheService;

@@ -25,6 +25,7 @@ public class Project extends BaseModel implements Serializable{
 	private int type;
 	private String remark;
 	private String userId;
+	private String password;
 	
 
 	@Column(name="name")
@@ -57,6 +58,14 @@ public class Project extends BaseModel implements Serializable{
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	@Transient

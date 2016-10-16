@@ -1,0 +1,78 @@
+	<div class="container-fluid m0 mt30 def-bg FOOTER_BG_COLOR FOOTER_COLOR">
+		<div class="container p0">
+			<div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">
+				©crap.cn&nbsp;版本号 [V6]
+				<ul class="dis-in-tab">
+					<li class="dis-in-tab mr20"><a target="_blank"
+						href="http://api.crap.cn/index.do#/webPage/list/ARTICLE/帮助文档">帮助文档</a>
+					</li>
+					<li class="dis-in-tab mr20"><a target="_blank"
+						href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a> <span
+						class="bg_line"></span></li>
+					<li class="dis-in-tab mr20"><a target="_blank"
+						href="https://git.oschina.net/CrapApi/CrapApi">源码:码云</a> <span
+						class="bg_line"></span></li>
+					<li class="dis-in-tab mr20"><a target="_blank"
+						href="http://tools.crap.cn">在线工具</a> <span
+						class="bg_line"></span></li>
+					<li class="dis-in-tab mr20" ng-repeat="item in fontMenus"
+						ng-if="item.menu.type=='BOTTOM'"><a target="_blank"
+						ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
+					</li>
+				</ul>
+				<div class="mt20">
+					友情链接：
+					<ul class="dis-in-tab p0">
+						<li class="dis-in-tab pr20" ng-repeat="item in fontMenus"
+							ng-if="item.menu.type=='FRIEND'"><a target="_blank"
+							ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<div id="go_top" style="padding-top: 9px; padding-left: 13px;"
+		class="cursor">
+		<i class="iconfont f20" style="color: #FFF;">&#xe617;</i>
+	</div>
+	<!-- 提示窗口 -->
+	<div id="lookUp" class="look-up shadow">
+		<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
+		<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
+	</div>
+	<div id="fade"></div>
+	<div id="passwordDiv" class="look-up shadow">
+		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
+			<form onsubmit="$('#refresh').click();closeMyDialog('passwordDiv');">
+				<blockquote style="margin-left: -15px;">
+					<p>&nbsp;私密项目，请输入访问密码</p>
+				</blockquote>
+				<div class="input-wrapper mt20 bt1">
+					<input id="password" type="text" placeholder="请输入访问密码">
+				</div>
+				<div class="input-wrapper bt0" ng-if="settings.VISITCODE=='true'">
+						<input type="text" id="visitCode" placeholder="图形验证码">
+						<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+							data-toggle="tooltip">
+							<img id="imgCode" width="80" height="30"
+								onclick="changeimg('imgCode','verificationCode')"
+								src="getImgCode.do">
+						</div>
+				</div>
+				<button type="submit" class="btn btn btn-purple btn-sm fr mt20">确认</button>
+			</form>
+		</div>
+		<i class="iconfont i-close" onclick="closeMyDialog('passwordDiv')">&#xe615;</i>
+	</div>
+	<div id="float" class="folat">
+		<div class="sk-wave">
+			<div class="sk-rect sk-rect1"></div>
+			<div class="sk-rect sk-rect2"></div>
+			<div class="sk-rect sk-rect3"></div>
+			<div class="sk-rect sk-rect4"></div>
+			<div class="sk-rect sk-rect5"></div>
+		</div>
+	</div>

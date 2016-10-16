@@ -25,9 +25,11 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
@@ -37,16 +39,18 @@ import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@Controller
+@Controller("frontInterfaceController")
 @RequestMapping("/front/interface")
-public class FrontInterfaceController extends BaseController<Interface>{
+public class InterfaceController extends BaseController<Interface>{
 
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IModuleService dataCenterService;
+	private IModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private IProjectService projectService;
 	@Autowired
 	private Config config;
 	
@@ -100,14 +104,30 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	}
 	
 	
+
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult webList(@ModelAttribute Interface interFace,
+	public JsonResult webList(@RequestParam String moduleId,String interfaceName, String url,
 			@RequestParam(defaultValue = "1") Integer currentPage,String password,String visitCode) throws MyException{
+		if( MyString.isEmpty(moduleId) ){
+			throw new MyException("000020");
+		}
+		
 		Page page= new Page(15);
-		Module dc = dataCenterService.get(interFace.getModuleId());
-		Tools.canVisitModule(dc.getPassword(), password, visitCode, request);
-		return interfaceService.getInterfaceList(page, null, interFace, currentPage);
+		page.setCurrentPage(currentPage);
+		
+		// 检查是否需要密码：模块密码>项目密码
+		Module module = moduleService.get(moduleId);
+		String needPassword = module.getPassword();
+		if(MyString.isEmpty(needPassword)){
+			needPassword = projectService.get(module.getProjectId()).getPassword();
+		}
+		Tools.canVisitModule(needPassword, password, visitCode, request);
+			
+		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
+		
+		return new JsonResult(1, interfaces, page,
+				Tools.getMap("crumbs", Tools.getCrumbs( module.getProjectName(), "#/"+module.getProjectId()+"/module/list", module.getName(), "void") ));
 	}
 
 	@RequestMapping("/detail.do")
@@ -115,16 +135,27 @@ public class FrontInterfaceController extends BaseController<Interface>{
 	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
 		interFace = interfaceService.get(interFace.getId());
 		if(interFace!=null){
-			Tools.canVisitModule(cacheService.getModule(interFace.getModuleId()).getPassword(), password, visitCode, request);
+			
+			Module module = cacheService.getModule(interFace.getModuleId());
+			Project project = projectService.get(module.getProjectId());
+			String needPassword = module.getPassword();
+			if(MyString.isEmpty(needPassword)){
+				needPassword = project.getPassword();
+			}
+			Tools.canVisitModule(needPassword, password, visitCode, request);
+			
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号
 			 */
 			List<Interface> versions = interfaceService.findByMap(
 					Tools.getMap("moduleId",interFace.getModuleId(),"interfaceName",interFace.getInterfaceName(),"version|<>",interFace.getVersion()), null, null);
 			return new JsonResult(1, interFace, null, 
-					Tools.getMap("versions", versions, "crumbs",
-							Tools.getCrumbs( cacheService.getModuleName(interFace.getModuleId()), "#/"+interFace.getProjectId() +"/interface/list/" +interFace.getModuleId() +"/" +cacheService.getModuleName(interFace.getModuleId())
-							,interFace.getInterfaceName() , "void"), "module",cacheService.getModule(interFace.getModuleId()) ));
+					Tools.getMap("versions", versions, 
+							"crumbs", 
+							Tools.getCrumbs( 
+									project.getName(), "#/"+project.getId()+"module/list",
+									module.getName()+":接口列表", "#/"+project.getId()+"/interface/list/" + module.getId(),
+									interFace.getInterfaceName() , "void"), "module",cacheService.getModule(interFace.getModuleId()) ));
 		}else{
 			throw new MyException("000012");
 		}

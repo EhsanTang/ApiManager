@@ -34,4 +34,9 @@ UPDATE `api`.`article` SET `moduleId`='web' WHERE `moduleId`='top';
 ALTER TABLE `api`.`module` 
 DROP COLUMN `parentId`;
 
+ALTER TABLE `api`.`project` 
+ADD COLUMN `password` VARCHAR(45) NULL AFTER `type`;
+
+ALTER TABLE `api`.`article` 
+DROP COLUMN `password`;
 

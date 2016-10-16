@@ -1,6 +1,5 @@
 package cn.crap.controller.user;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IErrorService;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Error;
 import cn.crap.utils.Const;
@@ -32,8 +28,6 @@ public class ErrorController extends BaseController<Error>{
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
-	@Autowired
-	private IProjectService projectService;
 
 	/**
 	 * @return 

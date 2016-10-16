@@ -12,7 +12,7 @@ import cn.crap.model.Interface;
 
 @Controller
 @RequestMapping("/mock")
-public class FrontMockController extends BaseController<Interface>{
+public class MockController extends BaseController<Interface>{
 
 	@Autowired
 	private IInterfaceService interfaceService;

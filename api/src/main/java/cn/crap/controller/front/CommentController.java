@@ -17,9 +17,9 @@ import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
-@Controller
+@Controller("frontCommentController")
 @RequestMapping("/front/comment")
-public class FrontCommentController extends BaseController<Comment> {
+public class CommentController extends BaseController<Comment> {
 	@Autowired
 	private ICacheService cacheService;
 

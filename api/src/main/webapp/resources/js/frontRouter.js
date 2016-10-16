@@ -8,12 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	if($("#projectId").length>0){// 项目主页
-		$urlRouterProvider.otherwise('/project');
-	}else{
-		$urlRouterProvider.otherwise('/top/webPage/detail/PAGE/WELCOME');
-	}
-	
+	$urlRouterProvider.otherwise('/web/article/detail/web/PAGE/WELCOME');
 	$stateProvider.state('frontSearchCtrl', {
 		url : '/frontSearch/:keyword',
 		views : {
@@ -41,13 +36,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/moduleList.tpl.html'
-			},
-			'page@frontModuleCtrl' : {
-				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
 	}).state('frontInterfaceCtrl', {
-		url : '/:projectId/interface/list/:moduleId/:moduleName',
+		url : '/:projectId/interface/list/:moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/interfaceList.tpl.html'

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -56,11 +55,6 @@ public class ModuleController extends BaseController<Module>{
 			Map<String,Object> map = Tools.getMap("projectId", module.getProjectId());
 			
 			hasPermission(cacheService.getProject(module.getProjectId()));
-			// 普通用户只能查看自己的项目
-			LoginInfoDto user = Tools.getUser();
-			if( Tools.getUser().getType() == UserType.USER.getType()){
-				map.put("userId", user.getId());
-			}
 			
 			return new JsonResult(1, moduleService.findByMap(map, page, null), page);
 		}	

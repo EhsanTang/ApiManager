@@ -4,7 +4,7 @@
  */
 app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('frontArticleDetail', {
-		url : '/:projectId/article/detail/:type/:id',
+		url : '/:projectId/article/detail/:moduleId/:type/:id',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -20,11 +20,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('frontArticleList', {
-		url : '/:projectId/webPage/list/:type/:search',
+		url : '/:projectId/article/list/:moduleId/:type/:category/:name',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/frontHtml/webPageList_'+$stateParems.type+'.tpl.html';
+					if($stateParems.type == "PROJECTARTICLE")
+						return 'resources/html/frontHtml/articleList_ARTICLE.tpl.html';
+					else
+						return 'resources/html/frontHtml/articleList_'+$stateParems.type+'.tpl.html';
 				}
 			},'page@frontArticleList' : {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'

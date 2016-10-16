@@ -30,8 +30,8 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
-@Controller
-public class FrontController extends BaseController<User> {
+@Controller("fontMainController")
+public class MainController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
@@ -59,6 +59,17 @@ public class FrontController extends BaseController<User> {
 	@RequestMapping({"/index.do","/web.do"})
 	public String index() throws Exception {
 		return "resources/html/frontHtml/index.html";
+	}
+	
+	/**
+	 * 前端项目主页
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/project.do")
+	public String project() throws Exception {
+		return "resources/html/frontHtml/projectIndex.html";
 	}
 	
 	@RequestMapping("/searchList.do")
@@ -114,7 +125,7 @@ public class FrontController extends BaseController<User> {
 		Object objMenus = cacheService.getObj("cache:leftMenu");
 		List<MenuDto> menus = null;
 		if(objMenus == null){
-			synchronized (FrontController.class) {
+			synchronized (MainController.class) {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
 					menus = menuService.getLeftMenu(null);

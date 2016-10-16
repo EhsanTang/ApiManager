@@ -37,7 +37,6 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 	private String category;
 	private byte canComment;
 	private int commentCount;
-	private String password;
 	private String markdown;
 	
 	public Article(){};
@@ -202,14 +201,6 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 	}
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
-	}
-	
-	@Column(name="password")
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Column(name="markdown")

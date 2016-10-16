@@ -8,7 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/web/article/detail/PAGE/ADMINHELP');
+	$urlRouterProvider.otherwise('/web/article/detail/web/PAGE/ADMINHELP');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
@@ -117,10 +117,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					if($stateParems.type == 'PROJECTARTICLE')
-						return 'resources/html/user/articleDetail_ARTICLE.tpl.html';
-					else
-						return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html';
+					return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html';
 				}
 			}
 		}
@@ -174,17 +171,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('commentList', {
-		url : '/:projectId/comment/list/:webpageId',
+		url : '/:projectId/comment/list/:articleId',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/backHtml/commentList.tpl.html'
+				templateUrl : 'resources/html/user/commentList.tpl.html'
 			},
 			'page@commentList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/backHtml/commentDetail.tpl.html';
+					return 'resources/html/user/commentDetail.tpl.html';
 				}
 			}
 		}

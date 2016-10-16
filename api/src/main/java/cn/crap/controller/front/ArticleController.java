@@ -91,7 +91,7 @@ public class ArticleController extends BaseController<Article> {
 		// 选择分类，最多显示前20个
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
 		if( categorys == null){
-			categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where (type ='PROJECTARTICLE' or type = 'ARTICLE') and moduleId = '"+module.getId()+"'", null, new Page(20));
+			categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, new Page(20));
 			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + module.getId(), categorys, config.getCacheTime());
 		}
 
@@ -141,7 +141,7 @@ public class ArticleController extends BaseController<Article> {
 		if( !model.getType().equals(ArticleType.DICTIONARY.name()) ){
 			List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
 			if( categorys == null){
-				categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where (type ='PROJECTARTICLE' or type = 'ARTICLE') and moduleId = '"+module.getId()+"'", null, new Page(20));
+				categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, new Page(20));
 				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + module.getId(), categorys, config.getCacheTime());
 			}
 			returnMap.put("categorys", categorys);
@@ -149,7 +149,7 @@ public class ArticleController extends BaseController<Article> {
 			
 			// 初始化前端js评论对象
 			returnMap.put("comment", new Comment(model.getId()));
-			map = Tools.getMap("webpageId", model.getId());
+			map = Tools.getMap("articleId", model.getId());
 			
 			// 评论
 			page= (Page) cacheService.getObj(Const.CACHE_COMMENT_PAGE + model.getId(), currentPage + "");

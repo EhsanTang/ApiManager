@@ -40,3 +40,6 @@ ADD COLUMN `password` VARCHAR(45) NULL AFTER `type`;
 ALTER TABLE `api`.`article` 
 DROP COLUMN `password`;
 
+ALTER TABLE `api`.`comment` 
+CHANGE COLUMN `webpageId` `articleId` VARCHAR(50) NOT NULL ;
+

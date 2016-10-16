@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12" ng-controller="backCommentCtrl">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="userCommentCtrl">
 <div class="col-xs-6 f16 fb p0 mb5">评论管理</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
@@ -39,12 +39,12 @@
 				<td class="tc">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</td>
 				<td class="tc w100">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('COMMENT','');"
-					ng-click="detail('编辑【'+item.content+'】',700,'back/comment/detail.do?id='+item.id)"
+					ng-click="detail('编辑【'+item.content+'】',700,'user/comment/detail.do?id='+item.id)"
 					data-toggle="tooltip" data-placement="top"
 					data-original-title="编辑"> <i class="iconfont f12">&#xe618;修改</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('COMMENT','');"
-					ng-click="del('back/comment/delete.do?id='+item.id,item.content)">
+					ng-click="del('user/comment/delete.do?id='+item.id,item.content)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				</td>

@@ -18,23 +18,23 @@ public class Comment extends BaseModel implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String webpageId;
+	private String articleId;
 	private String userId;
 	private String parentId;
 	private String content;
 	private String reply;
 	private String updateTime;
 	public Comment(){}
-	public Comment(String webpageId){
-		this.webpageId = webpageId;
+	public Comment(String articleId){
+		this.articleId = articleId;
 	}
 		
-	@Column(name="webpageId")
-	public String getWebpageId() {
-		return webpageId;
+	@Column(name="articleId")
+	public String getArticleId() {
+		return articleId;
 	}
-	public void setWebpageId(String webpageId) {
-		this.webpageId = webpageId;
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
 	}
 	
 	@Column(name="userId")

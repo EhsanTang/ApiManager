@@ -200,9 +200,9 @@ mainModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $sta
     };
     $scope.getData();
 });
-mainModule.controller('backCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=back/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&webpageId="+$stateParams.webpageId;
+		var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

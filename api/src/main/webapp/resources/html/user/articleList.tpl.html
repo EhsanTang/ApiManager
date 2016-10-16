@@ -15,7 +15,7 @@
 				<input type="text" class="form-control dis-in-blo w120" placeholder="名称" ng-model="$stateParams.name">
 			</div>
 		</div>
-		<div class="form-group w200 fr mr10" ng-if="$stateParams.type=='ARTICLE' || $stateParams.type=='PROJECTARTICLE' ">
+		<div class="form-group w200 fr mr10" ng-if="$stateParams.type=='ARTICLE'">
 			<label class="sr-only" for="">类目</label>
 			<div class="input-group">
 				<div class="input-group-addon">类目</div>
@@ -41,7 +41,7 @@
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">key</th>
 				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</th>
-				<th class="tc" ng-if="$stateParams.type=='ARTICLE' || $stateParams.type=='PROJECTARTICLE'">类目</th>
+				<th class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</th>
 				<th class="tc">点击量</th>
 				<td class="tc">排序</td>
 				<th class="tc w300">操作</th>
@@ -53,7 +53,7 @@
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
 				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
-				<td class="tc" ng-if="$stateParams.type=='ARTICLE' || $stateParams.type=='PROJECTARTICLE'">{{item.category}}</td>
+				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
 				<td class="tc">{{item.click}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
@@ -61,14 +61,14 @@
 					ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.type}}/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation(item.type,item.moduleId);"
 					ng-click="del('webPage/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/{{item.moduleId}}/comment/list/{{item.id}}"> 
+				<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/{{item.projectId}}/comment/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;评论列表</i>
 				</a>
 				<div class="w50 fr tl">

@@ -42,8 +42,8 @@ public class CommentController extends BaseController<Comment> {
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.save(comment);
 		
-		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getWebpageId());
-		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getWebpageId());
+		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getArticleId());
+		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getArticleId());
 		
 		return new JsonResult(1, null);
 	}

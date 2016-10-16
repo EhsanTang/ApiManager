@@ -16,7 +16,16 @@
 				</td>
 				
 			</tr>
-			
+			<tr>
+				<td class="tc">是否可评论</td>
+				<td class="tc">
+						<select name="type" class="form-control" ng-model="model.canComment">
+								<option value="1" ng-selected="item.canComment==1">可评论</option>
+								<option value="0" ng-selected="item.canComment==0">不可评论</option>
+						</select>
+				</td>
+				
+			</tr>
 			<tr>
 				<td class="tc">简介</td>
 				<td class="tc">

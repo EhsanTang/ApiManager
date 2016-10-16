@@ -1,4 +1,4 @@
-package cn.crap.controller.admin;
+package cn.crap.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ICommentService;
+import cn.crap.inter.service.table.IProjectService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -19,26 +21,33 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-@RequestMapping("/back/comment")
+@RequestMapping("/user/comment")
 public class CommentController extends BaseController<Comment> {
 	@Autowired
 	private ICommentService commentService;
+	@Autowired
+	private IProjectService projectService;
+	@Autowired
+	private IArticleService articleService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
-	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) {
+	@AuthPassport
+	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+		
+		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		return new JsonResult(1, commentService.findByMap(Tools.getMap("webpageId", comment.getWebpageId()), page, " createTime desc"), page);
+		return new JsonResult(1, commentService.findByMap(Tools.getMap("articleId", comment.getArticleId()), page, " createTime desc"), page);
 	}
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
-	public JsonResult detail(@ModelAttribute Comment comment) {
+	@AuthPassport
+	public JsonResult detail(@ModelAttribute Comment comment) throws MyException {
 		Comment model;
 		if (!comment.getId().equals(Const.NULL_ID)) {
+			hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
 			model = commentService.get(comment.getId());
 		} else {
 			model = new Comment();
@@ -48,8 +57,9 @@ public class CommentController extends BaseController<Comment> {
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
-	public JsonResult addOrUpdate(@ModelAttribute Comment comment) {
+	@AuthPassport
+	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
+		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.update(comment);
 		return new JsonResult(1, null);
@@ -57,8 +67,9 @@ public class CommentController extends BaseController<Comment> {
 
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_ADMIN)
+	@AuthPassport
 	public JsonResult delete(@ModelAttribute Comment comment) throws MyException {
+		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
 		comment = commentService.get(comment.getId());
 		commentService.delete(comment);
 		return new JsonResult(1, null);

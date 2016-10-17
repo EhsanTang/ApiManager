@@ -122,7 +122,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('sourceList', {
-		url : '/back/source/list/:directoryId/:directoryName',
+		url : '/user/source/list/:moduleId/:moduleName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/backHtml/sourceList.tpl.html'

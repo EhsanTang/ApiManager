@@ -243,9 +243,8 @@ public class AdminPickService implements IPickService{
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
-				preUrl = "#/%s/module/list";
 				for(Project project: projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)){
-					pick = new PickDto(project.getId() , String.format(preUrl, project.getId()) , project.getName());
+					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}
 				

@@ -51,16 +51,7 @@ public class SourceController extends BaseController<Source>{
 	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		// 搜索条件
-		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId());
-		//returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		returnMap.put("sources", sourceService.findByMap(map, page, null));
-
-		map.clear();
-		//map = Tools.getMap("projectId", source.getm, "type", "DIRECTORY");
-		//returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
-		return new JsonResult(1, returnMap, page);
+		return new JsonResult(1, sourceService.findByMap(Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId()), page, null), page);
 	}
 	
 	@RequestMapping("/detail.do")

@@ -57,6 +57,18 @@ public class Config{
 	@Value("${web.monitorEmailSendIndex}")
 	private int monitorEmailSendIndex;
 	
+	@Value("${web.showRecommendProject}")
+	private boolean showRecommendProject;
+	
+	@Value("${web.recommendProjectMenuName}")
+	private String recommendProjectMenuName;
+	
+	@Value("${web.showArticle}")
+	private boolean showArticle;
+	
+	@Value("${web.articleMenuName}")
+	private String articleMenuName;
+
 	public String getClientID() {
 		return clientID;
 	}
@@ -137,5 +149,23 @@ public class Config{
 		}
 		return monitorEmailSendIndex;
 	}
+
+	public boolean isShowRecommendProject() {
+		return showRecommendProject;
+	}
+
+	public String getRecommendProjectMenuName() {
+		return recommendProjectMenuName;
+	}
+
+	public boolean isShowArticle() {
+		return showArticle;
+	}
+
+	public String getArticleMenuName() {
+		return articleMenuName;
+	}
+	
+	
 	
 }

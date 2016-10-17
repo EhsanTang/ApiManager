@@ -1,51 +1,14 @@
 <div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
-		<form ng-submit="submitForm('module/addOrUpdate.do')" ng-if="model.parentId">
-			<table class="table table-bordered">
-				<tr>
-					<td class="tc">名称</td>
-					<td class="tc" colspan="3">
-						<input  class="form-control"  type="text" ng-model="model.name" required placeholder="目录名">
-					</td>
-				</tr>
-				<tr>
-					<td class="tc">父目录</td>
-					<td class="tc" colspan="3">
-						<input  class="form-control"  id="parentName" type="text" ng-model="model.parentName" required placeholder="点击输入框选择目录"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=parentName|tag=parentId|code=DATACENTER|params=&key=DIRECTORY|def='+model.parentId,$event)">
-					</td>
-				</tr>
-					<tr>
-					<td class="tc">访问密码</td>
-					<td class="tc" colspan="3"><input class="form-control"
-						type="text" ng-model="model.password" placeholder="可选，私密目录请设置密码"></td>
-				</tr>
-				<tr>
-					<td class="tc">备注</td>
-					<td class="tc" colspan="3">
-					<textarea class="form-control no-resize" ng-model="model.remark" placeholder="目录备注"></textarea>
-					</td>
-				</tr>
-				
-				<tr>
-					<td class="tc">排序</td>
-					<td class="tc" colspan="3">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
-				</tr>
-			</table>
-			<button type="submit" class="btn btn-success fr">提交</button>
-		</form>
-			
-		<form ng-submit="submitForm('back/source/addOrUpdate.do')" ng-if="model.directoryId">
+		<form ng-submit="submitForm('back/source/addOrUpdate.do')">
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w200">标题</td>
 					<td class="tc"><input class="form-control" type="text" placeholder="文件名" required ng-model="model.name"></td>
 				</tr>
 				<tr>
-					<td class="tc">目录</td>
+					<td class="tc">模块</td>
 					<td class="tc">
-						<input  class="form-control"  id="directoryName" type="text" ng-model="model.directoryName" required placeholder="点击输入框选择目录"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=directoryName|tag=directoryId|code=DATACENTER|params=&key=DIRECTORY|def='+model.directoryId,$event)">
+							<input  class="form-control" type="text" ng-model="model.moduleName" readonly>
 					</td>
 				</tr>
 					<tr>
@@ -64,7 +27,7 @@
 		</form>
 		
 		<form enctype="multipart/form-data" name="fileForm" style="margin-top:-21px"
-			target="hiddenFrame"  ng-if="model.directoryId"
+			target="hiddenFrame"
 			action="file/upload.do?callBack=uploadFileCallBack" method="post">
 			<table class="table table-bordered">
 				<tr>
@@ -84,6 +47,6 @@
 			</table>
 		</form>
 	</div>
-<button class="btn btn-success fr" onclick="$('#sourceForm').click();" ng-if="model.directoryId">提交</button>
+<button class="btn btn-success fr" onclick="$('#sourceForm').click();">提交</button>
 <div class="cb"></div>
 <iframe name="hiddenFrame" class="ndis"></iframe>

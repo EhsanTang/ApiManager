@@ -12,16 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
+import cn.crap.enumeration.MenuType;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IRoleService;
 import cn.crap.model.Menu;
+import cn.crap.model.Project;
+import cn.crap.springbeans.Config;
 import cn.crap.springbeans.PickFactory;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -31,20 +32,14 @@ import cn.crap.utils.Tools;
 public class MenuService extends BaseService<Menu> implements IMenuService {
 
 	@Autowired
-	private IModuleService dataCenter;
-	@Autowired
-	private IErrorService errorService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private IArticleService webPageService;
-	@Autowired
-	private IModuleService dataCenterService;
-	@Autowired
 	private IProjectService projectService;
 	@Autowired
+	private IArticleService articleService;
+	@Autowired
 	private PickFactory pickFactory;
-
+	@Autowired
+	private Config config;
+	
 	
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
@@ -64,6 +59,61 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		map.put("parentId|in", menuIds);
 		List<Menu> subMenus = findByMap(map, null, null);
 		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
+		
+		// 加载默认推荐项目菜单
+		if(config.isShowRecommendProject()){
+			MenuDto menuVO = new MenuDto();
+			Menu menu = new Menu();
+			menu.setIconRemark("<i class=\"iconfont\">&#xe636;</i>");
+			menu.setId("recommendProjectId");
+			menu.setMenuName(config.getRecommendProjectMenuName());
+			menu.setParentId("0");
+			menu.setType(MenuType.FRONT.name());
+			menuVO.setMenu(menu);
+			
+			menuVO.setSubMenu(new ArrayList<Menu>());
+			for (Project project : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)) {
+				Menu subMenu = new Menu();
+				subMenu.setId("recPro_"+project.getId());
+				subMenu.setMenuName(project.getName());
+				subMenu.setParentId("recommendProjectId");
+				subMenu.setType(MenuType.FRONT.name());
+				subMenu.setMenuUrl(String.format(Const.FRONT_PROJECT_URL, project.getId()));
+				menuVO.getSubMenu().add(subMenu);
+			}
+			menuVOs.add(menuVO);
+		}
+			
+		// 加载默认推荐文章
+		if(config.isShowArticle()){
+			MenuDto menuVO = new MenuDto();
+			Menu menu = new Menu();
+			menu.setIconRemark("<i class=\"iconfont\">&#xe637;</i>");
+			menu.setId("articleListId");
+			menu.setMenuName(config.getArticleMenuName());
+			menu.setParentId("0");
+			menu.setType(MenuType.FRONT.name());
+			menuVO.setMenu(menu);
+			
+			menuVO.setSubMenu(new ArrayList<Menu>());
+			@SuppressWarnings("unchecked")
+			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null);
+			int i = 0;
+			for (String category : categorys) {
+				if (MyString.isEmpty(category))
+					continue;
+				i ++ ;
+				Menu subMenu = new Menu();
+				subMenu.setId("arcList_cate_"+i);
+				subMenu.setMenuName(category);
+				subMenu.setParentId("articleListId");
+				subMenu.setType(MenuType.FRONT.name());
+				subMenu.setMenuUrl(String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE, Const.WEB_MODULE, category));
+				menuVO.getSubMenu().add(subMenu);
+			}
+			menuVOs.add(menuVO);
+		}
+		
 		for (Menu menu : menus) {
 			MenuDto menuVO = new MenuDto();
 			menuVO.setMenu(menu);

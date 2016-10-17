@@ -72,6 +72,7 @@ public class Const {
 	public static final String DOMAIN = "DOMAIN";
 	// url
 	public static final String FRONT_ARTICLE_URL = "#%s/article/list/%s/ARTICLE/%s/NULL";
+	public static final String FRONT_PROJECT_URL = "#/%s/module/list";
 	
 	//系统设置
 	public static final String SETTING_SECRETKEY = "SECRETKEY";

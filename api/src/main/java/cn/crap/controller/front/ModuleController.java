@@ -32,7 +32,7 @@ public class ModuleController extends BaseController<Module>{
 			throw new MyException("000020");
 		}
 		Project project = projectService.get(projectId);
-		Tools.canVisitModule(project.getPassword(), password, visitCode, request);
+		canVisit(project.getPassword(), password, visitCode);
 		
 		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, 
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void") )  );

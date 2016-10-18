@@ -10,24 +10,37 @@
 		ng-if="moduleList.length>0">模块列表</div>
 	<div class="col-xs-12 p0 dashed-t" ng-if="moduleList.length>0">
 		<div class="col-sm-4 col-md-3 m0 p0" ng-repeat="item in moduleList">
-			<div class="b1 tc r3 h220 m15 p10">
+			<div class="b1 tc r3 h220 m15 p10 pt5">
 				<i class="iconfont adorn-color f40 dis">&#xe61f;</i>
 				<div class="h30 of-h f16 C000 p10"
 					ng-bind="item.name|cut:true:8:' ...'"></div>
-				<div class="h70 of-h C555 p10"
+				<div class="h70 of-h C555 p10 pb5"
 					ng-bind="item.remark|cut:true:20:' ...'">
 				</div>
-				<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}"> 
-					<i class="iconfont f12">&#xe60f;接口</i>
-				</a>
+				<div class="lh26">
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}"> 
+						<i class="iconfont f12">&#xe614; 接口</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL"> 
+						<i class="iconfont f12">&#xe637; 文章</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/source/list/{{item.id}}"> 
+						<i class="iconfont f12">&#xe638; 资源</i>
+					</a>
+					<br/>
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL"> 
+						<i class="iconfont f12">&#xe61c; 数据字典</i>
+					</a>
+					
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL"> 
+						<i class="iconfont f12">&#xe61e; 下载</i>
+					</a>
+				</div>
 				
-				<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL"> 
-					<i class="iconfont f12">&#xe60f;文章</i>
-				</a>
 				
-				<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL"> 
-					<i class="iconfont f12">&#xe60f;字典</i>
-				</a>
+				
 			</div>
 		</div>
 	</div>

@@ -65,7 +65,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('frontSourceList', {
-		url : '/front/source/list/:directoryId/:directoryName',
+		url : '/:projectId/source/list/:moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/sourceList.tpl.html'

@@ -1,0 +1,57 @@
+package cn.crap.dto;
+
+import java.io.Serializable;
+
+import cn.crap.model.Interface;
+
+public class InterfacePDFDto implements Serializable{
+	/**
+	 * 生成pdf
+	 */
+	private static final long serialVersionUID = 1L;
+	private Interface model;
+	private Object formParams;
+	private String customParams;
+	private Object headers;
+	private Object responseParam;
+	private Object errors;
+	public Interface getModel() {
+		return model;
+	}
+	public void setModel(Interface model) {
+		this.model = model;
+	}
+	public Object getFormParams() {
+		return formParams;
+	}
+	public void setFormParams(Object formParams) {
+		this.formParams = formParams;
+	}
+	public String getCustomParams() {
+		return customParams;
+	}
+	public void setCustomParams(String customParams) {
+		this.customParams = customParams;
+	}
+	public Object getHeaders() {
+		return headers;
+	}
+	public void setHeaders(Object headers) {
+		this.headers = headers;
+	}
+	public Object getResponseParam() {
+		return responseParam;
+	}
+	public void setResponseParam(Object responseParam) {
+		this.responseParam = responseParam;
+	}
+	public Object getErrors() {
+		return errors;
+	}
+	public void setErrors(Object errors) {
+		this.errors = errors;
+	}
+	
+	
+	
+}

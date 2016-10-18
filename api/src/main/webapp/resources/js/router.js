@@ -33,8 +33,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
-	}).state('sourceDetail', {
-		url : '/front/source/detail/:id',
+	}).state('frontSourceDetail', {
+		url : '/:projectId/source/detail/:id',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){

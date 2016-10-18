@@ -38,12 +38,13 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 	private String filePath;
 	
 	public Source(){};
-	public Source(String id, String createTime, byte status, int sequence, String name, String filePath, String moduleId, String updateTime){
+	public Source(String id, String createTime, byte status, int sequence, String name, String remark, String filePath, String moduleId, String updateTime){
 		this.id = id;
 		this.createTime = createTime;
 		this.status = status;
 		this.sequence = sequence;
 		this.name = name;
+		this.remark = remark;
 		this.filePath = filePath;
 		this.moduleId = moduleId;
 		this.updateTime = updateTime;
@@ -95,6 +96,17 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 	}
 	
 	@Transient
+	public String getProjectId() {
+		if (!MyString.isEmpty(moduleId)) {
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
+			if (module != null)
+				return module.getProjectId();
+		}
+		return "";
+	}
+	
+	@Transient
 	public String getModuleName(){
 		if(!MyString.isEmpty(moduleId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
@@ -112,7 +124,7 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 		dto.setCreateTime(createTime);
 		dto.setTitle(name);
 		dto.setType(Source.class.getSimpleName());
-		dto.setUrl("#/front/source/detail/"+id);
+		dto.setUrl("#/"+getProjectId()+"/source/detail/"+id);
 		dto.setVersion("");
 		//索引内容 = 备注内容 + 文档内容
 		String docContent = "";

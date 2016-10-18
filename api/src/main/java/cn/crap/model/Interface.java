@@ -62,7 +62,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		this.remark = remark;
 		this.sequence = sequence;
 	}
-
+    // 以get开头的方法在jsaon返回时会调用
 	@Transient
 	public SearchDto toSearchDto(ICacheService cacheService) {
 		SearchDto dto = new SearchDto();
@@ -72,7 +72,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		dto.setModuleName(getModuleName());
 		dto.setTitle(interfaceName);
 		dto.setType(Interface.class.getSimpleName());
-		dto.setUrl("#/font/interfaceDetail/" + id);
+		dto.setUrl("#/"+getProjectId()+"/front/interfaceDetail/" + id);
 		dto.setVersion(version);
 		// 私有项目不能建立索引
 		if(cacheService.getModule(this.moduleId).getStatus() == 2){

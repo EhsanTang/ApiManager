@@ -1,10 +1,12 @@
 package cn.crap.controller.front;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +27,7 @@ import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
+import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -59,6 +62,18 @@ public class MainController extends BaseController<User> {
 	@RequestMapping({"/index.do","/web.do"})
 	public String index() throws Exception {
 		return "resources/html/frontHtml/index.html";
+	}
+	/**
+	 * 公共
+	 * @param result
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws MessagingException
+	 */
+	@RequestMapping("/result.do")
+	public String validateEmail(String result) throws UnsupportedEncodingException, MessagingException {
+		request.setAttribute("result", result);
+		return "WEB-INF/views/result.jsp";
 	}
 	
 	/**

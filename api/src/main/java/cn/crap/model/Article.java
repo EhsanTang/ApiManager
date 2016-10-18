@@ -69,14 +69,7 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 		dto.setModuleName(getModuleName());
 		dto.setTitle(name);
 		dto.setType(Article.class.getSimpleName());
-		if(type.equals(ArticleType.ARTICLE.name()))
-			dto.setUrl("#/"+getModuleId()+"/webPage/detail/ARTICLE/"+id);
-		else if(type.equals(ArticleType.DICTIONARY.name()))
-			dto.setUrl("#/"+getModuleId()+"/webPage/detail/DICTIONARY/"+id);
-		else if(type.equals(ArticleType.PAGE.name()))
-			dto.setUrl("#/"+getModuleId()+"/webPage/detail/PAGE/"+key);
-		else
-			dto.setUrl("");
+		dto.setUrl("#/"+getProjectId()+"/article/detail/"+getModuleId()+"/"+type+"/"+id);
 		dto.setVersion("");
 		return dto;
 	}

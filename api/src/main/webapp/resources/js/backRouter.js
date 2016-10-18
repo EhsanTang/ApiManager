@@ -122,17 +122,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('sourceList', {
-		url : '/user/source/list/:moduleId/:moduleName',
+		url : '/user/source/list/:moduleId',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/backHtml/sourceList.tpl.html'
+				templateUrl : 'resources/html/user/sourceList.tpl.html'
 			},
 			'page@sourceList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'
 			},
 			'detail' : {
 				templateUrl : function($stateParems){
-					return 'resources/html/backHtml/sourceDetail.tpl.html';
+					return 'resources/html/user/sourceDetail.tpl.html';
 				}
 			}
 		}

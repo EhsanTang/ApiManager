@@ -1,8 +1,6 @@
-package cn.crap.controller.admin;
+package cn.crap.controller.user;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +14,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.ISourceService;
-import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Source;
 import cn.crap.utils.DateFormartUtil;
@@ -27,15 +23,11 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
-@RequestMapping("/back/source")
+@RequestMapping("/user/source")
 public class SourceController extends BaseController<Source>{
 
 	@Autowired
 	private ISourceService sourceService;
-	@Autowired
-	private IModuleService dataCenterService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
 	/**
@@ -44,11 +36,13 @@ public class SourceController extends BaseController<Source>{
 	 * @param currentPage 当前页
 	 * @param pageSize 每页显示多少条，-1表示查询全部
 	 * @return
+	 * @throws MyException 
 	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage){
+	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage) throws MyException{
+		hasPermissionModuleId((source.getModuleId()));
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, sourceService.findByMap(Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId()), page, null), page);
@@ -57,56 +51,25 @@ public class SourceController extends BaseController<Source>{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Source source){
+	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
 		if(!MyString.isEmpty(source.getId())){
+			hasPermissionModuleId((source.getModuleId()));
 			model = sourceService.get(source.getId());
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
 		}
 		return new JsonResult(1,model);
-		
-	}
-	@RequestMapping("/webDetail.do")
-	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute Source source,String password,String visitCode) throws MyException{
-		Source model;
-		if(!MyString.isEmpty(source.getId())){
-			model = sourceService.get(source.getId());
-		}else{
-			throw new MyException("000020");
-		}
-		Tools.canVisitModule(cacheService.getModule(model.getModuleId()).getPassword(), password, visitCode, request);
-		return new JsonResult(1,model);
-	}
-	
-	@RequestMapping("/webList.do")
-	@ResponseBody
-	public JsonResult webList(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage,String password,String visitCode,
-			@RequestParam(defaultValue="无") String directoryName) throws MyException{
-		Tools.canVisitModule(cacheService.getModule(source.getModuleId()).getPassword(), password, visitCode, request);
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		// 搜索条件
-		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "directoryId", source.getModuleId());
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		returnMap.put("sources", sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,filePath,directoryId,updateTime) ", page, null));
-
-		map.clear();
-		map = Tools.getMap("parentId", source.getModuleId(), "type", "DIRECTORY");
-		returnMap.put("directorys",  dataCenterService.findByMap(map, null, null));
-		
-		return new JsonResult(1, returnMap, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("目录列表:"+directoryName,"void")));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
+		// 权限
+		hasPermissionModuleId((source.getModuleId()));
 		
-			// TODO 权限
 			if(MyString.isEmpty(source.getFilePath())){
 				throw new MyException("000016");
 			}
@@ -127,6 +90,7 @@ public class SourceController extends BaseController<Source>{
 			}catch(Exception e){
 				throw new MyException("000017");
 			}
+			
 			if(!MyString.isEmpty(source.getId())){
 				Source oldSource = sourceService.get(source.getId());
 				String oldVsesions[]  = oldSource.getFilePath().split("\\.");
@@ -162,7 +126,9 @@ public class SourceController extends BaseController<Source>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
-		// TODO 权限
+		// 权限
+		hasPermissionModuleId(sourceService.get(source.getId()).getModuleId());
+		
 		sourceService.delete(source);
 		luceneService.delete(new SearchDto(source.getId()));
 		return new JsonResult(1,null);
@@ -171,9 +137,13 @@ public class SourceController extends BaseController<Source>{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		Source change = sourceService.get(changeId);
 		Source model = sourceService.get(id);
+		// 权限
+		hasPermissionModuleId(change.getModuleId());
+		hasPermissionModuleId(model.getModuleId());
+				
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());

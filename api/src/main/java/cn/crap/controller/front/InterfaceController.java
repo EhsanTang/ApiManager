@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,8 +56,16 @@ public class InterfaceController extends BaseController<Interface>{
 	private Config config;
 	
 	@RequestMapping("/detail/pdf.do")
-	public String pdf(@ModelAttribute Interface interFace) throws Exception {
-		interFace = interfaceService.get(interFace.getId());
+	public String pdf(String id, String moduleId) throws Exception {
+		if(MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
+			request.setAttribute("result", "参数不能为空，生成pdf失败");
+			return "/WEB-INF/views/result.jsp";
+		}
+		Interface interFace = interfaceService.get(id);
+		if(MyString.isEmpty(interFace.getId())){
+			request.setAttribute("result", "接口id有误，生成pdf失败");
+			return "/WEB-INF/views/result.jsp";
+		}
 		request.setAttribute("model", interFace);
 		if(interFace.getParam().startsWith("form=")){
 			request.setAttribute("formParams", JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
@@ -75,8 +84,8 @@ public class InterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
-	public void download(@ModelAttribute Interface interFace,HttpServletRequest req) throws Exception {
-		interFace = interfaceService.get(interFace.getId());
+	public void download(@ModelAttribute Interface interFace,HttpServletRequest req, HttpServletResponse response) throws Exception {
+		//interFace = interfaceService.get(interFace.getId());
 		String displayFilename = "CrapApi"+System.currentTimeMillis()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
         int len = 0; 
@@ -100,6 +109,7 @@ public class InterfaceController extends BaseController<Interface>{
         ut = response.getOutputStream();  
         while ((len = br.read(buf)) != -1)  
              ut.write(buf, 0, len);
+        ut.flush();
         br.close();
 	}
 	
@@ -118,11 +128,7 @@ public class InterfaceController extends BaseController<Interface>{
 		
 		// 检查是否需要密码：模块密码>项目密码
 		Module module = moduleService.get(moduleId);
-		String needPassword = module.getPassword();
-		if(MyString.isEmpty(needPassword)){
-			needPassword = projectService.get(module.getProjectId()).getPassword();
-		}
-		Tools.canVisitModule(needPassword, password, visitCode, request);
+		canVisitModule(module, password, visitCode);
 			
 		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
 		
@@ -142,7 +148,7 @@ public class InterfaceController extends BaseController<Interface>{
 			if(MyString.isEmpty(needPassword)){
 				needPassword = project.getPassword();
 			}
-			Tools.canVisitModule(needPassword, password, visitCode, request);
+			canVisit(needPassword, password, visitCode);
 			
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号

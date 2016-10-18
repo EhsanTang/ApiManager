@@ -1,46 +1,21 @@
 <div class="col-xs-12 r0 p20 pt0" ng-controller="frontSourceCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt20 mb20 adorn-bl-3">目录列表</div>
 
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.directorys.length>0">目录列表</div>
-<div class="col-xs-12 p0 tc mt50 mb10 C999 f14" ng-if="list.directorys.length==0 && list.sources.length==0">
+<div class="col-xs-12 p0 tc mt50 mb10 C999 f14" ng-if="list.length==0">
 		<i class="iconfont f30 mt-5 mr10">&#xe626;</i>目录为空
 </div>
-<div class="col-xs-12 p0" ng-if="list.directorys.length>0">
-	<table class="table table-bordered table-hover">
-		<thead>
-			<tr class="BGEEE">
-				<th class="tc">目录名称</th>
-				<th class="w300 tc">创建时间</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in list.directorys" class="h40 lh40">
-				<td class="tc lh40">
-				<a class="f12 text-primary mr10 cursor" ng-href="#/front/source/list/{{item.id}}/{{item.name}}"> 
-				<i class="iconfont f14 C999">&#xe628;&nbsp;</i>{{item.name}}
-				</a>
-				</td>
-				<td class="tc lh40" ng-bind="getDate(item.createTime)|date:'yyyy-MM-dd hh:mm'">
-				</td>
-			</tr>
-
-		</tbody>
-	</table>
-</div>
 
 
-<div class="col-xs-6 f16 fb pl0 mb10 pb5 mt20" ng-if="list.sources.length>0">
-	<a type="button" class="btn btn-default btn-sm"> <i class="iconfont f16 mt-5">&#xe628;</i> {{$stateParams.directoryName}}</a>
-</div>
+<div class="col-xs-12 p0" ng-if="list.length>0">
 
-<div class="col-xs-12 p0" ng-if="list.sources.length>0">
-	<table class="table table-hover">
-			<tr ng-repeat="item in list.sources">
-				<td><a ng-href="#/front/source/detail/{{item.id}}" class="f14">{{item.name}}</a></td>
-				<td class="tr w300 C999"><span class="C999 pl20 f12">更新时间: {{getDate(item.updateTime)|date:'yyyy-MM-dd hh:mm'}}</span></td>
-			</tr>
-	</table>
-	<div ui-view="page"></div>
+	<div ng-repeat="item in list" class="dashed-t">
+	
+		<a ng-href="#/{{item.projectId}}/source/detail/{{item.id}}" class="p10 pl0 f16 fb dis w C000 no_unl">{{item.name}}</a>
+		<div class ="f14 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
+		<div class="tr C999 f12 p10">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</div>
+	</div>
+	<div ui-view="page" class="mt20"></div>
 </div>
 </div>
 <div class="cb"></div>

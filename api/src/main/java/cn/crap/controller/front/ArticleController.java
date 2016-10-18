@@ -20,11 +20,11 @@ import cn.crap.inter.service.table.ICommentService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Article;
 import cn.crap.model.Comment;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.springbeans.Config;
-import cn.crap.model.Article;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -54,13 +54,8 @@ public class ArticleController extends BaseController<Article> {
 	@RequestMapping("/front/article/diclist.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
-		Module module = cacheService.getModule(moduleId);
-		Project project = projectService.get(module.getProjectId());
-		String needPassword = module.getPassword();
-		if(MyString.isEmpty(needPassword)){
-			needPassword = project.getPassword();
-		}
-		Tools.canVisitModule(needPassword, password, visitCode, request);
+		
+		canVisitModuleId(moduleId, password, visitCode);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -75,18 +70,18 @@ public class ArticleController extends BaseController<Article> {
 	@ResponseBody
 	public JsonResult list(@RequestParam(defaultValue="1") Integer currentPage,@RequestParam(defaultValue=Const.WEB_MODULE) String moduleId, @RequestParam String type,@RequestParam String category
 			,String password, String visitCode) throws MyException{
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		
-		Map<String,Object> map = Tools.getMap("moduleId", moduleId, "type", type.equals("PAGE")? "ARTICLE":type, "category", category);
-		
 		Module module = cacheService.getModule(moduleId);
 		Project project = projectService.get(module.getProjectId());
 		String needPassword = module.getPassword();
 		if(MyString.isEmpty(needPassword)){
 			needPassword = project.getPassword();
 		}
-		Tools.canVisitModule(needPassword, password, visitCode, request);
+		canVisit(needPassword, password, visitCode);
+		
+		Page page= new Page(15);
+		page.setCurrentPage(currentPage);
+		
+		Map<String,Object> map = Tools.getMap("moduleId", moduleId, "type", type.equals("PAGE")? "ARTICLE":type, "category", category);
 		
 		// 选择分类，最多显示前20个
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
@@ -128,21 +123,16 @@ public class ArticleController extends BaseController<Article> {
 			cacheService.setObj( Const.CACHE_WEBPAGE + webPage.getId(), model, config.getCacheTime());
 		}
 		
-		Module module = cacheService.getModule(model.getModuleId());
 		// 检查是否需要密码：模块密码>项目密码
-		String needPassword = module.getPassword();
-		if(MyString.isEmpty(needPassword)){
-			needPassword = projectService.get(module.getProjectId()).getPassword();
-		}
-		Tools.canVisitModule(needPassword, password, visitCode, request);
+		canVisitModuleId(model.getModuleId(), password, visitCode);
 		
 		Page page = null;
 		// 选择分类，最多显示前20个
 		if( !model.getType().equals(ArticleType.DICTIONARY.name()) ){
-			List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
+			List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId());
 			if( categorys == null){
-				categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, new Page(20));
-				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + module.getId(), categorys, config.getCacheTime());
+				categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+model.getModuleId()+"'", null, new Page(20));
+				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId(), categorys, config.getCacheTime());
 			}
 			returnMap.put("categorys", categorys);
 			returnMap.put("category", model.getCategory());

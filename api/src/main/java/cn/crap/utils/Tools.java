@@ -100,26 +100,6 @@ public class Tools {
 		throw new MyException("000003");
 	}
 	
-	/**********************模块访问密码***************************/
-	public static void canVisitModule(String modulePassword,String password, String visitCode, HttpServletRequest request) throws MyException{
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		String temPwd = cacheService.getStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
-		if(!MyString.isEmpty(modulePassword)){
-			if(!MyString.isEmpty(temPwd)&&temPwd.toString().equals(modulePassword)){
-				return;
-			}
-			if(MyString.isEmpty(password)||!password.equals(modulePassword)){
-				throw new MyException("000007");
-			}
-			if(cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")){
-				Object imgCode = getImgCode(request);
-				if(MyString.isEmpty(visitCode)||imgCode==null||!visitCode.equals(imgCode.toString())){
-					throw new MyException("000007");
-				}
-			}
-			cacheService.setStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request), password, 10 * 60);
-		}
-	}
 	/**
 	 * 构造查询Map集合
 	 * @param params 不定数量参数 格式(key1,value1,key2,value2....)

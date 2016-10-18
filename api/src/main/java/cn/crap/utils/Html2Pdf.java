@@ -2,6 +2,8 @@ package cn.crap.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +43,21 @@ public class Html2Pdf {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(destDir));
 			document.open();
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, HttpPostGet.GetString(
-					config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId),
+			
+			InputStream pdfText = null;
+			try{
+				pdfText = HttpPostGet.GetString(config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			if(pdfText == null){
+				pdfText = HttpPostGet.GetString("http://api.crap.cn/result.do?result="+URLEncoder.encode("地址有误，生成pdf失败，请确认配置文件config.properties中的网站域名配置是否正确！","utf-8"));
+			}
+					
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, pdfText,
 					Charset.forName("UTF-8"), new ChinaFont());
 			document.close();
+			System.out.println(destDir);
 			return destDir;
 		} catch (Exception e) {
 			e.printStackTrace();

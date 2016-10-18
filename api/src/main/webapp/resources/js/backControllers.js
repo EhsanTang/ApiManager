@@ -243,7 +243,7 @@ mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
 
 mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=back/source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
+		var params = "iUrl=user/source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

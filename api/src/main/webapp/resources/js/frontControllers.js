@@ -231,11 +231,11 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 });
 
 
-webModule.controller('sourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontSourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iLoading=FLOAT|iUrl=back/source/webDetail.do?id="+$stateParams.id;
+		var params = "iLoading=FLOAT|iUrl=front/source/detail.do?id="+$stateParams.id;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		httpService.callHttpMethod($http,params).success(function(result) {
@@ -258,7 +258,7 @@ webModule.controller('frontSourceCtrl', function($rootScope,$scope, $http, $stat
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
-		var params = "iUrl=back/source/webList.do|iLoading=FLOAT|iParams=&directoryName="+$stateParams.directoryName+"&directoryId="+$stateParams.directoryId;
+		var params = "iUrl=front/source/list.do|iLoading=FLOAT|iParams=&moduleId="+$stateParams.moduleId;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		$rootScope.getBaseData($scope,$http,params,page);

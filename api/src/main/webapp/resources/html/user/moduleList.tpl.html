@@ -39,15 +39,15 @@
 					<i class="iconfont f12">&#xe60f;接口</i>
 				</a>
 				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.id}}/ARTICLE"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/ARTICLE"> 
 					<i class="iconfont f12">&#xe60f;文章</i>
 				</a>
 				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.id}}"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.projectId}}/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;资源</i>
 				</a>
 				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.id}}/DICTIONARY"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/DICTIONARY"> 
 					<i class="iconfont f12">&#xe60f;数据字典</i>
 				</a>
 				
@@ -61,7 +61,7 @@
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				
-				<div class="w50 fr tl">
+				<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/module/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>

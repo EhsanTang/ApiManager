@@ -71,7 +71,7 @@ public class ArticleController extends BaseController<Article> {
 	public JsonResult list(@RequestParam(defaultValue="1") Integer currentPage,@RequestParam(defaultValue=Const.WEB_MODULE) String moduleId, @RequestParam String type,@RequestParam String category
 			,String password, String visitCode) throws MyException{
 		Module module = cacheService.getModule(moduleId);
-		Project project = projectService.get(module.getProjectId());
+		Project project = cacheService.getProject(module.getProjectId());
 		String needPassword = module.getPassword();
 		if(MyString.isEmpty(needPassword)){
 			needPassword = project.getPassword();

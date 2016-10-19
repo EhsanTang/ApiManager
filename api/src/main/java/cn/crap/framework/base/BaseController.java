@@ -136,10 +136,10 @@ public abstract class BaseController<T extends BaseModel> {
 			throw new MyException("000003");
 		}
 		protected void hasPermission(String projectId) throws MyException{
-			hasPermission(projectService.get(projectId));
+			hasPermission(cacheService.getProject(projectId));
 		}
 		protected void hasPermissionModuleId(String moduleId) throws MyException{
-			hasPermission(projectService.get(cacheService.getModule(moduleId).getProjectId()));
+			hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()));
 		}
 		
 		/**
@@ -150,12 +150,12 @@ public abstract class BaseController<T extends BaseModel> {
 		public void canVisitModuleId(String moduleId,String password, String visitCode) throws MyException{
 			Module module = cacheService.getModule(moduleId);
 			if(MyString.isEmpty(module.getPassword())){
-				canVisit(projectService.get(module.getProjectId()).getPassword(), password, visitCode);
+				canVisit(cacheService.getProject(module.getProjectId()).getPassword(), password, visitCode);
 			}
 		}
 		public void canVisitModule(Module module,String password, String visitCode) throws MyException{
 			if(MyString.isEmpty(module.getPassword())){
-				canVisit(projectService.get(module.getProjectId()).getPassword(), password, visitCode);
+				canVisit(cacheService.getProject(module.getProjectId()).getPassword(), password, visitCode);
 			}
 		}
 		

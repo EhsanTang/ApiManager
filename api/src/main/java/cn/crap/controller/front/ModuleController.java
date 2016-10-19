@@ -11,6 +11,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.MyString;
@@ -24,6 +25,8 @@ public class ModuleController extends BaseController<Module>{
 	private IModuleService moduleService;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private ICacheService cacheService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -31,7 +34,7 @@ public class ModuleController extends BaseController<Module>{
 		if( MyString.isEmpty(projectId) ){
 			throw new MyException("000020");
 		}
-		Project project = projectService.get(projectId);
+		Project project = cacheService.getProject(projectId);
 		canVisit(project.getPassword(), password, visitCode);
 		
 		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, 
@@ -43,6 +46,6 @@ public class ModuleController extends BaseController<Module>{
 		if( MyString.isEmpty(projectId) ){
 			throw new MyException("000020");
 		}
-		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, Tools.getMap("project",  projectService.get(projectId)) );
+		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId), null, null), null, Tools.getMap("project",  cacheService.getProject(projectId)) );
 	}	
 }

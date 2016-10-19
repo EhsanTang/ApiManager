@@ -143,7 +143,7 @@ public class InterfaceController extends BaseController<Interface>{
 		if(interFace!=null){
 			
 			Module module = cacheService.getModule(interFace.getModuleId());
-			Project project = projectService.get(module.getProjectId());
+			Project project = cacheService.getProject(module.getProjectId());
 			String needPassword = module.getPassword();
 			if(MyString.isEmpty(needPassword)){
 				needPassword = project.getPassword();

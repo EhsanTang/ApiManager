@@ -107,7 +107,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('articleList', {
-		url : '/user/article/list/:moduleId/:type',
+		url : '/user/article/list/:projectId/:moduleId/:type',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/articleList.tpl.html'
@@ -122,7 +122,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('sourceList', {
-		url : '/user/source/list/:moduleId',
+		url : '/user/source/list/:projectId/:moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/sourceList.tpl.html'

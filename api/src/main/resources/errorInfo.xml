@@ -36,6 +36,11 @@
 				<entry key="000030" value="该邮箱尚未注册，操作失败" />
 				<entry key="000031" value="邮箱验证码有误，请重新发送验证码" />
 				<entry key="000032" value="邮箱格式不正确能" />
+				<entry key="000033" value="错误码数量大于0，不允许删除该模块" />
+				<entry key="000034" value="模块文章数量大于0，不允许删除该模块" />
+				<entry key="000035" value="模块资源数量大于0，不允许删除该模块" />
+				<entry key="000036" value="模块数据字典数量大于0，不允许删除该模块" />
+				<entry key="000037" value="评论数量大于0，不允许删除该文章" />
 			</map>
 		</property>
 	</bean>

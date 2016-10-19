@@ -17,6 +17,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IArticleService;
+import cn.crap.inter.service.table.ICommentService;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
@@ -37,13 +38,15 @@ public class ArticleController extends BaseController<Article>{
 	private ISearchService luceneService;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private ICommentService commentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Article article,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		
-		hasPermission( projectService.get(article.getProjectId()) );
+		hasPermission( cacheService.getProject(article.getProjectId()) );
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -61,7 +64,7 @@ public class ArticleController extends BaseController<Article>{
 		Article model;
 		if(!article.getId().equals(Const.NULL_ID)){
 			model= articleService.get(article.getId());
-			hasPermission( projectService.get(model.getProjectId()) );
+			hasPermission( cacheService.getProject(model.getProjectId()) );
 		}else{
 			model=new Article();
 			model.setType(article.getType());
@@ -73,7 +76,7 @@ public class ArticleController extends BaseController<Article>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Article article) throws MyException, IOException{
-		hasPermission( projectService.get(article.getProjectId()) );
+		hasPermission( cacheService.getProject(article.getProjectId()) );
 		
 		// 如果模块为空，表示为管理员，将模块设置为系统模块
 		if(MyString.isEmpty(article.getModuleId())){
@@ -94,7 +97,7 @@ public class ArticleController extends BaseController<Article>{
 				article.setCanDelete(Byte.valueOf("0"));
 			}
 			
-			hasPermission( projectService.get(model.getProjectId()) );
+			hasPermission( cacheService.getProject(model.getProjectId()) );
 			articleService.update(article);
 			luceneService.update(article.toSearchDto(null));
 		}else{
@@ -110,9 +113,13 @@ public class ArticleController extends BaseController<Article>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Article article) throws MyException, IOException{
 		Article model = articleService.get(article.getId());
-		hasPermission( projectService.get(article.getProjectId()) );
+		hasPermission( cacheService.getProject(model.getProjectId()) );
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
+		}
+		
+		if( commentService.getCount(Tools.getMap("articleId", model.getId()))>0){
+			throw new MyException("000037");
 		}
 		articleService.delete(article);
 		cacheService.delObj(Const.CACHE_WEBPAGE + article.getId());
@@ -129,8 +136,8 @@ public class ArticleController extends BaseController<Article>{
 		Article change = articleService.get(changeId);
 		Article model = articleService.get(id);
 		
-		hasPermission( projectService.get(change.getProjectId()) );
-		hasPermission( projectService.get(model.getProjectId()) );
+		hasPermission( cacheService.getProject(change.getProjectId()) );
+		hasPermission( cacheService.getProject(model.getProjectId()) );
 		
 		int modelSequence = model.getSequence();
 		

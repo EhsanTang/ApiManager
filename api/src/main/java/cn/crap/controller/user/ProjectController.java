@@ -16,6 +16,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
@@ -44,6 +45,8 @@ public class ProjectController extends BaseController<Project> {
 	private IRoleService roleService;
 	@Autowired
 	private IModuleService moduleService;
+	@Autowired
+	private IErrorService errorService;
 	@Autowired
 	private Config config;
 	
@@ -77,7 +80,7 @@ public class ProjectController extends BaseController<Project> {
 	public JsonResult detail(@ModelAttribute Project project) throws MyException{
 		Project model;
 		if(!project.getId().equals(Const.NULL_ID)){
-			model= projectService.get(project.getId());
+			model= cacheService.getProject(project.getId());
 			hasPermission(model);
 		}else{
 			model=new Project();
@@ -97,7 +100,7 @@ public class ProjectController extends BaseController<Project> {
 		LoginInfoDto user = Tools.getUser();
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
-			model= projectService.get(project.getId());
+			model= cacheService.getProject(project.getId());
 			hasPermission(model);
 			
 			// 不允许转移项目
@@ -144,16 +147,19 @@ public class ProjectController extends BaseController<Project> {
 			throw new MyException("000009");
 
 				
-		Project model= projectService.get(project.getId());
+		Project model= cacheService.getProject(project.getId());
 		hasPermission(model);
 		
 		
-		// 只有子模块数量为0，才允许删除模块
-		if(moduleService.getCount(Tools.getMap("parentId", model.getId())) > 0){
+		// 只有子模块数量为0，才允许删除项目
+		if(moduleService.getCount(Tools.getMap("projectId", model.getId())) > 0){
 			throw new MyException("000023");
 		}
 		
-		// TODO 文章、数据字段、文件
+		// 只有错误码数量为0，才允许删除项目
+		if(errorService.getCount(Tools.getMap("projectId", model.getId())) > 0){
+			throw new MyException("000033");
+		}
 		
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
 		projectService.delete(project);
@@ -164,8 +170,8 @@ public class ProjectController extends BaseController<Project> {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Project change = projectService.get(changeId);
-		Project model = projectService.get(id);
+		Project change = cacheService.getProject(changeId);
+		Project model = cacheService.getProject(id);
 		
 		hasPermission(change);
 		hasPermission(model);

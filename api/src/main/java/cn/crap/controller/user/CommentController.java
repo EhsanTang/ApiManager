@@ -14,6 +14,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ICommentService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -29,13 +30,14 @@ public class CommentController extends BaseController<Comment> {
 	private IProjectService projectService;
 	@Autowired
 	private IArticleService articleService;
-
+	@Autowired
+	private ICacheService cacheService;
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
 		
-		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, commentService.findByMap(Tools.getMap("articleId", comment.getArticleId()), page, " createTime desc"), page);
@@ -47,8 +49,8 @@ public class CommentController extends BaseController<Comment> {
 	public JsonResult detail(@ModelAttribute Comment comment) throws MyException {
 		Comment model;
 		if (!comment.getId().equals(Const.NULL_ID)) {
-			hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
 			model = commentService.get(comment.getId());
+			hasPermission( cacheService.getProject(  articleService.get( model.getArticleId() ).getProjectId() ) );
 		} else {
 			model = new Comment();
 		}
@@ -59,7 +61,7 @@ public class CommentController extends BaseController<Comment> {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.update(comment);
 		return new JsonResult(1, null);
@@ -69,7 +71,8 @@ public class CommentController extends BaseController<Comment> {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult delete(@ModelAttribute Comment comment) throws MyException {
-		hasPermission( projectService.get(  articleService.get(  commentService.get(comment.getArticleId()).getArticleId()  ).getProjectId() ) );
+		comment = commentService.get(comment.getId());
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
 		comment = commentService.get(comment.getId());
 		commentService.delete(comment);
 		return new JsonResult(1, null);

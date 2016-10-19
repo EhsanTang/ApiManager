@@ -10,7 +10,6 @@ import cn.crap.inter.service.table.IRoleService;
 import cn.crap.model.Project;
 import cn.crap.model.Role;
 import cn.crap.model.User;
-import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
 public class LoginInfoDto implements Serializable{
@@ -41,7 +40,6 @@ public class LoginInfoDto implements Serializable{
 		
 		// 100
 		if( (user.getType() + "").equals(UserType.ADMIN.getType()) ){
-			sb.append(Const.AUTH_ADMIN+",");
 			sb.append(user.getAuth()+",");
 			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
 				List<Role> roles = roleService.findByMap(

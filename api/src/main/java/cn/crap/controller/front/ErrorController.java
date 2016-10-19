@@ -48,7 +48,7 @@ public class ErrorController extends BaseController<Error>{
 		map.put( "projectId", projectId );
 		
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+projectService.get(projectId).getName(), "void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getProject(projectId).getName(), "void")));
 	}
 
 }

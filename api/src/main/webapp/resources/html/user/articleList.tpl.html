@@ -27,7 +27,7 @@
 </div>
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">{{others.type}}列表</div>
 <div class="col-xs-9 mt20 p0 mb10 f14 tr">
-	<a type="button" class="btn btn-success btn-sm cursor" 
+	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 		ng-click="detail('新增'+$stateParams.type,1000,'user/article/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type,getFields);"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
 	</a>
@@ -57,21 +57,21 @@
 				<td class="tc">{{item.click}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation(item.type,item.moduleId);"
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation(item.type,item.moduleId);"
-					ng-click="del('webPage/delete.do?id='+item.id,item.name)">
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					ng-click="del('user/article/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/{{item.projectId}}/comment/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;评论列表</i>
 				</a>
-				<div class="w50 fr tl">
+				<div class="w50 fr tl" ng-if="showOperation('PROJECT',$stateParams.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/article/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>

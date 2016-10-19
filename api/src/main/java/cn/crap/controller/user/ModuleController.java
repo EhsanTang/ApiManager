@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.ISourceService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
@@ -38,11 +41,15 @@ public class ModuleController extends BaseController<Module>{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
+	private IArticleService articleService;
+	@Autowired
 	private IUserService userService;
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private ISourceService sourceService;
 	@Autowired
 	private Config config;
 	
@@ -122,10 +129,23 @@ public class ModuleController extends BaseController<Module>{
 		Module oldDataCenter = cacheService.getModule(module.getId());
 		hasPermission(cacheService.getProject( oldDataCenter.getProjectId() ));
 		
-		// 只有接口数量为0，才允许删除模块
 		if(interfaceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
 			throw new MyException("000024");
 		}
+		
+		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.ARTICLE.name())) >0 ){
+			throw new MyException("000034");
+		}
+		
+		if(sourceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
+			throw new MyException("000035");
+		}
+		
+		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.DICTIONARY.name())) >0 ){
+			throw new MyException("000036");
+		}
+		
+		
 		
 		
 		cacheService.delObj(Const.CACHE_MODULE+module.getId());

@@ -2,12 +2,8 @@ package cn.crap.service.tool;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
@@ -20,12 +16,7 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.inter.dao.ICacheDao;
-import cn.crap.inter.dao.IModuleDao;
-import cn.crap.inter.dao.IProjectDao;
-import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
@@ -35,11 +26,8 @@ import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.IPickService;
 import cn.crap.model.Article;
 import cn.crap.model.Menu;
-import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.Role;
-import cn.crap.model.Setting;
-import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -54,15 +42,9 @@ public class AdminPickService implements IPickService{
 	@Autowired
 	IMenuService menuService;
 	@Autowired
-	private ICacheService cacheService;
-	@Autowired
-	private IUserService userService;
-	@Autowired
 	private IProjectService projectService;
 	@Autowired
 	private IRoleService roleService;
-	@Autowired
-	private IModuleService moduleService;
 	@Autowired
 	private IArticleService articleService;
 
@@ -73,6 +55,7 @@ public class AdminPickService implements IPickService{
 		switch (code) {
 		case "CATEGORY":
 			int i = 0;
+			@SuppressWarnings("unchecked")
 			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web' "
 					+ "or moduleId in( select id from Module where userId='" + user.getId()+"')", null);
 			for (String w : categorys) {
@@ -199,9 +182,6 @@ public class AdminPickService implements IPickService{
 			if(key.equals(MenuType.BACK.name())){
 				pick = new PickDto(Const.SEPARATOR, "后台");
 				picks.add(pick);
-//				// 后端错误码管理
-//				pick = new PickDto("h_e_0", "#/error/list", "错误码列表");
-//				picks.add(pick);
 				// 后端用户管理
 				pick = new PickDto("h_u_0", "#/user/list", "用户列表");
 				picks.add(pick);
@@ -221,12 +201,12 @@ public class AdminPickService implements IPickService{
 							type.getName());
 					picks.add(pick);
 				}
-//				pick = new PickDto(Const.SEPARATOR, "后台数据字典&页面&文章管理");
-//				picks.add(pick);
-//				preUrl = "#/webPage/list/";
+				pick = new PickDto(Const.SEPARATOR, "文章管理&页面");
 				
-				for (ArticleType webPage : ArticleType.values()) {
-					pick = new PickDto("h_" + webPage.name(), preUrl + webPage.name(), webPage.getName());
+				for (ArticleType articleType : ArticleType.values()) {
+					if(articleType.name().equals(ArticleType.DICTIONARY.name()))
+						continue;
+					pick = new PickDto("h_" + articleType.name(), "#/user/article/list/web/" + articleType.name(), articleType.getName());
 					picks.add(pick);
 				}
 				// 分割线
@@ -241,6 +221,13 @@ public class AdminPickService implements IPickService{
 			// 前端菜单url
 			else{
 				// 分割线
+				pick = new PickDto(Const.SEPARATOR, "项目列表");
+				picks.add(pick);
+				pick = new PickDto("m_myproject", "#/project/list/true/NULL", "我的项目列表");
+				picks.add(pick);
+				pick = new PickDto("m_myproject", "#/project/list/false/NULL", "推荐项目列表");
+				picks.add(pick);
+				
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
 				for(Project project: projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)){

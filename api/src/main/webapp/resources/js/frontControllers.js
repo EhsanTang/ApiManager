@@ -98,6 +98,16 @@ webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $st
     $scope.getData(1);
 });
 /**
+ * 资源列表
+ */
+webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page,setPwd) {
+		var params = "iUrl=front/project/list.do|iLoading=FLOAT|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+/**
  * 模块列表
  */
 webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {

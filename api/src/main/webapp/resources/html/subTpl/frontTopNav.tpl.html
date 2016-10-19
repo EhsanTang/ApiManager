@@ -14,10 +14,14 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
-	               <!-- <li ng-if="projectId">
-	                	<a ng-href="#/project/{{projectId}}" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">项目首页</a>
+	               	<li>
+	                	<a ng-href="#/project/list/false/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
 	                </li>
-	                 <li ng-if="!projectId">
+	                <li ng-if="sessionAdminName!=''">
+	                	<a ng-href="#/project/list/true/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
+	                </li>
+	                
+	                <!-- <li ng-if="!projectId">
 	                	<a ng-href="#/project/open" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">开放接口</a>
 	                </li> --> 
 	                

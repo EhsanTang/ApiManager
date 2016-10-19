@@ -74,6 +74,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}
+	}).state('frontProjectList', {
+		url : '/project/list/:myself/NULL',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/frontHtml/projectList.tpl.html'
+			},
+			'page@frontSourceList' : {
+				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+			}
+		}
 	})
 	/*********************前端项目主页*******************/
 });

@@ -26,6 +26,7 @@ import cn.crap.springbeans.Config;
 import cn.crap.springbeans.PickFactory;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Service
@@ -60,6 +61,8 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		List<Menu> subMenus = findByMap(map, null, null);
 		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
 		
+		Page page = new Page();
+		page.setSize(config.getSubMenuSize());
 		// 加载默认推荐项目菜单
 		if(config.isShowRecommendProject()){
 			MenuDto menuVO = new MenuDto();
@@ -72,13 +75,23 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			menuVO.setMenu(menu);
 			
 			menuVO.setSubMenu(new ArrayList<Menu>());
-			for (Project project : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)) {
+			for (Project project : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), page, null)) {
 				Menu subMenu = new Menu();
 				subMenu.setId("recPro_"+project.getId());
 				subMenu.setMenuName(project.getName());
 				subMenu.setParentId("recommendProjectId");
 				subMenu.setType(MenuType.FRONT.name());
 				subMenu.setMenuUrl(String.format(Const.FRONT_PROJECT_URL, project.getId()));
+				menuVO.getSubMenu().add(subMenu);
+			}
+			// 添加更多按钮
+			if(menuVO.getSubMenu().size() == page.getSize()){
+				Menu subMenu = new Menu();
+				subMenu.setId("recPro_more");
+				subMenu.setMenuName("更多项目...");
+				subMenu.setParentId("recommendProjectId");
+				subMenu.setType(MenuType.FRONT.name());
+				subMenu.setMenuUrl("#/project/list/false/NULL");
 				menuVO.getSubMenu().add(subMenu);
 			}
 			menuVOs.add(menuVO);
@@ -97,7 +110,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			
 			menuVO.setSubMenu(new ArrayList<Menu>());
 			@SuppressWarnings("unchecked")
-			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null);
+			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null, page);
 			int i = 0;
 			for (String category : categorys) {
 				if (MyString.isEmpty(category))

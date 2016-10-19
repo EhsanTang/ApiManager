@@ -68,6 +68,9 @@ public class Config{
 	
 	@Value("${web.articleMenuName}")
 	private String articleMenuName;
+	
+	@Value("${web.subMenuSize}")
+	private int subMenuSize;
 
 	public String getClientID() {
 		return clientID;
@@ -164,6 +167,10 @@ public class Config{
 
 	public String getArticleMenuName() {
 		return articleMenuName;
+	}
+
+	public int getSubMenuSize() {
+		return subMenuSize;
 	}
 	
 	

@@ -27,7 +27,6 @@ import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.Aes;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;

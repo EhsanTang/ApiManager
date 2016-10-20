@@ -57,7 +57,7 @@
 					ng-href="#/setting/detail/{{item.type}}/{{item.id}}">
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('SETTING',item.moduleId) && item.canDelete=='1'" 
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('SETTING','') && item.canDelete=='1'" 
 					ng-click="del('setting/delete.do?id='+item.id,item.key)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>

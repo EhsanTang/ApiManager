@@ -69,14 +69,14 @@ public class InterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Interface interFace) throws MyException {
+	public JsonResult detail(@RequestParam String id, String moduleId) throws MyException {
 		Interface model;
-		if(!interFace.getId().equals(Const.NULL_ID)){
-			model= interfaceService.get(interFace.getId());
-			hasPermission(cacheService.getProject(interFace.getProjectId()));
+		if(!id.equals(Const.NULL_ID)){
+			model= interfaceService.get(id);
+			hasPermission(cacheService.getProject(model.getProjectId()));
 		}else{
 			model = new Interface();
-			model.setModuleId(interFace.getModuleId());
+			model.setModuleId( moduleId);
 		}
 		return new JsonResult(1, model);
 	}
@@ -92,7 +92,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
 		hasPermission(cacheService.getProject(interFace.getProjectId()));
-		if(interfaceService.getCount(Tools.getMap("fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
+		if(interfaceService.getCount(Tools.getMap("moduleId", interFace.getModuleId(), "fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
 		interFace.setId(null);

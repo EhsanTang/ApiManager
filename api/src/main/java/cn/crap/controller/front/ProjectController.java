@@ -1,11 +1,15 @@
 package cn.crap.controller.front;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -39,7 +43,10 @@ public class ProjectController extends BaseController<Project> {
 		}
 		// 未登陆用户，查看推荐的项目
 		else{
-			return new JsonResult(1, projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType(), "name|like", name), page, null), page);
+			List<Byte> statusList = new ArrayList<Byte>();
+			statusList.add(ProjectStatus.RECOMMEND.getStatus());
+			statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
+			return new JsonResult(1, projectService.findByMap(Tools.getMap("status|in", statusList, "name|like", name), page, null), page);
 		}
 		
 	}

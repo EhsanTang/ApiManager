@@ -94,7 +94,6 @@ public class SettingController extends BaseController<Setting>{
 		if(setting.getCanDelete()==0){
 			throw new MyException("000009");
 		}
-		Tools.hasAuth(Const.AUTH_SETTING, "");
 		settingService.delete(setting);
 		cacheService.delObj(Const.CACHE_SETTING);
 		cacheService.delObj(Const.CACHE_SETTINGLIST);

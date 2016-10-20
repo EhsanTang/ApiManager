@@ -27,9 +27,10 @@
 				setPick();
 			}
 		}
-		if(hasLoad==0){
+		/* 关闭下拉快速定位
+		if(hasLoad==0){ 
 			$(document).ready(keyMonitor());
-		}
+		} */
 		
 	</script>
 <div class="form-group">

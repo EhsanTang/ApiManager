@@ -123,7 +123,7 @@ public abstract class BaseController<T extends BaseModel> {
 
 				// 拥有项目权限的普通管理员修改项目
 				String authority = user.getAuthStr();
-				if(authority.indexOf(","+Const.PROJECTID+",") >=0){
+				if(authority.indexOf(","+Const.AUTH_PROJECT+project.getId()+",") >=0){
 					return;
 				}
 				

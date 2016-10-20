@@ -21,6 +21,15 @@
 					<td class="tc" colspan="3">
 						<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
 				</tr>
+				<tr ng-if="isAdmin()">
+					<td class="tc">项目类型</td>
+					<td class="tl" colspan="3">
+						*推荐项目将在首页默认显示，管理员项目可以被其他管理员管理，管理员不能管理用户的普通项目<br>
+						<input  class="form-control"  id="statusName" type="text" ng-model="model.statusName" required placeholder="点击选择"
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=statusName|tag=status|code=PROJECTSTATUE|def='+model.status,$event)">
+					</td>
+				</tr>
+				
 				<tr>
 					<td class="tc">访问密码</td>
 					<td class="tc" colspan="3"><input class="form-control"

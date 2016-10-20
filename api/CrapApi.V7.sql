@@ -43,3 +43,9 @@ DROP COLUMN `password`;
 ALTER TABLE `api`.`comment` 
 CHANGE COLUMN `webpageId` `articleId` VARCHAR(50) NOT NULL ;
 
+delete from api.menu where  type='BACK';
+
+ALTER TABLE `api`.`project` 
+CHANGE COLUMN `status` `status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '2：推荐项目，3，管理员管理项目，4，管理管理&推荐项目' ;
+
+

@@ -80,7 +80,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/projectList.tpl.html'
 			},
-			'page@frontSourceList' : {
+			'page@frontProjectList' : {
 				templateUrl : 'resources/html/frontHtml/page.tpl.html'
 			}
 		}

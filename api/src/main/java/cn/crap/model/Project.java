@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.base.BaseModel;
 
@@ -71,5 +72,9 @@ public class Project extends BaseModel implements Serializable{
 	@Transient
 	public String getTypeName(){
 		return ProjectType.getNameByValue(type);
+	}
+	@Transient
+	public String getStatusName(){
+		return ProjectStatus.getNameByValue(status);
 	}
 }

@@ -1,5 +1,6 @@
 package cn.crap.service.tool;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,14 @@ import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.FontFamilyType;
 import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ModuleStatus;
-import cn.crap.enumeration.ProjectType;
+import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.table.IRoleService;
-import cn.crap.inter.service.table.IUserService;
-import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.IPickService;
 import cn.crap.model.Article;
 import cn.crap.model.Menu;
@@ -67,15 +65,21 @@ public class AdminPickService implements IPickService{
 			}
 			return;
 			
-		case "MYPROJECT":
+//		case "MYPROJECT":
+//			for (Project p : projectService.findByMap(null, null, null)) {
+//				pick = new PickDto(p.getId(), p.getName());
+//				picks.add(pick);
+//			}
+//			return;
+		case "PROJECT":
 			for (Project p : projectService.findByMap(null, null, null)) {
 				pick = new PickDto(p.getId(), p.getName());
 				picks.add(pick);
 			}
 			return;
-		case "PROJECT":
-			for (Project p : projectService.findByMap(null, null, null)) {
-				pick = new PickDto(p.getId(), p.getName());
+		case "PROJECTSTATUE":// 管理员项目、推荐项目...
+			for (ProjectStatus ps : ProjectStatus.values()) {
+				pick = new PickDto(ps.name(), ps.getStatus()+"", ps.getName());
 				picks.add(pick);
 			}
 			return;
@@ -91,8 +95,13 @@ public class AdminPickService implements IPickService{
 		case "AUTH":
 			pick = new PickDto(Const.SEPARATOR, "项目管理");
 			picks.add(pick);
-			pick = new PickDto(DataType.PROJECT.name(), "项目管理");
-			picks.add(pick);
+			List<Byte> statusList = new ArrayList<Byte>();
+			statusList.add(ProjectStatus.RECOMMEND.getStatus());
+			statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
+			for (Project project : projectService.findByMap(Tools.getMap("status|in", statusList), null, null)) {
+				pick = new PickDto(project.getId(), Const.AUTH_PROJECT+project.getId(), project.getName());
+				picks.add(pick);
+			}
 			
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "用户、菜单、角色、系统设置管理");
@@ -105,17 +114,10 @@ public class AdminPickService implements IPickService{
 			picks.add(pick);
 			pick = new PickDto(DataType.SETTING.name(), "系统设置管理");
 			picks.add(pick);
-			pick = new PickDto(DataType.LOG);
+			pick = new PickDto(ArticleType.ARTICLE.name(), "站点文章管理");
 			picks.add(pick);
-
-			// 分割线
-			pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
+			pick = new PickDto(ArticleType.PAGE.name(), "站点页面管理");
 			picks.add(pick);
-			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0", "type", MenuType.BACK.name()), null,
-					null)) {
-				pick = new PickDto(m.getId(), m.getMenuName() + "--【菜单】");
-				picks.add(pick);
-			}
 			return;
 		
 		// 角色
@@ -177,49 +179,6 @@ public class AdminPickService implements IPickService{
 			return;
 		
 		case "MENURUL":
-			
-			// 后台菜单url
-			if(key.equals(MenuType.BACK.name())){
-				pick = new PickDto(Const.SEPARATOR, "后台");
-				picks.add(pick);
-				// 后端用户管理
-				pick = new PickDto("h_u_0", "#/user/list", "用户列表");
-				picks.add(pick);
-				// 后端角色管理
-				pick = new PickDto("h_r_0", "#/role/list", "角色列表");
-				picks.add(pick);
-				// 后端系统设置
-				pick = new PickDto("h_s_0", "#/setting/list/null", "系统设置列表");
-				picks.add(pick);
-				pick = new PickDto("h_l_0", "#/log/list", "日志列表");
-				picks.add(pick);
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "后台菜单列表");
-				picks.add(pick);
-				for (MenuType type : MenuType.values()) {
-					pick = new PickDto("h_m_" + type.name(), "#/menu/list/0/" + type.name() + "/一级菜单",
-							type.getName());
-					picks.add(pick);
-				}
-				pick = new PickDto(Const.SEPARATOR, "文章管理&页面");
-				
-				for (ArticleType articleType : ArticleType.values()) {
-					if(articleType.name().equals(ArticleType.DICTIONARY.name()))
-						continue;
-					pick = new PickDto("h_" + articleType.name(), "#/user/article/list/web/" + articleType.name(), articleType.getName());
-					picks.add(pick);
-				}
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "项目列表");
-				picks.add(pick);
-				// 后端项目
-				pick = new PickDto("p_l_0", "#/user/project/list/NULL/NULL", "项目列表");
-				picks.add(pick);
-				return;
-			}
-			
-			// 前端菜单url
-			else{
 				// 分割线
 				pick = new PickDto(Const.SEPARATOR, "项目列表");
 				picks.add(pick);
@@ -230,7 +189,7 @@ public class AdminPickService implements IPickService{
 				
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
-				for(Project project: projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), null, null)){
+				for(Project project: projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), null, null)){
 					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}
@@ -260,7 +219,7 @@ public class AdminPickService implements IPickService{
 				}
 				// 分割线
 				return;
-			}
+				
 		case "FONTFAMILY":// 字体
 			for (FontFamilyType font : FontFamilyType.values()) {
 				pick = new PickDto(font.name(), font.getValue(), font.getName());
@@ -270,12 +229,6 @@ public class AdminPickService implements IPickService{
 		case "USERTYPE": // 用户类型
 			for (UserType type : UserType.values()) {
 				pick = new PickDto("user-type"+type.getType(), type.getType()+"", type.getName());
-				picks.add(pick);
-			}
-			return;
-		case "PROJECTTYPE": 
-			for (ProjectType pt : ProjectType.values()) {
-				pick = new PickDto(pt.getType()+"", pt.getName());
 				picks.add(pick);
 			}
 			return;

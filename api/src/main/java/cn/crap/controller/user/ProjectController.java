@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectType;
+import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -59,11 +59,7 @@ public class ProjectController extends BaseController<Project> {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		Map<String,Object> map = null;
-		if(project.getType() != -1){
-			map = Tools.getMap("type", project.getType(), "name|like", project.getName());
-		}else{
-			map = Tools.getMap("name|like", project.getName());
-		}
+		map = Tools.getMap("name|like", project.getName());
 		
 		// 普通用户，管理员我的项目菜单只能查看自己的项目
 		LoginInfoDto user = Tools.getUser();
@@ -108,9 +104,7 @@ public class ProjectController extends BaseController<Project> {
 			
 			// 普通用户不能推荐项目，将项目类型修改为原有类型
 			if( Tools.getUser().getType() == UserType.USER.getType()){
-				if(project.getType() == ProjectType.RECOMMEND.getType()){
-					project.setType(model.getType());
-				}
+				project.setStatus(model.getStatus());
 			}
 						
 			projectService.update(project);
@@ -119,12 +113,9 @@ public class ProjectController extends BaseController<Project> {
 		// 新增
 		else{
 			project.setUserId(user.getId());
-			
 			// 普通用户不能推荐项目
 			if( Tools.getUser().getType() == UserType.USER.getType()){
-				if(project.getType() == ProjectType.RECOMMEND.getType()){
-					project.setType(ProjectType.PRIVATE.getType());
-				}
+				project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
 			}
 			
 			projectService.save(project);

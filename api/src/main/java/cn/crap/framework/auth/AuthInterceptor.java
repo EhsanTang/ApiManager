@@ -77,7 +77,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             cacheDao.setObj(Const.CACHE_USER + uid, obj, config.getLoginInforTime());
             
             if(!authPassport.authority().equals("")){
-            	return Tools.hasAuth(authPassport.authority(), MyString.getValueFromRequest(request, "moduleId"), request);
+            	return Tools.hasAuth(authPassport.authority());
             }else{
             	return true;
             }

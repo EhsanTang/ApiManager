@@ -145,11 +145,11 @@ public class UserController extends BaseController<User>{
 		return new JsonResult(1,user);
 	}
 	
-	@RequestMapping("/user/delete.do")
+/*	@RequestMapping("/user/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_USER)
 	public JsonResult delete(@ModelAttribute User user){
 		userService.delete(user);
 		return new JsonResult(1,null);
-	}
+	}*/
 }

@@ -56,15 +56,8 @@ public class Tools {
 		String imgCode = cacheService.getStr(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
 		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
 	}
-	/**
-	 * 查询是否拥有权限
-	 */
-	public static boolean hasAuth(String authPassport, String moduleId) throws MyException {
-		return hasAuth(authPassport, moduleId, Tools.getRequest());
-	}
-	public static boolean hasAuth(String authPassport,
-			String moduleId, HttpServletRequest request) throws MyException {
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+	
+	public static boolean hasAuth(String authPassport) throws MyException {
 		LoginInfoDto user = Tools.getUser();
 		if(user == null ){
 			throw new MyException("000003");
@@ -75,26 +68,15 @@ public class Tools {
 			return true;//超级管理员
 		}
 		
-		// 修改自己创建的模块
-		if(!MyString.isEmpty(moduleId) && cacheService.getModule(moduleId).getUserId().equals(user.getId())){
-			return true;
-		}
-		
 		// 管理员修改自己的资料
-		if(authPassport.equals("USER") && request != null){
+		if(authPassport.equals("USER")){
 			// 如果session中的管理员id和参数中的id一致
-			if( MyString.isEquals(  user.getId(),  MyString.getValueFromRequest(request, "id", "-1")  )  ){
+			if( MyString.isEquals(  user.getId(),  user.getId() )  ){
 				return true;
 			}
 		}
 		
-		// 普通用户没有其他访问的权限
-		if(Tools.getUser().getType() != 100){
-			throw new MyException("000003");
-		}
-		
-		String needAuth = authPassport.replace(Const.MODULEID, moduleId);
-		if(authority.indexOf(","+needAuth+",")>=0){
+		if(authority.indexOf(","+authPassport+",")>=0){
 			return true;
 		}
 		throw new MyException("000003");

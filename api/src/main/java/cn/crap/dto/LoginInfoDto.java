@@ -10,6 +10,7 @@ import cn.crap.inter.service.table.IRoleService;
 import cn.crap.model.Project;
 import cn.crap.model.Role;
 import cn.crap.model.User;
+import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
 public class LoginInfoDto implements Serializable{
@@ -35,12 +36,15 @@ public class LoginInfoDto implements Serializable{
 		// 将用户的自己的模块添加至权限中
 		List<Project> projects = projectService.findByMap(Tools.getMap("userId", user.getId()), null, null);
 		for(Project project:projects){
-			sb.append(DataType.PROJECT.name()+"_" + project.getId()+",");
+			sb.append(Const.AUTH_PROJECT + project.getId()+",");
 		}
 		
-		// 100
-		if( (user.getType() + "").equals(UserType.ADMIN.getType()) ){
+		// 管理员，将最高管理员，管理员
+		if( (user.getType() + "").equals(UserType.ADMIN.getType() +"") ){
 			sb.append(user.getAuth()+",");
+			sb.append("ADMIN,");
+			if(user.getRoleId().indexOf("super") >= 0)
+				sb.append("super,");
 			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
 				List<Role> roles = roleService.findByMap(
 						Tools.getMap("id|in", Tools.getIdsFromField(user.getRoleId())), null, null);

@@ -36,6 +36,7 @@ public class MenuController extends BaseController<Menu> {
 	 */
 	@RequestMapping("/menu/list.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult list(@ModelAttribute Menu menu, @RequestParam(defaultValue = "1") Integer currentPage) {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -45,6 +46,7 @@ public class MenuController extends BaseController<Menu> {
 
 	@RequestMapping("/menu/detail.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult detail(@ModelAttribute Menu menu) {
 		Menu model;
 		if (!menu.getId().equals(Const.NULL_ID)) {
@@ -100,20 +102,9 @@ public class MenuController extends BaseController<Menu> {
 		return new JsonResult(1, null);
 	}
 
-	/****
-	 * 后台加载菜单列表
-	 */
-	@RequestMapping("/menu/menu.do")
-	@ResponseBody
-	public JsonResult menu() {
-		return new JsonResult(1, menuService.getLeftMenu(null));
-	}
-
-	
-	
 	@RequestMapping("/back/menu/changeSequence.do")
 	@ResponseBody
-	@AuthPassport
+	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
 		Menu change = menuService.get(changeId);
 		Menu model = menuService.get(id);

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumeration.MenuType;
-import cn.crap.enumeration.ProjectType;
+import cn.crap.enumeration.ProjectStatus;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
@@ -75,7 +75,10 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			menuVO.setMenu(menu);
 			
 			menuVO.setSubMenu(new ArrayList<Menu>());
-			for (Project project : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType()), page, null)) {
+			List<Byte> status = new ArrayList<Byte>();
+			status.add(ProjectStatus.RECOMMEND.getStatus());
+			status.add(ProjectStatus.RECOMMENDADMIN.getStatus());
+			for (Project project : projectService.findByMap(Tools.getMap("status|in", status), page, null)) {
 				Menu subMenu = new Menu();
 				subMenu.setId("recPro_"+project.getId());
 				subMenu.setMenuName(project.getName());

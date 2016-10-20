@@ -70,7 +70,6 @@ public class MainController extends BaseController<User> {
 		}
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
-		returnMap.put("menuList", menuService.getLeftMenu(null));
 		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		returnMap.put("sessionAdminName", user.getUserName());
 		returnMap.put("sessionAdminAuthor", user.getAuthStr());

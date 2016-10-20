@@ -1,7 +1,7 @@
 package cn.crap.enumeration;
 
 public enum ProjectType {
-	PRIVATE("私有项目", 1), PUBLIC("公开项目",2), RECOMMEND("公开推荐",3);
+	PRIVATE("私有项目", 1), PUBLIC("公开项目",2);
 	private final int type;
 	private final String name;
 	

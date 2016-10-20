@@ -83,11 +83,23 @@ public class UserPickService implements IPickService{
 						picks.add(pick);
 					}
 					return;
-					case "MYPROJECT":// 用户所有项目
+//					case "MYPROJECT":// 用户所有项目
+//						// 普通用户，只能查看自己的模块
+//						for (Project p : projectService.findByMap(Tools.getMap("userId", Tools.getUser().getId()), null, null)) {
+//							pick = new PickDto(p.getId(), p.getName());
+//							picks.add(pick);
+//						}
+//						return;
+					case "MYMODULE":// 用户所有模块
 						// 普通用户，只能查看自己的模块
 						for (Project p : projectService.findByMap(Tools.getMap("userId", Tools.getUser().getId()), null, null)) {
-							pick = new PickDto(p.getId(), p.getName());
+							pick = new PickDto(Const.SEPARATOR, p.getName());
 							picks.add(pick);
+							
+							for(Module m : moduleService.findByMap(Tools.getMap("projectId", p.getId()), null, null)){
+								pick = new PickDto(m.getId(), m.getName());
+								picks.add(pick);
+							}
 						}
 						return;
 					case "PROJECT_MODULE":
@@ -107,9 +119,6 @@ public class UserPickService implements IPickService{
 						return;
 					case "PROJECTTYPE":
 						for (ProjectType pt : ProjectType.values()) {
-							// 用户不能设置模块为推荐
-							if(pt.name().equals(ProjectType.RECOMMEND.name()))
-								continue;
 							pick = new PickDto(pt.getType()+"", pt.getName());
 							picks.add(pick);
 						}

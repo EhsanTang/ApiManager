@@ -71,8 +71,8 @@
 					</div>
 					
 					
-						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isSupperAdmin('adminMenu0')">
+						<!-- 该菜单只有超级管理员或拥有菜单权限的管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isAdmin('adminMenu0','MENU')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel2">
 									<div class="f14 mt-3 fl mr10">
@@ -93,14 +93,11 @@
 								<div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/menu/list/0/FRIEND/底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
 								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/BACK/管理员菜单" onclick="selectButton(this,'menu-a')">后台管理员菜单</a>
-								</div>
 							</div>
 						</div>
 						
 						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isSupperAdmin('adminMenu1')">
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isAdmin('adminMenu1')">
 							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
 								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
 									<div class="f14 mt-3 fl mr10">
@@ -115,22 +112,22 @@
 								<!--  <div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
 								</div>-->
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'USER')">
 									<a class="menu-a" target="_self" href="#/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
 								</div>
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ROLE')">
 									<a class="menu-a" target="_self" href="#/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
 								</div>
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'SETTING')">
 									<a class="menu-a" target="_self" href="#/setting/list/null" onclick="selectButton(this,'menu-a')">系统设置管理</a>
 								</div>
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'PAGE')">
 									<a class="menu-a" target="_self" href="#/user/article/list/web/PAGE" onclick="selectButton(this,'menu-a')">站点页面管理</a>
 								</div>
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ARTICLE')">
 									<a class="menu-a" target="_self" href="#/user/article/list/web/ARTICLE" onclick="selectButton(this,'menu-a')">站点文章管理</a>
 								</div>
-								<div class="panel-body b0 p0">
+								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
 									<a class="menu-a" target="_self" href="#/log/list" onclick="selectButton(this,'menu-a')">日志管理</a>
 								</div>
 							</div>
@@ -156,20 +153,6 @@
 								
 							</div>
 						</div>
-					
-					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top" ng-repeat="item in backMenus" ng-if="canSeeMenu(item.menu.id,item.menu.type);">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel{{item.menu.id}}">
-								<div class="f14 mt-3 fl mr10" ng-bind-html="item.menu.iconRemark|trustHtml"></div> 
-								<span class="hidden-xs" ng-bind="item.menu.menuName"></span> 
-							</div>
-						</div>
-						<div id="panel{{item.menu.id}}" class="panel-collapse BGEEE collapse">
-							<div class="panel-body b0 p0" ng-repeat="subItem in item.subMenu">
-								<a class="menu-a" target="_self" ng-href="{{subItem.menuUrl}}" onclick="selectButton(this,'menu-a')" ng-bind="subItem.menuName"></a>
-							</div>
-						</div>
-					</div>
 					
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
 						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">

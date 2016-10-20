@@ -27,6 +27,7 @@ public class LogController extends BaseController<Log>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_LOG)
 	public JsonResult list(@ModelAttribute Log log,@RequestParam(defaultValue="1") Integer currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -36,6 +37,7 @@ public class LogController extends BaseController<Log>{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority = Const.AUTH_LOG)
 	public JsonResult detail(@ModelAttribute Log log){
 		Log model;
 		if(!log.getId().equals(Const.NULL_ID)){

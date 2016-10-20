@@ -41,7 +41,6 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 				alert("系统初始化异常："+isSuccess.replace('[ERROR]', ''));
 			}else{
 				$rootScope.settings = result.data.settingMap;
-				$rootScope.backMenus = result.data.menuList;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
@@ -51,35 +50,53 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 			}
 		});
     };
+    // 判断是不是管理员
+    $scope.isAdmin = function (id, needAuth){
+		var auth = $("#sessionAuth").val();
+		var hasAuth = false;
+		// 最高管理员
+		if( (","+auth+",").indexOf(",super,")>=0){
+			hasAuth = true;
+		}
+		// 拥有权限的管理员
+		if( (","+auth+",").indexOf(",ADMIN,")>=0){
+			if(needAuth){
+				if( (","+auth+",").indexOf(","+needAuth+",")>=0){
+					hasAuth = true;
+				}
+			}else{
+				hasAuth = true;
+			}
+		}
+		if(hasAuth){
+			if(id)
+				$("#"+id).removeClass("ndis");
+			return true;
+		}else{
+			if(id){
+				if(!$("#"+id).hasClass("ndis"))
+					$("#"+id).addClass("ndis");
+			}
+			return false;
+		}
+    }
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
-    	if($rootScope.sessionAdminRoleIds){
-    		var roles = ","+$rootScope.sessionAdminRoleIds+",";
-    		if(roles.indexOf(',super,')>=0){
-    			if(id)
-    				$("#"+id).removeClass("ndis");
-    			return true;
-    		}else{
-    			if(id){
-    				if(!$("#"+id).hasClass("ndis"))
-        				$("#"+id).addClass("ndis");
-    			}
-    			
-    			return false;
-    		}
-
-    	}
-    	return false;
-    }
-    /***********************判断菜单中的roleIds是否包含用户角色中的任意一个role************/
-	$scope.canSeeMenu = function(id,type){
-		if(!id||id==""||type!="BACK")
-			return false;
-		var auth = $("#sessionAuth").val();
-		if((","+auth+",").indexOf(","+id+",")>=0 && (","+auth+",").indexOf(",ADMIN,")>=0)
+    	var auth = $("#sessionAuth").val();
+    	if( (","+auth+",").indexOf(",super,")>=0){
+			if(id)
+				$("#"+id).removeClass("ndis");
 			return true;
-		return false;
-	}
+		}
+    	else{
+			if(id){
+				if(!$("#"+id).hasClass("ndis"))
+    				$("#"+id).addClass("ndis");
+			}
+			return false;
+		}
+    }
+    
 	$scope.profile = function(id){
 		var params = "iUrl=user/detail.do?id="+id+"|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {

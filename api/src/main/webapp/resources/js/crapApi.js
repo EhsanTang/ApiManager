@@ -149,7 +149,6 @@ function setPick() {
 	var checkBoxValue = "";
 	var checkBoxName = "";
 	var rootScope = getRootScope();
-	var stateParams = getStateParams();
 	for (var i = 0; i < length; i++) {
 		if (pickRadio == 'true') {
 			if (document.getElementsByName('cid')[i].checked == true) {
@@ -160,7 +159,6 @@ function setPick() {
 							rootScope.model[pickTagName] = $(".cidName")[i].textContent;
 					}
 					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
-					stateParams[pickTag] = document.getElementsByName('cid')[i].value;
 					if(rootScope.model)
 						rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
 				});

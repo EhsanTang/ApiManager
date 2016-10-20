@@ -26,7 +26,7 @@ public class Const {
 	public static final String AUTH_ADMIN = "ADMIN";// 管理员
 	public static final String AUTH_ROLE = "ROLE";
 	public static final String AUTH_LOG = "LOG";
-	public static final String AUTH_PROJECT = "PROJECT_"+PROJECTID;
+	public static final String AUTH_PROJECT = "PROJECT_";
 	// 缓存
 	public static final String CACHE_USER= ":user";
 	public static final String CACHE_IMGCODE = ":imgCode";

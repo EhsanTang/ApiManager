@@ -28,6 +28,7 @@ public class RoleController extends BaseController<Role>{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_ROLE)
 	public JsonResult list(@ModelAttribute Role role,@RequestParam(defaultValue="1") Integer currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -36,6 +37,7 @@ public class RoleController extends BaseController<Role>{
 	}
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport(authority=Const.AUTH_ROLE)
 	public JsonResult detail(@ModelAttribute Role role){
 		Role model;
 		if(!role.getId().equals(Const.NULL_ID)){

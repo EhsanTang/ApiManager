@@ -3,6 +3,7 @@ package cn.crap.utils;
 import java.io.Serializable;
 
 public class Page implements Serializable{
+
 	private Integer allRow=0;
 	private Integer currentPage =1;
 	private Integer size =5;

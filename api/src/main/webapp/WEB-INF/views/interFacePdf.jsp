@@ -6,7 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style type="text/css">
-	body {font-family: SimSun;}
+<!--font-family: SimSun;-->
+	body {
+		font-family: "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
+	}
+	
 	pre {
 	    border: 0px;
 	    color: #595959;
@@ -16,30 +20,50 @@
 	}
 	td{padding:5px;}
 	tr{background:#F0F0F0;}
+	h1,h2,h3,h4,h5{color:#000000;}
 	</style>
 </head>
-<body screen_capture_injected="true" ryt11773="1">
-		<div style="padding-left:4px;padding-right:4px; background:#fff; 
-		color:#B768A5;font-size:16px;text-align:right;">
-			CrapApi接口管理系统
+<body screen_capture_injected="true" ryt11773="1" style="padding:10px;">
+		<!-- 标题 -->
+		<div style="padding-left:4px;padding-bottom:0px; background:#fff; color:${MAIN_COLOR};font-size:18px;font-weight:bold;">
+			${title}--模块【${moduleName}】
 		</div>
-		<div style="height:2px;width:100%;background:${MAIN_COLOR};margin-bottom:20px;"></div>
-		<br/>
-		<br/>
+		<div style="padding-right:4px;background:#fff; color:#999;font-size:12px;text-align:right;">
+			本系统由CrapApi【crap.cn】提供技术支持
+		</div>
+		<div style="clear:both;height:2px;width:100%;background:${MAIN_COLOR};"></div>
+		<!-- 列表 -->
+		<div style="font-size:18px;line-height:36px; color:${MAIN_COLOR};padding:15px;background:#eeeeee;">
+			<div style="color:#000000;font-size:20px;">目录</div>
+			<c:forEach var="f" items="${requestScope.interfaces}" varStatus="status"> 
+				${ status.index + 1}. ${f.model.interfaceName}<br/>
+			</c:forEach>
+		</div>
 		
-		<div style="background:#F0F0F0;padding:6px;font-size:18px;">${model.interfaceName}——【${model.moduleName}】</div>
-		<div>
-			<br/>
+		<!-- 内容 -->
+		<c:forEach var="f" items="${requestScope.interfaces}" varStatus="status"> 
+			<div style="height:20px;"></div>
+			<div style="padding:20px;padding-top:10px;background:#f6f6f6; margin-top:20px;font-size:14px;color:#999;">
+			<div style="margin-left:-10px;font-size:18px;font-weight:bold;color:${MAIN_COLOR};">${ status.index + 1}、 ${f.model.interfaceName}</div>
 			<h3>1 功能说明</h3>
-			${model.remark}
+			${f.model.remark}
+			<br/>
+			<h3>2 URL地址</h3>
+			${f.model.moduleUrl}${f.model.url}
 			<br/>
 			<br/>
-			<h3>2 URL</h3>
-			${model.moduleUrl}${model.url}
+			<h3>3 版本号</h3>
+			${f.model.version}
 			<br/>
 			<br/>
+			<h3>4 Mock地址</h3>
+			正确：${f.trueMockUrl}<br/>
+			错误：${f.falseMockUrl}
+			<br/>
+			<br/>
+			
 			<h3>3 HTTP请求方式</h3>
-			${model.method}
+			${f.model.method}
 			<br/>
 			<br/>
 			<h3>4 请求头说明</h3>
@@ -51,7 +75,7 @@
 					<td>默认值</td>
 					<td style="width:260px;">备注</td>
 				</tr>
-				<c:forEach var="v" items="${requestScope.headers}"> 
+				<c:forEach var="v" items="${f.headers}"> 
 				<tr>
 					<td>${v.name}</td>
 					<td>${v.necessary}</td>
@@ -62,9 +86,8 @@
 				</c:forEach>
 			</table>
 			<br/>
-			<br/>
-			<h3>5 输入参数说明<c:if test="${requestScope.customParams!=null}">(自定义参数)</c:if></h3>
-				<c:if test="${requestScope.formParams!=null}">
+			<h3>5 输入参数说明<c:if test="${f.customParams!=null}">(自定义参数)</c:if></h3>
+				<c:if test="${f.formParams!=null}">
 					<table style="width:100%;">
 						<tr style="background:${MAIN_COLOR};color:#fff;">
 							<td>名称</td>
@@ -74,7 +97,7 @@
 							<td style="width:260px;">备注</td>
 						</tr>
 						
-						<c:forEach var="v" items="${requestScope.formParams}"> 
+						<c:forEach var="v" items="${f.formParams}"> 
 						
 						<tr>
 							<td>${v.name}</td>
@@ -86,16 +109,14 @@
 						</c:forEach>
 					</table>
 				</c:if>
-				<c:if test="${requestScope.customParams!=null}">
-					${requestScope.customParams}
+				<c:if test="${f.customParams!=null}">
+					${f.customParams}
 				</c:if>
-			<br/>
 			<br/>
 			<h3>6 请求示例</h3>
 			<div style="background:#F0F0F0; padding:10px;">
-			<pre style="font-family: SimSun;">${model.requestExam}</pre>
+			<pre style="font-family: SimSun;">${f.model.requestExam}</pre>
 			</div>
-			<br/>
 			<br/>
 			<h3>7 返回参数说明</h3>
 			<table style="width:100%;">
@@ -104,7 +125,7 @@
 					<td>类型</td>
 					<td>备注</td>
 				</tr>
-				<c:forEach var="v" items="${requestScope.responseParam}"> 
+				<c:forEach var="v" items="${f.responseParam}"> 
 				<tr>
 					<td>${v.name}</td>
 					<td>${v.type}</td>
@@ -113,18 +134,15 @@
 				</c:forEach>
 			</table>
 			<br/>
-			<br/>
 			<h3>8 正确返回示例</h3>
 			<div style="background:#F0F0F0; padding:10px;">
-			<pre>${model.trueExam}</pre>
+			<pre>${f.model.trueExam}</pre>
 			</div>
-			<br/>
 			<br/>
 			<h3>9 错误返回示例</h3>
 			<div style="background:#F0F0F0; padding:10px;">
-			<pre>${model.falseExam}</pre>
+			<pre>${f.model.falseExam}</pre>
 			</div>
-			<br/>
 			<br/>
 			<h3>10 错误码</h3>
 			<table style="width:100%;">
@@ -132,7 +150,7 @@
 					<td>Code</td>
 					<td>Msg</td>
 				</tr>
-				<c:forEach var="v" items="${requestScope.errors}"> 
+				<c:forEach var="v" items="${f.errors}"> 
 				<tr>
 					<td>${v.errorCode}</td>
 					<td>${v.errorMsg}</td>
@@ -140,6 +158,8 @@
 				</c:forEach>
 			</table>
 		</div>
+		</c:forEach>
+		
 		
 </body>
 </html>

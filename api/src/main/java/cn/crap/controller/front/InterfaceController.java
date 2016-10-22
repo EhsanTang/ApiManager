@@ -3,6 +3,7 @@ package cn.crap.controller.front;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.ErrorDto;
+import cn.crap.dto.InterfacePDFDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.ResponseParamDto;
 import cn.crap.framework.JsonResult;
@@ -58,33 +60,61 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/detail/pdf.do")
 	public String pdf(String id, String moduleId) throws Exception {
 		if(MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
-			request.setAttribute("result", "参数不能为空，生成pdf失败");
+			request.setAttribute("result", "参数不能为空，生成PDF失败！");
 			return "/WEB-INF/views/result.jsp";
 		}
-		Interface interFace = interfaceService.get(id);
-		if(MyString.isEmpty(interFace.getId())){
-			request.setAttribute("result", "接口id有误，生成pdf失败");
-			return "/WEB-INF/views/result.jsp";
-		}
-		request.setAttribute("model", interFace);
-		if(interFace.getParam().startsWith("form=")){
-			request.setAttribute("formParams", JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
-		}else{
-			request.setAttribute("customParams", interFace.getParam());
-		}
-		request.setAttribute("headers", JSONArray.toArray(JSONArray.fromObject(interFace.getHeader()),ParamDto.class));
 		
-		Object responseParam = JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class);
-		request.setAttribute("responseParam", responseParam);
-		Object errors = JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class);
-		request.setAttribute("errors", errors);
+		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
+		Interface interFace = null;
+		InterfacePDFDto interDto = null;
+		Module module = null;
+		if( !MyString.isEmpty(id) ){
+			interDto= new InterfacePDFDto();
+			interFace = interfaceService.get(id);
+			if(MyString.isEmpty(interFace.getId())){
+				request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
+				return "/WEB-INF/views/result.jsp";
+			}
+			getInterDto(interfaces, interFace, interDto);
+		}else{
+			module = moduleService.get(moduleId);
+			if(MyString.isEmpty(module.getId())){
+				request.setAttribute("result", "模块id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
+				return "/WEB-INF/views/result.jsp";
+			}
+			for( Interface inter : interfaceService.findByMap(Tools.getMap("moduleId", moduleId), null, null)){
+				interDto= new InterfacePDFDto();
+				getInterDto(interfaces, inter, interDto);
+
+			}
+		}
 		request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
+		request.setAttribute("ADORN_COLOR", cacheService.getSetting("ADORN_COLOR").getValue());
+		request.setAttribute("interfaces", interfaces);
+		request.setAttribute("moduleName", interFace == null? module.getName():interFace.getModuleName());
+		request.setAttribute("title", cacheService.getSetting("TITLE").getValue());
 		return "/WEB-INF/views/interFacePdf.jsp";
+	}
+
+	private void getInterDto(List<InterfacePDFDto> interfaces, Interface interFace, InterfacePDFDto interDto) {
+		interDto.setModel(interFace);
+		if(interFace.getParam().startsWith("form=")){
+			interDto.setFormParams(JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
+		}else{
+			interDto.setCustomParams( interFace.getParam());
+		}
+		interDto.setTrueMockUrl(config.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
+		interDto.setFalseMockUrl(config.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
+
+		interDto.setHeaders( JSONArray.toArray(JSONArray.fromObject(interFace.getHeader()),ParamDto.class));
+		interDto.setResponseParam( JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class) );
+		interDto.setErrors( JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class) );
+		interfaces.add(interDto);
 	}
 	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
-	public void download(@ModelAttribute Interface interFace,HttpServletRequest req, HttpServletResponse response) throws Exception {
+	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response) throws Exception {
 		//interFace = interfaceService.get(interFace.getId());
 		String displayFilename = "CrapApi"+System.currentTimeMillis()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
@@ -105,7 +135,7 @@ public class InterfaceController extends BaseController<Interface>{
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
         } 
-        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, interFace.getId())));
+        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId)));
         ut = response.getOutputStream();  
         while ((len = br.read(buf)) != -1)  
              ut.write(buf, 0, len);

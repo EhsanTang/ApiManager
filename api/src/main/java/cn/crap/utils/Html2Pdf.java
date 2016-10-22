@@ -21,7 +21,7 @@ public class Html2Pdf {
 	 * @throws Exception
 	 */
 
-	public static String createPdf(HttpServletRequest request, Config config, String interFaceId) throws Exception {
+	public static String createPdf(HttpServletRequest request, Config config, String interFaceId , String moduleId) throws Exception {
 		try {
 			String destDir = Tools.getServicePath(request) + "resources/upload/pdf";
 			// 根据当前时间获取文件夹名（0/1）
@@ -46,7 +46,7 @@ public class Html2Pdf {
 			
 			InputStream pdfText = null;
 			try{
-				pdfText = HttpPostGet.GetString(config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId);
+				pdfText = HttpPostGet.GetString(config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId + "&moduleId="+moduleId);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -57,7 +57,6 @@ public class Html2Pdf {
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document, pdfText,
 					Charset.forName("UTF-8"), new ChinaFont());
 			document.close();
-			System.out.println(destDir);
 			return destDir;
 		} catch (Exception e) {
 			e.printStackTrace();

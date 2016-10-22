@@ -15,6 +15,9 @@ public class InterfacePDFDto implements Serializable{
 	private Object headers;
 	private Object responseParam;
 	private Object errors;
+	private String trueMockUrl;
+	private String falseMockUrl;
+
 	public Interface getModel() {
 		return model;
 	}
@@ -51,7 +54,18 @@ public class InterfacePDFDto implements Serializable{
 	public void setErrors(Object errors) {
 		this.errors = errors;
 	}
-	
+	public String getTrueMockUrl() {
+		return trueMockUrl;
+	}
+	public void setTrueMockUrl(String trueMockUrl) {
+		this.trueMockUrl = trueMockUrl;
+	}
+	public String getFalseMockUrl() {
+		return falseMockUrl;
+	}
+	public void setFalseMockUrl(String falseMockUrl) {
+		this.falseMockUrl = falseMockUrl;
+	}
 	
 	
 }

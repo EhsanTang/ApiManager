@@ -130,11 +130,6 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring_version}</version>
-		</dependency>
 		<!-- Srping -->
 		<!-- mysql -->
 		<dependency>
@@ -158,12 +153,6 @@
 			<artifactId>servlet-api</artifactId>
 			<version>6.0.44</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- pdf导出 -->
 		<dependency>

@@ -13,10 +13,12 @@ import cn.crap.inter.dao.ICacheDao;
 import cn.crap.inter.dao.IModuleDao;
 import cn.crap.inter.dao.IProjectDao;
 import cn.crap.inter.dao.ISettingDao;
+import cn.crap.inter.dao.IUserDao;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.Setting;
+import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -36,7 +38,8 @@ public class CacheService implements ICacheService {
 	private ICacheDao memoryCacheDao;
 	@Resource(name="redisCacheDao")
 	private ICacheDao redisCacheDao;
-	
+	@Resource(name="userDao")
+	private IUserDao userDao;
 	@Resource(name="projectDao")
 	private IProjectDao projectDao;
 	
@@ -177,5 +180,23 @@ public class CacheService implements ICacheService {
 	@Override
 	public Object getObj(String key, String field) {
 		return getDao().getObj(key, field);
+	}
+	
+	@Override
+	@Transactional
+	public User getUser(String userId){
+		if(MyString.isEmpty(userId)){
+			return new User();
+		}
+		
+		Object obj = getDao().getObj(Const.CACHE_USER_MODEL + userId);
+		if(obj == null){
+			User user = userDao.get(userId);
+			if(user == null)
+				user = new User();
+			getDao().setObj(Const.CACHE_USER_MODEL + userId, user, config.getCacheTime());
+			return user;
+		}
+		return (User) obj;
 	}
 }

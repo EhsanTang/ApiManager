@@ -5,6 +5,7 @@ import java.util.List;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.Setting;
+import cn.crap.model.User;
 
 public interface ICacheService{
 
@@ -31,4 +32,5 @@ public interface ICacheService{
 	boolean flushDB();
 	Object getObj(String string, String string2);
 	Project getProject(String projectId);
+	User getUser(String userId);
 }

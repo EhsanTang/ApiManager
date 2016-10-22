@@ -6,16 +6,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
-import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.dao.IUserDao;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Source;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Aes;
@@ -33,10 +35,21 @@ public class UserService extends BaseService<User>
 	private Config config;
 	@Autowired
 	private IProjectService projectService;
+	@Resource(name="userDao")
+	IUserDao userDao;
 	
 	@Resource(name="userDao")
 	public void setDao(IBaseDao<User> dao) {
-		super.setDao(dao, new User());
+		super.setDao(dao);
+	}
+
+	@Override
+	@Transactional
+	public User get(String id){
+		User model = userDao.get(id);
+		if(model == null)
+			 return new User();
+		return model;
 	}
 	
 	@Override

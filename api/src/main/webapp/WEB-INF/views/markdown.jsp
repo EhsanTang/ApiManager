@@ -7,8 +7,8 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>CrapApi|接口、文档管理系统—MarkDown</title>
-    <link rel="stylesheet" href="../resources/markdown/dist/markdown-plus.min.css"/>
-    <script src="../resources/markdown/dist/markdown-plus.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../resources/markdown/dist/markdown-plus.min.css"/>
+    <script src="../../resources/markdown/dist/markdown-plus.min.js" charset="utf-8"></script>
   </head>
   <body>
     <div id="mdp-container" style="height: 99%;">

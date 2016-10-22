@@ -178,7 +178,7 @@ public class LoginController extends BaseController<User> {
 		findPwdDto.check();
 		
 		String code = cacheService.getStr(Const.CACHE_FINDPWD + findPwdDto.getEmail());
-		if(code == null || !code.equals(findPwdDto.getCode())){
+		if(code == null || !code.equalsIgnoreCase(findPwdDto.getCode())){
 			throw new MyException("000031");
 		}
 		
@@ -225,7 +225,7 @@ public class LoginController extends BaseController<User> {
 			user.setUserName(model.getUserName().split("@")[0]);
 			// 判断用户名是否重名，重名则修改昵称
 			if( userService.getCount(Tools.getMap("userName", user.getUserName())) >0 ){
-				user.setUserName("ca_"+ model.getUserName().split("@")[0]);
+				user.setUserName("ca_"+ model.getUserName().split("@")[0]+"_"+Tools.getChar(5));
 			}
 			
 			user.setEmail(model.getUserName());

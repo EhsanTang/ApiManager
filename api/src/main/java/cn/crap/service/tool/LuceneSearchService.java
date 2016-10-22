@@ -70,7 +70,7 @@ public class LuceneSearchService implements ISearchService {
 					.open(FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
-			String[] fields = { "contents", "modelName", "title" };
+			String[] fields = { "id", "url", "contents", "modelName", "title" };
 			QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 			Query query = parser.parse(keyword);
 

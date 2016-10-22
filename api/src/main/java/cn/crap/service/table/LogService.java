@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.IInterfaceDao;
+import cn.crap.inter.dao.ILogDao;
 import cn.crap.inter.service.table.ILogService;
 import cn.crap.model.Interface;
 import cn.crap.model.Log;
@@ -19,12 +20,22 @@ public class LogService extends BaseService<Log>
 		implements ILogService {
 	@Autowired
 	private IInterfaceDao interfaceDao;
+	@Autowired
+	private ILogDao logDao;
 	
 	@Resource(name="logDao")
 	public void setDao(IBaseDao<Log> dao) {
-		super.setDao(dao, new Log());
+		super.setDao(dao);
 	}
-	
+
+	@Override
+	@Transactional
+	public Log get(String id){
+		Log model = logDao.get(id);
+		if(model == null)
+			 return new Log();
+		return model;
+	}
 	
 	
 	@Override

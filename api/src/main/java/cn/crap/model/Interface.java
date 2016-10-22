@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.MonitorType;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.tool.ICacheService;
@@ -75,7 +76,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		dto.setUrl("#/"+getProjectId()+"/front/interfaceDetail/" + id);
 		dto.setVersion(version);
 		// 私有项目不能建立索引
-		if(cacheService.getModule(this.moduleId).getStatus() == 2){
+		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
 			dto.setNeedCreateIndex(false);
 		}
 		return dto;

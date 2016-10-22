@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.tool.ICacheService;
@@ -118,7 +119,7 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 	}
 
 	@Transient
-	public SearchDto toSearchDto(ICacheService service){
+	public SearchDto toSearchDto(ICacheService cacheService){
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
 		dto.setCreateTime(createTime);
@@ -137,6 +138,10 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 		//如果备注为空，则提取文档内容前2500 个字
 		if( MyString.isEmpty(this.remark) ){
 			this.remark = docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent;
+		}
+		// 私有项目不能建立索引
+		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+			dto.setNeedCreateIndex(false);
 		}
 		return dto;
 	}

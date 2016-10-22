@@ -11,7 +11,11 @@ import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
+import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.tool.CacheService;
+import cn.crap.utils.MyString;
 
 
 @Entity
@@ -76,5 +80,15 @@ public class Project extends BaseModel implements Serializable{
 	@Transient
 	public String getStatusName(){
 		return ProjectStatus.getNameByValue(status);
+	}
+	@Transient
+	public String getUserName(){
+		if(!MyString.isEmpty(userId)){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			User user = cacheService.getUser(userId);
+			if(user!=null)
+				return user.getUserName();
+		}
+		return "";
 	}
 }

@@ -311,7 +311,7 @@ public class Tools {
 	}
 	
 	public static boolean checkUserName(String userName){
-		String regex = "^[0-9A-Za-z]{6,20}$";		
+		String regex = "^[0-9A-Za-z]{5,20}$";		
 		return userName.matches(regex);
 	}
 	public static boolean checkEmail(String email){

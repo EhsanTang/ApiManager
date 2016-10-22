@@ -23,7 +23,16 @@ public class SourceService extends BaseService<Source>
 	
 	@Resource(name="sourceDao")
 	public void setDao(IBaseDao<Source> dao ) {
-		super.setDao(dao, new Source());
+		super.setDao(dao);
+	}
+	
+	@Override
+	@Transactional
+	public Source get(String id){
+		Source model = sourceDao.get(id);
+		if(model == null)
+			 return new Source();
+		return model;
 	}
 
 	@Override

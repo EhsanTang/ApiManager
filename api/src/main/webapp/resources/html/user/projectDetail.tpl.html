@@ -11,7 +11,7 @@
 				<tr>
 					<td class="tc">是否公开</td>
 					<td class="tl" colspan="3">
-						*公开模块下的接口、错误码可以在站内搜索检索到，私有模块只能通过模块主页地址进入<br>
+						*私有项目不会建立索引，站内全文搜索检索到，只能模块主页地址进入。已经建立的索引将不会删除，需触发修改才能删除<br>
 						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=typeName|tag=type|code=PROJECTTYPE|def='+model.type,$event)">
 					</td>

@@ -18,7 +18,6 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ICommentService;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Article;
@@ -36,8 +35,6 @@ public class ArticleController extends BaseController<Article>{
 	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
-	@Autowired
-	private IProjectService projectService;
 	@Autowired
 	private ICommentService commentService;
 
@@ -99,10 +96,10 @@ public class ArticleController extends BaseController<Article>{
 			
 			hasPermission( cacheService.getProject(model.getProjectId()) );
 			articleService.update(article);
-			luceneService.update(article.toSearchDto(null));
+			luceneService.update(article.toSearchDto(cacheService));
 		}else{
 			articleService.save(article);
-			luceneService.add(article.toSearchDto(null));
+			luceneService.add(article.toSearchDto(cacheService));
 		}
 		cacheService.delObj(Const.CACHE_WEBPAGE + article.getId());
 		cacheService.delObj(Const.CACHE_WEBPAGE + article.getKey());

@@ -16,15 +16,12 @@ import net.sf.json.JSONObject;
 
 public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	protected IBaseDao<T> dao;
-	//空对象，避免空指针异常（当没有找到数据时，返回一个新的对象，该对象在类实例化时由子类调用setDao注入）
-	private T model = null;
 	@Autowired
 	private ILogDao logDao;
 	
 	
-	public void setDao(IBaseDao<T> dao, T model) {
+	public void setDao(IBaseDao<T> dao) {
 		this.dao = dao;
-		this.model = model;
 	}
 	
 	/**
@@ -37,7 +34,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 		dao.save(model);
 		return model;
 	}
-
+	
 	@Override
 	@Transactional
 	public void update(T model) {
@@ -93,13 +90,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	@Override
 	@Transactional
 	public T get(String id){
-		if(MyString.isEmpty(id))
-			return model;
-		T temp = dao.get(id);
-		if(temp != null)
-			return temp;
-		else
-			return model;
+		return dao.get(id);
 	}
 
 	/**
@@ -150,7 +141,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	@Override
 	@Transactional
 	public List<?> queryByHql(String hql, Map<String, Object> map, Page page){
-		return  dao.queryByHql(hql, map);
+		return  dao.queryByHql(hql, map, page);
 	}
 	
 }

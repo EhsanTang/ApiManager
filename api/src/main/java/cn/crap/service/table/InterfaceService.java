@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.inter.dao.IErrorDao;
 import cn.crap.inter.dao.IInterfaceDao;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ILuceneService;
 import cn.crap.model.Module;
+import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -38,9 +40,18 @@ public class InterfaceService extends BaseService<Interface>
 	
 	@Resource(name="interfaceDao")
 	public void setDao(IBaseDao<Interface> dao) {
-		super.setDao(dao, new Interface());
+		super.setDao(dao);
 	}
 
+	@Override
+	@Transactional
+	public Interface get(String id){
+		Interface model = interfaceDao.get(id);
+		if(model == null)
+			 return new Interface();
+		return model;
+	}
+	
 	@Override
 	@Transactional
 	public JsonResult getInterfaceList(Page page,List<String> moduleIds, Interface interFace, Integer currentPage) {

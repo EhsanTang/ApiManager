@@ -22,7 +22,16 @@ public class ArticleService extends BaseService<Article>
 
 	@Resource(name="articleDao")
 	public void setDao(IBaseDao<Article> dao) {
-		super.setDao(dao, new Article());
+		super.setDao(dao);
+	}
+	
+	@Override
+	@Transactional
+	public Article get(String id){
+		Article model = dao.get(id);
+		if(model == null)
+			 return new Article();
+		return model;
 	}
 
 	@Override

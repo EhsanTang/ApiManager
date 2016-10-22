@@ -14,6 +14,7 @@
 			<tr>
 				<td class="tc">类目</td>
 				<td>
+					* 类目没有管理界面，初始化时没有类目，需要手动写入类目。下次选择将显示项目中所有之前输入过的类目
 					<div class="input-group">
 							<input class="form-control" type="text" id="category" required
 								ng-model="model.category"  placeholder="点击“选择”按钮选择，或输入新类目">
@@ -61,7 +62,7 @@
 					内容
 					<input type="button" class="btn btn-default btn-sm mt10" value="默认编辑器" onclick="changeDisplay('defEditor','kindEditor')">
 					<input type="button" class="btn btn-default btn-sm mt10" value="Kind编辑器" ng-click="createEditor('eidtorId','content')">
-					<input type="button" class="btn btn-default btn-sm mt10" value="MarkDown" ng-click="markdownEtitor('webPage/markdown.do?id='+model.id)">
+					<input type="button" class="btn btn-default btn-sm mt10" value="MarkDown" ng-click="markdownEtitor('user/article/markdown.do?id='+model.id)">
 				</td>
 				<td class="tc">
 					<!-- 默认编辑器 -->

@@ -1,6 +1,7 @@
 package unitTest;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,20 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.crap.enumeration.ArticleType;
+import cn.crap.enumeration.ProjectStatus;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
+import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
+import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.table.IRoleService;
+import cn.crap.inter.service.table.ISourceService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Article;
 import cn.crap.model.Module;
-import cn.crap.model.Interface;
-import cn.crap.utils.Const;
+import cn.crap.model.Project;
+import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:spring-servlet.xml"})
+@ContextConfiguration(locations={"classpath:springMVC.xml"})
 public class Update {
 	@Autowired
 	private IModuleService moduleService;
@@ -33,64 +41,66 @@ public class Update {
 	private IUserService userService;
 	@Autowired
 	private IInterfaceService interfaceService;
+	@Autowired
+	private IProjectService projectService;
+	@Autowired
+	private IArticleService articleService;
+	@Autowired
+	private ISourceService sourceService;
 	
 	/**
-	 * V5版本升级成V6版本，下载源代码后，请执行该方法升级数据库
+	 * V6版本升级成V7版本，下载源代码后，请执行该方法升级数据库
 	 * 需要提供接口（有些用户没有下载源码，直接安装的无法执行该代码）
 	 * @throws IOException 
 	 * @throws MyException 
 	 */
 	@Test
-	public void v5ToV6() throws MyException, IOException{
-//		// 模块中补全项目字段
-//		for(DataCenter dc: moduleService.findByMap(Tools.getMap("type","MODULE"), null, null)){
-//			
-//			if(dc.getParentId().equals(Const.TOP_MODULE) || dc.getParentId().equals(Const.PRIVATE_MODULE) || dc.getParentId().equals(Const.ADMIN_MODULE)){
-//				dc.setProjectId(dc.getId());
-//				moduleService.update(dc);
-//			}
-//			
-//			else{
-//				DataCenter parent = moduleService.get(dc.getParentId());
-//				// 父模块不存在，删除模块
-//				if(parent == null || MyString.isEmpty(parent.getId())){
-//					moduleService.delete(dc);
-//					break;
-//				}
-//				int i=0;
-//				while( !parent.getParentId().equals(Const.PRIVATE_MODULE) && !parent.getParentId().equals(Const.ADMIN_MODULE) ){
-//					DataCenter temp =  moduleService.get(parent.getParentId());
-//					if(temp == null || MyString.isEmpty(temp.getId())){
-//						moduleService.delete(dc);
-//						break;
-//					}else{
-//						i++;
-//						if(i>900){
-//							System.out.print("'"+temp.getId()+"',");
-//						}
-//						if(i>1000){
-//							System.out.println("模块表存在循环依赖，更新出现异常!!");
-//							return;
-//						}
-//						parent = temp;
-//					}
-//				}
-//				// 项目的根项目是私有项目或管理员项目则跟新
-//				if(parent.getParentId().equals(Const.PRIVATE_MODULE) || parent.getParentId().equals(Const.ADMIN_MODULE)){
-//					dc.setProjectId(parent.getId());
-//					moduleService.update(dc);
-//				}else{
-//					moduleService.delete(dc);
-//				}
-//			}
-//		}
-//		
-//		// 补全接口中的fullUrl
-//		for(Interface i : interfaceService.findByMap(null, null, null)){
-//			i.setFullUrl(i.getModuleUrl() + i.getUrl());
-//			interfaceService.update(i);
-//		}
-//		interfaceService.update("delete from Interface where moduleId not in(select id from DataCenter where type='MODULE')", null);
-//		
+	public void v6ToV7() throws MyException, IOException{
+		for(Module module : moduleService.findByMap(null, null,null)){
+			// 请除无效module
+			if(MyString.isEmpty(module.getProjectId())){
+				moduleService.delete(module);
+			}else{
+				Project project = projectService.get(module.getProjectId());
+				Module p = moduleService.get(module.getProjectId());
+				if(MyString.isEmpty(project.getId()) && !MyString.isEmpty(p.getId())){
+					// 新建项目
+					project.setId(p.getId());
+					project.setCreateTime(p.getCreateTime());
+					project.setName(p.getName());
+					project.setPassword(p.getPassword());
+					project.setRemark(p.getRemark());
+					project.setSequence(p.getSequence());
+					project.setStatus(ProjectStatus.COMMON.getStatus());
+					project.setType(ProjectType.PRIVATE.getType());
+					project.setUserId(p.getUserId());
+					projectService.save(project);
+					projectService.update("update Project set id='"+p.getId()+"' where id = '"+project.getId()+"'", null);
+				}
+			}
+			
+		}
+		// 同步数据字典，从项目迁移到模块，项目下没有模块则不迁移a
+		for(Article article: articleService.findByMap(Tools.getMap("type", ArticleType.DICTIONARY.name()), null, null)){
+			Project p = projectService.get(article.getModuleId());
+			if(MyString.isEmpty(p.getId())){
+				articleService.delete(article);
+			}else{
+				List<Module> modules = moduleService.findByMap(Tools.getMap("projectId", p.getId()), null, null);
+				if(modules.size()>0){
+					article.setModuleId(modules.get(0).getId());
+					articleService.update(article);
+				}
+			}
+		}
+		
+		// 删除模块中的项目
+		for(Module module : moduleService.findByMap(null, null,null)){
+			if(MyString.isEmpty(module.getProjectId())){
+				moduleService.delete(module);
+			}
+		}
+		
 	}
+		
 }

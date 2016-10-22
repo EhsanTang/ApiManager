@@ -59,41 +59,46 @@ public class InterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/detail/pdf.do")
 	public String pdf(String id, String moduleId) throws Exception {
-		if(MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
-			request.setAttribute("result", "参数不能为空，生成PDF失败！");
+		try{
+			if(MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
+				request.setAttribute("result", "参数不能为空，生成PDF失败！");
+				return "/WEB-INF/views/result.jsp";
+			}
+			
+			List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
+			Interface interFace = null;
+			InterfacePDFDto interDto = null;
+			Module module = null;
+			if( !MyString.isEmpty(id) ){
+				interDto= new InterfacePDFDto();
+				interFace = interfaceService.get(id);
+				if(MyString.isEmpty(interFace.getId())){
+					request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
+					return "/WEB-INF/views/result.jsp";
+				}
+				getInterDto(interfaces, interFace, interDto);
+			}else{
+				module = moduleService.get(moduleId);
+				if(MyString.isEmpty(module.getId())){
+					request.setAttribute("result", "模块id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
+					return "/WEB-INF/views/result.jsp";
+				}
+				for( Interface inter : interfaceService.findByMap(Tools.getMap("moduleId", moduleId), null, null)){
+					interDto= new InterfacePDFDto();
+					getInterDto(interfaces, inter, interDto);
+	
+				}
+			}
+			request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
+			request.setAttribute("ADORN_COLOR", cacheService.getSetting("ADORN_COLOR").getValue());
+			request.setAttribute("interfaces", interfaces);
+			request.setAttribute("moduleName", interFace == null? module.getName():interFace.getModuleName());
+			request.setAttribute("title", cacheService.getSetting("TITLE").getValue());
+			return "/WEB-INF/views/interFacePdf.jsp";
+		}catch(Exception e){
+			request.setAttribute("result", "接口数据有误，请修改接口后再试，错误信息："+e.getMessage());
 			return "/WEB-INF/views/result.jsp";
 		}
-		
-		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
-		Interface interFace = null;
-		InterfacePDFDto interDto = null;
-		Module module = null;
-		if( !MyString.isEmpty(id) ){
-			interDto= new InterfacePDFDto();
-			interFace = interfaceService.get(id);
-			if(MyString.isEmpty(interFace.getId())){
-				request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
-				return "/WEB-INF/views/result.jsp";
-			}
-			getInterDto(interfaces, interFace, interDto);
-		}else{
-			module = moduleService.get(moduleId);
-			if(MyString.isEmpty(module.getId())){
-				request.setAttribute("result", "模块id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
-				return "/WEB-INF/views/result.jsp";
-			}
-			for( Interface inter : interfaceService.findByMap(Tools.getMap("moduleId", moduleId), null, null)){
-				interDto= new InterfacePDFDto();
-				getInterDto(interfaces, inter, interDto);
-
-			}
-		}
-		request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
-		request.setAttribute("ADORN_COLOR", cacheService.getSetting("ADORN_COLOR").getValue());
-		request.setAttribute("interfaces", interfaces);
-		request.setAttribute("moduleName", interFace == null? module.getName():interFace.getModuleName());
-		request.setAttribute("title", cacheService.getSetting("TITLE").getValue());
-		return "/WEB-INF/views/interFacePdf.jsp";
 	}
 
 	private void getInterDto(List<InterfacePDFDto> interfaces, Interface interFace, InterfacePDFDto interDto) {

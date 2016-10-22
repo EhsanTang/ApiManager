@@ -5,12 +5,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.inter.dao.IModuleDao;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.model.Module;
 import cn.crap.utils.Const;
@@ -22,10 +24,23 @@ import cn.crap.utils.Tools;
 public class ModuleService extends BaseService<Module>
 		implements IModuleService {
 
+	@Autowired
+	private IModuleDao dataCenterDao;
+	
 	@Resource(name="dataCenterDao")
 	public void setDao(IBaseDao<Module> dao ) {
-		super.setDao(dao, new Module());
+		super.setDao(dao);
 	}
+	
+	@Override
+	@Transactional
+	public Module get(String id){
+		Module model = dataCenterDao.get(id);
+		if(model == null)
+			 return new Module();
+		return model;
+	}
+	
 	
 	@Override
 	@Transactional

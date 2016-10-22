@@ -28,7 +28,7 @@ public class Const {
 	public static final String AUTH_LOG = "LOG";
 	public static final String AUTH_PROJECT = "PROJECT_";
 	// 缓存
-	public static final String CACHE_USER= ":user";
+	public static final String CACHE_USER= ":user";// 用户登录信息
 	public static final String CACHE_IMGCODE = ":imgCode";
 	public static final String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
@@ -49,6 +49,7 @@ public class Const {
 	public static final String CACHE_PROJECT = ":project:";
 	public static final String CACHE_MODULE = "cache:model:";
 	public static final String CACHE_SETTING = "cache:setting";
+	public static final String CACHE_USER_MODEL= "cache:user:model";// 用户登录信息
 	public static final String CACHE_SETTINGLIST = "cache:settingList";
 	
 	

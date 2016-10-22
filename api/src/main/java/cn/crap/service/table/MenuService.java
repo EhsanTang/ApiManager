@@ -17,6 +17,7 @@ import cn.crap.enumeration.ProjectStatus;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
+import cn.crap.inter.dao.IMenuDao;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IProjectService;
@@ -40,13 +41,23 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	private PickFactory pickFactory;
 	@Autowired
 	private Config config;
-	
+	@Autowired
+	private IMenuDao menuDao;
 	
 	@Resource(name = "menuDao")
 	public void setDao(IBaseDao<Menu> dao) {
-		super.setDao(dao, new Menu());
+		super.setDao(dao);
 	}
 
+	@Override
+	@Transactional
+	public Menu get(String id){
+		Menu model = menuDao.get(id);
+		if(model == null)
+			 return new Menu();
+		return model;
+	}
+	
 	@Override
 	@Transactional
 	public List<MenuDto> getLeftMenu(Map<String,Object> map) {

@@ -50,6 +50,7 @@ public class AdminPickService implements IPickService{
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
 		PickDto pick = null;
 		String preUrl = "";
+		List<Byte> statusList = new ArrayList<Byte>();
 		switch (code) {
 		case "CATEGORY":
 			int i = 0;
@@ -95,7 +96,6 @@ public class AdminPickService implements IPickService{
 		case "AUTH":
 			pick = new PickDto(Const.SEPARATOR, "项目管理");
 			picks.add(pick);
-			List<Byte> statusList = new ArrayList<Byte>();
 			statusList.add(ProjectStatus.RECOMMEND.getStatus());
 			statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
 			for (Project project : projectService.findByMap(Tools.getMap("status|in", statusList), null, null)) {
@@ -189,7 +189,10 @@ public class AdminPickService implements IPickService{
 				
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
-				for(Project project: projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), null, null)){
+				
+				statusList.add(ProjectStatus.RECOMMEND.getStatus());
+				statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
+				for (Project project : projectService.findByMap(Tools.getMap("status|in", statusList), null, null)) {
 					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}

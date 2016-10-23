@@ -2,7 +2,7 @@
    
 [CrapApi是什么]
 ```
-CrapApi：一个由anjularjs+bootstrap+springMVC搭建的高性能的免费开源的API接口、文档管理系统（应用接口管理系统）
+CrapApi：一个由angularjs+bootstrap+springMVC搭建的高性能的免费开源的API接口、文档管理系统（应用接口管理系统）
 ```
 [CrapApi收费吗？]
 ```
@@ -28,6 +28,7 @@ CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，�
 帮助文档地址：http://api.crap.cn/index.do#/top/webPage/list/ARTICLE/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3
 部署文档地址：http://api.crap.cn/index.do#/top/webPage/detail/ARTICLE/19dc3d5c7-ff3d-4dff-ad72-2212869cd92a
 码云源码地址：https://git.oschina.net/CrapApi/CrapApi.git
+GitHub源码地址：https://github.com/EhsanTang/CrapApi
 
 演示项目：http://api2.crap.cn
 普通账号：super 123456 （该账号只拥有部分权限）

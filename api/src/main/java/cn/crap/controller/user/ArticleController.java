@@ -99,7 +99,7 @@ public class ArticleController extends BaseController<Article>{
 			articleService.update(article);
 			luceneService.update(article.toSearchDto(cacheService));
 		}else{
-			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
 			articleService.save(article);
 			luceneService.add(article.toSearchDto(cacheService));
 		}
@@ -112,7 +112,7 @@ public class ArticleController extends BaseController<Article>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Article article) throws MyException, IOException{
 		Article model = articleService.get(article.getId());
-		hasPermission( cacheService.getProject(model.getProjectId()) , model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+		hasPermission( cacheService.getProject(model.getProjectId()) , model.getType().equals(ArticleType.ARTICLE.name())? delArticle:delDict);
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
 		}

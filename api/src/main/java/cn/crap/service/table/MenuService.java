@@ -86,10 +86,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			menuVO.setMenu(menu);
 			
 			menuVO.setSubMenu(new ArrayList<Menu>());
-			List<Byte> status = new ArrayList<Byte>();
-			status.add(ProjectStatus.RECOMMEND.getStatus());
-			status.add(ProjectStatus.RECOMMENDADMIN.getStatus());
-			for (Project project : projectService.findByMap(Tools.getMap("status|in", status), page, null)) {
+			for (Project project : projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), page, null)) {
 				Menu subMenu = new Menu();
 				subMenu.setId("recPro_"+project.getId());
 				subMenu.setMenuName(project.getName());

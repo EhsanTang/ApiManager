@@ -46,7 +46,7 @@ public class SourceController extends BaseController<Source>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage) throws MyException{
-		hasPermissionModuleId((source.getModuleId()));
+		hasPermissionModuleId((source.getModuleId()), view);
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, sourceService.findByMap(Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId()), page, null), page);
@@ -59,7 +59,7 @@ public class SourceController extends BaseController<Source>{
 		Source model;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.get(source.getId());
-			hasPermissionModuleId( model.getModuleId() );
+			hasPermissionModuleId( model.getModuleId(), view);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
@@ -71,9 +71,6 @@ public class SourceController extends BaseController<Source>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
-		// 权限
-		hasPermissionModuleId((source.getModuleId()));
-		
 			if(MyString.isEmpty(source.getFilePath())){
 				throw new MyException("000016");
 			}
@@ -116,9 +113,11 @@ public class SourceController extends BaseController<Source>{
 			SearchDto searchDto = source.toSearchDto(cacheService);
 			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
+				source.setModuleId(sourceService.get(source.getId()).getModuleId());
+				hasPermissionModuleId((source.getModuleId()), modSource);
 				sourceService.update(source);
 			}else{
-				source.setId(null);
+				hasPermissionModuleId((source.getModuleId()), addSource);
 				sourceService.save(source);
 			}
 			
@@ -131,7 +130,7 @@ public class SourceController extends BaseController<Source>{
 	@AuthPassport
 	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
 		// 权限
-		hasPermissionModuleId(sourceService.get(source.getId()).getModuleId());
+		hasPermissionModuleId(sourceService.get(source.getId()).getModuleId(), delSource);
 		
 		sourceService.delete(source);
 		luceneService.delete(new SearchDto(source.getId()));
@@ -145,8 +144,8 @@ public class SourceController extends BaseController<Source>{
 		Source change = sourceService.get(changeId);
 		Source model = sourceService.get(id);
 		// 权限
-		hasPermissionModuleId(change.getModuleId());
-		hasPermissionModuleId(model.getModuleId());
+		hasPermissionModuleId(change.getModuleId(), modSource);
+		hasPermissionModuleId(model.getModuleId(), modSource);
 				
 		int modelSequence = model.getSequence();
 		

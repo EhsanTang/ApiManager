@@ -37,7 +37,7 @@ public class CommentController extends BaseController<Comment> {
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
 		
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), view);
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		return new JsonResult(1, commentService.findByMap(Tools.getMap("articleId", comment.getArticleId()), page, " createTime desc"), page);
@@ -50,7 +50,7 @@ public class CommentController extends BaseController<Comment> {
 		Comment model;
 		if (!comment.getId().equals(Const.NULL_ID)) {
 			model = commentService.get(comment.getId());
-			hasPermission( cacheService.getProject(  articleService.get( model.getArticleId() ).getProjectId() ) );
+			hasPermission( cacheService.getProject(  articleService.get( model.getArticleId() ).getProjectId() ), view);
 		} else {
 			model = new Comment();
 		}
@@ -61,7 +61,7 @@ public class CommentController extends BaseController<Comment> {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) , modArticle);
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.update(comment);
 		return new JsonResult(1, null);
@@ -72,7 +72,7 @@ public class CommentController extends BaseController<Comment> {
 	@AuthPassport
 	public JsonResult delete(@ModelAttribute Comment comment) throws MyException {
 		comment = commentService.get(comment.getId());
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) );
+		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), delArticle);
 		comment = commentService.get(comment.getId());
 		commentService.delete(comment);
 		return new JsonResult(1, null);

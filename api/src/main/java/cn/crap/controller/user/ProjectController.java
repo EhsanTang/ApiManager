@@ -20,6 +20,7 @@ import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
@@ -48,6 +49,8 @@ public class ProjectController extends BaseController<Project> {
 	@Autowired
 	private IErrorService errorService;
 	@Autowired
+	private IProjectUserService projectUserService;
+	@Autowired
 	private Config config;
 	
 	@RequestMapping("/list.do")
@@ -58,16 +61,29 @@ public class ProjectController extends BaseController<Project> {
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		Map<String,Object> map = null;
-		map = Tools.getMap("name|like", project.getName());
 		
 		// 普通用户，管理员我的项目菜单只能查看自己的项目
 		LoginInfoDto user = Tools.getUser();
 		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
-			map.put("userId", user.getId());
+			if(MyString.isEmpty(project.getName())){
+				return new JsonResult(1, 
+						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", Tools.getMap("userId", user.getId()), page)
+						, page);
+
+			}else{
+				return new JsonResult(1, 
+						projectService.queryByHql("from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name", 
+						Tools.getMap("userId", user.getId(), "name|like", project.getName()), page)
+						, page);
+
+			}
+		}else{
+			Map<String,Object> map = null;
+			map = Tools.getMap("name|like", project.getName());
+
+			return new JsonResult(1, projectService.findByMap(map, page, null), page);
 		}
 		
-		return new JsonResult(1, projectService.findByMap(map, page, null), page);
 	}
 	
 	@RequestMapping("/detail.do")
@@ -125,7 +141,7 @@ public class ProjectController extends BaseController<Project> {
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
 		
 		// 刷新用户权限 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, projectService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, projectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,project);
 	}
 	
@@ -150,6 +166,11 @@ public class ProjectController extends BaseController<Project> {
 		// 只有错误码数量为0，才允许删除项目
 		if(errorService.getCount(Tools.getMap("projectId", model.getId())) > 0){
 			throw new MyException("000033");
+		}
+		
+		// 只有项目成员数量为0，才允许删除项目
+		if(projectUserService.getCount(Tools.getMap("projectId", model.getId()))>0){
+			throw new MyException("000038");
 		}
 		
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());

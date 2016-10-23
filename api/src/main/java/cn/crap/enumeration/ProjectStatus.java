@@ -1,7 +1,7 @@
 package cn.crap.enumeration;
 
 public enum ProjectStatus {
-	COMMON("普通项目", 1),RECOMMEND("推荐项目", 2), ADMIN("管理员项目",3), RECOMMENDADMIN("管理员项目&推荐项目",4);
+	COMMON("普通项目", 1),RECOMMEND("推荐项目", 2);
 	private final int status;
 	private final String name;
 	

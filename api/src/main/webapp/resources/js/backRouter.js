@@ -170,6 +170,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('projectUserList', {
+		url : '/user/projectUser/list/:projectId',
+		views : {
+			'main' : {
+				templateUrl : 'resources/html/user/projectUserList.tpl.html'
+			},
+			'page@projectUserList' : {
+				templateUrl : 'resources/html/backHtml/page.tpl.html'
+			},
+			'detail' : {
+				templateUrl : function($stateParems){
+					return 'resources/html/user/projectUserDetail.tpl.html';
+				}
+			}
+		}
 	}).state('commentList', {
 		url : '/:projectId/comment/list/:articleId',
 		views : {

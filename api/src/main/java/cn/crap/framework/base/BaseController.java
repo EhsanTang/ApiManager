@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,10 +18,10 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.model.ProjectUser;
 import cn.crap.service.tool.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
@@ -30,8 +32,31 @@ public abstract class BaseController<T extends BaseModel> {
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected Logger log = Logger.getLogger(getClass());
-	@Autowired
-	private IProjectService projectService;
+	protected final static int view = 100;
+	protected final static int modInter = 1;
+	protected final static int addInter = 2;
+	protected final static int delInter = 3;
+	
+	protected final static int modModule = 4;
+	protected final static int addModule = 5;
+	protected final static int delModule = 6;
+	
+	protected final static int modArticle = 7;
+	protected final static int addArticle = 8;
+	protected final static int delArticle = 9;
+	
+	protected final static int modDict = 10;
+	protected final static int addDict = 11;
+	protected final static int delDict = 12;
+	
+	protected final static int modSource = 13;
+	protected final static int addSource = 14;
+	protected final static int delSource = 15;
+	
+	protected final static int modError = 16;
+	protected final static int addError = 17;
+	protected final static int delError = 18;
+	
 	@Autowired
 	private ICacheService cacheService;
 	
@@ -112,7 +137,7 @@ public abstract class BaseController<T extends BaseModel> {
 		 * @param project
 		 * @throws MyException
 		 */
-		protected void hasPermission(Project project) throws MyException{
+		protected void hasPermission(Project project, int type) throws MyException{
 			LoginInfoDto user = Tools.getUser();
 			if(user != null ){
 				
@@ -121,25 +146,127 @@ public abstract class BaseController<T extends BaseModel> {
 					return;
 				}
 
-				// 拥有项目权限的普通管理员修改项目
-				String authority = user.getAuthStr();
-				if(authority.indexOf(","+Const.AUTH_PROJECT+project.getId()+",") >=0){
-					return;
-				}
-				
 				// 修改自己的项目
 				if( user.getId().equals(project.getUserId())){
 					return;
 				}
 				
+				// 项目成员
+				if(type > 0){
+					ProjectUser pu = user.getProjects().get(project.getId());
+					if( pu == null){
+						throw new MyException("000003");
+					}
+					if( type == view){
+						return;
+					}
+					
+					switch (type) {
+						case modModule:
+							if(pu.isModModule())
+								return;
+							break;
+						case delModule:
+							if(pu.isDelModule())
+								return;
+							break;
+						case addModule:
+							if(pu.isAddModule())
+								return;
+							break;
+						
+						case modInter:
+							if(pu.isModInter())
+								return;
+							break;
+						case addInter:
+							if(pu.isAddInter())
+								return;
+							break;
+						case delInter:
+							if(pu.isDelInter())
+								return;
+							break;
+						
+						case modArticle:
+							if(pu.isModArticle())
+								return;
+							break;
+						case addArticle:
+							if(pu.isAddArticle())
+								return;
+							break;
+						case delArticle:
+							if(pu.isDelArticle())
+								return;
+							break;
+						
+						case modDict:
+							if(pu.isModDict())
+								return;
+							break;
+						case addDict:
+							if(pu.isAddDict())
+								return;
+							break;
+						case delDict:
+							if(pu.isDelDict())
+								return;
+							break;
+							
+						case modSource:
+							if(pu.isModSource())
+								return;
+							break;
+						case addSource:
+							if(pu.isAddSource())
+								return;
+							break;
+						case delSource:
+							if(pu.isDelSource())
+								return;
+							break;
+						
+						case modError:
+							if(pu.isModError())
+								return;
+							break;
+						case addError:
+							if(pu.isAddError())
+								return;
+							break;
+						case delError:
+							if(pu.isDelError())
+								return;
+							break;
+							
+							
+	
+						default:
+							break;
+					}
+					
+					
+				}
+				
 			}
 			throw new MyException("000003");
 		}
+		protected void hasPermission(Project project) throws MyException{
+			hasPermission(project, 0);
+		}
+		protected void hasPermission(String projectId, int type) throws MyException{
+			hasPermission(cacheService.getProject(projectId), type);
+		}
+		protected void hasPermissionModuleId(String moduleId, int type) throws MyException{
+			hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()), type);
+		}
+		
 		protected void hasPermission(String projectId) throws MyException{
-			hasPermission(cacheService.getProject(projectId));
+			hasPermission(cacheService.getProject(projectId), 0);
 		}
 		protected void hasPermissionModuleId(String moduleId) throws MyException{
-			hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()));
+			hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()), 0);
 		}
 		
 		/**

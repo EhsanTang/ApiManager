@@ -2,30 +2,15 @@ package cn.crap.service.tool;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.enumeration.DataType;
-import cn.crap.enumeration.FontFamilyType;
-import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ModuleStatus;
 import cn.crap.enumeration.ProjectType;
-import cn.crap.enumeration.SettingType;
-import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.inter.dao.ICacheDao;
-import cn.crap.inter.dao.IModuleDao;
-import cn.crap.inter.dao.IProjectDao;
-import cn.crap.inter.dao.ISettingDao;
 import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
@@ -33,15 +18,10 @@ import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.IPickService;
-import cn.crap.model.Article;
-import cn.crap.model.Menu;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.Role;
-import cn.crap.model.Setting;
-import cn.crap.springbeans.Config;
+import cn.crap.model.User;
 import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 /**
@@ -123,6 +103,21 @@ public class UserPickService implements IPickService{
 							picks.add(pick);
 						}
 						return;
+					case "USER":
+						if(key!= null && key.length()>5){
+							if(key.indexOf("@")>0){
+								for (User u : userService.findByMap(Tools.getMap("email|like", key), null, null)) {
+									pick = new PickDto(u.getId(), u.getUserName());
+									picks.add(pick);
+								}
+							}
+							else{
+								for (User u : userService.findByMap(Tools.getMap("userName|like", key), null, null)) {
+									pick = new PickDto(u.getId(), u.getUserName());
+									picks.add(pick);
+								}
+							}
+						}
 				}
 			}
 

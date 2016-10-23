@@ -94,15 +94,6 @@ public class AdminPickService implements IPickService{
 			
 		// 权限
 		case "AUTH":
-			pick = new PickDto(Const.SEPARATOR, "项目管理");
-			picks.add(pick);
-			statusList.add(ProjectStatus.RECOMMEND.getStatus());
-			statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
-			for (Project project : projectService.findByMap(Tools.getMap("status|in", statusList), null, null)) {
-				pick = new PickDto(project.getId(), Const.AUTH_PROJECT+project.getId(), project.getName());
-				picks.add(pick);
-			}
-			
 			// 分割线
 			pick = new PickDto(Const.SEPARATOR, "用户、菜单、角色、系统设置管理");
 			picks.add(pick);
@@ -190,9 +181,7 @@ public class AdminPickService implements IPickService{
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
 				
-				statusList.add(ProjectStatus.RECOMMEND.getStatus());
-				statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
-				for (Project project : projectService.findByMap(Tools.getMap("status|in", statusList), null, null)) {
+				for (Project project : projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), null, null)) {
 					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}

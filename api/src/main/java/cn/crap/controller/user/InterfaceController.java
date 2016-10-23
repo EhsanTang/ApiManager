@@ -39,8 +39,6 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IModuleService dataCenterService;
-	@Autowired
 	private IErrorService errorService;
 	@Autowired
 	private ICacheService cacheService;
@@ -55,7 +53,7 @@ public class InterfaceController extends BaseController<Interface>{
 			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
 		Page page= new Page(15);
 		
-		hasPermission(cacheService.getProject(interFace.getProjectId()));
+		hasPermission(cacheService.getProject(interFace.getProjectId()), view);
 		
 		List<Interface> interfaces = interfaceService.findByMap( 
 				Tools.getMap("moduleId", interFace.getModuleId(), "interfaceName|like", interFace.getInterfaceName(), "fullUrl|like", interFace.getUrl()), 
@@ -73,7 +71,7 @@ public class InterfaceController extends BaseController<Interface>{
 		Interface model;
 		if(!id.equals(Const.NULL_ID)){
 			model= interfaceService.get(id);
-			hasPermission(cacheService.getProject(model.getProjectId()));
+			hasPermission(cacheService.getProject(model.getProjectId()), view);
 		}else{
 			model = new Interface();
 			model.setModuleId( moduleId);
@@ -91,7 +89,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
-		hasPermission(cacheService.getProject(interFace.getProjectId()));
+		hasPermission(cacheService.getProject(interFace.getProjectId()), addInter);
 		if(interfaceService.getCount(Tools.getMap("moduleId", interFace.getModuleId(), "fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
@@ -159,12 +157,10 @@ public class InterfaceController extends BaseController<Interface>{
 			}
 		}
 		
-		// 判断是否有新建模块的权限
-		hasPermission(cacheService.getProject( interFace.getProjectId() ));
-		
 		if (!MyString.isEmpty(interFace.getId())) {
+			interFace.setModuleId( interfaceService.get(interFace.getId()).getModuleId());
 			// 判断是否有修改模块的权限
-			hasPermission(cacheService.getProject( interfaceService.get(interFace.getId()).getProjectId() ));
+			hasPermission(cacheService.getProject( interFace.getProjectId() ), modInter);
 			
 			// url 重复
 			if( interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
@@ -179,7 +175,7 @@ public class InterfaceController extends BaseController<Interface>{
 			luceneService.update(interFace.toSearchDto(cacheService));
 			
 		} else {
-			interFace.setId(null);
+			hasPermission(cacheService.getProject( interFace.getProjectId() ), addInter);
 			if(interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
@@ -194,7 +190,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException, IOException {
 		interFace = interfaceService.get(interFace.getId());
-		hasPermission(cacheService.getProject( interFace.getProjectId() ));
+		hasPermission(cacheService.getProject( interFace.getProjectId() ), delInter);
 		interfaceService.delete(interFace, "接口", "");
 		luceneService.delete(new SearchDto(interFace.getId()));
 		return new JsonResult(1, null);
@@ -205,8 +201,8 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		Interface change = interfaceService.get(changeId);
 		Interface model = interfaceService.get(id);
-		hasPermission(cacheService.getProject( model.getProjectId() ));
-		hasPermission(cacheService.getProject( change.getProjectId() ));
+		hasPermission(cacheService.getProject( model.getProjectId() ), modInter);
+		hasPermission(cacheService.getProject( change.getProjectId() ), modInter);
 		
 		int modelSequence = model.getSequence();
 		

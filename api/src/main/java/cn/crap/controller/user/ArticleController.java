@@ -43,7 +43,7 @@ public class ArticleController extends BaseController<Article>{
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Article article,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		
-		hasPermission( cacheService.getProject(article.getProjectId()) );
+		hasPermission( cacheService.getProject(article.getProjectId()) , view);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -61,7 +61,7 @@ public class ArticleController extends BaseController<Article>{
 		Article model;
 		if(!article.getId().equals(Const.NULL_ID)){
 			model= articleService.get(article.getId());
-			hasPermission( cacheService.getProject(model.getProjectId()) );
+			hasPermission( cacheService.getProject(model.getProjectId()), view);
 		}else{
 			model=new Article();
 			model.setType(article.getType());
@@ -73,7 +73,6 @@ public class ArticleController extends BaseController<Article>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Article article) throws MyException, IOException{
-		hasPermission( cacheService.getProject(article.getProjectId()) );
 		
 		// 如果模块为空，表示为管理员，将模块设置为系统模块
 		if(MyString.isEmpty(article.getModuleId())){
@@ -88,16 +87,19 @@ public class ArticleController extends BaseController<Article>{
 			/**
 			 * 判断是否为系统数据，系统数据不允许修改可以和canDelete字段
 			 */
-			Article model = articleService.get(article.getId());
-			if(model.getCanDelete()!=1){
-				article.setKey(model.getKey());
+			Article old = articleService.get(article.getId());
+			if(old.getCanDelete()!=1){
+				article.setKey(old.getKey());
 				article.setCanDelete(Byte.valueOf("0"));
 			}
+			article.setModuleId(old.getModuleId());
+			article.setType(old.getType());
 			
-			hasPermission( cacheService.getProject(model.getProjectId()) );
+			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 			articleService.update(article);
 			luceneService.update(article.toSearchDto(cacheService));
 		}else{
+			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 			articleService.save(article);
 			luceneService.add(article.toSearchDto(cacheService));
 		}
@@ -110,7 +112,7 @@ public class ArticleController extends BaseController<Article>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Article article) throws MyException, IOException{
 		Article model = articleService.get(article.getId());
-		hasPermission( cacheService.getProject(model.getProjectId()) );
+		hasPermission( cacheService.getProject(model.getProjectId()) , model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 		if(model.getCanDelete()!=1){
 			throw new MyException("000009");
 		}
@@ -133,8 +135,8 @@ public class ArticleController extends BaseController<Article>{
 		Article change = articleService.get(changeId);
 		Article model = articleService.get(id);
 		
-		hasPermission( cacheService.getProject(change.getProjectId()) );
-		hasPermission( cacheService.getProject(model.getProjectId()) );
+		hasPermission( cacheService.getProject(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+		hasPermission( cacheService.getProject(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 		
 		int modelSequence = model.getSequence();
 		

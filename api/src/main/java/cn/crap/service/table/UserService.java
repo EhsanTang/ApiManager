@@ -14,10 +14,10 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.IUserDao;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Source;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Aes;
@@ -35,6 +35,9 @@ public class UserService extends BaseService<User>
 	private Config config;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private IProjectUserService projectUserService;
+	
 	@Resource(name="userDao")
 	IUserDao userDao;
 	
@@ -57,7 +60,7 @@ public class UserService extends BaseService<User>
 		String token  = Aes.encrypt(user.getId());
 		MyCookie.addCookie(Const.COOKIE_TOKEN, token, response);
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
 		MyCookie.addCookie(Const.COOKIE_USERID, user.getId(), response);
 		MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
 		MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);

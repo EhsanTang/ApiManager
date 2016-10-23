@@ -38,7 +38,7 @@ public class ErrorController extends BaseController<Error>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
-		hasPermission(cacheService.getProject(error.getProjectId()));
+		hasPermission(cacheService.getProject(error.getProjectId()), view);
 		
 		if(MyString.isEmpty(error.getProjectId())){
 			throw new MyException("000020");
@@ -59,7 +59,7 @@ public class ErrorController extends BaseController<Error>{
 		Error model;
 		if(!error.getId().equals(Const.NULL_ID)){
 			model= errorService.get(error.getId());
-			hasPermission(cacheService.getProject(model.getProjectId()));
+			hasPermission(cacheService.getProject(model.getProjectId()), view);
 		}else{
 			model=new Error();
 			model.setProjectId(error.getProjectId());
@@ -71,14 +71,14 @@ public class ErrorController extends BaseController<Error>{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Error error) throws MyException{
 		
-		hasPermission(cacheService.getProject(error.getProjectId()));
-				
 		if(!MyString.isEmpty(error.getId())){
 			// 不允许修改项目
 			error.setProjectId( errorService.get(error.getId()).getProjectId() );
+			hasPermission(cacheService.getProject(error.getProjectId()), modError);
 			errorService.update(error);
 		}else{
 			if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"projectId",error.getProjectId()))==0){
+				hasPermission(cacheService.getProject(error.getProjectId()), addError);
 				errorService.save(error);
 			}else{
 				return new JsonResult(new MyException("000002"));
@@ -91,7 +91,7 @@ public class ErrorController extends BaseController<Error>{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Error error) throws MyException{
 		error = errorService.get(error.getId());
-		hasPermission(cacheService.getProject(error.getProjectId()));
+		hasPermission(cacheService.getProject(error.getProjectId()), delError);
 		errorService.delete(error);
 		return new JsonResult(1,null);
 	}

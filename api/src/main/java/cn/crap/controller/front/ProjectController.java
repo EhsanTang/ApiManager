@@ -1,22 +1,20 @@
 package cn.crap.controller.front;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ProjectStatus;
-import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IProjectService;
 import cn.crap.model.Project;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -39,14 +37,22 @@ public class ProjectController extends BaseController<Project> {
 		
 		//已登录用户：且选着了myself，则查看自己的项目：推荐项目会泄露秘密
 		if(user != null && myself){
-			return new JsonResult(1, projectService.findByMap(Tools.getMap("userId", user.getId(), "name|like", name), page, null), page);
+			if(MyString.isEmpty(name)){
+				return new JsonResult(1, 
+						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", Tools.getMap("userId", user.getId()), page)
+						, page);
+
+			}else{
+				return new JsonResult(1, 
+						projectService.queryByHql("from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name", 
+						Tools.getMap("userId", user.getId(), "name|like", name), page)
+						, page);
+
+			}
 		}
 		// 未登陆用户，查看推荐的项目
 		else{
-			List<Byte> statusList = new ArrayList<Byte>();
-			statusList.add(ProjectStatus.RECOMMEND.getStatus());
-			statusList.add(ProjectStatus.RECOMMENDADMIN.getStatus());
-			return new JsonResult(1, projectService.findByMap(Tools.getMap("status|in", statusList, "name|like", name), page, null), page);
+			return new JsonResult(1, projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus(), "name|like", name), page, null), page);
 		}
 		
 	}

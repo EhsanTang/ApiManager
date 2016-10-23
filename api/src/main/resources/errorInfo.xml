@@ -41,6 +41,9 @@
 				<entry key="000035" value="模块资源数量大于0，不允许删除该模块" />
 				<entry key="000036" value="模块数据字典数量大于0，不允许删除该模块" />
 				<entry key="000037" value="评论数量大于0，不允许删除该文章" />
+				<entry key="000038" value="项目成员大于0，不允许删除项目" />
+				<entry key="000039" value="成员已存在，不允许重复添加" />
+				<entry key="000040" value="用户不存在" />
 			</map>
 		</property>
 	</bean>

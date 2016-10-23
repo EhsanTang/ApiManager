@@ -71,6 +71,13 @@ public class Config{
 	
 	@Value("${web.subMenuSize}")
 	private int subMenuSize;
+	
+	@Value("${web.openRegister}")
+	private boolean openRegister;
+
+	public boolean isOpenRegister() {
+		return openRegister;
+	}
 
 	public String getClientID() {
 		return clientID;

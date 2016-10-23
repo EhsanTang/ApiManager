@@ -37,7 +37,7 @@
 				<td class="tc">类型</td>
 				<td class="tc">用户</td>
 				<td class="tc">排序</td>
-				<th class="w300 tc">操作</th>
+				<th class="w500 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,13 +46,16 @@
 				<td class="tc">{{item.typeName}}</td>
 				<td class="tc">{{item.userName}}</td>
 				<td class="tc">{{item.sequence}}</td>
-				<td class="tc w400">
+				<td class="tc w500">
 				
 				<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;模块</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;错误码</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list/{{item.id}}"> 
+					<i class="iconfont f12">&#xe60f;项目成员</i>
 				</a>
 				
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"

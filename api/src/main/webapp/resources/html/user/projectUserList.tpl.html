@@ -1,0 +1,97 @@
+<div class="r0 p20 pt10 col-xs-12" ng-controller="userProjectUserCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">成员管理</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
+	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+</div>
+
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">成员列表</div>
+<div class="col-xs-9 mt20 p0 mb10 f14 tr">
+	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+		ng-click="detail('新增成员',800,'user/projectUser/detail.do?id=NULL','&projectId='+$stateParams.projectId);"> 
+		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
+	</a>
+</div>
+
+<div class="col-xs-12 p0">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">用户名</th>
+				<th class="tc">用户邮箱</th>
+				
+				<th class="tc">模块权限</th>
+				
+				<th class="tc">接口权限</th>
+				
+				<th class="tc">文章权限</th>
+				
+				<th class="tc">数据字典权限</th>
+				
+				<th class="tc">资源权限</th>
+				<th class="tc">错误码</th>
+				
+				<th class="tc w200">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list">
+				<td class="tc">{{item.userName}}</td>
+				<td class="tc">{{item.userEmail}}</td>
+				
+				<td class="tc">
+					修改：{{item.modModule}}<br/>
+					添加：{{item.addModule}}<br/>
+					删除：{{item.delModule}}<br/>
+				</td>
+				
+				<td class="tc">
+					修改：{{item.modInter}}<br/>
+					添加：{{item.addInter}}<br/>
+					删除：{{item.delInter}}<br/>
+				</td>
+				
+				<td class="tc">
+					修改：{{item.modArticle}}<br/>
+					添加：{{item.addArticle}}<br/>
+					删除：{{item.delArticle}}<br/>
+				</td>
+				
+				<td class="tc">
+					修改：{{item.modDict}}<br/>
+					添加：{{item.addDict}}<br/>
+					删除：{{item.delDict}}<br/>
+				</td>
+				
+				<td class="tc">
+					修改：{{item.modSource}}<br/>
+					添加：{{item.addSource}}<br/>
+					删除：{{item.delSource}}<br/>
+				</td>
+				
+				<td class="tc">
+					修改：{{item.modError}}<br/>
+					添加：{{item.addError}}<br/>
+					删除：{{item.delError}}<br/>
+				</td>
+				
+				
+				<td class="tc">
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')"> 
+					<i class="iconfont f12">&#xe618;修改</i>
+				</a>
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					ng-click="del('user/projectUser/delete.do?id='+item.id,item.name)">
+					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

@@ -19,6 +19,7 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
@@ -45,6 +46,8 @@ public class UserController extends BaseController<User>{
 	private Config config;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private IProjectUserService projectUserService;
 	
 	@RequestMapping("/user/list.do")
 	@ResponseBody
@@ -106,7 +109,8 @@ public class UserController extends BaseController<User>{
 				user.setType(temp.getType());
 				if( !MyString.isEmpty(user.getEmail()) && ( MyString.isEmpty(temp.getEmail()) || !user.getEmail().equals(temp.getEmail()) )){
 					user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
-					cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
+					cacheService.setObj(Const.CACHE_USER + user.getId(), 
+							new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
 				}
 			}else{
 				user.setAuth("");

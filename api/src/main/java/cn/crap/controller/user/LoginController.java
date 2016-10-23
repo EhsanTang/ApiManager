@@ -23,6 +23,7 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
@@ -51,6 +52,8 @@ public class LoginController extends BaseController<User> {
 	private IRoleService roleService;
 	@Autowired
 	private IProjectService projectService;
+	@Autowired
+	private IProjectUserService projectUserService;
 	@Autowired
 	private Config config;
 	
@@ -89,7 +92,7 @@ public class LoginController extends BaseController<User> {
 	}
 	
 	/**
-	 * 登陆页面获取基础数据
+	 * 注册页面获取基础数据
 	 */
 	@RequestMapping("/back/preRegister.do")
 	@ResponseBody
@@ -116,7 +119,8 @@ public class LoginController extends BaseController<User> {
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
-				cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService), config.getLoginInforTime());
+				cacheService.setObj(Const.CACHE_USER + user.getId(), 
+						new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
 				request.setAttribute("result", "验证通过！");
 			}else{
 				request.setAttribute("result", "抱歉，账号不存在！");
@@ -195,6 +199,10 @@ public class LoginController extends BaseController<User> {
 	@RequestMapping("/back/register.do")
 	@ResponseBody
 	public JsonResult register(@ModelAttribute LoginDto model) throws MyException, UnsupportedEncodingException, MessagingException {
+		if( !config.isOpenRegister() ){
+			model.setTipMessage("系统尚未开放注册功能，请联系管理员开放");
+			return new JsonResult(1, model); 
+		}
 		if( MyString.isEmpty(model.getUserName())){
 			model.setTipMessage("邮箱不能为空");
 			return new JsonResult(1, model);

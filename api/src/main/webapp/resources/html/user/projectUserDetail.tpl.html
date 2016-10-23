@@ -1,0 +1,176 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+	<div class="col-xs-12 p0">
+		<form ng-submit="submitForm('user/projectUser/addOrUpdate.do')">
+			<table class="table table-bordered">
+				<tr>
+					<td class="tc">项目名</td>
+					<td colspan="4">
+						<input  class="form-control"  type="text" ng-model="model.projectName" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">用户名</td>
+					<td colspan="4">
+						<input  class="form-control"  type="text" ng-model="model.userName" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">用户邮箱</td>
+					<td colspan="4">
+						<input  class="form-control"  type="text" ng-model="model.userEmail" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">用户邮箱</td>
+					<td colspan="4">
+						*输入邮箱或昵称，点击搜索查询用户，长度必须大于5
+						<div class="input-group w">
+							<input class="form-control" type="text" id="userName" required
+								ng-model="model.userName"  placeholder="请输入邮箱或密码">
+							<div class="input-group-addon cursor btn-purple"
+								ng-click="loadPickByName('iwidth=260|iheight=300|tagName=userName|tag=userId|code=USER|def='+model.userId+'&key='+model.userName,$event)">
+								搜索</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">模块权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modModule">
+								<option value="true" ng-selected="model.modModule==true">允许修改</option>
+								<option value="false" ng-selected="model.modModule==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addModule">
+								<option value="true" ng-selected="model.addModule==true">允许添加</option>
+								<option value="false" ng-selected="model.addModule==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delModule">
+								<option value="true" ng-selected="model.delModule==true">允许删除</option>
+								<option value="false" ng-selected="model.delModule==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">接口权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modInter">
+								<option value="true" ng-selected="model.modInter==true">允许修改</option>
+								<option value="false" ng-selected="model.modInter==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addInter">
+								<option value="true" ng-selected="model.addInter==true">允许添加</option>
+								<option value="false" ng-selected="model.addInter==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delInter">
+								<option value="true" ng-selected="model.delInter==true">允许删除</option>
+								<option value="false" ng-selected="model.delInter==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="tc">文章权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modArticle">
+								<option value="true" ng-selected="model.modArticle==true">允许修改</option>
+								<option value="false" ng-selected="model.modArticle==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addArticle">
+								<option value="true" ng-selected="model.addArticle==true">允许添加</option>
+								<option value="false" ng-selected="model.addArticle==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delArticle">
+								<option value="true" ng-selected="model.delArticle==true">允许删除</option>
+								<option value="false" ng-selected="model.delArticle==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="tc">数据字典权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modDict">
+								<option value="true" ng-selected="model.modDict==true">允许修改</option>
+								<option value="false" ng-selected="model.modDict==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addDict">
+								<option value="true" ng-selected="model.addDict==true">允许添加</option>
+								<option value="false" ng-selected="model.addDict==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delDict">
+								<option value="true" ng-selected="model.delDict==true">允许删除</option>
+								<option value="false" ng-selected="model.delDict==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td class="tc">资源权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modSource">
+								<option value="true" ng-selected="model.modSource==true">允许修改</option>
+								<option value="false" ng-selected="model.modSource==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addSource">
+								<option value="true" ng-selected="model.addSource==true">允许添加</option>
+								<option value="false" ng-selected="model.addSource==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delSource">
+								<option value="true" ng-selected="model.delSource==true">允许删除</option>
+								<option value="false" ng-selected="model.delSource==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="tc">错误码权限</td>
+					<td class="tc">
+						<select class="form-control" ng-model="model.modError">
+								<option value="true" ng-selected="model.modError==true">允许修改</option>
+								<option value="false" ng-selected="model.modError==false">不允许修改</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.addError">
+								<option value="true" ng-selected="model.addError==true">允许添加</option>
+								<option value="false" ng-selected="model.addError==false">不允许添加</option>
+						</select>
+					</td>	
+					<td class="tc">
+						<select class="form-control" ng-model="model.delError">
+								<option value="true" ng-selected="model.delError==true">允许删除</option>
+								<option value="false" ng-selected="model.delError==false">不允许删除</option>
+						</select>
+					</td>
+				</tr>
+				
+			</table>
+			<button type="submit" class="btn btn-success fr">提交</button>
+		</form>
+
+		
+	</div>
+</div>
+<div class="cb"></div>
+

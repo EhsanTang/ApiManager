@@ -207,6 +207,14 @@ mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $st
     };
     $scope.getData();
 });
+/**************************项目成员**************************/
+mainModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=user/projectUser/list.do|iLoading=FLOAT|iParams=&projectId=" +$stateParams.projectId;
+		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 /**************************article列表****************************/
 mainModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
 	$scope.getData = function(page) {

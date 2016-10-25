@@ -4,9 +4,9 @@ String.prototype.trim = function () {
 }
 
 //回顶部
-$("#go_top").click(function (){
+function goTop(){
 	$("html, body").animate({ scrollTop: 0 }, 400);
-});
+}
 
 //将指定id的控件滚动到浏览器顶部，如：接口详情页目录
 function scrollToId(id){

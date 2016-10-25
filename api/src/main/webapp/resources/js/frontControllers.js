@@ -19,9 +19,9 @@ webModule.filter("removeLast",function(){
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据
  */
-webModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,httpService) {
 });
-webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
 		if(!$stateParams.keyword)
 			$stateParams.keyword ="";
@@ -31,7 +31,7 @@ webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $stat
     $scope.getData();
 });
 /**************************错误码列表****************************/
-mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
 		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&projectId=" +
 			$stateParams.projectId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode;
@@ -40,7 +40,7 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
     $scope.getData();
 });
 /*************************数据字典列表******************************/
-mainModule.controller('frontDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('frontDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=front/article/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.moduleId+"&name="+$stateParams.search;
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
@@ -52,7 +52,7 @@ mainModule.controller('frontDictCtrl', function($rootScope,$scope, $http, $state
     $scope.getData();
 });
 /**************************article列表****************************/
-mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=front/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type
 		+"&moduleId="+$stateParams.moduleId+"&name="+$stateParams.name+"&category="+$stateParams.category;
@@ -66,7 +66,7 @@ mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $sta
 /**
  * article详情（数据字典，网站页面，文章）
  */
-webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -100,7 +100,7 @@ webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $st
 /**
  * 资源列表
  */
-webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=front/project/list.do|iLoading=FLOAT|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
@@ -166,7 +166,7 @@ webModule.controller('frontModuleMenuCtrl', function($rootScope,$scope, $http, $
 /**
  * 接口列表
  */
-webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "&interfaceName=" + $stateParams.interfaceName + "&url="+ $stateParams.url + "&moduleId="+ $stateParams.moduleId;
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
@@ -184,7 +184,7 @@ webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $s
  * 接口详情
  * 不需要打开模态框，所以不能调用$rootScope中的getBaseData()
  */
-webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -241,7 +241,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 });
 
 
-webModule.controller('frontSourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontSourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -264,7 +264,7 @@ webModule.controller('frontSourceDetailCtrl', function($rootScope,$scope, $http,
 /**
  * 资源列表
  */
-webModule.controller('frontSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('frontSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -281,7 +281,7 @@ webModule.controller('frontSourceCtrl', function($rootScope,$scope, $http, $stat
 /***
  * 前端页面初始化，加载系统设置，菜单等
  */
-webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,$http ,httpService) {
+webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=front/init.do|iLoading=FLOAT"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {

@@ -14,7 +14,7 @@
 		<property name="jobDetail" ref="interfaceJobDetail">
 		</property>
 		<property name="cronExpression">
-			<value>*/30 * * * * ?</value><!-- 每分钟执行一次 -->
+			<value>* */1 * * * ?</value><!-- 每1分钟执行一次 -->
 		</property>
 	</bean>
 	<bean id="interfaceJobDetail"

@@ -246,6 +246,7 @@ table{border-collapse:collapse;border-spacing:0}
   	box-shadow:none!important;
 }
 .shadow{box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);}
+
 .trans{
 	content: '';
     width: 100%;

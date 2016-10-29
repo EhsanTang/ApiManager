@@ -52,7 +52,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
 		Page page= new Page(15);
-		
+		page.setCurrentPage(currentPage);
 		hasPermission(cacheService.getProject(interFace.getProjectId()), view);
 		
 		List<Interface> interfaces = interfaceService.findByMap( 

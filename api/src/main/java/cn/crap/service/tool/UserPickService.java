@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumeration.ModuleStatus;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
 import cn.crap.inter.service.table.IArticleService;
@@ -87,15 +86,6 @@ public class UserPickService implements IPickService{
 						projectIds = projectService.getProjectIdByUid(Tools.getUser().getId());
 						projectIds.add("NULL");
 						moduleService.getDataCenterPick(picks, projectIds , "", "", "");
-						return;
-					case "MODULESTATUS": // 枚举 模块类型（公开、私有）
-						for (ModuleStatus status : ModuleStatus.values()) {
-							// 用户不能设置模块为推荐状态
-							if(status.getName().equals("3"))
-								continue;
-							pick = new PickDto(status.getName(), status.name());
-							picks.add(pick);
-						}
 						return;
 					case "PROJECTTYPE":
 						for (ProjectType pt : ProjectType.values()) {

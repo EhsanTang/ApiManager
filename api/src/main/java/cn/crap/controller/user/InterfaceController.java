@@ -2,14 +2,16 @@ package cn.crap.controller.user;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.MonitorType;
@@ -19,10 +21,8 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IInterfaceService;
-import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
-import cn.crap.model.Module;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.utils.Const;

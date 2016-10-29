@@ -9,7 +9,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import cn.crap.enumeration.ModuleStatus;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.tool.ICacheService;
@@ -98,12 +97,6 @@ public class Module extends BaseModel implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
-	@Transient
-	public String getStatusName(){
-		return ModuleStatus.getNameByValue(status+"");
-	}
-	
 	
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;

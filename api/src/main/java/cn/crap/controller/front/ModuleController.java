@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -15,7 +14,6 @@ import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.ProjectUser;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;

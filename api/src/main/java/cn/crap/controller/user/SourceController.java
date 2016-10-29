@@ -15,10 +15,8 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.ISourceService;
-import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Source;
-import cn.crap.service.tool.CacheService;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -32,8 +30,6 @@ public class SourceController extends BaseController<Source>{
 	private ISourceService sourceService;
 	@Autowired
 	private ISearchService luceneService;
-	@Autowired
-	private ICacheService cacheService;
 	/**
 	 * 
 	 * @param source

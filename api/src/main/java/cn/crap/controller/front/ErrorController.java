@@ -14,7 +14,6 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Error;
-import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;

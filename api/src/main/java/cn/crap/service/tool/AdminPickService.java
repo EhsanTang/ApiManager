@@ -12,7 +12,6 @@ import cn.crap.enumeration.ArticleType;
 import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.FontFamilyType;
 import cn.crap.enumeration.MenuType;
-import cn.crap.enumeration.ModuleStatus;
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
@@ -117,14 +116,6 @@ public class AdminPickService implements IPickService{
 			picks.add(pick);
 			for (Role r : roleService.findByMap(null, null, null)) {
 				pick = new PickDto(r.getId(), r.getRoleName());
-				picks.add(pick);
-			}
-			return;
-		
-		// 枚举 模块类型（公开、私有）
-		case "MODULESTATUS":
-			for (ModuleStatus status : ModuleStatus.values()) {
-				pick = new PickDto(status.getName(), status.name());
 				picks.add(pick);
 			}
 			return;

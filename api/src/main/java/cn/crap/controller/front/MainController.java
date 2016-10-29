@@ -20,6 +20,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.MenuDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.tool.ICacheService;
@@ -164,6 +165,12 @@ public class MainController extends BaseController<User> {
 	@RequestMapping("/frontSearch.do")
 	@ResponseBody
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
+		if(config.isLuceneSearchNeedLogin()){
+			LoginInfoDto user = Tools.getUser();
+			if(user == null){
+				throw new MyException("000043");
+			}
+		}
 		keyword = keyword.trim();
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);

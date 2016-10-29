@@ -74,6 +74,20 @@ public class Config{
 	
 	@Value("${web.openRegister}")
 	private boolean openRegister;
+	
+	@Value("${web.privateProjectNeedCreateIndex}")
+	private boolean privateProjectNeedCreateIndex;
+	
+	@Value("${web.luceneSearchNeedLogin}")
+	private boolean luceneSearchNeedLogin;
+	
+	public boolean isPrivateProjectNeedCreateIndex() {
+		return privateProjectNeedCreateIndex;
+	}
+
+	public boolean isLuceneSearchNeedLogin() {
+		return luceneSearchNeedLogin;
+	}
 
 	public boolean isOpenRegister() {
 		return openRegister;

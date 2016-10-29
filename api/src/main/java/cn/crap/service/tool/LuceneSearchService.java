@@ -40,6 +40,7 @@ import cn.crap.dto.SearchDto;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ILuceneService;
 import cn.crap.inter.service.tool.ISearchService;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -50,6 +51,8 @@ public class LuceneSearchService implements ISearchService {
 	
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private Config config;
 	
 	/**
 	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个
@@ -208,8 +211,8 @@ public class LuceneSearchService implements ISearchService {
 	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
-			
-			if(!searchDto.isNeedCreateIndex()){
+			// 如果是私有项目，且配置了私有项目不简历索引，则不简历索引
+			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}
@@ -238,7 +241,8 @@ public class LuceneSearchService implements ISearchService {
 	public boolean update(SearchDto searchDto) throws IOException {
 		IndexWriter writer = null;
 		try {
-			if(!searchDto.isNeedCreateIndex()){
+			// 如果是私有项目，且配置了私有项目不简历索引，则不简历索引
+			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}

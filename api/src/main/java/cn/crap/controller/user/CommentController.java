@@ -13,8 +13,6 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ICommentService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -27,11 +25,8 @@ public class CommentController extends BaseController<Comment> {
 	@Autowired
 	private ICommentService commentService;
 	@Autowired
-	private IProjectService projectService;
-	@Autowired
 	private IArticleService articleService;
-	@Autowired
-	private ICacheService cacheService;
+	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport

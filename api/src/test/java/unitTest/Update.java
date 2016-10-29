@@ -78,7 +78,7 @@ public class Update {
 			}
 			
 		}
-		// 同步数据字典，从项目迁移到模块，项目下没有模块则不迁移a
+		// 同步数据字典，从项目迁移到模块，项目下没有模块则不迁移
 		for(Article article: articleService.findByMap(Tools.getMap("type", ArticleType.DICTIONARY.name()), null, null)){
 			Project p = projectService.get(article.getModuleId());
 			if(MyString.isEmpty(p.getId())){

@@ -60,12 +60,32 @@ function closeMyDialog(tagDiv){
 	iClose(tagDiv);
 	iClose('fade');
 }
+
+
+var dialogOldTop;
+var dialogOldLeft;
+var dialogOldHeight;
+var dialogOldWidth;
 function fullMyDialog(tagDiv){
-	$("#"+tagDiv).css("top","0px");
-	$("#"+tagDiv).css("left","0px");
-	$("#"+tagDiv).css("height","100%");
-	$("#"+tagDiv).css("width","100%");
-	$("#myDialogContent").css("max-height","100%");
+	var target = $("#"+tagDiv);
+	if( target.css('top') != '0px'){
+		dialogOldTop = target.css('top');
+		dialogOldLeft = target.css('left');
+		dialogOldHeight = target.css('height');
+		dialogOldWidth = target.css('width');
+		$("#"+tagDiv).css("top","0px");
+		$("#"+tagDiv).css("left","0px");
+		$("#"+tagDiv).css("height","100%");
+		$("#"+tagDiv).css("width","100%");
+		$("#myDialogContent").css("max-height","100%");
+	}else{
+		$("#"+tagDiv).css("top",dialogOldTop);
+		$("#"+tagDiv).css("left",dialogOldLeft);
+		$("#"+tagDiv).css("height",dialogOldHeight);
+		$("#"+tagDiv).css("width",dialogOldWidth);
+		$("#myDialogContent").removecss("max-height");
+	}
+	
 }
 function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
 	/***********加载选择对话框********************/

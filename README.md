@@ -25,11 +25,9 @@ CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，�
    4.接口支持文档下载、在线调试、接口监控、数据mock等，适合企业内部接口开发
 
 高并发：默认采用内存缓存，可配置redis缓存。使用redis缓存时，系统可集群部署
-
 历经1年打磨，7版更迭，上百用户建议留言，总有一些功能是你需要的
-![image](https://raw.githubusercontent.com/EhsanTang/CrapApi/master/CrapApiFiles/0CEE2FA3-85FB-4D88-9CD8-E536E2FE06DC.png)
-
 ```
+![image](https://raw.githubusercontent.com/EhsanTang/CrapApi/master/CrapApiFiles/0CEE2FA3-85FB-4D88-9CD8-E536E2FE06DC.png)
 
 [部署硬件要求]
 ```

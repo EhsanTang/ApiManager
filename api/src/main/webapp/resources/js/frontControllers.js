@@ -32,9 +32,13 @@ webModule.controller('frontSearchCtrl', function($rootScope,$scope, $http, $stat
 });
 /**************************错误码列表****************************/
 mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&projectId=" +
-			$stateParams.projectId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode;
+	$scope.getData = function(page,setPwd) {
+		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
+		if(setPwd) setPassword();
+		var params ="&password="+unescapeAndDecode('password');
+		params +="&visitCode="+unescapeAndDecode('visitCode');
+		params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&projectId=" +
+			$stateParams.projectId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode + params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

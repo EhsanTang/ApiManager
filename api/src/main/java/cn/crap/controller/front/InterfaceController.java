@@ -28,12 +28,12 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.springbeans.Config;
+import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
@@ -53,13 +53,17 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IProjectService projectService;
-	@Autowired
 	private Config config;
 	
 	@RequestMapping("/detail/pdf.do")
-	public String pdf(String id, String moduleId) throws Exception {
+	public String pdf(String id, String moduleId, @RequestParam String secretKey) throws Exception {
 		try{
+			
+			if( !secretKey.equals( cacheService.getSetting(Const.SETTING_SECRETKEY).getValue()) ){
+				request.setAttribute("result", "秘钥不正确，非法请求！");
+				return "/WEB-INF/views/result.jsp";
+			}
+			
 			if(MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
 				request.setAttribute("result", "参数不能为空，生成PDF失败！");
 				return "/WEB-INF/views/result.jsp";
@@ -119,7 +123,18 @@ public class InterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
-	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response) throws Exception {
+	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response, String password,String visitCode) throws Exception {
+		
+		Module module = null;
+		if( !MyString.isEmpty(moduleId) ){
+			module = cacheService.getModule(moduleId);
+		}else{
+			module = cacheService.getModule( interfaceService.get(id).getModuleId() );
+		}
+		Project project = cacheService.getProject(module.getProjectId());
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, null, project);		
+		
 		//interFace = interfaceService.get(interFace.getId());
 		String displayFilename = "CrapApi"+System.currentTimeMillis()+".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];  
@@ -140,7 +155,8 @@ public class InterfaceController extends BaseController<Interface>{
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);  
         } 
-        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId)));
+        String secretKey = cacheService.getSetting(Const.SETTING_SECRETKEY).getValue();
+        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId, secretKey)));
         ut = response.getOutputStream();  
         while ((len = br.read(buf)) != -1)  
              ut.write(buf, 0, len);
@@ -158,14 +174,16 @@ public class InterfaceController extends BaseController<Interface>{
 			throw new MyException("000020");
 		}
 		
+		Module module = moduleService.get(moduleId);
+		Project project = cacheService.getProject(module.getProjectId());
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
+		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		
-		// 检查是否需要密码：模块密码>项目密码
-		Module module = moduleService.get(moduleId);
-		canVisitModule(module, password, visitCode);
 			
-		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
+		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), 
+				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
 		
 		return new JsonResult(1, interfaces, page,
 				Tools.getMap("crumbs", Tools.getCrumbs( module.getProjectName(), "#/"+module.getProjectId()+"/module/list", module.getName(), "void") ));
@@ -179,11 +197,8 @@ public class InterfaceController extends BaseController<Interface>{
 			
 			Module module = cacheService.getModule(interFace.getModuleId());
 			Project project = cacheService.getProject(module.getProjectId());
-			String needPassword = module.getPassword();
-			if(MyString.isEmpty(needPassword)){
-				needPassword = project.getPassword();
-			}
-			canVisit(needPassword, password, visitCode);
+			// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+			isPrivateProject(password, visitCode, module, project);	
 			
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号

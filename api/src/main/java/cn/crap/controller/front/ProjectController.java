@@ -35,11 +35,11 @@ public class ProjectController extends BaseController<Project> {
 		page.setCurrentPage(currentPage);
 		LoginInfoDto user =  Tools.getUser();
 		
-		//已登录用户：且选着了myself，则查看自己的项目：推荐项目会泄露秘密
 		if(user != null && myself){
 			if(MyString.isEmpty(name)){
 				return new JsonResult(1, 
-						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", Tools.getMap("userId", user.getId()), page)
+						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", 
+								Tools.getMap("userId", user.getId()), page)
 						, page);
 
 			}else{
@@ -52,7 +52,9 @@ public class ProjectController extends BaseController<Project> {
 		}
 		// 未登陆用户，查看推荐的项目
 		else{
-			return new JsonResult(1, projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus(), "name|like", name), page, null), page);
+			return new JsonResult(1,
+				projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus(), "name|like", name),
+						"new Project(id, name, type, remark, userId, createTime)" ,page, null), page);
 		}
 		
 	}

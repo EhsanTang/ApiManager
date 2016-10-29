@@ -12,9 +12,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IErrorService;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Error;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -26,8 +27,6 @@ public class ErrorController extends BaseController<Error>{
 	private ICacheService cacheService;
 	@Autowired
 	private IErrorService errorService;
-	@Autowired
-	private IProjectService projectService;
 
 	/**
 	 * 前端错误码列表，只查询公开的顶级项目错误码（错误码定义在顶级项目中）
@@ -39,7 +38,12 @@ public class ErrorController extends BaseController<Error>{
 	 */
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String errorCode,@RequestParam String errorMsg, @RequestParam String projectId, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult list(@RequestParam String errorCode,@RequestParam String errorMsg, @RequestParam String projectId, 
+			@RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
+		Project project = cacheService.getProject(projectId);
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, null, project);
+		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		page.setSize(20);
@@ -48,7 +52,7 @@ public class ErrorController extends BaseController<Error>{
 		map.put( "projectId", projectId );
 		
 		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getProject(projectId).getName(), "void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+project.getName(), "void")));
 	}
 
 }

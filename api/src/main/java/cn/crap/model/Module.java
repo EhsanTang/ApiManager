@@ -32,7 +32,16 @@ public class Module extends BaseModel implements Serializable{
 	private String userId;
 	private String projectId;
 	
-
+	public Module(String id,String name, String url, String remark, String userId, String createTime, String projectId,byte canDelete){
+		this.id = id;
+		this.name = name;
+		this.url = url;
+		this.remark = remark;
+		this.userId = userId;
+		this.projectId = projectId;
+		this.createTime = createTime;
+		this.canDelete = canDelete;
+	}
 	public Module(){};
 	public Module(String name) {
 		this.name = name;

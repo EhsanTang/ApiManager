@@ -15,6 +15,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.ISourceService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -38,7 +39,12 @@ public class SourceController extends BaseController<Source>{
 		}else{
 			throw new MyException("000020");
 		}
-		canVisitModuleId(model.getModuleId(), password, visitCode);
+		
+		Module module = cacheService.getModule(model.getModuleId());
+		Project project = cacheService.getProject(module.getProjectId());
+		
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
 		return new JsonResult(1,model);
 	}
 	
@@ -46,7 +52,10 @@ public class SourceController extends BaseController<Source>{
 	@ResponseBody
 	public JsonResult webList(@ModelAttribute Source source,@RequestParam(defaultValue="1") int currentPage,String password,String visitCode) throws MyException{
 		Module module = cacheService.getModule(source.getModuleId());
-		canVisitModule(module, password, visitCode);
+		Project project = cacheService.getProject(module.getProjectId());
+		
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);

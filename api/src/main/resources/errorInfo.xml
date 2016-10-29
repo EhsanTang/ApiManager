@@ -44,6 +44,8 @@
 				<entry key="000038" value="项目成员大于0，不允许删除项目" />
 				<entry key="000039" value="成员已存在，不允许重复添加" />
 				<entry key="000040" value="用户不存在" />
+				<entry key="000041" value="私有项目，必须登录才能访问" />
+				<entry key="000042" value="权限不够，禁止访问该项目" />
 			</map>
 		</property>
 	</bean>

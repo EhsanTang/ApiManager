@@ -18,7 +18,6 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ICommentService;
 import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IProjectService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Comment;
@@ -26,7 +25,6 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -46,8 +44,6 @@ public class ArticleController extends BaseController<Article> {
 	@Autowired
 	private ICommentService commentService;
 	@Autowired
-	private IProjectService projectService;
-	@Autowired
 	private Config config;
 	
 	
@@ -55,13 +51,17 @@ public class ArticleController extends BaseController<Article> {
 	@ResponseBody
 	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
 		
-		canVisitModuleId(moduleId, password, visitCode);
+		Module module = cacheService.getModule(moduleId);
+		Project project = cacheService.getProject(module.getProjectId());
+		
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", ArticleType.DICTIONARY.name(), "name|like", name);
 		return new JsonResult(1, webPageService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
-				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + cacheService.getModuleName(moduleId), "void")) );
+				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + module.getName(), "void")) );
 	}
 	
 
@@ -70,13 +70,12 @@ public class ArticleController extends BaseController<Article> {
 	@ResponseBody
 	public JsonResult list(@RequestParam(defaultValue="1") Integer currentPage,@RequestParam(defaultValue=Const.WEB_MODULE) String moduleId, @RequestParam String type,@RequestParam String category
 			,String password, String visitCode) throws MyException{
+		
 		Module module = cacheService.getModule(moduleId);
 		Project project = cacheService.getProject(module.getProjectId());
-		String needPassword = module.getPassword();
-		if(MyString.isEmpty(needPassword)){
-			needPassword = project.getPassword();
-		}
-		canVisit(needPassword, password, visitCode);
+		
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -98,6 +97,7 @@ public class ArticleController extends BaseController<Article> {
 								project.getName(), "#/"+project.getId()+"module/list",
 								module.getName()+":文章列表", "void")));
 	}
+
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/front/article/detail.do")
@@ -123,8 +123,10 @@ public class ArticleController extends BaseController<Article> {
 			cacheService.setObj( Const.CACHE_WEBPAGE + webPage.getId(), model, config.getCacheTime());
 		}
 		
-		// 检查是否需要密码：模块密码>项目密码
-		canVisitModuleId(model.getModuleId(), password, visitCode);
+		Module module = cacheService.getModule(model.getModuleId());
+		Project project = cacheService.getProject(module.getProjectId());
+		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+		isPrivateProject(password, visitCode, module, project);
 		
 		Page page = null;
 		// 选择分类，最多显示前20个
@@ -159,5 +161,4 @@ public class ArticleController extends BaseController<Article> {
 		webPageService.update("update Article set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
 		return new JsonResult(1, model, page, returnMap);
 	}
-	
 }

@@ -32,7 +32,17 @@ public class Project extends BaseModel implements Serializable{
 	private String userId;
 	private String password;
 	
-
+	public Project(String id,String name, int type, String remark, String userId, String createTime){
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.remark = remark;
+		this.userId = userId;
+		this.createTime = createTime;
+	}
+	
+	public Project(){};
+	
 	@Column(name="name")
 	public String getName() {
 		return name;

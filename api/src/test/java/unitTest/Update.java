@@ -24,7 +24,6 @@ import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -68,7 +67,6 @@ public class Update {
 					project.setId(p.getId());
 					project.setCreateTime(p.getCreateTime());
 					project.setName(p.getName());
-					project.setPassword(p.getPassword());
 					project.setRemark(p.getRemark());
 					project.setSequence(p.getSequence());
 					project.setStatus(ProjectStatus.COMMON.getStatus());

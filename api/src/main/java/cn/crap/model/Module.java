@@ -24,7 +24,6 @@ public class Module extends BaseModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private String password;
 	private String url;
 	private byte canDelete;
 	private String remark;
@@ -45,15 +44,6 @@ public class Module extends BaseModel implements Serializable{
 	public Module(String name) {
 		this.name = name;
 		this.userId = "superAdmin";
-	}
-
-	@Column(name="password")
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Column(name="name")

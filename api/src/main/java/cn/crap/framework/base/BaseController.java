@@ -286,21 +286,22 @@ public abstract class BaseController<T extends BaseModel> {
 	/********************** 模块访问密码 ***************************/
 	public void canVisitModuleId(String moduleId, String password, String visitCode) throws MyException {
 		Module module = cacheService.getModule(moduleId);
-		String needPassword = module.getPassword();
-		if (MyString.isEmpty(password)) {
-			needPassword = cacheService.getProject(module.getProjectId()).getPassword();
-		}
+		String needPassword = cacheService.getProject(module.getProjectId()).getPassword();
 		canVisit(needPassword, password, visitCode);
 	}
 
 	public void canVisitModule(Module module, String password, String visitCode) throws MyException {
-		String needPassword = module.getPassword();
-		if (MyString.isEmpty(module.getPassword())) {
-			needPassword = cacheService.getProject(module.getProjectId()).getPassword();
-		}
+		String needPassword = cacheService.getProject(module.getProjectId()).getPassword();
 		canVisit(needPassword, password, visitCode);
 	}
 
+	/**
+	 * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
+	 * @param neddPassword
+	 * @param password
+	 * @param visitCode
+	 * @throws MyException
+	 */
 	public void canVisit(String neddPassword, String password, String visitCode) throws MyException {
 		if (!MyString.isEmpty(neddPassword)) {
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
@@ -323,7 +324,7 @@ public abstract class BaseController<T extends BaseModel> {
 		}
 	}
 
-	protected void isPrivateProject(String password, String visitCode, Module module, Project project)
+	protected void isPrivateProject(String password, String visitCode, Project project)
 			throws MyException {
 		// web项目为默认的公开项目
 		if(project.getId().equals(Const.WEB_MODULE)){
@@ -351,10 +352,7 @@ public abstract class BaseController<T extends BaseModel> {
 					throw new MyException("000042");
 			}
 		} else {
-			String needPassword = (module == null ? "" : module.getPassword());
-			if (MyString.isEmpty(needPassword)) {
-				needPassword = project.getPassword();
-			}
+			String needPassword = project.getPassword();
 			canVisit(needPassword, password, visitCode);
 		}
 	}

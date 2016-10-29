@@ -41,7 +41,7 @@ public class ErrorController extends BaseController<Error>{
 			@RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
 		Project project = cacheService.getProject(projectId);
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, null, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);

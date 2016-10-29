@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -36,7 +37,7 @@ public class ModuleController extends BaseController<Module>{
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = cacheService.getProject(projectId);
-		isPrivateProject(password, visitCode, null, project);
+		isPrivateProject(password, visitCode, project);
 		
 		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId),
 				"new  Module( id, name,  url,  remark,  userId,  createTime,  projectId, canDelete)",
@@ -51,21 +52,22 @@ public class ModuleController extends BaseController<Module>{
 		}
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = cacheService.getProject(projectId);
-		LoginInfoDto user = Tools.getUser();
-		if (user == null) {
-			throw new MyException("000041");
+		if(project.getType() == ProjectType.PRIVATE.getType()){
+			LoginInfoDto user = Tools.getUser();
+			if (user == null) {
+				throw new MyException("000041");
+			}
+			// 最高管理员修改项目
+			// 自己的项目
+			if ( ("," + user.getRoleId()).indexOf("," + Const.SUPER + ",") < 0 && !user.getId().equals(project.getUserId())
+					&& user.getProjects().get(project.getId()) == null) {
+				throw new MyException("000042");
+			}
 		}
-		// 最高管理员修改项目
-
-		// 自己的项目
-		if ( ("," + user.getRoleId()).indexOf("," + Const.SUPER + ",") >= 0 || user.getId().equals(project.getUserId())
-				|| user.getProjects().get(project.getId()) != null) {
-			return new JsonResult(1, 
+		
+		return new JsonResult(1, 
 					moduleService.findByMap(Tools.getMap("projectId", projectId),
 							"new  Module( id, name,  url,  remark,  userId,  createTime,  projectId, canDelete)",
 							null, null), null, Tools.getMap("project",  cacheService.getProject(projectId)) );
-		}else{
-			throw new MyException("000042");
-		}
 	}	
 }

@@ -36,6 +36,7 @@ import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.Html2Pdf;
 import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -123,7 +124,7 @@ public class InterfaceController extends BaseController<Interface>{
 	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
-	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response, String password,String visitCode) throws Exception {
+	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response) throws Exception {
 		
 		Module module = null;
 		if( !MyString.isEmpty(moduleId) ){
@@ -133,7 +134,8 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		Project project = cacheService.getProject(module.getProjectId());
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, null, project);		
+		// 使用缓存的密码，不需要验证码
+		isPrivateProject("", "", project);		
 		
 		//interFace = interfaceService.get(interFace.getId());
 		String displayFilename = "CrapApi"+System.currentTimeMillis()+".pdf";
@@ -177,7 +179,7 @@ public class InterfaceController extends BaseController<Interface>{
 		Module module = moduleService.get(moduleId);
 		Project project = cacheService.getProject(module.getProjectId());
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -198,7 +200,7 @@ public class InterfaceController extends BaseController<Interface>{
 			Module module = cacheService.getModule(interFace.getModuleId());
 			Project project = cacheService.getProject(module.getProjectId());
 			// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-			isPrivateProject(password, visitCode, module, project);	
+			isPrivateProject(password, visitCode, project);	
 			
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号

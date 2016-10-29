@@ -44,7 +44,7 @@ public class SourceController extends BaseController<Source>{
 		Project project = cacheService.getProject(module.getProjectId());
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		return new JsonResult(1,model);
 	}
 	
@@ -55,7 +55,7 @@ public class SourceController extends BaseController<Source>{
 		Project project = cacheService.getProject(module.getProjectId());
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);

@@ -55,7 +55,7 @@ public class ArticleController extends BaseController<Article> {
 		Project project = cacheService.getProject(module.getProjectId());
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -75,7 +75,7 @@ public class ArticleController extends BaseController<Article> {
 		Project project = cacheService.getProject(module.getProjectId());
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
@@ -126,7 +126,7 @@ public class ArticleController extends BaseController<Article> {
 		Module module = cacheService.getModule(model.getModuleId());
 		Project project = cacheService.getProject(module.getProjectId());
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, module, project);
+		isPrivateProject(password, visitCode, project);
 		
 		Page page = null;
 		// 选择分类，最多显示前20个

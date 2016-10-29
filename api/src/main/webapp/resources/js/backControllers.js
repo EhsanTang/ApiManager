@@ -403,9 +403,7 @@ mainModule.controller('userInterfaceCtrl', function($rootScope,$scope, $http, $s
 		if($("#url").val()!=null&&$("#url").val()!=''){
 			params += "&url=" + $("#url").val();
 		}
-		if(params==""){
-			params +="&moduleId="+ $stateParams.moduleId;
-		}
+		params +="&moduleId="+ $stateParams.moduleId;
 		params = "iUrl=user/interface/list.do|iLoading=FLOAT|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };

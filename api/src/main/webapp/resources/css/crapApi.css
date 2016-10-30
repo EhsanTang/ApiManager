@@ -130,6 +130,11 @@ blockquote{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+#editResponseParamTable input,#editResponseParamTable select{
+	padding:5px 5px;
+	height:25px!important;
+	font-size:12px!important;
+}
 
 /***************接口详情页面*************/
 .interface-detail{

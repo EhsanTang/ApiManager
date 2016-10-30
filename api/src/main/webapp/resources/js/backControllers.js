@@ -289,7 +289,6 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
 		});
     };
     $scope.editerParam = function(editerId,targetId,item,tableId) {
-    	var params = "";
     	if(tableId=='editParamTable'&&item.param!=''){
     		
     		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
@@ -332,9 +331,50 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     $scope.addOneParam = function(){
     	$rootScope.model.params[$rootScope.model.params.length] = "{}";
     }
-    $scope.addOneResponseParams = function(){
-    	$rootScope.model.responseParams[$rootScope.model.responseParams.length] =  "{}";
+    $scope.addOneResponseParam = function(){
+    	var newObj=new Object();
+    	newObj.deep=0;
+    	newObj.type="string";
+    	newObj.necessary="true";
+    	$rootScope.model.responseParams[$rootScope.model.responseParams.length] =  newObj;
     }
+    $scope.addOneResponseParamByParent = function(name,deep,parentIndex){
+    	// 兼容历史数据
+    	if(!deep){
+    		deep = 0;
+    		$rootScope.model.responseParams[parentIndex].deep=0;
+    	}
+    	var newObj=new Object();
+    	newObj.deep=deep*1+1;
+    	newObj.type="string";
+    	newObj.necessary="true";
+    	$rootScope.model.responseParams.splice(parentIndex + 1, 0, newObj);
+    }
+    
+    $scope.deleteOneResponseParam = function(parentIndex,deep){
+    	// 兼容历史数据
+    	if(!deep){
+    		deep = 0;
+    		$rootScope.model.responseParams[parentIndex].deep=0;
+    	}
+    	var needDelete = 1;
+    	for(var i=parentIndex+1; i<$rootScope.model.responseParams.length; i++){
+    		if($rootScope.model.responseParams[i].deep>deep){
+    			needDelete ++;
+    		}else{
+    			break;
+    		}
+    	}
+    	$rootScope.model.responseParams.splice(parentIndex, needDelete);
+    }
+    $scope.importResponseParams = function(){
+    	var jsonText = jsonToDiv($rootScope.model.importJson);
+    	if(jsonText.length > 0){
+    		$rootScope.model.responseParams = eval("("+jsonText+")");
+    		changeDisplay('responseEditorDiv','responseImportDiv');
+    		changeDisplay('responseEparam','responseParam');
+    	}
+	}
     $scope.modifyParam = function(editerId,targetId,item,type) {
     	if(type=='param'){
     		var json = getParamFromTable('editParamTable');

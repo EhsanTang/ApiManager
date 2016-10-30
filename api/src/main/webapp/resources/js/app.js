@@ -248,7 +248,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		    		addOneField(value.name, value.type, value.notNull,value.def, value.remark, value.rowNum);
 		        });  
 	    	}
-	    };
+	};
 	$rootScope.jsonformat = function(id,tiperror){
 		var result = format($rootScope.model[id],tiperror);
 		if(result){

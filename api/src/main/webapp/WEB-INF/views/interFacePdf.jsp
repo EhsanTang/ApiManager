@@ -121,14 +121,20 @@
 			<h3>7 返回参数说明</h3>
 			<table style="width:100%;">
 				<tr style="background:${MAIN_COLOR};color:#fff;">
-					<td>名称</td>
-					<td>类型</td>
-					<td>备注</td>
+					<th style="width:30px;"></th>
+					<th>名称</th>
+					<th style="width:60px;">类型</th>
+					<th style="width:50px;">是否必须</th>
+					<th style="width:80px;">备注</th>
 				</tr>
 				<c:forEach var="v" items="${f.responseParam}"> 
 				<tr>
-					<td>${v.name}</td>
+					<td style="color:red;">${v.deep}</td>
+					<td style="padding-left:20px;">
+						<div style="padding-left: ${v.deep*10}px;">${v.name}</div>
+					</td>
 					<td>${v.type}</td>
+					<td>${v.necessary}</td>
 					<td>${v.remark}</td>
 				</tr>
 				</c:forEach>

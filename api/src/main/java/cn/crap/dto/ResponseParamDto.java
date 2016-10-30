@@ -10,6 +10,8 @@ public class ResponseParamDto implements Serializable{
 	private String name;
 	private String type;
 	private String remark;
+	private int deep;
+	private String necessary;
 	public String getName() {
 		return name;
 	}
@@ -28,5 +30,18 @@ public class ResponseParamDto implements Serializable{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	public int getDeep() {
+		return deep;
+	}
+	public void setDeep(int deep) {
+		this.deep = deep;
+	}
+	public String getNecessary() {
+		return necessary;
+	}
+	public void setNecessary(String necessary) {
+		this.necessary = necessary;
+	}
+	
 	
 }

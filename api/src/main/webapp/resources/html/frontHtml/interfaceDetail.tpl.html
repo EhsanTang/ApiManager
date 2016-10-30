@@ -143,15 +143,21 @@
 		<table class="table table-bordered" ng-if="responseParams.length>0">
 		<thead>
 			<tr class="BGEEE C000">
+				<th class="w50"></th>
 				<th class="tc">名称</th>
-				<th class="tc">类型</th>
-				<th class="tc w300">备注</th>
+				<th class="tc w100">类型</th>
+				<th class="tc w100">是否必须</th>
+				<th class="tc w200">备注</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in responseParams">
-				<td class="tc fb C000">{{item.name}}</td>
+				<td class="tc" style="color:red;">{{item.deep}}</td>
+				<td class="C000 pl20">
+					<span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
+				</td>
 				<td class="tc C000">{{item.type}}</td>
+				<td class="tc C000">{{item.necessary}}</td>
 				<td class="tc C000">{{item.remark}}</td>
 			</tr>
 		</tbody>

@@ -5,24 +5,22 @@
   		{{webpage.brief}}
 	</div>
 	<table class="table table-bordered f12 C555 mb5">
-		<thead>
 			<tr class="main-bg CFFF">
-				<th class="w150">字段</th>
-				<th  class="w100">类型</th>
-				<th  class="w100">空</th>
+				<th class="w200">字段</th>
+				<th  class="w150">类型</th>
+				<th  class="w50">空</th>
 				<th  class="w150">默认</th>
-				<th>注释</th>
+				<th  class="w50">标识</th>
+				<th  class="w200">注释</th>
 			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in dictionary">
+			<tr ng-repeat="item in dictionary"  class="{{item.flag|directoryBG}}">
 				<td>{{item.name}}</td>
 				<td>{{item.type}}</td>
-				<td>{{item.notNull}}</td>
+				<td>{{item.notNull=='true'?'是':'否'}}</td>
 				<td>{{item.def}}</td>
+				<td>{{item.flag|directoryFlagName}}</td>
 				<td>{{item.remark}}</td>
 			</tr>
-		</tbody>
 	</table>
 </div>
 <div class="cb"></div>

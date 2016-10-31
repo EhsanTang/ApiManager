@@ -245,7 +245,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		    	var i=0;
 		    	$.each(content, function (n, value) {
 		    		i++;
-		    		addOneField(value.name, value.type, value.notNull,value.def, value.remark, value.rowNum);
+		    		addOneField(value.name, value.type, value.notNull,value.flag, value.def, value.remark, value.rowNum);
 		        });  
 	    	}
 	};

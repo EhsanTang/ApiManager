@@ -11,7 +11,8 @@
 				<tr>
 					<td class="tc">是否公开</td>
 					<td class="tl" colspan="3">
-						*私有项目不会建立索引，站内全文搜索检索不到，只能从项目主页地址进入。已经建立的索引将不会删除，需触发修改才能删除<br>
+						*私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可以通过项目主页访问。已经建立的索引将不会删除，需触发修改才能删除
+						<br>
 						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=typeName|tag=type|code=PROJECTTYPE|def='+model.type,$event)">
 					</td>
@@ -33,7 +34,7 @@
 				<tr>
 					<td class="tc">访问密码</td>
 					<td class="tl" colspan="3">
-					*模块密码优先于项目密码，输入密码后浏览时需要输入密码才能查看<br>
+					*公开项目可以添加项目密码，浏览时必须输入密码后浏览时需要输入密码才能查看<br>
 					<input class="form-control"
 						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
 				</tr>

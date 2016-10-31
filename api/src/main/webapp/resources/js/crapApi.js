@@ -11,8 +11,8 @@ function propUpPsswordDiv(obj){
 	}
 }
 
-/****************添加数据字典****************/
-function addOneField(name, type, notNull,def, remark, rowNum) {
+/****************数据字典****************/
+function addOneField(name, type, notNull,flag, def, remark, rowNum) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();
 		rowNum = mydate.getTime();
@@ -21,17 +21,37 @@ function addOneField(name, type, notNull,def, remark, rowNum) {
 				.append("<tr>"
 						+"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
 						+"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
-						+"<td><input class='form-control' type='text' name='notNull' value='"+ notNull + "' placeholder=\"是否可为空\"></td>"
+						+"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"
 						+"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
+						+"<td><select name='flag' class='form-control'><option value='common'"+ ( flag == 'common'  ? " selected":"") + ">普通</option><option value='primary'"+ ( flag == 'primary'  ? " selected":"") + ">主键</option><option value='foreign'"+ (flag == 'foreign' ? " selected":"") +">外键</option><option value='associate'"+ ( flag == 'associate'  ? " selected":"") + ">关联</option></select></td>"
 						+"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
-						+ "<td class='cursor text-danger'><i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i></td>"
+						+"<td class='cursor text-danger'>"
+						+		"<i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i>&nbsp;&nbsp; "
+						+		"<i class='iconfont' onclick='upward(this)'>&#xe623;</i>&nbsp;&nbsp;"
+						+		"<i class='iconfont' onclick='downward(this)'>&#xe624;</i>"
+						+"</td>"
 						+"</tr>");
 }
 
-/****************End****************/
 function deleteOneParam(nowTr) {
 	$(nowTr).parent().parent().remove();
 }
+
+function upward(nowTr){
+	var $tr = $(nowTr).parent().parent(); 
+    if ($tr.index() != 0) { 
+      $tr.fadeOut(1).fadeIn(600); 
+      $tr.prev().fadeOut(1).fadeIn(1000); 
+      $tr.prev().before($tr); 
+    } 
+}
+function downward(nowTr){
+	var $tr = $(nowTr).parent().parent(); 
+      $tr.fadeOut(1).fadeIn(600);  
+      $tr.next().fadeOut(1).fadeIn(1000); 
+      $tr.next().after($tr); 
+}
+/****************End****************/
 
 function unescapeAndDecode(name){
 	var value = $.cookie(name);

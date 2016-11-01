@@ -267,6 +267,7 @@ public class LoginController extends BaseController<User> {
 	@RequestMapping("/login.do")
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
+		try{
 			if (cacheService.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
 				if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode(request))) {
 					model.setTipMessage("验证码有误");
@@ -295,6 +296,11 @@ public class LoginController extends BaseController<User> {
 				model.setTipMessage("用户名不存在");
 				return new JsonResult(1, model);
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+			model.setTipMessage("未知异常，请查看日志："+e.getMessage());
+			return new JsonResult(1, model);
+		}
 	}
 	
 	

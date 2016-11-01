@@ -111,7 +111,6 @@ webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $st
 				 $rootScope.webpage = null;
 				 $rootScope.model = null;//初始化评论对象
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.webpage = result.data;
 				 $rootScope.page = result.page;
 				 $rootScope.model = result.others.comment;//初始化评论对象
@@ -157,7 +156,6 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.moduleList = null;
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.moduleList = result.data;
 				 $rootScope.others = result.others;
 			 }
@@ -183,7 +181,6 @@ webModule.controller('frontModuleMenuCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.projectMenu = null;
 				 $rootScope.project = null;
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.projectMenu = result.data;
 				 $rootScope.project = result.others.project;
 			 }
@@ -227,7 +224,6 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.model = result.data;
 				 $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
 				 $rootScope.versions = result.others.versions;
@@ -259,7 +255,6 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.model = null;
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.model.debugResult = result.data.debugResult;
 				 
 				 $rootScope.jsonformat("debugResult",false);
@@ -284,7 +279,6 @@ webModule.controller('frontSourceDetailCtrl', function($rootScope,$scope, $http,
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.source = null;
 			 }else{
-				 $rootScope.error = null;
 				 $rootScope.source = result.data;
 			 }
 		});

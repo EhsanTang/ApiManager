@@ -211,7 +211,7 @@ public class LuceneSearchService implements ISearchService {
 	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
-			// 如果是私有项目，且配置了私有项目不简历索引，则不简历索引
+			// 如果是私有项目，且配置了私有项目不建立索引，则不建立索引
 			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
 				delete(searchDto);
 				return true;

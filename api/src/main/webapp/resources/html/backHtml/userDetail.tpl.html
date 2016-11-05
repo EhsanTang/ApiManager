@@ -1,10 +1,10 @@
 <div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
 <div class="col-xs-12 p0 mt10">
 	
-	<div class="adorn-bl-3 pl10 f16">
+	<div class="adorn-bl-3 pl10 f16 C555" ng-if="sessionAdminId==model.id">
 		个人资料
 	</div>
-	<div class="notice h30 pl20 pt5 mt20" ng-if="model.status==1">
+	<div class="notice h30 pl20 pt5 mt20" ng-if="model.status==1 && sessionAdminId==model.id">
 			<i class="iconfont f16 pr20">&#xe632;</i>邮箱尚未验证，请登陆邮箱验证！ 
 			<a class="cursor" "_self" href="javascrpit:void(0);"
 				onclick="callAjaxByName('iUrl=back/sendValidateEmail.do|iLoading=PROPUPFLOAT发送中，请稍后...|ishowMethod=updateDivWithImg');">

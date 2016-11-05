@@ -109,7 +109,6 @@ public class SourceController extends BaseController<Source>{
 			SearchDto searchDto = source.toSearchDto(cacheService);
 			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
-				source.setModuleId(sourceService.get(source.getId()).getModuleId());
 				hasPermissionModuleId((source.getModuleId()), modSource);
 				sourceService.update(source);
 			}else{

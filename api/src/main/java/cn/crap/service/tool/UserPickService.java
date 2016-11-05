@@ -21,6 +21,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 /**
@@ -86,6 +87,15 @@ public class UserPickService implements IPickService{
 						projectIds = projectService.getProjectIdByUid(Tools.getUser().getId());
 						projectIds.add("NULL");
 						moduleService.getDataCenterPick(picks, projectIds , "", "", "");
+						return;
+					case "MODULES":
+						// 查看某个项目下的模块
+						if(!MyString.isEmpty(key)){
+							for(Module m : moduleService.findByMap(Tools.getMap("projectId", key), null, null)){
+								pick = new PickDto(m.getId(), m.getName());
+								picks.add(pick);
+							}
+						}
 						return;
 					case "PROJECTTYPE":
 						for (ProjectType pt : ProjectType.values()) {

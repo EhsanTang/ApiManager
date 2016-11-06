@@ -35,30 +35,30 @@ public abstract class BaseController<T extends BaseModel> {
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected Logger log = Logger.getLogger(getClass());
-	protected final static int view = 100;
-	protected final static int modInter = 1;
-	protected final static int addInter = 2;
-	protected final static int delInter = 3;
+	public final static int view = 100;
+	public final static int modInter = 1;
+	public final static int addInter = 2;
+	public final static int delInter = 3;
 
-	protected final static int modModule = 4;
-	protected final static int addModule = 5;
-	protected final static int delModule = 6;
+	public final static int modModule = 4;
+	public final static int addModule = 5;
+	public final static int delModule = 6;
 
-	protected final static int modArticle = 7;
-	protected final static int addArticle = 8;
-	protected final static int delArticle = 9;
+	public final static int modArticle = 7;
+	public final static int addArticle = 8;
+	public final static int delArticle = 9;
 
-	protected final static int modDict = 10;
-	protected final static int addDict = 11;
-	protected final static int delDict = 12;
+	public final static int modDict = 10;
+	public final static int addDict = 11;
+	public final static int delDict = 12;
 
-	protected final static int modSource = 13;
-	protected final static int addSource = 14;
-	protected final static int delSource = 15;
+	public final static int modSource = 13;
+	public final static int addSource = 14;
+	public final static int delSource = 15;
 
-	protected final static int modError = 16;
-	protected final static int addError = 17;
-	protected final static int delError = 18;
+	public final static int modError = 16;
+	public final static int addError = 17;
+	public final static int delError = 18;
 
 	@Autowired
 	protected ICacheService cacheService;
@@ -168,90 +168,11 @@ public abstract class BaseController<T extends BaseModel> {
 				if (type == view) {
 					return;
 				}
-
-				switch (type) {
-				case modModule:
-					if (pu.isModModule())
-						return;
-					break;
-				case delModule:
-					if (pu.isDelModule())
-						return;
-					break;
-				case addModule:
-					if (pu.isAddModule())
-						return;
-					break;
-
-				case modInter:
-					if (pu.isModInter())
-						return;
-					break;
-				case addInter:
-					if (pu.isAddInter())
-						return;
-					break;
-				case delInter:
-					if (pu.isDelInter())
-						return;
-					break;
-
-				case modArticle:
-					if (pu.isModArticle())
-						return;
-					break;
-				case addArticle:
-					if (pu.isAddArticle())
-						return;
-					break;
-				case delArticle:
-					if (pu.isDelArticle())
-						return;
-					break;
-
-				case modDict:
-					if (pu.isModDict())
-						return;
-					break;
-				case addDict:
-					if (pu.isAddDict())
-						return;
-					break;
-				case delDict:
-					if (pu.isDelDict())
-						return;
-					break;
-
-				case modSource:
-					if (pu.isModSource())
-						return;
-					break;
-				case addSource:
-					if (pu.isAddSource())
-						return;
-					break;
-				case delSource:
-					if (pu.isDelSource())
-						return;
-					break;
-
-				case modError:
-					if (pu.isModError())
-						return;
-					break;
-				case addError:
-					if (pu.isAddError())
-						return;
-					break;
-				case delError:
-					if (pu.isDelError())
-						return;
-					break;
-
-				default:
-					break;
+				
+				if( pu.projectAuth()[type]){
+					return;
 				}
-
+				
 			}
 
 		}

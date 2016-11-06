@@ -60,6 +60,7 @@ public class ModuleService extends BaseService<Module>
 					pick = new PickDto(idPre+dc.getId(), Const.LEVEL_PRE+dc.getName()+suffix);
 				else
 					pick = new PickDto(idPre+dc.getId(), value.replace("moduleId", dc.getId()).replace("moduleName", dc.getName()).replace("projectId", projectId), Const.LEVEL_PRE+dc.getName()+suffix);
+				picks.add(pick);
 			}
 		}
 	}

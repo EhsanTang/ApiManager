@@ -104,7 +104,7 @@ public class UserPickService implements IPickService{
 						}
 						return;
 					case "USER":
-						if(key!= null && key.length()>5){
+						if(key!= null && key.length()>=4){
 							if(key.indexOf("@")>0){
 								for (User u : userService.findByMap(Tools.getMap("email|like", key), null, null)) {
 									pick = new PickDto(u.getId(), u.getUserName());
@@ -117,6 +117,9 @@ public class UserPickService implements IPickService{
 									picks.add(pick);
 								}
 							}
+						}else{
+							pick = new PickDto(Const.SEPARATOR, "输入的搜索长度必须大于3");
+							picks.add(pick);
 						}
 				}
 			}

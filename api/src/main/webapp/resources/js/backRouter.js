@@ -155,6 +155,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('dictionaryImoprtFromSql', {
+		url : '/article/dictionary/importFromSql',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/user/dictionaryImportFromSql.tpl.html';
+				}
+			}
+		}
 	}).state('userList', {
 		url : '/user/list',
 		views : {

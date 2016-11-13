@@ -36,10 +36,13 @@ public class HttpPostGet {
 	public final static String ACCEPT_JSON = "application/json";
 
 	public static String get(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+		return get(path, params, headers, 5000);
+	}
+	public static String get(String path, Map<String, String> params, Map<String, String> headers, int timeout) throws Exception {
 		path = gethPath(path, params);
 		HttpGet method = new HttpGet(path);
-		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
-				.setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+				.setConnectionRequestTimeout(timeout).setStaleConnectionCheckEnabled(true).build();
 		method.setConfig(requestConfig);
 		return getMethod(method, headers);
 	}
@@ -237,7 +240,7 @@ public class HttpPostGet {
 	}
 
 	// 获取页面代码
-	public static InputStream GetString(String path) throws Exception {
+	public static InputStream getInputStream(String path) throws Exception {
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");

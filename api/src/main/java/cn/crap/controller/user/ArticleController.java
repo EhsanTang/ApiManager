@@ -147,6 +147,21 @@ public class ArticleController extends BaseController<Article>{
 		articleService.update(change);
 		return new JsonResult(1, null);
 	}
+	
+	@RequestMapping("/dictionary/importFromSql.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult importFromSql(@RequestParam String sql) throws MyException {
+		sql = sql.toLowerCase();
+		
+		/**
+		 * mysql
+		 */
+		
+		
+		
+		return new JsonResult(1, null);
+	}
 
 	@RequestMapping("/markdown.do")
 	public String markdown(@ModelAttribute Article webPage) throws Exception {
@@ -163,4 +178,27 @@ public class ArticleController extends BaseController<Article>{
 		return "/WEB-INF/views/markdown.jsp";
 	}
 
+	public static void main(String args[]){
+		String sql ="CREATE TABLE `article` ( `id` varchar(50) NOT NULL, `name` varchar(100) NOT NULL,   `brief` varchar(200) DEFAULT NULL,"+
+				  "`content` longtext NOT NULL,"+
+				  "`click` int(11) NOT NULL DEFAULT '0',"+
+				 " `type` varchar(20) NOT NULL DEFAULT 'PAGE',"+
+				 " `status` tinyint(4) NOT NULL DEFAULT '1',"+
+				 " `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,"+
+				 " `moduleId` varchar(50) NOT NULL DEFAULT 'top',"+
+				"  `mkey` varchar(20) DEFAULT NULL COMMENT 'key，唯一键，页面唯一标识',"+
+				"  `canDelete` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否可删除，可修key，默认可以',"+
+				"  `category` varchar(50) DEFAULT NULL,"+
+				"  `canComment` tinyint(4) NOT NULL DEFAULT '1',"+
+				"  `commentCount` int(11) NOT NULL DEFAULT '0',"+
+				"  `sequence` int(11) NOT NULL DEFAULT '0' COMMENT '排序，越大越靠前',"+
+				"  `markdown` text NOT NULL,"+
+				"  PRIMARY KEY (`id`),"+
+				"  UNIQUE KEY `mkey_UNIQUE` (`mkey`)"+
+				") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+		sql = sql.toLowerCase();
+		String tableName = sql.substring(sql.indexOf("table"), sql.indexOf("(")).replace("table", "").replaceAll("`", "").replace("'", "").trim();
+		
+		System.out.println(tableName);
+	}
 }

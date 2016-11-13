@@ -60,7 +60,10 @@
 					ng-click="del('user/module/delete.do?id='+item.id,item.name)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				
+				<a class="f12 text-primary mr10 cursor"
+						ng-href="resources/html/staticize/{{item.projectId}}/{{item.id}}/list.html" target="_blank"> 
+						<i class="iconfont f12">&#xe63a;静态化地址</i>
+				</a>
 				<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/module/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>

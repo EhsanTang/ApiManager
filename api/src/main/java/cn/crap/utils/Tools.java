@@ -1,6 +1,9 @@
 package cn.crap.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +34,48 @@ import cn.crap.service.tool.CacheService;
 
 
 public class Tools {
-	
+	public static void staticize(String html, String filePath) throws MyException, IOException{
+		if(html == null){
+			throw new MyException("000045");
+		}
+		FileWriter fw = new FileWriter(filePath, false);
+		try{
+			fw.write(html);
+			fw.flush();
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new MyException("000001", e.getMessage());
+		}finally{
+			fw.close();
+		}
+	}
+	/** 
+     * 通过递归调用删除一个文件夹及下面的所有文件 
+     * @param file 
+     */  
+    public static void deleteFile(String filePath){  
+    	File file = new File(filePath);
+    	if( !file.exists()){
+    		return;
+    	}
+        if(file.isFile()){//表示该文件不是文件夹  
+            file.delete();  
+        }else{  
+            //首先得到当前的路径  
+            String[] childFilePaths = file.list();  
+            for(String childFilePath : childFilePaths){  
+                deleteFile(file.getAbsolutePath()+"\\"+childFilePath);  
+            }  
+            file.delete();  
+        }  
+    } 
+    // 创建文件夹
+    public static void createFile(String filePath){  
+    	File file = new File(filePath);
+    	if( !file.exists()){
+    		file.mkdirs();
+    	}
+    }  
 	/**
 	 * 构造查询的id
 	 * @param roleName

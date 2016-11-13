@@ -1,6 +1,15 @@
 package cn.crap.controller.user;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,14 +17,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ProjectStatus;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
+import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.IErrorService;
 import cn.crap.inter.service.table.IMenuService;
 import cn.crap.inter.service.table.IModuleService;
@@ -24,9 +36,13 @@ import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Article;
+import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.model.Setting;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
+import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -52,6 +68,8 @@ public class ProjectController extends BaseController<Project> {
 	private IProjectUserService projectUserService;
 	@Autowired
 	private Config config;
+	@Autowired
+	private IArticleService articleService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -196,5 +214,120 @@ public class ProjectController extends BaseController<Project> {
 		projectService.update(change);
 
 		return new JsonResult(1, null);
+	}
+	
+	/**
+	 * 静态化模块
+	 */
+	@RequestMapping("/staticizeModule.do")
+	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId) throws MyException {
+		Module module = cacheService.getModule(moduleId);
+		Project project = cacheService.getProject(module.getProjectId());
+		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
+
+		if(project.getType() != ProjectType.PUBLIC.getType()){
+			Tools.deleteFile(path);
+			// 删除旧的静态化文件
+			throw new MyException("000044");
+		}
+		
+		// 静态化
+		Map<String, String> settingMap = new HashMap<String, String>();
+		for (Setting setting : cacheService.getSetting()) {
+			settingMap.put(setting.getKey(), setting.getValue());
+		}
+		settingMap.put(Const.DOMAIN, config.getDomain());
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		Map<String,Object> map = Tools.getMap("projectId",project.getId());
+		returnMap.put("settings", settingMap);
+		returnMap.put("project", project);
+		returnMap.put("module", module);
+		returnMap.put("moduleList", moduleService.findByMap(map, null, null));
+		returnMap.put("menuList", menuService.getLeftMenu(null));
+		returnMap.put("keywords", module.getRemark());
+		returnMap.put("description", project.getRemark());
+		returnMap.put("title", module.getName());
+		
+		map = Tools.getMap("moduleId", moduleId, "type", "ARTICLE");
+		List<Article> articleList = articleService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", null, null);
+		returnMap.put("articleList", articleList);
+		
+		return new ModelAndView("WEB-INF/views/staticize/index.jsp",returnMap);
+	}
+	/**
+	 * 静态化文章
+	 * @param req
+	 * @param articleId
+	 * @return
+	 * @throws MyException
+	 */
+	@RequestMapping("/staticizeArticle.do")
+	public ModelAndView staticizeArticle(HttpServletRequest req, @RequestParam String articleId) throws MyException {
+		Article article = articleService.get(articleId);
+		Module module = cacheService.getModule(article.getModuleId());
+		Project project = cacheService.getProject(module.getProjectId());
+		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
+
+		if(project.getType() != ProjectType.PUBLIC.getType()){
+			Tools.deleteFile(path);
+			// 删除旧的静态化文件
+			throw new MyException("000044");
+		}
+		
+		// 静态化
+		Map<String, String> settingMap = new HashMap<String, String>();
+		for (Setting setting : cacheService.getSetting()) {
+			settingMap.put(setting.getKey(), setting.getValue());
+		}
+		settingMap.put(Const.DOMAIN, config.getDomain());
+		Map<String,Object> returnMap = new HashMap<String,Object>();
+		returnMap.put("settings", settingMap);
+		returnMap.put("project", project);
+		returnMap.put("module", module);
+		returnMap.put("article", article);
+		returnMap.put("moduleList", moduleService.findByMap(Tools.getMap("projectId",project.getId()), null, null));
+		returnMap.put("menuList", menuService.getLeftMenu(null));
+		returnMap.put("keywords", module.getRemark());
+		returnMap.put("description", article.getBrief());
+		returnMap.put("title", article.getName());
+		
+		return new ModelAndView("WEB-INF/views/staticize/articleDetail.jsp",returnMap);
+	}
+	
+	
+	
+	/**
+	 * 静态化
+	 * @throws Exception 
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/staticize.do")
+	@ResponseBody
+	public JsonResult staticize(HttpServletRequest req, @RequestParam String projectId) throws UnsupportedEncodingException, Exception {
+		
+		Project project = cacheService.getProject(projectId);
+		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
+
+		if(project.getType() != ProjectType.PUBLIC.getType()){
+			Tools.deleteFile(path);
+			// 删除旧的静态化文件
+			throw new MyException("000044");
+		}
+		for(Module module : moduleService.findByMap(Tools.getMap("projectId", projectId), null, null)){
+			// 创建文件夹
+			Tools.createFile(path + "/" + module.getId());
+			
+			// 静态化模块
+			String html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeModule.do?moduleId="+ module.getId(), null, null, 10 * 1000);
+			Tools.staticize(html, path + "/" +  module.getId() +"/list.html");
+			
+			// 静态化文章
+			for(Article article: articleService.findByMap(Tools.getMap("moduleId", module.getId()), null, null)){
+				html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeArticle.do?articleId="+ article.getId(), null, null, 10 * 1000);
+				Tools.staticize(html, path + "/" +  module.getId() +"/"+article.getId()+".html");
+			}
+		}
+		return new JsonResult(1, null );
+		
 	}
 }

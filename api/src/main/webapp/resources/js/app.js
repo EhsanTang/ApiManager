@@ -255,6 +255,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			$rootScope.model[id] = result;
 		}
 	}
+	$rootScope.callAjaxByName = function(iurl){
+		callAjaxByName(iurl);
+	}
 	/**************markdown*************/
 	$rootScope.markdownEtitor = function(href){
 		$("#markdownDialog").css('display','block'); 

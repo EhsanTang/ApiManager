@@ -47,6 +47,9 @@
 				<entry key="000041" value="私有项目，必须登录才能访问" />
 				<entry key="000042" value="权限不够，禁止访问该项目" />
 				<entry key="000043" value="站内搜索/全文检索需要登陆后方可使用" />
+				<entry key="000044" value="非公开项目不支持静态化"/>
+				<entry key="000045" value="地址有误，静态化失败，请确认配置文件config.properties中的网站域名配置是否正确！"/>
+				
 			</map>
 		</property>
 	</bean>

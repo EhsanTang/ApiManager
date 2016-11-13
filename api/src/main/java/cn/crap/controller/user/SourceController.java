@@ -115,8 +115,8 @@ public class SourceController extends BaseController<Source>{
 				hasPermissionModuleId((source.getModuleId()), addSource);
 				sourceService.save(source);
 			}
-			
-			
+			// 新增的source没有id，必须在持久化后从新设置id
+			searchDto.setId(source.getId());
 			luceneService.update(searchDto);
 			return new JsonResult(1,source);
 	}

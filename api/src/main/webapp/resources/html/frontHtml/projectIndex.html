@@ -29,18 +29,9 @@
 	<div class="container p0 mt20">
 		<div class="row min-h p0 m0">
 		
-			<div class="col-xs-9 p0 BG_COLOR m0 pt0">
-				<div class="col-xs-12 f16 fb p20 pt10 pb0 mb5 BGFFF"
-					ng-if="error">
-					<button type="button" class="btn btn-danger btn-xs break-word"
-						onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
-				</div>
-				<div ui-view="main" class="BGFFF min-h500"></div>
-			</div>
-			
 			<!-- leftMenu -->
 			<div class="col-xs-3 p0 m0" ng-controller="frontModuleMenuCtrl">
-				<div class="r2 BGFFF p20 C555 ml15">
+				<div class="r2 BGFFF p20 C555 mr15">
 					<div class=" fb f18 adorn-color fl">
 						<i class="iconfont">&#xe61f;</i>
 					</div>
@@ -50,9 +41,12 @@
 				
 				</div>
 				
-					<div class="mb0 r2 f14 ml15 mt20" id="accordion" role="tablist" aria-multiselectable="true">
-					<div class=" no-radius b0 mt0" ng-repeat="item in projectMenu">
-						<div class="no-radius BGFFF p10" data-parent="#accordion">
+				<div class="mb0 r2 f14 mr15 mt20 BGFFF pt20 pb20" id="accordion" role="tablist">
+					<div class="ml10 pl10 adorn-bl-3 pl10">
+						<a class="C555 cursor" href="#{{project.id}}/error/list">错误码</a>
+					</div>
+					<div class="no-radius b0 mt0" ng-repeat="item in projectMenu">
+						<div class="no-radius p10" data-parent="#accordion">
 							<div class="a cursor adorn-bl-3 pl10 no_unl " data-toggle="collapse" data-parent="#accordion" href="#panel{{item.id}}">
 								<span class="hidden-xs" ng-bind="item.name"></span>
 							</div>
@@ -60,10 +54,10 @@
 						<div id="panel{{item.id}}" class="panel-collapse BGFFF collapse"
 							ng-class="{true: 'panel-collapse BGFFF collapse in', false: 'panel-collapse BGFFF collapse'}[$index == 0]">
 							<div class="panel-body b0 p0">
-								<a target="_self" class="p5 pl30" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">接口列表</a>
-								<a target="_self" class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL">数据字典</a>
-								<a target="_self" class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL">文章</a>
-								<a target="_self" class="p5 pl30" ng-href="#/{{item.projectId}}/source/list/{{item.id}}">资源</a>
+								<a class="p5 pl30" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">接口列表</a>
+								<a class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL">数据字典</a>
+								<a class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL">文章</a>
+								<a class="p5 pl30" ng-href="#/{{item.projectId}}/source/list/{{item.id}}">资源</a>
 							</div>
 						</div>
 					</div>
@@ -71,6 +65,16 @@
 			</div>
 			<!-- End:leftMenu -->
 			
+			<!-- main view -->
+			<div class="col-xs-9 p0 BG_COLOR m0 pt0">
+				<div class="col-xs-12 f16 fb p20 pt10 pb0 mb5 BGFFF"
+					ng-if="error">
+					<button type="button" class="btn btn-danger btn-xs break-word"
+						onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
+				</div>
+				<div ui-view="main" class="BGFFF min-h500"></div>
+			</div>
+			<!-- End:main view -->
 		</div>
 	</div>
 

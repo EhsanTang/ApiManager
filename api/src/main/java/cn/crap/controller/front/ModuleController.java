@@ -42,7 +42,7 @@ public class ModuleController extends BaseController<Module>{
 		return new JsonResult(1, moduleService.findByMap(Tools.getMap("projectId", projectId),
 				"new  Module( id, name,  url,  remark,  userId,  createTime,  projectId, canDelete)",
 				null, null), null, 
-				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void") )  );
+				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),  "project", project) );
 	}	
 	@RequestMapping("/menu.do")
 	@ResponseBody

@@ -1,13 +1,14 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="frontModuleCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
-		
+	<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt10 mb20 adorn-bl-3">
+		<a ng-href="project.do#/{{project.id}}/module/list" class="cursor adorn-color" ng-bind="project.name"></a>
+		&nbsp;<span class="C999 f12"> > </span>&nbsp;模块列表
+	</div>
+	
 	<div ng-if="moduleList.length==0" class="col-xs-12 tc mt10 mb10 C999">
 			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>抱歉，没有模块
 	</div>
 	
-	
-	<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt10 mb20 adorn-bl-3"
-		ng-if="moduleList.length>0">模块列表</div>
 	<div class="col-xs-12 p0 dashed-t" ng-if="moduleList.length>0">
 		<div class="col-sm-6 col-md-4 col-lg-3 m0 p0" ng-repeat="item in moduleList">
 			<div class="b1 tc r3 h220 m15 p10 pt5">

@@ -12,13 +12,25 @@
 			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>暂时没有项目
 </div>
 <div class="col-xs-12 p0"  ng-if="list.length>0">
-	<div ng-repeat="item in list" class="dashed-t">
-	
-		<a ng-href="project.do#/{{item.id}}/module/list" target="_blank" class="p10 pl0 f16 fb dis w C000 no_unl">{{item.name}}</a>
-		<div class ="f14 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
-		<div class="tr C999 f12 p10">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</span></div>
+
+	<div class="col-sm-6 col-md-4 col-lg-3 m0 p0" ng-repeat="item in list">
+			<div class="b1 tc r3 h220 m15 p10 pt5">
+				<i class="iconfont adorn-color f40 dis">&#xe61f;</i>
+				<div class="h30 of-h f12 C000 p10">
+					<a ng-href="project.do#/{{item.id}}/module/list" target="_blank" class="fb adorn-color" ng-bind="item.name|cut:true:8:' ...'"></a>	
+				</div>
+				<div class="h80 of-h C555 p10 pb5"
+					ng-bind="item.remark|cut:true:20:' ...'">
+				</div>
+				<div class="lh26">
+					<a class="f12 text-primary mr5 cursor" ng-href="#{{item.id}}/error/list"> 
+						<i class="iconfont f12">&#xe608; 错误码</i>
+					</a>
+				</div>
+			</div>
 	</div>
-	<div ui-view="page" class="mt20"></div>
+
+	<div ui-view="page" class="mt20 cb"></div>
 	
 </div>
 </div>

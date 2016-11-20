@@ -32,18 +32,22 @@
 			<!-- leftMenu -->
 			<div class="col-xs-3 p0 m0" ng-controller="frontModuleMenuCtrl">
 				<div class="r2 BGFFF p20 C555 mr15">
-					<div class=" fb f18 adorn-color fl">
-						<i class="iconfont">&#xe61f;</i>
-					</div>
-					<a class="fl dis C000 f16 mt2 ml10" ng-href="#/{{project.id}}/module/list" ng-bind="project.name"></a>
-					<div class="cb"></div>
+					<table>
+						<tr>
+							<td class="w50">
+								<img class="w50" ng-src="{{project.cover}}"/>
+							</td>
+							<td class="pl10">
+								<a class="C000 f16 mt2" ng-href="#/{{project.id}}/module/list" ng-bind="project.name"></a>
+							</td>
+						</tr>
+					</table>
 					<div class="f12 C999 lh20 mt10" ng-bind="project.remark"></div>
-				
 				</div>
 				
 				<div class="mb0 r2 f14 mr15 mt20 BGFFF pt20 pb20" id="accordion" role="tablist">
 					<div class="ml10 pl10 adorn-bl-3 pl10">
-						<a class="C555 cursor" href="#{{project.id}}/error/list">错误码</a>
+						<a class="C555 cursor" ng-href="#{{project.id}}/error/list">错误码</a>
 					</div>
 					<div class="no-radius b0 mt0" ng-repeat="item in projectMenu">
 						<div class="no-radius p10" data-parent="#accordion">

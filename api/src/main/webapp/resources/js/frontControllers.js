@@ -158,6 +158,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 			 }else{
 				 $rootScope.moduleList = result.data;
 				 $rootScope.others = result.others;
+				 $rootScope.project = result.others.project;
 			 }
 		});
     };

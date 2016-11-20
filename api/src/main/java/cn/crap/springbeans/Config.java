@@ -3,6 +3,8 @@ package cn.crap.springbeans;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import cn.crap.utils.MyString;
+
 @Component
 public class Config{
 	
@@ -81,6 +83,15 @@ public class Config{
 	@Value("${web.luceneSearchNeedLogin}")
 	private boolean luceneSearchNeedLogin;
 	
+	@Value("${web.baidu}")
+	private String baidu;
+	
+	public String getBaidu() {
+		if(MyString.isEmpty(baidu))
+			return "";
+		return baidu;
+	}
+
 	public boolean isPrivateProjectNeedCreateIndex() {
 		return privateProjectNeedCreateIndex;
 	}

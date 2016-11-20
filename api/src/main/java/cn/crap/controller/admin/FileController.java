@@ -26,7 +26,8 @@ public class FileController extends BaseController <User>{
 	@RequestMapping(value="/file/upload.do")
 	@ResponseBody
 	@AuthPassport
-	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack) {
+	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack,
+			String property) {
 		String result = "";
 	    String realFileName = file.getOriginalFilename();    
 	    String destDir = Tools.getServicePath(request);
@@ -83,7 +84,7 @@ public class FileController extends BaseController <User>{
 	    }
 	    if(!callBack.equals("")){
 	       if(result.indexOf("[ERROR]")<0){
-	    	   printMsg("<script>parent."+callBack+"('[OK]上传成功','"+result+"')</script>");
+	    	   printMsg("<script>parent."+callBack+"('[OK]上传成功','"+result+"','"+property+"')</script>");
 	       }else{
 	    	   printMsg("<script>parent.uploadImgCallBack('[ERROR]上传失败','"+result+"')</script>");
 	       }

@@ -324,7 +324,16 @@ public class ProjectController extends BaseController<Project> {
 			// 静态化文章
 			for(Article article: articleService.findByMap(Tools.getMap("moduleId", module.getId()), null, null)){
 				html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeArticle.do?articleId="+ article.getId(), null, null, 10 * 1000);
-				Tools.staticize(html, path + "/" +  module.getId() +"/"+article.getId()+".html");
+				Tools.staticize(html, path + "/" + module.getId() +"/"+article.getId()+".html");
+				// 临时解决域名解析目录问题
+				Tools.staticize(html, path + "/" + article.getId()+".html");
+			}
+			// 推送给百度
+			try{
+				if( !config.getBaidu().equals("") )
+					HttpPostGet.postBody(config.getBaidu(), config.getDomain()+"/resources/html/staticize/"+project.getId()+"/"+module.getId()+"/list.html", null);
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 		return new JsonResult(1, null );

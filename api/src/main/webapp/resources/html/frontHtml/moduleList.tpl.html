@@ -10,7 +10,7 @@
 	</div>
 	
 	<div ng-repeat="item in moduleList" class="dashed-t col-xs-12 pl0"  ng-if="moduleList.length>0">
-		<span class="p10 pl0 f14 fb dis w C000 no_unl">{{item.name}}</span>
+		<a class="p10 pl0 f16 fb dis w C000 no_unl cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">{{item.name}}</a>
 		<div class ="f14 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
 		<div class="tr C999 f12 p10">
 			<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}"> 

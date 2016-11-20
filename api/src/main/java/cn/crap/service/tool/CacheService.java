@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -132,16 +133,19 @@ public class CacheService implements ICacheService {
 			return new Project();
 		}
 		
-		Object obj = getDao().getObj(Const.CACHE_PROJECT + projectId);
-		if(obj == null){
-			Project project = projectDao.get(projectId);
+		Project project = (Project) getDao().getObj(Const.CACHE_PROJECT + projectId);
+		if(project == null){
+			project = projectDao.get(projectId);
 			if(project == null)
 				project = new Project();
 			getDao().setObj(Const.CACHE_PROJECT + projectId, project, config.getCacheTime());
-			return project;
 				
 		}
-		return (Project) obj;
+		return project;
+// 		内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
+//		Project p = new Project();
+//		BeanUtils.copyProperties(project, p);
+//		return p;
 	}
 	
 	@Override

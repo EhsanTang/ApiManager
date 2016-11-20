@@ -31,14 +31,16 @@ public class Project extends BaseModel implements Serializable{
 	private String remark;
 	private String userId;
 	private String password;
+	private String cover = "resources/images/cover.png";
 	
-	public Project(String id,String name, int type, String remark, String userId, String createTime){
+	public Project(String id,String name, int type, String remark, String userId, String createTime, String cover){
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.remark = remark;
 		this.userId = userId;
 		this.createTime = createTime;
+		this.cover = cover;
 	}
 	
 	public Project(){};
@@ -83,6 +85,14 @@ public class Project extends BaseModel implements Serializable{
 		this.password = password;
 	}
 	
+	@Column(name="cover")
+	public String getCover() {
+		return cover;
+	}
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+
 	@Transient
 	public String getTypeName(){
 		return ProjectType.getNameByValue(type);

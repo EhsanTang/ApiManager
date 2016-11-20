@@ -38,13 +38,13 @@ public class ProjectController extends BaseController<Project> {
 		if(user != null && myself){
 			if(MyString.isEmpty(name)){
 				return new JsonResult(1, 
-						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", 
+						projectService.queryByHql("select new Project(id, name, type, remark, userId, createTime, cover) from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", 
 								Tools.getMap("userId", user.getId()), page)
 						, page);
 
 			}else{
 				return new JsonResult(1, 
-						projectService.queryByHql("from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name", 
+						projectService.queryByHql("select new Project(id, name, type, remark, userId, createTime, cover) from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name", 
 						Tools.getMap("userId", user.getId(), "name|like", name), page)
 						, page);
 
@@ -54,7 +54,7 @@ public class ProjectController extends BaseController<Project> {
 		else{
 			return new JsonResult(1,
 				projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus(), "name|like", name),
-						"new Project(id, name, type, remark, userId, createTime)" ,page, null), page);
+						"new Project(id, name, type, remark, userId, createTime, cover)" ,page, null), page);
 		}
 		
 	}

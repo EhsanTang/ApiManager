@@ -122,7 +122,7 @@ function uploadImage(id,size,form){
 	form.submit();
 }
 //上传图片非编辑器默认回调方法
-function uploadImgCallBack(msg, url) {
+function uploadImgCallBack(msg, url, property) {
 	if (msg.indexOf("[OK]") >= 0) {
 		$("#image").attr("src", url + "");
 		$("#image").removeClass("ndis");
@@ -130,8 +130,8 @@ function uploadImgCallBack(msg, url) {
 		if (url!= undefined) {
 			//修改setting中的value
 			var rootScope = getRootScope();
-			rootScope.$apply(function () {          
-			    rootScope.model.value = url;
+			rootScope.$apply(function () {  
+				rootScope.model[property] = url;
 			});
 		}
 	}else {

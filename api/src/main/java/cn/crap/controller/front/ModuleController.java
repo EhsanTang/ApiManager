@@ -1,5 +1,6 @@
 package cn.crap.controller.front;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,9 +66,13 @@ public class ModuleController extends BaseController<Module>{
 			}
 		}
 		
+		Project returnProject = new Project();
+		BeanUtils.copyProperties(project, returnProject);
+		returnProject.setPassword("");
+		
 		return new JsonResult(1, 
 					moduleService.findByMap(Tools.getMap("projectId", projectId),
 							"new  Module( id, name,  url,  remark,  userId,  createTime,  projectId, canDelete)",
-							null, null), null, Tools.getMap("project",  cacheService.getProject(projectId)) );
+							null, null), null, Tools.getMap("project",  returnProject) );
 	}	
 }

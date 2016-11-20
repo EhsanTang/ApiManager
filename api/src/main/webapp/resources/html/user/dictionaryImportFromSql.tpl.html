@@ -1,11 +1,11 @@
-<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+<div class="r0 p10 pt0 col-xs-12" ng-controller="dictionaryInportFromSqlCtrl">
 <div class="col-xs-12 p0 mt10">
 	<form ng-submit="submitForm('user/article/dictionary/importFromSql.do')">
 		<table class="table table-bordered">
 			<tr>
 				<td class="tc w100">标题</td>
 				<td class="tc">
-						<input  class="form-control" type="text" ng-model="model.name" required>
+						<input  class="form-control" type="text" ng-model="model.name">
 				</td>
 				
 			</tr>
@@ -25,7 +25,7 @@
 			<tr>
 				<td class="tc">创建表格SQL</td>
 				<td class="tc">
-					<textarea  class="form-control no-resize" rows="8" ng-model="model.sql"></textarea></td>
+					<textarea  class="form-control no-resize" rows="8" ng-model="model.sql" placeholder="请输入标准的mysql建表语句，一次只允许输入一张表"></textarea></td>
 			</tr>
 			<tr>
 					<td class="tc">排序</td>

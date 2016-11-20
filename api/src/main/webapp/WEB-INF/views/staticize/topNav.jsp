@@ -9,7 +9,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand p0 pt10" href="index.do#">
+				<a class="navbar-brand p0 pt10" href="${settings.DOMAIN}">
 					<img class="h30" src="<%=settings.get("LOGO").startsWith("http")? settings.get("LOGO"):basePath + settings.get("LOGO")%>" />
 				</a>
 			</div>

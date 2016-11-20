@@ -184,7 +184,7 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
  * @param iTarget
  * @param iLoading //fase:不提示，propup:弹窗提示
  */
-var isFloat = false;
+var floatTimes = 0;
 function showTip(iTarget,iLoading) {
 	var oldLoadText = iLoading;
 	var floatOrPropUp = false;
@@ -199,11 +199,12 @@ function showTip(iTarget,iLoading) {
 		floatOrPropUp = true;
 	}
 	if(oldLoadText.toUpperCase().indexOf('FLOAT') >= 0){
-		if(!isFloat){
-			showMessage('float','false',false,-1);
-			isFloat = true;
-			floatOrPropUp = true;
+		showMessage('float','false',false,-1);
+		floatOrPropUp = true;
+		if( floatTimes < 0 ){
+			floatTimes = 0;
 		}
+		floatTimes = floatTimes + 1;
 	}
 	if (oldLoadText.toUpperCase().indexOf('PROPUP') >= 0 && !floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
 		if (iLoading.toUpperCase() != "FALSE"){
@@ -243,10 +244,9 @@ function closeTip(data,iLoading,tipTime){
 		showMessage('lookUp','false',false,tipTime);
 	}
 	if(iLoading.toUpperCase().indexOf('FLOAT') >= 0){
-		if(isFloat){
+		floatTimes = floatTimes - 1;
+		if( floatTimes == 0){
 			showMessage("float",'false',false,0);
-			isFloat = false;
-			floatOrPropUp = true;
 		}
 	}
 }

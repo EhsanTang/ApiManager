@@ -460,6 +460,23 @@ mainModule.controller('userErrorCtrl', function($rootScope,$scope, $http, $state
     };
     $scope.getData();
 });
+mainModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+	var params = "iUrl=user/article/detail.do?id=NULL|iLoading=FLOAT";
+	httpService.callHttpMethod($http,params).success(function(result) {
+		var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+		if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+			 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 $rootScope.model = null;
+		 }else{
+			 $rootScope.model = result.data;
+			 $rootScope.error = null;
+		 }
+	}).error(function(result) {
+		closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
+		$rootScope.error = result;
+		 
+	});
+});
 
 
 

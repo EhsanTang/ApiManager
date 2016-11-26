@@ -293,88 +293,35 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     		
     		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
     		if(item.param.length<5 || item.param.substring(0,5)!="form="){
-    			alert("参数格式有误，无法解析，请点击【Custom】自定义参数");
-    			return;
+    			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+    				$rootScope.model.params = eval("([])");
+    			}else{
+    				return;
+    			}
     		}else{
-    			item.iparam = item.param.substring(5);
-    		}
-    		
-    		// 将param转换为json数据
-    		try{
-    			$rootScope.model.params = eval("("+item.iparam+")");
-    		}catch(e){
-    			alert("参数格式有误，无法解析，请点击【Custom】自定义参数");
-    			return;
+    			// 将param转换为json数据
+        		try{
+        			$rootScope.model.params = eval("("+item.param.substring(5)+")");
+        		}catch(e){
+        			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+        				$rootScope.model.params = eval("([])");
+        			}else{
+        				return;
+        			}
+        		}
     		}
     		
     	}else if(tableId=='editResponseParamTable'){
     		$rootScope.model.responseParams = eval("("+item.responseParam+")");
     	}else if(tableId=='editHeaderTable'){
     		$rootScope.model.headers = eval("("+item.header+")");
+    	}else if(tableId=='eparamRemarkTable'){
+    		$rootScope.model.paramRemarks = eval("("+item.paramRemark+")");
     	}
-    	
-    	
-//    	$("#"+editerId).find("tbody").find("tr").remove();
-//    	if(params!=null&&params!=""){
-//	    	var i=0;
-//	    	$.each(params, function (n, value) {
-//	    		i++;
-//	    		addOneParam(value.name,value.necessary,value.type, value.def,value.remark,i,tableId)
-//	        });  
-//    	}
 		$("#"+editerId).removeClass('none');
 		$("#"+targetId).addClass('none');
     };
-    $scope.addOneHeard = function(){
-    	$rootScope.model.headers[$rootScope.model.headers.length] = "{}";
-    }
-    $scope.addOneParam = function(){
-    	$rootScope.model.params[$rootScope.model.params.length] = "{}";
-    }
-    $scope.addOneResponseParam = function(){
-    	var newObj=new Object();
-    	newObj.deep=0;
-    	newObj.type="string";
-    	newObj.necessary="true";
-    	$rootScope.model.responseParams[$rootScope.model.responseParams.length] =  newObj;
-    }
-    $scope.addOneResponseParamByParent = function(name,deep,parentIndex){
-    	// 兼容历史数据
-    	if(!deep){
-    		deep = 0;
-    		$rootScope.model.responseParams[parentIndex].deep=0;
-    	}
-    	var newObj=new Object();
-    	newObj.deep=deep*1+1;
-    	newObj.type="string";
-    	newObj.necessary="true";
-    	$rootScope.model.responseParams.splice(parentIndex + 1, 0, newObj);
-    }
-    
-    $scope.deleteOneResponseParam = function(parentIndex,deep){
-    	// 兼容历史数据
-    	if(!deep){
-    		deep = 0;
-    		$rootScope.model.responseParams[parentIndex].deep=0;
-    	}
-    	var needDelete = 1;
-    	for(var i=parentIndex+1; i<$rootScope.model.responseParams.length; i++){
-    		if($rootScope.model.responseParams[i].deep>deep){
-    			needDelete ++;
-    		}else{
-    			break;
-    		}
-    	}
-    	$rootScope.model.responseParams.splice(parentIndex, needDelete);
-    }
-    $scope.importResponseParams = function(){
-    	var jsonText = jsonToDiv($rootScope.model.importJson);
-    	if(jsonText.length > 0){
-    		$rootScope.model.responseParams = eval("("+jsonText+")");
-    		changeDisplay('responseEditorDiv','responseImportDiv');
-    		changeDisplay('responseEparam','responseParam');
-    	}
-	}
+
     $scope.modifyParam = function(editerId,targetId,item,type) {
     	if(type=='param'){
     		var json = getParamFromTable('editParamTable');
@@ -404,10 +351,76 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
        			return;
        		}
     		item.header = json;
+    	}else if(type=="paramRemark"){
+    		var json = getParamFromTable('eparamRemarkTable');
+    		try{
+       		 eval("("+json+")");
+       		}catch(e){
+       			alert("输入有误，json解析出错："+e);
+       			return;
+       		}
+    		item.paramRemark = json;
     	}
     	$("#"+editerId).addClass('none');
 		$("#"+targetId).removeClass('none');
     };
+    /***********添加参数********/
+    $scope.addOneParam = function(field){
+    	var newObj=new Object();
+    	newObj.deep=0;
+    	newObj.type="string";
+    	newObj.necessary="true";
+    	$rootScope.model[field][$rootScope.model[field].length] = newObj;
+    }
+    /***********添加嵌套参数**************/
+    $scope.addOneParamByParent = function(field,deep,parentIndex){
+    	var newObj=new Object();
+    	newObj.type="string";
+    	newObj.necessary="true";
+    	if(parentIndex || parentIndex==0){
+    		// 兼容历史数据
+        	if(!deep){
+        		deep = 0;
+        		$rootScope.model[field][parentIndex].deep=0;
+        	}
+        	newObj.deep=deep*1+1;
+        	$rootScope.model[field].splice(parentIndex + 1, 0, newObj);
+    	}else{
+    		newObj.deep = 0*1;
+    		$rootScope.model[field][$rootScope.model[field].length]=newObj;
+    	}
+    }
+    
+    $scope.deleteOneParamByParent = function(parentIndex,deep){
+    	// 兼容历史数据
+    	if(!deep){
+    		deep = 0;
+    		$rootScope.model.responseParams[parentIndex].deep=0;
+    	}
+    	var needDelete = 1;
+    	for(var i=parentIndex+1; i<$rootScope.model.responseParams.length; i++){
+    		if($rootScope.model.responseParams[i].deep>deep){
+    			needDelete ++;
+    		}else{
+    			break;
+    		}
+    	}
+    	$rootScope.model.responseParams.splice(parentIndex, needDelete);
+    }
+    $scope.importParams = function(field){
+    	var jsonText = jsonToDiv($rootScope.model.importJson);
+    	if(jsonText.length > 0){
+    		$rootScope.model[field] = eval("("+jsonText+")");
+    		if(field == 'responseParams'){
+    			changeDisplay('responseEditorDiv','responseImportDiv');
+    			changeDisplay('responseEparam','responseParam');
+    		}else if(field == 'paramRemarks'){
+    			changeDisplay('paramEditorDiv','paramImportDiv');
+    			changeDisplay('eparamRemark','paramRemark');
+    		}
+    	}
+	}
+    /****************End:返回参数***************/
 });
 /**************************日志列表****************************/
 mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {

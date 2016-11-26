@@ -1,0 +1,56 @@
+
+<div id="eheader" class="none">
+
+	<table class="table table-hover" id="editHeaderTable">
+		<thead>
+			<tr class="btn-main">
+				<th>名称</th>
+				<th>是否必须</th>
+				<th>类型</th>
+				<th>默认值</th>
+				<th>备注</th>
+				<th class="w50">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in model.headers track by $index">
+				<td><input class="form-control" type="text" name="name"
+					value="{{item.name}}" placeholder="参数名：必填"></td>
+				<td class="w100"><select name="necessary" class="form-control">
+						<option value="true" ng-selected="item.necessary=='true'">true</option>
+						<option value="false" ng-selected="item.necessary=='false'">false</option>
+				</select></td>
+				<td class="w100"><select name="type" class="form-control">
+						<option value="string" ng-selected="item.type=='string'">string</option>
+						<option value="int" ng-selected="item.type=='int'">int</option>
+						<option value="float" ng-selected="item.type=='float'">float</option>
+						<option value="long" ng-selected="item.type=='long'">long</option>
+						<option value="byte" ng-selected="item.type=='byte'">byte</option>
+						<option value="double" ng-selected="item.type=='double'">double</option>
+						<option value="boolean" ng-selected="item.type=='boolean'">boolean</option>
+						<option value="file" ng-selected="item.type=='file'">file</option>
+				</select></td>
+				<td><input class="form-control" type="text" name="def"
+					value="{{item.def}}" placeholder="默认值"></td>
+				<td><input class="form-control" type="text" name="remark"
+					value="{{item.remark}}"></td>
+				<td class="cursor text-danger"><i class="iconfont"
+					onclick="deleteOneParam(this)">&#xe60e;</i></td>
+			</tr>
+		</tbody>
+	</table>
+	<button type="button"
+		ng-click="modifyParam('eheader','header',model,'header')"
+		class="btn btn-warning fr ml10">提交修改</button>
+	<button type="button" ng-click="addOneParam('headers')"
+		class="btn btn-success fr ml10">添加</button>
+	<button type="button" onclick="changeDisplay('header','eheader')"
+		class="btn btn-primary fr">返回</button>
+</div>
+<div class="input-group w" id="header">
+	<textarea class="form-control no-resize" ng-model="model.header"
+		rows="3" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
+	<div class="input-group-addon cursor btn-main"
+		ng-click="editerParam('eheader','header',model,'editHeaderTable');">
+		编辑</div>
+</div>

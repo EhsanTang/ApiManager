@@ -101,6 +101,30 @@
 		<div class="code" ng-if="model.customParams">
 			<div class="bb1 mt0 pt0">自定义参数（Custom）</div>
 			<pre>{{model.customParams}}</pre>
+			<!-- 自定义参数备注 -->
+			<div class="bb1 mt0 pt0">自定义参数备注（Custom）</div>
+			<table class="table table-bordered" ng-if="paramRemarks.length>0">
+		<thead>
+			<tr class="BGEEE C000">
+				<th class="w50"></th>
+				<th class="tc">名称</th>
+				<th class="tc w100">类型</th>
+				<th class="tc w100">是否必须</th>
+				<th class="tc w200">备注</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in paramRemarks">
+				<td class="tc" style="color:red;">{{item.deep}}</td>
+				<td class="C000 pl20">
+					<span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
+				</td>
+				<td class="tc C000">{{item.type}}</td>
+				<td class="tc C000">{{item.necessary}}</td>
+				<td class="tc C000">{{item.remark}}</td>
+			</tr>
+		</tbody>
+		</table>
 		</div>
 		
 		

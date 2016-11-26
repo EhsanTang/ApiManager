@@ -240,6 +240,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.headers = eval("("+result.data.header+")");
 				 
 				 $rootScope.responseParams = eval("("+result.data.responseParam+")");
+				 $rootScope.paramRemarks = eval("("+result.data.paramRemark+")");
 				 $rootScope.others = result.others;
 				 if(result.data.method)// 调试页面默认显示method中第一个
 					 $rootScope.model.debugMethod = result.data.method.split(",")[0];

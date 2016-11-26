@@ -129,7 +129,8 @@ blockquote{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-#editResponseParamTable input,#editResponseParamTable select{
+#editResponseParamTable input,#editResponseParamTable select,
+#eparamRemarkTable input,#eparamRemarkTable select{
 	padding:5px 5px;
 	height:25px!important;
 	font-size:12px!important;

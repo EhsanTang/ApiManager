@@ -76,242 +76,56 @@
 				</tr>
 				<tr>
 					<td class="tc">请求头</td>
-					<td class="tc" colspan="3">
-							<div id="eheader" class="none">
-								<table class="table table-hover" id="editHeaderTable">
-									<thead>
-										<tr class="btn-main">
-											<th>名称</th>
-											<th>是否必须</th>
-											<th>类型</th>
-											<th>默认值</th>
-											<th>备注</th>
-											<th class="w50">操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="item in model.headers track by $index">
-											<td><input class="form-control" type="text" name="name" value="{{item.name}}" placeholder="参数名：必填"></td>
-											<td class="w100">
-												<select name="necessary" class="form-control">
-													<option value="true" ng-selected="item.necessary=='true'">true</option>
-													<option value="false" ng-selected="item.necessary=='false'">false</option>
-												</select>
-											</td>
-											<td class="w100">
-												<select name="type" class="form-control">
-													<option value="string" ng-selected="item.type=='string'">string</option>
-													<option value="int" ng-selected="item.type=='int'">int</option>
-													<option value="float" ng-selected="item.type=='float'">float</option>
-													<option value="long"  ng-selected="item.type=='long'">long</option>
-													<option value="byte"  ng-selected="item.type=='byte'">byte</option>
-													<option value="double"  ng-selected="item.type=='double'">double</option>
-													<option value="boolean"  ng-selected="item.type=='boolean'">boolean</option>
-													<option value="file"  ng-selected="item.type=='file'">file</option>
-												</select>
-											</td>
-											<td><input class="form-control" type="text" name="def" value="{{item.def}}" placeholder="默认值"></td>
-											<td><input class="form-control" type="text" name="remark" value="{{item.remark}}"></td>
-											<td class="cursor text-danger"><i class="iconfont" onclick="deleteOneParam(this)">&#xe60e;</i></td>
-										</tr>
-									</tbody>
-								</table>
-								<button type="button"
-									ng-click="modifyParam('eheader','header',model,'header')"
-									class="btn btn-warning fr ml10">提交修改</button>
-								<button type="button"
-									ng-click="addOneHeard()"
-									class="btn btn-success fr ml10">添加</button>
-								<button type="button" onclick="changeDisplay('header','eheader')"
-									class="btn btn-primary fr">返回</button>
-							</div>
-							<div class="input-group w" id="header">
-								<textarea class="form-control no-resize" ng-model="model.header"
-									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
-								<div class="input-group-addon cursor btn-main"
-									ng-click="editerParam('eheader','header',model,'editHeaderTable');">
-									编辑</div>
-							</div>
-					</td>
+					<td class="tc" colspan="3" ui-view="interHeaderDiv"></td>
 				</tr>
 				
 				
 				<tr>
 					<td class="tc">
-						参数<br> 
-						<input type="button" class="btn btn-default btn-sm w100 mt10" value="Form" onclick="changeDisplay('formParam','customParam')">
-						<input type="button" class="btn btn-default btn-sm w100 mt10" value="Custom" onclick="changeDisplay('customParam','formParam')">
+						参数类型<br> 
+						<input type="button" class="btn btn-default btn-sm w100 mt10 param-group iactive" value="表单模式" 
+						onclick="changeDisplay('formParam','customParam');selectButton(this,'param-group')">
+						<input type="button" class="btn btn-default btn-sm w100 mt10 param-group" value="自定义" 
+						onclick="changeDisplay('customParam','formParam');selectButton(this,'param-group')">
+					</td>
+					<td class="tc" colspan="3" ui-view="interFormParamDiv"></td>
+				</tr>
+				<tr ng-if="model.param.indexOf('form=')!=0">
+					<td class="tc">
+						自定义参数备注
+						<input type="button" class="btn btn-default btn-sm w100 mt10 remark-group iactive" value="编辑模式"
+						 onclick="changeDisplay('paramEditorDiv','paramImportDiv');selectButton(this,'remark-group')">
+						<input type="button" class="btn btn-default btn-sm w100 mt10 remark-group" value="JSON导入" 
+						onclick="changeDisplay('paramImportDiv','paramEditorDiv');selectButton(this,'remark-group')">
 					</td>
 					<td class="tc" colspan="3">
-					
-					
-						<!-- form表单参数 -->
-						<div id="formParam">
-							<div id="eparam" class="none">
-								<table class="table table-hover" id="editParamTable">
-									<thead>
-										<tr class="btn-main">
-											<th>名称</th>
-											<th>是否必须</th>
-											<th>位置</th>
-											<th>类型</th>
-											<th>默认值</th>
-											<th>备注</th>
-											<th class="w50">操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="item in model.params track by $index">
-											<td><input class="form-control" type="text" name="name" value="{{item.name}}" placeholder="参数名：必填"></td>
-											<td class="w100">
-												<select name="necessary" class="form-control">
-													<option value="true" ng-selected="item.necessary=='true'">true</option>
-													<option value="false" ng-selected="item.necessary=='false'">false</option>
-												</select>
-											</td>
-											<td class="w100">
-												<select name="inUrl" ng-if="item.inUrl && item.inUrl=='false'" class="form-control">
-													<option value="false" selected="selected">普通参数</option>
-													<option value="true">URL路径</option>
-												</select>
-												<select name="inUrl" ng-if="!item.inUrl || item.inUrl!='false'" class="form-control">
-													<option value="false">普通参数</option>
-													<option value="true" selected="selected">URL路径</option>
-												</select>
-											</td>
-											<td class="w100">
-												<select name="type" class="form-control">
-													<option value="string" ng-selected="item.type=='string'">string</option>
-													<option value="int" ng-selected="item.type=='int'">int</option>
-													<option value="float" ng-selected="item.type=='float'">float</option>
-													<option value="long"  ng-selected="item.type=='long'">long</option>
-													<option value="byte"  ng-selected="item.type=='byte'">byte</option>
-													<option value="double"  ng-selected="item.type=='double'">double</option>
-													<option value="boolean"  ng-selected="item.type=='boolean'">boolean</option>
-													<option value="file"  ng-selected="item.type=='file'">file</option>
-												</select>
-												
-											</td>
-											<td><input class="form-control" type="text" name="def" value="{{item.def}}" placeholder="默认值"></td>
-											<td><input class="form-control" type="text" name="remark" value="{{item.remark}}"></td>
-											<td class="cursor text-danger"><i class="iconfont" onclick="deleteOneParam(this)">&#xe60e;</i></td>
-										</tr>
-									</tbody>
-								</table>
-								<button type="button"
-									ng-click="modifyParam('eparam','param',model,'param')"
-									class="btn btn-warning fr ml10">提交修改</button>
-								<button type="button"
-									ng-click="addOneParam()"
-									class="btn btn-success fr ml10">添加</button>
-								<button type="button" onclick="changeDisplay('param','eparam')"
-									class="btn btn-primary fr">返回</button>
-							</div>
-							<div class="input-group w" id="param">
-								<textarea class="form-control no-resize" ng-model="model.param"
-									rows="6" readonly placeholder="请点击“编辑”按钮编辑参数"></textarea>
+						<div class="input-group w none" id="paramImportDiv">
+								<textarea class="form-control no-resize" ng-model="model.importJson"
+									rows="5" placeholder="请输入需要导出的json数据"></textarea>
 								<div class="input-group-addon cursor btn-main"
-									ng-click="editerParam('eparam','param',model,'editParamTable');">
-									编辑</div>
-							</div>
+									ng-click="importParams('paramRemarks');">
+									导入</div>
 						</div>
-						<!-- End:form表单参数 -->
-						
-						
-						<!-- 自定义参数 -->
-						<div class="input-group w none" id="customParam">
-							<textarea class="form-control no-resize" ng-model="model.param" rows="6" placeholder="自定义参数"></textarea>
-						</div>
-						<!-- End:自定义参数 -->
-						
-						
+						<div id="paramEditorDiv" ui-view="interParamRemakDiv"></div>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">
 						返回参数
-						<input type="button" class="btn btn-default btn-sm w100 mt10" value="编辑" onclick="changeDisplay('responseEditorDiv','responseImportDiv')">
-						<input type="button" class="btn btn-default btn-sm w100 mt10" value="导入" onclick="changeDisplay('responseImportDiv','responseEditorDiv')">
+						<input type="button" class="btn btn-default btn-sm w100 mt10 resparam-group iactive" value="编辑模式" 
+						onclick="changeDisplay('responseEditorDiv','responseImportDiv');selectButton(this,'resparam-group')">
+						<input type="button" class="btn btn-default btn-sm w100 mt10 resparam-group" value="JSON导入" 
+						onclick="changeDisplay('responseImportDiv','responseEditorDiv');selectButton(this,'resparam-group')">
 					</td>
 					<td class="tc" colspan="3">
 						<div class="input-group w none" id="responseImportDiv">
 								<textarea class="form-control no-resize" ng-model="model.importJson"
-									rows="6" placeholder="请输入需要导出的json数据"></textarea>
+									rows="5" placeholder="请输入需要导出的json数据"></textarea>
 								<div class="input-group-addon cursor btn-main"
-									ng-click="importResponseParams();">
+									ng-click="importParams('responseParams');">
 									导入</div>
 						</div>
-						<div  id="responseEditorDiv">
-							<div id="responseEparam" class="none">
-								<table class="table table-hover table-bordered" id="editResponseParamTable">
-									<thead>
-										<tr class="btn-main">
-											<th class="w50"></th>
-											<th>名称</th>
-											<th class="w100">类型</th>
-											<th class="w100">是否必须</th>
-											<th class="w200">备注</th>
-											<th class="w50">操作</th>
-										</tr>
-									</thead>
-										<tr ng-repeat="item in model.responseParams track by $index">
-											<td style="color:red;" class="p5">
-												{{item.deep}}
-												<input type="hidden" name="deep" value="{{item.deep}}" ng-model="item.deep">
-											</td>
-											<td class="p5">
-												<input class="form-control b0 no-b-s" style="padding-left:{{item.deep*10 + 'px'}}" type="text" name="name" ng-model="item.name" value="{{item.name}}" placeholder="参数名：必填">
-											</td>
-											<td class="w100 p5">
-													<select name="type" class="form-control b0 no-b-s" ng-model="item.type">
-														<option value="string" ng-selected="item.type=='string'">string</option>
-														<option value="number" ng-selected="item.type=='number'">number</option>
-														<option value="boolean" ng-selected="item.type=='boolean'">boolean</option>
-														<option value="object"  ng-selected="item.type=='object'">object</option>
-														<option value="array[number]"  ng-selected="item.type=='array[number]'">array[number]</option>
-														<option value="array[boolean]"  ng-selected="item.type=='array[boolean]'">array[boolean]</option>
-														<option value="array[string]"  ng-selected="item.type=='array[string]'">array[string]</option>
-														<option value="array[object]"  ng-selected="item.type=='array[object]'">array[object]</option>
-														<option value="file"  ng-selected="item.type=='file'">file</option>
-													</select>
-											</td>
-											<td class="p5">
-													<select name="necessary" class="form-control b0 no-b-s" ng-model="item.necessary">
-														<option value="true" ng-selected="item.necessary=='true'">true</option>
-														<option value="false" ng-selected="item.necessary=='false'">false</option>
-													</select>
-											</td>
-											<td class="p5">
-												<input class="form-control b0 no-b-s" type="text" name="remark" ng-model="item.remark" value="{{item.remark}}" placeholder="备注">
-											</td>
-											<td class="cursor text-danger p5">
-												<i class="iconfont" ng-click="deleteOneResponseParam($index,item.deep)">&#xe60e;</i>
-												<i class="iconfont" ng-click="addOneResponseParamByParent(item.name,item.deep,$index)" ng-if="item.type=='object' || item.type=='array[object]'">&#xe604;</i>
-											</td>
-										</tr>
-									<tbody>
-									</tbody>
-								</table>
-								<button type="button"
-									ng-click="modifyParam('responseEparam','responseParam',model,'responseParam')"
-									class="btn btn-warning fr ml10">提交修改</button>
-								<button type="button"
-									ng-click="addOneResponseParam()"
-									class="btn btn-success fr ml10">添加</button>
-								<button type="button"
-									onclick="changeDisplay('responseParam','responseEparam')"
-									class="btn btn-primary fr">返回</button>
-							</div>
-							<div class="input-group w" id="responseParam">
-								<textarea class="form-control no-resize"
-									ng-model="model.responseParam" rows="6" readonly
-									placeholder="请点击“编辑”按钮编辑返回参数"></textarea>
-								<div class="input-group-addon cursor btn-main"
-									ng-click="editerParam('responseEparam','responseParam',model,'editResponseParamTable');">
-									编辑</div>
-							</div>
-						</div>
-
+						<div id="responseEditorDiv" ui-view="interResEditorDiv"></div>
 					</td>
 				</tr>
 				<tr>

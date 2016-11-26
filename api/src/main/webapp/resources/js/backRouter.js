@@ -89,7 +89,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/interfaceDetail.tpl.html';
 				}
+			},
+			'interResEditorDiv@interfaceList' : {
+				templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html'
+			},
+			'interFormParamDiv@interfaceList' : {
+				templateUrl : 'resources/html/subTpl/interFormParamDiv.tpl.html'
+			},
+			'interHeaderDiv@interfaceList' : {
+				templateUrl : 'resources/html/subTpl/interHeaderDiv.tpl.html'
+			},
+			'interParamRemakDiv@interfaceList' : {
+				templateUrl : 'resources/html/subTpl/interParamRemakDiv.tpl.html'
 			}
+			
 		}
 	}).state('errorList', {
 		url : '/user/error/list/:projectId',

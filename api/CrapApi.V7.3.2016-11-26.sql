@@ -1,0 +1,13 @@
+
+ALTER TABLE `interface` 
+ADD COLUMN `paramRemark` TEXT NULL COMMENT '请求参数备注' AFTER `param`;
+
+ALTER TABLE `source` 
+CHANGE COLUMN `updateTime` `updateTime` TIMESTAMP NOT NULL DEFAULT '2016-01-01 00:00:00' ;
+
+ALTER TABLE `comment` 
+CHANGE COLUMN `updateTime` `updateTime` TIMESTAMP NOT NULL DEFAULT '2016-01-01 00:00:00' ;
+
+ALTER TABLE `interface` 
+CHANGE COLUMN `updateTime` `updateTime` TIMESTAMP NOT NULL DEFAULT '2016-01-01 00:00:00' ;
+

@@ -47,6 +47,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	private int monitorType;
 	private String monitorText;
 	private String monitorEmails;
+	private String paramRemark; // 参数说明
 	public Interface() {
 	}
 
@@ -139,6 +140,17 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 
 	public void setParam(String param) {
 		this.param = param;
+	}
+	
+	@Column(name = "paramRemark")
+	public String getParamRemark() {
+		if (MyString.isEmpty(paramRemark))
+			return "[]";
+		return paramRemark;
+	}
+
+	public void setParamRemark(String paramRemark) {
+		this.paramRemark = paramRemark;
 	}
 
 	@Column(name = "requestExam")

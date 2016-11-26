@@ -110,8 +110,31 @@
 					</table>
 				</c:if>
 				<c:if test="${f.customParams!=null}">
+					<h5 style="color:#999999;">请求示列</h5>
 					${f.customParams}
-				</c:if>
+					<br/><br/>
+					<h5 style="color:#999999;">参数备注</h5>
+					<table style="width:100%;">
+						<tr style="background:${MAIN_COLOR};color:#fff;">
+							<th style="width:30px;"></th>
+							<th>名称</th>
+							<th style="width:60px;">类型</th>
+							<th style="width:50px;">是否必须</th>
+							<th style="width:80px;">备注</th>
+						</tr>
+						<c:forEach var="v" items="${f.paramRemarks}"> 
+						<tr>
+							<td style="color:red;">${v.deep}</td>
+							<td style="padding-left:20px;">
+								<div style="padding-left: ${v.deep*10}px;">${v.name}</div>
+							</td>
+							<td>${v.type}</td>
+							<td>${v.necessary}</td>
+							<td>${v.remark}</td>
+						</tr>
+						</c:forEach>
+				</table>
+			</c:if>
 			<br/>
 			<h3>6 请求示例</h3>
 			<div style="background:#F0F0F0; padding:10px;">

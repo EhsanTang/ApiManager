@@ -20,6 +20,9 @@
 				<div class="mt20">
 					友情链接：
 					<ul class="dis-in-tab p0">
+						<li class="dis-in-tab mr20"><a target="_blank"
+						href="http://api.crap.cn">CrapApi官网</a> <span
+						class="bg_line"></span></li>
 						<li class="dis-in-tab pr20" ng-repeat="item in fontMenus"
 							ng-if="item.menu.type=='FRIEND'"><a target="_blank"
 							ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName"></a>
@@ -45,7 +48,7 @@
 		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
 			<form onsubmit="$('#refresh').click();closeMyDialog('passwordDiv');">
 				<blockquote style="margin-left: -15px;">
-					<p>&nbsp;私密项目，请输入访问密码</p>
+					<p>&nbsp;加密项目，请输入访问密码</p>
 				</blockquote>
 				<div class="input-wrapper mt20 bt1">
 					<input id="password" type="text" placeholder="请输入访问密码">

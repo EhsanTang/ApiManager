@@ -38,12 +38,15 @@ public class ProjectService extends BaseService<Project>
 		return model;
 	}
 	
+	/**
+	 * 根据用户ID查询所有该用户加入的项目、创建的项目
+	 */
 	@Override
 	@Transactional
 	public List<String> getProjectIdByUid(String userId) {
-		Page page = new Page();
 		List<String> ids = new ArrayList<String>();
-		List<Project> ps = findByMap(Tools.getMap("userId", userId), page, null);
+		List<Project> ps =  queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)",
+				Tools.getMap("userId", userId), null);
 		for(Project p:ps){
 			ids.add(p.getId());
 		}

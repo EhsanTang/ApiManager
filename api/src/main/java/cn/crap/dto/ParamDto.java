@@ -12,6 +12,7 @@ public class ParamDto implements Serializable{
 	private String type;
 	private String remark;
 	private String def;
+	private String inUrl;
 	public String getName() {
 		return name;
 	}
@@ -43,7 +44,11 @@ public class ParamDto implements Serializable{
 	public void setDef(String def) {
 		this.def = def;
 	}
-	
-	
+	public String getInUrl() {
+		return inUrl;
+	}
+	public void setInUrl(String inUrl) {
+		this.inUrl = inUrl;
+	}
 	
 }

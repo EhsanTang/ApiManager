@@ -162,8 +162,8 @@ public class InterfaceController extends BaseController<Interface>{
 			// 判断是否有修改模块的权限
 			hasPermission(cacheService.getProject( interFace.getProjectId() ), modInter);
 			
-			// url 重复
-			if( interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
+			//同一模块下不允许 url 重复
+			if( interfaceService.getCount(Tools.getMap("moduleId",interFace.getModuleId(), "fullUrl",interFace.getModuleUrl() +interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
 			

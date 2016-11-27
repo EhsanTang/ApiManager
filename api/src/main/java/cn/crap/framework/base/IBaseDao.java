@@ -20,5 +20,5 @@ public interface IBaseDao<T extends BaseModel> {
 	int update(String hql, Map<String, Object> map);
 	HibernateTemplate gethibernateTemplate();
 	List<T> findByMap(String construct, Map<String, Object> map, Page pageBean, String order);
-	List<?> queryByHql(String hql, Map<String, Object> map, Page pageBean);
+	List<T> queryByHql(String hql, Map<String, Object> map, Page pageBean);
 }

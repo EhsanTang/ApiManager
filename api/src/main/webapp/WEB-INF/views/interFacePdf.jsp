@@ -92,6 +92,7 @@
 						<tr style="background:${MAIN_COLOR};color:#fff;">
 							<td>名称</td>
 							<td>是否必须</td>
+							<td>参数位置</td>
 							<td>类型</td>
 							<td>默认值</td>
 							<td style="width:260px;">备注</td>
@@ -102,6 +103,7 @@
 						<tr>
 							<td>${v.name}</td>
 							<td>${v.necessary}</td>
+							<td>${v.inUrl=='true'?'URL地址':'普通参数'}</td>
 							<td>${v.type}</td>
 							<td>${v.def}</td>
 							<td>${v.remark}</td>

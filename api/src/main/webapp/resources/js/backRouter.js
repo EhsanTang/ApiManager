@@ -123,7 +123,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : '/user/article/list/:projectId/:moduleId/:type',
 		views : {
 			'main' : {
-				templateUrl : 'resources/html/user/articleList.tpl.html'
+				templateUrl : function($stateParems){
+					return 'resources/html/user/articleList.tpl.html';
+				}
 			},
 			'page@articleList' : {
 				templateUrl : 'resources/html/backHtml/page.tpl.html'

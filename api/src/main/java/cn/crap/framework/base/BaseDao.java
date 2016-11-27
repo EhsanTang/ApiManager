@@ -73,12 +73,12 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	}
 	
 	@Override
-	public List<?> queryByHql(String hql, Map<String, Object> map) {
+	public List<T> queryByHql(String hql, Map<String, Object> map) {
 		return queryByHql(hql, map, null);
 	}
 	
 	@Override
-	public List<?> queryByHql(String hql, Map<String, Object> map, Page pageBean) {
+	public List<T> queryByHql(String hql, Map<String, Object> map, Page pageBean) {
 		Query query = hibernateTemplate.getSessionFactory().getCurrentSession()
 				.createQuery(hql);
 		if(pageBean!=null){

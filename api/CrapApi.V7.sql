@@ -394,7 +394,7 @@ CREATE TABLE `source` (
   `sequence` int(11) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `name` varchar(100) NOT NULL COMMENT '资源名称',
-  `updateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updateTime` timestamp NOT NULL DEFAULT '2016-01-01 00:00:00',
   `moduleId` varchar(50) NOT NULL DEFAULT '0' COMMENT '模块ID',
   `remark` varchar(5000) NOT NULL DEFAULT '' COMMENT '备注',
   `filePath` varchar(200) NOT NULL DEFAULT '' COMMENT '文件目录',

@@ -220,7 +220,7 @@ mainModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $sta
 	$scope.getData = function(page) {
 		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" 
 			+ $stateParams.type+"&moduleId="+$stateParams.moduleId+
-			"&category="+$stateParams.category+"&name="+$stateParams.name;
+			"&category="+$("#category").val()+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

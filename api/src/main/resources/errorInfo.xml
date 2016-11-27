@@ -7,7 +7,7 @@
 				<entry key="000001" value="系统未知错误" />
 				<entry key="000002" value="重复的errorCode" />
 				<entry key="000003" value="权限不足或登录超时，操作失败！" />
-				<entry key="000004" value="重复的接口url地址！" />
+				<entry key="000004" value="重复的接口url地址！(同一模块下不允许重复的url)" />
 				<entry key="000005" value="接口url不能为空！" />
 				<entry key="000006" value="重复的key！" />
 				<entry key="000007" value="请输入访问密码" />

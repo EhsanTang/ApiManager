@@ -85,7 +85,6 @@ public class UserPickService implements IPickService{
 					case "PROJECT_MODULE":
 						// 普通用户，只能查看自己的项目和模块
 						projectIds = projectService.getProjectIdByUid(Tools.getUser().getId());
-						projectIds.add("NULL");
 						moduleService.getDataCenterPick(picks, projectIds , "", "", "");
 						return;
 					case "MODULES":

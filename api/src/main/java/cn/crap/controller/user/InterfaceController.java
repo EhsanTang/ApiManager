@@ -25,6 +25,7 @@ import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
+import cn.crap.model.Module;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
@@ -57,7 +58,7 @@ public class InterfaceController extends BaseController<Interface>{
 		
 		List<Interface> interfaces = interfaceService.findByMap( 
 				Tools.getMap("moduleId", interFace.getModuleId(), "interfaceName|like", interFace.getInterfaceName(), "fullUrl|like", interFace.getUrl()), 
-				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
+				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence,template)", page, null);
 		
 		return new JsonResult(1, interfaces, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
@@ -75,6 +76,25 @@ public class InterfaceController extends BaseController<Interface>{
 		}else{
 			model = new Interface();
 			model.setModuleId( moduleId);
+			Module module = cacheService.getModule(moduleId);
+			if(!MyString.isEmpty(module.getTemplateId())){
+				Interface template = interfaceService.get(module.getTemplateId());
+				// 根据模板初始化接口
+				if(template != null){
+					model.setHeader(template.getHeader());
+					model.setParam(template.getParam());
+					model.setMethod(template.getMethod());
+					model.setVersion(template.getVersion());
+					model.setParamRemark(template.getParamRemark());
+					model.setResponseParam(template.getResponseParam());
+					model.setErrorList(template.getErrorList());
+					model.setErrors(template.getErrors());
+					model.setFalseExam(template.getFalseExam());
+					model.setTrueExam(template.getTrueExam());
+					model.setStatus(template.getStatus());
+				}
+			}
+			
 		}
 		return new JsonResult(1, model);
 	}

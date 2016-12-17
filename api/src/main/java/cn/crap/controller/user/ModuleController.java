@@ -24,6 +24,7 @@ import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.ISourceService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -74,6 +75,11 @@ public class ModuleController extends BaseController<Module>{
 		Module model;
 		if(!module.getId().equals(Const.NULL_ID)){
 			model= moduleService.get(module.getId());
+			if(!MyString.isEmpty(model.getTemplateId())){
+				Interface inter = interfaceService.get(model.getTemplateId());
+				if(inter != null)
+					model.setTemplateName(inter.getInterfaceName());
+			}
 			hasPermission(cacheService.getProject(model.getProjectId()), view);
 		}else{
 			hasPermission(cacheService.getProject(module.getProjectId()), view);
@@ -114,6 +120,35 @@ public class ModuleController extends BaseController<Module>{
 				new LoginInfoDto(userService.get(user.getId()), roleService, projectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
+	
+	/**
+	 * 设置模块接口
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/setTemplate.do")
+	@ResponseBody
+	public JsonResult setTemplate(String id) throws Exception{
+		Interface inter = interfaceService.get(id);
+		
+		Module module = cacheService.getModule(inter.getModuleId());
+		hasPermission(cacheService.getProject( module.getProjectId() ), modModule);
+		
+		module.setTemplateId( inter.isTemplate() ? null: inter.getId() );
+		moduleService.update(module);
+		
+		interfaceService.update("update Interface set isTemplate=0 where moduleId ='"+module.getId()+"'", null);
+		if(!inter.isTemplate()){
+			inter.setTemplate(true);;
+			interfaceService.update(inter);
+		}
+		
+		cacheService.delObj(Const.CACHE_MODULE+module.getId());
+		return new JsonResult(1,module);
+	}
+	
+	
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody

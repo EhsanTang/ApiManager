@@ -48,6 +48,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 	private String monitorText;
 	private String monitorEmails;
 	private String paramRemark; // 参数说明
+	private boolean template; // 是否是模板
 	public Interface() {
 	}
 
@@ -63,6 +64,11 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		this.updateTime = updateTime;
 		this.remark = remark;
 		this.sequence = sequence;
+	}
+	public Interface(String id, String moduleId, String interfaceName, String version, String createTime,
+			String updateBy, String updateTime, String remark, int sequence, boolean template) {
+		this(id, moduleId, interfaceName, version, createTime, updateBy, updateTime, remark, sequence);
+		this.template = template;
 	}
     // 以get开头的方法在jsaon返回时会调用
 	@Transient
@@ -300,6 +306,16 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 
 	public void setMonitorEmails(String monitorEmails) {
 		this.monitorEmails = monitorEmails;
+	}
+
+	
+	@Column(name = "isTemplate")
+	public boolean isTemplate() {
+		return template;
+	}
+
+	public void setTemplate(boolean template) {
+		this.template = template;
 	}
 
 	@Transient

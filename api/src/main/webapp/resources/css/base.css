@@ -166,6 +166,7 @@ table{border-collapse:collapse;border-spacing:0}
 .mb0{margin-bottom:0px}.mb5{margin-bottom:5px}.mb10{margin-bottom:10px}
 .mb15{margin-bottom:15px}.mb20{margin-bottom:20px}.mb30{margin-bottom:30px}
 .mb50{margin-bottom:50px}.mb75{margin-bottom:75px}.mb90{margin-bottom:90px}.mb100{margin-bottom:100px}
+.mb-10{margin-bottom:-10px!important}
 
 /***********margin-left*******************/
 .ml-1{margin-left:-1px}.ml-5{margin-left:-5px!important}.ml0{margin-left:0px!important}

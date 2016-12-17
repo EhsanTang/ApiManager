@@ -35,8 +35,10 @@
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
 </div>
-
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">接口列表</div>
+<div class="f12 tr C999 col-xs-9 mt20">
+		设置为模板后，新建接口时将根据该接口初始化接口内容
+</div>
 <div class="col-xs-12 p0">
 	<table class="table table-bordered table-hover">
 		<thead>
@@ -73,6 +75,12 @@
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
 					<i class="iconfont">&#xe625;&nbsp;</i>调试
 				</a>
+				<a class="f12 text-danger mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					ng-click="sendRequest('user/module/setTemplate.do?id='+item.id)">
+					<i class="iconfont f12"  ng-if="item.template">&#xe63d;取消模板</i>
+					<i class="iconfont f12 text-success"  ng-if="!item.template">&#xe63d;设置模板</i>
+				</a>
+				
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName)">
 					<i class="iconfont f12">&#xe60e;删除</i>

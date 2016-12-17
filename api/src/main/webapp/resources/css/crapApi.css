@@ -20,14 +20,13 @@ blockquote{
 }
 /***remote iconfont*****/
 @font-face {
-  font-family: 'iconfont';  /* project id："73680" */
-  src: url('//at.alicdn.com/t/font_xupnac2ak0oa8aor.eot');
-  src: url('//at.alicdn.com/t/font_xupnac2ak0oa8aor.eot') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_xupnac2ak0oa8aor.woff') format('woff'),
-  url('//at.alicdn.com/t/font_xupnac2ak0oa8aor.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_xupnac2ak0oa8aor.svg#iconfont') format('svg');
-}                              
-                    
+  font-family: 'iconfont';  /* project id 73680 */
+  src: url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.eot');
+  src: url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.woff') format('woff'),
+  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.svg#iconfont') format('svg');
+}                  
                                       
 .pager-sm li > a, .pager-sm li > span {
     padding: 1px 8px;

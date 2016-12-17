@@ -181,7 +181,33 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
 			$rootScope.error = result;
 			 
-		});;
+		});
+	}
+	/**
+	 * 发送请求工具方法
+	 */
+	$rootScope.sendRequest = function(url,myLoading){
+		var iLoading = "PROPUPFLOAT";
+		if(myLoading){
+			iLoading = myLoading;
+		}
+		var params = "iUrl="+url+"|iLoading="+iLoading+"|iPost=POST";
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading)
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 }else if(result.success==1){
+				 $rootScope.error = null;
+				 $timeout(function() {
+					 $("#refresh").click();
+                 })
+			 }
+		}).error(function(result) {
+			lookUp('lookUp','',100,300,3);
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
+			$rootScope.error = result;
+			 
+		});
 	}
 	/***********************是否显示操作按钮************/
 	

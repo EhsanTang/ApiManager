@@ -29,6 +29,8 @@ public class Module extends BaseModel implements Serializable{
 	private String remark;
 	private String userId;
 	private String projectId;
+	private String templateId;
+	private String templateName="";
 	
 	public Module(String id,String name, String url, String remark, String userId, String createTime, String projectId,byte canDelete){
 		this.id = id;
@@ -97,10 +99,27 @@ public class Module extends BaseModel implements Serializable{
 		return this.projectId;
 	}
 	
+	@Column(name="templateId")
+	public String getTemplateId() {
+		return templateId;
+	}
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
 	@Transient
 	public String getProjectName(){
 		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 		return cacheService.getProject(projectId).getName();
 	}
+	
+	@Transient
+	public String getTemplateName(){
+		return templateName;
+	}
+	public void setTemplateName(String templateName){
+		this.templateName=templateName;
+	}
+	
+	
 }
 	

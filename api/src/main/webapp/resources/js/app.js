@@ -139,7 +139,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		if(callBack){
 			callBack();
 		}
-		iLoading = "PROPUPFLOAT";
+		iLoading = "TIPFLOAT";
 		if(myLoading){
 			iLoading = myLoading;
 		}
@@ -187,7 +187,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	 * 发送请求工具方法
 	 */
 	$rootScope.sendRequest = function(url,myLoading){
-		var iLoading = "PROPUPFLOAT";
+		var iLoading = "FLOATTIP";
 		if(myLoading){
 			iLoading = myLoading;
 		}

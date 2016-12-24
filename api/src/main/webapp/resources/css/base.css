@@ -27,18 +27,18 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 }
 .l-s-n{list-style:none;}
 .o2{opacity:0.2}.o3{opacity:0.3}.o5{opacity:0.5}.o8{opacity:0.8}
-.no-b-s{-webkit-box-shadow: none; box-shadow: none; border: 1px solid #DDD;}
+.no-b-s{-webkit-box-shadow: none; box-shadow: none; border: 1px solid #eaeaea;}
 .b0{border:0px!important;}
-.b1{border: 1px solid #DDD;}
-.dashed{border:1px dashed #DDD;}
-.dashed-t{border-top:1px dashed #DDD;}
-.dashed-b{border-bottom:1px dashed #DDD;}
+.b1{border: 1px solid #eaeaea;}
+.dashed{border:1px dashed #eaeaea;}
+.dashed-t{border-top:1px dashed #eaeaea;}
+.dashed-b{border-bottom:1px dashed #eaeaea;}
 .bl3{border-left: 3px solid #eeeeee;}
-.bl1{border-left: 1px solid #DDD;}
-.bt1{border-top: 1px solid #DDD;}
+.bl1{border-left: 1px solid #eaeaea;}
+.bt1{border-top: 1px solid #eaeaea;}
 .bt0{border-top:0px!important;}
-.bb1{border-bottom: 1px solid #DDD;}
-.br1{border-right: 1px solid #DDD;}
+.bb1{border-bottom: 1px solid #eaeaea;}
+.br1{border-right: 1px solid #eaeaea;}
 .bl0{border-left:0px;}
 .br0{border-right:0px;}
 .BCEEE{border-color:#EEE;}

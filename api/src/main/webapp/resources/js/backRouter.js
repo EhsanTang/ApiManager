@@ -170,6 +170,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
+	}).state('configProperties', {
+		url : '/config/properties',
+		views : {
+			'main' :{
+				templateUrl : function($stateParems){
+					return 'resources/html/backHtml/config.properties.html';
+				}
+			}
+		}
 	}).state('dictionaryImoprtFromSql', {
 		url : '/article/dictionary/importFromSql',
 		views : {

@@ -2,7 +2,7 @@ body{
 	font-size:12px;
 	word-break:break-all; 
 	word-wrap:break-word;
-	background-color:#DDD;
+	background-color:#DDDDDD;
 }
 /**火狐红色边框**/
 input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
@@ -21,12 +21,12 @@ blockquote{
 /***remote iconfont*****/
 @font-face {
   font-family: 'iconfont';  /* project id 73680 */
-  src: url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.eot');
-  src: url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.woff') format('woff'),
-  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_eenv85gurqxmkj4i.svg#iconfont') format('svg');
-}                  
+  src: url('//at.alicdn.com/t/font_l0c3jug917yl23xr.eot');
+  src: url('//at.alicdn.com/t/font_l0c3jug917yl23xr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_l0c3jug917yl23xr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_l0c3jug917yl23xr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_l0c3jug917yl23xr.svg#iconfont') format('svg');
+}               
                                       
 .pager-sm li > a, .pager-sm li > span {
     padding: 1px 8px;
@@ -37,8 +37,11 @@ blockquote{
 }                    
 /***默认颜色**/
 .def-bg{
-	background:#cccccc;
-}                 
+	background:#DDDDDD;
+}
+.light-bg{
+	background:#f9fafc;
+}
 .search-input:focus{
 	opacity:1!important;
 }  

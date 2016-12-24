@@ -86,6 +86,10 @@ public class Config{
 	@Value("${web.baidu}")
 	private String baidu;
 	
+	@Value("${mail.username}")
+	private String mail;
+	
+	
 	public String getBaidu() {
 		if(MyString.isEmpty(baidu))
 			return "";
@@ -205,6 +209,9 @@ public class Config{
 		return subMenuSize;
 	}
 	
+	public String getMail(){
+		return mail;
+	}
 	
 	
 }

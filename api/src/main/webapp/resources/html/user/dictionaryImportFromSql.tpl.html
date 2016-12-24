@@ -23,9 +23,18 @@
 					<textarea  class="form-control no-resize" rows="5" ng-model="model.brief"></textarea></td>
 			</tr>
 			<tr>
+				<td class="tc">数据库类型</td>
+				<td class="tc">
+					<select class="form-control" ng-model="model.isMysql">
+						<option value="true" ng-selected="model.isMysql=='true'">mysql</option>
+						<option value="false" ng-selected="model.isMysql=='false'">sqlservice</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td class="tc">创建表格SQL</td>
 				<td class="tc">
-					<textarea  class="form-control no-resize" rows="8" ng-model="model.sql" placeholder="请输入标准的mysql建表语句，一次只允许输入一张表"></textarea></td>
+					<textarea  class="form-control no-resize" rows="8" ng-model="model.sql" placeholder="请输入标准的mysql/sqlservice建表语句，一次只允许输入一张表，建议直接通过客户端拷贝建表语句"></textarea></td>
 			</tr>
 			<tr>
 					<td class="tc">排序</td>

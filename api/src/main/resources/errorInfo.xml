@@ -49,6 +49,7 @@
 				<entry key="000043" value="站内搜索/全文检索需要登陆后方可使用" />
 				<entry key="000044" value="非公开项目不支持静态化"/>
 				<entry key="000045" value="地址有误，静态化失败，请确认配置文件config.properties中的网站域名配置是否正确！"/>
+				<entry key="000046" value="SQL格式有误，必须以create开头"/>
 				
 			</map>
 		</property>

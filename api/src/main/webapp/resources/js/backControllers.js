@@ -482,6 +482,7 @@ mainModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope,
 			 $rootScope.model = null;
 		 }else{
 			 $rootScope.model = result.data;
+			 $rootScope.model.isMysql="true";
 			 $rootScope.error = null;
 		 }
 	}).error(function(result) {

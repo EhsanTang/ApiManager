@@ -23,6 +23,7 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
     top:50%;
     left:50%;
     display:none;
+    z-index: 1060;
 }
 .l-s-n{list-style:none;}
 .o2{opacity:0.2}.o3{opacity:0.3}.o5{opacity:0.5}.o8{opacity:0.8}

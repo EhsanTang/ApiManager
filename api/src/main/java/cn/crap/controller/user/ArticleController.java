@@ -160,8 +160,14 @@ public class ArticleController extends BaseController<Article>{
 	@RequestMapping("/dictionary/importFromSql.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue="") String brief, @RequestParam String moduleId, String name) throws MyException {
-		Article article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
+	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue="") String brief, @RequestParam String moduleId, String name,
+			@RequestParam(defaultValue="") boolean isMysql) throws MyException {
+		Article article = null;
+		if(isMysql){
+			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
+		}else{
+			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
+		}
 		articleService.save(article);
 		return new JsonResult(1, new Article());
 	}

@@ -35,6 +35,8 @@ import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.log.SysoCounter;
+
 import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.inter.service.tool.ICacheService;
@@ -65,6 +67,7 @@ public class LuceneSearchService implements ISearchService {
 
 	@Override
 	public List<SearchDto> search(String keyword, Page page) throws Exception {
+		keyword = handleHref(keyword);
 		if (MyString.isEmpty(keyword))
 			return new ArrayList<SearchDto>();
 		IndexReader reader = null;
@@ -73,7 +76,7 @@ public class LuceneSearchService implements ISearchService {
 					.open(FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
-			String[] fields = { "id", "url", "contents", "modelName", "title" };
+			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
 			QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 			Query query = parser.parse(keyword);
 
@@ -151,7 +154,8 @@ public class LuceneSearchService implements ISearchService {
 		// 高亮处理的搜索结果
 		dto.setContent(doc.get("r_contents"));
 		dto.setCreateTime(doc.get("createTime"));
-		dto.setUrl(doc.get("url"));
+		// 恢复反斜杠
+		dto.setUrl(unHandleHref(doc.get("url")));
 		dto.setId(doc.get("id"));
 		dto.setModuleName(doc.get("r_moduleName"));
 		dto.setTitle(doc.get("r_title"));
@@ -169,13 +173,15 @@ public class LuceneSearchService implements ISearchService {
 		// the field into separate words and don't index term frequency
 		// or positional information:
 		doc.add(new StringField("id", dto.getId(), Field.Store.YES));
-		doc.add(new StringField("url", dto.getUrl(), Field.Store.YES));
+		doc.add(new StringField("url", handleHref(dto.getUrl()), Field.Store.YES));
 		doc.add(new StringField("version", dto.getVersion(), Field.Store.YES));
 		doc.add(new StringField("createTime", dto.getCreateTime(), Field.Store.YES));
 		doc.add(new TextField("contents", Tools.removeHtml(dto.getContent()), Field.Store.YES));
 		doc.add(new TextField("moduleName", dto.getModuleName(), Field.Store.YES));
 		doc.add(new TextField("title", dto.getTitle(), Field.Store.YES));
 		doc.add(new TextField("type", dto.getType(), Field.Store.YES));
+		// 将反斜杠替换
+		doc.add(new TextField("href", handleHref(dto.getHref()) , Field.Store.YES));
 
 		return doc;
 	}
@@ -281,5 +287,17 @@ public class LuceneSearchService implements ISearchService {
 			}
 	    }
 	    return true;
+	}
+	public static String handleHref(String href){
+		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
+		return href.replaceAll("\\/", "CA_FXG").replaceAll("\\+", "CA_ADD").replaceAll("\\-", "CA_DES").replaceAll("\\&", "CA_AND")
+				.replaceAll("\\|", "CA_HZ").replaceAll("\\{", "CA_DKHS").replaceAll("\\}", "CA_DKHE").replaceAll("\\?", "CA_WH")
+				.replaceAll("\\*", "CA_XH").replaceAll("\\#", "CA_JH").replaceAll("\\:", "CA_MH").replaceAll("\\.", "CA_DH");
+	}
+	public static String unHandleHref(String href){
+		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
+		return href.replaceAll("CA_FXG", "\\/").replaceAll( "CA_ADD","\\+").replaceAll( "CA_DES", "\\-").replaceAll( "CA_AND","\\&")
+				.replaceAll("CA_HZ", "\\|").replaceAll("CA_DKHS", "\\{").replaceAll("CA_DKHE","\\}").replaceAll( "CA_WH","\\?")
+				.replaceAll("CA_XH", "\\*").replaceAll("CA_JH", "\\#").replaceAll("CA_MH", "\\:").replaceAll("CA_DH", "\\.");
 	}
 }

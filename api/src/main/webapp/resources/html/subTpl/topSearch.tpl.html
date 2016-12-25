@@ -19,7 +19,7 @@
 							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文章" 
 							ng-focus="loadPickByName('iwidth=265|iUrl=searchList.do|iheight=260|tag=searchInput',$event)"
 							onkeypress="iClose('lookUp');if(event.keyCode==13) {luceneSearch.click();return false;}">
-							<a ng-href="#/frontSearch/{{$stateParams.keyword}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
+							<a ng-href="#/frontSearch/{{$stateParams.keyword|encodeURL}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
 								class="input-group-addon no-radius o3 b0 search-button cursor">
 									<i class="iconfont C000">&#xe60d;</i>
 							</a>

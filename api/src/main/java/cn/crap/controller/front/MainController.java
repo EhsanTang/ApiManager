@@ -27,6 +27,7 @@ import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
+import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -110,6 +111,7 @@ public class MainController extends BaseController<User> {
 				if(searchWord.length()>20){
 					showText = showText + "...";
 				}
+				searchWord = LuceneSearchService.handleHref(searchWord);
 				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='#/frontSearch/"+searchWord+"'>"+showText+"</a>");
 			}
 			

@@ -16,6 +16,7 @@ public class SearchDto implements Serializable{
 	private String moduleName;
 	private String createTime;// 时间，不参与分词搜索
 	private boolean needCreateIndex = true; // 是否需要建立索引 
+	private String href;//接口、文章的地址，不需要分词，需要建立索引
 	
 	public SearchDto(){};
 	public SearchDto(String id, String title, String type, String url, String content, String version, String moduleName, String createTime){
@@ -103,6 +104,13 @@ public class SearchDto implements Serializable{
 	public void setNeedCreateIndex(boolean needCreateIndex) {
 		this.needCreateIndex = needCreateIndex;
 	}
+	public String getHref() {
+		return href;
+	}
+	public void setHref(String href) {
+		this.href = href;
+	}
+	
 	
 	
 }

@@ -29,13 +29,13 @@ webModule.filter("decodeURL",function($sce){
 		 return function (input){
 			 if(input){
 			 input = replaceAll(input, "CA_FXG","\/");
-			 input = replaceAll(input, "CA_ADD","\\+");
-			 input = replaceAll(input, "CA_DES","\\-");
-			 input = replaceAll(input, "CA_AND","\\&");
-			 input = replaceAll(input, "CA_HZ","\\|");
+			 input = replaceAll(input, "CA_ADD","\+");
+			 input = replaceAll(input, "CA_DES","\-");
+			 input = replaceAll(input, "CA_AND","\&");
+			 input = replaceAll(input, "CA_HZ","\|");
 			 input = replaceAll(input, "CA_DKHS","\{");
 			 input = replaceAll(input, "CA_DKHE","\}");
-			 input = replaceAll(input, "CA_WH","\\?");
+			 input = replaceAll(input, "CA_WH","\?");
 			 input = replaceAll(input, "CA_XH","\*");
 			 input = replaceAll(input, "CA_JH","\#");
 			 input = replaceAll(input, "CA_MH","\:");

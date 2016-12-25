@@ -289,12 +289,16 @@ public class LuceneSearchService implements ISearchService {
 	    return true;
 	}
 	public static String handleHref(String href){
+		if(href == null)
+			return "";
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
 		return href.replaceAll("\\/", "CA_FXG").replaceAll("\\+", "CA_ADD").replaceAll("\\-", "CA_DES").replaceAll("\\&", "CA_AND")
 				.replaceAll("\\|", "CA_HZ").replaceAll("\\{", "CA_DKHS").replaceAll("\\}", "CA_DKHE").replaceAll("\\?", "CA_WH")
 				.replaceAll("\\*", "CA_XH").replaceAll("\\#", "CA_JH").replaceAll("\\:", "CA_MH").replaceAll("\\.", "CA_DH");
 	}
 	public static String unHandleHref(String href){
+		if(href == null)
+			return "";
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
 		return href.replaceAll("CA_FXG", "\\/").replaceAll( "CA_ADD","\\+").replaceAll( "CA_DES", "\\-").replaceAll( "CA_AND","\\&")
 				.replaceAll("CA_HZ", "\\|").replaceAll("CA_DKHS", "\\{").replaceAll("CA_DKHE","\\}").replaceAll( "CA_WH","\\?")

@@ -39,6 +39,13 @@ public class SqlToDictionaryUtil {
 		String[] fieldsArray =  fields.split(",");
 		for(int i=0; i<fieldsArray.length; i++){
 			String field = fieldsArray[i];
+			// decimal(18,2) 被分隔
+			try{
+				Integer.parseInt(fieldsArray[i+1].substring(0,1));
+				fieldsArray[i+1] = fieldsArray[i] +","+ fieldsArray[i+1];
+				continue;
+			}catch(Exception e){
+			}
 			try{
 				// 字段
 				DictionaryDto dto = null;
@@ -143,6 +150,13 @@ public class SqlToDictionaryUtil {
 		String[] fieldsArray =  fields.split(",");
 		for(int i=0; i<fieldsArray.length; i++){
 			String field = fieldsArray[i];
+			// decimal(18,2) 被分隔
+			try{
+				Integer.parseInt(fieldsArray[i+1].substring(0,1));
+				fieldsArray[i+1] = fieldsArray[i] +","+ fieldsArray[i+1];
+				continue;
+			}catch(Exception e){
+			}
 			try{
 				// 字段
 				DictionaryDto dto = null;

@@ -236,7 +236,7 @@ public class HttpPostGet {
 				path += key + "=" + params.get(key) + "&";
 			}
 			if(path.endsWith("&"))
-				path = path.substring(path.length()-1, path.length());
+				path = path.substring(0, path.length()-1);
 		}
 		return path;
 	}

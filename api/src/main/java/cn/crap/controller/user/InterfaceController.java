@@ -26,6 +26,7 @@ import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
@@ -45,6 +46,8 @@ public class InterfaceController extends BaseController<Interface>{
 	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
+	@Autowired
+	private Config config;
 	
 	
 	@RequestMapping("/list.do")
@@ -110,7 +113,7 @@ public class InterfaceController extends BaseController<Interface>{
 	public JsonResult copy(@ModelAttribute Interface interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
 		hasPermission(cacheService.getProject(interFace.getProjectId()), addInter);
-		if(interfaceService.getCount(Tools.getMap("moduleId", interFace.getModuleId(), "fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
+		if(!config.isCanRepeatUrl() && interfaceService.getCount(Tools.getMap("moduleId", interFace.getModuleId(), "fullUrl", interFace.getModuleUrl()+interFace.getUrl()))>0){
 			throw new MyException("000004");
 		}
 		interFace.setId(null);
@@ -183,7 +186,7 @@ public class InterfaceController extends BaseController<Interface>{
 			hasPermission(cacheService.getProject( interFace.getProjectId() ), modInter);
 			
 			//同一模块下不允许 url 重复
-			if( interfaceService.getCount(Tools.getMap("moduleId",interFace.getModuleId(), "fullUrl",interFace.getModuleUrl() +interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
+			if( !config.isCanRepeatUrl() && interfaceService.getCount(Tools.getMap("moduleId",interFace.getModuleId(), "fullUrl",interFace.getModuleUrl() +interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
 			
@@ -196,7 +199,7 @@ public class InterfaceController extends BaseController<Interface>{
 			
 		} else {
 			hasPermission(cacheService.getProject( interFace.getProjectId() ), addInter);
-			if(interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl()))>0){
+			if(!config.isCanRepeatUrl() && interfaceService.getCount(Tools.getMap("fullUrl",interFace.getModuleUrl()+interFace.getUrl()))>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interFace.setFullUrl(interFace.getModuleUrl()+interFace.getUrl());

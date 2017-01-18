@@ -270,6 +270,7 @@ public class InterfaceController extends BaseController<Interface>{
 				return new JsonResult(1, Tools.getMap("debugResult","不支持的请求方法："+debugMethod));
 		}
 		}catch(Exception e){
+			e.printStackTrace();
 			return new JsonResult(1, Tools.getMap("debugResult","调试出错\r\nmessage:"+e.getMessage()));
 		}
 	}

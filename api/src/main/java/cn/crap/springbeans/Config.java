@@ -86,6 +86,9 @@ public class Config{
 	@Value("${web.baidu}")
 	private String baidu;
 	
+	@Value("${web.canRepeatUrl}")
+	private boolean canRepeatUrl;
+	
 	@Value("${mail.username}")
 	private String mail;
 	
@@ -211,6 +214,10 @@ public class Config{
 	
 	public String getMail(){
 		return mail;
+	}
+
+	public boolean isCanRepeatUrl() {
+		return canRepeatUrl;
 	}
 	
 	

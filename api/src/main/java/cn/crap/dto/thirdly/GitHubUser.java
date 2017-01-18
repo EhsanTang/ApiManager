@@ -1,6 +1,13 @@
 package cn.crap.dto.thirdly;
-public class GitHubUser {
-    private String login;// 用户登录名
+
+import java.io.Serializable;
+
+public class GitHubUser implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String login;// 用户登录名
     private String id;// 用户唯一编码
     private String avatar_url;// 用户头像
     private String email;

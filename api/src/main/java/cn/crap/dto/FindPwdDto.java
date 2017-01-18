@@ -1,9 +1,15 @@
 package cn.crap.dto;
 
+import java.io.Serializable;
+
 import cn.crap.framework.MyException;
 import cn.crap.utils.MyString;
 
-public class FindPwdDto {
+public class FindPwdDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String code;
 	private String newPwd;

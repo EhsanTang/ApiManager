@@ -2,9 +2,11 @@ package cn.crap.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -222,7 +224,7 @@ public class HttpPostGet {
 		return EntityUtils.toString(entity, "UTF-8");
 	}
 
-	private static String gethPath(String path, Map<String, String> params) {
+	private static String gethPath(String path, Map<String, String> params) throws UnsupportedEncodingException {
 		if (params != null) {
 			if (path.indexOf("?") > -1) {
 				path += "&";
@@ -233,7 +235,7 @@ public class HttpPostGet {
 			Iterator<String> iterator = keys.iterator();
 			while (iterator.hasNext()) {
 				String key = (String) iterator.next();
-				path += key + "=" + params.get(key) + "&";
+				path += key + "=" +URLEncoder.encode(params.get(key), "UTF-8")  + "&";
 			}
 			if(path.endsWith("&"))
 				path = path.substring(0, path.length()-1);

@@ -29,6 +29,7 @@ mainModule.filter('cut', function () {
 
 mainModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,httpService) {});
 
+
 /***
  * 后台初始化，加载系统设置，菜单等
  */
@@ -131,7 +132,7 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
     $scope.getData();
 });
 /**************************后端接口列表****************************/
-mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$timeout,httpService) {
 	$scope.getData = function() {
 		if($rootScope.model && $rootScope.model.sessionAdminName){
 			window.location.href="admin.do";
@@ -145,6 +146,15 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 					alert(isSuccess.replace('[ERROR]', ''));
 				 }else{
 					 $rootScope.model = result.data.model;
+					 if( $rootScope.model.remberPwd != 'NO'){
+						 $timeout(function() {
+							 $("#remberPwdYes").click();
+		                 })
+					 }else{
+						 $timeout(function() {
+							 $("#remberPwdNo").click();
+		                 })
+					 }
 					 // 已经登陆成功，跳转至后台主页
 					 if($rootScope.model && $rootScope.model.sessionAdminName){
 							window.location.href="admin.do";
@@ -157,6 +167,32 @@ mainModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
     $scope.changeRadio = function(value){
     	$rootScope.model.remberPwd = value;
     }
+
+    $scope.login = function(iurl,myLoading){
+		var iLoading = "TIPFLOAT";
+		if(myLoading){
+			iLoading = myLoading;
+		}
+		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+ $('#loginForm').serialize();
+		httpService.callHttpMethod($http,params).success(function(result) {
+			var isSuccess = httpSuccess(result,'iLoading='+iLoading);
+			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+				 $rootScope.error = isSuccess.replace('[ERROR]', '');
+			 }else if(result.success==1){
+				 $rootScope.error = null;
+				 $rootScope.model = result.data;
+				 //关闭编辑对话框
+				 closeMyDialog('myDialog');
+				 $timeout(function() {
+					 $("#refresh").click();
+                 })
+			 }
+		}).error(function(result) {
+			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
+			$rootScope.error = result;
+			 
+		});
+	}
     $scope.getData();
 });
 

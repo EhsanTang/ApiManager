@@ -17,6 +17,7 @@ import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.LoginType;
+import cn.crap.framework.ErrorInfos;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -274,8 +275,12 @@ public class LoginController extends BaseController<User> {
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
 		try{
 			if (cacheService.getSetting(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
-				if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode(request))) {
-					model.setTipMessage("验证码有误");
+				if(MyString.isEmpty(model.getVerificationCode()) ){
+					model.setTipMessage("验证码为空,请刷新浏览器再试！");
+					return new JsonResult(1, model);
+				}
+				if (!model.getVerificationCode().equals(Tools.getImgCode(request))) {
+					model.setTipMessage("验证码有误,请重新输入或刷新浏览器再试！");
 					return new JsonResult(1, model);
 				}
 			}
@@ -302,8 +307,12 @@ public class LoginController extends BaseController<User> {
 				return new JsonResult(1, model);
 			}
 		}catch(Exception e){
-			e.printStackTrace();
-			model.setTipMessage("未知异常，请查看日志："+e.getMessage());
+			if(e instanceof MyException){
+				model.setTipMessage( ErrorInfos.getMessage( e.getMessage() ) );
+			}else{
+				e.printStackTrace();
+				model.setTipMessage("未知异常，请查看日志："+e.getMessage());
+			}
 			return new JsonResult(1, model);
 		}
 	}

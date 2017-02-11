@@ -65,7 +65,7 @@ public class UserService extends BaseService<User>
 		MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
 		MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);
 		
-		if (model.getRemberPwd().equals("YES")) {
+		if (!model.getRemberPwd().equalsIgnoreCase("no")) {
 			MyCookie.addCookie(Const.COOKIE_PASSWORD, model.getPassword(), true, response);
 		} else {
 			MyCookie.deleteCookie(Const.COOKIE_PASSWORD, request, response);

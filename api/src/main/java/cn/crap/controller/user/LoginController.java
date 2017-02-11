@@ -81,8 +81,13 @@ public class LoginController extends BaseController<User> {
 		}
 		LoginDto model = new LoginDto();
 		model.setUserName(MyCookie.getCookie(Const.COOKIE_USERNAME, request));
-		model.setPassword(MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
 		model.setRemberPwd(MyCookie.getCookie(Const.COOKIE_REMBER_PWD, request));
+		if(!model.getRemberPwd().equalsIgnoreCase("no")){
+			model.setPassword(MyCookie.getCookie(Const.COOKIE_PASSWORD, true, request));
+		}else{
+			model.setPassword("");
+		}
+	
 		model.setTipMessage("");
 		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		model.setSessionAdminName(user == null? null:user.getUserName());

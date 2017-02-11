@@ -19,6 +19,7 @@ public class MyCookie {
 		          {
 		        	  allCookie[i].setValue(null);
 		        	  allCookie[i].setMaxAge(0);
+		        	  allCookie[i].setPath("/");
 		        	  response.addCookie(allCookie[i]);
 		          }
 		      }

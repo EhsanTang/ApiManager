@@ -6,14 +6,14 @@
 <form class="form-horizontal p15 mt10" ng-submit="submitForm('login.do','','FLOAT')" ng-controller="preLoginCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
 	<div class="input-wrapper">
-		<input type="text" ng-model="model.userName" placeholder="用户名（6-20位）" autocomplete="off" required/>
+		<input type="text" ng-model="model.userName" placeholder="用户名（6-20位）" autocomplete="off" required name="userName"/>
 	</div>
 	<div class="input-wrapper">
 		<input type="password" ng-model="model.password" placeholder="密码（不少于6位）" autocomplete="off" required/>
 	</div>
 	<div class="input-wrapper"
 		ng-if="settings.VERIFICATIONCODE=='true'">
-		<input type="text" ng-model="model.verificationCode"
+		<input type="text" ng-model="model.verificationCode" name="verificationCode"
 			autocomplete="off" placeholder="图形验证码" required>
 
 		<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
@@ -42,12 +42,13 @@
 		<div class="btn-group fr" data-toggle="buttons"">
 			<label
 				ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd != 'NO']"
-				ng-click="changeRadio('YES')"> <input type="radio"
-				name="remberPwd" ng-model="model.remberPwd" value="YES"> YES
-			</label> <label
+				ng-click="changeRadio('YES')">
+				<input type="radio" name="remberPwd" ng-model="model.remberPwd" value="YES"> YES
+			</label> 
+			<label
 				ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd == 'NO']"
-				ng-click="changeRadio('NO')"> <input type="radio"
-				name="remberPwd" ng-model="model.remberPwd" value="NO"> NO
+				ng-click="changeRadio('NO')">
+				<input type="radio" name="remberPwd" ng-model="model.remberPwd" value="NO"> NO
 			</label>
 		</div>
 		<div class="fr lab">记住密码?</div>

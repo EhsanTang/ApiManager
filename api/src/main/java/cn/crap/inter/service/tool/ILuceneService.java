@@ -6,4 +6,5 @@ import cn.crap.dto.ILuceneDto;
 
 public interface ILuceneService<T extends ILuceneDto>{
 	public List<T> getAll();
+	public String getLuceneType();
 }

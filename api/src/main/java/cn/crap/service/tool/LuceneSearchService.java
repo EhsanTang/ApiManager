@@ -269,23 +269,48 @@ public class LuceneSearchService implements ISearchService {
 		return true;
 	}
 
+	private boolean isRebuild = false;
 	/**
 	 * 重建系统索引
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean rebuild(){
-		File file = new File(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue());
-		File[] tempList = file.listFiles();
-	    for (int i = 0; i < tempList.length; i++) {
-	    	tempList[i].delete();
-	    }
-	    
-	    for(ILuceneService<ILuceneDto> service:luceneServices){
-	    	for (ILuceneDto dto : service.getAll()) {
-				add(dto.toSearchDto(cacheService));
+		if(isRebuild){
+			return true;
+		}
+		synchronized (LuceneSearchService.this) {
+			try{
+				isRebuild = true;
+				File file = new File(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue());
+				File[] tempList = file.listFiles();
+			    for (int i = 0; i < tempList.length; i++) {
+			    	tempList[i].delete();
+			    }
+			    
+			    for(ILuceneService<ILuceneDto> service:luceneServices){
+			    	int i = 0;
+			    	List<ILuceneDto> dtos= service.getAll();
+			    	for (ILuceneDto dto : dtos) {
+			    		i++;
+						cacheService.setStr(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在备份第"+i+"条记录", 60);
+						// 避免占用太大的系统资源
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						add(dto.toSearchDto(cacheService));
+					}
+			    }
+			    cacheService.setStr(Const.CACHE_ERROR_TIP,"重建索引成功！",60);
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally{
+				isRebuild = false;
 			}
-	    }
+		   
+		}
 	    return true;
 	}
 	public static String handleHref(String href){

@@ -126,4 +126,9 @@ public class InterfaceService extends BaseService<Interface>
 	public List<Interface> getAll() {
 		return interfaceDao.findByMap(null, null, null);
 	}
+
+	@Override
+	public String getLuceneType() {
+		return "接口";
+	}
 }

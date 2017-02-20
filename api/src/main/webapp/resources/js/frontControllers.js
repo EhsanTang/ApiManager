@@ -273,6 +273,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 					 $rootScope.formParams = eval("("+result.data.param.substring(5)+")");
 				 }else{
 					 $rootScope.model.customParams = result.data.param;
+					 $rootScope.formParams = null;
 				 }
 				 
 				 $rootScope.headers = eval("("+result.data.header+")");

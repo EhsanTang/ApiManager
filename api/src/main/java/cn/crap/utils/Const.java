@@ -82,6 +82,8 @@ public class Const {
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
 	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
 	public static final String SETTING_TITLE = "TITLE";
+	public static final String SETTING_OPEN_REGISTER = "openRegister";
+	public static final String SETTING_GITHUB_ID = "githubClientID";
 	
 	//SOLR
 	public static final String SOLR_URL = "SOLR_URL";

@@ -434,21 +434,21 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     	}
     }
     
-    $scope.deleteOneParamByParent = function(parentIndex,deep){
+    $scope.deleteOneParamByParent = function(field,parentIndex,deep){
     	// 兼容历史数据
     	if(!deep){
     		deep = 0;
-    		$rootScope.model.responseParams[parentIndex].deep=0;
+    		$rootScope.model[field][parentIndex].deep=0;
     	}
     	var needDelete = 1;
-    	for(var i=parentIndex+1; i<$rootScope.model.responseParams.length; i++){
-    		if($rootScope.model.responseParams[i].deep>deep){
+    	for(var i=parentIndex+1; i<$rootScope.model[field].length; i++){
+    		if($rootScope.model[field][i].deep>deep){
     			needDelete ++;
     		}else{
     			break;
     		}
     	}
-    	$rootScope.model.responseParams.splice(parentIndex, needDelete);
+    	$rootScope.model[field].splice(parentIndex, needDelete);
     }
     $scope.importParams = function(field){
     	var jsonText = jsonToDiv($rootScope.model.importJson);

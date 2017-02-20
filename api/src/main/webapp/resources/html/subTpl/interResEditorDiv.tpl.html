@@ -45,7 +45,7 @@
 				name="remark" ng-model="item.remark" value="{{item.remark}}"
 				placeholder="备注"></td>
 			<td class="cursor text-danger p5"><i class="iconfont"
-				ng-click="deleteOneParamByParent($index,item.deep)">&#xe60e;</i> <i
+				ng-click="deleteOneParamByParent('responseParams',$index,item.deep)">&#xe60e;</i> <i
 				class="iconfont"
 				ng-click="addOneParamByParent('responseParams',item.deep,$index)"
 				ng-if="item.type=='object' || item.type=='array[object]' || item.type=='array' ">&#xe604;</i>

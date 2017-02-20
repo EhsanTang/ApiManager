@@ -238,7 +238,7 @@ mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************用户列表****************************/
 mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/list.do|iLoading=FLOAT|iParams=&trueName=" + $("#trueName").val();
+		var params = "iUrl=user/list.do|iLoading=FLOAT|iPost=true|iParams=&trueName=" + $("#trueName").val();
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -279,7 +279,7 @@ mainModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state,
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=setting/list.do|iLoading=FLOAT|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
+		var params = "iUrl=setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -303,7 +303,7 @@ mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=role/list.do|iLoading=FLOAT|iParams=&roleName=" + $("#roleName").val();;
+		var params = "iUrl=role/list.do|iLoading=FLOAT|iPost=true|iParams=&roleName=" + $("#roleName").val();;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -311,7 +311,7 @@ mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
 
 mainModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/source/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
+		var params = "iUrl=user/source/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -468,7 +468,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
 /**************************日志列表****************************/
 mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=log/list.do|iLoading=FLOAT|iParams=&modelName="+$stateParams.modelName;
+		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$stateParams.modelName;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -476,7 +476,7 @@ mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $sta
 /*************************项目列表************************/
 mainModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&myself="+$stateParams.myself;
+		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&myself="+$stateParams.myself;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -500,7 +500,7 @@ mainModule.controller('userInterfaceCtrl', function($rootScope,$scope, $http, $s
 			params += "&url=" + $("#url").val();
 		}
 		params +="&moduleId="+ $stateParams.moduleId;
-		params = "iUrl=user/interface/list.do|iLoading=FLOAT|iParams="+params;
+		params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -508,7 +508,7 @@ mainModule.controller('userInterfaceCtrl', function($rootScope,$scope, $http, $s
 /**************************错误码列表****************************/
 mainModule.controller('userErrorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/error/list.do|iLoading=FLOAT|iParams=";
+		var params = "iUrl=user/error/list.do|iLoading=FLOAT|iPost=true|iParams=";
 		params += "&projectId=" + $stateParams.projectId;
 		params += "&errorMsg=" + $stateParams.errorMsg;
 		params += "&errorCode=" + $stateParams.errorCode;

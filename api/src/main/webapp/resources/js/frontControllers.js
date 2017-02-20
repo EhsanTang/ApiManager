@@ -101,7 +101,7 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
 		if(setPwd) setPassword();
 		var params ="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
-		params = "iUrl=front/error/list.do|iLoading=FLOAT|iParams=&projectId=" +
+		params = "iUrl=front/error/list.do|iLoading=FLOAT|iPost=true|iParams=&projectId=" +
 			$stateParams.projectId +"&errorMsg=" + $stateParams.errorMsg+"&errorCode=" + $stateParams.errorCode + params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
@@ -169,7 +169,7 @@ webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $st
  */
 webModule.controller('frontProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
-		var params = "iUrl=front/project/list.do|iLoading=FLOAT|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
+		var params = "iUrl=front/project/list.do|iLoading=FLOAT|iPost=true|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -239,7 +239,7 @@ webModule.controller('frontInterfaceCtrl', function($rootScope,$scope, $http, $s
 		if(setPwd) setPassword();
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
-		params = "iUrl=front/interface/list.do|iLoading=FLOAT|iParams="+params;
+		params = "iUrl=front/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

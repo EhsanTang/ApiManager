@@ -27,7 +27,6 @@ CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，�
 高并发：默认采用内存缓存，可配置redis缓存。使用redis缓存时，系统可集群部署
 历经1年打磨，7版更迭，上百用户建议留言，总有一些功能是你需要的
 ```
-![image](https://raw.githubusercontent.com/EhsanTang/CrapApi/master/CrapApiFiles/0CEE2FA3-85FB-4D88-9CD8-E536E2FE06DC.png)
 
 [部署硬件要求]
 ```
@@ -50,7 +49,7 @@ GitHub源码地址：https://github.com/EhsanTang/CrapApi
 ***********使用最高管理员账号时，请文明操作，请勿删除重要配置信息、请勿修改密码等危险操作*********
 
 付费QQ群：263949884   前往http://git.oschina.net/CrapApi/CrapApi 捐赠(10元以上，用于服务器租赁)即可入群，提供部署、升级、问题解答等服务...
-用户交流群：254450938
+用户交流群：254450938[1群] 535449678[2群]
 ```
 
 [主要技术]

@@ -92,7 +92,6 @@ public class Config{
 	@Value("${mail.username}")
 	private String mail;
 	
-	
 	public String getBaidu() {
 		if(MyString.isEmpty(baidu))
 			return "";
@@ -219,6 +218,5 @@ public class Config{
 	public boolean isCanRepeatUrl() {
 		return canRepeatUrl;
 	}
-	
 	
 }

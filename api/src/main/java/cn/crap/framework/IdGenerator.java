@@ -1,17 +1,35 @@
 package cn.crap.framework;
 
 import java.io.Serializable;
-import java.util.UUID;
+import java.net.InetAddress;
+import java.util.Random;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
 public class IdGenerator implements IdentifierGenerator{
-
-	public Serializable generate(SessionImplementor arg0, Object arg1)
+	private volatile int idNum = 1; // 自增，防止同一毫秒内id重复
+	String ip = ""; // 分布式部署时防止ID重复
+	public IdGenerator(){
+		try{
+			ip =InetAddress.getLocalHost().getHostAddress().replace(".", "");
+		}catch(Exception e){
+		    e.printStackTrace();
+		    Random r = new Random();
+		    ip = r.nextInt(10000000) + ""; 
+		}
+	}
+	
+	// id生成策略
+	public synchronized Serializable generate(SessionImplementor arg0, Object arg1)
 			throws HibernateException {
-		return UUID.randomUUID().toString();
+		idNum ++;
+		if(idNum > 9999){
+			idNum = 1;
+		}
+		// 以ffff开头，兼容就系统，保证新生成的id大于旧方法生成的id
+		return "ffff-" + System.currentTimeMillis() + "-" + ip + "-" + String.format("%04d", idNum);
 	}
 
 }

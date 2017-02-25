@@ -26,6 +26,7 @@ import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -181,12 +182,20 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 		
 		if (!MyString.isEmpty(interFace.getId())) {
-			interFace.setModuleId( interfaceService.get(interFace.getId()).getModuleId());
+			String oldModuleId = interfaceService.get(interFace.getId()).getModuleId();
+			String projectId = cacheService.getModule(oldModuleId).getProjectId();
+			Project project = cacheService.getProject( interFace.getProjectId() );
+			
+			// 接口只能在同一个项目下的模块中移动
+			if( !projectId.equals(project.getId())){
+				throw new MyException("000047");
+			}
 			// 判断是否有修改模块的权限
-			hasPermission(cacheService.getProject( interFace.getProjectId() ), modInter);
+			hasPermission(project, modInter);
 			
 			//同一模块下不允许 url 重复
-			if( !config.isCanRepeatUrl() && interfaceService.getCount(Tools.getMap("moduleId",interFace.getModuleId(), "fullUrl",interFace.getModuleUrl() +interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
+			if( !config.isCanRepeatUrl() && interfaceService.getCount(Tools.getMap("moduleId",interFace.getModuleId(), "fullUrl",
+					interFace.getModuleUrl() +interFace.getUrl(),"id|!=",interFace.getId())) >0 ){
 				throw new MyException("000004");
 			}
 			

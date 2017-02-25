@@ -468,7 +468,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
 /**************************日志列表****************************/
 mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$stateParams.modelName;
+		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$stateParams.modelName+"&identy="+$stateParams.identy;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

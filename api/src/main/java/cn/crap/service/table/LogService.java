@@ -45,13 +45,7 @@ public class LogService extends BaseService<Log>
 		if(log.getModelClass().equals("Interface")){//恢复接口
 			JSONObject json = JSONObject.fromObject(log.getContent());
 			Interface inter = (Interface) JSONObject.toBean(json,Interface.class);
-			// 删除旧数据，在插入新数据
-			Interface oldInter = interfaceDao.get(inter.getId());
-			if( oldInter!= null){
-				interfaceDao.delete(oldInter);
-				interfaceDao.gethibernateTemplate().getSessionFactory().getCurrentSession().flush();
-			}
-			interfaceDao.save(inter);
+			interfaceDao.update(inter);
 		}
 	}
 }

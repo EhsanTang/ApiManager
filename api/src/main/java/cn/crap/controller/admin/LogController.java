@@ -31,7 +31,7 @@ public class LogController extends BaseController<Log>{
 	public JsonResult list(@ModelAttribute Log log,@RequestParam(defaultValue="1") Integer currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		Map<String,Object> map = Tools.getMap("modelName",log.getModelName());
+		Map<String,Object> map = Tools.getMap("modelName",log.getModelName(),"identy", log.getIdenty());
 		return new JsonResult(1,logService.findByMap(map,page,null),page);
 	}
 	
@@ -49,16 +49,11 @@ public class LogController extends BaseController<Log>{
 	}
 	
 		
-	@RequestMapping("/delete.do")
+	@RequestMapping("/recover.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_LOG)
-	public JsonResult delete(@ModelAttribute Log log, @RequestParam(defaultValue="false") boolean recover){
-		// 恢复数据
-		if(recover){
-			logService.recover(log);
-		}else{
-			logService.delete(log);// 删除日志
-		}
+	public JsonResult recover(@ModelAttribute Log log){
+		logService.recover(log);
 		return new JsonResult(1,null);
 	}
 }

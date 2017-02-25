@@ -26,6 +26,7 @@
 			<tr class="BGEEE">
 				<th class="tc w200">类型</th>
 				<td class="tc">备注</td>
+				<td class="tc">操作</td>
 				<td class="tc">操作人</td>
 				<td class="tc">时间</td>
 				<th class="w200 tc">操作</th>
@@ -35,18 +36,12 @@
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.modelName}}</td>
 				<td class="tc" title="{{item.remark}}">{{item.remark| cut:true:50:' ...'}}</td>
+				<td class="tc">{{item.type}}</td>
 				<td class="tc">{{item.updateBy}}</td>
 				<td class="tc">{{getDate(item.createTime)|date:'yyyy-MM-dd HH:mm'}}</td>
 				<td class="tc">
-				<a class="f12 text-danger mr10 cursor" title="恢复" ng-if="showOperation('LOG','');"
-					ng-click="del('log/delete.do?recover=true&id='+item.id,item.remark,'确认恢复【'+item.remark+'】?恢复后当前数据将被删除')">
-					<i class="iconfont f12">&#xe627;恢复</i>
-				</a>				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"
-					ng-click="detail('查看【'+item.remark+'】',900,'log/detail.do?id='+item.id, '', logDetailFormat)"> <i class="iconfont f12">&#xe618;查看</i>
-				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('LOG','');"
-					ng-click="del('log/delete.do?id='+item.id,item.remark)">
-					<i class="iconfont f12">&#xe60e;删除</i>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"
+					ng-click="detail('查看【'+item.remark+'】',900,'log/detail.do?id='+item.id, '', logDetailFormat)"> <i class="iconfont f12">&#xe60a;&nbsp;查看</i>
 				</a>
 				</td>
 			</tr>

@@ -70,7 +70,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	public void delete(T model, String modelName, String remark){
 		model = get(model.getId());
 		if(MyString.isEmpty(remark))
-			remark = "删除："+model.getLogRemark();
+			remark = model.getLogRemark();
 		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(),
 				model.getClass().getSimpleName(), model.getId());
 		logDao.save(log);

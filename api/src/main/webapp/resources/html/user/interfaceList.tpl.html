@@ -49,7 +49,7 @@
 				<th class="tc">排序</th>
 				<th class="tc w200">最后修改人</th>
 				<th class="tc">最后修改时间</th>
-				<th class="w400 tc">操作</th>
+				<th class="w500 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -79,6 +79,9 @@
 					ng-click="sendRequest('user/module/setTemplate.do?id='+item.id)">
 					<i class="iconfont f12"  ng-if="item.template">&#xe63d;取消模板</i>
 					<i class="iconfont f12 text-success"  ng-if="!item.template">&#xe63d;设置模板</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 				</a>
 				
 				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"

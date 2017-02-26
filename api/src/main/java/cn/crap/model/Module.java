@@ -120,6 +120,11 @@ public class Module extends BaseModel implements Serializable{
 		this.templateName=templateName;
 	}
 	
+	@Transient
+	@Override
+	public String getLogRemark() {
+		return name;
+	}
 	
 }
 	

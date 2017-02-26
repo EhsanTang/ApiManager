@@ -35,10 +35,10 @@
 		<thead>
 			<tr class="BGEEE">
 				<th class="tc">名称</th>
-				<td class="tc">类型</td>
-				<td class="tc">用户</td>
-				<td class="tc">排序</td>
-				<th class="w500 tc">操作</th>
+				<td class="tc w100">类型</td>
+				<td class="tc w100">用户</td>
+				<td class="tc w50">排序</td>
+				<th class="w600 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,7 +58,9 @@
 				<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;项目成员</i>
 				</a>
-				
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
+				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
 					ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id)"> 
 					<i class="iconfont f12">&#xe618;修改</i>

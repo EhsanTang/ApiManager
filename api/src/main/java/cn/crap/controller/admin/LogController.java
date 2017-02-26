@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.ILogService;
@@ -52,7 +53,7 @@ public class LogController extends BaseController<Log>{
 	@RequestMapping("/recover.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_LOG)
-	public JsonResult recover(@ModelAttribute Log log){
+	public JsonResult recover(@ModelAttribute Log log) throws MyException{
 		logService.recover(log);
 		return new JsonResult(1,null);
 	}

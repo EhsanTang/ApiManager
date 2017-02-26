@@ -111,4 +111,9 @@ public class Project extends BaseModel implements Serializable{
 		}
 		return "";
 	}
+	@Transient
+	@Override
+	public String getLogRemark() {
+		return name;
+	}
 }

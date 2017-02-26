@@ -37,14 +37,14 @@
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc">名称</th>
+				<th class="tc w300">名称</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">key</th>
 				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</th>
 				<th class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</th>
 				<th class="tc">点击量</th>
 				<td class="tc">排序</td>
-				<th class="tc w300">操作</th>
+				<th class="tc w400">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -70,6 +70,9 @@
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/{{item.projectId}}/comment/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;评论列表</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 				</a>
 				<div class="w50 fr tl" ng-if="showOperation('PROJECT',$stateParams.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/article/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">

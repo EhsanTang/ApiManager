@@ -1,9 +1,6 @@
 package cn.crap.controller.user;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.DictionaryDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.ArticleType;
-import cn.crap.enumeration.DictionaryPropertyType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -31,7 +26,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.SqlToDictionaryUtil;
 import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/user/article")
@@ -105,7 +99,7 @@ public class ArticleController extends BaseController<Article>{
 			}	
 			
 			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-			articleService.update(article);
+			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
 			luceneService.update(article.toSearchDto(cacheService));
 		}else{
 			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
@@ -129,9 +123,9 @@ public class ArticleController extends BaseController<Article>{
 		if( commentService.getCount(Tools.getMap("articleId", model.getId()))>0){
 			throw new MyException("000037");
 		}
-		articleService.delete(article);
-		cacheService.delObj(Const.CACHE_WEBPAGE + article.getId());
-		cacheService.delObj(Const.CACHE_WEBPAGE + article.getKey());
+		articleService.delete(article, ArticleType.getByEnumName(model.getType()) , "");
+		cacheService.delObj(Const.CACHE_WEBPAGE + model.getId());
+		cacheService.delObj(Const.CACHE_WEBPAGE + model.getKey());
 		
 		luceneService.delete(new SearchDto(article.getId()));
 		return new JsonResult(1,null);

@@ -103,7 +103,7 @@ public class ModuleController extends BaseController<Module>{
 			// 更新该模块下的所有接口的fullUrl
 			interfaceService.update("update Interface set fullUrl=CONCAT('"+(module.getUrl() == null? "":module.getUrl())+
 					"',url) where moduleId ='"+module.getId()+"'", null);
-			moduleService.update(module);
+			moduleService.update(module, "模块" , "");
 		}else{
 			hasPermission(cacheService.getProject( module.getProjectId() ), addModule);
 			module.setUserId(Tools.getUser().getId());
@@ -176,11 +176,8 @@ public class ModuleController extends BaseController<Module>{
 			throw new MyException("000036");
 		}
 		
-		
-		
-		
 		cacheService.delObj(Const.CACHE_MODULE+module.getId());
-		moduleService.delete(module);
+		moduleService.delete(module, "模块", "");
 		return new JsonResult(1,null);
 	}
 	

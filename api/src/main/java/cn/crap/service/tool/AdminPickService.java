@@ -49,7 +49,6 @@ public class AdminPickService implements IPickService{
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
 		PickDto pick = null;
 		String preUrl = "";
-		List<Byte> statusList = new ArrayList<Byte>();
 		switch (code) {
 		case "CATEGORY":
 			int i = 0;
@@ -108,6 +107,9 @@ public class AdminPickService implements IPickService{
 			picks.add(pick);
 			pick = new PickDto(ArticleType.PAGE.name(), "站点页面管理");
 			picks.add(pick);
+			pick = new PickDto(DataType.LOG.name(), "操作日志管理");
+			picks.add(pick);
+			
 			return;
 		
 		// 角色

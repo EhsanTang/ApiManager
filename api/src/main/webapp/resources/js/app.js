@@ -291,6 +291,6 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	 $rootScope.iClose = function(id) {
 	    	iClose(id);
-	    };
+	 };
 });
 

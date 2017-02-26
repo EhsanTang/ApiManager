@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.crap.framework.base.BaseModel;
-import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
 @Entity

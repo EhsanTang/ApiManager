@@ -208,6 +208,10 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 	public void setMarkdown(String markdown) {
 		this.markdown = markdown;
 	}
-	
+	@Transient
+	@Override
+	public String getLogRemark() {
+		return name;
+	}
 	
 }

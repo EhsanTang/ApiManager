@@ -46,7 +46,7 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	public void update(T model, String modelName, String remark) {
 		T oldModel = dao.get(model.getId());
 		if(MyString.isEmpty(remark))
-			remark = "修改："+oldModel.getLogRemark();
+			remark = model.getLogRemark();
 		Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(oldModel).toString(),
 				model.getClass().getSimpleName(), model.getId());
 		logDao.save(log);

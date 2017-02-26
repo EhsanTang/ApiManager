@@ -1,10 +1,6 @@
 package cn.crap.controller.user;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +137,7 @@ public class ProjectController extends BaseController<Project> {
 				project.setStatus(model.getStatus());
 			}
 						
-			projectService.update(project);
+			projectService.update(project , "项目" , "");
 		}
 		
 		// 新增
@@ -192,7 +188,7 @@ public class ProjectController extends BaseController<Project> {
 		}
 		
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
-		projectService.delete(project);
+		projectService.delete(project, "项目", "");
 		return new JsonResult(1,null);
 	}
 	

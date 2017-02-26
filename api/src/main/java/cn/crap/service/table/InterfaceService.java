@@ -5,23 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
-import cn.crap.inter.dao.IErrorDao;
 import cn.crap.inter.dao.IInterfaceDao;
 import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ILuceneService;
-import cn.crap.model.Module;
-import cn.crap.model.Error;
 import cn.crap.model.Interface;
+import cn.crap.model.Module;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -34,7 +30,7 @@ public class InterfaceService extends BaseService<Interface>
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IModuleService dataCenterService;
+	private IModuleService moduleService;
 	@Resource(name="interfaceDao")
 	IInterfaceDao interfaceDao;
 	
@@ -76,7 +72,7 @@ public class InterfaceService extends BaseService<Interface>
 				params.put("id|in", moduleIds);
 			}
 			params.put("id|!=", "top");// 顶级目录不显示
-			modules = dataCenterService.findByMap(params, null, null);
+			modules = moduleService.findByMap(params, null, null);
 		}
 		params.clear();
 		params.put("interfaces", interfaces);

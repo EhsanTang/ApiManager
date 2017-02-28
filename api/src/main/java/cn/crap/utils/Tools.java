@@ -2,9 +2,10 @@ package cn.crap.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class Tools {
 		if(html == null){
 			throw new MyException("000045");
 		}
-		FileWriter fw = new FileWriter(filePath, false);
+		OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(filePath),"UTF-8");
 		try{
 			fw.write(html);
 			fw.flush();

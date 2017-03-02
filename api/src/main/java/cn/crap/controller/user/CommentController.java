@@ -1,5 +1,7 @@
 package cn.crap.controller.user;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +18,7 @@ import cn.crap.inter.service.table.ICommentService;
 import cn.crap.model.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -65,11 +68,23 @@ public class CommentController extends BaseController<Comment> {
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult delete(@ModelAttribute Comment comment) throws MyException {
-		comment = commentService.get(comment.getId());
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), delArticle);
-		comment = commentService.get(comment.getId());
-		commentService.delete(comment);
+	public JsonResult delete(String id, String ids) throws MyException, IOException{
+		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
+			throw new MyException("000029");
+		}
+		if( MyString.isEmpty(ids) ){
+			ids = id;
+		}
+		
+		for(String tempId : ids.split(",")){
+			if(MyString.isEmpty(tempId)){
+				continue;
+			}
+			Comment comment = commentService.get(tempId);
+			hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), delArticle);
+			comment = commentService.get(comment.getId());
+			commentService.delete(comment);
+		}
 		return new JsonResult(1, null);
 	}
 }

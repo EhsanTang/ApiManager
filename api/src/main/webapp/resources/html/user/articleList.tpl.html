@@ -31,12 +31,18 @@
 		ng-click="detail('新增'+$stateParams.type,1000,'user/article/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type,getFields);"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
 	</a>
+	
+	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+		ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选？')"> 
+		<i class="iconfont fb">&#xe60e;</i>&nbsp;批量删除
+	</a>
 </div>
 
 <div class="col-xs-12 p0">
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
+				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
 				<th class="tc w300">名称</th>
 				<th class="tc" ng-if="$stateParams.type=='PAGE'">key</th>
 				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
@@ -49,6 +55,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
+				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
 				<td class="tc">{{item.name| cut:true:15:' ...'}}</td>
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
 				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>

@@ -377,7 +377,7 @@ function iShow(id){
 }
 
 /**
- * 全选、全部选
+ * 全选、全不选
  * 
  * @param id
  *            点击多选框

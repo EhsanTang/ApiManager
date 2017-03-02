@@ -118,10 +118,11 @@ public abstract class BaseController<T extends BaseModel> {
 	public JsonResult expHandler(HttpServletRequest request, Exception ex) {
 		if (ex instanceof MyException) {
 			return new JsonResult((MyException) ex);
+		}else if(ex instanceof NullPointerException){
+			log.error(ex.getMessage(), ex);
+			return new JsonResult( new MyException("000051"));
 		} else {
-			ex.printStackTrace();
-			log.error(ex.getMessage());
-			ex.printStackTrace();
+			log.error(ex.getMessage(), ex);
 			return new JsonResult(new MyException("000001", ex.getMessage()));
 		}
 	}

@@ -110,7 +110,8 @@ public class SourceController extends BaseController<Source>{
 			source.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 			if(!MyString.isEmpty(source.getId())){
 				hasPermissionModuleId((source.getModuleId()), modSource);
-				sourceService.update(source);
+				sourceService.update(source, "资源", "");
+
 			}else{
 				hasPermissionModuleId((source.getModuleId()), addSource);
 				sourceService.save(source);
@@ -123,12 +124,26 @@ public class SourceController extends BaseController<Source>{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult delete(@ModelAttribute Source source) throws MyException, IOException{
-		// 权限
-		hasPermissionModuleId(sourceService.get(source.getId()).getModuleId(), delSource);
+	public JsonResult delete(String id, String ids) throws MyException, IOException{
+		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
+			throw new MyException("000029");
+		}
+		if( MyString.isEmpty(ids) ){
+			ids = id;
+		}
 		
-		sourceService.delete(source);
-		luceneService.delete(new SearchDto(source.getId()));
+		for(String tempId : ids.split(",")){
+			if(MyString.isEmpty(tempId)){
+				continue;
+			}
+			// 权限
+			hasPermissionModuleId(sourceService.get( tempId ).getModuleId(), delSource);
+			Source source = new Source();
+			source.setId(tempId);
+			
+			sourceService.delete(source, "资源", "");
+			luceneService.delete(new SearchDto(source.getId()));
+		}
 		return new JsonResult(1,null);
 	}
 	

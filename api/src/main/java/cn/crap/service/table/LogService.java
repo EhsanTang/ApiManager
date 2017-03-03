@@ -16,11 +16,13 @@ import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.table.ILogService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.table.IProjectService;
+import cn.crap.inter.service.table.ISourceService;
 import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONObject;
 
@@ -37,6 +39,8 @@ public class LogService extends BaseService<Log>
 	private IProjectService projectService;
 	@Autowired
 	private IArticleService articleService;
+	@Autowired
+	private ISourceService sourceService;
 	
 	@Resource(name="logDao")
 	public void setDao(IBaseDao<Log> dao) {
@@ -98,6 +102,13 @@ public class LogService extends BaseService<Log>
 				json = JSONObject.fromObject(log.getContent());
 				Project project = (Project) JSONObject.toBean(json,Project.class);
 				projectService.update(project);
+				break;
+				
+			case "SOURCE"://恢复资源
+				json = JSONObject.fromObject(log.getContent());
+				Source source = (Source) JSONObject.toBean(json,Source.class);
+				checkModuleAndProject(source.getModuleId());
+				sourceService.update(source);
 				break;
 		
 		}

@@ -72,6 +72,7 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 		dto.setType(Article.class.getSimpleName());
 		dto.setUrl("#/"+getProjectId()+"/article/detail/"+getModuleId()+"/"+type+"/"+id);
 		dto.setVersion("");
+		dto.setProjectId(getProjectId());
 		// 私有项目不能建立索引
 		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
 			dto.setNeedCreateIndex(false);

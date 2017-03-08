@@ -158,6 +158,7 @@ public class LuceneSearchService implements ISearchService {
 		dto.setTitle(doc.get("r_title"));
 		dto.setType(doc.get("type"));
 		dto.setVersion(doc.get("version"));
+		dto.setProjectId(doc.get("projectId"));
 
 		return dto;
 	}
@@ -177,6 +178,7 @@ public class LuceneSearchService implements ISearchService {
 		doc.add(new TextField("moduleName", dto.getModuleName(), Field.Store.YES));
 		doc.add(new TextField("title", dto.getTitle(), Field.Store.YES));
 		doc.add(new TextField("type", dto.getType(), Field.Store.YES));
+		doc.add(new StringField("projectId", dto.getProjectId(), Field.Store.YES));
 		// 将反斜杠替换
 		doc.add(new TextField("href", handleHref(dto.getHref()) , Field.Store.YES));
 
@@ -290,7 +292,7 @@ public class LuceneSearchService implements ISearchService {
 			    	List<ILuceneDto> dtos= service.getAll();
 			    	for (ILuceneDto dto : dtos) {
 			    		i++;
-						cacheService.setStr(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在备份第"+i+"条记录", 60);
+						cacheService.setStr(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录", 60);
 						// 避免占用太大的系统资源
 						try {
 							Thread.sleep(100);

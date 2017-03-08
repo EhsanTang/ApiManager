@@ -127,6 +127,7 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 		dto.setType(Source.class.getSimpleName());
 		dto.setUrl("#/"+getProjectId()+"/source/detail/"+id);
 		dto.setVersion("");
+		dto.setProjectId(getProjectId());
 		//索引内容 = 备注内容 + 文档内容
 		String docContent = "";
 		try {

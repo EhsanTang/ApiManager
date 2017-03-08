@@ -83,6 +83,7 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		dto.setUrl("#/"+getProjectId()+"/front/interfaceDetail/" + id);
 		dto.setVersion(version);
 		dto.setHref(getFullUrl());
+		dto.setProjectId(getProjectId());
 		// 私有项目不能建立索引
 		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
 			dto.setNeedCreateIndex(false);

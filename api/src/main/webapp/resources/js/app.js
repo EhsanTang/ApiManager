@@ -61,6 +61,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.list = result.data;
 				 $rootScope.page = result.page;
 				 $rootScope.others=result.others;
+				 $rootScope.deleteIds = ",";
 			 }
 		}).error(function(result) {
 			lookUp('lookUp','',100,300,3);
@@ -110,9 +111,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除【"+id+"】？";
 		if (confirm(title)) {
-			var params = "iUrl="+iUrl+"|iLoading=PROPUP";
+			var params = "iUrl="+iUrl+"|iLoading=TIP";
 			httpService.callHttpMethod($http,params).success(function(result) {
-				var isSuccess = httpSuccess(result,'iLoading=PROPUP')
+				var isSuccess = httpSuccess(result,'iLoading=TIP')
 				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 					 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 }else{
@@ -131,7 +132,27 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			});;
 	    }
 	};
-
+	// 选中某个选项
+	$rootScope.checkboxSelect = function(checkValues,value){
+		if( $rootScope[checkValues].indexOf(","+value+",")>=0 ){
+			$rootScope[checkValues] = $rootScope[checkValues].replace(value+",","");
+		}else{
+			$rootScope[checkValues] = $rootScope[checkValues]+value+","
+		}
+	}
+	// 全选，不选
+	$rootScope.selectAll = function(id,name,list){
+		selectAll(id, name);
+		if($("#"+id).prop("checked")==true){ 
+			$rootScope[name] = ",";
+			for (var i=0;i<list.length;i++){
+				$rootScope[name] = $rootScope[name] + list[i].id + "," ;
+			}
+		}else{
+			$rootScope[name] = ",";
+		}
+	}
+	
 	$rootScope.submitForm = function(iurl,callBack,myLoading){
 		/**
 		  * 回调刷新当前页面数据

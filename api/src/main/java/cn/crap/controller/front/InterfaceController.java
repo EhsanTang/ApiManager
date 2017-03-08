@@ -210,7 +210,7 @@ public class InterfaceController extends BaseController<Interface>{
 					Tools.getMap("versions", versions, 
 							"crumbs", 
 							Tools.getCrumbs( 
-									project.getName(), "#/"+project.getId()+"module/list",
+									project.getName(), "#/"+project.getId()+"/module/list",
 									module.getName()+":接口列表", "#/"+project.getId()+"/interface/list/" + module.getId(),
 									interFace.getInterfaceName() , "void"), "module",cacheService.getModule(interFace.getModuleId()) ));
 		}else{

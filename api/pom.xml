@@ -8,7 +8,13 @@
 	<name>api Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<spring_version>4.2.0.RELEASE</spring_version>
+		 <!-- 文件拷贝时的编码 -->  
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>  
+        <!-- 编译时的编码 -->  
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>  
+        
+        <spring_version>4.2.0.RELEASE</spring_version>
 	</properties>
 	<dependencies>
 		<!-- hibernate -->
@@ -288,6 +294,7 @@
 
 
 	</dependencies>
+	
 	<build>
 		<finalName>api</finalName>
 		<!-- 设置项目jdk版本，编码 -->

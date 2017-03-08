@@ -147,7 +147,10 @@ public class Source extends BaseModel implements Serializable,ILuceneDto{
 		return dto;
 	}
 	
-	
+	@Transient
+	public String getLogRemark(){
+		return name;
+	}
 	
 	
 }

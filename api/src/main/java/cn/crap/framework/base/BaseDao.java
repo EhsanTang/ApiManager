@@ -35,6 +35,19 @@ public class BaseDao<T extends BaseModel> implements IBaseDao<T> {
 	public T save(T t) {
 		if(MyString.isEmpty(t.getCreateTime()))
 			t.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+		// 如果没有设置排序，则自动取数据库中最大排序+1； 由于多个用户排序互相影响，故存在bug，但是要解决该问题，需要去掉用户输入排序字段的功能
+		if(t.getSequence() == 0){
+			// 查询当前最大排序号
+			String hql = "select max(sequence) from " + entity.getSimpleName();
+			Query query = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(hql);
+			Object sequence = query.uniqueResult();
+			if( sequence != null ){
+				// 允许的最大排序不能超过10000
+				int maxSequence = Integer.parseInt(sequence.toString());
+				t.setSequence( maxSequence >= 10000 ? 10000 : maxSequence + 1);
+			}
+		}
+		
 		hibernateTemplate.save(entityName, t);
 		return t;
 	}

@@ -220,11 +220,23 @@ public class InterfaceController extends BaseController<Interface>{
 
 	@RequestMapping("/delete.do")
 	@ResponseBody
-	public JsonResult delete(@ModelAttribute Interface interFace) throws MyException, IOException {
-		interFace = interfaceService.get(interFace.getId());
-		hasPermission(cacheService.getProject( interFace.getProjectId() ), delInter);
-		interfaceService.delete(interFace, "接口", "");
-		luceneService.delete(new SearchDto(interFace.getId()));
+	public JsonResult delete(String id, String ids) throws MyException, IOException{
+		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
+			throw new MyException("000029");
+		}
+		if( MyString.isEmpty(ids) ){
+			ids = id;
+		}
+		
+		for(String tempId : ids.split(",")){
+			if(MyString.isEmpty(tempId)){
+				continue;
+			}
+			Interface interFace = interfaceService.get( tempId );
+			hasPermission(cacheService.getProject( interFace.getProjectId() ), delInter);
+			interfaceService.delete(interFace, "接口", "");
+			luceneService.delete(new SearchDto(interFace.getId()));
+		}
 		return new JsonResult(1, null);
 	}
 

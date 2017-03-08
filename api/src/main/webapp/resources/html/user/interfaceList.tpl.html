@@ -34,6 +34,10 @@
 		ng-click="detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
+	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+		ng-click="del('user/interface/delete.do?ids='+deleteIds,'','确认批量删除选中的接口？')"> 
+		<i class="iconfont fb">&#xe60e;</i>&nbsp;批量删除
+	</a>
 </div>
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">接口列表</div>
 <div class="f12 tr C999 col-xs-9 mt20">
@@ -43,6 +47,7 @@
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
+				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
 				<th class="tc w100">名称</th>
 				<th class="tc">版本号</th>
 				<th class="tc w100">模块名</th>
@@ -54,6 +59,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
+				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
 				<td class="tc">{{item.interfaceName}}</td>
 				<td class="tc">{{item.version}}</td>
 				<td class="tc">{{item.moduleName}}</td>

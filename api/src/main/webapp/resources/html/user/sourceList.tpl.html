@@ -23,6 +23,10 @@
 		ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)"> 
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增文件
 	</a>
+	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+		ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的资源？')"> 
+		<i class="iconfont fb">&#xe60e;</i>&nbsp;批量删除
+	</a>
 </div>
 
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.length>0">文档列表</div>
@@ -30,6 +34,7 @@
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
+				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
 				<th class="tc">名称</th>
 				<th class="tc">摘要</th>
 				<th class="tc">排序</th>
@@ -39,6 +44,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
+				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
 				<td class="tc w200">{{item.name}}</td>
 				<td class="tc">{{item.remark|cut:true:50:' ...'}}</td>
 				<td class="tc">{{item.sequence}}</td>
@@ -54,6 +60,9 @@
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/front/source/detail/{{item.id}}" target="_blank"> 
 					<i class="iconfont f12">&#xe60a;预览</i>
+				</a>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 				</a>
 				<div class="w50 fr tl"  ng-if="showOperation('PROJECT',$stateParams.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">

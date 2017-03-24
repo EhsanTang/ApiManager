@@ -171,7 +171,7 @@ table{border-collapse:collapse;border-spacing:0}
 	display:inline-block!important;
 }
 /***********margin-right*******************/
-.mr-1{margin-right:-1px}.mr-5{margin-right:-5px!important}.mr0{margin-right:0px!important}.mr5{margin-right:5px}
+.mr-1{margin-right:-1px}.mr-5{margin-right:-5px!important}.mr-15{margin-right:-15px!important}.mr0{margin-right:0px!important}.mr5{margin-right:5px}
 .mr10{margin-right:10px}.mr15{margin-right:15px}.mr20{margin-right:20px!important}
 .mr30{margin-right:30px}.mr50{margin-right:50px!important}.mr75{margin-right:75px}
 .mr100{margin-right:100px}
@@ -183,7 +183,8 @@ table{border-collapse:collapse;border-spacing:0}
 .mb-10{margin-bottom:-10px!important}
 
 /***********margin-left*******************/
-.ml-1{margin-left:-1px}.ml-5{margin-left:-5px!important}.ml0{margin-left:0px!important}
+.ml-1{margin-left:-1px}.ml-5{margin-left:-5px!important}.ml-15{margin-left:-15px}
+.ml0{margin-left:0px!important}
 .ml5{margin-left:5px}.ml10{margin-left:10px}.ml15{margin-left:15px}
 .ml20{margin-left:20px}.ml30{margin-left:30px}.ml50{margin-left:50px}
 .ml75{margin-left:75px}.ml100{margin-left:100px}

@@ -9,16 +9,14 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand p0 pt10" href="${settings.DOMAIN}">
-					<img class="h30" src="<%=settings.get("LOGO").startsWith("http")? settings.get("LOGO"):basePath + settings.get("LOGO")%>" />
+				<!-- 使用项目LOGO作为静态化后的LOGO -->
+				<a class="navbar-brand p0 pt10">
+					<img class="h30" src="${project.cover}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
-	               	<li>
-	                	<a ng-href="#/project/list/false/NULL" class="menu-a cursor" onclick="selectButton(this,'menu-a')">推荐项目</a>
-	                </li>
-	                	<li>
+	                <li>
 	                	<a href="http://git.oschina.net/CrapApi/CrapApi" target="_blank" class="menu-a cursor" onclick="selectButton(this,'menu-a')">查看源码</a>
 	                </li>
 				</ul>

@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="row min-h p0 m0">
 			<!-- leftMenu -->
 			<%@ include  file="left.jsp"%>
-			<div class="col-xs-9 p0 BG_COLOR m0 pt0">
+			<div class="col-xs-12 col-md-9 p0 BG_COLOR m0 pt0">
 				<div class="BGFFF min-h500 p20">
 					<div class="f14 mt10 mb20 b1 bl-5 p0 r3 no-right-radius BCEEE">
 						<pre class="b0 p10 BGFFF">${article.brief}</pre>

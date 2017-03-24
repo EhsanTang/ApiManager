@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="keywords" content="${keywords}" />
 	<meta name="description" content="${description}" />
 	<link href="${settings.ICON}" rel="shortcut icon" type="image/x-icon" />
@@ -13,8 +14,17 @@
 	<link href="<%=basePath %>resources/css/crapApi.css" rel="stylesheet" type="text/css" />
 	<title>${title}</title>
 <style type="text/css"> 
-body{min-width:800px;}
-@media ( min-width : 1210px) {.container {width: ${settings.MAX_WIDTH}px!important}
+body{overflow-x:hidden;}
+@media ( min-width : 1210px) {.container {width: {{settings.MAX_WIDTH}}px!important}}
+@media ( max-width : 992px) {.col-md-mr0 {margin-right:0px!important}}
+pre { white-space: normal;}
+
+/********前端显示最小宽度*************/
+.container-fluid{min-width: 400px;}
+.navbar-inverse{min-width: 400px;border:0px!important;}
+.container{min-width: 400px;}   
+.C${module.id}{color:${settings.ADORN_COLOR}!important;font-weight:bold;}
+
 .BG_COLOR {background-color: ${settings.BG_COLOR}}
 .FOOTER_BG_COLOR {background-color: ${settings.FOOTER_BG_COLOR}}
 .FOOTER_COLOR {color: ${settings.FOOTER_COLOR}}

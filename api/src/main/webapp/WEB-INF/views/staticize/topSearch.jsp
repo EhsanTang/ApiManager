@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<div class="def-bg main-bg h120 mb20 title-bg-img w">
+<div class="container def-bg main-bg h120 mb20 title-bg-img w p0">
 		<div class="container p0">
 			<div class="row p0 m0">
 				<div class="col-xs-12">

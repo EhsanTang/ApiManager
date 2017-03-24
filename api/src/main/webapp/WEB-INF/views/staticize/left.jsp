@@ -13,7 +13,7 @@
 				<div class="mb0 r2 f14 mr15 mt20 p20 BGFFF mb20 col-md-mr0">
 					<ul class="panel-body b0 p0 ml10">
 						<c:forEach var="f" items="${moduleList}" varStatus="status"> 
-							<li><a target="_self" class="p5 cursor C${f.id}" href="../${f.id}/list.html">${f.name}</a></li>
+							<li><a target="_self" class="p5 cursor C${f.id}" href="../${f.id}/list--1.html">${f.name}</a></li>
 						</c:forEach>
 					</ul>
 				</div>

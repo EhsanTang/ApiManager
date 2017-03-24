@@ -15,6 +15,7 @@ public class Const {
 	public final static String NULL_ID = "NULL"; //当新增数据时，前段传递的id=NULL
 	public static final String NOT_NULL = "NOT_NULL";
 	public static final String BLANK = "_BLANK"; 
+	public static final String ALL = "_ALL"; 
 	public static final String DEF_MODULEID = "defaultModuleId";
 	public static final String SUPER = "super"; 
 	public static final String MODULEID = "MODULEID"; 

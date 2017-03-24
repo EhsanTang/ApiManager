@@ -1,6 +1,7 @@
 package cn.crap.controller.user;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.crap.dto.CategoryDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
@@ -39,6 +41,7 @@ import cn.crap.model.Setting;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -213,10 +216,10 @@ public class ProjectController extends BaseController<Project> {
 	}
 	
 	/**
-	 * 静态化模块
+	 * 静态化模块文章列表
 	 */
 	@RequestMapping("/staticizeModule.do")
-	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId) throws MyException {
+	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId,@RequestParam String category,@RequestParam int currentPage) throws MyException {
 		Module module = cacheService.getModule(moduleId);
 		Project project = cacheService.getProject(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
@@ -232,6 +235,7 @@ public class ProjectController extends BaseController<Project> {
 		for (Setting setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
+		
 		settingMap.put(Const.DOMAIN, config.getDomain());
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		Map<String,Object> map = Tools.getMap("projectId",project.getId());
@@ -239,17 +243,52 @@ public class ProjectController extends BaseController<Project> {
 		returnMap.put("project", project);
 		returnMap.put("module", module);
 		returnMap.put("moduleList", moduleService.findByMap(map, null, null));
-		returnMap.put("menuList", menuService.getLeftMenu(null));
+		//returnMap.put("menuList", menuService.getLeftMenu(null));
+		// 模块将静态化成网站的keywords
 		returnMap.put("keywords", module.getRemark());
+		// 项目备注将静态化成网站的description
 		returnMap.put("description", project.getRemark());
+		// 模块名称将静态化成网站标题
 		returnMap.put("title", module.getName());
 		
-		map = Tools.getMap("moduleId", moduleId, "type", "ARTICLE");
-		List<Article> articleList = articleService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", null, null);
+		// 当前类目
+		if( category.equals(Const.ALL) ){
+			category = "";
+			returnMap.put("md5Category", "");
+		}else{
+			returnMap.put("md5Category", MD5.encrytMD5(category).substring(0, 10));
+		}
+		
+		// 获取所有类目
+		// 静态化模块文章
+		@SuppressWarnings("unchecked")
+		List<String> categorys =  (List<String>) articleService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, null);
+		List<CategoryDto> categoryDtos = new ArrayList<CategoryDto>();
+		// 文章分类，按类目静态化
+		for(String c: categorys){
+			if(MyString.isEmpty(c)){
+				continue;
+			}
+			CategoryDto categoryDto = new CategoryDto();
+			categoryDto.setMd5Category(MD5.encrytMD5(c).substring(0, 10)); 
+			categoryDto.setCategory(c);
+			categoryDtos.add( categoryDto );
+		}
+		returnMap.put("categoryDtos", categoryDtos);
+		
+		map = Tools.getMap("moduleId", moduleId, "type", "ARTICLE", "category", category);
+		Page page = new Page();
+		page.setCurrentPage(currentPage);
+		page.setSize(15);
+		List<Article> articleList = articleService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ",
+				page, null);
+		returnMap.put("page", page);
 		returnMap.put("articleList", articleList);
 		
 		return new ModelAndView("WEB-INF/views/staticize/index.jsp",returnMap);
 	}
+	
+	
 	/**
 	 * 静态化文章
 	 * @param req
@@ -282,10 +321,13 @@ public class ProjectController extends BaseController<Project> {
 		returnMap.put("module", module);
 		returnMap.put("article", article);
 		returnMap.put("moduleList", moduleService.findByMap(Tools.getMap("projectId",project.getId()), null, null));
-		returnMap.put("menuList", menuService.getLeftMenu(null));
+		//returnMap.put("menuList", menuService.getLeftMenu(null));
+		// 模块将静态化成网站的keywords
 		returnMap.put("keywords", module.getRemark());
-		returnMap.put("description", article.getBrief());
-		returnMap.put("title", article.getName());
+		// 项目备注将静态化成网站的description
+		returnMap.put("description", project.getRemark());
+		// 模块名称将静态化成网站标题
+		returnMap.put("title", module.getName());
 		
 		return new ModelAndView("WEB-INF/views/staticize/articleDetail.jsp",returnMap);
 	}
@@ -309,21 +351,53 @@ public class ProjectController extends BaseController<Project> {
 			// 删除旧的静态化文件
 			throw new MyException("000044");
 		}
+		
 		for(Module module : moduleService.findByMap(Tools.getMap("projectId", projectId), null, null)){
 			// 创建文件夹
 			Tools.createFile(path + "/" + module.getId());
 			
-			// 静态化模块
-			String html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeModule.do?moduleId="+ module.getId(), null, null, 10 * 1000);
-			Tools.staticize(html, path + "/" +  module.getId() +"/list.html");
+			// 静态化模块文章
+			@SuppressWarnings("unchecked")
+			List<String> categorys =  (List<String>) articleService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, null);
+			// 文章分类，按类目静态化
+			for(String category: categorys){
+				if( MyString.isEmpty( category )){
+					continue; // 空类目不静态化
+				}
+				// 查询页码
+				Map<String, Object> map = Tools.getMap("moduleId", module.getId(), "type", "ARTICLE", "category", category);
+				int articleSize = articleService.getCount(map);
+				// 计算总页数
+				int pageSize = 15;
+				int totalPage = (articleSize+pageSize-1)/pageSize;
+				for(int i=1 ; i<= totalPage; i++){
+					String html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeModule.do?moduleId="+ module.getId()+"&category="+category+"&currentPage="+i, null, null, 10 * 1000);
+					// list-类目摘要-页码
+					Tools.staticize(html, path + "/" +  module.getId() +"/list-"+ MD5.encrytMD5(category).substring(0, 10) + "-" + i + ".html");
+				}
+			}
+			
+			// 文章分类，不分类
+			Map<String, Object> map = Tools.getMap("moduleId", module.getId(), "type", "ARTICLE");
+			int articleSize = articleService.getCount(map);
+			// 计算总页数
+			int pageSize = 15;
+			int totalPage = (articleSize+pageSize-1)/pageSize;
+			for(int i=1 ; i<= totalPage; i++){
+				String html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeModule.do?moduleId="+ module.getId()+"&category="+Const.ALL+"&currentPage="+i, null, null, 10 * 1000);
+				// list-类目摘要-页码
+				Tools.staticize(html, path + "/" +  module.getId() +"/list--" + i + ".html");
+			}
+			
 			
 			// 静态化文章
 			for(Article article: articleService.findByMap(Tools.getMap("moduleId", module.getId()), null, null)){
-				html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeArticle.do?articleId="+ article.getId(), null, null, 10 * 1000);
+				String html = HttpPostGet.get(config.getDomain()+ "/user/project/staticizeArticle.do?articleId="+ article.getId(), null, null, 10 * 1000);
 				Tools.staticize(html, path + "/" + module.getId() +"/"+article.getId()+".html");
 				// 临时解决域名解析目录问题
 				Tools.staticize(html, path + "/" + article.getId()+".html");
 			}
+			
 			// 推送给百度
 			try{
 				if( !config.getBaidu().equals("") )

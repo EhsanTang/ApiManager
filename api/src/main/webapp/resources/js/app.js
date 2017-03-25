@@ -108,6 +108,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	$rootScope.copyInterface = function() {
 		changeDisplay('copyInterFace','interFaceDetail');
 	};
+	$rootScope.changeDisplay = function(id1, id2) {
+		changeDisplay(id1,id2);
+	}
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除【"+id+"】？";
 		if (confirm(title)) {

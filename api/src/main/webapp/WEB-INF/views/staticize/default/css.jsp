@@ -24,7 +24,7 @@ pre { white-space: normal;}
 .navbar-inverse{min-width: 400px;border:0px!important;}
 .container{min-width: 400px;}   
 .C${module.id}{color:${settings.ADORN_COLOR}!important;font-weight:bold;}
-
+.C${activePage}{color:${settings.ADORN_COLOR}!important;font-weight:bold;}
 .BG_COLOR {background-color: ${settings.BG_COLOR}}
 .FOOTER_BG_COLOR {background-color: ${settings.FOOTER_BG_COLOR}}
 .FOOTER_COLOR {color: ${settings.FOOTER_COLOR}}

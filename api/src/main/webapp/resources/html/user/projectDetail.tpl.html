@@ -1,84 +1,110 @@
-<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
-		<form ng-submit="submitForm('user/project/addOrUpdate.do')">
-			<table class="table table-bordered">
-				</tr>
-				<tr>
-					<td class="tc w100">名称</td>
-					<td class="tc" colspan="3">
-						<input  class="form-control"  type="text" ng-model="model.name" required placeholder="项目名">
-					</td>
-				</tr>
-				<tr>
-					<td class="tc">是否公开</td>
-					<td class="tl" colspan="3">
-						*私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可以通过项目主页访问。已经建立的索引将不会删除，需触发修改才能删除
-						<br>
-						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
-					ng-focus="loadPickByName('iwidth=180|iheight=200|tagName=typeName|tag=type|code=PROJECTTYPE|def='+model.type,$event)">
-					</td>
-				</tr>
-				<tr>
-					<td class="tc">项目简介</td>
-					<td class="tc" colspan="3">
-						<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
-				</tr>
-				<tr ng-if="isAdmin()">
-					<td class="tc">项目类型</td>
-					<td class="tl" colspan="3">
-						*推荐项目将在首页默认显示<br>
-						<input  class="form-control"  id="statusName" type="text" ng-model="model.statusName" required placeholder="点击选择"
-					ng-focus="loadPickByName('iwidth=180|iheight=200|tagName=statusName|tag=status|code=PROJECTSTATUE|def='+model.status,$event)">
-					</td>
-				</tr>
-				
-				<tr>
-					<td class="tc">访问密码</td>
-					<td class="tl" colspan="3">
-					*公开项目可以添加项目密码，浏览时必须输入密码后浏览时需要输入密码才能查看<br>
-					<input class="form-control"
-						type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
-				</tr>
-				<tr>
-					<td class="tc">排序</td>
-					<td class="tc" colspan="3">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
-				</tr>
-				<tr>
-					<td class="tc">封面</td>
-					<td class="tc" colspan="3">
-						<input class="form-control" type="text" ng-model="model.cover" id="imgUrl" placeholder="封面可输入地址亦可在下方上传">
-					</td>
-				</tr>
-			</table>
-			<button class="ndis" id="projectForm" type="submit">提交</button>
-		</form>
-		<form enctype="multipart/form-data" name="imageForm" style="margin-top:-21px"
-			target="hiddenFrame"
-			action="file/upload.do?callBack=uploadImgCallBack&property=cover" method="post">
-			<table class="table table-bordered">
-				<tr>
-					<td class="tc w100">上传封面</td>
-					<td>
-						<div class="col-xs-6 p0">
-							<div class="C999 file fl mr20 cursor" title="点击选择图片" onclick="$('#uploadImg').click();">
-								<i class="iconfont f60 main-color">&#xe619;</i>
+<div id="editer-project" class="none">
+		<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+			<form ng-submit="submitForm('user/project/addOrUpdate.do')">
+				<table class="table table-bordered">
+					</tr>
+					<tr>
+						<td class="tc w100">名称</td>
+						<td class="tc" colspan="3">
+							<input  class="form-control"  type="text" ng-model="model.name" required placeholder="项目名">
+						</td>
+					</tr>
+					<tr>
+						<td class="tc">是否公开</td>
+						<td class="tl" colspan="3">
+							*私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可以通过项目主页访问。已经建立的索引将不会删除，需触发修改才能删除
+							<br>
+							<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
+						ng-focus="loadPickByName('iwidth=180|iheight=200|tagName=typeName|tag=type|code=PROJECTTYPE|def='+model.type,$event)">
+						</td>
+					</tr>
+					<tr>
+						<td class="tc">项目简介</td>
+						<td class="tc" colspan="3">
+							<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
+					</tr>
+					<tr ng-if="isAdmin()">
+						<td class="tc">项目类型</td>
+						<td class="tl" colspan="3">
+							*推荐项目将在首页默认显示<br>
+							<input  class="form-control"  id="statusName" type="text" ng-model="model.statusName" required placeholder="点击选择"
+						ng-focus="loadPickByName('iwidth=180|iheight=200|tagName=statusName|tag=status|code=PROJECTSTATUE|def='+model.status,$event)">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="tc">访问密码</td>
+						<td class="tl" colspan="3">
+						*公开项目可以添加项目密码，浏览时必须输入密码后浏览时需要输入密码才能查看<br>
+						<input class="form-control"
+							type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
+					</tr>
+					<tr>
+						<td class="tc">排序</td>
+						<td class="tc" colspan="3">
+						<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+					</tr>
+					<tr>
+						<td class="tc">封面</td>
+						<td class="tc" colspan="3">
+							<input class="form-control" type="text" ng-model="model.cover" id="imgUrl" placeholder="封面可输入地址亦可在下方上传">
+						</td>
+					</tr>
+				</table>
+				<button class="ndis" id="projectForm" type="submit">提交</button>
+			</form>
+			<form enctype="multipart/form-data" name="imageForm" style="margin-top:-21px"
+				target="hiddenFrame"
+				action="file/upload.do?callBack=uploadImgCallBack&property=cover" method="post">
+				<table class="table table-bordered">
+					<tr>
+						<td class="tc w100">上传封面</td>
+						<td>
+							<div class="col-xs-6 p0">
+								<div class="C999 file fl mr20 cursor" title="点击选择图片" onclick="$('#uploadImg').click();">
+									<i class="iconfont f60 main-color">&#xe619;</i>
+								</div>
+								<span class="ndis"> 
+									<input type="file" name="img" onchange="uploadImage('uploadImg',2048,imageForm,'cover')" id="uploadImg" />
+								</span>
 							</div>
-							<span class="ndis"> 
-								<input type="file" name="img" onchange="uploadImage('uploadImg',2048,imageForm,'cover')" id="uploadImg" />
-							</span>
-						</div>
-						<div class="col-xs-6 p0 maw400 mah400">
-							<img src="{{model.cover}}" class="main-bg" id="image"
-								ng-show="model.cover!=''">
-						</div>
-
-					</td>
-				</tr>
-			</table>
-		</form>
+							<div class="col-xs-6 p0 maw400 mah400">
+								<img src="{{model.cover}}" class="main-bg" id="image"
+									ng-show="model.cover!=''">
+							</div>
+	
+						</td>
+					</tr>
+				</table>
+			</form>
+	</div>
+	<button class="btn btn-success fr" onclick="$('#projectForm').click();">提交</button>
+	<div class="cb"></div>
+	<iframe name="hiddenFrame" class="ndis"></iframe>
+	
 </div>
-<button class="btn btn-success fr" onclick="$('#projectForm').click();">提交</button>
-<div class="cb"></div>
-<iframe name="hiddenFrame" class="ndis"></iframe>
+<div id="staticize-project" class="none">
+	<form ng-submit="submitForm('user/staticize/staticize.do?projectId='+model.id)">
+				<table class="table table-bordered">
+					</tr>
+					<tr>
+						<td class="tc w100">名称</td>
+						<td class="tc" colspan="3">
+							<input  class="form-control"  type="text" ng-model="model.name" readonly placeholder="项目名">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="tc">提示</td>
+						<td class="tl" colspan="3">
+							*私有化项目不支持静态化<br>
+							*系统不会自动静态化，修改后需要手动静态化<br>
+							*静态化后可以通过模块列表中的静态化地址访问静态化后的页面<br>
+						</td>
+					</tr>
+				</table>
+				<button class="btn btn-success fr"  type="submit">提交</button>
+			</form>
+</div>
 
 

@@ -62,7 +62,7 @@
 					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
-					ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id)"> 
+					ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('editer-project','staticize-project');"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
 			
@@ -71,10 +71,11 @@
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
 				
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)" title="生成静态html"
-					ng-click="callAjaxByName('iUrl=user/project/staticize.do?projectId='+item.id+'|iLoading=PROPUPFLOAT玩命静态化中（生成html），请稍后...|ishowMethod=updateDivWithImg');"> 
-					<i class="iconfont f12">&#xe63a;静态化</i>
+				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+					ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('staticize-project','editer-project');"> 
+					<i class="iconfont f12">&#xe618;静态化</i>
 				</a>
+				
 				<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list" target="_blank"> 
 					<i class="iconfont f12 adorn-color">&#xe613;项目主页</i>
 				</a>

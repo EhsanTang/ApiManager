@@ -32,7 +32,7 @@
 					<ul class="nls m0 p0 f12 ACFFF fl mt10 ACFFF">
 		 			 <li class="fl p0"><a href="${settings.DOMAIN}" class="ACFFF">首页</a></li>
 		 			 <li class="fl p0">&nbsp;>&nbsp; </li>
-		 			 <li class="fl p0"><a href="list--1.html" class="ACFFF">${module.name}</a></li>
+		 			 <li class="fl p0"><a href="${module.id}-articleList--1.html" class="ACFFF">${module.name}</a></li>
 					</ul>
 				</div>
 			</div>

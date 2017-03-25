@@ -84,7 +84,7 @@
 	
 </div>
 <div id="staticize-project" class="none">
-	<form ng-submit="submitForm('user/staticize/staticize.do?projectId='+model.id)">
+	<form id="staticize-form">
 				<table class="table table-bordered">
 					</tr>
 					<tr>
@@ -100,10 +100,21 @@
 							*私有化项目不支持静态化<br>
 							*系统不会自动静态化，修改后需要手动静态化<br>
 							*静态化后可以通过模块列表中的静态化地址访问静态化后的页面<br>
+							*文章为必选项，可用来添加项目说明、联系方式等<br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							静态化类型
+						</td>
+						<td>
+							<input type="checkbox" name="needStaticizes" value="error">&nbsp;&nbsp;错误码&nbsp;&nbsp;
+							<input type="checkbox" name="needStaticizes" value="interface">&nbsp;&nbsp;接口&nbsp;&nbsp;
+							<input type="checkbox" name="needStaticizes" value="dictionary">&nbsp;&nbsp;数据字典&nbsp;&nbsp;
 						</td>
 					</tr>
 				</table>
-				<button class="btn btn-success fr"  type="submit">提交</button>
+				<button class="btn btn-success fr"  type="button" ng-click="staticize(model.id)">静态化</button>
 			</form>
 </div>
 

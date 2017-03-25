@@ -79,7 +79,7 @@ public class InterfaceController extends BaseController<Interface>{
 					request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
 					return "/WEB-INF/views/result.jsp";
 				}
-				getInterDto(interfaces, interFace, interDto);
+				interfaceService.getInterDto(config, interfaces, interFace, interDto);
 			}else{
 				module = moduleService.get(moduleId);
 				if(MyString.isEmpty(module.getId())){
@@ -88,7 +88,7 @@ public class InterfaceController extends BaseController<Interface>{
 				}
 				for( Interface inter : interfaceService.findByMap(Tools.getMap("moduleId", moduleId), null, null)){
 					interDto= new InterfacePDFDto();
-					getInterDto(interfaces, inter, interDto);
+					interfaceService.getInterDto(config, interfaces, inter, interDto);
 	
 				}
 			}
@@ -104,23 +104,6 @@ public class InterfaceController extends BaseController<Interface>{
 		}
 	}
 
-	private void getInterDto(List<InterfacePDFDto> interfaces, Interface interFace, InterfacePDFDto interDto) {
-		interDto.setModel(interFace);
-		if(interFace.getParam().startsWith("form=")){
-			interDto.setFormParams(JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
-		}else{
-			interDto.setCustomParams( interFace.getParam());
-		}
-		interDto.setTrueMockUrl(config.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
-		interDto.setFalseMockUrl(config.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
-
-		interDto.setHeaders( JSONArray.toArray(JSONArray.fromObject(interFace.getHeader()),ParamDto.class));
-		interDto.setResponseParam( JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class) );
-		interDto.setParamRemarks( JSONArray.toArray(JSONArray.fromObject(interFace.getParamRemark()), ResponseParamDto.class) );
-		interDto.setErrors( JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class) );
-		interfaces.add(interDto);
-	}
-	
 	@RequestMapping("/download/pdf.do")
 	@ResponseBody
 	public void download(String id,String moduleId,HttpServletRequest req, HttpServletResponse response) throws Exception {

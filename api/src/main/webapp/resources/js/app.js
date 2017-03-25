@@ -84,6 +84,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 }else{
 					 $rootScope.model = result.data;
 					 $rootScope.error = null;
+					 $rootScope.deleteIds = ",";
 					 if(callBack)
 						 callBack();
 				 }
@@ -316,5 +317,8 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	 $rootScope.iClose = function(id) {
 	    	iClose(id);
 	 };
+	 $rootScope.staticize= function (id){
+			callAjaxByName('iUrl=user/staticize/staticize.do?projectId='+id+'|iLoading=TIPFLOAT静态化中，请稍后...|ishowMethod=updateDivWithImg|iFormId=staticize-form');
+	 }
 });
 

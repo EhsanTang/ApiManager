@@ -123,10 +123,9 @@ public abstract class BaseController<T extends BaseModel> {
 	public JsonResult expHandler(HttpServletRequest request, Exception ex) {
 		if (ex instanceof MyException) {
 			return new JsonResult((MyException) ex);
-		} else if (ex instanceof NullPointerException) {
-			log.error(ex.getMessage(), ex);
+		}else if (ex instanceof NullPointerException) {
 			return new JsonResult(new MyException("000051"));
-		} else {
+		}else {
 			log.error(ex.getMessage(), ex);
 
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -139,7 +138,7 @@ public abstract class BaseController<T extends BaseModel> {
 			
 			String cusedBy = "";
 			if (exceptionDetail.length > 0) {
-				cusedBy = exceptionDetail[exceptionDetail.length - 1];
+				cusedBy = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
 			}
 			
 			// 字段超过最大长度异常处理
@@ -147,7 +146,6 @@ public abstract class BaseController<T extends BaseModel> {
 				if (cusedBy.contains("com.mysql.jdbc.MysqlDataTruncation")) {
 					return new JsonResult(new MyException("000052", "（字段：" + cusedBy.split("'")[1] + "）"));
 				}
-
 			}
 
 			return new JsonResult(new MyException("000001", ex.getMessage() + "——" + cusedBy));

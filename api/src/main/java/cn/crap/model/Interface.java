@@ -18,6 +18,7 @@ import cn.crap.framework.base.BaseModel;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.service.tool.CacheService;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 
 @Entity
 @Table(name = "interface")
@@ -320,6 +321,11 @@ public class Interface extends BaseModel implements Serializable,ILuceneDto{
 		this.template = template;
 	}
 
+	@Transient 
+	public String getRemarkNoHtml(){
+		return Tools.subString( Tools.removeHtml(this.remark), 166, "...");
+	}
+	
 	@Transient
 	public String getProjectId() {
 		if (!MyString.isEmpty(moduleId)) {

@@ -13,7 +13,7 @@
 	<div ng-repeat="item in list" class="dashed-t">
 	
 		<a ng-href="#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" class="p10 pl0 f16 fb dis w C000 no_unl">{{item.name}}</a>
-		<div class ="f14 C555" ng-bind="item.brief"></div>
+		<div class ="f14 C999 pl10">{{item.brief| cut:true:150:' ...'}}</div>
 		<div class="tr C999 f12 p10">点击量:{{item.click}}次  <span class="C999 pl20">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</span></div>
 	</div>
 	<div ui-view="page" class="mt20"></div>

@@ -333,6 +333,9 @@ public class Tools {
 	}
 
 	public static String removeHtml(String inputStr){
+		if(inputStr == null){
+			return "";
+		}
 		inputStr=inputStr.replaceAll("<[a-zA-Z|//]+[1-9]?[^><]*>", "");
 		inputStr=inputStr.replaceAll("&nbsp;", "");
 		StringBuffer temp=new StringBuffer();
@@ -344,6 +347,22 @@ public class Tools {
 			temp.append(matcher.group());
 		}
 		return temp.toString();
+	}
+	
+	public static String subString(String str, int length, String suffix){
+		if( MyString.isEmpty( str ) ){
+			return "";
+		}
+		
+		if( MyString.isEmpty(suffix) ){
+			suffix = "...";
+		}
+		
+		if(str.length() > length){
+			return str.substring(0, length) + suffix;
+		}
+		
+		return str;
 	}
 	/**
 	 * 获取用户登录信息

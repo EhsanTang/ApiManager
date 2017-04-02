@@ -32,10 +32,10 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr ng-if="model.type==2"><!-- 只有公开的项目才能添加密码 -->
 						<td class="tc">访问密码</td>
 						<td class="tl" colspan="3">
-						*公开项目可以添加项目密码，浏览时必须输入密码后浏览时需要输入密码才能查看<br>
+						*公开项目可以添加项目密码，浏览时必须输入密码后浏览时需要输入密码才能查看。系统会缓存输入的密码，输入密码后短时间内不需要再次输入<br>
 						<input class="form-control"
 							type="text" ng-model="model.password" placeholder="可选，私密项目请设置密码"></td>
 					</tr>

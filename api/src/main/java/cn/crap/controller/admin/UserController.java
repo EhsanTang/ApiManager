@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.LoginType;
 import cn.crap.enumeration.UserStatus;
+import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -55,7 +56,8 @@ public class UserController extends BaseController<User>{
 	public JsonResult list(@ModelAttribute User user,@RequestParam(defaultValue="1") Integer currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		Map<String,Object> map = Tools.getMap("trueName|like",user.getTrueName());
+		Map<String,Object> map = Tools.getMap("trueName|like",user.getTrueName(),
+				"userName|like", user.getUserName(), "email|like", user.getEmail());
 		return new JsonResult(1,userService.findByMap(map,page,null),page);
 	}
 	@RequestMapping("/user/detail.do")
@@ -86,12 +88,6 @@ public class UserController extends BaseController<User>{
 		}
 		
 		
-		
-		// 如果前端设置了密码，则修改密码，否者使用就密码
-		if(!MyString.isEmpty(user.getPassword())){
-			user.setPassword(MD5.encrytMD5(user.getPassword()));
-		}
-		
 		User temp = null;
 		if(!MyString.isEmpty(user.getId())){
 			temp = userService.get(user.getId());
@@ -99,19 +95,45 @@ public class UserController extends BaseController<User>{
 		
 		LoginInfoDto cacheUser = (LoginInfoDto) Tools.getUser();
 		
+		// 超级管理员账号不能修改其它超级管理员账号信息，但是用户名为admin的超级管理员能修改其他超级管理员的信息
+		if( temp != null && Tools.isSuperAdmin( temp.getRoleId() )){
+			if( !temp.getId().equals( cacheUser.getId()) && !cacheUser.getUserName().equals("admin") ){
+				throw new MyException("000053");
+			}
+		}
+		
+		// admin 用户名不允许修改
+		if( temp != null && temp.getUserName().equals("admin") && !user.getUserName().equals("admin")){
+			throw new MyException("000055");
+		}
+		
+		// 普通管理员不能修改管理员信息
+		if( temp != null && !Tools.isSuperAdmin(cacheUser.getRoleId()) ){
+			if( !temp.getId().equals( cacheUser.getId()) && temp.getType() == UserType.ADMIN.getType() ){
+				throw new MyException("000054");
+			}
+		}
+		
+		// 如果前端设置了密码，则修改密码，否者使用就密码
+		if(!MyString.isEmpty(user.getPassword())){
+			user.setPassword(MD5.encrytMD5(user.getPassword()));
+		}
+		
+		// 修改了用户邮箱，状态修改改为为验证
+		if( temp != null && !MyString.isEmpty(user.getEmail()) && ( MyString.isEmpty(temp.getEmail()) || !user.getEmail().equals(temp.getEmail()) )){
+			user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
+			cacheService.setObj(Const.CACHE_USER + user.getId(), 
+					new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
+		}
+		
 		// 如果不是最高管理员，不允许修改权限、角色、类型
-		if((","+cacheUser.getRoleId()).indexOf(","+Const.SUPER+",") < 0){
+		if( !Tools.isSuperAdmin(cacheUser.getRoleId()) ){
 			if(temp != null){
 				user.setAuth(temp.getAuth());
 				user.setAuthName(temp.getAuthName());
 				user.setRoleId(temp.getRoleId());
 				user.setRoleName(temp.getRoleName());
 				user.setType(temp.getType());
-				if( !MyString.isEmpty(user.getEmail()) && ( MyString.isEmpty(temp.getEmail()) || !user.getEmail().equals(temp.getEmail()) )){
-					user.setStatus(Byte.valueOf(UserStatus.邮箱未验证.getName()));
-					cacheService.setObj(Const.CACHE_USER + user.getId(), 
-							new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
-				}
 			}else{
 				user.setAuth("");
 				user.setAuthName("");
@@ -121,7 +143,10 @@ public class UserController extends BaseController<User>{
 			}
 			
 		}
-		
+
+		if(MyString.isEmpty(user.getEmail())){
+			user.setEmail(null);
+		}
 		
 		// 如果temp不为空，表示修改用户信息
 		if(temp != null){
@@ -134,18 +159,12 @@ public class UserController extends BaseController<User>{
 				user.setPassword(temp.getPassword());
 			}
 			
-			if(MyString.isEmpty(user.getEmail())){
-				user.setEmail(null);
-			}
-			
 			userService.update(user);
 		}else{
-			user.setEmail(null);
 			user.setStatus(Byte.valueOf("1"));
 			user.setId(null);
 			userService.save(user);
 		}
-		user.setPassword("");
 		return new JsonResult(1,user);
 	}
 	

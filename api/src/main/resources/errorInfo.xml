@@ -56,6 +56,9 @@
 				<entry key="000050" value="抱歉，模块的修改操作不允许恢复（需要关联更新接口数据）"/>
 				<entry key="000051" value="抱歉，系统出现未知空指针异常（你查找的数据可能已被删除）"/>
 				<entry key="000052" value="添加失败，超过允许的最大长度"/>
+				<entry key="000053" value="超级管理员信息只能自己修改"/>
+				<entry key="000054" value="管理员自能修改普通用户信息"/>
+				<entry key="000055" value="admin账号为内置账号，不能修改用户名"/>
 			</map>
 		</property>
 	</bean>

@@ -419,7 +419,7 @@ public class StaticizeController extends BaseController<Project> {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		if(!MyString.isEmpty(project.getCover())){
-			if(!project.getCover().startsWith("http:")){
+			if(!project.getCover().startsWith("http:") &&  !project.getCover().startsWith("https:") ){
 				project.setCover(config.getDomain() +"/"+ project.getCover());
 			}
 		}

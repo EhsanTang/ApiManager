@@ -4,6 +4,15 @@ body{
 	word-wrap:break-word;
 	background-color:#DDDDDD;
 }
+/***project-user样式***/
+.true-class{
+	color:green;
+	font-weight:bold;
+}
+.false-class{
+	color:red;
+	font-weight:bold;
+}
 /**火狐红色边框**/
 input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
 table{

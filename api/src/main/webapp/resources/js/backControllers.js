@@ -238,7 +238,8 @@ mainModule.controller('menuCtrl', function($rootScope,$scope, $http, $state, $st
 /**************************用户列表****************************/
 mainModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/list.do|iLoading=FLOAT|iPost=true|iParams=&trueName=" + $("#trueName").val();
+		var params = "iUrl=user/list.do|iLoading=FLOAT|iPost=true|iParams=&trueName=" 
+			+ $stateParams.trueName + "&userName=" + $stateParams.userName + "&email=" + $stateParams.email;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

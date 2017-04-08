@@ -1,6 +1,8 @@
 package cn.crap.service.tool;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,16 +106,22 @@ public class UserPickService implements IPickService{
 						return;
 					case "USER":
 						if(key!= null && key.length()>=4){
-							if(key.indexOf("@")>0){
-								for (User u : userService.findByMap(Tools.getMap("email|like", key), null, null)) {
+							Set<String> userIds = new TreeSet<String>();
+							for (User u : userService.findByMap(Tools.getMap("email|like", key), null, null)) {
+								if( !userIds.contains(u.getId()) ){
 									pick = new PickDto(u.getId(), u.getUserName());
 									picks.add(pick);
+									userIds.add(u.getId());
 								}
 							}
-							else{
+							
+							if(key.indexOf("@")<0){
 								for (User u : userService.findByMap(Tools.getMap("userName|like", key), null, null)) {
-									pick = new PickDto(u.getId(), u.getUserName());
-									picks.add(pick);
+									if( !userIds.contains(u.getId()) ){
+										pick = new PickDto(u.getId(), u.getUserName());
+										picks.add(pick);
+										userIds.add(u.getId());
+									}
 								}
 							}
 						}else{

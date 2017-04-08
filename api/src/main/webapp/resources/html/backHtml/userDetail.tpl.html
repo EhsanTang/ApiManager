@@ -16,13 +16,13 @@
 			<tr>
 				<td class="tc w100">用户名</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control b0 no-b-s"  type="text" ng-model="model.userName" required>
+					<input  class="form-control b0 no-b-s"  type="text" ng-model="model.userName" required placeholder="请输入用户登录名">
 				</td>
 			</tr>
 			<tr>
 				<td class="tc">真实姓名/昵称</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control b0 no-b-s" type="text" ng-model="model.trueName" required placeholder="点击修改昵称">
+					<input  class="form-control b0 no-b-s" type="text" ng-model="model.trueName" required placeholder="点击修改昵称/真实姓名">
 				</td>
 			</tr>
 			<tr ng-if="isSupperAdmin()">
@@ -36,8 +36,7 @@
 			<tr>
 				<td class="tc">邮箱</td>
 				<td class="tc w200" colspan="3">
-					<input  class="form-control b0 no-b-s" type="text" ng-model="model.email" placeholder="请输入用户邮箱"
-	>
+					<input  class="form-control b0 no-b-s" type="text" ng-model="model.email" placeholder="请输入用户邮箱">
 				</td>
 			</tr>
 			
@@ -47,7 +46,7 @@
 					<input  class="form-control b0 no-b-s" type="text" ng-model="model.password" placeholder="点击修改密码">
 				</td>
 			</tr>
-			<tr ng-if="isSupperAdmin()">
+			<tr ng-if="isSupperAdmin() && model.type==100">
 				<td class="tc">权限</td>
 				<td class="tc w200" colspan="3">
 					<input  class="form-control b0 no-b-s" readonly id="authName" type="text" ng-model="model.authName" placeholder="请点击选择权限"
@@ -55,7 +54,7 @@
 				</td>
 				
 			</tr>
-			<tr ng-if="isSupperAdmin()">
+			<tr ng-if="isSupperAdmin() && model.type==100">
 				<td class="tc">角色</td>
 				<td class="tc w200" colspan="3">
 						<input  class="form-control b0 no-b-s" readonly id="roleName" type="text" ng-model="model.roleName" placeholder="请点击选择角色"

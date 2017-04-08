@@ -305,6 +305,17 @@ public class Tools {
 		return m.matches();
 	}
 	
+	public static boolean isSuperAdmin(String role) {
+		if( MyString.isEmpty(role) ){
+			return false;
+		}
+		
+		if( ( ","+ role + ",").indexOf(","+Const.SUPER+",") >= 0){
+			return true;
+		}
+		return false;
+	}
+	
 	
 	public static HttpServletResponse getResponse(){
 		HttpServletResponse response=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();;

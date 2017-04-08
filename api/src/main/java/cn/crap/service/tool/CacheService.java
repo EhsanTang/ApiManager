@@ -141,11 +141,10 @@ public class CacheService implements ICacheService {
 			getDao().setObj(Const.CACHE_PROJECT + projectId, project, config.getCacheTime());
 				
 		}
-		return project;
-// 		内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
-//		Project p = new Project();
-//		BeanUtils.copyProperties(project, p);
-//		return p;
+ 		//内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
+		Project p = new Project();
+		BeanUtils.copyProperties(project, p);
+		return p;
 	}
 	
 	@Override

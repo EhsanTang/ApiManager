@@ -20,54 +20,56 @@
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc">名称</th>
-				<th class="tc">Url前缀</th>
-				<td class="tc">排序</td>
+				<th class="tc w200">名称</th>
+				<th class="tc w200">Url前缀</th>
+				<td class="tc w100">排序</td>
 				<th class="tc">操作</th>
+				<th class="tc w50">排序</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
-				<td class="tc w200">{{item.name}}</td>
-				<td class="tc w200">{{item.url}}</td>
-				<td class="tc w50">{{item.sequence}}</td>
+				<td class="tc">{{item.name}}</td>
+				<td class="tc">{{item.url}}</td>
+				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/interface/list/{{item.projectId}}/{{item.id}}/{{item.name}}"> 
+						<i class="iconfont f12">&#xe614; 接口</i>
+					</a>
+					
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/ARTICLE"> 
+						<i class="iconfont f12">&#xe637; 文章</i>
+					</a>
+					
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.projectId}}/{{item.id}}"> 
+						<i class="iconfont f12">&#xe638; 资源</i>
+					</a>
+					
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/DICTIONARY"> 
+						<i class="iconfont f12">&#xe61c;数据字典</i>
+					</a>
+					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+						<i class="iconfont">&#xe62b;&nbsp;</i>日志
+					</a>
+					<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?moduleId={{item.id}}"> 
+						<i class="iconfont f12">&#xe61e; 下载接口</i>
+					</a>
+					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
+						ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id)"> 
+						<i class="iconfont f12">&#xe618;修改</i>
+					</a>
 				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/interface/list/{{item.projectId}}/{{item.id}}/{{item.name}}"> 
-					<i class="iconfont f12">&#xe614; 接口</i>
-				</a>
-				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/ARTICLE"> 
-					<i class="iconfont f12">&#xe637; 文章</i>
-				</a>
-				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.projectId}}/{{item.id}}"> 
-					<i class="iconfont f12">&#xe638; 资源</i>
-				</a>
-				
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/DICTIONARY"> 
-					<i class="iconfont f12">&#xe61c;数据字典</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
-					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?moduleId={{item.id}}"> 
-					<i class="iconfont f12">&#xe61e; 下载接口</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
-					ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id)"> 
-					<i class="iconfont f12">&#xe618;修改</i>
-				</a>
-			
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.projectId)"
-					ng-click="del('user/module/delete.do?id='+item.id,item.name)">
-					<i class="iconfont f12">&#xe60e;删除</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor"
-						ng-href="resources/html/staticize/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"> 
-						<i class="iconfont f12">&#xe63a;静态化地址</i>
-				</a>
-				<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
+					<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.projectId)"
+						ng-click="del('user/module/delete.do?id='+item.id,item.name)">
+						<i class="iconfont f12">&#xe60e;删除</i>
+					</a>
+					<a class="f12 text-primary mr10 cursor"
+							ng-href="resources/html/staticize/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"> 
+							<i class="iconfont f12">&#xe63a;静态化地址</i>
+					</a>
+				</td>
+				<td class="tc">
+					<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/module/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>

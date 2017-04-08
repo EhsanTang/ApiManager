@@ -1,7 +1,7 @@
 /****************密码访问*****************/
 function propUpPsswordDiv(obj){
 	var msg = obj.textContent;
-	if(msg.indexOf("[000007]")>=0){
+	if(msg.indexOf("[000007]")>=0 || msg.indexOf("[000011]")>=0){
 		lookUp('passwordDiv', '', 300, 300 ,6,'');
 		showMessage('passwordDiv','false',false,-1);
 		showMessage('fade','false',false,-1);

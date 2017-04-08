@@ -24,7 +24,7 @@
 		<div class="cb"></div>
 </div>
 <div class="col-xs-12 mt20 p0 mb10 f12 tr C999">
-	静态化项目：暂时只支持文章静态化，公开项目可以静态化成html，静态化后的文件目录：【项目根目录】/resources/html/staticize/项目ID/模块ID
+	静态化项目：暂时只支持文章静态化，公开项目可以静态化成html，静态化后的文件目录：【项目根目录】/resources/html/staticize/项目ID
 </div>
 
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">
@@ -51,20 +51,20 @@
 				<td class="tc">
 				
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
-						<i class="iconfont f12">&#xe60f;模块</i>
+						<i class="iconfont f12">&#xe613;模块</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 
-						<i class="iconfont f12">&#xe60f;错误码</i>
+						<i class="iconfont f12">&#xe60c;错误码</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list/{{item.id}}"> 
-						<i class="iconfont f12">&#xe60f;成员</i>
+						<i class="iconfont f12">&#xe603;成员</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>日志
 					</a>
 					
 					<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list" target="_blank"> 
-						<i class="iconfont f12 adorn-color">&#xe613;主页</i>
+						<i class="iconfont f12 adorn-color">&#xe616;主页</i>
 					</a>
 					
 					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
@@ -79,7 +79,7 @@
 					
 					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('staticize-project','editer-project');"> 
-						<i class="iconfont f12">&#xe618;静态化</i>
+						<i class="iconfont f12">&#xe640;静态化</i>
 					</a>
 					
 				</td>

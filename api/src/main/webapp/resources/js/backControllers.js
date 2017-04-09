@@ -480,6 +480,9 @@ mainModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, 
 		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&myself="+$stateParams.myself;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
+    $scope.clearDonwloadUrl = function(){
+    	$("#downloadUrl").html("");
+    }
     $scope.getData();
 });
 /*************************模块列表**********************/

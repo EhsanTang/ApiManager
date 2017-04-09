@@ -1,8 +1,6 @@
 # CrapApi
 [![视屏演示](http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
 
-<a href="http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1" target="_blank"> <img src="http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg"></a>
-
 [CrapApi是什么]
 ```
 CrapApi：一个由angularjs+bootstrap+springMVC搭建的高性能的免费开源的API接口、文档管理系统（应用接口管理系统）

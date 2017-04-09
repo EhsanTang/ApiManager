@@ -1,5 +1,5 @@
 # CrapApi
-[![视屏演示](http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
+[![视屏演示](http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1?_blank)
 
 [CrapApi是什么]
 ```

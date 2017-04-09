@@ -19,6 +19,8 @@ public class SqlToDictionaryUtil {
 		if(!sql.toLowerCase().replaceAll(" ", "").startsWith("createtable")){
 			throw new MyException("000046");
 		}
+		// 联合主键等被切分
+		sql = sql.replace("`,`", "");
 		Article article = new Article();
 		article.setType(ArticleType.DICTIONARY.name());
 		article.setBrief(brief);
@@ -115,7 +117,13 @@ public class SqlToDictionaryUtil {
 		}
 		List<DictionaryDto> fieldList = new ArrayList<DictionaryDto>();
 		for(String key: propertys.keySet()){
-			fieldList.add(propertys.get(key));
+			if( propertys.get(key).getFlag().equals( DictionaryPropertyType.primary.getName() )
+					|| propertys.get(key).getFlag().equals( DictionaryPropertyType.foreign.getName() )
+					|| propertys.get(key).getFlag().equals( DictionaryPropertyType.associate.getName() ) ){
+				fieldList.add(0,propertys.get(key));
+			}else{
+				fieldList.add(propertys.get(key));
+			}
 		}
 		article.setContent(JSONArray.fromObject(fieldList).toString());
 		return article;
@@ -219,7 +227,13 @@ public class SqlToDictionaryUtil {
 		}
 		List<DictionaryDto> fieldList = new ArrayList<DictionaryDto>();
 		for(String key: propertys.keySet()){
-			fieldList.add(propertys.get(key));
+			if( propertys.get(key).getFlag().equals( DictionaryPropertyType.primary.getName() )
+					|| propertys.get(key).getFlag().equals( DictionaryPropertyType.foreign.getName() )
+					|| propertys.get(key).getFlag().equals( DictionaryPropertyType.associate.getName() ) ){
+				fieldList.add(0,propertys.get(key));
+			}else{
+				fieldList.add(propertys.get(key));
+			}
 		}
 		article.setContent(JSONArray.fromObject(fieldList).toString());
 		return article;

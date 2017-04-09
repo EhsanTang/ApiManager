@@ -35,6 +35,9 @@ public class MyCookie {
 		addCookie(key,value,jiami, response,60*60*24*7);
 	}
 	public static void addCookie(String key,String value,boolean jiami, HttpServletResponse response, int time){
+		if( MyString.isEmpty(key) || MyString.isEmpty(value)){
+			return;
+		}
 		if(jiami){
 			value = Aes.encrypt(value);
 		}else{

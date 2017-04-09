@@ -317,8 +317,25 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	 $rootScope.iClose = function(id) {
 	    	iClose(id);
 	 };
+	 /******静态化****************/
 	 $rootScope.staticize= function (id){
 			callAjaxByName('iUrl=user/staticize/staticize.do?projectId='+id+'|iLoading=TIPFLOAT静态化中，请稍后...|ishowMethod=updateDivWithImg|iFormId=staticize-form');
+	 }
+	 $rootScope.downloadStaticize= function (id){
+		 var params = "iUrl=user/staticize/downloadStaticize.do?projectId="+id+"|iLoading=TIPFLOAT静态化中，请稍后...|iPost=POST";
+			httpService.callHttpMethod($http,params).success(function(result) {
+				var isSuccess = httpSuccess(result,'iLoading=TIPFLOAT')
+				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+					 $rootScope.error = isSuccess.replace('[ERROR]', '');
+				 }else if(result.success==1){
+					 $("#downloadUrl").html("操作成功，将自动下载，3s后若无反应，请点击：<a href='"+ result.data +"' target='_blank'>下载</a> 手动下载");
+					 window.open(result.data);
+				 }
+			}).error(function(result) {
+				lookUp('lookUp','',100,300,3);
+				closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=TIPFLOAT', 3);
+				$rootScope.error = result;
+			});
 	 }
 });
 

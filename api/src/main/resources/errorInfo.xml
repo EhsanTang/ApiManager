@@ -59,6 +59,8 @@
 				<entry key="000053" value="超级管理员信息只能自己修改"/>
 				<entry key="000054" value="管理员自能修改普通用户信息"/>
 				<entry key="000055" value="admin账号为内置账号，不能修改用户名"/>
+				<entry key="000056" value="非法请求，决绝响应"/>
+				<entry key="000057" value="尚未静态化，静态化后方可下载"/>
 			</map>
 		</property>
 	</bean>

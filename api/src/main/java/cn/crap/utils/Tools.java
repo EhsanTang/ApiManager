@@ -1,10 +1,15 @@
 package cn.crap.utils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +20,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +57,134 @@ public class Tools {
 			fw.close();
 		}
 	}
+	
+	public static void createZip(String sourcePath, String zipPath) throws Exception {
+		FileOutputStream fos = null;
+		ZipOutputStream zos = null;
+		try {
+			fos = new FileOutputStream(zipPath);
+			zos = new ZipOutputStream(fos);
+			writeZip(new File(sourcePath), "", zos);
+		} catch (FileNotFoundException e) {
+			throw e;
+		} finally {
+			if (zos != null) {
+				zos.close();
+			}
+			if( fos != null ){
+				fos.close();
+			}
+		}
+	}
+  
+	private static void writeZip(File file, String parentPath, ZipOutputStream zos) throws Exception {
+		if (file.exists()) {
+			if (file.isDirectory()) {// 处理文件夹
+				parentPath += file.getName() + File.separator;
+				File[] files = file.listFiles();
+				if (files.length != 0) {
+					for (File f : files) {
+						writeZip(f, parentPath, zos);
+					}
+				} else {
+					zos.putNextEntry(new ZipEntry(parentPath));
+				}
+			} else {
+				FileInputStream fis = null;
+				try {
+					fis = new FileInputStream(file);
+					ZipEntry ze = new ZipEntry(parentPath + file.getName());
+					zos.putNextEntry(ze);
+					byte[] content = new byte[1024];
+					int len;
+					while ((len = fis.read(content)) != -1) {
+						zos.write(content, 0, len);
+						zos.flush();
+					}
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					if (fis != null) {
+						fis.close();
+					}
+				}
+			}
+		}
+	}
+      
+	public static String readFile(String filePath) throws Exception{
+		  FileInputStream fis = null;
+		  InputStreamReader isr = null;
+		  BufferedReader br = null;
+		  try{
+			  fis = new FileInputStream(filePath);   
+			  isr = new InputStreamReader(fis, "UTF-8");   
+			  br =new BufferedReader(isr);   
+			  String line = null;   
+			  StringBuilder sb = new StringBuilder();
+			  while ((line = br.readLine()) != null) {  
+				  sb.append(line + (line.equals("\r\n") ? "":"\r\n") );
+			  }   
+			  return sb.toString();
+		  }catch(Exception e){
+			  throw e;
+		  }finally{
+			 if(fis != null){
+				 fis.close();
+			 }
+			 if(isr != null){
+				 isr.close();
+			 }
+			 if(br != null){
+				 br.close();
+			 }
+		  }
+	}
+	public static void copyFile(String source, String dest)
+	        throws IOException {    
+	    InputStream input = null;    
+	    OutputStream output = null;    
+	    try {
+	           input = new FileInputStream(source);
+	           output = new FileOutputStream(dest);        
+	           byte[] buf = new byte[1024];        
+	           int bytesRead;        
+	           while ((bytesRead = input.read(buf)) > 0) {
+	               output.write(buf, 0, bytesRead);
+	           }
+	    } catch(Exception e){
+	    	e.printStackTrace();
+	    }finally {
+	    	if(input != null)
+	    		input.close();
+	    	if(output != null)
+	    		output.close();
+	    }
+	}
+	
+	public static void getHrefFromText(String html, List<String> filePaths){
+		Pattern pattern = Pattern.compile("href=\"(.*)\"",Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(html);
+		while(matcher.find()){
+		    String foundURL = matcher.group(1);
+		    if (foundURL.startsWith("http")){
+		    	if( !filePaths.contains(foundURL) ){
+		    		filePaths.add(foundURL);
+		    	}
+		    }
+		}
+		pattern = Pattern.compile("src=\"(.*)\"",Pattern.CASE_INSENSITIVE);
+		matcher = pattern.matcher(html);
+		while(matcher.find()){
+		    String foundURL = matcher.group(1);
+		    if (foundURL.startsWith("http")){
+		    	if( !filePaths.contains(foundURL) ){
+		    		filePaths.add(foundURL);
+		    	}
+		    }
+		}
+	}
+	
 	/** 
      * 通过递归调用删除一个文件夹及下面的所有文件 
      * @param file 
@@ -65,7 +200,7 @@ public class Tools {
             //首先得到当前的路径  
             String[] childFilePaths = file.list();  
             for(String childFilePath : childFilePaths){  
-                deleteFile(file.getAbsolutePath()+"\\"+childFilePath);  
+                deleteFile(file.getAbsolutePath()+"/"+childFilePath);  
             }  
             file.delete();  
         }  
@@ -400,6 +535,5 @@ public class Tools {
 	                flag = false;
 	            }
 	        return flag;
-	    }
-	
+	 }
 }

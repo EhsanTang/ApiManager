@@ -97,10 +97,19 @@
 					<tr>
 						<td class="tc">提示</td>
 						<td class="tl" colspan="3">
+							什么叫静态化？<br>
+								&nbsp;&nbsp;静态化是指将网页静态化成html页面，当通过静态化后的地址访问项目不在需要查询数据库，使用静态化能显著加快项目访问速度！<br>
+							下载静态化文件？<br><br>
+								&nbsp;&nbsp;点击【静态化】后方可通过【下载静态化文件】按钮下载对应的html页面，接压缩或，项目接口等能够直接通过浏览器部署，
+								也可部署至html服务器器下（不需要java环境，任何web环境都可）<br><br>
+							
 							*私有化项目不支持静态化<br>
 							*系统不会自动静态化，修改后需要手动静态化<br>
 							*静态化后可以通过模块列表中的静态化地址访问静态化后的页面<br>
 							*文章为必选项，可用来添加项目说明、联系方式等<br>
+							*为了保证系统安全，在不需要静态化后，请及时删除静态化文件<br>
+							<br>
+							<div id="downloadUrl" class="text-danger fb"></div>
 						</td>
 					</tr>
 					<tr>
@@ -114,7 +123,14 @@
 						</td>
 					</tr>
 				</table>
-				<button class="btn btn-success fr"  type="button" ng-click="staticize(model.id)">静态化</button>
+				<button class="btn btn-success fr ml10"  type="button" ng-click="staticize(model.id)">
+					<i class="iconfont">&#xe640;</i>静态化</button>
+				<button class="btn btn-danger fr ml10"  type="button" 
+					ng-click="callAjaxByName('iUrl=user/staticize/delStaticize.do?projectId='+model.id+'|iLoading=TIPFLOAT静态化中，请稍后...')">
+					<i class="iconfont">&#xe60c;</i>删除静态化</button>
+				<button class="btn btn-primary fr"  type="button" 
+					ng-click="downloadStaticize(model.id)">
+					<i class="iconfont">&#xe624;</i>下载文件</button>
 			</form>
 </div>
 

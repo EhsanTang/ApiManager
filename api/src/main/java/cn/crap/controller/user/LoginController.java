@@ -1,6 +1,8 @@
 package cn.crap.controller.user;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -310,8 +312,19 @@ public class LoginController extends BaseController<User> {
 			if(e instanceof MyException){
 				model.setTipMessage( ErrorInfos.getMessage( e.getMessage() ) );
 			}else{
-				e.printStackTrace();
-				model.setTipMessage("未知异常，请查看日志："+e.getMessage());
+				log.error(e.getMessage(), e);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				e.printStackTrace(new PrintStream(baos));
+				String exceptionDetail[] = baos.toString().split("Caused by:");
+				try {
+					baos.close();
+				} catch (IOException ioe) {}
+				
+				String cusedBy = "";
+				if (exceptionDetail.length > 0) {
+					cusedBy = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
+				}
+				model.setTipMessage("未知异常，请查看日志：" + cusedBy);
 			}
 			return new JsonResult(1, model);
 		}

@@ -1,6 +1,10 @@
 # CrapApi
 [![视屏演示](http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
 
+最新消息：
+[2016 年9月获得码云推荐]
+[2016 年度码云新增热门开源软件排行榜 TOP 50——【CrapApi排名16】](http://www.oschina.net//news/81027/2016-oschina-git-new-software-top-50)
+
 [CrapApi是什么]
 ```
 CrapApi：一个由angularjs+bootstrap+springMVC搭建的高性能的免费开源的API接口、文档管理系统（应用接口管理系统）

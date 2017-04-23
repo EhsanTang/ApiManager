@@ -216,8 +216,7 @@ public class LuceneSearchService implements ISearchService {
 	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
-			// 如果是私有项目，且配置了私有项目不建立索引，则不建立索引
-			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
+			if(!searchDto.isNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}
@@ -246,8 +245,7 @@ public class LuceneSearchService implements ISearchService {
 	public boolean update(SearchDto searchDto) throws IOException {
 		IndexWriter writer = null;
 		try {
-			// 如果是私有项目，且配置了私有项目不简历索引，则不简历索引
-			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
+			if(!searchDto.isNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}
@@ -312,6 +310,25 @@ public class LuceneSearchService implements ISearchService {
 		}
 	    return true;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean rebuildByProjectId(String projectId){
+		for (ILuceneService<ILuceneDto> service : luceneServices) {
+			List<ILuceneDto> dtos = service.getAllByProjectId(projectId);
+			for (ILuceneDto dto : dtos) {
+				// 避免占用太大的系统资源
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				add(dto.toSearchDto(cacheService));
+			}
+		}
+		return true;
+	}
+	
 	public static String handleHref(String href){
 		if(href == null)
 			return "";

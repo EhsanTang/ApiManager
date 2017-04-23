@@ -12,7 +12,9 @@ import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.ISourceDao;
 import cn.crap.inter.service.table.ISourceService;
 import cn.crap.inter.service.tool.ILuceneService;
+import cn.crap.model.Interface;
 import cn.crap.model.Source;
+import cn.crap.utils.Tools;
 
 @Service
 public class SourceService extends BaseService<Source>
@@ -39,6 +41,13 @@ public class SourceService extends BaseService<Source>
 	@Transactional
 	public List<Source> getAll() {
 		return sourceDao.findByMap(null, null, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Source> getAllByProjectId(String projectId) {
+		return (List<Source>) sourceDao.queryByHql("from Interface where moduleId in (select id  from Module where projectId=:projectId)", Tools.getMap("projectId", projectId));
 	}
 
 	@Override

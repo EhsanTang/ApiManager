@@ -1,12 +1,6 @@
 package cn.crap.controller.user;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import cn.crap.dto.CategoryDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ProjectStatus;
-import cn.crap.enumeration.ProjectType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -34,14 +25,10 @@ import cn.crap.inter.service.table.IProjectUserService;
 import cn.crap.inter.service.table.IRoleService;
 import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Article;
-import cn.crap.model.Module;
+import cn.crap.inter.service.tool.ISearchService;
 import cn.crap.model.Project;
-import cn.crap.model.Setting;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
-import cn.crap.utils.HttpPostGet;
-import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -69,6 +56,8 @@ public class ProjectController extends BaseController<Project> {
 	private Config config;
 	@Autowired
 	private IArticleService articleService;
+	@Autowired
+	private ISearchService luceneService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -127,6 +116,7 @@ public class ProjectController extends BaseController<Project> {
 		
 		Project model;
 		LoginInfoDto user = Tools.getUser();
+		
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
 			model= cacheService.getProject(project.getId());
@@ -213,5 +203,14 @@ public class ProjectController extends BaseController<Project> {
 		projectService.update(change);
 
 		return new JsonResult(1, null);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/rebuildIndex.do")
+	@AuthPassport
+	public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
+		Project model= cacheService.getProject(projectId);
+		hasPermission(model);
+		return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
 	}
 }

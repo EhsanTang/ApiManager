@@ -41,4 +41,6 @@ public interface ISearchService{
 	 */
 	boolean rebuild();
 
+	boolean rebuildByProjectId(String projectId);
+
 }

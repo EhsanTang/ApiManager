@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
+import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
 import cn.crap.inter.service.table.IArticleService;
@@ -101,6 +102,12 @@ public class UserPickService implements IPickService{
 					case "PROJECTTYPE":
 						for (ProjectType pt : ProjectType.values()) {
 							pick = new PickDto(pt.getType()+"", pt.getName());
+							picks.add(pick);
+						}
+						return;
+					case "LUCENESEARCHTYPE":
+						for (LuceneSearchType lc : LuceneSearchType.values()) {
+							pick = new PickDto( lc.getValue() + "" , lc.getName());
 							picks.add(pick);
 						}
 						return;

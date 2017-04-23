@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.SpringContextHolder;
@@ -32,6 +33,7 @@ public class Project extends BaseModel implements Serializable{
 	private String userId;
 	private String password;
 	private String cover = "resources/images/cover.png";
+	private byte luceneSearch;
 	
 	public Project(String id,String name, int type, String remark, String userId, String createTime, String cover){
 		this.id = id;
@@ -92,6 +94,15 @@ public class Project extends BaseModel implements Serializable{
 	public void setCover(String cover) {
 		this.cover = cover;
 	}
+	
+	@Column(name="luceneSearch")
+	public byte getLuceneSearch() {
+		return luceneSearch;
+	}
+
+	public void setLuceneSearch(byte luceneSearch) {
+		this.luceneSearch = luceneSearch;
+	}
 
 	@Transient
 	public String getTypeName(){
@@ -101,6 +112,13 @@ public class Project extends BaseModel implements Serializable{
 	public String getStatusName(){
 		return ProjectStatus.getNameByValue(status);
 	}
+	
+	@Transient
+	public String getLuceneSearchName(){
+		return LuceneSearchType.getName(luceneSearch);
+	}
+	
+	
 	@Transient
 	public String getUserName(){
 		if(!MyString.isEmpty(userId)){

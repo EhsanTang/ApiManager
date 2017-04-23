@@ -77,9 +77,6 @@ public class Config{
 	@Value("${web.openRegister}")
 	private boolean openRegister;
 	
-	@Value("${web.privateProjectNeedCreateIndex}")
-	private boolean privateProjectNeedCreateIndex;
-	
 	@Value("${web.luceneSearchNeedLogin}")
 	private boolean luceneSearchNeedLogin;
 	
@@ -96,10 +93,6 @@ public class Config{
 		if(MyString.isEmpty(baidu))
 			return "";
 		return baidu;
-	}
-
-	public boolean isPrivateProjectNeedCreateIndex() {
-		return privateProjectNeedCreateIndex;
 	}
 
 	public boolean isLuceneSearchNeedLogin() {

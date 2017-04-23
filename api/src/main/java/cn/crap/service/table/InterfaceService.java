@@ -21,6 +21,7 @@ import cn.crap.inter.service.table.IInterfaceService;
 import cn.crap.inter.service.table.IModuleService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.inter.service.tool.ILuceneService;
+import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.springbeans.Config;
@@ -147,8 +148,16 @@ public class InterfaceService extends BaseService<Interface>
 		return interfaceDao.findByMap(null, null, null);
 	}
 
+	
 	@Override
 	public String getLuceneType() {
 		return "接口";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Interface> getAllByProjectId(String projectId) {
+		return (List<Interface>) interfaceDao.queryByHql("from Interface where moduleId in (select id  from Module where projectId=:projectId)", Tools.getMap("projectId", projectId));
 	}
 }

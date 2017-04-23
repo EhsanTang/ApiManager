@@ -1,0 +1,55 @@
+package cn.crap.enumeration;
+
+public enum LuceneSearchType {
+	
+	
+	No("不建立索引",new Byte("0")),
+	Yes("建立索引",new Byte("1"));
+	
+	private String name;
+	private byte value;
+	
+	LuceneSearchType(String name, byte value){
+		this.name = name;
+		this.value = value;
+	}
+	
+	public LuceneSearchType getMonitorType(int value){
+		for (LuceneSearchType c : LuceneSearchType.values())
+		{
+			if (c.getValue() == value)
+			{
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	// 普通方法
+	public static String getName(byte value)
+	{
+		for (LuceneSearchType c : LuceneSearchType.values())
+		{
+			if (c.getValue() == value)
+			{
+				return c.getName();
+			}
+		}
+		return "";
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getValue() {
+		return value;
+	}
+	public void setValue(byte value) {
+		this.value = value;
+	}
+	
+	
+	
+}

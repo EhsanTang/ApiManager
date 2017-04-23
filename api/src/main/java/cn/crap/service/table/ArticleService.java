@@ -4,15 +4,18 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.inter.dao.IArticleDao;
+import cn.crap.inter.dao.IModuleDao;
 import cn.crap.inter.service.table.IArticleService;
 import cn.crap.inter.service.tool.ILuceneService;
 import cn.crap.model.Article;
+import cn.crap.utils.Tools;
 
 @Service
 public class ArticleService extends BaseService<Article>
@@ -20,6 +23,9 @@ public class ArticleService extends BaseService<Article>
 	@Resource(name="articleDao")
 	IArticleDao webPageDao;
 
+	@Autowired
+	private IModuleDao moduleDao;
+	
 	@Resource(name="articleDao")
 	public void setDao(IBaseDao<Article> dao) {
 		super.setDao(dao);
@@ -43,6 +49,13 @@ public class ArticleService extends BaseService<Article>
 	@Override
 	public String getLuceneType() {
 		return "文章&数据字典";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Article> getAllByProjectId(String projectId) {
+		return (List<Article>) webPageDao.queryByHql("from Article where moduleId in (select id  from Module where projectId=:projectId)", Tools.getMap("projectId", projectId));
 	}
 	
 	

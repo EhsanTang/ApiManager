@@ -262,6 +262,7 @@ function rebuildIndex(obj){
 	}
 }
 
+
 //刷新缓存
 function flushDB(obj){
 	if (confirm("确定刷新缓存？登陆信息等缓存将被删除")) {

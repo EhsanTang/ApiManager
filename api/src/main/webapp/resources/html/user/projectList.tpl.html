@@ -81,7 +81,10 @@
 						ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();"> 
 						<i class="iconfont f12">&#xe640;静态化</i>
 					</a>
-					
+					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+						ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + item.id, 'PROPUPFLOAT重建索引中...')"> 
+						<i class="iconfont f12">&#xe611;重建索引</i>
+					</a>
 				</td>
 				<td>
 					<div class="w50 fr tl">

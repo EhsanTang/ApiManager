@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 import cn.crap.dto.ILuceneDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.ArticleType;
+import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
@@ -73,8 +74,8 @@ public class Article extends BaseModel implements Serializable,ILuceneDto{
 		dto.setUrl("#/"+getProjectId()+"/article/detail/"+getModuleId()+"/"+type+"/"+id);
 		dto.setVersion("");
 		dto.setProjectId(getProjectId());
-		// 私有项目不能建立索引
-		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+		
+		if(cacheService.getProject(getProjectId()).getLuceneSearch() == LuceneSearchType.No.getValue()){
 			dto.setNeedCreateIndex(false);
 		}
 		return dto;

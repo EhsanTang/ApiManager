@@ -5,8 +5,13 @@ function format(txt, tiperror, compress/*是否为压缩模式*/) {/* 格式化J
 			alert('数据为空,无法格式化! ');
 		return;
 	}
+	// 替换\r\n 换行
+	txt=txt.replace(/\\r/g,"CRAPAPI_R"); 
+    txt=txt.replace(/\\n/g,"CRAPAPI_N"); 
+    txt=txt.replace(/\\t/g,"CRAPAPI_T"); 
+	var data;
 	try {
-		var data = eval('(' + txt + ')');
+		data=$.parseJSON(txt);
 	} catch (e) {
 		if (tiperror)
 			alert('数据源语法错误,格式化失败! 错误信息: ' + e.description, 'err');
@@ -37,6 +42,11 @@ function format(txt, tiperror, compress/*是否为压缩模式*/) {/* 格式化J
 		} else {
 			if (typeof value == 'string') {
 				value = value.replace(/\"/gm, '\\"');
+				// 替换\r\n 换行
+				value=value.replace(/CRAPAPI_R/g,"\\r"); 
+  				value=value.replace(/CRAPAPI_N/g,"\\n"); 
+  				value=value.replace(/CRAPAPI_T/g,"\\t"); 
+
 				value = '"' + value + '"';
 			}
 			draw.push(tab + (formObj ? ('"' + name + '":') : '') + value

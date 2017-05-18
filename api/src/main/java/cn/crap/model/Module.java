@@ -31,6 +31,7 @@ public class Module extends BaseModel implements Serializable{
 	private String projectId;
 	private String templateId;
 	private String templateName="";
+	private Integer version;
 	
 	public Module(String id,String name, String url, String remark, String userId, String createTime, String projectId,byte canDelete){
 		this.id = id;
@@ -105,6 +106,13 @@ public class Module extends BaseModel implements Serializable{
 	}
 	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
+	}
+	@Column(name="version")
+	public Integer getVersion() {
+		return version;
+	}
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 	@Transient
 	public String getProjectName(){

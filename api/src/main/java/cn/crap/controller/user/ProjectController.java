@@ -73,12 +73,12 @@ public class ProjectController extends BaseController<Project> {
 		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
 			if(MyString.isEmpty(project.getName())){
 				return new JsonResult(1, 
-						projectService.queryByHql("from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId) order by sequence desc, createTime desc", Tools.getMap("userId", user.getId()), page)
+						projectService.queryByHql("from Project where status>0 and userId=:userId or id in (select projectId from ProjectUser where userId=:userId) order by sequence desc, createTime desc", Tools.getMap("userId", user.getId()), page)
 						, page);
 
 			}else{
 				return new JsonResult(1, 
-						projectService.queryByHql("from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name order by sequence desc, createTime desc", 
+						projectService.queryByHql("from Project where status>0 and (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name order by sequence desc, createTime desc", 
 						Tools.getMap("userId", user.getId(), "name|like", project.getName()), page)
 						, page);
 

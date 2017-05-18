@@ -107,6 +107,7 @@ public class ModuleController extends BaseController<Module>{
 		}else{
 			hasPermission(cacheService.getProject( module.getProjectId() ), addModule);
 			module.setUserId(Tools.getUser().getId());
+			module.setVersion(0);
 			moduleService.save(module);
 		}
 		cacheService.delObj(Const.CACHE_MODULE+module.getId());

@@ -30,7 +30,8 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	@Override
 	@Transactional
 	public T save(T model){
-		model.setId(null);
+		if(MyString.isEmpty(model.getId()))
+			model.setId(null);
 		dao.save(model);
 		return model;
 	}

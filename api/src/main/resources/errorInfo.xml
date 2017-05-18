@@ -4,7 +4,7 @@
 	<bean id="errorInfos" class="cn.crap.framework.ErrorInfos">
 		<property name="errMsgs">
 			<map>
-				<entry key="000001" value="系统未知错误" />
+				<entry key="000001" value="Unknow Error!「系统未知错误」" />
 				<entry key="000002" value="重复的errorCode" />
 				<entry key="000003" value="权限不足或登录超时，操作失败！" />
 				<entry key="000004" value="重复的接口url地址！(同一模块下不允许重复的url)" />
@@ -24,7 +24,7 @@
 				<entry key="000018" value="文件标识有误，更新文件时，文件名必须包含“.CAV.文件标识.版本号”，且【文件标识】必须和原文件相同" />
 				<entry key="000019" value="文件版本号已经过期，请重新下载文件编辑后再上传" />
 				<entry key="000020" value="参数有误，查询失败" />
-				<entry key="000021" value="登录超时" />
+				<entry key="000021" value="Login Timeout!「登录超时」" />
 				<entry key="000022" value="权限不足" />
 				<entry key="000023" value="子模块数量大于0，不允许删除该模块" />
 				<entry key="000024" value="接口数量大于0，不允许删除该模块" />
@@ -61,6 +61,7 @@
 				<entry key="000055" value="admin账号为内置账号，不能修改用户名"/>
 				<entry key="000056" value="非法请求，决绝响应"/>
 				<entry key="000057" value="尚未静态化，静态化后方可下载"/>
+				<entry key="000058" value="Up to 100 interfaces are allowed at most. Delete some interfaces, try again, or contact us to modify the quantity!「最多允许同步100个接口，请删除部分接口再试，或联系管理员修改数量！」"/>
 			</map>
 		</property>
 	</bean>

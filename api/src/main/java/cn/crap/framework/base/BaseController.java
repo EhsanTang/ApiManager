@@ -124,6 +124,7 @@ public abstract class BaseController<T extends BaseModel> {
 		if (ex instanceof MyException) {
 			return new JsonResult((MyException) ex);
 		}else if (ex instanceof NullPointerException) {
+			log.error(ex.getMessage(), ex);
 			return new JsonResult(new MyException("000051"));
 		}else {
 			log.error(ex.getMessage(), ex);

@@ -536,4 +536,20 @@ public class Tools {
 	            }
 	        return flag;
 	 }
+	// 相同ID，不同用户在数据库存储的id与浏览器中存储的不一致，解决项目导出给其他人id一致的问题
+		public static String handleId(LoginInfoDto user, String id){
+			if(MyString.isEmpty(id)){
+				return null;
+			}
+			
+			id = id + "-" + MD5.encrytMD5(user.getId()).substring(0, 5);
+			return id;
+		}
+		public static String unhandleId(String id){
+			if(MyString.isEmpty(id)){
+				return null;
+			}
+			id = id.substring(0, id.lastIndexOf("-"));
+			return id;
+		}
 }

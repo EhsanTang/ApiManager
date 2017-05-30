@@ -2,19 +2,17 @@ package cn.crap.dto;
 
 import java.util.List;
 
-import cn.crap.model.Debug;
-
 public class DebugInterfaceParamDto {
-	private List<Debug> debugs;
+	private List<DebugDto> debugs;
 	private String moduleId;
 	private String moduleName;
 	private Integer version;
 	private Byte status;
 	
-	public List<Debug> getDebugs() {
+	public List<DebugDto> getDebugs() {
 		return debugs;
 	}
-	public void setDebugs(List<Debug> debugs) {
+	public void setDebugs(List<DebugDto> debugs) {
 		this.debugs = debugs;
 	}
 	public String getModuleId() {

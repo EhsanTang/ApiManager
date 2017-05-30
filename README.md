@@ -1,9 +1,9 @@
 # CrapApi
-[![视屏演示](http://api.crap.cn/resources/upload/files/2017-04-09/20045116Ezr6.CAV.HJFwtk.1.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
+[![视屏演示](http://git.oschina.net/CrapApi/CrapApi/raw/master/CrapApiFiles/webPlay.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
 
 [CrapApi是什么]
 ```
-CrapApi：一个由angularjs+bootstrap+springMVC搭建的高性能的免费开源的API接口、文档管理系统（应用接口管理系统）
+一个由angularjs+bootstrap+springMVC搭建的免费开源的API接口、文档管理系统（应用接口管理系统）
 ```
 [CrapApi收费吗？]
 ```
@@ -58,6 +58,11 @@ GitHub源码地址：https://github.com/EhsanTang/CrapApi
 主要语言：java、js
 主要技术：angularjs、bootstrap、springMVC、hibernate、maven、iconfont、markdown、redis、Lucene...
 ```
+[关键字]
+```
+ApiManager GitHub,apimanager github,Apimanager 码云,ApiManager 开源中国
+API接口管理系统,API接口管理,在线API接口管理,API接口调试工具,RestApi,API调试插件
+```
 
 [相关技术介绍]
 ```
@@ -68,4 +73,8 @@ Iconfont：阿里巴巴矢量图标库
 [效果图]
 
 http://blog.csdn.net/torrytang/article/details/52728160
+
+最新消息：</br>
+[2016 年9月获得码云推荐]</br>
+[2016 年度码云新增热门开源软件排行榜 TOP 50——【CrapApi排名16】](http://www.oschina.net//news/81027/2016-oschina-git-new-software-top-50)
 

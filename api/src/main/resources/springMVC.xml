@@ -32,6 +32,7 @@
 	<import resource="errorInfo.xml" />
 	<!-- 定时任务
 	<import resource="monitor.xml" /> -->
+	<import resource="mongo.xml" />
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">

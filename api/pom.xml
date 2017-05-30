@@ -291,7 +291,18 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
-
+<!-- mongo -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!-- spring mongo -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.7.0.RELEASE</version>
+		</dependency>
 
 	</dependencies>
 	

@@ -1,4 +1,8 @@
 use api;
+-- 最后修改sql的版本-V7.4，该脚本永远都是最新，最全的，不需要再执行其他脚本（如果表存在会删除所有已有表，然后重新建立）
+-- 该脚本使用mysql工具导出，不同工具导入时可能出错，删除不识别的脚本即可（工具添加的注释等）
+-- 执行前请新建数据库，本脚本默认使用api库（use api）
+-- 请使用5.6及以上mysql
 
 DROP TABLE IF EXISTS `article`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

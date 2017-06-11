@@ -256,7 +256,7 @@ function saveMarkdown(markdown,content){
 }
 // 重建索引
 function rebuildIndex(obj){
-	if (confirm("确定重建索引？")) {
+	if (myConfirm("确定重建索引？")) {
 		selectButton(obj,'menu-a');
 		callAjaxByName('iUrl=back/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
 	}
@@ -265,7 +265,7 @@ function rebuildIndex(obj){
 
 //刷新缓存
 function flushDB(obj){
-	if (confirm("确定刷新缓存？登陆信息等缓存将被删除")) {
+	if (myConfirm("确定刷新缓存？登陆信息等缓存将被删除")) {
 		selectButton(obj,'menu-a');
 		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}

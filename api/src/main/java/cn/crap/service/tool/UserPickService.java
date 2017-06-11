@@ -75,7 +75,7 @@ public class UserPickService implements IPickService{
 //						return;
 					case "MYMODULE":// 用户所有模块
 						// 普通用户，只能查看自己的模块
-						for (Project p : projectService.findByMap(Tools.getMap("userId", Tools.getUser().getId()), null, null)) {
+						for (Project p : projectService.findByMap(Tools.getMap("userId", Tools.getUser().getId(), "status|>", 0), null, null)) {
 							pick = new PickDto(Const.SEPARATOR, p.getName());
 							picks.add(pick);
 							

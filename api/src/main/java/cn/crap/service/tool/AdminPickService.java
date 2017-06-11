@@ -71,7 +71,7 @@ public class AdminPickService implements IPickService{
 //			}
 //			return;
 		case "PROJECT":
-			for (Project p : projectService.findByMap(null, null, null)) {
+			for (Project p : projectService.findByMap(Tools.getMap("status|>",0), null, null)) {
 				pick = new PickDto(p.getId(), p.getName());
 				picks.add(pick);
 			}

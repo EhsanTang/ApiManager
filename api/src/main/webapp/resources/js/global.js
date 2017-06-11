@@ -284,3 +284,23 @@ function selectButton(obj,className){
 	objs.removeClass("iactive");
 	$(obj).addClass("iactive");
 }
+
+function myConfirm(message){
+    var begin = Date.now();
+    var result = window.confirm(message);
+    var end = Date.now();
+    if (end - begin < 10) {
+    	$("#global-error").text("Please do not disable popups,it's dangerous!「请勿禁用【确认】弹窗，直接操作非常危险」");
+    	$("#global-error").removeClass("ndis");
+        return true;
+    }
+    return result;
+}
+function sleep(numberMillis) { 
+	   var now = new Date();
+	   var exitTime = now.getTime() + numberMillis;  
+	   while (true) { 
+	       now = new Date(); 
+	       if (now.getTime() > exitTime)    return;
+	    }
+	}

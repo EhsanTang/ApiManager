@@ -337,7 +337,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     		
     		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
     		if(item.param.length<5 || item.param.substring(0,5)!="form="){
-    			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+    			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
     				$rootScope.model.params = eval("([])");
     			}else{
     				return;
@@ -347,7 +347,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
         		try{
         			$rootScope.model.params = eval("("+item.param.substring(5)+")");
         		}catch(e){
-        			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+        			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
         				$rootScope.model.params = eval("([])");
         			}else{
         				return;

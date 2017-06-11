@@ -175,6 +175,8 @@
 				
 				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
 					<div class="m15">
+						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
+						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
 						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
@@ -253,7 +255,6 @@
 		<i class="iconfont i-full CFFF fb f20" onclick="fullMyDialog('myDialog')">&#xe62e;</i>
 </div>   
 <div class="tip-div" id="tip-div"></div>
- 
 <div id="float" class="folat">
 		<div class="sk-wave">
         <div class="sk-rect sk-rect1"></div>

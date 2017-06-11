@@ -114,7 +114,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除【"+id+"】？";
-		if (confirm(title)) {
+		if (myConfirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=TIP";
 			httpService.callHttpMethod($http,params).success(function(result) {
 				var isSuccess = httpSuccess(result,'iLoading=TIP')

@@ -72,7 +72,7 @@ public class CrapDebugController extends BaseController<Article>{
 			project.setRemark("");
 			projectService.save(project);
 		}
-		
+		int moduleSequence = 0;
 		for(DebugInterfaceParamDto d: list){
 			if(d==null || MyString.isEmpty(d.getModuleId())){
 				continue;
@@ -85,7 +85,7 @@ public class CrapDebugController extends BaseController<Article>{
 					module.setId(d.getModuleId());
 					module.setName(d.getModuleName());
 					module.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
-					module.setSequence(0);
+					module.setSequence(moduleSequence);
 					module.setProjectId(project.getId());
 					module.setUserId(user.getId());
 					module.setRemark("");
@@ -107,12 +107,14 @@ public class CrapDebugController extends BaseController<Article>{
 					else if(d.getVersion() == null || module.getVersion() < d.getVersion()){
 						module.setVersion(d.getVersion()==null?0:d.getVersion());
 						module.setName(d.getModuleName());
+						module.setSequence(moduleSequence);
 						moduleService.update(module);
 					}
 				}catch(Exception e){
 					e.printStackTrace();
 				}
 			}
+			moduleSequence = moduleSequence + 1;
 			// 先删除，在同步
 			for(DebugDto debug : d.getDebugs()){
 				debug.setId(Tools.handleId(user, debug.getId()));
@@ -136,8 +138,9 @@ public class CrapDebugController extends BaseController<Article>{
 			if (totalNum > 100){
 				return new JsonResult("000058");
 			}
-			
+			int debugSequence = 0;
 			for(DebugDto debug : d.getDebugs()){
+				debug.setSequence(debugSequence);
 				try{
 					if(MyString.isEmpty( debug.getId())){
 						continue;
@@ -147,14 +150,12 @@ public class CrapDebugController extends BaseController<Article>{
 					}
 					debug.setUid(user.getId());
 					debug.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
-					debug.setSequence(0);
 					debugService.save(debug.convertToDebug());
 				}catch(Exception e){
 					Debug old = debugService.get(debug.getId());
 					if(old.getVersion() < debug.getVersion()){
 						debug.setCreateTime(old.getCreateTime());
 						if(old.getModuleId().equals(debug.getModuleId())){
-							debug.setSequence(old.getSequence());
 							debug.setStatus(old.getStatus());
 							debug.setUid(user.getId());
 							debugService.update(debug.convertToDebug());
@@ -163,15 +164,16 @@ public class CrapDebugController extends BaseController<Article>{
 					continue;
 				}
 				totalNum = totalNum + 1;
+				debugSequence = debugSequence + 1;
 			}
 		}
 		
-		List<Module> modules = moduleService.findByMap(Tools.getMap("projectId",projectId), null, "createTime desc");
+		List<Module> modules = moduleService.findByMap(Tools.getMap("projectId",projectId), null, "sequence asc");
 		List<String> moduleIds = new ArrayList<String>();
 		for (Module m:modules){
 			moduleIds.add(m.getId());
 		}
-		List<Debug> debugs = debugService.findByMap(Tools.getMap("moduleId|in", moduleIds), null, "createTime desc");
+		List<Debug> debugs = debugService.findByMap(Tools.getMap("moduleId|in", moduleIds), null, "sequence asc");
 		Map<String,List<DebugDto>> mapDebugs = new HashMap<>();
 		for(Debug d:debugs){
 			List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());

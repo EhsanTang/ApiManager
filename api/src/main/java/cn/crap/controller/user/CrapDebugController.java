@@ -104,7 +104,7 @@ public class CrapDebugController extends BaseController<Article>{
 						moduleService.delete(delete);
 						debugService.update("delete from Debug where moduleId=:moduleId", Tools.getMap("moduleId", d.getModuleId()));
 					}
-					else if(d.getVersion() == null || module.getVersion() < d.getVersion()){
+					else if(d.getVersion() == null || module.getVersion() <= d.getVersion()){
 						module.setVersion(d.getVersion()==null?0:d.getVersion());
 						module.setName(d.getModuleName());
 						module.setSequence(moduleSequence);
@@ -151,9 +151,10 @@ public class CrapDebugController extends BaseController<Article>{
 					debug.setUid(user.getId());
 					debug.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 					debugService.save(debug.convertToDebug());
+					totalNum = totalNum + 1;
 				}catch(Exception e){
 					Debug old = debugService.get(debug.getId());
-					if(old.getVersion() < debug.getVersion()){
+					if(old.getVersion() <= debug.getVersion()){
 						debug.setCreateTime(old.getCreateTime());
 						if(old.getModuleId().equals(debug.getModuleId())){
 							debug.setStatus(old.getStatus());
@@ -161,9 +162,7 @@ public class CrapDebugController extends BaseController<Article>{
 							debugService.update(debug.convertToDebug());
 						}	
 					}
-					continue;
 				}
-				totalNum = totalNum + 1;
 				debugSequence = debugSequence + 1;
 			}
 		}

@@ -1,5 +1,7 @@
 <div class="bb1 mt20 C999 fb f16 pb5">发表评论</div>
-
+<div class="col-xs-12 f16 fb pl0 pt10 pb0 mb5 BGFFF r5" ng-if="error">
+	<button type="button" class="btn btn-danger btn-xs break-word" onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
+</div>
 <form ng-submit="submitForm('front/comment/add.do')" class="mt10">
 	<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="model.content"
 			rows="4" required placeholder="请输入评论内容">

@@ -50,4 +50,4 @@ ADD COLUMN `avatarUrl` VARCHAR(500) NOT NULL DEFAULT 'resources/avatar/avatar0.j
 ALTER TABLE `comment` 
 ADD COLUMN `userName` VARCHAR(50) NOT NULL COMMENT '匿名' AFTER `avatarUrl`;
 
-
+update comment set userName='匿名' where userName='' or userName is null;

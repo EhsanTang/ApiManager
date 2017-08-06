@@ -25,7 +25,11 @@ public class ErrorInfos {
 	}
 	
 	public static String getMessage(String code) {
-		return errMsgs.get(code);
+		String message = errMsgs.get(code);
+		if (message == null){
+			message = "错误码不存在：" + code;
+		}
+		return message;
 	}
 	public Map<String, String> getErrMap(String code, String msg) {
 		Map<String, String> returnMap = new HashMap<String, String>();

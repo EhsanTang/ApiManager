@@ -64,7 +64,7 @@ public class GitOschinaController extends BaseController<User> {
 					user.setEmail(gitHubUser.getEmail());
 				user.setPassword("");
 				user.setStatus(Byte.valueOf("1"));
-				user.setType(Byte.valueOf("2"));
+				user.setType(Byte.valueOf("1"));
 				String avatarUrl = gitHubUser.getAvatar_url();
 				if (avatarUrl.contains("?")){
 					avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"));

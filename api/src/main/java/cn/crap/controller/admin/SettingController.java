@@ -20,6 +20,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.ISettingService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Setting;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
@@ -33,6 +34,8 @@ public class SettingController extends BaseController<Setting>{
 	private ISettingService settingService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private Config config;
 	private final static String[] indexUrls = new String[]{"index.do", "front/","project.do"};
 	/**
 	 * 
@@ -109,7 +112,13 @@ public class SettingController extends BaseController<Setting>{
 			Tools.createFile(path);
 			String content = Tools.readFile(path + "setting.tpl.css");
 			for(Setting s:cacheService.getSetting()){
-				content = content.replace("{{settings."+ s.getKey() + "}}", s.getValue());
+				String value = s.getValue();
+				if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png")) ){
+					if (!value.startsWith("http://") && !value.startsWith("https://")){
+						value = config.getDomain() + "/" + value;
+					}
+				}
+				content = content.replace("{{settings."+ s.getKey() + "}}", value);
 			}
 			Tools.staticize(content, path + "/setting.css");
 		return new JsonResult(1,setting);

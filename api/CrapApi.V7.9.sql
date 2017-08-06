@@ -41,3 +41,13 @@ ALTER TABLE `user`
 CHANGE COLUMN `loginType` `loginType` INT(11) NOT NULL DEFAULT '0' COMMENT '0：账号登陆，1：github登陆，2：码云' ;
 
 update `user` set loginType=1 where thirdlyId like 'gitHub%';
+INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fff-1111-d4839-b38a-898343435462', 'ANONYMOUS_COMMENT', 'true', '是否允许匿名评论, true:允许', 'TEXT', '0', '100');
+
+ALTER TABLE `comment` 
+ADD COLUMN `avatarUrl` VARCHAR(500) NOT NULL DEFAULT 'resources/avatar/avatar0.jpg' COMMENT '用户头像 ' AFTER `userName`;
+
+
+ALTER TABLE `comment` 
+ADD COLUMN `userName` VARCHAR(50) NOT NULL COMMENT '匿名' AFTER `avatarUrl`;
+
+

@@ -1,5 +1,7 @@
 package cn.crap.controller.front;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,8 +15,10 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.inter.service.table.ICommentService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Comment;
+import cn.crap.model.Setting;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 @Controller("frontCommentController")
@@ -35,8 +39,23 @@ public class CommentController extends BaseController<Comment> {
 			}
 		}
 		LoginInfoDto user = Tools.getUser();
-		if(user != null)
+		Setting anonymousComment = cacheService.getSetting(Const.SETTING_ANONYMOUS_COMMENT);
+		if (anonymousComment != null && !"true".equals(anonymousComment.getValue())){
+			if (user == null){
+				throw new MyException("000060");
+			}
+		}
+		
+		comment.setUserName("匿名");
+		Random random = new Random();
+		comment.setAvatarUrl("resources/avatar/avatar" + random.nextInt(10) +".jpg");
+		if(user != null){
 			comment.setUserId(user.getId());
+			if (!MyString.isEmpty(user.getAvatarUrl())){
+				comment.setAvatarUrl(user.getAvatarUrl());
+			}
+			comment.setUserName(user.getUserName());
+		}
 		
 		comment.setId(null);
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));

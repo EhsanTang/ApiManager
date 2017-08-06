@@ -62,6 +62,8 @@ public class CommentController extends BaseController<Comment> {
 		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) , modArticle);
 		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
 		commentService.update(comment);
+		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getArticleId());
+		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getArticleId());
 		return new JsonResult(1, null);
 	}
 

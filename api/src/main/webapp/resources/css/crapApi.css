@@ -64,7 +64,15 @@ blockquote{
     margin-left: auto;
     margin-right: auto;
 }    
-
+/*** 头像**/
+.avatar{
+	width:40px;
+	height:40px;
+	border-radius: 50%;
+	margin-left:-50px;
+	display: block;
+	float:left;
+}
 /*****左边菜单*****/
  .left-menu-border-top{
  	border-top: 1px solid #888!important;

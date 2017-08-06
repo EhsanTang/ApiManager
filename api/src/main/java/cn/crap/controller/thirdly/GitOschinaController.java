@@ -65,7 +65,11 @@ public class GitOschinaController extends BaseController<User> {
 				user.setPassword("");
 				user.setStatus(Byte.valueOf("1"));
 				user.setType(Byte.valueOf("2"));
-				user.setAvatarUrl(gitHubUser.getAvatar_url());
+				String avatarUrl = gitHubUser.getAvatar_url();
+				if (avatarUrl.contains("?")){
+					avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"));
+				}
+				user.setAvatarUrl(avatarUrl);
 				user.setThirdlyId(Const.OSCHINA + gitHubUser.getId());
 				user.setLoginType(LoginType.OSCHINA.getValue());
 				userService.save(user);

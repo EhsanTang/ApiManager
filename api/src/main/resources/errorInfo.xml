@@ -63,6 +63,7 @@
 				<entry key="000057" value="尚未静态化，静态化后方可下载"/>
 				<entry key="000058" value="Up to 100 interfaces are allowed at most. Delete some interfaces, try again, or contact us to modify the quantity!「最多允许同步100个接口，请删除部分接口再试，或联系管理员修改数量！」"/>
 				<entry key="000059" value="非法的url，前端首页地址正能为站内相对地址：以font/、index.do开头的地址"/>
+				<entry key="000060" value="不允许匿名评论，请使用github、码云或注册账号后评论（便于问题解决后及时通知）"/>
 			</map>
 		</property>
 	</bean>

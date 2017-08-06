@@ -88,6 +88,7 @@ public class Const {
 	public static final String SETTING_TITLE = "TITLE";
 	public static final String SETTING_OPEN_REGISTER = "openRegister";
 	public static final String SETTING_GITHUB_ID = "githubClientID";
+	public static final String SETTING_ANONYMOUS_COMMENT = "ANONYMOUS_COMMENT";
 	
 	
 	//SOLR

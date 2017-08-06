@@ -26,6 +26,7 @@ public class LoginInfoDto implements Serializable{
 	private String id;
 	private byte type;
 	private String email;
+	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
 	
 	public LoginInfoDto(User user, IRoleService roleService, IProjectService projectService, IProjectUserService projectUserService){
@@ -35,6 +36,7 @@ public class LoginInfoDto implements Serializable{
 		this.id = user.getId();
 		this.type = user.getType();
 		this.email = user.getEmail();
+		this.avatarUrl = user.getAvatarUrl();
 		
 		StringBuilder sb = new StringBuilder(",");
 		// 将用户的自己的模块添加至权限中
@@ -108,6 +110,14 @@ public class LoginInfoDto implements Serializable{
 
 	public void setProjects(Map<String, ProjectUser> projects) {
 		this.projects = projects;
+	}
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
 	}
 
 }

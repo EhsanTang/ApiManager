@@ -40,3 +40,4 @@ INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `se
 ALTER TABLE `user` 
 CHANGE COLUMN `loginType` `loginType` INT(11) NOT NULL DEFAULT '0' COMMENT '0：账号登陆，1：github登陆，2：码云' ;
 
+update `user` set loginType=1 where thirdlyId like 'gitHub%';

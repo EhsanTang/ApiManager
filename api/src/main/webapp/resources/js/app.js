@@ -40,7 +40,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 		$("#pickContent").html(loadText);
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
-		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iParams=&type="
+		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iPost=POST|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
 		if(tagName)
 			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);

@@ -8,7 +8,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand p0 pt10" href="index.do#">
+				<a class="navbar-brand p0 pt10" href="home.do">
 					<img class="h30" ng-src="{{settings.LOGO}}" />
 				</a>
 			</div>
@@ -36,7 +36,7 @@
 	                </li>
 					<li ng-if="sessionAdminName==''"><a href="loginOrRegister.do#/login"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
 					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-					<li ng-if="sessionAdminName!=''"><a href="index.do" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+					<li ng-if="sessionAdminName!=''"><a href="home.do" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
 		</div>

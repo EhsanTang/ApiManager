@@ -3,6 +3,8 @@ package cn.crap.controller.admin;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
@@ -18,6 +21,7 @@ import cn.crap.inter.service.table.ISettingService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.Setting;
 import cn.crap.utils.Const;
+import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -29,6 +33,7 @@ public class SettingController extends BaseController<Setting>{
 	private ISettingService settingService;
 	@Autowired
 	private ICacheService cacheService;
+	private final static String[] indexUrls = new String[]{"index.do", "front/","project.do"};
 	/**
 	 * 
 	 * @param setting
@@ -70,8 +75,22 @@ public class SettingController extends BaseController<Setting>{
 	@RequestMapping("/setting/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult addOrUpdate(@ModelAttribute Setting setting){
+	public JsonResult addOrUpdate(@ModelAttribute Setting setting, HttpServletRequest req) throws Exception{
 			if(!MyString.isEmpty(setting.getId())){
+				Setting old = settingService.get(setting.getId());
+				setting.setCanDelete(old.getCanDelete());
+				if (Const.SETTING_INDEX_PAGE.equals(setting.getKey())){
+					boolean legalUrl = false;
+					for(String indexUrl : indexUrls){
+						if(setting.getValue().startsWith(indexUrl)){
+							legalUrl = true;
+							break;
+						}
+					}
+					if (!legalUrl){
+						return new JsonResult(new MyException("000059"));
+					}
+				}
 				settingService.update(setting);
 			}else{
 				setting.setId(null);
@@ -84,6 +103,15 @@ public class SettingController extends BaseController<Setting>{
 			}
 			cacheService.delObj(Const.CACHE_SETTING);
 			cacheService.delObj(Const.CACHE_SETTINGLIST);
+			
+			// 更新css模板
+			String path = Tools.getServicePath(req) + "resources/css/"; 
+			Tools.createFile(path);
+			String content = Tools.readFile(path + "setting.tpl.css");
+			for(Setting s:cacheService.getSetting()){
+				content = content.replace("{{settings."+ s.getKey() + "}}", s.getValue());
+			}
+			Tools.staticize(content, path + "/setting.css");
 		return new JsonResult(1,setting);
 	}
 	@RequestMapping("/setting/delete.do")

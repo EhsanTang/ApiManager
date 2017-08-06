@@ -43,6 +43,7 @@ public class Const {
 	public static final String CACHE_COMMENTLIST = ":commentList:";
 	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
 	public static final String CACHE_AUTHORIZE = ":authorize:";
+	public static final String CACHE_OSCHINA_AUTHORIZE = ":oschina:authorize:";
 	public static final String CACHE_FINDPWD= ":findPwd:";
 	public static final String CACHE_MONITOR_INTERFACES = ":monitor:interfaces";
 	public static final String CACHE_MONITOR_INTERFACES_HAS_SEND_EMAIL = ":monitor:interfaces:hasSendEmail";// 是否已经发送了告警邮件
@@ -71,6 +72,7 @@ public class Const {
 	public static final String LEVEL_PRE = "- - ";
 	public static final String REGISTER = "register";
 	public static final String GITHUB = "gitHub:";
+	public static final String OSCHINA = "oschina:";
 	public static final String DOMAIN = "DOMAIN";
 	// url
 	public static final String FRONT_ARTICLE_URL = "#%s/article/list/%s/ARTICLE/%s/NULL";
@@ -82,9 +84,11 @@ public class Const {
 	public final static String SETTING_VISITCODE = "VISITCODE";
 	public static final String SETTING_COMMENTCODE = "COMMENTCODE";
 	public static final String SETTING_LUCENE_DIR = "LUCENE_DIR";
+	public static final String SETTING_INDEX_PAGE = "INDEX_PAGE";
 	public static final String SETTING_TITLE = "TITLE";
 	public static final String SETTING_OPEN_REGISTER = "openRegister";
 	public static final String SETTING_GITHUB_ID = "githubClientID";
+	
 	
 	//SOLR
 	public static final String SOLR_URL = "SOLR_URL";

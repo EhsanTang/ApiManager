@@ -14,6 +14,12 @@ public class Config{
 	@Value("${github.clientSecret}")
 	private String clientSecret;
 	
+	@Value("${git.oschina.clientID}")
+	private String oschinaClientID;
+	
+	@Value("${git.oschina.clientSecret}")
+	private String oschinaClientSecret;
+	
 	@Value("${web.domain}")
 	private String domain;
 	
@@ -211,5 +217,14 @@ public class Config{
 	public boolean isCanRepeatUrl() {
 		return canRepeatUrl;
 	}
+
+	public String getOschinaClientID() {
+		return oschinaClientID;
+	}
+
+	public String getOschinaClientSecret() {
+		return oschinaClientSecret;
+	}
+	
 	
 }

@@ -44,6 +44,7 @@ public class MainController extends BaseController<User> {
 	private ISearchService luceneService;
 	@Autowired
 	private Config config;
+	
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
@@ -52,7 +53,13 @@ public class MainController extends BaseController<User> {
 	 */
 	@RequestMapping("/home.do")
 	public void home() throws Exception {
-		response.sendRedirect("index.do");
+		Setting indexUrl = cacheService.getSetting(Const.SETTING_INDEX_PAGE);
+		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
+			response.sendRedirect(indexUrl.getValue());
+		}else{
+			response.sendRedirect("index.do");
+		}
+		
 	}
 	
 	/**
@@ -131,6 +138,9 @@ public class MainController extends BaseController<User> {
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (Setting setting : cacheService.getSetting()) {
+			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
+				continue;
+			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		settingMap.put(Const.DOMAIN, config.getDomain());

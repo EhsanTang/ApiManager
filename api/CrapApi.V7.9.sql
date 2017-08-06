@@ -35,3 +35,8 @@ ADD COLUMN `uid` VARCHAR(50) NOT NULL DEFAULT '-1' AFTER `version`;
 ALTER TABLE `module` 
 ADD COLUMN `version` INT NOT NULL DEFAULT 0 AFTER `templateId`;
 
+INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fpmbdc8b-9cd8-4839-b38a-898343435462', 'INDEX_PAGE', 'index.do#/web/article/list/web/PAGE/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/NULL', '前端首页：只能以index.do、font/ 开头的url', 'INDEXPAGE', '0', '66');
+
+ALTER TABLE `user` 
+CHANGE COLUMN `loginType` `loginType` INT(11) NOT NULL DEFAULT '0' COMMENT '0：账号登陆，1：github登陆，2：码云' ;
+

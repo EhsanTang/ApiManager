@@ -14,7 +14,7 @@ import cn.crap.model.mongo.CrapMongo;
 @Service
 public class MongoService {
     private static Logger logger  = LoggerFactory.getLogger(MongoService.class);
-    @Autowired
+    @Autowired(required=false)
     private MongoTemplate mongoTemplate;
 
     public void insert(CrapMongo object){

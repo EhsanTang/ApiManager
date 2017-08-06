@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumeration.ArticleType;
 import cn.crap.enumeration.DataType;
 import cn.crap.enumeration.FontFamilyType;
+import cn.crap.enumeration.IndexPageUrl;
 import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.SettingType;
@@ -208,6 +208,12 @@ public class AdminPickService implements IPickService{
 		case "FONTFAMILY":// 字体
 			for (FontFamilyType font : FontFamilyType.values()) {
 				pick = new PickDto(font.name(), font.getValue(), font.getName());
+				picks.add(pick);
+			}
+			return;
+		case "INDEXPAGE":// 首页
+			for (IndexPageUrl indexPage : IndexPageUrl.values()) {
+				pick = new PickDto(indexPage.name(), indexPage.getValue(), indexPage.getName());
 				picks.add(pick);
 			}
 			return;

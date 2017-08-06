@@ -19,7 +19,7 @@ import cn.crap.service.mongo.MongoService;
 @RequestMapping("/mongodb/v1")
 public class MongodbV1Controller extends BaseController<Article>{
 	
-	@Autowired
+	@Autowired(required=false)
     private MongoService mongoService;
 
 	@RequestMapping("/add.do")

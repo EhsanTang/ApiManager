@@ -97,6 +97,9 @@ public class MainController extends BaseController<User> {
 	public JsonResult init(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (Setting setting : cacheService.getSetting()) {
+			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
+				continue;
+			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		Map<String,Object> returnMap = new HashMap<String,Object>();

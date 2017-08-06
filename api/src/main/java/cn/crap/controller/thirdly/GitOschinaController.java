@@ -16,8 +16,10 @@ import cn.crap.inter.service.table.IUserService;
 import cn.crap.inter.service.tool.ICacheService;
 import cn.crap.model.User;
 import cn.crap.service.thirdly.GitHubService;
+import cn.crap.service.thirdly.OschinaService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
+import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -28,7 +30,7 @@ import cn.crap.utils.Tools;
  *
  */
 @Controller
-public class GitHubController extends BaseController<User> {
+public class GitOschinaController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
 	@Autowired
@@ -36,32 +38,24 @@ public class GitHubController extends BaseController<User> {
 	@Autowired
 	private Config config;
 	@Autowired
-	private GitHubService githHubService;
+	private OschinaService oschinaService;
 	@Autowired
 	private IUserService userService;
-	
 	
 	/**
 	 * gitHub授权
 	 * @throws Exception
 	 */
-	@RequestMapping("/github/authorize.do")
+	@RequestMapping("/oschina/authorize.do")
 	public void authorize() throws Exception {
-		String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
-		String state = Tools.getChar(20);
-		cacheService.setStr( MyCookie.getCookie(Const.COOKIE_TOKEN, false, request) + Const.CACHE_AUTHORIZE, state, 10*60);
-		response.sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
+		String authorizeUrl = "https://git.oschina.net/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
+		response.sendRedirect(String.format(authorizeUrl, config.getOschinaClientID(), config.getDomain()+"/oschina/login.do"));
 	}
-	@RequestMapping("/github/login.do")
-	public String login(@RequestParam String code,@RequestParam String state) throws Exception {
-		String myState = cacheService.getStr(MyCookie.getCookie(Const.COOKIE_TOKEN, false, request) + Const.CACHE_AUTHORIZE);
-		if(myState == null || !myState.equals(state)){
-			request.setAttribute("result", "非法参数，登陆失败！");
-			return "WEB-INF/views/result.jsp";
-		}else{
+	@RequestMapping("/oschina/login.do")
+	public String login(@RequestParam String code) throws Exception {
 			User user = null;
-			GitHubUser gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
-			List<User> users = userService.findByMap(Tools.getMap("thirdlyId",Const.GITHUB + gitHubUser.getId()), null, null);
+			GitHubUser gitHubUser = oschinaService.getUser(oschinaService.getAccessToken(code, config.getDomain()).getAccess_token());
+			List<User> users = userService.findByMap(Tools.getMap("thirdlyId",Const.OSCHINA + gitHubUser.getId()), null, null);
 			if(users.size() == 0){
 				user = new User();
 				user.setUserName(gitHubUser.getLogin());
@@ -70,10 +64,10 @@ public class GitHubController extends BaseController<User> {
 					user.setEmail(gitHubUser.getEmail());
 				user.setPassword("");
 				user.setStatus(Byte.valueOf("1"));
-				user.setType(Byte.valueOf("1"));
+				user.setType(Byte.valueOf("2"));
 				user.setAvatarUrl(gitHubUser.getAvatar_url());
-				user.setThirdlyId(Const.GITHUB + gitHubUser.getId());
-				user.setLoginType(LoginType.GITHUB.getValue());
+				user.setThirdlyId(Const.OSCHINA + gitHubUser.getId());
+				user.setLoginType(LoginType.OSCHINA.getValue());
 				userService.save(user);
 			}else{
 				user = users.get(0);
@@ -86,7 +80,6 @@ public class GitHubController extends BaseController<User> {
 			userService.login(model, user, request, response);
 			
 			response.sendRedirect("../admin.do");
-		}
 		return "";
 	}
 }

@@ -39,6 +39,7 @@ public class User extends BaseModel implements Serializable{
 	private String avatarUrl;
 	private int loginType;
 	private String thirdlyId;
+	private String passwordSalt;
 	
 	
 	@Column(name="userName")
@@ -149,6 +150,15 @@ public class User extends BaseModel implements Serializable{
 
 	public void setThirdlyId(String thirdlyId) {
 		this.thirdlyId = thirdlyId;
+	}
+
+	@Column(name = "passwordSalt")
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
 	}
 
 	@Transient

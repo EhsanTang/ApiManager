@@ -74,6 +74,7 @@ public class Const {
 	public static final String GITHUB = "gitHub:";
 	public static final String OSCHINA = "oschina:";
 	public static final String DOMAIN = "DOMAIN";
+	public static final String ADMIN = "admin";
 	// url
 	public static final String FRONT_ARTICLE_URL = "#%s/article/list/%s/ARTICLE/%s/NULL";
 	public static final String FRONT_PROJECT_URL = "#/%s/module/list";

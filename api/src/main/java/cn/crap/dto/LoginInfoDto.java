@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.crap.enumeration.UserType;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IProjectUserService;
-import cn.crap.inter.service.table.IRoleService;
+import cn.crap.service.IProjectService;
+import cn.crap.service.IProjectUserService;
+import cn.crap.service.IRoleService;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.Role;

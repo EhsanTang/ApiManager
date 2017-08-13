@@ -2,6 +2,9 @@ package cn.crap.controller.thirdly;
 
 import java.util.List;
 
+import cn.crap.enumeration.UserStatus;
+import cn.crap.enumeration.UserType;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +14,11 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumeration.LoginType;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IUserService;
-import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.IMenuService;
+import cn.crap.service.IUserService;
 import cn.crap.model.User;
-import cn.crap.service.thirdly.GitHubService;
+import cn.crap.service.imp.thirdly.GitHubService;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
 /**
  * 前后台共用的Controller
@@ -31,8 +29,6 @@ import cn.crap.utils.Tools;
 public class GitHubController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private Config config;
 	@Autowired
@@ -61,18 +57,26 @@ public class GitHubController extends BaseController<User> {
 		}else{
 			User user = null;
 			GitHubUser gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
-			List<User> users = userService.findByMap(Tools.getMap("thirdlyId",Const.GITHUB + gitHubUser.getId()), null, null);
+			List<User> users = userService.findByMap(Tools.getMap(TableField.USER.THIRDLY_ID, getThirdlyId(gitHubUser)), null, null);
 			if(users.size() == 0){
 				user = new User();
-				user.setUserName(gitHubUser.getLogin());
+				user.setUserName( Tools.handleUserName(gitHubUser.getLogin()) );
 				user.setTrueName(gitHubUser.getName());
-				if(!MyString.isEmpty(gitHubUser.getEmail()))
-					user.setEmail(gitHubUser.getEmail());
+
+				// 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
+				if(!MyString.isEmpty(gitHubUser.getEmail())){
+					String email = gitHubUser.getEmail();
+					List<User> existUser = userService.findByMap(Tools.getMap(TableField.USER.EMAIL, email, TableField.USER.USER_TYPE, LoginType.GITHUB.getValue()), null, null);
+					if (existUser == null || existUser.size() == 0){
+						user.setEmail(gitHubUser.getEmail());
+					}
+				}
+
 				user.setPassword("");
-				user.setStatus(Byte.valueOf("1"));
-				user.setType(Byte.valueOf("1"));
+				user.setStatus(UserStatus.INVALID.getType());
+				user.setType(UserType.USER.getType());
 				user.setAvatarUrl(gitHubUser.getAvatar_url());
-				user.setThirdlyId(Const.GITHUB + gitHubUser.getId());
+				user.setThirdlyId(getThirdlyId(gitHubUser));
 				user.setLoginType(LoginType.GITHUB.getValue());
 				userService.save(user);
 			}else{
@@ -88,5 +92,9 @@ public class GitHubController extends BaseController<User> {
 			response.sendRedirect("../admin.do");
 		}
 		return "";
+	}
+
+	private String getThirdlyId(GitHubUser gitHubUser) {
+		return Const.GITHUB + gitHubUser.getId();
 	}
 }

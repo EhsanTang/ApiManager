@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
+
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,29 +26,20 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IProjectUserService;
-import cn.crap.inter.service.table.IRoleService;
-import cn.crap.inter.service.table.IUserService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.IEmailService;
+import cn.crap.service.IMenuService;
+import cn.crap.service.IProjectService;
+import cn.crap.service.IProjectUserService;
+import cn.crap.service.IRoleService;
+import cn.crap.service.IUserService;
+import cn.crap.service.IEmailService;
 import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.Aes;
-import cn.crap.utils.Const;
-import cn.crap.utils.MD5;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
 @Controller
 public class LoginController extends BaseController<User> {
 	@Autowired
 	IMenuService menuService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -168,7 +161,7 @@ public class LoginController extends BaseController<User> {
 			throw new MyException("000010");
 		}
 		
-		List<User> user = userService.findByMap(Tools.getMap("email",email,"loginType", LoginType.COMMON.getValue()), null, null);
+		List<User> user = userService.findByMap(Tools.getMap("email",email,TableField.USER.LOGIN_TYPE, LoginType.COMMON.getValue()), null, null);
 		if(user.size()!=1){
 			throw new MyException("000030");
 		}
@@ -178,7 +171,7 @@ public class LoginController extends BaseController<User> {
 	
 	/**
 	 * 找回密码：重置密码
-	 * @param email
+	 * @param findPwdDto
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 * @throws MessagingException
@@ -194,13 +187,15 @@ public class LoginController extends BaseController<User> {
 			throw new MyException("000031");
 		}
 		
-		List<User> user = userService.findByMap(Tools.getMap("email",findPwdDto.getEmail(), "loginType", LoginType.COMMON.getValue()), null, null);
-		if(user.size()!=1){
+		List<User> users = userService.findByMap(Tools.getMap("email",findPwdDto.getEmail(), TableField.USER.LOGIN_TYPE, LoginType.COMMON.getValue()), null, null);
+		if(users.size()!=1){
 			throw new MyException("000030");
 		}
-		user.get(0).setPassword( MD5.encrytMD5(findPwdDto.getNewPwd()) );
-		userService.update(user.get(0));
-		return new JsonResult(1, user.get(0));
+		User user = users.get(0);
+		user.setPasswordSalt(Tools.getChar(20));
+		user.setPassword( MD5.encrytMD5(findPwdDto.getNewPwd(), user.getPasswordSalt()));
+		userService.update(user);
+		return new JsonResult(1, user);
 	}
 	
 	
@@ -245,7 +240,8 @@ public class LoginController extends BaseController<User> {
 			}
 			
 			user.setEmail(model.getUserName());
-			user.setPassword(MD5.encrytMD5(model.getPassword()));
+			user.setPasswordSalt(Tools.getChar(20));
+			user.setPassword(MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()));
 			user.setStatus(Byte.valueOf("1"));
 			user.setType(Byte.valueOf("1"));
 			userService.save(user);
@@ -289,16 +285,15 @@ public class LoginController extends BaseController<User> {
 
 			// 只允许普通账号方式登陆，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登陆
 			List<User> users = null;
-			if(model.getUserName().indexOf("@")>0){
-				users =  userService.findByMap(Tools.getMap("email", model.getUserName().toLowerCase(),"loginType" , LoginType.COMMON.getValue()), null, null);
+			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登陆
+				users =  userService.findByMap(Tools.getMap(TableField.USER.EMAIL, model.getUserName().toLowerCase(), TableField.USER.LOGIN_TYPE , LoginType.COMMON.getValue()), null, null);
 			}else{
-				users =  userService.findByMap(Tools.getMap("userName", model.getUserName(),"loginType" , LoginType.COMMON.getValue()), null, null);
+				users =  userService.findByMap(Tools.getMap(TableField.USER.USER_NAME, model.getUserName(),TableField.USER.LOGIN_TYPE , LoginType.COMMON.getValue()), null, null);
 			}
 			
 			if (users.size() == 1) {
 				User user = users.get(0);
-				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword()).equals(user.getPassword()) && 
-						(model.getUserName().equals(user.getUserName()) || model.getUserName().toLowerCase().equals(user.getEmail())) ) {
+				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
 					userService.login(model, user, request, response);
 					return new JsonResult(1, model);
 				}

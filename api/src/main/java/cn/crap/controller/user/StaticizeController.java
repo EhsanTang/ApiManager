@@ -24,12 +24,12 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IErrorService;
-import cn.crap.inter.service.table.IInterfaceService;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IModuleService;
-import cn.crap.inter.service.tool.ICacheService;
+import cn.crap.service.IArticleService;
+import cn.crap.service.IErrorService;
+import cn.crap.service.IInterfaceService;
+import cn.crap.service.IMenuService;
+import cn.crap.service.IModuleService;
+import cn.crap.service.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
@@ -157,7 +157,7 @@ public class StaticizeController extends BaseController<Project> {
 			category = "";
 			returnMap.put("md5Category", "");
 		}else{
-			returnMap.put("md5Category", MD5.encrytMD5(category).substring(0, 10));
+			returnMap.put("md5Category", MD5.encrytMD5(category, "").substring(0, 10));
 		}
 		
 		if(MyString.isEmpty(type)){
@@ -176,7 +176,7 @@ public class StaticizeController extends BaseController<Project> {
 					continue;
 				}
 				CategoryDto categoryDto = new CategoryDto();
-				categoryDto.setMd5Category(MD5.encrytMD5(c).substring(0, 10)); 
+				categoryDto.setMd5Category(MD5.encrytMD5(c, "").substring(0, 10));
 				categoryDto.setCategory(c);
 				categoryDtos.add( categoryDto );
 			}
@@ -419,7 +419,7 @@ public class StaticizeController extends BaseController<Project> {
 						String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleList.do?moduleId="+ module.getId()+"&category="+
 								category+"&currentPage="+i + "&needStaticizes="+needStaticizes + "&secretKey=" + secretKey, null, null, 10 * 1000);
 						// list-类目摘要-页码
-						Tools.staticize(html, path + "/" + module.getId() +"-articleList-"+ MD5.encrytMD5(category).substring(0, 10) + "-" + i + ".html");
+						Tools.staticize(html, path + "/" + module.getId() +"-articleList-"+ MD5.encrytMD5(category, "").substring(0, 10) + "-" + i + ".html");
 					}
 				}
 				

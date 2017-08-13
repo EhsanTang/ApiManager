@@ -13,7 +13,7 @@ import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.Article;
 import cn.crap.model.mongo.CrapMongo;
-import cn.crap.service.mongo.MongoService;
+import cn.crap.service.imp.mongo.MongoService;
 
 @Controller
 @RequestMapping("/mongodb/v1")

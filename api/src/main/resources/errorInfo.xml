@@ -17,7 +17,7 @@
 				<entry key="000011" value="图形验证码已失效，请刷新验证码" />
 				<entry key="000012" value="查找数据失败" />
 				<entry key="000013" value="用户名不存在" />
-				<entry key="000014" value="用密码有误" />
+				<entry key="000014" value="用户密码有误" />
 				<entry key="000015" value="用户名已被使用，请更换用户名" />
 				<entry key="000016" value="文件地址不能为空" />
 				<entry key="000017" value="文件名有误，无法识别的版本号：文件必须包含“.CAV.文件标识.版本号”" />
@@ -64,6 +64,8 @@
 				<entry key="000058" value="Up to 100 interfaces are allowed at most. Delete some interfaces, try again, or contact us to modify the quantity!「最多允许同步100个接口，请删除部分接口再试，或联系管理员修改数量！」"/>
 				<entry key="000059" value="非法的url，前端首页地址正能为站内相对地址：以font/、index.do开头的地址"/>
 				<entry key="000060" value="不允许匿名评论，请使用github、码云或注册账号后评论（便于问题解决后及时通知）"/>
+				<entry key="000061" value="用户密码不能为空" />
+				<entry key="000062" value="该邮箱已经被其他用户绑定，不能为该邮箱设置登陆密码，请更换账号邮箱" />
 			</map>
 		</property>
 	</bean>

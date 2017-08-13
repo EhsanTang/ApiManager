@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IRoleService;
+import cn.crap.service.IRoleService;
 import cn.crap.model.Role;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;

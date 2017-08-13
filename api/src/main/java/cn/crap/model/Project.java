@@ -14,8 +14,8 @@ import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.base.BaseModel;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.service.tool.CacheService;
+import cn.crap.service.ICacheService;
+import cn.crap.service.imp.tool.CacheService;
 import cn.crap.utils.MyString;
 
 

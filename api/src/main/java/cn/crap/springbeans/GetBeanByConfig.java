@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cn.crap.inter.dao.ICacheDao;
+import cn.crap.dao.ICacheDao;
 
 @Component
 public class GetBeanByConfig {

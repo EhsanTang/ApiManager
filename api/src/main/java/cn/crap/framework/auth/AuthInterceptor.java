@@ -8,7 +8,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import cn.crap.framework.MyException;
-import cn.crap.inter.dao.ICacheDao;
+import cn.crap.dao.ICacheDao;
 import cn.crap.springbeans.Config;
 import cn.crap.springbeans.GetBeanByConfig;
 import cn.crap.utils.Aes;

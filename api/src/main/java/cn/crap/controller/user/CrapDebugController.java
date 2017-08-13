@@ -20,11 +20,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.dao.IModuleDao;
-import cn.crap.inter.dao.IProjectDao;
-import cn.crap.inter.service.table.IDebugService;
-import cn.crap.inter.service.table.IModuleService;
-import cn.crap.inter.service.table.IProjectService;
+import cn.crap.dao.IModuleDao;
+import cn.crap.dao.IProjectDao;
+import cn.crap.service.IDebugService;
+import cn.crap.service.IModuleService;
+import cn.crap.service.IProjectService;
 import cn.crap.model.Article;
 import cn.crap.model.Debug;
 import cn.crap.model.Module;
@@ -56,7 +56,7 @@ public class CrapDebugController extends BaseController<Article>{
 		LoginInfoDto user = Tools.getUser();
 		
 		// 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
-		String projectId = MD5.encrytMD5(user.getId()).substring(0, 20) + "-debug";
+		String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
 		Project project = projectDao.get(projectId);
 		if( project == null){
 			project = new Project();

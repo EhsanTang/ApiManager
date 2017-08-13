@@ -51,3 +51,7 @@ ALTER TABLE `comment`
 ADD COLUMN `userName` VARCHAR(50) NOT NULL COMMENT '匿名' AFTER `avatarUrl`;
 
 update comment set userName='匿名' where userName='' or userName is null;
+
+ALTER TABLE user`
+ADD COLUMN `passwordSalt` VARCHAR(20) NULL COMMENT '密码MD5盐' AFTER `thirdlyId`;
+

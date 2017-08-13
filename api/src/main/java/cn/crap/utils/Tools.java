@@ -37,8 +37,8 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.service.tool.CacheService;
+import cn.crap.service.ICacheService;
+import cn.crap.service.imp.tool.CacheService;
 
 
 public class Tools {
@@ -187,7 +187,7 @@ public class Tools {
 	
 	/** 
      * 通过递归调用删除一个文件夹及下面的所有文件 
-     * @param file 
+     * @param filePath
      */  
     public static void deleteFile(String filePath){  
     	File file = new File(filePath);
@@ -214,7 +214,7 @@ public class Tools {
     }  
 	/**
 	 * 构造查询的id
-	 * @param roleName
+	 * @param ids
 	 * @return
 	 */
 	public static List<String> getIdsFromField(String ids) {
@@ -536,13 +536,29 @@ public class Tools {
 	            }
 	        return flag;
 	 }
+
+	/**
+	 * 处理用户名，不能包含@，不能=admin
+	 * @param name
+	 * @return
+	 */
+	public static String handleUserName(String name){
+		if(MyString.isEmpty(name)){
+			return "";
+		}
+		name = name.replaceAll("@", "");
+		if (name.equals("admin")){
+			name = "ca_" + name;
+		}
+		return name;
+	}
 	// 相同ID，不同用户在数据库存储的id与浏览器中存储的不一致，解决项目导出给其他人id一致的问题
 		public static String handleId(LoginInfoDto user, String id){
 			if(MyString.isEmpty(id)){
 				return null;
 			}
 			
-			id = id + "-" + MD5.encrytMD5(user.getId()).substring(0, 5);
+			id = id + "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
 			return id;
 		}
 		public static String unhandleId(String id){

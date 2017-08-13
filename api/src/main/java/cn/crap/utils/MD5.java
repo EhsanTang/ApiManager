@@ -3,7 +3,21 @@ package cn.crap.utils;
 import java.security.MessageDigest;
 
 public class MD5 {
-	 public static String encrytMD5(String data){
+	/**
+	 * MD5 + 盐，防止数据库被盗，第三方使用碰撞法解密用户账号（彩虹碰撞）
+	 * @param data
+	 * @param passwordSalt
+	 * @return
+	 */
+	 public static String encrytMD5(String data, String passwordSalt){
+	 	if (data == null || data.trim() == null){
+	 		return "";
+		}
+	 	if (passwordSalt == null){
+			passwordSalt = "";
+		}
+		passwordSalt = passwordSalt.trim();
+	 	data = passwordSalt + data.trim();
 		try{
 	    	//指定加密算法
 			MessageDigest digest=MessageDigest.getInstance("MD5");
@@ -16,6 +30,9 @@ public class MD5 {
 	 }
 	//将加密后的字节数组转化为固定长度的字符串
 	private static String encryptMD5toString(byte[] data){
+		if (data == null || data.length == 0){
+			return "";
+		}
 		try{
 			String str="";
 			String str16; 

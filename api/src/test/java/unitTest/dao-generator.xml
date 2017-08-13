@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <plugin type="com.lagou.common.tool.mybatis.generator.MyPlus" />
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$" />
+            <property name="replaceString" value="Criteria" />
+        </plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!-- 数据库配置，需要修改 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.1.200.59:3306/mds_position" userId="lagourw"
+                        password="lagourw">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 包名及存储路径，需要修改，下同 -->
+        <javaModelGenerator targetPackage="com.lagou.mds.service.position.core.model"
+                            targetProject="E:/eclipse-workspace/mds-service-position-v0.0.1/mds-service-position-core/src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="com.lagou.mds.service.position.core.dao"
+                         targetProject="E:/eclipse-workspace/mds-service-position-v0.0.1/mds-service-position-core/src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.lagou.mds.service.position.core.dao"
+                             targetProject="E:/eclipse-workspace/mds-service-position-v0.0.1/mds-service-position-core/src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+
+        <!--
+                <table domainObjectName="PositionModel" tableName="t_position">
+                    <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+                    <columnOverride column="status" property="status"
+                         javaType="com.lagou.mds.service.position.api.dic.PositionStatus"
+                        typeHandler="com.lagou.mds.service.position.core.typehandler.PositionStatusHandler" />
+                    <columnOverride column="channel_type" property="channelType"
+                        javaType="com.lagou.mds.service.common.dic.channel.ChannelType"
+                        typeHandler="com.lagou.mds.service.position.core.typehandler.ChannelTypeHandler" />
+                </table>
+
+                <table domainObjectName="OnlinePositionModel" tableName="t_online_position">
+                 <table domainObjectName="PositionModel" tableName="t_position">
+                        <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+                        <columnOverride column="status" property="status"
+                                        javaType="com.lagou.mds.service.position.api.dic.PositionStatus"
+                                        typeHandler="com.lagou.mds.service.position.core.typehandler.PositionStatusHandler"/>
+                        <columnOverride column="channel_type" property="channelType"
+                                        javaType="com.lagou.mds.service.common.dic.channel.ChannelType"
+                                        typeHandler="com.lagou.mds.service.position.core.typehandler.ChannelTypeHandler"/>
+                        <columnOverride column="position_bright_point" property="positionBrightPoint"
+                                        javaType="java.util.List"
+                                        typeHandler="com.lagou.mds.service.position.core.typehandler.StringListJsonHandler"/>
+
+                    </table>
+                    <table domainObjectName="PositionLocationModel" tableName="t_position_location">
+                        <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+                        <columnOverride column="comarea_infos" property="comareaInfos"
+                                        javaType="java.util.List"
+                                        typeHandler="com.lagou.mds.service.position.core.typehandler.PositionLocationComareaTypeHandler"/>
+                    </table>-->
+        <!-- <table domainObjectName="ParentPositionModel" tableName="t_parent_position">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true" />-->
+        <!--<columnOverride column="position_bright_point" property="positionBrightPoint"-->
+        <!--javaType="java.util.List"-->
+        <!--typeHandler="com.lagou.mds.service.position.core.typehandler.StringListJsonHandler"/>-->
+        <!--<columnOverride column="channel_list" property="channelList"-->
+        <!--javaType="java.util.List"-->
+        <!--typeHandler="com.lagou.mds.service.position.core.typehandler.StringListJsonHandler"/>-->
+        <!--</table>-->
+        <table domainObjectName="PositionOperateRecordModel" tableName="t_position_operate_record">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+            <columnOverride column="parameters" property="parameters"
+                            javaType="java.util.Map"
+                            typeHandler="com.lagou.mds.service.position.core.typehandler.MapJsonHandler" />
+            <columnOverride column="operate_type" property="operateType"
+                            javaType="com.lagou.mds.service.position.api.dic.PositionOperateType"
+                            typeHandler="com.lagou.mds.service.position.core.typehandler.PositionOperateTypeHandler" />
+
+        </table>
+
+        <table domainObjectName="RecruiterModel" tableName="t_recruiter">
+        </table>
+        <table domainObjectName="WorkAddressModel" tableName="t_work_address">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+            <columnOverride column="biz_area" property="bizArea"
+                            javaType="java.util.List"
+                            typeHandler="com.lagou.mds.service.position.core.typehandler.ComareaInfoListJsonHandler" />
+        </table>
+
+
+        <!--
+                <table domainObjectName="OnlinePositionModel" tableName="t_online_position">
+                    <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+                    <columnOverride column="status" property="status"
+                         javaType="com.lagou.mds.service.position.api.dic.PositionStatus"
+                        typeHandler="com.lagou.mds.service.position.core.typehandler.PositionStatusHandler" />
+                    <columnOverride column="channel_type" property="channelType"
+                        javaType="com.lagou.mds.service.common.dic.channel.ChannelType"
+                        typeHandler="com.lagou.mds.service.position.core.typehandler.ChannelTypeHandler" />
+                </table>
+
+                <table domainObjectName="RecruiterModel" tableName="t_recruiter">
+                    <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+                </table>
+         -->
+
+        <!-- 		<table domainObjectName="UserModel" tableName="t_user"> -->
+
+        <!-- 			<columnOverride column="status" property="status" -->
+        <!-- 				javaType="com.lagou.mds.service.account.core.model.entry.UserStatus" -->
+        <!-- 				typeHandler="com.lagou.mds.service.account.core.typehandler.UserStatusHandler" /> -->
+
+        <!-- 		</table> -->
+
+        <!-- 		<table domainObjectName="CompanyUserModel" tableName="t_company_user"> -->
+        <!-- 			<generatedKey column="id" sqlStatement="Mysql" identity="true" /> -->
+        <!-- 			<columnOverride column="status" property="status" -->
+        <!-- 				javaType="com.lagou.mds.service.account.core.model.entry.CompanyUserStatus" -->
+        <!-- 				typeHandler="com.lagou.mds.service.account.core.typehandler.CompanyUserStatusHandler" /> -->
+        <!-- 			<columnOverride column="role" property="role" -->
+        <!-- 				javaType="com.lagou.mds.service.account.core.model.entry.CompanyUserRole" -->
+        <!-- 				typeHandler="com.lagou.mds.service.account.core.typehandler.CompanyUserRoleHandler" /> -->
+        <!-- 		</table> -->
+        <!-- 		<table domainObjectName="InviteRecordModel" tableName="t_invite_record"> -->
+        <!-- 			<generatedKey column="id" sqlStatement="Mysql" identity="true" /> -->
+        <!-- 			<columnOverride column="invite_type" property="inviteType" -->
+        <!-- 				javaType="com.lagou.mds.service.account.core.model.entry.InviteType" -->
+        <!-- 				typeHandler="com.lagou.mds.service.account.core.typehandler.InviteTypeHandler" /> -->
+
+        <!-- 		</table> -->
+        <!-- 		<table domainObjectName="LoginRecordModel" tableName="t_login_record"> -->
+        <!-- 			<generatedKey column="id" sqlStatement="Mysql" identity="true" /> -->
+        <!-- 		</table> -->
+
+    </context>
+
+</generatorConfiguration>

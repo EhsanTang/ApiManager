@@ -5,14 +5,12 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="mkey" property="mkey" jdbcType="VARCHAR" />
     <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="canDelete" property="canDelete" jdbcType="TINYINT" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.mybatis.Setting" extends="BaseResultMap" >
-    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,27 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mkey, value, createTime, status, type, canDelete, sequence
+    id, mkey, value, remark, createTime, status, type, canDelete, sequence
   </sql>
-  <sql id="Blob_Column_List" >
-    remark
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.crap.model.mybatis.SettingCriteria" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from setting
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.SettingCriteria" >
     select
     <if test="distinct" >
@@ -116,11 +95,9 @@
       </when>
     </choose>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from setting
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -135,16 +112,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.crap.model.mybatis.Setting" >
-    insert into setting (id, mkey, value,
-      createTime, status, type, 
-      canDelete, sequence, remark
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into setting (id, mkey, value, 
+      remark, createTime, status, 
+      type, canDelete, sequence
       )
     values (#{id,jdbcType=VARCHAR}, #{mkey,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{type,jdbcType=VARCHAR}, 
-      #{canDelete,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}, #{remark,jdbcType=LONGVARCHAR}
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{type,jdbcType=VARCHAR}, #{canDelete,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Setting" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,
@@ -153,6 +136,9 @@
       </if>
       <if test="value != null" >
         value,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -169,9 +155,6 @@
       <if test="sequence != null" >
         sequence,
       </if>
-      <if test="remark != null" >
-        remark,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{id,jdbcType=VARCHAR},
@@ -180,6 +163,9 @@
       </if>
       <if test="value != null" >
         #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -195,9 +181,6 @@
       </if>
       <if test="sequence != null" >
         #{sequence,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -219,6 +202,9 @@
       <if test="record.value != null" >
         value = #{record.value,jdbcType=VARCHAR},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -234,25 +220,7 @@
       <if test="record.sequence != null" >
         sequence = #{record.sequence,jdbcType=INTEGER},
       </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update setting
-    set id = #{record.id,jdbcType=VARCHAR},
-      mkey = #{record.mkey,jdbcType=VARCHAR},
-      value = #{record.value,jdbcType=VARCHAR},
-      createTime = #{record.createTime,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=TINYINT},
-      type = #{record.type,jdbcType=VARCHAR},
-      canDelete = #{record.canDelete,jdbcType=TINYINT},
-      sequence = #{record.sequence,jdbcType=INTEGER},
-      remark = #{record.remark,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -262,6 +230,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       mkey = #{record.mkey,jdbcType=VARCHAR},
       value = #{record.value,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=TINYINT},
       type = #{record.type,jdbcType=VARCHAR},
@@ -280,6 +249,9 @@
       <if test="value != null" >
         value = #{value,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -295,28 +267,14 @@
       <if test="sequence != null" >
         sequence = #{sequence,jdbcType=INTEGER},
       </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.crap.model.mybatis.Setting" >
-    update setting
-    set mkey = #{mkey,jdbcType=VARCHAR},
-      value = #{value,jdbcType=VARCHAR},
-      createTime = #{createTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=TINYINT},
-      type = #{type,jdbcType=VARCHAR},
-      canDelete = #{canDelete,jdbcType=TINYINT},
-      sequence = #{sequence,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Setting" >
     update setting
     set mkey = #{mkey,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=TINYINT},
       type = #{type,jdbcType=VARCHAR},

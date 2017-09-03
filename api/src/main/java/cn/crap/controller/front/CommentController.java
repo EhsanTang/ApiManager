@@ -2,6 +2,7 @@ package cn.crap.controller.front;
 
 import java.util.Random;
 
+import cn.crap.dto.SettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,7 +40,7 @@ public class CommentController extends BaseController<Comment> {
 			}
 		}
 		LoginInfoDto user = Tools.getUser();
-		Setting anonymousComment = cacheService.getSetting(Const.SETTING_ANONYMOUS_COMMENT);
+		SettingDto anonymousComment = cacheService.getSetting(Const.SETTING_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !"true".equals(anonymousComment.getValue())){
 			if (user == null){
 				throw new MyException("000060");

@@ -5,6 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.crap.adapter.SettingAdapter;
+import cn.crap.dto.SettingDto;
+import cn.crap.model.mybatis.Setting;
+import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.service.mybatis.imp.MybatisSettingService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,16 +24,13 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ISettingService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Setting;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
 
 @Controller
-public class SettingController extends BaseController<Setting>{
+public class SettingController extends BaseController<cn.crap.model.Setting>{
 
+	@Autowired
+	private MybatisSettingService mybatisSettingService;
 	@Autowired
 	private ISettingService settingService;
 	@Autowired
@@ -37,53 +40,66 @@ public class SettingController extends BaseController<Setting>{
 	private final static String[] indexUrls = new String[]{"index.do", "front/","project.do"};
 	/**
 	 * 
-	 * @param setting
 	 * @param currentPage 当前页
-	 * @param pageSize 每页显示多少条，-1表示查询全部
 	 * @return
 	 */
 	@RequestMapping("/setting/list.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
+	public JsonResult list(String key, String remark,@RequestParam(defaultValue="1") int currentPage){
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		// 搜索条件
-		Map<String,Object> map = Tools.getMap(  "key|like", setting.getKey()  ,  "remark|like", setting.getRemark()  );
-		return new JsonResult(1,  settingService.findByMap(map, page, null)   , page);
+
+		SettingCriteria example = new SettingCriteria();
+		SettingCriteria.Criteria criteria= example.createCriteria();
+		if (key != null){
+			criteria.andMkeyLike(key);
+		}
+		if (remark != null){
+			criteria.andRemarkLike(remark);
+		}
+		example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+
+		page.setAllRow(mybatisSettingService.countByExample(example));
+		return new JsonResult(1, SettingAdapter.getDto(mybatisSettingService.selectByExample(example)) , page);
 	}
 	
 	@RequestMapping("/setting/detail.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult detail(@ModelAttribute Setting setting){
+	public JsonResult detail(String id, String key, String type){
 		Setting model = null;
-		if(!MyString.isEmpty(setting.getId())){
-			model = settingService.get(setting.getId());
-		}else if(!MyString.isEmpty(setting.getKey())){
-			List<Setting> settings= settingService.findByMap(Tools.getMap("key",setting.getKey()),null,null);
+		if(id != null){
+			model = mybatisSettingService.selectByPrimaryKey(id);
+		}else if(key != null){
+			SettingCriteria example = new SettingCriteria();
+			SettingCriteria.Criteria criteria = example.createCriteria();
+			criteria.andMkeyEqualTo(key);
+
+			List<Setting> settings= mybatisSettingService.selectByExample(example);
 			if(settings.size()>0){
 				model = settings.get(0);
 			}
 		}
+
 		if(model==null){
 			model=new Setting();
-			model.setType(setting.getType());
+			model.setType(type);
 		}
-		return new JsonResult(1,model);
+		return new JsonResult(1, SettingAdapter.getDto(model));
 	}
 	
 	@RequestMapping("/setting/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult addOrUpdate(@ModelAttribute Setting setting, HttpServletRequest req) throws Exception{
-			if(!MyString.isEmpty(setting.getId())){
-				Setting old = settingService.get(setting.getId());
-				setting.setCanDelete(old.getCanDelete());
-				if (Const.SETTING_INDEX_PAGE.equals(setting.getKey())){
+	public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto, HttpServletRequest req) throws Exception{
+			if(settingDto.getId() == null){
+				Setting old = mybatisSettingService.selectByPrimaryKey(settingDto.getId());
+				settingDto.setCanDelete(old.getCanDelete());
+				if (Const.SETTING_INDEX_PAGE.equals(settingDto.getKey())){
 					boolean legalUrl = false;
 					for(String indexUrl : indexUrls){
-						if(setting.getValue().startsWith(indexUrl)){
+						if(settingDto.getValue().startsWith(indexUrl)){
 							legalUrl = true;
 							break;
 						}
@@ -92,15 +108,18 @@ public class SettingController extends BaseController<Setting>{
 						return new JsonResult(new MyException("000059"));
 					}
 				}
-				settingService.update(setting);
+				mybatisSettingService.update(SettingAdapter.getModel(settingDto));
 			}else{
-				setting.setId(null);
-				if(settingService.getCount(Tools.getMap("key",setting.getKey()))==0){
-					setting.setCanDelete(Byte.valueOf("1"));
-					settingService.save(setting);
-				}else{
+				SettingCriteria example = new SettingCriteria();
+				SettingCriteria.Criteria criteria = example.createCriteria();
+				criteria.andMkeyEqualTo(settingDto.getKey());
+
+				List<Setting> settings= mybatisSettingService.selectByExample(example);
+				if(settings.size()>0){
 					return new JsonResult(new MyException("000006"));
 				}
+
+				mybatisSettingService.insert(SettingAdapter.getModel(settingDto));
 			}
 			cacheService.delObj(Const.CACHE_SETTING);
 			cacheService.delObj(Const.CACHE_SETTINGLIST);
@@ -109,7 +128,7 @@ public class SettingController extends BaseController<Setting>{
 			String path = Tools.getServicePath(req) + "resources/css/"; 
 			Tools.createFile(path);
 			String content = Tools.readFile(path + "setting.tpl.css");
-			for(Setting s:cacheService.getSetting()){
+			for(SettingDto s:cacheService.getSetting()){
 				String value = s.getValue();
 				if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png")) ){
 					if (!value.startsWith("http://") && !value.startsWith("https://")){
@@ -119,17 +138,18 @@ public class SettingController extends BaseController<Setting>{
 				content = content.replace("{{settings."+ s.getKey() + "}}", value);
 			}
 			Tools.staticize(content, path + "/setting.css");
-		return new JsonResult(1,setting);
+		return new JsonResult(1,settingDto);
 	}
+
 	@RequestMapping("/setting/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
-		setting = settingService.get(setting.getId());
+	public JsonResult delete(@RequestParam  String id) throws MyException{
+		Setting setting = mybatisSettingService.selectByPrimaryKey(id);
 		if(setting.getCanDelete()==0){
 			throw new MyException("000009");
 		}
-		settingService.delete(setting);
+		mybatisSettingService.delete(id);
 		cacheService.delObj(Const.CACHE_SETTING);
 		cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1,null);
@@ -139,15 +159,15 @@ public class SettingController extends BaseController<Setting>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		Setting change = settingService.get(changeId);
-		Setting model = settingService.get(id);
+		Setting change = mybatisSettingService.selectByPrimaryKey(changeId);
+		Setting model = mybatisSettingService.selectByPrimaryKey(id);
 		int modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);
-		
-		settingService.update(model);
-		settingService.update(change);
+
+		mybatisSettingService.update(model);
+		mybatisSettingService.update(change);
 		cacheService.delObj(Const.CACHE_SETTING);
 		cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1, null);

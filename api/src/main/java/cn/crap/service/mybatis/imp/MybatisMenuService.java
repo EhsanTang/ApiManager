@@ -56,7 +56,6 @@ public class MybatisMenuService {
         if (menu == null) {
             return false;
         }
-        menu.setCreateTime(null);
         return menuMapper.updateByPrimaryKeySelective(menu) > 0 ? true : false;
     }
 

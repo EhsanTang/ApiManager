@@ -2,9 +2,10 @@ package cn.crap.service;
 
 import java.util.List;
 
+import cn.crap.dto.SettingDto;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.Setting;
+import cn.crap.model.mybatis.Setting;
 import cn.crap.model.User;
 
 public interface ICacheService{
@@ -13,9 +14,9 @@ public interface ICacheService{
 	String getStr(String key);
 	boolean delObj(String key);
 
-	Setting getSetting(String key);
+	SettingDto getSetting(String key);
 
-	List<Setting> getSetting();
+	List<SettingDto> getSetting();
 
 	String getModuleName(String moduleId);
 

@@ -55,3 +55,7 @@ update comment set userName='匿名' where userName='' or userName is null;
 ALTER TABLE user`
 ADD COLUMN `passwordSalt` VARCHAR(20) NULL COMMENT '密码MD5盐' AFTER `thirdlyId`;
 
+
+ALTER TABLE `apidev`.`setting`
+CHANGE COLUMN `remark` `remark` VARCHAR(500) NULL DEFAULT NULL ;
+

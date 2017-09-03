@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.crap.dto.SettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,7 +97,7 @@ public class MainController extends BaseController<User> {
 	@AuthPassport
 	public JsonResult init(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
+		for (SettingDto setting : cacheService.getSetting()) {
 			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}

@@ -1,43 +1,35 @@
-package cn.crap.model.mybatis;
+package cn.crap.dto;
+
+import cn.crap.enumeration.SettingType;
+import cn.crap.utils.MyString;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Setting implements Serializable {
+public class SettingDto{
     private String id;
-
-    private String mkey;
-
+    private String key;
     private String value;
-
     private String remark;
-
-    private Date createTime;
-
     private Byte status;
-
     private String type;
-
     private Byte canDelete;
-
     private Integer sequence;
-
-    private static final long serialVersionUID = 1L;
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
-    public String getMkey() {
-        return mkey;
+    public String getKey() {
+        return key;
     }
 
-    public void setMkey(String mkey) {
-        this.mkey = mkey == null ? null : mkey.trim();
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getValue() {
@@ -45,7 +37,7 @@ public class Setting implements Serializable {
     }
 
     public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+        this.value = value;
     }
 
     public String getRemark() {
@@ -53,15 +45,7 @@ public class Setting implements Serializable {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.remark = remark;
     }
 
     public Byte getStatus() {
@@ -77,7 +61,7 @@ public class Setting implements Serializable {
     }
 
     public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+        this.type = type;
     }
 
     public Byte getCanDelete() {
@@ -94,5 +78,13 @@ public class Setting implements Serializable {
 
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
+    }
+
+    public String getTypeName(){
+        if(!MyString.isEmpty(type)){
+            return SettingType.getValue(type);
+        }
+        return "";
+
     }
 }

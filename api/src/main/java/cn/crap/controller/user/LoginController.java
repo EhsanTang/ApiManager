@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
 
+import cn.crap.dto.SettingDto;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,7 +73,7 @@ public class LoginController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult preLogin() {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
+		for (SettingDto setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		LoginDto model = new LoginDto();

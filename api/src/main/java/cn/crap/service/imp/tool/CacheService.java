@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.crap.adapter.SettingAdapter;
+import cn.crap.dto.SettingDto;
+import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.service.mybatis.imp.MybatisSettingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,6 +38,8 @@ public class CacheService implements ICacheService {
 	private IModuleDao dataCenterDao;
 	@Autowired
 	private Config config;
+	@Autowired
+	private MybatisSettingService mybatisSettingService;
 	
 	@Resource(name="memoryCacheDao")
 	private ICacheDao memoryCacheDao;
@@ -77,33 +83,37 @@ public class CacheService implements ICacheService {
 	
 	@Override
 	@Transactional
-	public Setting getSetting(String key){
+	public SettingDto getSetting(String key){
 		Object obj = getDao().getObj(Const.CACHE_AUTHORIZE , key);
 		
 		if(obj == null){
-			List<Setting> settings = settingDao.findByMap(Tools.getMap("key",key), null, null);
+			SettingCriteria example = new SettingCriteria();
+			SettingCriteria.Criteria criteria = example.createCriteria();
+			criteria.andMkeyEqualTo(key);
+
+			List<cn.crap.model.mybatis.Setting> settings= mybatisSettingService.selectByExample(example);
 			if(settings.size() > 0){
-				getDao().setObj(Const.CACHE_SETTING, key, settings.get(0), config.getCacheTime());
-				return settings.get(0);
+				getDao().setObj(Const.CACHE_SETTING, key, SettingAdapter.getDto(settings.get(0)), config.getCacheTime());
+				return SettingAdapter.getDto(settings.get(0));
 			}
 		}else{
-			return (Setting) obj;
+			return (SettingDto) obj;
 		}
-		return new Setting();
+		return new SettingDto();
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Setting> getSetting(){
+	public List<SettingDto> getSetting(){
 		Object obj = getDao().getObj(Const.CACHE_SETTINGLIST);
 		
 		if(obj == null){
-			List<Setting> settings = settingDao.findByMap(null, null, null);
-			getDao().setObj(Const.CACHE_SETTINGLIST, settings, config.getCacheTime());
-			return settings;
+			List<cn.crap.model.mybatis.Setting> settings= mybatisSettingService.selectByExample(null);
+			getDao().setObj(Const.CACHE_SETTINGLIST, SettingAdapter.getDto(settings), config.getCacheTime());
+			return SettingAdapter.getDto(settings);
 		}else{
-			return (List<Setting>) obj;
+			return (List<SettingDto>) obj;
 		}
 	}
 	

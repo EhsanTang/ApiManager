@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.dto.SettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,7 @@ public class MainController extends BaseController<User> {
 	 */
 	@RequestMapping("/home.do")
 	public void home() throws Exception {
-		Setting indexUrl = cacheService.getSetting(Const.SETTING_INDEX_PAGE);
+		SettingDto indexUrl = cacheService.getSetting(Const.SETTING_INDEX_PAGE);
 		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
 			response.sendRedirect(indexUrl.getValue());
 		}else{
@@ -136,7 +137,7 @@ public class MainController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
+		for (SettingDto setting : cacheService.getSetting()) {
 			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}

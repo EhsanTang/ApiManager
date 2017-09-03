@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.crap.dto.SettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -245,7 +246,6 @@ public class StaticizeController extends BaseController<Project> {
 	/**
 	 * 静态化接口详情
 	 * @param req
-	 * @param articleId
 	 * @return
 	 * @throws MyException
 	 */
@@ -511,7 +511,7 @@ public class StaticizeController extends BaseController<Project> {
 	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) {
 		// 静态化
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
+		for (SettingDto setting : cacheService.getSetting()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		if(!MyString.isEmpty(project.getCover())){

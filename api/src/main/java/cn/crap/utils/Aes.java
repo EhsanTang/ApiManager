@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import cn.crap.dto.SettingDto;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Setting;
@@ -24,7 +25,7 @@ public class Aes
 	 public static final String iv="CRAPG_@W8#_19#10";
 	 public static String encrypt(String data){
 		 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
+		 SettingDto setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();
@@ -58,7 +59,7 @@ public class Aes
  
      public static String desEncrypt(String data){
     	 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-    	 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
+    	 SettingDto setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();

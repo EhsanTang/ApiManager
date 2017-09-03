@@ -18,7 +18,7 @@ import cn.crap.dto.DebugInterfaceParamDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.dao.IModuleDao;
 import cn.crap.dao.IProjectDao;

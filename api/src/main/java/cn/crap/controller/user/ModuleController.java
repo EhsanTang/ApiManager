@@ -13,7 +13,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumeration.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
 import cn.crap.service.IInterfaceService;

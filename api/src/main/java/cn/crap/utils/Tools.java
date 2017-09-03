@@ -537,6 +537,10 @@ public class Tools {
 	        return flag;
 	 }
 
+	 public static String getAvatar(){
+		Random random = new Random();
+		return "resources/avatar/avatar" + random.nextInt(10) +".jpg";
+	 }
 	/**
 	 * 处理用户名，不能包含@，不能=admin
 	 * @param name

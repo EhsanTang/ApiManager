@@ -2,6 +2,14 @@ package cn.crap.utils;
 
 public class TableField {
 
+    public final static String ID = "id";
+    public final static String CREATE_TIME = "createTime";
+    public final static String SEQUENCE = "sequence";
+
+    public static class SORT{
+        public final static String SEQUENCE_DESC = "sequence desc";
+    }
+
     public static class USER {
         public final static String USER_TYPE = "userType"; // userType 只记录用户账号初始化来源
         public final static String EMAIL = "email";

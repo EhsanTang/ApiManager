@@ -96,7 +96,7 @@ public class IndexController extends BaseController<User> {
 
 	/**
 	 * 
-	 * @param 跳转至指定页面
+	 * @param p 跳转至指定页面
 	 * @return
 	 */
 	@RequestMapping("go.do")

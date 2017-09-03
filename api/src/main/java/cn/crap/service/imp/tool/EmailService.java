@@ -67,9 +67,9 @@ public class EmailService implements IEmailService {
 		String code =  Aes.encrypt(id);
 		String domain = config.getDomain() + "/back/validateEmail.do?i=" + code;
 		MailBean mailBean = new MailBean();
-		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "<a href=\""+domain+"\">"+domain+"</a>"));
+		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "点击验证邮箱：<a href=\""+domain+"\">"+domain+"</a>"));
 		mailBean.setToEmail(eamil);
-		mailBean.setSubject("注册邮箱验证");
+		mailBean.setSubject("注册邮箱验证-开源API接口管理系统");
 		sendMail(mailBean);
 		cacheService.setStr(code, Const.REGISTER, 10 * 60);
 	}
@@ -80,7 +80,7 @@ public class EmailService implements IEmailService {
 		String code = Tools.getChar(6);
 		mailBean.setContext( getMtml(eamil, "找回密码", "邮件验证码为："+code));
 		mailBean.setToEmail(eamil);
-		mailBean.setSubject("找回密码");
+		mailBean.setSubject("找回密码-开源API接口管理系统");
 		sendMail(mailBean);
 		cacheService.setStr(Const.CACHE_FINDPWD+ eamil, code, 10 * 60);
 	}

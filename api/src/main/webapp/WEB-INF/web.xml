@@ -18,6 +18,16 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>paramFilter</filter-name>
+		<filter-class>cn.crap.framework.ParamFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>paramFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
+
 
 	<!-- spring配置 -->
 	<servlet>

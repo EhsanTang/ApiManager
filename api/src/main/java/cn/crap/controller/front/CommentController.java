@@ -47,8 +47,7 @@ public class CommentController extends BaseController<Comment> {
 		}
 		
 		comment.setUserName("匿名");
-		Random random = new Random();
-		comment.setAvatarUrl("resources/avatar/avatar" + random.nextInt(10) +".jpg");
+		comment.setAvatarUrl(Tools.getAvatar());
 		if(user != null){
 			comment.setUserId(user.getId());
 			if (!MyString.isEmpty(user.getAvatarUrl())){

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IRoleService;
 import cn.crap.model.Role;

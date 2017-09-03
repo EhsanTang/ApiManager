@@ -10,7 +10,10 @@ public enum UserType {
 		this.name = name;
 	}
 	
-	public static String getNameByValue(byte type){
+	public static String getNameByValue(Byte type){
+		if (type == null){
+			return "";
+		}
 		for(UserType userType : UserType.values()){
 			if(userType.getType() == type)
 				return userType.getName();

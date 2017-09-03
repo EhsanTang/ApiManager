@@ -28,7 +28,7 @@ public class LoginInfoDto implements Serializable{
 	private String email;
 	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
-	
+
 	public LoginInfoDto(User user, IRoleService roleService, IProjectService projectService, IProjectUserService projectUserService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
@@ -37,23 +37,24 @@ public class LoginInfoDto implements Serializable{
 		this.type = user.getType();
 		this.email = user.getEmail();
 		this.avatarUrl = user.getAvatarUrl();
+		this.authStr = user.getAuth();
 		
 		StringBuilder sb = new StringBuilder(",");
 		// 将用户的自己的模块添加至权限中
-		List<Project> myProjects = projectService.findByMap(Tools.getMap("userId", user.getId()), null, null);
+		List<Project> myProjects = projectService.findByMap(Tools.getMap("userId", id), null, null);
 		for(Project project:myProjects){
 			sb.append(Const.AUTH_PROJECT + project.getId()+",");
 		}
 		
 		// 管理员，将最高管理员，管理员
-		if( (user.getType() + "").equals(UserType.ADMIN.getType() +"") ){
-			sb.append(user.getAuth()+",");
+		if( type == UserType.ADMIN.getType() ){
+			sb.append(authStr+",");
 			sb.append("ADMIN,");
-			if(user.getRoleId().indexOf("super") >= 0)
+			if(roleId.indexOf("super") >= 0)
 				sb.append("super,");
-			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
+			if (roleId != null && !"".equals(roleId)) {
 				List<Role> roles = roleService.findByMap(
-						Tools.getMap("id|in", Tools.getIdsFromField(user.getRoleId())), null, null);
+						Tools.getMap("id|in", Tools.getIdsFromField(roleId)), null, null);
 				// 将角色中的权限添加至用户权限中
 				for (Role role : roles) {
 					sb.append(role.getAuth()+",");
@@ -62,7 +63,7 @@ public class LoginInfoDto implements Serializable{
 		}
 		
 		// 项目成员
-		for(ProjectUser p: projectUserService.findByMap(Tools.getMap("userId", user.getId()), null, null)){
+		for(ProjectUser p: projectUserService.findByMap(Tools.getMap("userId", id), null, null)){
 			projects.put(p.getProjectId(), p);
 			sb.append(Const.AUTH_PROJECT + p.getProjectId()+",");
 		}

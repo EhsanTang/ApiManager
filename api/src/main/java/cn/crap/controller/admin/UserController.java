@@ -1,11 +1,15 @@
 package cn.crap.controller.admin;
 
 import java.util.List;
-import java.util.Map;
 
+import cn.crap.adapter.UserAdapter;
+import cn.crap.framework.IdGenerator;
+import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,25 +21,23 @@ import cn.crap.enumeration.UserStatus;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
 
 @Controller
-public class UserController extends BaseController<User> {
+public class UserController extends BaseController<cn.crap.model.User> {
 
-    @Autowired
-    private IUserService userService;
     @Autowired
     private IRoleService roleService;
     @Autowired
-    private IModuleService dataCenterService;
+    private MybatisUserService mybatisUserService;
     @Autowired
     private Config config;
     @Autowired
@@ -46,25 +48,38 @@ public class UserController extends BaseController<User> {
     @RequestMapping("/user/list.do")
     @ResponseBody
     @AuthPassport(authority = Const.AUTH_USER)
-    public JsonResult list(@ModelAttribute User user, @RequestParam(defaultValue = "1") Integer currentPage) {
+    public JsonResult list(String userName, String email, String trueName, @RequestParam(defaultValue = "1") Integer currentPage) {
         Page page = new Page(15);
         page.setCurrentPage(currentPage);
-        Map<String, Object> map = Tools.getMap("trueName|like", user.getTrueName(),
-                "userName|like", user.getUserName(), "email|like", user.getEmail());
-        return new JsonResult(1, userService.findByMap(map, page, null), page);
+        UserCriteria userCriteria = new UserCriteria();
+        UserCriteria.Criteria criteria = userCriteria.createCriteria();
+
+        if (userName != null){
+            criteria.andUserNameLike("%" + userName +"%");
+        }
+        if (trueName != null){
+            criteria.andTrueNameLike("%" + trueName+"%");
+        }
+        if (email != null){
+            criteria.andEmailLike("%" + email+"%");
+        }
+        userCriteria.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+        userCriteria.setLimitStart(page.getStart());
+        userCriteria.setMaxResults(page.getSize());
+
+        page.setAllRow(mybatisUserService.countByExample(userCriteria));
+        return new JsonResult(1, UserAdapter.getDto(mybatisUserService.selectByExample(userCriteria)), page);
     }
 
     @RequestMapping("/user/detail.do")
     @ResponseBody
     @AuthPassport(authority = Const.AUTH_USER)
-    public JsonResult detail(@ModelAttribute User user) {
-        if (!user.getId().equals(Const.NULL_ID)) {
-            user = userService.get(user.getId());
-        } else {
-            user = new User();
+    public JsonResult detail(String id) {
+        User user = new User();
+        if (id != null) {
+            user = mybatisUserService.selectByPrimaryKey(id);
         }
-        user.setPassword("");
-        return new JsonResult(1, user);
+        return new JsonResult(1, UserAdapter.getDto(user));
     }
 
 
@@ -77,6 +92,7 @@ public class UserController extends BaseController<User> {
             throw new MyException("000032");
         }
 
+        user = UserAdapter.getModel(user);
         if (MyString.isEmpty(user.getId())){
             return addUser(user);
         }else{
@@ -90,8 +106,10 @@ public class UserController extends BaseController<User> {
         }
 
         // 判断是否重名
-        List<User> users = userService.findByMap(Tools.getMap("userName", user.getUserName()), null, null);
-        if (users.size() > 0) {
+        UserCriteria userCriteria = new UserCriteria();
+        UserCriteria.Criteria criteria = userCriteria.createCriteria().andUserNameEqualTo(user.getUserName());
+        int userSize = mybatisUserService.countByExample(userCriteria);
+        if (userSize > 0) {
             throw new MyException("000015");
         }
 
@@ -99,7 +117,7 @@ public class UserController extends BaseController<User> {
             throw new MyException("000061");
         }
 
-
+        user.setId(IdGenerator.getId());
         LoginInfoDto loginUser = Tools.getUser();
         // 如果不是最高管理员，不允许修改权限、角色、类型
         if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
@@ -114,12 +132,18 @@ public class UserController extends BaseController<User> {
         user.setLoginType(LoginType.COMMON.getValue());
         user.setPassword(MD5.encrytMD5(user.getPassword(), user.getPasswordSalt()));
 
-        return new JsonResult(1, user);
+        mybatisUserService.insert(user);
+        user.setPassword(null);
+        return new JsonResult(1, UserAdapter.getDto(user));
     }
 
     private JsonResult updateUser(@ModelAttribute User user) throws MyException {
+        Assert.notNull(user,"user不能为空");
+        Assert.notNull(user.getId(), "user.id不能为空");
         // 判断是否重名
-        List<User> users = userService.findByMap(Tools.getMap("userName", user.getUserName()), null, null);
+        UserCriteria userCriteria = new UserCriteria();
+        UserCriteria.Criteria criteria = userCriteria.createCriteria().andUserNameEqualTo(user.getUserName());
+        List<User> users = mybatisUserService.selectByExample(userCriteria);
         if (users.size() > 0 && !users.get(0).getId().equals(user.getId())) {
             throw new MyException("000015");
         }
@@ -128,7 +152,7 @@ public class UserController extends BaseController<User> {
             throw new MyException("000028");
         }
 
-        User dbUser = userService.get(user.getId());
+        User dbUser = mybatisUserService.selectByPrimaryKey(user.getId());
         if (dbUser == null) {
             throw new MyException("000013");
         }
@@ -154,29 +178,31 @@ public class UserController extends BaseController<User> {
         }
 
         // 如果不是最高管理员，不允许修改权限、角色、类型
-        if (Tools.isSuperAdmin(loginUser.getRoleId())) {
-            dbUser.setAuth(user.getAuth());
-            dbUser.setAuthName(user.getAuthName());
-            dbUser.setRoleId(user.getRoleId());
-            dbUser.setRoleName(user.getRoleName());
-            dbUser.setType(user.getType());// 普通用户
+        if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
+            user.setAuth(null);
+            user.setAuthName(null);
+            user.setRoleId(null);
+            user.setRoleName(null);
+            user.setType(null);
         }
 
         // 修改了用户邮箱，状态修改改为为验证
         if (MyString.isEmpty(dbUser.getEmail()) || !user.getEmail().equals(dbUser.getEmail())) {
-            dbUser.setStatus(UserStatus.INVALID.getType());
-            dbUser.setEmail(user.getEmail());
+            user.setStatus(UserStatus.INVALID.getType());
+            user.setEmail(user.getEmail());
             cacheService.setObj(Const.CACHE_USER + user.getId(),
-                    new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
+                    new LoginInfoDto(UserAdapter.getUser(user), roleService, projectService, projectUserService), config.getLoginInforTime());
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登陆类型设置为允许普通登陆
         if (!MyString.isEmpty(user.getPassword())) {
-            dbUser.setPasswordSalt(Tools.getChar(20));
-            dbUser.setPassword(MD5.encrytMD5(user.getPassword(), dbUser.getPasswordSalt()));
-            dbUser.setLoginType(LoginType.COMMON.getValue());
+            user.setPasswordSalt(Tools.getChar(20));
+            user.setPassword(MD5.encrytMD5(user.getPassword(), user.getPasswordSalt()));
+            user.setLoginType(LoginType.COMMON.getValue());
 
-            users = userService.findByMap(Tools.getMap("email", dbUser.getEmail(), TableField.USER.LOGIN_TYPE, LoginType.COMMON.getValue()), null, null);
+            userCriteria = new UserCriteria();
+            criteria = userCriteria.createCriteria().andEmailEqualTo(user.getEmail()).andLoginTypeEqualTo(LoginType.COMMON.getValue());
+            int userSize = mybatisUserService.countByExample(userCriteria);
             if (users.size() == 1){
                 if (!users.get(0).getId().equals(dbUser.getId())){
                     throw new MyException("000062"); // 邮箱已经被其他用户绑定，不能通过密码登陆
@@ -184,8 +210,9 @@ public class UserController extends BaseController<User> {
             }
         }
 
-        userService.update(dbUser);
-        return new JsonResult(1, user);
+        mybatisUserService.update(user);
+        user.setPassword(null);
+        return new JsonResult(1, UserAdapter.getDto(user));
     }
 
 /*	@RequestMapping("/user/delete.do")

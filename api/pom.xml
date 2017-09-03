@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.crap</groupId>
 	<artifactId>api</artifactId>
@@ -8,15 +8,40 @@
 	<name>api Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		 <!-- 文件拷贝时的编码 -->  
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>  
-        <!-- 编译时的编码 -->  
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>  
-        
-        <spring_version>4.2.0.RELEASE</spring_version>
+		<!-- 文件拷贝时的编码 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 编译时的编码 -->
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<spring_version>4.2.0.RELEASE</spring_version>
+		<mybatis.version>3.2.8</mybatis.version>
+		<mybatis-generator-core.version>1.3.2</mybatis-generator-core.version>
+		<mybatis-spring.version>1.2.2</mybatis-spring.version>
+		<mysql-connector-java.version>5.1.34</mysql-connector-java.version>
 	</properties>
 	<dependencies>
+		<!-- mybatis gennerator-->
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>${mybatis-generator-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis-spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.14</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -141,7 +166,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.34</version>
+			<version>${mysql-connector-java.version}</version>
 		</dependency>
 		<!-- End:mysql -->
 		<dependency>
@@ -242,7 +267,7 @@
 			<version>2.8.0</version>
 		</dependency>
 		<!-- End:jedis -->
-		<!-- 读取xml配置 
+		<!-- 读取xml配置
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
@@ -256,15 +281,15 @@
 		</dependency>
 		<!-- fastjson-->
 		<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.7</version>
-        </dependency> 
-        <!-- 定时认为quartz -->
-        <dependency>
-    		<groupId>org.quartz-scheduler</groupId>
-   	 		<artifactId>quartz</artifactId>
-    		<version>2.2.1</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.7</version>
+		</dependency>
+		<!-- 定时认为quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 		<!-- Sprint-test 相关测试包 -->
 		<dependency>
@@ -291,7 +316,7 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
-<!-- mongo -->
+		<!-- mongo -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
@@ -304,25 +329,8 @@
 			<version>1.7.0.RELEASE</version>
 		</dependency>
 
-		<!-- mybatis gennerator-->
-		<dependency>
-			<groupId>org.mybatis.generator</groupId>
-			<artifactId>mybatis-generator-core</artifactId>
-			<version>1.3.2</version>
-		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.mybatis</groupId>-->
-			<!--<artifactId>mybatis-spring</artifactId>-->
-			<!--<version>1.3.2</version>-->
-		<!--</dependency>-->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.2.7</version>
-		</dependency>
-
 	</dependencies>
-	
+
 	<build>
 		<finalName>api</finalName>
 		<!-- 设置项目jdk版本，编码 -->
@@ -338,6 +346,17 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
 	</build>
+
 </project>

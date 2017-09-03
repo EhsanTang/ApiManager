@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;

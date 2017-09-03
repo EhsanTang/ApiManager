@@ -48,7 +48,6 @@ public class MainController extends BaseController<User> {
 	/**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
-	 * @param response
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")

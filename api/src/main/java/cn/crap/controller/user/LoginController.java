@@ -24,7 +24,7 @@ import cn.crap.enumeration.LoginType;
 import cn.crap.framework.ErrorInfos;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IMenuService;
 import cn.crap.service.IProjectService;
@@ -122,6 +122,7 @@ public class LoginController extends BaseController<User> {
 				userService.update(user);
 				cacheService.setObj(Const.CACHE_USER + user.getId(), 
 						new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
+				request.setAttribute("title", "恭喜，操作成功！");
 				request.setAttribute("result", "验证通过！");
 			}else{
 				request.setAttribute("result", "抱歉，账号不存在！");

@@ -13,7 +13,14 @@
 <div style="position:relative;width:400px;margin:0 auto; background:#f7f7f7;color:#999999; font-size:14px;line-height:36px;">
 <div style="margin-top:100px;height:60px; border-bottom:2px solid #6f5499;padding:10px;" >
 		<div style="float:left;margin-left:10px; line-height:60px;font-size:18px;font-weight:bold;color:#555;width:360px;height:60px;overflow:hidden;text-align:left;">
-		错误
+			<c:if test="${title==null}">
+				抱歉，出错啦！
+			</c:if>
+
+			<c:if test="${title!=null}">
+				${title}
+			</c:if>
+
 		</div>
 </div>
 		<div style="padding:20px;min-height:100px;white-space: pre-wrap;word-wrap: break-word;">

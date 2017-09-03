@@ -181,14 +181,16 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 					pickContent.append(String.format(separator, p.getName()));
 				} else {
 					if (radio.equals("true")) {
-						pickContent.append(String.format(radioDiv, def.equals(p.getValue()) ? " pickActive" : "",
-								p.getId(), p.getId(), p.getId(), def.equals(p.getValue()) ? "checked" : "",
+						boolean isCheck = (def != null && def.equals(p.getValue()));
+						pickContent.append(String.format(radioDiv, isCheck ? " pickActive" : "",
+								p.getId(), p.getId(), p.getId(), isCheck ? "checked" : "",
 								p.getValue(), p.getName()));
 					} else {
+						boolean isCheck = (def != null && ("," + def).indexOf("," + p.getValue() + ",") >= 0);
 						pickContent.append(String.format(checkBoxDiv,
-								("," + def).indexOf("," + p.getValue() + ",") >= 0 ? " pickActive" : "", p.getId(),
+								isCheck ? " pickActive" : "", p.getId(),
 								p.getId(), p.getId(),
-								("," + def).indexOf("," + p.getValue() + ",") >= 0 ? "checked" : "", p.getValue(),
+								isCheck ? "checked" : "", p.getValue(),
 								p.getName()));
 					}
 				}

@@ -121,10 +121,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.crap.model.mybatis.User" >
-    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into user (id, userName, password, 
+    insert into user (id, userName, password,
       trueName, roleId, roleName, 
       auth, authName, createTime, 
       status, sequence, type, 
@@ -138,9 +135,6 @@
       #{thirdlyId,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.mybatis.User" >
-    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.MenuDto;
+import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -151,7 +151,7 @@ public class MainController extends BaseController<User> {
 		
 		// 从缓存中获取菜单
 		Object objMenus = cacheService.getObj("cache:leftMenu");
-		List<MenuDto> menus = null;
+		List<MenuWithSubMenuDto> menus = null;
 		if(objMenus == null){
 			synchronized (MainController.class) {
 				objMenus = cacheService.getObj("cache:leftMenu");
@@ -159,12 +159,12 @@ public class MainController extends BaseController<User> {
 					menus = menuService.getLeftMenu(null);
 					cacheService.setObj("cache:leftMenu", menus, config.getCacheTime());//缓存10分钟
 				}else{
-					menus = (List<MenuDto>) objMenus;
+					menus = (List<MenuWithSubMenuDto>) objMenus;
 				}
 			}
 			
 		}else{
-			menus = (List<MenuDto>) objMenus;
+			menus = (List<MenuWithSubMenuDto>) objMenus;
 		}
 		
 		returnMap.put("menuList", menus);

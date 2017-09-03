@@ -60,7 +60,7 @@ public class ArticleController extends BaseController<Article>{
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Article article) throws MyException{
 		Article model;
-		if(!article.getId().equals(Const.NULL_ID)){
+		if(article.getId() != null){
 			model= articleService.get(article.getId());
 			hasPermission( cacheService.getProject(model.getProjectId()), view);
 		}else{

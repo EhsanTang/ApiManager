@@ -3,7 +3,9 @@ package cn.crap.controller.admin;
 import java.util.List;
 
 import cn.crap.adapter.UserAdapter;
+import cn.crap.dto.UserDto;
 import cn.crap.framework.IdGenerator;
+import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
@@ -23,12 +25,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
-import cn.crap.service.IUserService;
-import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
 
 @Controller
@@ -86,14 +85,14 @@ public class UserController extends BaseController<cn.crap.model.User> {
     @RequestMapping("/user/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = Const.AUTH_USER)
-    public JsonResult add(@ModelAttribute User user) throws MyException {
+    public JsonResult add(@ModelAttribute UserDto userDto) throws MyException {
         // 邮箱错误
-        if (MyString.isEmpty(user.getEmail()) || !Tools.checkEmail(user.getEmail())) {
+        if (MyString.isEmpty(userDto.getEmail()) || !Tools.checkEmail(userDto.getEmail())) {
             throw new MyException("000032");
         }
 
-        user = UserAdapter.getModel(user);
-        if (MyString.isEmpty(user.getId())){
+        User user = UserAdapter.getModel(userDto);
+        if (MyString.isEmpty(userDto.getId())){
             return addUser(user);
         }else{
             return updateUser(user);

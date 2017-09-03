@@ -3,7 +3,7 @@ package cn.crap.service;
 import java.util.List;
 import java.util.Map;
 
-import cn.crap.dto.MenuDto;
+import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.IBaseService;
@@ -24,6 +24,6 @@ public interface IMenuService extends IBaseService<Menu>{
 	 */
 	String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull) throws MyException;
 
-	List<MenuDto> getLeftMenu(Map<String, Object> map);
+	List<MenuWithSubMenuDto> getLeftMenu(Map<String, Object> map);
 
 }

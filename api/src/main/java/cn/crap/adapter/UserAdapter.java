@@ -2,7 +2,6 @@ package cn.crap.adapter;
 
 import cn.crap.dto.UserDto;
 import cn.crap.model.mybatis.User;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,17 +48,27 @@ public class UserAdapter {
 
     /**
      * 将前端不能修改得字段赋值为null
-     * @param dto
+     * @param userDto
      * @return
      */
-    public static User getModel(User dto){
-        if (dto == null){
+    public static User getModel(UserDto userDto){
+        if (userDto == null){
             return null;
         }
-        dto.setCreateTime(null);
-        dto.setLoginType(null);
-        dto.setPasswordSalt(null);
-        return dto;
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setAuth(userDto.getAuth());
+        user.setAuthName(userDto.getAuthName());
+        user.setAvatarUrl(userDto.getAvatarUrl());
+        user.setEmail(userDto.getEmail());
+        user.setRoleId(userDto.getRoleId());
+        user.setRoleName(userDto.getRoleName());
+        user.setThirdlyId(userDto.getThirdlyId());
+        user.setTrueName(userDto.getTrueName());
+        user.setType(userDto.getType());
+        user.setUserName(userDto.getUserName());
+        user.setStatus(userDto.getStatus());
+        return user;
     }
 
     public static cn.crap.model.User getUser(User model){

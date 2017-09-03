@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.crap.dto.MenuDto;
+import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ProjectStatus;
@@ -60,7 +60,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 	
 	@Override
 	@Transactional
-	public List<MenuDto> getLeftMenu(Map<String,Object> map) {
+	public List<MenuWithSubMenuDto> getLeftMenu(Map<String,Object> map) {
 		map = Tools.getMap("parentId", "0");
 		List<Menu> menus = findByMap(map, null, null);
 		map.clear();
@@ -70,13 +70,13 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		map.put("parentId|in", menuIds);
 		List<Menu> subMenus = findByMap(map, null, null);
-		List<MenuDto> menuVOs = new ArrayList<MenuDto>();
+		List<MenuWithSubMenuDto> menuVOs = new ArrayList<MenuWithSubMenuDto>();
 		
 		Page page = new Page();
 		page.setSize(config.getSubMenuSize());
 		// 加载默认推荐项目菜单
 		if(config.isShowRecommendProject()){
-			MenuDto menuVO = new MenuDto();
+			MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
 			Menu menu = new Menu();
 			menu.setIconRemark("<i class=\"iconfont\">&#xe636;</i>");
 			menu.setId("recommendProjectId");
@@ -110,7 +110,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 			
 		// 加载默认推荐文章
 		if(config.isShowArticle()){
-			MenuDto menuVO = new MenuDto();
+			MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
 			Menu menu = new Menu();
 			menu.setIconRemark("<i class=\"iconfont\">&#xe637;</i>");
 			menu.setId("articleListId");
@@ -139,7 +139,7 @@ public class MenuService extends BaseService<Menu> implements IMenuService {
 		}
 		
 		for (Menu menu : menus) {
-			MenuDto menuVO = new MenuDto();
+			MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
 			menuVO.setMenu(menu);
 			menuVO.setSubMenu(new ArrayList<Menu>());
 			for (Menu subMenu : subMenus) {

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.crap.dto.SettingDto;
+import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.custom.CustomMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +25,8 @@ import cn.crap.dto.SearchDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.service.imp.tool.LuceneSearchService;
 import cn.crap.springbeans.Config;
@@ -38,11 +38,11 @@ import cn.crap.utils.Tools;
 @Controller("fontMainController")
 public class MainController extends BaseController<User> {
 	@Autowired
-	IMenuService menuService;
-	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
+	@Autowired
+	private CustomMenuService customMenuService;
 	@Autowired
 	private Config config;
 	
@@ -157,7 +157,7 @@ public class MainController extends BaseController<User> {
 			synchronized (MainController.class) {
 				objMenus = cacheService.getObj("cache:leftMenu");
 				if(objMenus == null){
-					menus = menuService.getLeftMenu(null);
+					menus = customMenuService.getLeftMenu();
 					cacheService.setObj("cache:leftMenu", menus, config.getCacheTime());//缓存10分钟
 				}else{
 					menus = (List<MenuWithSubMenuDto>) objMenus;

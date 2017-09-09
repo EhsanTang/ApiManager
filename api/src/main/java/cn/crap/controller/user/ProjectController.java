@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import java.util.Map;
 
+import cn.crap.service.mybatis.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,8 +18,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IErrorService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
@@ -37,8 +36,6 @@ import cn.crap.utils.Tools;
 @RequestMapping("/user/project")
 public class ProjectController extends BaseController<Project> {
 	@Autowired
-	IMenuService menuService;
-	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
@@ -49,8 +46,6 @@ public class ProjectController extends BaseController<Project> {
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
-	private IErrorService errorService;
-	@Autowired
 	private IProjectUserService projectUserService;
 	@Autowired
 	private Config config;
@@ -58,6 +53,8 @@ public class ProjectController extends BaseController<Project> {
 	private IArticleService articleService;
 	@Autowired
 	private ISearchService luceneService;
+	@Autowired
+	private CustomErrorService customErrorService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -171,7 +168,7 @@ public class ProjectController extends BaseController<Project> {
 		}
 		
 		// 只有错误码数量为0，才允许删除项目
-		if(errorService.getCount(Tools.getMap("projectId", model.getId())) > 0){
+		if(customErrorService.countByProjectId(model.getId()) > 0){
 			throw new MyException("000033");
 		}
 		

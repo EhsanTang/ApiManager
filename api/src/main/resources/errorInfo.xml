@@ -66,6 +66,7 @@
 				<entry key="000060" value="不允许匿名评论，请使用github、码云或注册账号后评论（便于问题解决后及时通知）"/>
 				<entry key="000061" value="用户密码不能为空" />
 				<entry key="000062" value="该邮箱已经被其他用户绑定，不能为该邮箱设置登陆密码，请更换账号邮箱" />
+				<entry key="000063" value="数据不存在" />
 			</map>
 		</property>
 	</bean>

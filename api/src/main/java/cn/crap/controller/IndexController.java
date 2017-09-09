@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 
+import cn.crap.service.mybatis.custom.CustomMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
@@ -30,7 +30,7 @@ import cn.crap.utils.ValidateCodeService;
 @Controller
 public class IndexController extends BaseController<User> {
 	@Autowired
-	IMenuService menuService;
+	CustomMenuService customMenuService;
 	@Autowired
 	private ICacheService cacheService;
 	
@@ -61,7 +61,7 @@ public class IndexController extends BaseController<User> {
 			radio = "true";
 		}
 		List<PickDto> picks = new ArrayList<PickDto>();
-		String pickContent = menuService.pick(picks, radio, code, key, def, notNull);
+		String pickContent = customMenuService.pick(picks, radio, code, key, def, notNull);
 		request.setAttribute("radio", radio);
 		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);

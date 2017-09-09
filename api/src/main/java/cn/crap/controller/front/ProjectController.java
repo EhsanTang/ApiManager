@@ -11,7 +11,6 @@ import cn.crap.enumeration.ProjectStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IProjectService;
 import cn.crap.model.Project;
 import cn.crap.utils.MyString;
@@ -21,8 +20,6 @@ import cn.crap.utils.Tools;
 @Controller("forntProjectController")
 @RequestMapping("/front/project")
 public class ProjectController extends BaseController<Project> {
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private IProjectService projectService;
 	

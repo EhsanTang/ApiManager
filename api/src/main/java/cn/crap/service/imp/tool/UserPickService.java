@@ -13,7 +13,6 @@ import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
@@ -34,8 +33,6 @@ import cn.crap.utils.Tools;
  */
 @Service("userPickService")
 public class UserPickService implements IPickService{
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

@@ -1,7 +1,6 @@
 package cn.crap.controller.admin;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,7 +21,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ISettingService;
 import cn.crap.service.ICacheService;
 import cn.crap.springbeans.Config;
 
@@ -31,8 +29,6 @@ public class SettingController extends BaseController<cn.crap.model.Setting>{
 
 	@Autowired
 	private MybatisSettingService mybatisSettingService;
-	@Autowired
-	private ISettingService settingService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -59,6 +55,8 @@ public class SettingController extends BaseController<cn.crap.model.Setting>{
 			criteria.andRemarkLike(remark);
 		}
 		example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+		example.setLimitStart(page.getStart());
+		example.setMaxResults(page.getSize());
 
 		page.setAllRow(mybatisSettingService.countByExample(example));
 		return new JsonResult(1, SettingAdapter.getDto(mybatisSettingService.selectByExample(example)) , page);

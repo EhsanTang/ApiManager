@@ -11,13 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -218,6 +213,9 @@ public class Tools {
 	 * @return
 	 */
 	public static List<String> getIdsFromField(String ids) {
+		if (MyString.isEmpty(ids)){
+			return Collections.emptyList();
+		}
 		return Arrays.asList(ids.split(","));
 	}
 	

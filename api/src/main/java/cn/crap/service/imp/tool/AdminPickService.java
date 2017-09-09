@@ -2,6 +2,7 @@ package cn.crap.service.imp.tool;
 
 import java.util.List;
 
+import cn.crap.service.mybatis.custom.CustomMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,11 @@ import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IPickService;
 import cn.crap.model.Article;
-import cn.crap.model.Menu;
+import cn.crap.model.mybatis.Menu;
 import cn.crap.model.Project;
 import cn.crap.model.Role;
 import cn.crap.utils.Const;
@@ -37,13 +37,13 @@ import cn.crap.utils.Tools;
 @Service("adminPickService")
 public class AdminPickService implements IPickService{
 	@Autowired
-	IMenuService menuService;
-	@Autowired
 	private IProjectService projectService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
 	private IArticleService articleService;
+	@Autowired
+	private CustomMenuService customMenuService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -84,7 +84,7 @@ public class AdminPickService implements IPickService{
 			return;
 		// 一级菜单
 		case "MENU":
-			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
+			for (Menu m : customMenuService.queryByParentId("0")) {
 				pick = new PickDto(m.getId(), m.getMenuName());
 				picks.add(pick);
 			}

@@ -17,7 +17,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
 import cn.crap.service.ICommentService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Comment;
@@ -35,8 +34,6 @@ import cn.crap.utils.Tools;
  */
 @Controller("frontArticleController")
 public class ArticleController extends BaseController<Article> {
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

@@ -1,13 +1,9 @@
 package cn.crap.controller.admin;
 
-import java.util.Map;
-
 import cn.crap.adapter.MenuAdapter;
-import cn.crap.adapter.UserAdapter;
 import cn.crap.dto.MenuDto;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
-import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.imp.MybatisMenuService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +17,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;
 
 @Controller

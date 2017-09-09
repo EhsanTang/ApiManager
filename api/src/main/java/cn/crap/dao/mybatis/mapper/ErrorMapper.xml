@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="errorCode" property="errorCode" jdbcType="VARCHAR" />
     <result column="errorMsg" property="errorMsg" jdbcType="VARCHAR" />
-    <result column="moduleId" property="moduleId" jdbcType="VARCHAR" />
+    <result column="projectId" property="projectId" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, errorCode, errorMsg, moduleId, createTime, status, sequence
+    id, errorCode, errorMsg, projectId, createTime, status, sequence
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.ErrorCriteria" >
     select
@@ -110,14 +110,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.crap.model.mybatis.Error" >
-    insert into error (id, errorCode, errorMsg,
-      moduleId, createTime, status, 
+    
+      
+    
+    insert into error (id, errorCode, errorMsg, 
+      projectId, createTime, status, 
       sequence)
     values (#{id,jdbcType=VARCHAR}, #{errorCode,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
-      #{moduleId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{projectId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
       #{sequence,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Error" >
+    
+      
+    
     insert into error
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,
@@ -127,8 +133,8 @@
       <if test="errorMsg != null" >
         errorMsg,
       </if>
-      <if test="moduleId != null" >
-        moduleId,
+      <if test="projectId != null" >
+        projectId,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -148,8 +154,8 @@
       <if test="errorMsg != null" >
         #{errorMsg,jdbcType=VARCHAR},
       </if>
-      <if test="moduleId != null" >
-        #{moduleId,jdbcType=VARCHAR},
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -180,8 +186,8 @@
       <if test="record.errorMsg != null" >
         errorMsg = #{record.errorMsg,jdbcType=VARCHAR},
       </if>
-      <if test="record.moduleId != null" >
-        moduleId = #{record.moduleId,jdbcType=VARCHAR},
+      <if test="record.projectId != null" >
+        projectId = #{record.projectId,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -202,7 +208,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       errorCode = #{record.errorCode,jdbcType=VARCHAR},
       errorMsg = #{record.errorMsg,jdbcType=VARCHAR},
-      moduleId = #{record.moduleId,jdbcType=VARCHAR},
+      projectId = #{record.projectId,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=TINYINT},
       sequence = #{record.sequence,jdbcType=INTEGER}
@@ -219,8 +225,8 @@
       <if test="errorMsg != null" >
         errorMsg = #{errorMsg,jdbcType=VARCHAR},
       </if>
-      <if test="moduleId != null" >
-        moduleId = #{moduleId,jdbcType=VARCHAR},
+      <if test="projectId != null" >
+        projectId = #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -238,7 +244,7 @@
     update error
     set errorCode = #{errorCode,jdbcType=VARCHAR},
       errorMsg = #{errorMsg,jdbcType=VARCHAR},
-      moduleId = #{moduleId,jdbcType=VARCHAR},
+      projectId = #{projectId,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=TINYINT},
       sequence = #{sequence,jdbcType=INTEGER}

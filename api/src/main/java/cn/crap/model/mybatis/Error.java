@@ -10,7 +10,7 @@ public class Error implements Serializable {
 
     private String errorMsg;
 
-    private String moduleId;
+    private String projectId;
 
     private Date createTime;
 
@@ -44,12 +44,12 @@ public class Error implements Serializable {
         this.errorMsg = errorMsg == null ? null : errorMsg.trim();
     }
 
-    public String getModuleId() {
-        return moduleId;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId == null ? null : moduleId.trim();
+    public void setProjectId(String projectId) {
+        this.projectId = projectId == null ? null : projectId.trim();
     }
 
     public Date getCreateTime() {

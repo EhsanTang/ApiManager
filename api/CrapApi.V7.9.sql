@@ -59,3 +59,6 @@ ADD COLUMN `passwordSalt` VARCHAR(20) NULL COMMENT '密码MD5盐' AFTER `thirdly
 ALTER TABLE `apidev`.`setting`
 CHANGE COLUMN `remark` `remark` VARCHAR(500) NULL DEFAULT NULL ;
 
+--- 未执行，线上
+ALTER TABLE `apidev`.`error`
+CHANGE COLUMN `moduleId` `projectId` VARCHAR(50) NOT NULL ;

@@ -9,7 +9,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.SettingDto;
+import cn.crap.service.mybatis.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +28,13 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IErrorService;
 import cn.crap.service.IInterfaceService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.Setting;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
@@ -44,24 +43,23 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
+import cn.crap.model.mybatis.Error;
 
 @Controller
 @RequestMapping("/user/staticize")
 public class StaticizeController extends BaseController<Project> {
 	@Autowired
-	IMenuService menuService;
-	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IModuleService moduleService;
-	@Autowired
-	private IErrorService errorService;
 	@Autowired
 	private Config config;
 	@Autowired
 	private IArticleService articleService;
 	@Autowired
 	private IInterfaceService interfaceService;
+	@Autowired
+	private CustomErrorService customErrorService;
 	
 	/**
 	 * 静态化错误码列表
@@ -83,12 +81,13 @@ public class StaticizeController extends BaseController<Project> {
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(null, project, "-错误码");
 		
-		Map<String, Object> map = Tools.getMap("projectId", projectId);
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setSize(15);
+		List<Error> errorModels = customErrorService.pageByProjectIdCodeMsg(projectId, null, null, page);
+
 		returnMap.put("page", page);
-		returnMap.put("errorList",  errorService.findByMap(map, page, null));
+		returnMap.put("errorList", ErrorAdapter.getDto(errorModels));
 		returnMap.put("activePage","errorList");
 		returnMap.put("url", "errorList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -379,9 +378,8 @@ public class StaticizeController extends BaseController<Project> {
 		// 静态化错误码// 查询页码
 		int pageSize = 15;
 		int totalPage = 0;
-		Map<String, Object> map = Tools.getMap("projectId", projectId);
 		if(needStaticizes.indexOf(",error,") >= 0){
-			int errorSize = errorService.getCount(map);
+			int errorSize = customErrorService.countByProjectId(projectId);
 			// 计算总页数
 			totalPage = (errorSize+pageSize-1)/pageSize;
 			if(totalPage == 0){
@@ -395,7 +393,7 @@ public class StaticizeController extends BaseController<Project> {
 			}
 		}
 		
-		
+		Map<String, Object> map = new HashMap<>();
 		
 		for(Module module : moduleService.findByMap(Tools.getMap("projectId", projectId), null, null)){
 			if(needStaticizes.indexOf(",article,") >= 0){

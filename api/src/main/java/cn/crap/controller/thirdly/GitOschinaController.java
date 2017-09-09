@@ -14,7 +14,6 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumeration.LoginType;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IUserService;
 import cn.crap.model.User;
 import cn.crap.service.imp.thirdly.OschinaService;
@@ -27,8 +26,6 @@ import cn.crap.springbeans.Config;
  */
 @Controller
 public class GitOschinaController extends BaseController<User> {
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private Config config;
 	@Autowired

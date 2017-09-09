@@ -2,6 +2,7 @@ package cn.crap.service.imp.tool;
 
 import java.util.List;
 
+import cn.crap.service.mybatis.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +14,13 @@ import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.TrueOrFalse;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IErrorService;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
-import cn.crap.model.Error;
-import cn.crap.utils.Tools;
+import cn.crap.model.mybatis.Error;
 
 /**
  * 下拉选着
@@ -31,8 +29,6 @@ import cn.crap.utils.Tools;
  */
 @Service("pickService")
 public class PickService implements IPickService{
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -46,7 +42,7 @@ public class PickService implements IPickService{
 	@Autowired
 	private IArticleService articleService;
 	@Autowired
-	private IErrorService errorService;
+	private CustomErrorService customErrorService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -84,8 +80,7 @@ public class PickService implements IPickService{
 				}
 				return;
 			case "ERRORCODE":// 错误码
-				for (Error error : errorService.findByMap(
-						Tools.getMap("moduleId", key), null, "errorCode asc")) {
+				for (Error error : customErrorService.queryByProjectId(key)) {
 					pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 					picks.add(pick);
 				}

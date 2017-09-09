@@ -27,20 +27,16 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
 import cn.crap.service.IEmailService;
-import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 
 @Controller
 public class LoginController extends BaseController<User> {
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private IUserService userService;
 	@Autowired

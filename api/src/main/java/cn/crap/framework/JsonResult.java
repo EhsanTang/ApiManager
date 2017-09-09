@@ -23,8 +23,8 @@ public class JsonResult implements Serializable {
 	public JsonResult(Integer success,Object data,Page page,Object others){
 		this( success, data, page);
 		this.others = others;
-		
 	}
+
 	public JsonResult(Integer success,Object data,Page page){
 		this.data = data;
 		this.success = success;
@@ -49,7 +49,11 @@ public class JsonResult implements Serializable {
 		String errorMsg =  ErrorInfos.getMessage(errorCode);
 		this.setError( new ErrorMessage(errorCode,errorMsg) );
 	}
-	
+
+	public JsonResult others(Object others){
+		this.others = others;
+		return this;
+	}
 	
 	public Integer getSuccess() {
 		return success;

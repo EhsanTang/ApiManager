@@ -15,10 +15,8 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IMenuService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.Setting;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -28,8 +26,6 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class MainController extends BaseController<User> {
-	@Autowired
-	IMenuService menuService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

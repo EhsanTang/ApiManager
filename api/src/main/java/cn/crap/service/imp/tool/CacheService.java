@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.crap.dao.ICacheDao;
 import cn.crap.dao.IModuleDao;
 import cn.crap.dao.IProjectDao;
-import cn.crap.dao.ISettingDao;
 import cn.crap.dao.IUserDao;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Module;
@@ -32,8 +31,6 @@ import cn.crap.utils.Tools;
 @Service
 @Repository(value = "cacheService")
 public class CacheService implements ICacheService {
-	@Resource(name="settingDao")
-	private ISettingDao settingDao;
 	@Resource(name="dataCenterDao")
 	private IModuleDao dataCenterDao;
 	@Autowired

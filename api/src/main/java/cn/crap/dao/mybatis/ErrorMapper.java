@@ -2,8 +2,9 @@ package cn.crap.dao.mybatis;
 
 import cn.crap.model.mybatis.Error;
 import cn.crap.model.mybatis.ErrorCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ErrorMapper {
     int countByExample(ErrorCriteria example);

@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.service.mybatis.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +21,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IErrorService;
 import cn.crap.service.IInterfaceService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.Error;
+import cn.crap.model.mybatis.Error;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
@@ -42,11 +43,11 @@ public class InterfaceController extends BaseController<Interface>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IErrorService errorService;
-	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
+	@Autowired
+	private CustomErrorService customErrorService;
 	@Autowired
 	private Config config;
 	
@@ -140,25 +141,21 @@ public class InterfaceController extends BaseController<Interface>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(
-			@ModelAttribute Interface interFace) throws IOException, MyException {
-		if(MyString.isEmpty(interFace.getUrl()))
+	public JsonResult addOrUpdate(@ModelAttribute Interface interFace) throws IOException, MyException {
+		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
+
+		if(MyString.isEmpty(interFace.getUrl())) {
 			return new JsonResult(new MyException("000005"));
-		
+		}
 		interFace.setUrl(interFace.getUrl().trim());
 		
 		/**
 		 * 根据选着的错误码id，组装json字符串
 		 */
 		String errorIds = interFace.getErrorList();
-		if (errorIds != null && !errorIds.equals("")) {
-			List<Error> errors = errorService.findByMap(
-					 Tools.getMap("errorCode|in", Tools.getIdsFromField(errorIds), "moduleId", interFace.getProjectId()), null,null);
-			interFace.setErrors(JSONArray.fromObject(errors).toString());
-		}else{
-			interFace.setErrors("[]");
-		}
-		
+		List<Error> errors  = customErrorService.queryByProjectIdAndErrorCode(interFace.getProjectId(), Tools.getIdsFromField(errorIds));
+		interFace.setErrors(JSONArray.fromObject(errors).toString());
+
 		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 		interFace.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm));

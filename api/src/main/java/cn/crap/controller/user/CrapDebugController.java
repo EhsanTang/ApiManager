@@ -1,10 +1,9 @@
 package cn.crap.controller.user;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import cn.crap.model.mybatis.Project;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,14 +20,11 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.dao.IModuleDao;
-import cn.crap.dao.IProjectDao;
 import cn.crap.service.IDebugService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.model.Article;
 import cn.crap.model.Debug;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
@@ -40,11 +36,9 @@ public class CrapDebugController extends BaseController<Article>{
 	@Autowired
 	private IDebugService debugService;
 	@Autowired
-	private IProjectService projectService;
+	private MybatisProjectService projectService;
 	@Autowired
 	private IModuleService moduleService;
-	@Autowired
-	private IProjectDao projectDao;
 	@Autowired
 	private IModuleDao moduleDao;
 
@@ -57,7 +51,7 @@ public class CrapDebugController extends BaseController<Article>{
 		
 		// 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
 		String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
-		Project project = projectDao.get(projectId);
+		Project project = projectService.selectByPrimaryKey(projectId);
 		if( project == null){
 			project = new Project();
 			project.setId(projectId);
@@ -66,11 +60,12 @@ public class CrapDebugController extends BaseController<Article>{
 			project.setName("默认调试项目");
 			project.setStatus(Byte.valueOf("-1"));
 			project.setSequence(0);
-			project.setType(1);
+			project.setType(Byte.valueOf("1"));
 			project.setUserId(user.getId());
-			project.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+			project.setCreateTime(new Date());
 			project.setRemark("");
-			projectService.save(project);
+
+			projectService.insert(project);
 		}
 		int moduleSequence = 0;
 		for(DebugInterfaceParamDto d: list){

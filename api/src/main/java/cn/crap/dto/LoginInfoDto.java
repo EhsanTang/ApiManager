@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import cn.crap.enumeration.UserType;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.Role;
 import cn.crap.model.User;
+import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
@@ -29,7 +29,7 @@ public class LoginInfoDto implements Serializable{
 	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
 
-	public LoginInfoDto(User user, IRoleService roleService, IProjectService projectService, IProjectUserService projectUserService){
+	public LoginInfoDto(User user, IRoleService roleService, CustomProjectService customProjectService, IProjectUserService projectUserService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
@@ -41,7 +41,7 @@ public class LoginInfoDto implements Serializable{
 		
 		StringBuilder sb = new StringBuilder(",");
 		// 将用户的自己的模块添加至权限中
-		List<Project> myProjects = projectService.findByMap(Tools.getMap("userId", id), null, null);
+		List<Project> myProjects = customProjectService.queryMyProjectByUserId(id);
 		for(Project project:myProjects){
 			sb.append(Const.AUTH_PROJECT + project.getId()+",");
 		}

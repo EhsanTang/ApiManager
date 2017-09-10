@@ -2,6 +2,7 @@ package cn.crap.controller.front;
 
 import java.util.Map;
 
+import cn.crap.model.mybatis.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +16,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.service.ISourceService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;

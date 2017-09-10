@@ -22,11 +22,10 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.service.imp.tool.CacheService;
 import cn.crap.utils.Const;
@@ -65,8 +64,6 @@ public abstract class BaseController<T extends BaseModel> {
 
 	@Autowired
 	protected ICacheService cacheService;
-	@Autowired
-	protected IProjectService projectService;
 	@Autowired
 	protected IProjectUserService projectUserService;
 

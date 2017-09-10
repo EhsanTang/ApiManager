@@ -6,17 +6,15 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumeration.MenuType;
 import cn.crap.enumeration.ProjectStatus;
 import cn.crap.framework.MyException;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IProjectService;
 import cn.crap.springbeans.Config;
 import cn.crap.springbeans.PickFactory;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -24,7 +22,6 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CustomMenuService {
@@ -32,7 +29,7 @@ public class CustomMenuService {
     private MenuMapper mapper;
 
     @Autowired
-    private IProjectService projectService;
+    private CustomProjectService customProjectService;
     @Autowired
     private IArticleService articleService;
     @Autowired
@@ -83,7 +80,7 @@ public class CustomMenuService {
             menuVO.setMenu(menu);
 
             menuVO.setSubMenu(new ArrayList<Menu>());
-            for (Project project : projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), page, null)) {
+            for (Project project : customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), null, page)) {
                 Menu subMenu = new Menu();
                 subMenu.setId("recPro_"+project.getId());
                 subMenu.setMenuName(project.getName());

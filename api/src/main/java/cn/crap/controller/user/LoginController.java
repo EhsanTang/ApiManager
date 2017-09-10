@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import cn.crap.dto.SettingDto;
+import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
@@ -44,7 +44,7 @@ public class LoginController extends BaseController<User> {
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IProjectService projectService;
+	private CustomProjectService customProjectService;
 	@Autowired
 	private IProjectUserService projectUserService;
 	@Autowired
@@ -118,7 +118,7 @@ public class LoginController extends BaseController<User> {
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
 				cacheService.setObj(Const.CACHE_USER + user.getId(), 
-						new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
+						new LoginInfoDto(user, roleService, customProjectService, projectUserService), config.getLoginInforTime());
 				request.setAttribute("title", "恭喜，操作成功！");
 				request.setAttribute("result", "验证通过！");
 			}else{

@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +17,12 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -38,7 +40,9 @@ public class UserPickService implements IPickService{
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private IProjectService projectService;
+	private MybatisProjectService projectService;
+	@Autowired
+	private CustomProjectService customProjectService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
@@ -72,7 +76,9 @@ public class UserPickService implements IPickService{
 //						return;
 					case "MYMODULE":// 用户所有模块
 						// 普通用户，只能查看自己的模块
-						for (Project p : projectService.findByMap(Tools.getMap("userId", Tools.getUser().getId(), "status|>", 0), null, null)) {
+						ProjectCriteria example = new ProjectCriteria();
+						ProjectCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(Tools.getUser().getId()).andStatusGreaterThan(Byte.valueOf("0"));
+						for (Project p : projectService.selectByExample(example)) {
 							pick = new PickDto(Const.SEPARATOR, p.getName());
 							picks.add(pick);
 							
@@ -84,7 +90,7 @@ public class UserPickService implements IPickService{
 						return;
 					case "PROJECT_MODULE":
 						// 普通用户，只能查看自己的项目和模块
-						projectIds = projectService.getProjectIdByUid(Tools.getUser().getId());
+						projectIds = customProjectService.queryProjectIdByUid(Tools.getUser().getId());
 						moduleService.getDataCenterPick(picks, projectIds , "", "", "");
 						return;
 					case "MODULES":

@@ -15,7 +15,6 @@ import cn.crap.enumeration.TrueOrFalse;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
@@ -33,8 +32,6 @@ public class PickService implements IPickService{
 	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IProjectService projectService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired

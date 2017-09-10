@@ -1,8 +1,15 @@
 package cn.crap.controller.user;
 
+import java.util.List;
 import java.util.Map;
 
+import cn.crap.adapter.ProjectAdapter;
+import cn.crap.dto.ProjectDto;
+import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,28 +26,25 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/project")
-public class ProjectController extends BaseController<Project> {
+public class ProjectController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private IProjectService projectService;
+	private CustomProjectService customProjectService;
+	@Autowired
+	private MybatisProjectService projectService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
@@ -67,26 +71,27 @@ public class ProjectController extends BaseController<Project> {
 		
 		// 普通用户，管理员我的项目菜单只能查看自己的项目
 		LoginInfoDto user = Tools.getUser();
+		List<Project> models = null;
+		List<ProjectDto> dtos = null;
 		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
-			if(MyString.isEmpty(project.getName())){
-				return new JsonResult(1, 
-						projectService.queryByHql("from Project where status>0 and userId=:userId or id in (select projectId from ProjectUser where userId=:userId) order by sequence desc, createTime desc", Tools.getMap("userId", user.getId()), page)
-						, page);
-
-			}else{
-				return new JsonResult(1, 
-						projectService.queryByHql("from Project where status>0 and (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name order by sequence desc, createTime desc", 
-						Tools.getMap("userId", user.getId(), "name|like", project.getName()), page)
-						, page);
-
-			}
+			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
+			models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
+			dtos = ProjectAdapter.getDto(models);
+			return new JsonResult(1,dtos, page);
 		}else{
 			Map<String,Object> map = null;
-			map = Tools.getMap("name|like", project.getName());
-
-			return new JsonResult(1, projectService.findByMap(map, page, null), page);
+			ProjectCriteria example = new ProjectCriteria();
+			ProjectCriteria.Criteria criteria = example.createCriteria();
+			if (project.getName() != null){
+				criteria.andNameLike("%" + project.getName() +"%");
+			}
+			example.setLimitStart(page.getStart());
+			example.setMaxResults(page.getSize());
+			example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+			page.setAllRow(projectService.countByExample(example));
+			models = projectService.selectByExample(example);
 		}
-		
+		return new JsonResult(1,dtos, page);
 	}
 	
 	@RequestMapping("/detail.do")
@@ -127,7 +132,7 @@ public class ProjectController extends BaseController<Project> {
 				project.setStatus(model.getStatus());
 			}
 						
-			projectService.update(project , "项目" , "");
+			customProjectService.update(project , "项目" , "");
 		}
 		
 		// 新增
@@ -138,14 +143,14 @@ public class ProjectController extends BaseController<Project> {
 				project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
 			}
 			
-			projectService.save(project);
+			projectService.insert(project);
 		}
 		
 		// 清楚缓存
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
 		
 		// 刷新用户权限 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, projectService, projectUserService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,project);
 	}
 	
@@ -178,7 +183,7 @@ public class ProjectController extends BaseController<Project> {
 		}
 		
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
-		projectService.delete(project, "项目", "");
+		customProjectService.delete(project.getId(), "项目", "");
 		return new JsonResult(1,null);
 	}
 	

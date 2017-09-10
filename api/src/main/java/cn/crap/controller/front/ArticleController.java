@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.model.mybatis.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +22,7 @@ import cn.crap.service.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Comment;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.Page;

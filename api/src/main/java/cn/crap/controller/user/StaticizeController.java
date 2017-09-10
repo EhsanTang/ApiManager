@@ -34,7 +34,7 @@ import cn.crap.service.ICacheService;
 import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
@@ -47,7 +47,7 @@ import cn.crap.model.mybatis.Error;
 
 @Controller
 @RequestMapping("/user/staticize")
-public class StaticizeController extends BaseController<Project> {
+public class StaticizeController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

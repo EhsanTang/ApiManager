@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,6 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.dao.IUserDao;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IUserService;
@@ -34,7 +35,9 @@ public class UserService extends BaseService<User>
 	@Autowired
 	private Config config;
 	@Autowired
-	private IProjectService projectService;
+	private MybatisProjectService projectService;
+	@Autowired
+	private CustomProjectService customProjectService;
 	@Autowired
 	private IProjectUserService projectUserService;
 	
@@ -60,7 +63,7 @@ public class UserService extends BaseService<User>
 		String token  = Aes.encrypt(user.getId());
 		MyCookie.addCookie(Const.COOKIE_TOKEN, token, response);
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(user, roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		MyCookie.addCookie(Const.COOKIE_USERID, user.getId(), response);
 		MyCookie.addCookie(Const.COOKIE_USERNAME, model.getUserName(), response);
 		MyCookie.addCookie(Const.COOKIE_REMBER_PWD, model.getRemberPwd() , response);

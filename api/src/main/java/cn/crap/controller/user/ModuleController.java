@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import java.util.Map;
 
+import cn.crap.service.mybatis.custom.CustomProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +19,6 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.service.IArticleService;
 import cn.crap.service.IInterfaceService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.ISourceService;
@@ -49,7 +49,7 @@ public class ModuleController extends BaseController<Module>{
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
-	private IProjectService projectService;
+	private CustomProjectService customProjectService;
 	@Autowired
 	private IProjectUserService projectUserService;
 	@Autowired
@@ -118,7 +118,7 @@ public class ModuleController extends BaseController<Module>{
 		LoginInfoDto user = Tools.getUser();
 		// 将用户信息存入缓存
 		cacheService.setObj(Const.CACHE_USER + user.getId(), 
-				new LoginInfoDto(userService.get(user.getId()), roleService, projectService, projectUserService), config.getLoginInforTime());
+				new LoginInfoDto(userService.get(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
 	

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.service.mybatis.imp.MybatisSettingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dao.ICacheDao;
 import cn.crap.dao.IModuleDao;
-import cn.crap.dao.IProjectDao;
 import cn.crap.dao.IUserDao;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
-import cn.crap.model.Setting;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
 @Service
 @Repository(value = "cacheService")
@@ -44,8 +42,8 @@ public class CacheService implements ICacheService {
 	private ICacheDao redisCacheDao;
 	@Resource(name="userDao")
 	private IUserDao userDao;
-	@Resource(name="projectDao")
-	private IProjectDao projectDao;
+	@Autowired
+	private MybatisProjectService projectService;
 	
 	
 	
@@ -133,8 +131,6 @@ public class CacheService implements ICacheService {
 		return (Module) obj;
 	}
 	
-	@Override
-	@Transactional
 	public Project getProject(String projectId){
 		if(MyString.isEmpty(projectId)){
 			return new Project();
@@ -142,7 +138,7 @@ public class CacheService implements ICacheService {
 		
 		Project project = (Project) getDao().getObj(Const.CACHE_PROJECT + projectId);
 		if(project == null){
-			project = projectDao.get(projectId);
+			project = projectService.selectByPrimaryKey(projectId);
 			if(project == null)
 				project = new Project();
 			getDao().setObj(Const.CACHE_PROJECT + projectId, project, config.getCacheTime());

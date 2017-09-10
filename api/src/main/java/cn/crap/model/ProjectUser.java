@@ -264,7 +264,7 @@ public class ProjectUser extends BaseModel implements Serializable{
 	public String getProjectName(){
 		if(!MyString.isEmpty(projectId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			Project project = cacheService.getProject(projectId);
+			cn.crap.model.mybatis.Project project = cacheService.getProject(projectId);
 			if(project!=null)
 				return project.getName();
 		}

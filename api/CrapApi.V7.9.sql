@@ -62,3 +62,16 @@ CHANGE COLUMN `remark` `remark` VARCHAR(500) NULL DEFAULT NULL ;
 --- 未执行，线上
 ALTER TABLE `apidev`.`error`
 CHANGE COLUMN `moduleId` `projectId` VARCHAR(50) NOT NULL ;
+
+ALTER TABLE `apidev`.`setting`
+ADD COLUMN `show` TINYINT(4) NOT NULL DEFAULT 1 COMMENT '是否在前端显示，1：是，0：否' AFTER `sequence`;
+
+ALTER TABLE `apidev`.`article`
+ADD COLUMN `projectId` VARCHAR(50) NOT NULL DEFAULT '' AFTER `markdown`;
+
+ALTER TABLE `apidev`.`interface`
+ADD COLUMN `projectId` VARCHAR(50) NOT NULL DEFAULT '' AFTER `isTemplate`;
+
+ALTER TABLE `apidev`.`source`
+ADD COLUMN `projectId` VARCHAR(50) NOT NULL DEFAULT '' AFTER `filePath`;
+

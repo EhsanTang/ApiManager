@@ -4,9 +4,9 @@ import java.util.List;
 
 import cn.crap.adapter.UserAdapter;
 import cn.crap.dto.UserDto;
-import cn.crap.framework.IdGenerator;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.springbeans.Config;
@@ -40,7 +39,7 @@ public class UserController extends BaseController<cn.crap.model.User> {
     @Autowired
     private Config config;
     @Autowired
-    private IProjectService projectService;
+    private CustomProjectService customProjectService;
     @Autowired
     private IProjectUserService projectUserService;
 
@@ -116,7 +115,6 @@ public class UserController extends BaseController<cn.crap.model.User> {
             throw new MyException("000061");
         }
 
-        user.setId(IdGenerator.getId());
         LoginInfoDto loginUser = Tools.getUser();
         // 如果不是最高管理员，不允许修改权限、角色、类型
         if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
@@ -190,7 +188,7 @@ public class UserController extends BaseController<cn.crap.model.User> {
             user.setStatus(UserStatus.INVALID.getType());
             user.setEmail(user.getEmail());
             cacheService.setObj(Const.CACHE_USER + user.getId(),
-                    new LoginInfoDto(UserAdapter.getUser(user), roleService, projectService, projectUserService), config.getLoginInforTime());
+                    new LoginInfoDto(UserAdapter.getUser(user), roleService, customProjectService, projectUserService), config.getLoginInforTime());
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登陆类型设置为允许普通登陆

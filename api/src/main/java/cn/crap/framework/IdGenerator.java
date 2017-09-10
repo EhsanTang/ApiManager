@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.crap.enumeration.TableId;
 import cn.crap.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -45,13 +46,13 @@ public class IdGenerator implements IdentifierGenerator{
 		return System.currentTimeMillis() + "-" + ip + "-" + String.format("%06d", id);
 	}
 
-	public static String getId(){
+	public static String getId(TableId tableId){
 		int id = idNum.getAndIncrement();
 		// id 大于 100000 则从新从1开始
 		if(id >= 100000){
 			idNum.compareAndSet(id + 1, 1);
 		}
-		return System.currentTimeMillis() + "-" + ip + "-" + String.format("%06d", id);
+		return System.currentTimeMillis() + ip + tableId.getTableId() + String.format("%06d", id);
 	}
 
 }

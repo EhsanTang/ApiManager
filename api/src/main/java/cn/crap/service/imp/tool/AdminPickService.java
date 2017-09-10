@@ -2,7 +2,9 @@ package cn.crap.service.imp.tool;
 
 import java.util.List;
 
+import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.mybatis.custom.CustomMenuService;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,11 @@ import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IArticleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IPickService;
 import cn.crap.model.Article;
 import cn.crap.model.mybatis.Menu;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.Role;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -37,7 +38,7 @@ import cn.crap.utils.Tools;
 @Service("adminPickService")
 public class AdminPickService implements IPickService{
 	@Autowired
-	private IProjectService projectService;
+	private MybatisProjectService projectService;
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
@@ -71,7 +72,9 @@ public class AdminPickService implements IPickService{
 //			}
 //			return;
 		case "PROJECT":
-			for (Project p : projectService.findByMap(Tools.getMap("status|>",0), null, null)) {
+			ProjectCriteria example = new ProjectCriteria();
+			ProjectCriteria.Criteria criteria = example.createCriteria().andStatusGreaterThan(Byte.valueOf("0"));
+			for (Project p : projectService.selectByExample(example)) {
 				pick = new PickDto(p.getId(), p.getName());
 				picks.add(pick);
 			}
@@ -173,8 +176,10 @@ public class AdminPickService implements IPickService{
 				
 				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
-				
-				for (Project project : projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), null, null)) {
+
+				ProjectCriteria projectCriteria  = new ProjectCriteria();
+				ProjectCriteria.Criteria projectCriteriaCriteria = projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
+				for (Project project : projectService.selectByExample(projectCriteria)) {
 					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}

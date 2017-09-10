@@ -2,6 +2,7 @@ package cn.crap.service.imp.table;
 
 import javax.annotation.Resource;
 
+import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +16,12 @@ import cn.crap.dao.ILogDao;
 import cn.crap.service.IArticleService;
 import cn.crap.service.ILogService;
 import cn.crap.service.IModuleService;
-import cn.crap.service.IProjectService;
 import cn.crap.service.ISourceService;
 import cn.crap.model.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONObject;
@@ -36,7 +36,7 @@ public class LogService extends BaseService<Log>
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
-	private IProjectService projectService;
+	private MybatisProjectService projectService;
 	@Autowired
 	private IArticleService articleService;
 	@Autowired
@@ -86,7 +86,7 @@ public class LogService extends BaseService<Log>
 				Module module = (Module) JSONObject.toBean(json,Module.class);
 				
 				// 查看项目是否存在
-				if(  MyString.isEmpty( projectService.get(module.getProjectId()).getId() ) ){
+				if(  MyString.isEmpty( projectService.selectByPrimaryKey(module.getProjectId()).getId() ) ){
 					throw new MyException("000049");
 				}
 				
@@ -122,7 +122,7 @@ public class LogService extends BaseService<Log>
 		}
 		
 		// 查看项目是否存在
-		if(  MyString.isEmpty( projectService.get(module.getProjectId()).getId() ) ){
+		if(  MyString.isEmpty( projectService.selectByPrimaryKey(module.getProjectId()).getId() ) ){
 			throw new MyException("000049");
 		}
 	}

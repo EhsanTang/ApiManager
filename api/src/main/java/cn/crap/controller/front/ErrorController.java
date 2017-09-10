@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
+import cn.crap.model.mybatis.Project;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Error;
-import cn.crap.model.Project;
+import cn.crap.model.mybatis.Project;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 

@@ -1,10 +1,11 @@
 package cn.crap.service.mybatis.imp;
 
-import cn.crap.dao.mybatis.ErrorMapper;
+import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.enumeration.TableId;
 import cn.crap.framework.IdGenerator;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.ErrorCriteria;
+import cn.crap.model.mybatis.Article;
+import cn.crap.model.mybatis.ArticleCriteria;
+import cn.crap.model.mybatis.ArticleWithBLOBs;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,36 +14,40 @@ import org.springframework.util.Assert;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Automatic generation by tools
+ * service
+ */
 @Service
-public class MybatisErrorService {
+public class MybatisArticleService {
     @Autowired
-    private ErrorMapper mapper;
+    private ArticleMapper mapper;
 
-    public List<Error> selectByExample(ErrorCriteria example) {
+    public List<Article> selectByExample(ArticleCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(ErrorCriteria example) {
+    public int countByExample(ArticleCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public Error selectByPrimaryKey(String id) {
+    public Article selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(Error model) {
+    public boolean insert(ArticleWithBLOBs model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.ERROR));
+        model.setId(IdGenerator.getId(TableId.ARTICLE));
         if (model.getSequence() == null){
-            ErrorCriteria example = new ErrorCriteria();
+            ArticleCriteria example = new ArticleCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Error>  models = this.selectByExample(example);
+            List<Article>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -53,7 +58,7 @@ public class MybatisErrorService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(Error model) {
+    public boolean update(ArticleWithBLOBs model) {
         if (model == null) {
             return false;
         }
@@ -61,7 +66,7 @@ public class MybatisErrorService {
     }
 
     public boolean delete(String id) {
-        Assert.notNull(id, "id ????");
+        Assert.notNull(id, "id can't be null");
         return mapper.deleteByPrimaryKey(id) > 0 ? true : false;
     }
 

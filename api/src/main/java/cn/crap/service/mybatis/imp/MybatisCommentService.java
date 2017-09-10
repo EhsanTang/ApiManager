@@ -1,10 +1,10 @@
 package cn.crap.service.mybatis.imp;
 
-import cn.crap.dao.mybatis.ErrorMapper;
+import cn.crap.dao.mybatis.CommentMapper;
 import cn.crap.enumeration.TableId;
 import cn.crap.framework.IdGenerator;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.ErrorCriteria;
+import cn.crap.model.mybatis.Comment;
+import cn.crap.model.mybatis.CommentCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,36 +13,40 @@ import org.springframework.util.Assert;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Automatic generation by tools
+ * service
+ */
 @Service
-public class MybatisErrorService {
+public class MybatisCommentService {
     @Autowired
-    private ErrorMapper mapper;
+    private CommentMapper mapper;
 
-    public List<Error> selectByExample(ErrorCriteria example) {
+    public List<Comment> selectByExample(CommentCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(ErrorCriteria example) {
+    public int countByExample(CommentCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public Error selectByPrimaryKey(String id) {
+    public Comment selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(Error model) {
+    public boolean insert(Comment model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.ERROR));
+        model.setId(IdGenerator.getId(TableId.COMMENT));
         if (model.getSequence() == null){
-            ErrorCriteria example = new ErrorCriteria();
+            CommentCriteria example = new CommentCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Error>  models = this.selectByExample(example);
+            List<Comment>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -53,7 +57,7 @@ public class MybatisErrorService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(Error model) {
+    public boolean update(Comment model) {
         if (model == null) {
             return false;
         }

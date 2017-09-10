@@ -2,6 +2,7 @@ package cn.crap.service.mybatis.imp;
 
 import cn.crap.dao.mybatis.MenuMapper;
 import cn.crap.dao.mybatis.SettingMapper;
+import cn.crap.enumeration.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
@@ -39,7 +40,7 @@ public class MybatisSettingService {
         if (setting == null) {
             return false;
         }
-        setting.setId(IdGenerator.getId());
+        setting.setId(IdGenerator.getId(TableId.SETTING));
         if (setting.getSequence() == null){
             SettingCriteria example = new SettingCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);

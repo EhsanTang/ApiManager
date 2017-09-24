@@ -4,14 +4,15 @@ import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.Project;
 import cn.crap.utils.Page;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * @author nico 2017-07-28
  */
-@Service
 public interface CustomProjectMapper {
 
 	@Select("select id from project where status>0 and userId=#{userId} or id in (select projectId from projectUser where userId=#{userId})")

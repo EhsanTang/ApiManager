@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.custom.CustomArticleService;
+import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisCommentService;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,11 +20,7 @@ import cn.crap.enumeration.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
-import cn.crap.service.ICommentService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Article;
-import cn.crap.model.Comment;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
@@ -34,15 +34,17 @@ import cn.crap.utils.Tools;
  *
  */
 @Controller("frontArticleController")
-public class ArticleController extends BaseController<Article> {
+public class ArticleController extends BaseController<cn.crap.model.Article> {
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IArticleService webPageService;
-	@Autowired
-	private ICommentService commentService;
+	private MybatisCommentService commentService;
 	@Autowired
 	private Config config;
+	@Autowired
+	private CustomArticleService customArticleService;
+	@Autowired
+	private MybatisArticleService articleService;
 	
 	
 	@RequestMapping("/front/article/diclist.do")
@@ -57,8 +59,8 @@ public class ArticleController extends BaseController<Article> {
 		
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		Map<String,Object> map = Tools.getMap("moduleId",moduleId, "type", ArticleType.DICTIONARY.name(), "name|like", name);
-		return new JsonResult(1, webPageService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page, null)  , page,
+		page.setAllRow(customArticleService.countByProjectId(moduleId, name, ArticleType.DICTIONARY.name(), null));
+		return new JsonResult(1, customArticleService.queryArticle(moduleId, name, ArticleType.DICTIONARY.name(), null, page)  , page,
 				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + module.getName(), "void")) );
 	}
 	
@@ -78,16 +80,15 @@ public class ArticleController extends BaseController<Article> {
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		
-		Map<String,Object> map = Tools.getMap("moduleId", moduleId, "type", type.equals("PAGE")? "ARTICLE":type, "category", category);
-		
-		// 选择分类，最多显示前20个
+
+		// 选择分类，最多显示前20个 TODO
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
 		if( categorys == null){
-			categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, new Page(20));
+			categorys = (List<String>) customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
 			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + module.getId(), categorys, config.getCacheTime());
 		}
 
-		List<Article> webPages = webPageService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null);
+		List<Article> webPages = customArticleService.queryArticle(moduleId, null, type.equals("PAGE")? "ARTICLE":type, category,page);
 		return new JsonResult(1, webPages, page,
 				Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categorys, 
 						"crumbs", 
@@ -108,13 +109,15 @@ public class ArticleController extends BaseController<Article> {
 			// 根据key查询webPage
 			if(webPage.getId().length()<21){
 				map = Tools.getMap("key", webPage.getId());
-				List<Article>models=webPageService.findByMap(map, null, null);
+				ArticleCriteria example = new ArticleCriteria();
+				example.createCriteria().andMkeyEqualTo(webPage.getId());
+				List<Article>models=articleService.selectByExample(example);
 				if(models.size()>0)
 					model = models.get(0);
 			}
 			// 根据key没有查到，则根据id查
 			if(model==null){
-				model= webPageService.get(webPage.getId());
+				model= articleService.selectByPrimaryKey(webPage.getId());
 			}
 			if(model == null)
 				throw new MyException("000020");
@@ -131,14 +134,17 @@ public class ArticleController extends BaseController<Article> {
 		if( !model.getType().equals(ArticleType.DICTIONARY.name()) ){
 			List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId());
 			if( categorys == null){
-				categorys = (List<String>) webPageService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+model.getModuleId()+"'", null, new Page(20));
+				// TODO new Page(20)
+				categorys = customArticleService.queryArticleCatetoryByModuleIdAndType( model.getModuleId(), "ARTICLE");
 				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId(), categorys, config.getCacheTime());
 			}
 			returnMap.put("categorys", categorys);
 			returnMap.put("category", model.getCategory());
 			
 			// 初始化前端js评论对象
-			returnMap.put("comment", new Comment(model.getId()));
+			Comment comment = new Comment();
+			comment.setId(model.getId());
+			returnMap.put("comment",comment );
 			map = Tools.getMap("articleId", model.getId());
 			
 			// 评论
@@ -147,7 +153,13 @@ public class ArticleController extends BaseController<Article> {
 			if( comments == null || page == null){
 				page = new Page(10);
 				page.setCurrentPage(currentPage);
-				comments = commentService.findByMap(map, page, "createTime desc");
+
+				CommentCriteria example = new CommentCriteria();
+				example.createCriteria().andArticleIdEqualTo(model.getId());
+				example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+
+				comments = commentService.selectByExample(example);
+
 				cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId() , currentPage + "", comments, config.getCacheTime());
 				cacheService.setObj(Const.CACHE_COMMENT_PAGE + model.getId() , currentPage + "", page, config.getCacheTime());
 			}
@@ -156,7 +168,7 @@ public class ArticleController extends BaseController<Article> {
 		}
 		
 		// 更新点击量
-		webPageService.update("update Article set click=click+1 where id=:id", Tools.getMap("id", model.getId()));
+		customArticleService.updateClickById(model.getId());
 		return new JsonResult(1, model, page, returnMap);
 	}
 }

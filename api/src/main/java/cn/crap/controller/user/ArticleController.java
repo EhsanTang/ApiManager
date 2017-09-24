@@ -7,7 +7,9 @@ import java.util.Map;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dto.ArticleDto;
 import cn.crap.service.mybatis.custom.CustomArticleService;
+import cn.crap.service.mybatis.custom.CustomCommentService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisCommentService;
 import cn.crap.service.mybatis.imp.MybatisErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +25,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
-import cn.crap.service.ICommentService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
 import cn.crap.model.mybatis.Article;
@@ -49,7 +49,9 @@ public class ArticleController extends BaseController<cn.crap.model.Article>{
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private ICommentService commentService;
+	private MybatisCommentService commentService;
+	@Autowired
+	private CustomCommentService customCommentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -148,10 +150,11 @@ public class ArticleController extends BaseController<cn.crap.model.Article>{
 			if(model.getCanDelete()!=1){
 				throw new MyException("000009");
 			}
-			
-			if( commentService.getCount(Tools.getMap("articleId", model.getId()))>0){
+
+			if (customCommentService.countByArticleId(model.getId()) > 0){
 				throw new MyException("000037");
 			}
+
 			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
 			cacheService.delObj(Const.CACHE_WEBPAGE + model.getId());
 			cacheService.delObj(Const.CACHE_WEBPAGE + model.getMkey());

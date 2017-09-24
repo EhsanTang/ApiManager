@@ -1,11 +1,13 @@
 package cn.crap.service.mybatis.custom;
 
+import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
+import cn.crap.dto.ArticleDto;
 import cn.crap.enumeration.LogType;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.Log;
+import cn.crap.model.mybatis.Log;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.ArticleCriteria;
@@ -13,27 +15,34 @@ import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
 import cn.crap.service.ICacheService;
+import cn.crap.service.ILuceneService;
 import cn.crap.service.imp.tool.CacheService;
+import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
+import cn.crap.utils.Tools;
+import com.sun.xml.internal.bind.v2.TODO;
 import net.sf.json.JSONObject;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
 import java.util.Collections;
 import java.util.List;
 
+
 @Service
-public class CustomArticleService {
+public class CustomArticleService implements ILuceneService<ArticleDto> {
     @Autowired
     private ArticleMapper mapper;
     @Autowired
     private CustomArticleMapper customArticleMapper;
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private MybatisLogService logService;
 
     public int countByProjectId(String moduleId, String name, String type, String category) {
         Assert.notNull(moduleId, "moduleId can't be null");
@@ -104,9 +113,18 @@ public class CustomArticleService {
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-        Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(dbModel).toString(),
-                model.getClass().getSimpleName(), model.getId());
-       // logDao.save(log); TODO
+
+            Log log = new Log();
+            log.setModelName(modelName);
+            log.setRemark(remark);
+            log.setType(LogType.UPDATE.name());
+            log.setContent(JSONObject.fromObject(dbModel).toString());
+            log.setModelClass(dbModel.getClass().getSimpleName());
+
+            logService.insert(log);
+            mapper.deleteByPrimaryKey(dbModel.getId());
+
+        logService.insert(log);
         mapper.updateByPrimaryKeyWithBLOBs(model);
     }
 
@@ -116,9 +134,55 @@ public class CustomArticleService {
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
-        Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(dbModel).toString(),
-                dbModel.getClass().getSimpleName(), dbModel.getId());
-       // logDao.save(log);
+        Log log = new Log();
+        log.setModelName(modelName);
+        log.setRemark(remark);
+        log.setType(LogType.DELTET.name());
+        log.setContent(JSONObject.fromObject(dbModel).toString());
+        log.setModelClass(dbModel.getClass().getSimpleName());
+
+       logService.insert(log);
         mapper.deleteByPrimaryKey(dbModel.getId());
+    }
+
+    public List<ArticleDto> getAll() {
+        return ArticleAdapter.getDto(mapper.selectByExample(new ArticleCriteria()));
+    }
+
+    @Override
+    public String getLuceneType() {
+        return "文章&数据字典";
+    }
+
+    @Override
+    public List<ArticleDto> getAllByProjectId(String projectId) {
+        ArticleCriteria example = new ArticleCriteria();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return  ArticleAdapter.getDto(mapper.selectByExample(example));
+    }
+
+    public Integer countByModuleIdAndType(String moduleId, String type){
+        Assert.notNull(moduleId);
+        Assert.notNull(type);
+        ArticleCriteria example = new ArticleCriteria();
+        example.createCriteria().andModuleIdEqualTo(moduleId).andTypeEqualTo(type);
+        return mapper.countByExample(example);
+    }
+
+    public List<Article> queryByModuleIdAndType(String moduleId, String type){
+        Assert.notNull(moduleId);
+        Assert.notNull(type);
+        ArticleCriteria example = new ArticleCriteria();
+        example.createCriteria().andModuleIdEqualTo(moduleId).andTypeEqualTo(type);
+        return mapper.selectByExample(example);
+    }
+
+    public List<String> queryArticleCatetoryByModuleIdAndType(String moduleId, String type){
+        return customArticleMapper.queryArticleCatetoryByModuleIdAndType(moduleId, type);
+    }
+
+    public void updateClickById(String id){
+        Assert.notNull(id);
+        customArticleMapper.updateClickById(id);
     }
 }

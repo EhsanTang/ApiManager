@@ -5,7 +5,6 @@ import cn.crap.dao.mybatis.ProjectMapper;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dao.mybatis.custom.CustomProjectMapper;
 import cn.crap.enumeration.LogType;
-import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.imp.tool.CacheService;
@@ -94,9 +93,9 @@ public class CustomProjectService {
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-        Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(dbModel).toString(),
-                model.getClass().getSimpleName(), model.getId());
-        // logDao.save(log); TODO
+//        Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(dbModel).toString(),
+//                model.getClass().getSimpleName(), model.getId());
+//        // logDao.save(log); TODO
         mapper.updateByPrimaryKey(model);
     }
 
@@ -106,8 +105,8 @@ public class CustomProjectService {
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
-        Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(dbModel).toString(),
-                dbModel.getClass().getSimpleName(), dbModel.getId());
+//        Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(dbModel).toString(),
+//                dbModel.getClass().getSimpleName(), dbModel.getId());
         // logDao.save(log);
         mapper.deleteByPrimaryKey(dbModel.getId());
     }

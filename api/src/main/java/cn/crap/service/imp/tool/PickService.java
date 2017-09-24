@@ -13,10 +13,8 @@ import cn.crap.enumeration.MonitorType;
 import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.TrueOrFalse;
 import cn.crap.framework.MyException;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IRoleService;
-import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
 import cn.crap.model.mybatis.Error;
@@ -31,13 +29,9 @@ public class PickService implements IPickService{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IUserService userService;
-	@Autowired
 	private IRoleService roleService;
 	@Autowired
 	private IModuleService moduleService;
-	@Autowired
-	private IArticleService articleService;
 	@Autowired
 	private CustomErrorService customErrorService;
 

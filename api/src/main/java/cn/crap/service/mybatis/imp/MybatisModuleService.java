@@ -1,11 +1,10 @@
 package cn.crap.service.mybatis.imp;
 
-import cn.crap.dao.mybatis.ArticleMapper;
+import cn.crap.dao.mybatis.ModuleMapper;
 import cn.crap.enumeration.TableId;
 import cn.crap.framework.IdGenerator;
-import cn.crap.model.mybatis.Article;
-import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.ModuleCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,35 +18,35 @@ import java.util.List;
  * service
  */
 @Service
-public class MybatisArticleService {
+public class MybatisModuleService {
     @Autowired
-    private ArticleMapper mapper;
+    private ModuleMapper mapper;
 
-    public List<Article> selectByExample(ArticleCriteria example) {
+    public List<Module> selectByExample(ModuleCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(ArticleCriteria example) {
+    public int countByExample(ModuleCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public ArticleWithBLOBs selectByPrimaryKey(String id) {
+    public Module selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(ArticleWithBLOBs model) {
+    public boolean insert(Module model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.ARTICLE));
+        model.setId(IdGenerator.getId(TableId.MODULE));
         if (model.getSequence() == null){
-            ArticleCriteria example = new ArticleCriteria();
+            ModuleCriteria example = new ModuleCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Article>  models = this.selectByExample(example);
+            List<Module>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -58,7 +57,7 @@ public class MybatisArticleService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(ArticleWithBLOBs model) {
+    public boolean update(Module model) {
         if (model == null) {
             return false;
         }

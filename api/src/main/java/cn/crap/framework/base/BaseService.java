@@ -2,13 +2,12 @@ package cn.crap.framework.base;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.service.mybatis.imp.MybatisLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.enumeration.LogType;
-import cn.crap.dao.ILogDao;
-import cn.crap.model.Log;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -17,7 +16,7 @@ import net.sf.json.JSONObject;
 public class BaseService<T extends BaseModel> implements IBaseService<T> {
 	protected IBaseDao<T> dao;
 	@Autowired
-	private ILogDao logDao;
+	private MybatisLogService logService;
 	
 	
 	public void setDao(IBaseDao<T> dao) {
@@ -48,9 +47,9 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 		T oldModel = dao.get(model.getId());
 		if(MyString.isEmpty(remark))
 			remark = model.getLogRemark();
-		Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(oldModel).toString(),
-				model.getClass().getSimpleName(), model.getId());
-		logDao.save(log);
+//		Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(oldModel).toString(),
+//				model.getClass().getSimpleName(), model.getId());
+		//logDao.save(log);
 		dao.update(model);
 	}
 	
@@ -72,9 +71,9 @@ public class BaseService<T extends BaseModel> implements IBaseService<T> {
 		model = get(model.getId());
 		if(MyString.isEmpty(remark))
 			remark = model.getLogRemark();
-		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(),
-				model.getClass().getSimpleName(), model.getId());
-		logDao.save(log);
+//		Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(model).toString(),
+//				model.getClass().getSimpleName(), model.getId());
+		//logDao.save(log);
 		dao.delete(model);
 	}
 	

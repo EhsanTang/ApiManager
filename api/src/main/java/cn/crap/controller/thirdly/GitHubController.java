@@ -4,6 +4,9 @@ import java.util.List;
 
 import cn.crap.enumeration.UserStatus;
 import cn.crap.enumeration.UserType;
+import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.mybatis.custom.CustomUserService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +17,7 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumeration.LoginType;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IUserService;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.service.imp.thirdly.GitHubService;
 import cn.crap.springbeans.Config;
 
@@ -25,14 +27,16 @@ import cn.crap.springbeans.Config;
  *
  */
 @Controller
-public class GitHubController extends BaseController<User> {
+public class GitHubController extends BaseController<cn.crap.model.User> {
 	@Autowired
 	private Config config;
 	@Autowired
 	private GitHubService githHubService;
 	@Autowired
-	private IUserService userService;
-	
+	private MybatisUserService userService;
+	@Autowired
+	private CustomUserService customUserService;
+
 	
 	/**
 	 * gitHub授权
@@ -54,7 +58,11 @@ public class GitHubController extends BaseController<User> {
 		}else{
 			User user = null;
 			GitHubUser gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
-			List<User> users = userService.findByMap(Tools.getMap(TableField.USER.THIRDLY_ID, getThirdlyId(gitHubUser)), null, null);
+
+			UserCriteria example = new UserCriteria();
+			example.createCriteria().andThirdlyIdEqualTo(getThirdlyId(gitHubUser));
+			List<User> users = userService.selectByExample(example);
+
 			if(users.size() == 0){
 				user = new User();
 				user.setUserName( Tools.handleUserName(gitHubUser.getLogin()) );
@@ -63,7 +71,11 @@ public class GitHubController extends BaseController<User> {
 				// 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
 				if(!MyString.isEmpty(gitHubUser.getEmail())){
 					String email = gitHubUser.getEmail();
-					List<User> existUser = userService.findByMap(Tools.getMap(TableField.USER.EMAIL, email, TableField.USER.USER_TYPE, LoginType.GITHUB.getValue()), null, null);
+
+					example = new UserCriteria();
+					example.createCriteria().andEmailEqualTo(email).andLoginTypeEqualTo(LoginType.GITHUB.getValue());
+					List<User> existUser = userService.selectByExample(example);
+
 					if (existUser == null || existUser.size() == 0){
 						user.setEmail(gitHubUser.getEmail());
 					}
@@ -75,7 +87,7 @@ public class GitHubController extends BaseController<User> {
 				user.setAvatarUrl(gitHubUser.getAvatar_url());
 				user.setThirdlyId(getThirdlyId(gitHubUser));
 				user.setLoginType(LoginType.GITHUB.getValue());
-				userService.save(user);
+				userService.insert(user);
 			}else{
 				user = users.get(0);
 			}
@@ -84,7 +96,7 @@ public class GitHubController extends BaseController<User> {
 			LoginDto model = new LoginDto();
 			model.setUserName(user.getUserName());
 			model.setRemberPwd("NO");
-			userService.login(model, user, request, response);
+			customUserService.login(model, user, request, response);
 			
 			response.sendRedirect("../admin.do");
 		}

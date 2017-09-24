@@ -10,7 +10,10 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import cn.crap.dto.SettingDto;
+import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.custom.CustomUserService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,15 +33,12 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
-import cn.crap.service.IUserService;
 import cn.crap.service.IEmailService;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
 
 @Controller
-public class LoginController extends BaseController<User> {
-	@Autowired
-	private IUserService userService;
+public class LoginController extends BaseController<cn.crap.model.User> {
 	@Autowired
 	private IEmailService emailService;
 	@Autowired
@@ -47,6 +47,10 @@ public class LoginController extends BaseController<User> {
 	private CustomProjectService customProjectService;
 	@Autowired
 	private IProjectUserService projectUserService;
+	@Autowired
+	private MybatisUserService userService;
+	@Autowired
+	private CustomUserService customUserService;
 	@Autowired
 	private Config config;
 	
@@ -113,7 +117,7 @@ public class LoginController extends BaseController<User> {
 		if(code == null || !code.equals(Const.REGISTER)){
 			request.setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
 		}else{
-			User user = userService.get(id);
+			User user = userService.selectByPrimaryKey(id);
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
@@ -158,8 +162,11 @@ public class LoginController extends BaseController<User> {
 		if (MyString.isEmpty(imgCode) || !imgCode.equals(Tools.getImgCode(request))) {
 			throw new MyException("000010");
 		}
-		
-		List<User> user = userService.findByMap(Tools.getMap("email",email,TableField.USER.LOGIN_TYPE, LoginType.COMMON.getValue()), null, null);
+
+		UserCriteria example = new UserCriteria();
+		example.createCriteria().andEmailEqualTo(email).andLoginTypeEqualTo(LoginType.COMMON.getValue());
+
+		List<User> user = userService.selectByExample(example);
 		if(user.size()!=1){
 			throw new MyException("000030");
 		}
@@ -184,8 +191,11 @@ public class LoginController extends BaseController<User> {
 		if(code == null || !code.equalsIgnoreCase(findPwdDto.getCode())){
 			throw new MyException("000031");
 		}
-		
-		List<User> users = userService.findByMap(Tools.getMap("email",findPwdDto.getEmail(), TableField.USER.LOGIN_TYPE, LoginType.COMMON.getValue()), null, null);
+
+		UserCriteria example = new UserCriteria();
+		example.createCriteria().andEmailEqualTo(findPwdDto.getEmail()).andLoginTypeEqualTo(LoginType.COMMON.getValue());
+
+		List<User> users = userService.selectByExample(example);
 		if(users.size()!=1){
 			throw new MyException("000030");
 		}
@@ -223,8 +233,11 @@ public class LoginController extends BaseController<User> {
 				return new JsonResult(1, model);
 			}
 		}
-		
-		if( userService.getCount(Tools.getMap("email", model.getUserName().toLowerCase())) >0 ){
+
+		UserCriteria example = new UserCriteria();
+		example.createCriteria().andEmailEqualTo(model.getUserName().toLowerCase());
+
+		if( userService.countByExample(example) >0 ){
 			model.setTipMessage("邮箱已经注册");
 			return new JsonResult(1, model);
 		}
@@ -233,7 +246,10 @@ public class LoginController extends BaseController<User> {
 		try{
 			user.setUserName(model.getUserName().split("@")[0]);
 			// 判断用户名是否重名，重名则修改昵称
-			if( userService.getCount(Tools.getMap("userName", user.getUserName())) >0 ){
+			example = new UserCriteria();
+			example.createCriteria().andUserNameEqualTo(model.getUserName());
+
+			if( userService.countByExample(example) >0 ){
 				user.setUserName("ca_"+ model.getUserName().split("@")[0]+"_"+Tools.getChar(5));
 			}
 			
@@ -242,7 +258,7 @@ public class LoginController extends BaseController<User> {
 			user.setPassword(MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()));
 			user.setStatus(Byte.valueOf("1"));
 			user.setType(Byte.valueOf("1"));
-			userService.save(user);
+			userService.insert(user);
 		}catch(Exception e){
 			e.printStackTrace();
 			model.setTipMessage(e.getMessage());
@@ -284,15 +300,22 @@ public class LoginController extends BaseController<User> {
 			// 只允许普通账号方式登陆，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登陆
 			List<User> users = null;
 			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登陆
-				users =  userService.findByMap(Tools.getMap(TableField.USER.EMAIL, model.getUserName().toLowerCase(), TableField.USER.LOGIN_TYPE , LoginType.COMMON.getValue()), null, null);
+
+				UserCriteria example = new UserCriteria();
+				example.createCriteria().andEmailEqualTo(model.getUserName()).andLoginTypeEqualTo(LoginType.COMMON.getValue());
+
+				users =  userService.selectByExample(example);
 			}else{
-				users =  userService.findByMap(Tools.getMap(TableField.USER.USER_NAME, model.getUserName(),TableField.USER.LOGIN_TYPE , LoginType.COMMON.getValue()), null, null);
+				UserCriteria example = new UserCriteria();
+				example.createCriteria().andUserNameEqualTo(model.getUserName()).andLoginTypeEqualTo(LoginType.COMMON.getValue());
+
+				users =  userService.selectByExample(example);
 			}
 			
 			if (users.size() == 1) {
 				User user = users.get(0);
 				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
-					userService.login(model, user, request, response);
+					customUserService.login(model, user, request, response);
 					return new JsonResult(1, model);
 				}
 				model.setTipMessage("用户密码有误");

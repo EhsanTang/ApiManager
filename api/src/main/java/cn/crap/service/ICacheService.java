@@ -6,7 +6,7 @@ import cn.crap.dto.SettingDto;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Setting;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 
 public interface ICacheService{
 

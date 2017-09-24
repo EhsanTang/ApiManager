@@ -38,8 +38,9 @@
         <!-- mybatis配置文件自动扫描路径 -->
         <property name="mapperLocations" value="classpath:cn/crap/dao/mybatis/mapper/*.xml"></property>
     </bean>
+
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cn.crap.dao.mybatis" />
+        <property name="basePackage" value="cn.crap.dao.mybatis,cn.crap.dao.mybatis.custom" />
         <property name="sqlSessionFactoryBeanName" value="mybatisqlSessionFactory"></property>
     </bean>
 

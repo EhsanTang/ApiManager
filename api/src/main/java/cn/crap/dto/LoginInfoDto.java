@@ -11,7 +11,7 @@ import cn.crap.service.IRoleService;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.Role;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;

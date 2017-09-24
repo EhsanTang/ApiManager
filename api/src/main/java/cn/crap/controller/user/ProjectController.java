@@ -9,6 +9,7 @@ import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,11 +25,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
-import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
 import cn.crap.model.mybatis.Project;
@@ -39,8 +38,6 @@ import cn.crap.springbeans.Config;
 public class ProjectController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private ICacheService cacheService;
-	@Autowired
-	private IUserService userService;
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
@@ -54,11 +51,11 @@ public class ProjectController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private Config config;
 	@Autowired
-	private IArticleService articleService;
-	@Autowired
 	private ISearchService luceneService;
 	@Autowired
 	private CustomErrorService customErrorService;
+	@Autowired
+	private MybatisUserService userService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -150,7 +147,7 @@ public class ProjectController extends BaseController<cn.crap.model.Project> {
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
 		
 		// 刷新用户权限 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.get(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
+		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,project);
 	}
 	

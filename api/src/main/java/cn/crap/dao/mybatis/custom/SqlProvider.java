@@ -57,12 +57,10 @@ public class SqlProvider
             page = new Page(20);
             page.setCurrentPage(1);
         }
-        if (page.getSize() == null || page.getSize() > 100){
+        if (page.getSize() > 100){
             page.setSize(20);
         }
-        if (page.getCurrentPage() == null || page.getCurrentPage() < 1){
-            page.setCurrentPage(1);
-        }
+
         return page;
     }
 

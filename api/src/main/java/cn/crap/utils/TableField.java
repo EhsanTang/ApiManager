@@ -9,6 +9,8 @@ public class TableField {
     public static class SORT{
         public final static String SEQUENCE_DESC = "sequence desc";
         public final static String ERROR_CODE_ASC = "errorCode asc";
+        public final static String CREATE_TIME_DES = "createTime desc";
+
     }
 
     public static class USER {

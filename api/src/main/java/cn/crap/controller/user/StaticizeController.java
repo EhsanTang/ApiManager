@@ -10,8 +10,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.crap.adapter.ErrorAdapter;
+import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.SettingDto;
+import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.imp.MybatisArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +31,10 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IInterfaceService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Article;
+import cn.crap.model.mybatis.Article;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
@@ -55,11 +58,13 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private Config config;
 	@Autowired
-	private IArticleService articleService;
-	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
 	private CustomErrorService customErrorService;
+	@Autowired
+	private MybatisArticleService articleService;
+	@Autowired
+	private CustomArticleService customArticleService;
 	
 	/**
 	 * 静态化错误码列表
@@ -168,7 +173,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 			// 获取所有类目
 			// 静态化模块文章
 			@SuppressWarnings("unchecked")
-			List<String> categorys =  (List<String>) articleService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, null);
+			List<String> categorys =  (List<String>) customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
 			List<CategoryDto> categoryDtos = new ArrayList<CategoryDto>();
 			// 文章分类，按类目静态化
 			for(String c: categorys){
@@ -192,8 +197,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setSize(15);
-		List<Article> articleList = articleService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ",
-				page, null);
+		List<Article> articleList = customArticleService.queryArticle(moduleId, null, type, category, page);
 		returnMap.put("page", page);
 		returnMap.put("articleList", articleList);
 		returnMap.put("needStaticizes", needStaticizes);
@@ -216,7 +220,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 			throw new MyException("000056");
 		}		
 		
-		Article article = articleService.get(articleId);
+		ArticleWithBLOBs article = articleService.selectByPrimaryKey(articleId);
 		Module module = cacheService.getModule(article.getModuleId());
 		Project project = cacheService.getProject(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
@@ -398,16 +402,14 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		for(Module module : moduleService.findByMap(Tools.getMap("projectId", projectId), null, null)){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文章，分类
-				@SuppressWarnings("unchecked")
-				List<String> categorys =  (List<String>) articleService.queryByHql("select distinct category from Article where type = 'ARTICLE' and moduleId = '"+module.getId()+"'", null, null);
+				List<String> categorys = customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
 				// 文章分类，按类目静态化
 				for(String category: categorys){
 					if( MyString.isEmpty( category )){
 						continue; // 空类目不静态化
 					}
 					// 查询页码
-					map = Tools.getMap("moduleId", module.getId(), "type", "ARTICLE", "category", category);
-					int articleSize = articleService.getCount(map);
+					int articleSize = customArticleService.countByProjectId(module.getId(), null, "ARTICLE", category);
 					// 计算总页数
 					totalPage = (articleSize+pageSize-1)/pageSize;
 					if(totalPage == 0){
@@ -422,8 +424,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 				}
 				
 				// 文章分类，不分类
-				map = Tools.getMap("moduleId", module.getId(), "type", "ARTICLE");
-				int articleSize = articleService.getCount(map);
+				int articleSize = customArticleService.countByProjectId(module.getId(), null, "ARTICLE", null);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){
@@ -438,7 +439,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 				
 				
 				// 静态化文章
-				for(Article article: articleService.findByMap(Tools.getMap("moduleId", module.getId(), "type", "ARTICLE"), null, null)){
+				for(Article article: customArticleService.queryByModuleIdAndType(module.getId(), "ARTICLE")){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleDetail.do?articleId="+ article.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");
@@ -449,8 +450,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 			
 			if(needStaticizes.indexOf(",dictionary,") >= 0){
 				// 数据字典列表
-				map = Tools.getMap("moduleId", module.getId(), "type", "DICTIONARY");
-				int articleSize = articleService.getCount(map);
+				int articleSize = customArticleService.countByProjectId(module.getId(), null, "DICTIONARY", null);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){
@@ -464,7 +464,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 				}
 				
 				// 静态化数据字典详情
-				for(Article article: articleService.findByMap(Tools.getMap("moduleId", module.getId(), "type", "DICTIONARY"), null, null)){
+				for(Article article: customArticleService.queryByModuleIdAndType(module.getId(),  "DICTIONARY")){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");

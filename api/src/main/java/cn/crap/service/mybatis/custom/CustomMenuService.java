@@ -1,6 +1,7 @@
 package cn.crap.service.mybatis.custom;
 
 import cn.crap.dao.mybatis.MenuMapper;
+import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumeration.MenuType;
@@ -9,7 +10,6 @@ import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
-import cn.crap.service.IArticleService;
 import cn.crap.springbeans.Config;
 import cn.crap.springbeans.PickFactory;
 import cn.crap.utils.Const;
@@ -31,11 +31,11 @@ public class CustomMenuService {
     @Autowired
     private CustomProjectService customProjectService;
     @Autowired
-    private IArticleService articleService;
-    @Autowired
     private PickFactory pickFactory;
     @Autowired
     private Config config;
+    @Autowired
+    private CustomArticleMapper customArticleMapper;
 
     public List<Menu> queryByParentId(String parentId){
         Assert.notNull(parentId, "parentId can't be null");
@@ -114,8 +114,7 @@ public class CustomMenuService {
             menuVO.setMenu(menu);
 
             menuVO.setSubMenu(new ArrayList<Menu>());
-            @SuppressWarnings("unchecked")
-            List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null, page);
+            List<String> categorys = customArticleMapper.queryArticleCatetoryByWeb();
             int i = 0;
             for (String category : categorys) {
                 if (MyString.isEmpty(category))

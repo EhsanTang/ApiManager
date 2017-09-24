@@ -7,8 +7,10 @@ import javax.annotation.Resource;
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.service.mybatis.imp.MybatisSettingService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,11 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dao.ICacheDao;
 import cn.crap.dao.IModuleDao;
-import cn.crap.dao.IUserDao;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -40,10 +41,10 @@ public class CacheService implements ICacheService {
 	private ICacheDao memoryCacheDao;
 	@Resource(name="redisCacheDao")
 	private ICacheDao redisCacheDao;
-	@Resource(name="userDao")
-	private IUserDao userDao;
 	@Autowired
 	private MybatisProjectService projectService;
+	@Autowired
+	private MybatisUserService userService;
 	
 	
 	
@@ -197,7 +198,7 @@ public class CacheService implements ICacheService {
 		
 		Object obj = getDao().getObj(Const.CACHE_USER_MODEL + userId);
 		if(obj == null){
-			User user = userDao.get(userId);
+			User user = userService.selectByPrimaryKey(userId);
 			if(user == null)
 				user = new User();
 			getDao().setObj(Const.CACHE_USER_MODEL + userId, user, config.getCacheTime());

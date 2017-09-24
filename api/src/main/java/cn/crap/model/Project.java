@@ -123,7 +123,7 @@ public class Project extends BaseModel implements Serializable{
 	public String getUserName(){
 		if(!MyString.isEmpty(userId)){
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			User user = cacheService.getUser(userId);
+			cn.crap.model.mybatis.User user = cacheService.getUser(userId);
 			if(user!=null)
 				return user.getUserName();
 		}

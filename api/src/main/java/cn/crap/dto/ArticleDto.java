@@ -1,12 +1,22 @@
 package cn.crap.dto;
 
+import cn.crap.enumeration.LuceneSearchType;
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.model.Module;
+import cn.crap.service.ICacheService;
+
+import java.io.Serializable;
 import java.util.Date;
+import cn.crap.model.mybatis.Article;
+import cn.crap.service.imp.tool.CacheService;
+import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 
 /**
  * Automatic generation by tools
  * dto: exchange data with view
  */
-public class ArticleDto {
+public class ArticleDto implements Serializable,ILuceneDto{
 	private String id;
 	private String name;
 	private String brief;
@@ -145,4 +155,31 @@ public class ArticleDto {
 	}
 
 
+	public SearchDto toSearchDto(ICacheService cacheService){
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(DateFormartUtil.getDateByFormat(createTime, DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+		dto.setContent(brief + content);
+		dto.setModuleName(getModuleName());
+		dto.setTitle(name);
+		dto.setType(Article.class.getSimpleName());
+		dto.setUrl("#/"+getProjectId()+"/article/detail/"+getModuleId()+"/"+type+"/"+id);
+		dto.setVersion("");
+		dto.setProjectId(getProjectId());
+
+		if(cacheService.getProject(getProjectId()).getLuceneSearch() == LuceneSearchType.No.getValue()){
+			dto.setNeedCreateIndex(false);
+		}
+		return dto;
+	}
+
+	public String getModuleName(){
+		if(!MyString.isEmpty(moduleId)){
+			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
+			Module module = cacheService.getModule(moduleId);
+			if(module!=null)
+				return module.getName();
+		}
+		return "";
+	}
 }

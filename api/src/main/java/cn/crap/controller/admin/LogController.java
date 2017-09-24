@@ -1,7 +1,14 @@
 package cn.crap.controller.admin;
 
+import java.util.List;
 import java.util.Map;
 
+import cn.crap.adapter.LogAdapter;
+import cn.crap.dto.LogDto;
+import cn.crap.model.User;
+import cn.crap.model.mybatis.LogCriteria;
+import cn.crap.service.mybatis.custom.CustomLogService;
+import cn.crap.service.mybatis.imp.MybatisLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,18 +20,19 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ILogService;
-import cn.crap.model.Log;
+import cn.crap.model.mybatis.Log;
 import cn.crap.utils.Const;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController<Log>{
+public class LogController extends BaseController<User>{
 
 	@Autowired
-	private ILogService logService;
+	private MybatisLogService logService;
+	@Autowired
+	private CustomLogService customLogService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -33,7 +41,12 @@ public class LogController extends BaseController<Log>{
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
 		Map<String,Object> map = Tools.getMap("modelName",log.getModelName(),"identy", log.getIdenty());
-		return new JsonResult(1,logService.findByMap(map,page,null),page);
+		LogCriteria example = new LogCriteria();
+		example.createCriteria().andModelNameEqualTo(log.getModelName()).andIdNotEqualTo(log.getIdenty());
+
+		page.setAllRow(logService.countByExample(example));
+		List<LogDto> logDtoList = LogAdapter.getDto(logService.selectByExample(example));
+		return new JsonResult(1, logDtoList, page);
 	}
 	
 	@RequestMapping("/detail.do")
@@ -42,7 +55,7 @@ public class LogController extends BaseController<Log>{
 	public JsonResult detail(@ModelAttribute Log log){
 		Log model;
 		if(!log.getId().equals(Const.NULL_ID)){
-			model= logService.get(log.getId());
+			model= logService.selectByPrimaryKey(log.getId());
 		}else{
 			model=new Log();
 		}
@@ -54,7 +67,7 @@ public class LogController extends BaseController<Log>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_LOG)
 	public JsonResult recover(@ModelAttribute Log log) throws MyException{
-		logService.recover(log);
+		customLogService.recover(log);
 		return new JsonResult(1,null);
 	}
 }

@@ -3,6 +3,9 @@ package cn.crap.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.mybatis.custom.CustomUserService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,10 +17,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IProjectUserService;
-import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.ProjectUser;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -30,9 +32,11 @@ public class ProjectUserController extends BaseController<ProjectUser>{
 	@Autowired
 	private IProjectUserService projectUserService;
 	@Autowired
-	private IUserService userService;
+	private CustomUserService customUserService;
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private MybatisUserService userService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -68,9 +72,11 @@ public class ProjectUserController extends BaseController<ProjectUser>{
 		hasPermission( cacheService.getProject( projectUser.getProjectId() ));
 		User search = null;
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
-			search = userService.get( projectUser.getUserId() );
+			search = userService.selectByPrimaryKey( projectUser.getUserId() );
 		}else if( !MyString.isEmpty( projectUser.getUserEmail()) ){
-			List<User> users = userService.findByMap(Tools.getMap("email", projectUser.getUserEmail()), null, null);
+			UserCriteria example = new UserCriteria();
+			example.createCriteria().andEmailEqualTo(projectUser.getUserEmail());
+			List<User> users = userService.selectByExample(example);
 			if( users.size() == 1){
 				search = users.get(0);
 			}

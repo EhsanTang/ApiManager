@@ -2,8 +2,12 @@ package cn.crap.service.imp.tool;
 
 import java.util.List;
 
+import cn.crap.dao.mybatis.custom.CustomArticleMapper;
+import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomMenuService;
+import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +23,9 @@ import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.IPickService;
-import cn.crap.model.Article;
+import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.Role;
@@ -42,9 +45,11 @@ public class AdminPickService implements IPickService{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IArticleService articleService;
+	private MybatisArticleService articleService;
 	@Autowired
 	private CustomMenuService customMenuService;
+	@Autowired
+	private CustomArticleMapper customArticleMapper;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -53,9 +58,7 @@ public class AdminPickService implements IPickService{
 		switch (code) {
 		case "CATEGORY":
 			int i = 0;
-			@SuppressWarnings("unchecked")
-			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web' "
-					+ "or moduleId in( select id from Module where userId='" + user.getId()+"')", null);
+			List<String> categorys =customArticleMapper.queryArticleCatetoryByUserId(user.getId());
 			for (String w : categorys) {
 				if (w == null)
 					continue;
@@ -155,14 +158,15 @@ public class AdminPickService implements IPickService{
 			return;
 		case "MODELNAME":// 数据类型
 			i = 0;
-			List<String> modelNames = (List<String>) articleService.queryByHql("select distinct modelName from Log", null);
-			for (String w : modelNames) {
-				if (w == null)
-					continue;
-				i++;
-				pick = new PickDto("modelName_" + i, w, w);
-				picks.add(pick);
-			}
+			// TODO
+//			List<String> modelNames = (List<String>) articleService.queryByHql("select distinct modelName from Log", null);
+//			for (String w : modelNames) {
+//				if (w == null)
+//					continue;
+//				i++;
+//				pick = new PickDto("modelName_" + i, w, w);
+//				picks.add(pick);
+//			}
 			return;
 		
 		case "MENURUL":
@@ -188,8 +192,8 @@ public class AdminPickService implements IPickService{
 				pick = new PickDto(Const.SEPARATOR, "文章列表【站点文章】");
 				picks.add(pick);
 				int j = 0;
-				@SuppressWarnings("unchecked")
-				List<String> categorys2 = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null);
+
+				List<String> categorys2 = customArticleMapper.queryArticleCatetoryByWeb();
 				for (String article : categorys2) {
 					if (MyString.isEmpty(article))
 						continue;
@@ -202,9 +206,10 @@ public class AdminPickService implements IPickService{
 				pick = new PickDto(Const.SEPARATOR, "页面【站点页面】");
 				picks.add(pick);
 				preUrl = "#/web/article/detail/web/PAGE/";
-				for (Article w : articleService
-						.findByMap(Tools.getMap("key|" + Const.NOT_NULL, Const.NOT_NULL, "type", "PAGE"), null, null)) {
-					pick = new PickDto("wp_" + w.getKey(), preUrl + w.getKey(), w.getName());
+				ArticleCriteria example2= new ArticleCriteria();
+				example2.createCriteria().andTypeEqualTo("PAGE").andMkeyIsNotNull();
+				for (Article w : articleService.selectByExample(example2)) {
+					pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName());
 					picks.add(pick);
 				}
 				// 分割线

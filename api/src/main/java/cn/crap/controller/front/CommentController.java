@@ -1,8 +1,10 @@
 package cn.crap.controller.front;
 
+import java.util.Date;
 import java.util.Random;
 
 import cn.crap.dto.SettingDto;
+import cn.crap.service.mybatis.imp.MybatisCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,9 +15,8 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICommentService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Comment;
+import cn.crap.model.mybatis.Comment;
 import cn.crap.model.Setting;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -24,12 +25,12 @@ import cn.crap.utils.Tools;
 
 @Controller("frontCommentController")
 @RequestMapping("/front/comment")
-public class CommentController extends BaseController<Comment> {
+public class CommentController extends BaseController<cn.crap.model.Comment> {
 	@Autowired
 	private ICacheService cacheService;
 
 	@Autowired
-	private ICommentService commentService;
+	private MybatisCommentService commentService;
 
 	@RequestMapping("/add.do")
 	@ResponseBody
@@ -58,8 +59,8 @@ public class CommentController extends BaseController<Comment> {
 		}
 		
 		comment.setId(null);
-		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
-		commentService.save(comment);
+		comment.setUpdateTime(new Date());
+		commentService.insert(comment);
 		
 		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getArticleId());
 		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getArticleId());

@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +18,13 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IRoleService;
-import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
 import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.User;
+import cn.crap.model.mybatis.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -38,8 +39,6 @@ public class UserPickService implements IPickService{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IUserService userService;
-	@Autowired
 	private MybatisProjectService projectService;
 	@Autowired
 	private CustomProjectService customProjectService;
@@ -48,7 +47,9 @@ public class UserPickService implements IPickService{
 	@Autowired
 	private IModuleService moduleService;
 	@Autowired
-	private IArticleService articleService;
+	private CustomArticleMapper customArticleMapper;
+	@Autowired
+	private MybatisUserService userService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -58,7 +59,7 @@ public class UserPickService implements IPickService{
 				switch (code) {
 					case "CATEGORY":
 					int i = 0;
-					List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId in( select id from Module where userId='" + user.getId()+"')", null);
+					List<String> categorys = customArticleMapper.queryArticleCatetoryByUserId(user.getId());
 					for (String w : categorys) {
 						if (w == null)
 							continue;
@@ -117,7 +118,11 @@ public class UserPickService implements IPickService{
 					case "USER":
 						if(key!= null && key.length()>=4){
 							Set<String> userIds = new TreeSet<String>();
-							for (User u : userService.findByMap(Tools.getMap("email|like", key), null, null)) {
+
+							UserCriteria userExample = new UserCriteria();
+							userExample.createCriteria().andEmailLike(key);
+
+							for (User u : userService.selectByExample(userExample)) {
 								if( !userIds.contains(u.getId()) ){
 									pick = new PickDto(u.getId(), u.getUserName());
 									picks.add(pick);
@@ -126,7 +131,9 @@ public class UserPickService implements IPickService{
 							}
 							
 							if(key.indexOf("@")<0){
-								for (User u : userService.findByMap(Tools.getMap("userName|like", key), null, null)) {
+								 userExample = new UserCriteria();
+								userExample.createCriteria().andUserNameLike(key);
+								for (User u : userService.selectByExample(userExample)) {
 									if( !userIds.contains(u.getId()) ){
 										pick = new PickDto(u.getId(), u.getUserName());
 										picks.add(pick);

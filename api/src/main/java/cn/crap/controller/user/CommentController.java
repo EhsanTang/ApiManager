@@ -1,7 +1,14 @@
 package cn.crap.controller.user;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
+import cn.crap.adapter.CommentAdapter;
+import cn.crap.model.mybatis.CommentCriteria;
+import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisCommentService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,32 +20,36 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
-import cn.crap.service.ICommentService;
-import cn.crap.model.Comment;
-import cn.crap.utils.Const;
-import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.model.mybatis.Comment;
 
 @Controller
 @RequestMapping("/user/comment")
-public class CommentController extends BaseController<Comment> {
+public class CommentController extends BaseController<cn.crap.model.Comment> {
 	@Autowired
-	private ICommentService commentService;
+	private MybatisCommentService commentService;
 	@Autowired
-	private IArticleService articleService;
+	private MybatisArticleService articleService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Comment comment, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+	public JsonResult list(String articleId, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
 		
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), view);
+		hasPermission( cacheService.getProject(  articleService.selectByPrimaryKey(articleId).getProjectId() ), view);
 		Page page= new Page(15);
 		page.setCurrentPage(currentPage);
-		return new JsonResult(1, commentService.findByMap(Tools.getMap("articleId", comment.getArticleId()), page, " createTime desc"), page);
+
+		CommentCriteria example = new CommentCriteria();
+		example.createCriteria().andArticleIdEqualTo(articleId);
+		example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+		example.setLimitStart(page.getStart());
+		example.setMaxResults(page.getSize());
+
+		page.setAllRow(commentService.countByExample(example));
+
+		List<Comment> commentList = commentService.selectByExample(example);
+
+		return new JsonResult(1, CommentAdapter.getDto(commentList), page);
 	}
 
 	@RequestMapping("/detail.do")
@@ -47,8 +58,8 @@ public class CommentController extends BaseController<Comment> {
 	public JsonResult detail(@ModelAttribute Comment comment) throws MyException {
 		Comment model;
 		if (!comment.getId().equals(Const.NULL_ID)) {
-			model = commentService.get(comment.getId());
-			hasPermission( cacheService.getProject(  articleService.get( model.getArticleId() ).getProjectId() ), view);
+			model = commentService.selectByPrimaryKey(comment.getId());
+			hasPermission( cacheService.getProject(  articleService.selectByPrimaryKey( model.getArticleId() ).getProjectId() ), view);
 		} else {
 			model = new Comment();
 		}
@@ -59,8 +70,8 @@ public class CommentController extends BaseController<Comment> {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ) , modArticle);
-		comment.setUpdateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+		hasPermission( cacheService.getProject(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ) , modArticle);
+		comment.setUpdateTime(new Date());
 		commentService.update(comment);
 		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getArticleId());
 		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getArticleId());
@@ -82,10 +93,10 @@ public class CommentController extends BaseController<Comment> {
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			Comment comment = commentService.get(tempId);
-			hasPermission( cacheService.getProject(  articleService.get(  comment.getArticleId()  ).getProjectId() ), delArticle);
-			comment = commentService.get(comment.getId());
-			commentService.delete(comment);
+			Comment comment = commentService.selectByPrimaryKey(tempId);
+			hasPermission( cacheService.getProject(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ), delArticle);
+			comment = commentService.selectByPrimaryKey(comment.getId());
+			commentService.delete(tempId);
 		}
 		return new JsonResult(1, null);
 	}

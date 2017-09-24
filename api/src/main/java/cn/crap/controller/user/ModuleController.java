@@ -2,7 +2,9 @@ package cn.crap.controller.user;
 
 import java.util.Map;
 
+import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,13 +18,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IArticleService;
 import cn.crap.service.IInterfaceService;
 import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.ISourceService;
-import cn.crap.service.IUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Interface;
 import cn.crap.model.Module;
@@ -43,9 +43,7 @@ public class ModuleController extends BaseController<Module>{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IArticleService articleService;
-	@Autowired
-	private IUserService userService;
+	private CustomArticleService articleService;
 	@Autowired
 	private IInterfaceService interfaceService;
 	@Autowired
@@ -54,6 +52,8 @@ public class ModuleController extends BaseController<Module>{
 	private IProjectUserService projectUserService;
 	@Autowired
 	private ISourceService sourceService;
+	@Autowired
+	private MybatisUserService userService;
 	@Autowired
 	private Config config;
 	
@@ -118,7 +118,7 @@ public class ModuleController extends BaseController<Module>{
 		LoginInfoDto user = Tools.getUser();
 		// 将用户信息存入缓存
 		cacheService.setObj(Const.CACHE_USER + user.getId(), 
-				new LoginInfoDto(userService.get(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
+				new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,module);
 	}
 	
@@ -165,7 +165,7 @@ public class ModuleController extends BaseController<Module>{
 			throw new MyException("000024");
 		}
 		
-		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.ARTICLE.name())) >0 ){
+		if(articleService.countByModuleIdAndType(oldDataCenter.getId(), ArticleType.ARTICLE.name()) >0 ){
 			throw new MyException("000034");
 		}
 		
@@ -173,7 +173,7 @@ public class ModuleController extends BaseController<Module>{
 			throw new MyException("000035");
 		}
 		
-		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.DICTIONARY.name())) >0 ){
+		if(articleService.countByModuleIdAndType(oldDataCenter.getId(),  ArticleType.DICTIONARY.name()) >0 ){
 			throw new MyException("000036");
 		}
 		

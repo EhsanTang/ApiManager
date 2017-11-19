@@ -24,16 +24,16 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.ProjectUser;
 import cn.crap.service.imp.tool.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
-public abstract class BaseController<T extends BaseModel> {
+public abstract class BaseController{
+	protected final static int SIZE = 15;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected Logger log = Logger.getLogger(getClass());

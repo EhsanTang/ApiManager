@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
 
 @Controller
-public class MainController extends BaseController<User> {
+public class MainController extends BaseController{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

@@ -18,7 +18,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
 @Controller
-public class FileController extends BaseController <User>{
+public class FileController extends BaseController{
 	@Autowired
 	private Config config;
 	

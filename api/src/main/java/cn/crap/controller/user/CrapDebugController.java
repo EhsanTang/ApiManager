@@ -3,6 +3,8 @@ package cn.crap.controller.user;
 import java.util.*;
 
 import cn.crap.model.mybatis.Project;
+import cn.crap.service.mybatis.custom.CustomModuleService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.dao.IModuleDao;
 import cn.crap.service.IDebugService;
-import cn.crap.service.IModuleService;
 import cn.crap.model.Article;
 import cn.crap.model.Debug;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
@@ -38,9 +38,9 @@ public class CrapDebugController extends BaseController<Article>{
 	@Autowired
 	private MybatisProjectService projectService;
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Autowired
-	private IModuleDao moduleDao;
+	private CustomModuleService customModuleService;
 
 	@RequestMapping("/synch.do")
 	@ResponseBody
@@ -73,20 +73,20 @@ public class CrapDebugController extends BaseController<Article>{
 				continue;
 			}
 			d.setModuleId( Tools.handleId(user,d.getModuleId()) );
-			Module module = moduleDao.get(d.getModuleId());
+			Module module = moduleService.selectByPrimaryKey(d.getModuleId());
 			if( module == null && d.getStatus()!=-1){
 				try{
 					module = new Module();
 					module.setId(d.getModuleId());
 					module.setName(d.getModuleName());
-					module.setCreateTime(DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+					module.setCreateTime(new Date());
 					module.setSequence(moduleSequence);
 					module.setProjectId(project.getId());
 					module.setUserId(user.getId());
 					module.setRemark("");
 					module.setUrl("");
 					module.setVersion(d.getVersion()==null?0:d.getVersion());
-					moduleService.save(module);
+					moduleService.insert(module);
 				}catch(Exception e){
 					e.printStackTrace();
 					continue;
@@ -96,7 +96,7 @@ public class CrapDebugController extends BaseController<Article>{
 					if(d.getStatus() != null && d.getStatus() == -1){
 						Module delete = new Module();
 						delete.setId(d.getModuleId());
-						moduleService.delete(delete);
+						moduleService.delete(delete.getId());
 						debugService.update("delete from Debug where moduleId=:moduleId", Tools.getMap("moduleId", d.getModuleId()));
 					}
 					else if(d.getVersion() == null || module.getVersion() <= d.getVersion()){
@@ -162,7 +162,7 @@ public class CrapDebugController extends BaseController<Article>{
 			}
 		}
 		
-		List<Module> modules = moduleService.findByMap(Tools.getMap("projectId",projectId), null, "sequence asc");
+		List<Module> modules = customModuleService.queryByProjectId(projectId);
 		List<String> moduleIds = new ArrayList<String>();
 		for (Module m:modules){
 			moduleIds.add(m.getId());

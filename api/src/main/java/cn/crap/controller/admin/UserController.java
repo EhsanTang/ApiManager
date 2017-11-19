@@ -30,7 +30,7 @@ import cn.crap.service.IRoleService;
 import cn.crap.springbeans.Config;
 
 @Controller
-public class UserController extends BaseController<cn.crap.model.User> {
+public class UserController extends BaseController {
 
     @Autowired
     private IRoleService roleService;
@@ -47,8 +47,7 @@ public class UserController extends BaseController<cn.crap.model.User> {
     @ResponseBody
     @AuthPassport(authority = Const.AUTH_USER)
     public JsonResult list(String userName, String email, String trueName, @RequestParam(defaultValue = "1") Integer currentPage) {
-        Page page = new Page(15);
-        page.setCurrentPage(currentPage);
+        Page page = new Page(15,currentPage);
         UserCriteria userCriteria = new UserCriteria();
         UserCriteria.Criteria criteria = userCriteria.createCriteria();
 

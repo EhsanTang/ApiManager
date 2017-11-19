@@ -25,7 +25,7 @@ import cn.crap.service.ICacheService;
 import cn.crap.springbeans.Config;
 
 @Controller
-public class SettingController extends BaseController<cn.crap.model.Setting>{
+public class SettingController extends BaseController{
 
 	@Autowired
 	private MybatisSettingService mybatisSettingService;
@@ -43,8 +43,7 @@ public class SettingController extends BaseController<cn.crap.model.Setting>{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult list(String key, String remark,@RequestParam(defaultValue="1") int currentPage){
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 
 		SettingCriteria example = new SettingCriteria();
 		SettingCriteria.Criteria criteria= example.createCriteria();

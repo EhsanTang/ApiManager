@@ -8,6 +8,7 @@ import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.SettingCriteria;
 import cn.crap.model.mybatis.User;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.service.mybatis.imp.MybatisSettingService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
@@ -18,9 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.crap.dao.ICacheDao;
-import cn.crap.dao.IModuleDao;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
@@ -30,8 +30,8 @@ import cn.crap.utils.MyString;
 @Service
 @Repository(value = "cacheService")
 public class CacheService implements ICacheService {
-	@Resource(name="dataCenterDao")
-	private IModuleDao dataCenterDao;
+	@Autowired
+	private MybatisModuleService moduleService;
 	@Autowired
 	private Config config;
 	@Autowired
@@ -122,7 +122,7 @@ public class CacheService implements ICacheService {
 		
 		Object obj = getDao().getObj(Const.CACHE_MODULE + moduleId);
 		if(obj == null){
-			Module module = dataCenterDao.get(moduleId);
+			Module module = moduleService.selectByPrimaryKey(moduleId);
 			if(module == null)
 				module = new Module();
 			getDao().setObj(Const.CACHE_MODULE + moduleId, module, config.getCacheTime());

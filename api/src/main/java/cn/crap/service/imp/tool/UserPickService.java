@@ -5,9 +5,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.model.mybatis.ProjectCriteria;
-import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,9 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
-import cn.crap.service.IModuleService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
-import cn.crap.model.Module;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -45,11 +42,13 @@ public class UserPickService implements IPickService{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Autowired
 	private CustomArticleMapper customArticleMapper;
 	@Autowired
 	private MybatisUserService userService;
+	@Autowired
+	private CustomModuleService customModuleService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -82,8 +81,11 @@ public class UserPickService implements IPickService{
 						for (Project p : projectService.selectByExample(example)) {
 							pick = new PickDto(Const.SEPARATOR, p.getName());
 							picks.add(pick);
+
+							ModuleCriteria moduleExample = new ModuleCriteria();
+							moduleExample.createCriteria().andProjectIdEqualTo(p.getId());
 							
-							for(Module m : moduleService.findByMap(Tools.getMap("projectId", p.getId()), null, null)){
+							for(Module m : moduleService.selectByExample(moduleExample)){
 								pick = new PickDto(m.getId(), m.getName());
 								picks.add(pick);
 							}
@@ -92,12 +94,12 @@ public class UserPickService implements IPickService{
 					case "PROJECT_MODULE":
 						// 普通用户，只能查看自己的项目和模块
 						projectIds = customProjectService.queryProjectIdByUid(Tools.getUser().getId());
-						moduleService.getDataCenterPick(picks, projectIds , "", "", "");
+						customModuleService.getDataCenterPick(picks, projectIds , "", "", "");
 						return;
 					case "MODULES":
 						// 查看某个项目下的模块
 						if(!MyString.isEmpty(key)){
-							for(Module m : moduleService.findByMap(Tools.getMap("projectId", key), null, null)){
+							for(Module m : customModuleService.queryByProjectId(key)){
 								pick = new PickDto(m.getId(), m.getName());
 								picks.add(pick);
 							}

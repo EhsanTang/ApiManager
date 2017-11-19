@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
+import cn.crap.model.mybatis.ModuleCriteria;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +21,6 @@ import cn.crap.framework.base.BaseService;
 import cn.crap.framework.base.IBaseDao;
 import cn.crap.dao.IInterfaceDao;
 import cn.crap.service.IInterfaceService;
-import cn.crap.service.IModuleService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ILuceneService;
 import cn.crap.model.Interface;
@@ -36,7 +38,7 @@ public class InterfaceService extends BaseService<Interface>
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Resource(name="interfaceDao")
 	IInterfaceDao interfaceDao;
 	
@@ -72,39 +74,41 @@ public class InterfaceService extends BaseService<Interface>
 		return model;
 	}
 	
-	@Override
-	@Transactional
-	public JsonResult getInterfaceList(Page page,List<String> moduleIds, Interface interFace, Integer currentPage) {
-		page.setCurrentPage(currentPage);
-		
-		Map<String, Object> params = Tools.getMap("moduleId", interFace.getModuleId(),
-				"interfaceName|like", interFace.getInterfaceName(),"fullUrl|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
-		if(moduleIds != null){
-			moduleIds.add("NULL");// 防止长度为0，导致in查询报错
-			params.put("moduleId|in", moduleIds);
-		}
-			
-		List<Interface> interfaces = findByMap(
-				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
-		
-		List<Module> modules = new ArrayList<Module>();
-		// 搜索接口时，modules为空
-		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName()) && MyString.isEmpty(interFace.getUrl()) ) {
-			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
-			if(moduleIds != null){
-				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
-				params.put("id|in", moduleIds);
-			}
-			params.put("id|!=", "top");// 顶级目录不显示
-			modules = moduleService.findByMap(params, null, null);
-		}
-		params.clear();
-		params.put("interfaces", interfaces);
-		params.put("modules", modules);
-		return new JsonResult(1, params, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
-						"module",cacheService.getModule(interFace.getModuleId())));
-	}
+//	@Override
+//	@Transactional
+//	public JsonResult getInterfaceList(Page page,List<String> moduleIds, Interface interFace, Integer currentPage) {
+//		Map<String, Object> params = Tools.getMap("moduleId", interFace.getModuleId(),
+//				"interfaceName|like", interFace.getInterfaceName(),"fullUrl|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
+//		if(moduleIds != null){
+//			moduleIds.add("NULL");// 防止长度为0，导致in查询报错
+//			params.put("moduleId|in", moduleIds);
+//		}
+//
+//		List<Interface> interfaces = findByMap(
+//				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
+//
+//		List<Module> modules = new ArrayList<Module>();
+//		// 搜索接口时，modules为空
+//		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName()) && MyString.isEmpty(interFace.getUrl()) ) {
+//			ModuleCriteria example = new ModuleCriteria();
+//			example.createCriteria().andPa
+//
+//			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
+//			if(moduleIds != null){
+//				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
+//				params.put("id|in", moduleIds);
+//			}
+//			params.put("id|!=", "top");// 顶级目录不显示
+//
+//			modules = moduleService.findByMap(params, null, null);
+//		}
+//		params.clear();
+//		params.put("interfaces", interfaces);
+//		params.put("modules", modules);
+//		return new JsonResult(1, params, page,
+//				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
+//						"module",cacheService.getModule(interFace.getModuleId())));
+//	}
 	
 	@Override
 	@Transactional

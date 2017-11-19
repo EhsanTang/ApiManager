@@ -1,5 +1,6 @@
 package cn.crap.controller.front;
 
+import cn.crap.model.mybatis.Article;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +10,7 @@ import cn.crap.dto.XmlParamsDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.Article;
+import cn.crap.model.mybatis.Article;
 
 /**
  * 测试接口
@@ -17,7 +18,7 @@ import cn.crap.model.Article;
  *
  */
 @Controller("exampleController")
-public class ExampleController extends BaseController<Article> {	
+public class ExampleController extends BaseController{
 	@RequestMapping("/front/example/json.do")
 	@ResponseBody
 	public JsonResult json(@RequestBody Article article) throws MyException{

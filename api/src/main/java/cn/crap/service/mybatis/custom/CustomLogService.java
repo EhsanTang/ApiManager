@@ -10,17 +10,17 @@ import cn.crap.enumeration.LogType;
 import cn.crap.framework.MyException;
 import cn.crap.model.Interface;
 import cn.crap.model.mybatis.Log;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.Source;
 import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
 import cn.crap.model.mybatis.Project;
 import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.table.ModuleService;
 import cn.crap.service.imp.table.SourceService;
 import cn.crap.service.imp.tool.CacheService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -42,11 +42,23 @@ public class CustomLogService{
     @Autowired
     private MybatisProjectService projectService;
     @Autowired
-    private ModuleService moduleService;
+    private MybatisModuleService moduleService;
     @Autowired
     private SourceService sourceService;
     @Autowired
     private LogMapper logMapper;
+
+    public boolean saveLog(String modelName, String content, String remark, LogType logType, Class clazz){
+        Log log = new Log();
+        log.setModelName(modelName);
+        log.setRemark(remark);
+        log.setType(logType.name());
+        log.setContent(content);
+        log.setModelClass(clazz.getSimpleName());
+
+        logMapper.insert(log);
+        return true;
+    }
 
     public void recover(Log log) throws MyException{
         log = logMapper.selectByPrimaryKey(log.getId());
@@ -105,7 +117,7 @@ public class CustomLogService{
 
     private void checkModuleAndProject(String moduleId) throws MyException {
         // 查看模块是否存在
-        Module module = moduleService.get(moduleId);
+        Module module = moduleService.selectByPrimaryKey(moduleId);
         if( MyString.isEmpty(module.getId()) ){
             throw new MyException("000048");
         }

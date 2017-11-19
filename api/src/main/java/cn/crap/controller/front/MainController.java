@@ -36,7 +36,7 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 @Controller("fontMainController")
-public class MainController extends BaseController<User> {
+public class MainController extends BaseController{
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired

@@ -21,7 +21,7 @@ import java.util.List;
 // TODO 项目密码MD5 + 盐ß
 @Controller("forntProjectController")
 @RequestMapping("/front/project")
-public class ProjectController extends BaseController<cn.crap.model.Project> {
+public class ProjectController extends BaseController{
 	@Autowired
 	private CustomProjectService customProjectService;
 	
@@ -30,8 +30,7 @@ public class ProjectController extends BaseController<cn.crap.model.Project> {
 	public JsonResult list(@RequestParam(defaultValue="1") int currentPage, 
 			@RequestParam(defaultValue="false") boolean myself, String name) throws MyException{
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		LoginInfoDto user =  Tools.getUser();
 		
 		if(user != null && myself){

@@ -3,6 +3,7 @@ package cn.crap.service.imp.tool;
 import java.util.List;
 
 import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,6 @@ import cn.crap.enumeration.MonitorType;
 import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.TrueOrFalse;
 import cn.crap.framework.MyException;
-import cn.crap.service.IModuleService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
@@ -31,7 +31,7 @@ public class PickService implements IPickService{
 	@Autowired
 	private IRoleService roleService;
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Autowired
 	private CustomErrorService customErrorService;
 

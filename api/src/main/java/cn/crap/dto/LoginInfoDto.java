@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import cn.crap.enumeration.UserType;
+import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.ProjectUser;
-import cn.crap.model.Role;
+import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.model.mybatis.Role;
 import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.utils.Const;

@@ -25,7 +25,7 @@ import cn.crap.utils.Tools;
 
 @Controller("frontCommentController")
 @RequestMapping("/front/comment")
-public class CommentController extends BaseController<cn.crap.model.Comment> {
+public class CommentController extends BaseController {
 	@Autowired
 	private ICacheService cacheService;
 

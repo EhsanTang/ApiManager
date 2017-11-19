@@ -24,7 +24,7 @@ import cn.crap.utils.Tools;
 
 @Controller("frontErrorController")
 @RequestMapping("/front/error")
-public class ErrorController extends BaseController<cn.crap.model.Error>{
+public class ErrorController extends BaseController{
 
 	@Autowired
 	private ICacheService cacheService;
@@ -46,8 +46,7 @@ public class ErrorController extends BaseController<cn.crap.model.Error>{
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
 		
-		Page page= new Page(20);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(20, currentPage);
 
 		List<Error> models = customErrorService.pageByProjectIdCodeMsg(projectId, errorCode, errorMsg, page);
 		List<ErrorDto> dtos = ErrorAdapter.getDto(models);

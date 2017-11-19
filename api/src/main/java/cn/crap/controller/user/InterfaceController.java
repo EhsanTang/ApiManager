@@ -27,7 +27,7 @@ import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
 import cn.crap.model.mybatis.Error;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -58,8 +58,7 @@ public class InterfaceController extends BaseController<Interface>{
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Interface interFace,
 			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		hasPermission(cacheService.getProject(interFace.getProjectId()), view);
 		
 		List<Interface> interfaces = interfaceService.findByMap( 

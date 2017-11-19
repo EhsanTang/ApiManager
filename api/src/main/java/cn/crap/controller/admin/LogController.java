@@ -27,7 +27,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController<User>{
+public class LogController extends BaseController{
 
 	@Autowired
 	private MybatisLogService logService;
@@ -38,8 +38,7 @@ public class LogController extends BaseController<User>{
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_LOG)
 	public JsonResult list(@ModelAttribute Log log,@RequestParam(defaultValue="1") Integer currentPage){
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		Map<String,Object> map = Tools.getMap("modelName",log.getModelName(),"identy", log.getIdenty());
 		LogCriteria example = new LogCriteria();
 		example.createCriteria().andModelNameEqualTo(log.getModelName()).andIdNotEqualTo(log.getIdenty());

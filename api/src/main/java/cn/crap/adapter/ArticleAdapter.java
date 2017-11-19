@@ -112,7 +112,7 @@ public class ArticleAdapter {
 		dto.setContent(model.getBrief() + model.getContent());
 		dto.setModuleName(customArticleService.getModuleName(moduleId));
 		dto.setTitle(model.getName());
-		dto.setType(cn.crap.model.Article.class.getSimpleName());
+		dto.setType("Article");
 		dto.setUrl("#/"+model.getProjectId()+"/article/detail/"+model.getModuleId()+"/"+model.getType()+"/"+moduleId);
 		dto.setVersion("");
 		dto.setProjectId(model.getProjectId());

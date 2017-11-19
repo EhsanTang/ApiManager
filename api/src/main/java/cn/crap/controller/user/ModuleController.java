@@ -1,10 +1,18 @@
 package cn.crap.controller.user;
 
+import java.util.List;
 import java.util.Map;
 
+import cn.crap.adapter.ModuleAdapter;
+import cn.crap.enumeration.LogType;
+import cn.crap.model.mybatis.Module;
 import cn.crap.service.mybatis.custom.CustomArticleService;
+import cn.crap.service.mybatis.custom.CustomLogService;
+import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,13 +27,12 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IInterfaceService;
-import cn.crap.service.IModuleService;
 import cn.crap.service.IProjectUserService;
 import cn.crap.service.IRoleService;
 import cn.crap.service.ISourceService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
@@ -34,10 +41,10 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController<Module>{
+public class ModuleController extends BaseController<cn.crap.model.Module>{
 
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -56,30 +63,34 @@ public class ModuleController extends BaseController<Module>{
 	private MybatisUserService userService;
 	@Autowired
 	private Config config;
+	@Autowired
+	private CustomModuleService customModuleService;
+	@Autowired
+	private CustomLogService customLogService;
 	
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute  Module module, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 			Page page= new Page(15);
 			page.setCurrentPage(currentPage);
-			Map<String,Object> map = Tools.getMap("projectId", module.getProjectId());
-			
-			hasPermission(cacheService.getProject(module.getProjectId()), view);
-			
-			return new JsonResult(1, moduleService.findByMap(map, page, null), page);
+
+			hasPermission(cacheService.getProject(projectId), view);
+
+			List<Module> moduleList = customModuleService.queryByProjectId(projectId, page, true);
+			return new JsonResult(1, ModuleAdapter.getDto(moduleList), page);
 		}	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Module module) throws MyException{
 		Module model;
 		if(!module.getId().equals(Const.NULL_ID)){
-			model= moduleService.get(module.getId());
-			if(!MyString.isEmpty(model.getTemplateId())){
-				Interface inter = interfaceService.get(model.getTemplateId());
-				if(inter != null)
-					model.setTemplateName(inter.getInterfaceName());
-			}
+			model= moduleService.selectByPrimaryKey(module.getId());
+//			if(!MyString.isEmpty(model.getTemplateId())){
+//				Interface inter = interfaceService.get(model.getTemplateId());
+//				if(inter != null)
+//					model.setTemplateName(inter.getInterfaceName());
+//			}getInterfaceName
 			hasPermission(cacheService.getProject(model.getProjectId()), view);
 		}else{
 			hasPermission(cacheService.getProject(module.getProjectId()), view);
@@ -93,7 +104,7 @@ public class ModuleController extends BaseController<Module>{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Module module) throws Exception{
-		// 系统数据，不允许删除
+		// 系统数据，不允许删除 TODO web移至单独表
 		if(module.getId().equals("web"))
 			throw new MyException("000009");
 				
@@ -103,12 +114,14 @@ public class ModuleController extends BaseController<Module>{
 			// 更新该模块下的所有接口的fullUrl
 			interfaceService.update("update Interface set fullUrl=CONCAT('"+(module.getUrl() == null? "":module.getUrl())+
 					"',url) where moduleId ='"+module.getId()+"'", null);
-			moduleService.update(module, "模块" , "");
+			moduleService.update(module);
+			Module dbModule = moduleService.selectByPrimaryKey(module.getId());
+			customLogService.saveLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
 		}else{
 			hasPermission(cacheService.getProject( module.getProjectId() ), addModule);
 			module.setUserId(Tools.getUser().getId());
 			module.setVersion(0);
-			moduleService.save(module);
+			moduleService.insert(module);
 		}
 		cacheService.delObj(Const.CACHE_MODULE+module.getId());
 		
@@ -158,27 +171,29 @@ public class ModuleController extends BaseController<Module>{
 		if(module.getId().equals("web"))
 			throw new MyException("000009");
 				
-		Module oldDataCenter = cacheService.getModule(module.getId());
-		hasPermission(cacheService.getProject( oldDataCenter.getProjectId() ), delModule);
+		Module dbModule = cacheService.getModule(module.getId());
+		hasPermission(cacheService.getProject( dbModule.getProjectId() ), delModule);
 		
-		if(interfaceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
+		if(interfaceService.getCount(Tools.getMap("moduleId", dbModule.getId())) >0 ){
 			throw new MyException("000024");
 		}
 		
-		if(articleService.countByModuleIdAndType(oldDataCenter.getId(), ArticleType.ARTICLE.name()) >0 ){
+		if(articleService.countByModuleIdAndType(dbModule.getId(), ArticleType.ARTICLE.name()) >0 ){
 			throw new MyException("000034");
 		}
 		
-		if(sourceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
+		if(sourceService.getCount(Tools.getMap("moduleId", dbModule.getId())) >0 ){
 			throw new MyException("000035");
 		}
 		
-		if(articleService.countByModuleIdAndType(oldDataCenter.getId(),  ArticleType.DICTIONARY.name()) >0 ){
+		if(articleService.countByModuleIdAndType(dbModule.getId(),  ArticleType.DICTIONARY.name()) >0 ){
 			throw new MyException("000036");
 		}
 		
 		cacheService.delObj(Const.CACHE_MODULE+module.getId());
-		moduleService.delete(module, "模块", "");
+		moduleService.delete(module.getId());
+
+		customLogService.saveLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.DELTET, Module.class);
 		return new JsonResult(1,null);
 	}
 	
@@ -186,8 +201,8 @@ public class ModuleController extends BaseController<Module>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Module change = moduleService.get(changeId);
-		Module model = moduleService.get(id);
+		Module change = moduleService.selectByPrimaryKey(changeId);
+		Module model = moduleService.selectByPrimaryKey(id);
 		
 		hasPermission(cacheService.getProject( change.getProjectId() ), modModule);
 		hasPermission(cacheService.getProject( model.getProjectId() ), modModule);

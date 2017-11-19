@@ -2,6 +2,7 @@ package cn.crap.controller.front;
 
 import java.util.Map;
 
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ISourceService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.Source;
 import cn.crap.utils.MyString;
@@ -24,7 +25,7 @@ import cn.crap.utils.Tools;
 
 @Controller("frontSourceController")
 @RequestMapping("/front/source")
-public class SourceController extends BaseController<Source>{
+public class SourceController extends BaseController{
 
 	@Autowired
 	private ISourceService sourceService;
@@ -58,8 +59,7 @@ public class SourceController extends BaseController<Source>{
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		// 搜索条件
 		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId());
 

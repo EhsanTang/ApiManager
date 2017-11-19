@@ -21,7 +21,7 @@ import cn.crap.service.ICacheService;
 
 @Controller
 @RequestMapping
-public class MenuController extends BaseController<cn.crap.model.Menu> {
+public class MenuController extends BaseController{
 	@Autowired
 	private MybatisMenuService mybatisMenuService;
 	@Autowired
@@ -36,8 +36,7 @@ public class MenuController extends BaseController<cn.crap.model.Menu> {
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_MENU)
 	public JsonResult list(String type, String menuName, String parentId, @RequestParam(defaultValue = "1") Integer currentPage) {
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 
 		MenuCriteria menuCriteria = new MenuCriteria();
 		MenuCriteria.Criteria criteria = menuCriteria.createCriteria();

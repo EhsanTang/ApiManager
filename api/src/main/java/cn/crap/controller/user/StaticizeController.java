@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.SettingDto;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.*;
+import cn.crap.model.mybatis.Error;
 import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +34,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.IInterfaceService;
-import cn.crap.service.IModuleService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.mybatis.Article;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
-import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
@@ -46,7 +44,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
-import cn.crap.model.mybatis.Error;
 
 @Controller
 @RequestMapping("/user/staticize")
@@ -54,7 +51,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IModuleService moduleService;
+	private MybatisModuleService moduleService;
 	@Autowired
 	private Config config;
 	@Autowired
@@ -398,8 +395,10 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		}
 		
 		Map<String, Object> map = new HashMap<>();
-		
-		for(Module module : moduleService.findByMap(Tools.getMap("projectId", projectId), null, null)){
+
+		ModuleCriteria example = new ModuleCriteria();
+		example.createCriteria().andProjectIdEqualTo(projectId);
+		for(Module module : moduleService.selectByExample(example)){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文章，分类
 				List<String> categorys = customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");

@@ -7,13 +7,9 @@ import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.ArticleDto;
 import cn.crap.enumeration.LogType;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.mybatis.Log;
-import cn.crap.model.Module;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.mybatis.*;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.Article;
-import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.imp.tool.CacheService;
@@ -22,7 +18,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
-import com.sun.xml.internal.bind.v2.TODO;
 import net.sf.json.JSONObject;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +108,7 @@ public class CustomArticleService implements ILuceneService<ArticleDto> {
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-
+// TODO 提取代码
             Log log = new Log();
             log.setModelName(modelName);
             log.setRemark(remark);

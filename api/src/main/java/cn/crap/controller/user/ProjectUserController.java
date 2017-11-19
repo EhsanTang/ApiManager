@@ -8,6 +8,7 @@ import cn.crap.service.mybatis.custom.CustomUserService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,8 +42,8 @@ public class ProjectUserController extends BaseController<ProjectUser>{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-			Page page= new Page(15);
-			page.setCurrentPage(currentPage);
+		Assert.isTrue(currentPage > 0);
+			Page page= new Page(SIZE, currentPage);
 			Map<String,Object> map = Tools.getMap("projectId", projectId);
 			
 			hasPermission( cacheService.getProject(projectId) );

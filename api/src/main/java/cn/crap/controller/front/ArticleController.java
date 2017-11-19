@@ -34,7 +34,7 @@ import cn.crap.utils.Tools;
  *
  */
 @Controller("frontArticleController")
-public class ArticleController extends BaseController<cn.crap.model.Article> {
+public class ArticleController extends BaseController {
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
@@ -57,8 +57,7 @@ public class ArticleController extends BaseController<cn.crap.model.Article> {
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, ArticleType.DICTIONARY.name(), null));
 		return new JsonResult(1, customArticleService.queryArticle(moduleId, name, ArticleType.DICTIONARY.name(), null, page)  , page,
 				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + module.getName(), "void")) );
@@ -77,9 +76,8 @@ public class ArticleController extends BaseController<cn.crap.model.Article> {
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		
+		Page page= new Page(15, currentPage);
+
 
 		// 选择分类，最多显示前20个 TODO
 		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
@@ -151,8 +149,7 @@ public class ArticleController extends BaseController<cn.crap.model.Article> {
 			page= (Page) cacheService.getObj(Const.CACHE_COMMENT_PAGE + model.getId(), currentPage + "");
 			List<Comment> comments = (List<Comment>) cacheService.getObj(Const.CACHE_COMMENTLIST + model.getId(), currentPage+"");
 			if( comments == null || page == null){
-				page = new Page(10);
-				page.setCurrentPage(currentPage);
+				page = new Page(10, currentPage);
 
 				CommentCriteria example = new CommentCriteria();
 				example.createCriteria().andArticleIdEqualTo(model.getId());

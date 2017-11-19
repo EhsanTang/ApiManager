@@ -19,7 +19,7 @@ public interface IInterfaceService extends IBaseService<Interface>{
 	 * @param currentPage 当前页码
 	 * @return
 	 */
-	public JsonResult getInterfaceList(Page page, List<String> moduleIds, Interface interFace, Integer currentPage);
+	//public JsonResult getInterfaceList(Page page, List<String> moduleIds, Interface interFace, Integer currentPage);
 	
 	/**
 	 * 根据接口名，参数，请求头组装请求示例

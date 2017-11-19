@@ -8,7 +8,7 @@
 
 <generatorConfiguration>
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <plugin type="unitTest.MySQLLimitPlugin" />
+        <plugin type="genCode.utils.MySQLLimitPlugin" />
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 
         <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
@@ -31,19 +31,19 @@
 
         <!-- 包名及存储路径，需要修改，下同 -->
         <javaModelGenerator targetPackage="cn.crap.model.mybatis"
-                            targetProject="/users/apple/mybatisGeneratorCode">
+                            targetProject="/Users/apple/ijworkspace/ApiManager/api/src/test/java/genCode/genResult">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="cn.crap.dao.mybatis"
-                         targetProject="/users/apple/mybatisGeneratorCode">
+                         targetProject="/Users/apple/ijworkspace/ApiManager/api/src/test/java/genCode/genResult">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="cn.crap.dao.mybatis"
-                             targetProject="/users/apple/mybatisGeneratorCode">
+                             targetProject="/Users/apple/ijworkspace/ApiManager/api/src/test/java/genCode/genResult">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -69,7 +69,7 @@
             <!--&lt;!&ndash; 主键自增 <generatedKey column="id" sqlStatement="Mysql" identity="true"/> &ndash;&gt;-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <table domainObjectName="Setting" tableName="setting" >
+        <table domainObjectName="ProjectUser" tableName="projectUser" >
             <property name="useActualColumnNames" value="true"/>
             <!-- 主键自增 <generatedKey column="id" sqlStatement="Mysql" identity="true"/> -->
             <generatedKey column="id" sqlStatement="Mysql"/>

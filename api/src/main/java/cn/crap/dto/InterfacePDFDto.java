@@ -1,15 +1,14 @@
 package cn.crap.dto;
 
 import java.io.Serializable;
-
-import cn.crap.model.Interface;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
 
 public class InterfacePDFDto implements Serializable{
 	/**
 	 * 生成pdf
 	 */
 	private static final long serialVersionUID = 1L;
-	private Interface model;
+	private InterfaceWithBLOBs model;
 	private Object formParams;
 	private String customParams;
 	private Object headers;
@@ -19,10 +18,10 @@ public class InterfacePDFDto implements Serializable{
 	private String falseMockUrl;
 	private Object paramRemarks;
 
-	public Interface getModel() {
+	public InterfaceWithBLOBs getModel() {
 		return model;
 	}
-	public void setModel(Interface model) {
+	public void setModel(InterfaceWithBLOBs model) {
 		this.model = model;
 	}
 	public Object getFormParams() {

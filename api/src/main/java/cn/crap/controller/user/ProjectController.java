@@ -27,8 +27,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
 import cn.crap.model.mybatis.Project;
@@ -36,6 +34,7 @@ import cn.crap.springbeans.Config;
 
 @Controller
 @RequestMapping("/user/project")
+public class ProjectController extends BaseController {
 @Autowired
 private ICacheService cacheService;
 @Autowired
@@ -57,12 +56,12 @@ private CustomErrorService customErrorService;
 @Autowired
 private MybatisUserService userService;
 
-public class ProjectController extends BaseController {
-@RequestMapping("/list.do")
-@ResponseBody
-@AuthPassport
-public JsonResult list(@ModelAttribute Project project, @RequestParam(defaultValue="1") int currentPage,
-@RequestParam(defaultValue="false") boolean myself) throws MyException{
+
+	@RequestMapping("/list.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult list(@ModelAttribute Project project, @RequestParam(defaultValue="1") int currentPage,
+						   @RequestParam(defaultValue="false") boolean myself) throws MyException{
 		Assert.isTrue(currentPage > 0);
 		Page page= new Page(SIZE, currentPage);
 
@@ -71,76 +70,76 @@ public JsonResult list(@ModelAttribute Project project, @RequestParam(defaultVal
 		List<Project> models = null;
 		List<ProjectDto> dtos = null;
 		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
-		page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
-		models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
-		dtos = ProjectAdapter.getDto(models);
-		return new JsonResult(1,dtos, page);
+			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
+			models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
+			dtos = ProjectAdapter.getDto(models);
+			return new JsonResult(1,dtos, page);
 		}else{
-		Map<String,Object> map = null;
-		ProjectCriteria example = new ProjectCriteria();
-		ProjectCriteria.Criteria criteria = example.createCriteria();
-		if (project.getName() != null){
-		criteria.andNameLike("%" + project.getName() +"%");
-		}
-		example.setLimitStart(page.getStart());
-		example.setMaxResults(page.getSize());
-		example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
-		page.setAllRow(projectService.countByExample(example));
-		models = projectService.selectByExample(example);
+			Map<String,Object> map = null;
+			ProjectCriteria example = new ProjectCriteria();
+			ProjectCriteria.Criteria criteria = example.createCriteria();
+			if (project.getName() != null){
+				criteria.andNameLike("%" + project.getName() +"%");
+			}
+			example.setLimitStart(page.getStart());
+			example.setMaxResults(page.getSize());
+			example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+			page.setAllRow(projectService.countByExample(example));
+			models = projectService.selectByExample(example);
 		}
 		return new JsonResult(1,dtos, page);
-		}
+	}
 
-@RequestMapping("/detail.do")
-@ResponseBody
-@AuthPassport
-public JsonResult detail(@ModelAttribute Project project) throws MyException{
+	@RequestMapping("/detail.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult detail(@ModelAttribute Project project) throws MyException{
 		Project model;
 		if(!project.getId().equals(Const.NULL_ID)){
-		model= cacheService.getProject(project.getId());
-		hasPermission(model);
+			model= cacheService.getProject(project.getId());
+			hasPermission(model);
 		}else{
-		model=new Project();
+			model=new Project();
 		}
 		return new JsonResult(1,model);
-		}
+	}
 
 
-@RequestMapping("/addOrUpdate.do")
-@ResponseBody
-public JsonResult addOrUpdate(@ModelAttribute Project project) throws Exception{
+	@RequestMapping("/addOrUpdate.do")
+	@ResponseBody
+	public JsonResult addOrUpdate(@ModelAttribute Project project) throws Exception{
 		// 系统数据，不允许删除
 		if(project.getId().equals("web"))
-		throw new MyException("000009");
+			throw new MyException("000009");
 
 		Project model;
 		LoginInfoDto user = Tools.getUser();
 
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
-		model= cacheService.getProject(project.getId());
-		hasPermission(model);
+			model= cacheService.getProject(project.getId());
+			hasPermission(model);
 
-		// 不允许转移项目
-		project.setUserId(model.getUserId());
+			// 不允许转移项目
+			project.setUserId(model.getUserId());
 
-		// 普通用户不能推荐项目，将项目类型修改为原有类型
-		if( Tools.getUser().getType() == UserType.USER.getType()){
-		project.setStatus(model.getStatus());
-		}
+			// 普通用户不能推荐项目，将项目类型修改为原有类型
+			if( Tools.getUser().getType() == UserType.USER.getType()){
+				project.setStatus(model.getStatus());
+			}
 
-		customProjectService.update(project , "项目" , "");
+			customProjectService.update(project , "项目" , "");
 		}
 
 		// 新增
 		else{
-		project.setUserId(user.getId());
-		// 普通用户不能推荐项目
-		if( Tools.getUser().getType() == UserType.USER.getType()){
-		project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
-		}
+			project.setUserId(user.getId());
+			// 普通用户不能推荐项目
+			if( Tools.getUser().getType() == UserType.USER.getType()){
+				project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
+			}
 
-		projectService.insert(project);
+			projectService.insert(project);
 		}
 
 		// 清楚缓存
@@ -149,15 +148,15 @@ public JsonResult addOrUpdate(@ModelAttribute Project project) throws Exception{
 		// 刷新用户权限 将用户信息存入缓存
 		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
 		return new JsonResult(1,project);
-		}
+	}
 
 
-@RequestMapping("/delete.do")
-@ResponseBody
-public JsonResult delete(@ModelAttribute Project project) throws Exception{
+	@RequestMapping("/delete.do")
+	@ResponseBody
+	public JsonResult delete(@ModelAttribute Project project) throws Exception{
 		// 系统数据，不允许删除
 		if(project.getId().equals("web"))
-		throw new MyException("000009");
+			throw new MyException("000009");
 
 
 		Project model= cacheService.getProject(project.getId());
@@ -166,28 +165,28 @@ public JsonResult delete(@ModelAttribute Project project) throws Exception{
 
 		// 只有子模块数量为0，才允许删除项目
 		if(moduleService.getCount(Tools.getMap("projectId", model.getId())) > 0){
-		throw new MyException("000023");
+			throw new MyException("000023");
 		}
 
 		// 只有错误码数量为0，才允许删除项目
 		if(customErrorService.countByProjectId(model.getId()) > 0){
-		throw new MyException("000033");
+			throw new MyException("000033");
 		}
 
 		// 只有项目成员数量为0，才允许删除项目
 		if(projectUserService.getCount(Tools.getMap("projectId", model.getId()))>0){
-		throw new MyException("000038");
+			throw new MyException("000038");
 		}
 
 		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
 		customProjectService.delete(project.getId(), "项目", "");
 		return new JsonResult(1,null);
-		}
+	}
 
-@RequestMapping("/changeSequence.do")
-@ResponseBody
-@AuthPassport
-public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
+	@RequestMapping("/changeSequence.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		Project change = cacheService.getProject(changeId);
 		Project model = cacheService.getProject(id);
 
@@ -202,14 +201,14 @@ public JsonResult changeSequence(@RequestParam String id,@RequestParam String ch
 		projectService.update(change);
 
 		return new JsonResult(1, null);
-		}
+	}
 
-@ResponseBody
-@RequestMapping("/rebuildIndex.do")
-@AuthPassport
-public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
+	@ResponseBody
+	@RequestMapping("/rebuildIndex.do")
+	@AuthPassport
+	public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
 		Project model= cacheService.getProject(projectId);
 		hasPermission(model);
 		return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
-		}
-		}
+	}
+}

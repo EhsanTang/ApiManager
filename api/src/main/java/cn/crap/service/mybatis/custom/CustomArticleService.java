@@ -116,9 +116,6 @@ public class CustomArticleService implements ILuceneService<ArticleDto> {
             log.setContent(JSONObject.fromObject(dbModel).toString());
             log.setModelClass(dbModel.getClass().getSimpleName());
 
-            logService.insert(log);
-            mapper.deleteByPrimaryKey(dbModel.getId());
-
         logService.insert(log);
         mapper.updateByPrimaryKeyWithBLOBs(model);
     }

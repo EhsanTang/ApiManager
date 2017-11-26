@@ -1,6 +1,8 @@
 package cn.crap.framework;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.crap.utils.Page;
 
@@ -42,7 +44,14 @@ public class JsonResult implements Serializable {
 		String errorMsg =  ErrorInfos.getMessage(errorCode);
 		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention())));
 	}
-	
+
+	public JsonResult putOthers(String key, Object value){
+		if (this.others == null){
+			this.others = new HashMap<>();
+		}
+		((Map<String, Object>)this.others).put(key, value);
+		return this;
+	}
 	public JsonResult(String errorCode){
 		this.data = null;
 		this.success = 0;

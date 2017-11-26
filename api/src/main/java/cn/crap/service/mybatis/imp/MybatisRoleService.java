@@ -5,6 +5,7 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.enumeration.TableId;
 import cn.crap.model.mybatis.Role;
 import cn.crap.model.mybatis.RoleCriteria;
+import cn.crap.model.mybatis.RoleWithBLOBs;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class MybatisRoleService {
         return mapper.selectByExample(example);
     }
 
+    public List<RoleWithBLOBs> selectByExampleWithBLOBs(RoleCriteria example) {
+        return mapper.selectByExampleWithBLOBs(example);
+    }
+
+
     public int countByExample(RoleCriteria example) {
         return mapper.countByExample(example);
     }
@@ -37,7 +43,7 @@ public class MybatisRoleService {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(Role model) {
+    public boolean insert(RoleWithBLOBs model) {
         if (model == null) {
             return false;
         }
@@ -57,7 +63,7 @@ public class MybatisRoleService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(Role model) {
+    public boolean update(RoleWithBLOBs model) {
         if (model == null) {
             return false;
         }

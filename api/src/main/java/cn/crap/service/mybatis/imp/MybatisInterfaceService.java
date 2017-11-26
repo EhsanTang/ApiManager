@@ -5,6 +5,7 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.enumeration.TableId;
 import cn.crap.model.mybatis.Interface;
 import cn.crap.model.mybatis.InterfaceCriteria;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,14 @@ public class MybatisInterfaceService {
         return mapper.countByExample(example);
     }
 
-    public Interface selectByPrimaryKey(String id) {
+    public InterfaceWithBLOBs selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(Interface model) {
+    public boolean insert(InterfaceWithBLOBs model) {
         if (model == null) {
             return false;
         }
@@ -57,7 +58,7 @@ public class MybatisInterfaceService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(Interface model) {
+    public boolean update(InterfaceWithBLOBs model) {
         if (model == null) {
             return false;
         }

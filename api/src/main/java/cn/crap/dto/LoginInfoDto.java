@@ -5,15 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.controller.admin.RoleController;
 import cn.crap.enumeration.UserType;
+import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.ProjectUser;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.ProjectUser;
-import cn.crap.model.mybatis.Role;
-import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
+import cn.crap.service.mybatis.imp.MybatisProjectUserService;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 
@@ -30,7 +28,7 @@ public class LoginInfoDto implements Serializable{
 	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
 
-	public LoginInfoDto(User user, IRoleService roleService, CustomProjectService customProjectService, IProjectUserService projectUserService){
+	public LoginInfoDto(User user, MybatisRoleService roleService, CustomProjectService customProjectService, MybatisProjectUserService projectUserService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
@@ -54,17 +52,21 @@ public class LoginInfoDto implements Serializable{
 			if(roleId.indexOf("super") >= 0)
 				sb.append("super,");
 			if (roleId != null && !"".equals(roleId)) {
-				List<Role> roles = roleService.findByMap(
-						Tools.getMap("id|in", Tools.getIdsFromField(roleId)), null, null);
+				RoleCriteria example = new RoleCriteria();
+				RoleCriteria.Criteria criteria = example.createCriteria().andIdIn(Tools.getIdsFromField(roleId));
+				List<RoleWithBLOBs> roles = roleService.selectByExampleWithBLOBs(example);
 				// 将角色中的权限添加至用户权限中
-				for (Role role : roles) {
+				for (RoleWithBLOBs role : roles) {
 					sb.append(role.getAuth()+",");
 				}
 			}
 		}
 		
 		// 项目成员
-		for(ProjectUser p: projectUserService.findByMap(Tools.getMap("userId", id), null, null)){
+		ProjectUserCriteria example = new ProjectUserCriteria();
+		ProjectUserCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(id);
+
+		for(ProjectUser p: projectUserService.selectByExample(example)){
 			projects.put(p.getProjectId(), p);
 			sb.append(Const.AUTH_PROJECT + p.getProjectId()+",");
 		}

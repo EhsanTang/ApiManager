@@ -3,6 +3,7 @@ package cn.crap.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.custom.CustomUserService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
@@ -17,21 +18,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectUserService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.ProjectUser;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
+import cn.crap.service.mybatis.imp.MybatisProjectUserService;
 
 @Controller
 @RequestMapping("/user/projectUser")
-public class ProjectUserController extends BaseController<ProjectUser>{
+public class ProjectUserController extends BaseController{
 
 	@Autowired
-	private IProjectUserService projectUserService;
+	private MybatisProjectUserService projectUserService;
 	@Autowired
 	private CustomUserService customUserService;
 	@Autowired

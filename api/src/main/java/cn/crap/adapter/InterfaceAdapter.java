@@ -1,7 +1,15 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.InterfaceDto;
+import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.model.mybatis.Interface;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
+import cn.crap.service.ICacheService;
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +21,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDto(Interface model){
+    public static InterfaceDto getDto(InterfaceWithBLOBs model){
         if (model == null){
             return null;
         }
@@ -50,11 +58,39 @@ public class InterfaceAdapter {
         return dto;
     }
 
-    public static Interface getModel(InterfaceDto dto){
+	public static InterfaceDto getDto(Interface model){
+		if (model == null){
+			return null;
+		}
+
+		InterfaceDto dto = new InterfaceDto();
+		dto.setId(model.getId());
+		dto.setUrl(model.getUrl());
+		dto.setMethod(model.getMethod());
+		dto.setStatus(model.getStatus());
+		dto.setModuleId(model.getModuleId());
+		dto.setInterfaceName(model.getInterfaceName());
+		dto.setUpdateBy(model.getUpdateBy());
+		dto.setUpdateTime(model.getUpdateTime());
+		dto.setCreateTime(model.getCreateTime());
+		dto.setVersion(model.getVersion());
+		dto.setSequence(model.getSequence());
+		dto.setFullUrl(model.getFullUrl());
+		dto.setMonitorType(model.getMonitorType());
+		dto.setMonitorText(model.getMonitorText());
+		dto.setMonitorEmails(model.getMonitorEmails());
+		dto.setIsTemplate(model.getIsTemplate());
+		dto.setProjectId(model.getProjectId());
+
+		return dto;
+	}
+
+
+    public static InterfaceWithBLOBs getModel(InterfaceDto dto){
         if (dto == null){
             return null;
         }
-        Interface model = new Interface();
+		InterfaceWithBLOBs model = new InterfaceWithBLOBs();
         model.setId(dto.getId());
 		model.setUrl(dto.getUrl());
 		model.setMethod(dto.getMethod());
@@ -86,14 +122,54 @@ public class InterfaceAdapter {
         return model;
     }
 
-    public static List<InterfaceDto> getDto(List<Interface> models){
+    public static List<InterfaceDto> getDtoWithBLOBs(List<InterfaceWithBLOBs> models){
         if (models == null){
             return new ArrayList<>();
         }
         List<InterfaceDto> dtos = new ArrayList<>();
-        for (Interface model : models){
+        for (InterfaceWithBLOBs model : models){
             dtos.add(getDto(model));
         }
         return dtos;
     }
+
+	public static List<InterfaceDto> getDto(List<Interface> models){
+		if (models == null){
+			return new ArrayList<>();
+		}
+		List<InterfaceDto> dtos = new ArrayList<>();
+		for (Interface model : models){
+			dtos.add(getDto(model));
+		}
+		return dtos;
+	}
+
+	public static SearchDto toSearchDto(InterfaceWithBLOBs model, ICacheService cacheService) {
+		Assert.notNull(model);
+		Assert.notNull(cacheService);
+		Assert.notNull(model.getProjectId());
+		Assert.notNull(model.getModuleId());
+
+		Module module = cacheService.getModule(model.getModuleId());
+		Project project = cacheService.getProject(model.getProjectId());
+
+		SearchDto dto = new SearchDto();
+		dto.setId(model.getId());
+		dto.setCreateTime(model.getCreateTime());
+		dto.setContent(model.getRemark() + model.getResponseParam() + model.getParam());
+		dto.setModuleName(module.getName());
+		dto.setTitle(model.getInterfaceName());
+		dto.setType(Interface.class.getSimpleName());
+		dto.setUrl("#/"+model.getProjectId()+"/front/interfaceDetail/" + model.getId());
+		dto.setVersion(model.getVersion());
+		dto.setHref(model.getFullUrl());
+		dto.setProjectId(model.getProjectId());
+		// 私有项目不能建立索引
+
+		if(project.getType() == ProjectType.PRIVATE.getType()){
+			dto.setNeedCreateIndex(false);
+		}
+		return dto;
+
+	}
 }

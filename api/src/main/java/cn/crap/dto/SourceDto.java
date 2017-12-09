@@ -1,6 +1,10 @@
 package cn.crap.dto;
 
+import cn.crap.enumeration.ProjectType;
+import cn.crap.model.mybatis.Source;
 import cn.crap.service.ICacheService;
+import cn.crap.utils.GetTextFromFile;
+import cn.crap.utils.MyString;
 
 import java.util.Date;
 
@@ -8,7 +12,7 @@ import java.util.Date;
  * Automatic generation by tools
  * dto: exchange data with view
  */
-public class SourceDto extends ILuceneDto{
+public class SourceDto implements ILuceneDto {
 	private String id;
 	private Date createTime;
 	private Integer sequence;
@@ -93,6 +97,30 @@ public class SourceDto extends ILuceneDto{
 
 	@Override
 	public SearchDto toSearchDto(ICacheService cacheService){
-		SearchDto searchDto = new SearchDto();
+		SearchDto dto = new SearchDto();
+		dto.setId(id);
+		dto.setCreateTime(createTime);
+		dto.setTitle(name);
+		dto.setType(Source.class.getSimpleName());
+		dto.setUrl("#/"+getProjectId()+"/source/detail/"+id);
+		dto.setVersion("");
+		dto.setProjectId(getProjectId());
+		//索引内容 = 备注内容 + 文档内容
+		String docContent = "";
+		try {
+			docContent = GetTextFromFile.getText(this.filePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dto.setContent(remark + docContent);
+		//如果备注为空，则提取文档内容前2500 个字
+		if( MyString.isEmpty(this.remark) ){
+			this.remark = docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent;
+		}
+		// 私有项目不能建立索引
+		if(cacheService.getProject(getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+			dto.setNeedCreateIndex(false);
+		}
+		return dto;
 	}
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
-import cn.crap.model.User;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
@@ -28,7 +27,7 @@ import cn.crap.utils.ValidateCodeService;
  *
  */
 @Controller
-public class IndexController extends BaseController<User> {
+public class IndexController extends BaseController {
 	@Autowired
 	CustomMenuService customMenuService;
 	@Autowired

@@ -2,7 +2,7 @@ package cn.crap.dto;
 
 import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.Module;
+import cn.crap.model.mybatis.Module;
 import cn.crap.service.ICacheService;
 
 import java.io.Serializable;
@@ -158,7 +158,7 @@ public class ArticleDto implements Serializable,ILuceneDto{
 	public SearchDto toSearchDto(ICacheService cacheService){
 		SearchDto dto = new SearchDto();
 		dto.setId(id);
-		dto.setCreateTime(DateFormartUtil.getDateByFormat(createTime, DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+		dto.setCreateTime(createTime);
 		dto.setContent(brief + content);
 		dto.setModuleName(getModuleName());
 		dto.setTitle(name);

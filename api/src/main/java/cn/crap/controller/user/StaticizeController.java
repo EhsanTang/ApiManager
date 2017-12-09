@@ -16,7 +16,10 @@ import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Error;
 import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.custom.CustomInterfaceService;
+import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
+import cn.crap.service.mybatis.imp.MybatisInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,9 +36,7 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IInterfaceService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Interface;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
@@ -47,21 +48,25 @@ import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/user/staticize")
-public class StaticizeController extends BaseController<cn.crap.model.Project> {
+public class StaticizeController extends BaseController{
 	@Autowired
 	private ICacheService cacheService;
+	@Autowired
+	private CustomInterfaceService customInterfaceService;
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired
 	private Config config;
 	@Autowired
-	private IInterfaceService interfaceService;
+	private MybatisInterfaceService interfaceService;
 	@Autowired
 	private CustomErrorService customErrorService;
 	@Autowired
 	private MybatisArticleService articleService;
 	@Autowired
 	private CustomArticleService customArticleService;
+	@Autowired
+	private CustomModuleService customModuleService;
 	
 	/**
 	 * 静态化错误码列表
@@ -83,9 +88,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(null, project, "-错误码");
 		
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
-		page.setSize(15);
+		Page page = new Page(15, currentPage);
 		List<Error> errorModels = customErrorService.pageByProjectIdCodeMsg(projectId, null, null, page);
 
 		returnMap.put("page", page);
@@ -120,11 +123,9 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口");
 		
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId);
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
-		page.setSize(15);
+		Page page = new Page(15, currentPage);
 		returnMap.put("page", page);
-		returnMap.put("interfaceList",  interfaceService.findByMap(map, page, null));
+		returnMap.put("interfaceList",  customInterfaceService.selectByModuleId(moduleId));
 		returnMap.put("activePage",moduleId+"_interface");
 		returnMap.put("url", module.getId() + "-interfaceList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -191,9 +192,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		}
 		
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId, "type", type, "category", category);
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
-		page.setSize(15);
+		Page page = new Page(15, currentPage);
 		List<Article> articleList = customArticleService.queryArticle(moduleId, null, type, category, page);
 		returnMap.put("page", page);
 		returnMap.put("articleList", articleList);
@@ -257,7 +256,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 			throw new MyException("000056");
 		}		
 				
-		Interface interFace = interfaceService.get(interfaceId);
+		InterfaceWithBLOBs interFace = interfaceService.selectByPrimaryKey(interfaceId);
 		Module module = cacheService.getModule(interFace.getModuleId());
 		Project project = cacheService.getProject(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
@@ -271,7 +270,8 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
 		InterfacePDFDto interDto = null;
 		interDto= new InterfacePDFDto();
-		interfaceService.getInterDto(config, interfaces, interFace, interDto);
+
+		customInterfaceService.getInterDto(config, interfaces, interFace, interDto);
 
 		returnMap.put("interfaces", interfaces);
 		returnMap.put("activePage",module.getId()+"_interface");
@@ -472,9 +472,8 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 			
 			if(needStaticizes.indexOf("interface") >= 0){
 				// 接口列表
-				map = Tools.getMap("moduleId", module.getId());
 				// 计算总页数
-				totalPage = (interfaceService.getCount(map)+pageSize-1)/pageSize;
+				totalPage = (customInterfaceService.countByModuleId(module.getId())+pageSize-1)/pageSize;
 				if(totalPage == 0){
 					totalPage = 1;
 				}
@@ -487,7 +486,7 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 				
 				
 				// 静态化接口详情
-				for(Interface inter: interfaceService.findByMap(Tools.getMap("moduleId", module.getId()), null, null)){
+				for(Interface inter: customInterfaceService.selectByModuleId(module.getId())){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + inter.getId()+".html");
@@ -519,12 +518,11 @@ public class StaticizeController extends BaseController<cn.crap.model.Project> {
 		
 		settingMap.put(Const.DOMAIN, config.getDomain());
 		Map<String,Object> returnMap = new HashMap<String,Object>();
-		Map<String,Object> map = Tools.getMap("projectId",project.getId());
 		returnMap.put("settings", settingMap);
 		returnMap.put("project", project);
 		returnMap.put("module", module);
 		// 将选中的模块放到第一位
-		List<Module> moduleList = moduleService.findByMap(map, null, null);
+		List<Module> moduleList = customModuleService.queryByProjectId(project.getId());
 		if(module != null){
 			for(Module m:moduleList){
 				if(m.getId().equals(module.getId())){

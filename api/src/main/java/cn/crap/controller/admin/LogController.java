@@ -5,7 +5,6 @@ import java.util.Map;
 
 import cn.crap.adapter.LogAdapter;
 import cn.crap.dto.LogDto;
-import cn.crap.model.User;
 import cn.crap.model.mybatis.LogCriteria;
 import cn.crap.service.mybatis.custom.CustomLogService;
 import cn.crap.service.mybatis.imp.MybatisLogService;

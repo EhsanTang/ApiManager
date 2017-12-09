@@ -1,23 +1,16 @@
 package cn.crap.service.mybatis.custom;
 
 import cn.crap.adapter.ArticleAdapter;
-import cn.crap.dao.imp.InterfaceDao;
 import cn.crap.dao.mybatis.ArticleMapper;
+import cn.crap.dao.mybatis.InterfaceMapper;
 import cn.crap.dao.mybatis.LogMapper;
+import cn.crap.dao.mybatis.SourceMapper;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.ArticleDto;
 import cn.crap.enumeration.LogType;
 import cn.crap.framework.MyException;
-import cn.crap.model.Interface;
-import cn.crap.model.mybatis.Log;
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.Source;
-import cn.crap.model.mybatis.Article;
-import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.mybatis.*;
 import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.table.SourceService;
 import cn.crap.service.imp.tool.CacheService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
@@ -36,17 +29,17 @@ import java.util.List;
 public class CustomLogService{
 
     @Autowired
-    private InterfaceDao interfaceDao;
-    @Autowired
     private MybatisArticleService articleService;
     @Autowired
     private MybatisProjectService projectService;
     @Autowired
     private MybatisModuleService moduleService;
     @Autowired
-    private SourceService sourceService;
-    @Autowired
     private LogMapper logMapper;
+    @Autowired
+    private InterfaceMapper interfaceMapper;
+    @Autowired
+    private SourceMapper sourceMapper;
 
     public boolean saveLog(String modelName, String content, String remark, LogType logType, Class clazz){
         Log log = new Log();
@@ -66,9 +59,9 @@ public class CustomLogService{
 
             case "INTERFACE"://恢复接口
                 JSONObject json = JSONObject.fromObject(log.getContent());
-                Interface inter = (Interface) JSONObject.toBean(json,Interface.class);
+                InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json,Interface.class);
                 checkModuleAndProject(inter.getModuleId());
-                interfaceDao.update(inter);
+                interfaceMapper.updateByPrimaryKeyWithBLOBs(inter);
                 break;
 
             case "ARTICLE":// 恢复文章
@@ -109,7 +102,7 @@ public class CustomLogService{
                 json = JSONObject.fromObject(log.getContent());
                 Source source = (Source) JSONObject.toBean(json,Source.class);
                 checkModuleAndProject(source.getModuleId());
-                sourceService.update(source);
+                sourceMapper.updateByPrimaryKey(source);
                 break;
 
         }

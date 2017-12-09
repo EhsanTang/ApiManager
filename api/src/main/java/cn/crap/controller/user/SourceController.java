@@ -24,7 +24,7 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/source")
-public class SourceController extends BaseController<Source>{
+public class SourceController extends BaseController{
 
 	@Autowired
 	private ISourceService sourceService;

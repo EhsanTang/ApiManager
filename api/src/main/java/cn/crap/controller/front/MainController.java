@@ -27,7 +27,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.User;
 import cn.crap.service.imp.tool.LuceneSearchService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -186,9 +185,7 @@ public class MainController extends BaseController{
 			}
 		}
 		keyword = keyword.trim();
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		page.setSize(10);
+		Page page= new Page(10, currentPage);
 		List<SearchDto> searchResults = luceneService.search(keyword, page);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);

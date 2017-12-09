@@ -43,6 +43,14 @@ public class CustomModuleService {
         return mapper.selectByExample(example);
     }
 
+    public int countByProjectId(String projectId){
+        Assert.notNull(projectId, "projectId can't be null");
+        ModuleCriteria example = new ModuleCriteria();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+
+        return mapper.countByExample(example);
+    }
+
     public Page<Module> queryByProjectId(String projectId, Page<Module> page){
         Assert.notNull(projectId, "projectId can't be null");
         Assert.notNull(page, "page can't be null");

@@ -190,4 +190,20 @@ public class CustomInterfaceService {
         logService.insert(log);
         mapper.deleteByPrimaryKey(dbModel.getId());
     }
+
+    public List<Interface> selectByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        InterfaceCriteria example = new InterfaceCriteria();
+        example.createCriteria().andModuleIdEqualTo(moduleId);
+
+        return mapper.selectByExample(example);
+    }
+
+    public int countByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        InterfaceCriteria example = new InterfaceCriteria();
+        example.createCriteria().andModuleIdEqualTo(moduleId);
+
+        return mapper.countByExample(example);
+    }
 }

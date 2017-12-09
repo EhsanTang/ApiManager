@@ -21,7 +21,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;

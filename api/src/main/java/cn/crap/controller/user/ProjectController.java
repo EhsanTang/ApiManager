@@ -7,10 +7,10 @@ import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.ProjectDto;
 import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
-import cn.crap.service.mybatis.imp.MybatisModuleService;
-import cn.crap.service.mybatis.imp.MybatisProjectService;
-import cn.crap.service.mybatis.imp.MybatisUserService;
+import cn.crap.service.mybatis.custom.CustomProjectUserService;
+import cn.crap.service.mybatis.imp.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,15 +38,9 @@ public class ProjectController extends BaseController {
 @Autowired
 private ICacheService cacheService;
 @Autowired
-private CustomProjectService customProjectService;
-@Autowired
 private MybatisProjectService projectService;
 @Autowired
-private IRoleService roleService;
-@Autowired
 private MybatisModuleService moduleService;
-@Autowired
-private IProjectUserService projectUserService;
 @Autowired
 private Config config;
 @Autowired
@@ -55,7 +49,16 @@ private ISearchService luceneService;
 private CustomErrorService customErrorService;
 @Autowired
 private MybatisUserService userService;
-
+@Autowired
+private CustomModuleService customModuleService;
+@Autowired
+private CustomProjectUserService customProjectUserService;
+	@Autowired
+	private CustomProjectService customProjectService;
+	@Autowired
+	private MybatisProjectUserService projectUserService;
+	@Autowired
+	private MybatisRoleService roleService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -164,7 +167,7 @@ private MybatisUserService userService;
 
 
 		// 只有子模块数量为0，才允许删除项目
-		if(moduleService.getCount(Tools.getMap("projectId", model.getId())) > 0){
+		if(customModuleService.countByProjectId(model.getId()) > 0){
 			throw new MyException("000023");
 		}
 
@@ -174,7 +177,7 @@ private MybatisUserService userService;
 		}
 
 		// 只有项目成员数量为0，才允许删除项目
-		if(projectUserService.getCount(Tools.getMap("projectId", model.getId()))>0){
+		if(customProjectUserService.countByProjectId(model.getId())>0){
 			throw new MyException("000038");
 		}
 

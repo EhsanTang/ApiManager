@@ -13,6 +13,8 @@ import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.custom.CustomUserService;
+import cn.crap.service.mybatis.imp.MybatisProjectUserService;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,28 +33,26 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
 import cn.crap.service.IEmailService;
 import cn.crap.model.mybatis.User;
 import cn.crap.springbeans.Config;
 
 @Controller
-public class LoginController extends BaseController<cn.crap.model.User> {
+public class LoginController extends BaseController{
 	@Autowired
 	private IEmailService emailService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private CustomProjectService customProjectService;
-	@Autowired
-	private IProjectUserService projectUserService;
 	@Autowired
 	private MybatisUserService userService;
 	@Autowired
 	private CustomUserService customUserService;
 	@Autowired
 	private Config config;
+	@Autowired
+	private CustomProjectService customProjectService;
+	@Autowired
+	private MybatisProjectUserService projectUserService;
+	@Autowired
+	private MybatisRoleService roleService;
 	
 	/**
 	 * 退出登录

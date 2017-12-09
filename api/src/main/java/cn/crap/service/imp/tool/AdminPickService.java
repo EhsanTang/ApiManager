@@ -3,12 +3,12 @@ package cn.crap.service.imp.tool;
 import java.util.List;
 
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomMenuService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +23,7 @@ import cn.crap.enumeration.ProjectStatus;
 import cn.crap.enumeration.SettingType;
 import cn.crap.enumeration.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.service.IRoleService;
 import cn.crap.service.IPickService;
-import cn.crap.model.mybatis.Article;
-import cn.crap.model.mybatis.Menu;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.Role;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -43,13 +38,13 @@ public class AdminPickService implements IPickService{
 	@Autowired
 	private MybatisProjectService projectService;
 	@Autowired
-	private IRoleService roleService;
-	@Autowired
 	private MybatisArticleService articleService;
 	@Autowired
 	private CustomMenuService customMenuService;
 	@Autowired
 	private CustomArticleMapper customArticleMapper;
+	@Autowired
+	private MybatisRoleService roleService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -122,7 +117,7 @@ public class AdminPickService implements IPickService{
 		case "ROLE":
 			pick = new PickDto(Const.SUPER, "超级管理员");
 			picks.add(pick);
-			for (Role r : roleService.findByMap(null, null, null)) {
+			for (Role r : roleService.selectByExample(new RoleCriteria())) {
 				pick = new PickDto(r.getId(), r.getRoleName());
 				picks.add(pick);
 			}

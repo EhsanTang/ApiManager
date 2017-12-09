@@ -8,10 +8,10 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.ICacheService;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.service.mybatis.imp.MybatisProjectUserService;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +30,15 @@ public class CustomUserService {
     @Autowired
     private ICacheService cacheService;
     @Autowired
-    private IRoleService roleService;
-    @Autowired
     private Config config;
     @Autowired
     private MybatisProjectService projectService;
     @Autowired
     private CustomProjectService customProjectService;
     @Autowired
-    private IProjectUserService projectUserService;
+    private MybatisProjectUserService projectUserService;
+    @Autowired
+    private MybatisRoleService roleService;
 
     public void login(LoginDto model, User user, HttpServletRequest request, HttpServletResponse response) {
         String token  = Aes.encrypt(user.getId());

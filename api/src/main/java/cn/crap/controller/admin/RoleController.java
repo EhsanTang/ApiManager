@@ -2,6 +2,11 @@ package cn.crap.controller.admin;
 
 import java.util.Map;
 
+import cn.crap.adapter.RoleAdapter;
+import cn.crap.model.mybatis.Role;
+import cn.crap.model.mybatis.RoleCriteria;
+import cn.crap.model.mybatis.RoleWithBLOBs;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IRoleService;
-import cn.crap.model.Role;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -24,15 +27,21 @@ import cn.crap.utils.Tools;
 public class RoleController extends BaseController{
 
 	@Autowired
-	private IRoleService roleService;
+	private MybatisRoleService roleService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult list(@ModelAttribute Role role,@RequestParam(defaultValue="1") Integer currentPage){
+	public JsonResult list(String roleName, @RequestParam(defaultValue="1") Integer currentPage){
 		Page page= new Page(15, currentPage);
-		Map<String,Object> map = Tools.getMap("roleName|like",role.getRoleName());
-		return new JsonResult(1,roleService.findByMap(map,page,null),page);
+
+		RoleCriteria example = new RoleCriteria();
+
+		if (!MyString.isEmpty(roleName)) {
+			example.createCriteria().andRoleNameLike("%" + roleName + "%");
+		}
+
+		return new JsonResult(1, RoleAdapter.getDto(roleService.selectByExample(example)),page);
 	}
 	@RequestMapping("/detail.do")
 	@ResponseBody
@@ -40,7 +49,7 @@ public class RoleController extends BaseController{
 	public JsonResult detail(@ModelAttribute Role role){
 		Role model;
 		if(!role.getId().equals(Const.NULL_ID)){
-			model= roleService.get(role.getId());
+			model= roleService.selectByPrimaryKey(role.getId());
 		}else{
 			model=new Role();
 		}
@@ -50,12 +59,12 @@ public class RoleController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult addOrUpdate(@ModelAttribute Role role){
+	public JsonResult addOrUpdate(@ModelAttribute RoleWithBLOBs role){
 		if(!MyString.isEmpty(role.getId())){
 			roleService.update(role);
 		}else{
 			role.setId(null);
-			roleService.save(role);
+			roleService.insert(role);
 		}
 		return new JsonResult(1,role);
 	}
@@ -63,8 +72,8 @@ public class RoleController extends BaseController{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult delete(@ModelAttribute Role role){
-		roleService.delete(role);
+	public JsonResult delete(String id){
+		roleService.delete(id);
 		return new JsonResult(1,null);
 	}
 }

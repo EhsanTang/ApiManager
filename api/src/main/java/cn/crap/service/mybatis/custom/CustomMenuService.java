@@ -66,8 +66,7 @@ public class CustomMenuService {
         List<Menu> subMenus = queryByParentIds(menuIds);
         List<MenuWithSubMenuDto> menuVOs = new ArrayList<MenuWithSubMenuDto>();
 
-        Page page = new Page();
-        page.setSize(config.getSubMenuSize());
+        Page page = new Page(config.getSubMenuSize(),1);
         // 加载默认推荐项目菜单
         if(config.isShowRecommendProject()){
             MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();

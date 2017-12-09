@@ -7,7 +7,6 @@ import javax.crypto.spec.SecretKeySpec;
 import cn.crap.dto.SettingDto;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Setting;
 import cn.crap.service.imp.tool.CacheService;
 
  

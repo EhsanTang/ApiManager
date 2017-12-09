@@ -19,7 +19,6 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
-import cn.crap.service.IRoleService;
 import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
 import cn.crap.utils.Const;
@@ -39,8 +38,6 @@ public class UserPickService implements IPickService{
 	private MybatisProjectService projectService;
 	@Autowired
 	private CustomProjectService customProjectService;
-	@Autowired
-	private IRoleService roleService;
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired

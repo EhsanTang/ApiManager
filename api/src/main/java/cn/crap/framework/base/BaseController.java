@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.model.mybatis.ProjectUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +23,6 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.IProjectUserService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
@@ -64,8 +64,6 @@ public abstract class BaseController{
 
 	@Autowired
 	protected ICacheService cacheService;
-	@Autowired
-	protected IProjectUserService projectUserService;
 
 	/**
 	 * spring 中request、response是线程安全的，可以直接注入

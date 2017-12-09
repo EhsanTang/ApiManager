@@ -33,6 +33,7 @@ public class ProjectUserDto{
 	private Boolean addError;
 	private Boolean delError;
 	private Boolean modError;
+	private boolean[] projectAuth;
 
 	public void setId(String id){
 		this.id=id;
@@ -216,5 +217,11 @@ public class ProjectUserDto{
 		return modError;
 	}
 
+	public boolean[] getProjectAuth() {
+		return projectAuth;
+	}
 
+	public void setProjectAuth(boolean[] projectAuth) {
+		this.projectAuth = projectAuth;
+	}
 }

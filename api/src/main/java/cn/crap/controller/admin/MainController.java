@@ -17,7 +17,6 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ISearchService;
-import cn.crap.model.User;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;

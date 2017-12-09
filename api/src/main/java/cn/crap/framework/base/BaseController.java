@@ -10,6 +10,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.adapter.ProjectUserAdapter;
+import cn.crap.dto.ProjectUserDto;
 import cn.crap.model.mybatis.ProjectUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,15 +183,15 @@ public abstract class BaseController{
 
 			// 项目成员
 			if (type > 0) {
-				ProjectUser pu = user.getProjects().get(project.getId());
-				if (pu == null) {
+				ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
+				if (puDto == null) {
 					throw new MyException("000003");
 				}
 				if (type == view) {
 					return;
 				}
 
-				if (pu.projectAuth()[type]) {
+				if (puDto.getProjectAuth()[type]) {
 					return;
 				}
 

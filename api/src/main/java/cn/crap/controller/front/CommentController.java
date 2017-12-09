@@ -17,7 +17,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Comment;
-import cn.crap.model.Setting;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;

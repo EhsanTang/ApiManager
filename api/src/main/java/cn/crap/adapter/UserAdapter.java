@@ -71,13 +71,4 @@ public class UserAdapter {
         return user;
     }
 
-    public static cn.crap.model.User getUser(User model){
-        if (model == null){
-            return null;
-        }
-        cn.crap.model.User user = new cn.crap.model.User();
-        JSONObject json = JSONObject.fromObject(model);
-        user = (cn.crap.model.User) JSONObject.toBean(json, cn.crap.model.User.class);
-        return user;
-    }
 }

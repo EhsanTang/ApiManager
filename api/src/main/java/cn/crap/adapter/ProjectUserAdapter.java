@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectUserDto;
+import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.ProjectUser;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,30 @@ public class ProjectUserAdapter {
 		dto.setAddError(model.getAddError());
 		dto.setDelError(model.getDelError());
 		dto.setModError(model.getModError());
+
+		boolean[] projectAuth = new boolean[19];
+		projectAuth[BaseController.addModule] = model.getAddModule();
+		projectAuth[BaseController.delModule] = model.getDelModule();
+		projectAuth[BaseController.modModule] = model.getModModule();
+		projectAuth[BaseController.addInter] = model.getAddInter();
+		projectAuth[BaseController.delInter] = model.getDelInter();
+		projectAuth[BaseController.modInter] = model.getModInter();
+		projectAuth[BaseController.addArticle] = model.getAddArticle();
+		projectAuth[BaseController.delArticle] = model.getDelArticle();
+		projectAuth[BaseController.modArticle] = model.getModArticle();
+		projectAuth[BaseController.addSource] = model.getAddSource();
+		projectAuth[BaseController.delSource] = model.getDelSource();
+		projectAuth[BaseController.modSource] = model.getModSource();
+		projectAuth[BaseController.addDict] = model.getAddDict();
+		projectAuth[BaseController.delDict] = model.getDelDict();
+		projectAuth[BaseController.modDict] = model.getModDict();
+		projectAuth[BaseController.addError] = model.getAddError();
+		projectAuth[BaseController.delError] = model.getDelError();
+		projectAuth[BaseController.modError] = model.getModError();
 		
-        return dto;
+		dto.setProjectAuth(projectAuth);
+
+		return dto;
     }
 
     public static ProjectUser getModel(ProjectUserDto dto){

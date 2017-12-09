@@ -26,7 +26,7 @@ import cn.crap.model.mybatis.Error;
 // TODO jsonResult 优化，错误码提示国际化，html页面国际化
 @Controller
 @RequestMapping("/user/error")
-public class ErrorController extends BaseController<cn.crap.model.Error> {
+public class ErrorController extends BaseController{
     @Autowired
     private ICacheService cacheService;
     @Autowired
@@ -49,8 +49,7 @@ public class ErrorController extends BaseController<cn.crap.model.Error> {
             throw new MyException("000020");
         }
 
-        Page page = new Page(15);
-        page.setCurrentPage(currentPage);
+        Page page = new Page(15, currentPage);
 
         List<Error> models = customErrorService.pageByProjectIdCodeMsg(projectId, errorCode, errorMsg, page);
         List<ErrorDto> dtoList = ErrorAdapter.getDto(models);

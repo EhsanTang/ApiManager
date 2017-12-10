@@ -5,6 +5,7 @@ import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.ArticleDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.LogType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.*;
@@ -29,7 +30,7 @@ import java.util.List;
 
 
 @Service
-public class CustomArticleService implements ILuceneService<ArticleDto> {
+public class CustomArticleService implements ILuceneService{
     @Autowired
     private ArticleMapper mapper;
     @Autowired
@@ -137,8 +138,8 @@ public class CustomArticleService implements ILuceneService<ArticleDto> {
         mapper.deleteByPrimaryKey(dbModel.getId());
     }
 
-    public List<ArticleDto> getAll() {
-        return ArticleAdapter.getDto(mapper.selectByExample(new ArticleCriteria()));
+    public List<SearchDto> getAll() {
+        return ArticleAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(new ArticleCriteria()));
     }
 
     @Override
@@ -147,10 +148,10 @@ public class CustomArticleService implements ILuceneService<ArticleDto> {
     }
 
     @Override
-    public List<ArticleDto> getAllByProjectId(String projectId) {
+    public List<SearchDto> getAllByProjectId(String projectId) {
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  ArticleAdapter.getDto(mapper.selectByExample(example));
+        return  ArticleAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(example));
     }
 
     public Integer countByModuleIdAndType(String moduleId, String type){

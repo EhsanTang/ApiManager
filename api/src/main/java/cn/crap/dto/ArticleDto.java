@@ -8,15 +8,15 @@ import cn.crap.service.ICacheService;
 import java.io.Serializable;
 import java.util.Date;
 import cn.crap.model.mybatis.Article;
+import cn.crap.service.ILuceneService;
 import cn.crap.service.imp.tool.CacheService;
-import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 
 /**
  * Automatic generation by tools
  * dto: exchange data with view
  */
-public class ArticleDto implements Serializable,ILuceneDto{
+public class ArticleDto implements Serializable {
 	private String id;
 	private String name;
 	private String brief;
@@ -152,34 +152,5 @@ public class ArticleDto implements Serializable,ILuceneDto{
 	}
 	public String getProjectId(){
 		return projectId;
-	}
-
-
-	public SearchDto toSearchDto(ICacheService cacheService){
-		SearchDto dto = new SearchDto();
-		dto.setId(id);
-		dto.setCreateTime(createTime);
-		dto.setContent(brief + content);
-		dto.setModuleName(getModuleName());
-		dto.setTitle(name);
-		dto.setType(Article.class.getSimpleName());
-		dto.setUrl("#/"+getProjectId()+"/article/detail/"+getModuleId()+"/"+type+"/"+id);
-		dto.setVersion("");
-		dto.setProjectId(getProjectId());
-
-		if(cacheService.getProject(getProjectId()).getLuceneSearch() == LuceneSearchType.No.getValue()){
-			dto.setNeedCreateIndex(false);
-		}
-		return dto;
-	}
-
-	public String getModuleName(){
-		if(!MyString.isEmpty(moduleId)){
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			Module module = cacheService.getModule(moduleId);
-			if(module!=null)
-				return module.getName();
-		}
-		return "";
 	}
 }

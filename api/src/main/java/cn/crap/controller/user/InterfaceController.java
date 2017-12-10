@@ -144,7 +144,7 @@ public class InterfaceController extends BaseController{
 		interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 		mybatisInterfaceService.insert(interFace);
 
-		luceneService.add(InterfaceAdapter.toSearchDto(interFace, cacheService));
+		luceneService.add(InterfaceAdapter.getSearchDto(cacheService, interFace));
 		return new JsonResult(1, interFace);
 	}
 	
@@ -226,7 +226,7 @@ public class InterfaceController extends BaseController{
 			if(interFace.getId().equals(interFace.getProjectId())){
 				throw new MyException("000027");
 			}
-			luceneService.update(InterfaceAdapter.toSearchDto(interFace, cacheService));
+			luceneService.update(InterfaceAdapter.getSearchDto(cacheService, interFace));
 			
 		} else {
 			hasPermission(cacheService.getProject( interFace.getProjectId() ), addInter);
@@ -235,7 +235,7 @@ public class InterfaceController extends BaseController{
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			mybatisInterfaceService.insert(interFace);
-			luceneService.add(InterfaceAdapter.toSearchDto(interFace, cacheService));
+			luceneService.add(InterfaceAdapter.getSearchDto(cacheService, interFace));
 		}
 		return new JsonResult(1, interFace);
 	}

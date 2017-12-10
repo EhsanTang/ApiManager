@@ -1,7 +1,12 @@
 package cn.crap.adapter;
 
+import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.model.mybatis.Source;
+import cn.crap.service.ICacheService;
+import cn.crap.utils.GetTextFromFile;
+import cn.crap.utils.MyString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +66,44 @@ public class SourceAdapter {
             dtos.add(getDto(model));
         }
         return dtos;
+    }
+
+    public static List<SearchDto> getSearchDto(ICacheService cacheService,List<Source> models){
+        if (models == null){
+            return new ArrayList<>();
+        }
+        List<SearchDto> dtos = new ArrayList<>();
+        for (Source model : models){
+            dtos.add(getSearchDto(cacheService, model));
+        }
+        return dtos;
+    }
+
+    public static SearchDto getSearchDto(ICacheService cacheService, Source source){
+        SearchDto dto = new SearchDto();
+        dto.setId(source.getId());
+        dto.setCreateTime(source.getCreateTime());
+        dto.setTitle(source.getName());
+        dto.setType(Source.class.getSimpleName());
+        dto.setUrl("#/"+source.getProjectId()+"/source/detail/"+source.getId());
+        dto.setVersion("");
+        dto.setProjectId(source.getProjectId());
+        //索引内容 = 备注内容 + 文档内容
+        String docContent = "";
+        try {
+            docContent = GetTextFromFile.getText(source.getFilePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dto.setContent(source.getRemark() + docContent);
+        //如果备注为空，则提取文档内容前2500 个字
+        if( MyString.isEmpty(source.getRemark()) ){
+            source.setRemark( docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
+        }
+        // 私有项目不能建立索引
+        if(cacheService.getProject(source.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+            dto.setNeedCreateIndex(false);
+        }
+        return dto;
     }
 }

@@ -35,7 +35,10 @@ public class MyString {
 		}
 		return false;
 	}
-	
+
+	public static boolean isNotEmpty(Object object){
+		return !isEmpty(object);
+	}
 	// 从request中获取值
 	public static String getValueFromRequest(HttpServletRequest request, String name){
 		return getValueFromRequest(request, name, "");

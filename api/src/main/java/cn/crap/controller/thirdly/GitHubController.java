@@ -27,7 +27,7 @@ import cn.crap.springbeans.Config;
  *
  */
 @Controller
-public class GitHubController extends BaseController<cn.crap.model.User> {
+public class GitHubController extends BaseController {
 	@Autowired
 	private Config config;
 	@Autowired

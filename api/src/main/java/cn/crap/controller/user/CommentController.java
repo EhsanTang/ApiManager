@@ -24,7 +24,7 @@ import cn.crap.model.mybatis.Comment;
 
 @Controller
 @RequestMapping("/user/comment")
-public class CommentController extends BaseController<cn.crap.model.Comment> {
+public class CommentController extends BaseController {
 	@Autowired
 	private MybatisCommentService commentService;
 	@Autowired
@@ -36,8 +36,7 @@ public class CommentController extends BaseController<cn.crap.model.Comment> {
 	public JsonResult list(String articleId, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
 		
 		hasPermission( cacheService.getProject(  articleService.selectByPrimaryKey(articleId).getProjectId() ), view);
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 
 		CommentCriteria example = new CommentCriteria();
 		example.createCriteria().andArticleIdEqualTo(articleId);

@@ -39,7 +39,7 @@ import cn.crap.utils.Tools;
 // TODO setting 中记录版本ID（MD5（version））
 @Controller
 @RequestMapping("/user/article")
-public class ArticleController extends BaseController<cn.crap.model.Article>{
+public class ArticleController extends BaseController{
 	@Autowired
 	private MybatisArticleService articleService;
 	@Autowired
@@ -61,8 +61,7 @@ public class ArticleController extends BaseController<cn.crap.model.Article>{
 		Assert.notNull(projectId);
 		hasPermission( cacheService.getProject(projectId) , view);
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
+		Page page= new Page(15, currentPage);
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
 		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, page);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models);
@@ -120,11 +119,11 @@ public class ArticleController extends BaseController<cn.crap.model.Article>{
 			hasPermission( cacheService.getProject(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 
 			customArticleService.update(ArticleAdapter.getModel(dto), ArticleType.getByEnumName(dto.getType()), "");
-			luceneService.update(ArticleAdapter.toSearchDto(customArticleService, ArticleAdapter.getModel(dto)));
+			luceneService.update(ArticleAdapter.getSearchDto(cacheService, ArticleAdapter.getModel(dto)));
 		}else{
 			hasPermission( cacheService.getProject(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
 			articleService.insert(ArticleAdapter.getModel(dto));
-			luceneService.add(ArticleAdapter.toSearchDto(customArticleService,  ArticleAdapter.getModel(dto)));
+			luceneService.add(ArticleAdapter.getSearchDto(cacheService,  ArticleAdapter.getModel(dto)));
 		}
 		cacheService.delObj(Const.CACHE_WEBPAGE + dto.getId());
 		cacheService.delObj(Const.CACHE_WEBPAGE + dto.getMkey());

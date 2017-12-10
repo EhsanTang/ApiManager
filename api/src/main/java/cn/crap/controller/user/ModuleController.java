@@ -5,13 +5,10 @@ import java.util.Map;
 
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.enumeration.LogType;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.model.mybatis.Module;
-import cn.crap.service.mybatis.custom.CustomArticleService;
-import cn.crap.service.mybatis.custom.CustomLogService;
-import cn.crap.service.mybatis.custom.CustomModuleService;
-import cn.crap.service.mybatis.custom.CustomProjectService;
-import cn.crap.service.mybatis.imp.MybatisModuleService;
-import cn.crap.service.mybatis.imp.MybatisUserService;
+import cn.crap.service.mybatis.custom.*;
+import cn.crap.service.mybatis.imp.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,12 +23,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IInterfaceService;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
-import cn.crap.service.ISourceService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Interface;
 import cn.crap.model.mybatis.Module;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -41,24 +33,24 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController<cn.crap.model.Module>{
+public class ModuleController extends BaseController{
 
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired
 	private ICacheService cacheService;
 	@Autowired
-	private IRoleService roleService;
+	private MybatisRoleService roleService;
 	@Autowired
 	private CustomArticleService articleService;
 	@Autowired
-	private IInterfaceService interfaceService;
+	private MybatisInterfaceService interfaceService;
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
-	private IProjectUserService projectUserService;
+	private MybatisProjectUserService projectUserService;
 	@Autowired
-	private ISourceService sourceService;
+	private CustomSourceService customSourceService;
 	@Autowired
 	private MybatisUserService userService;
 	@Autowired
@@ -67,19 +59,21 @@ public class ModuleController extends BaseController<cn.crap.model.Module>{
 	private CustomModuleService customModuleService;
 	@Autowired
 	private CustomLogService customLogService;
+	@Autowired
+	private CustomInterfaceService customInterfaceService;
 	
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-			Page page= new Page(15);
-			page.setCurrentPage(currentPage);
+			Page<Module> page= new Page(15, currentPage);
 
 			hasPermission(cacheService.getProject(projectId), view);
 
-			List<Module> moduleList = customModuleService.queryByProjectId(projectId, page, true);
-			return new JsonResult(1, ModuleAdapter.getDto(moduleList), page);
-		}	
+			page = customModuleService.queryByProjectId(projectId, page);
+			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
+		}
+
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Module module) throws MyException{
@@ -112,8 +106,7 @@ public class ModuleController extends BaseController<cn.crap.model.Module>{
 			module.setProjectId(cacheService.getModule(module.getId()).getProjectId());
 			hasPermission(cacheService.getProject( module.getProjectId() ), modModule);
 			// 更新该模块下的所有接口的fullUrl
-			interfaceService.update("update Interface set fullUrl=CONCAT('"+(module.getUrl() == null? "":module.getUrl())+
-					"',url) where moduleId ='"+module.getId()+"'", null);
+			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), module.getId());
 			moduleService.update(module);
 			Module dbModule = moduleService.selectByPrimaryKey(module.getId());
 			customLogService.saveLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
@@ -144,17 +137,17 @@ public class ModuleController extends BaseController<cn.crap.model.Module>{
 	@RequestMapping("/setTemplate.do")
 	@ResponseBody
 	public JsonResult setTemplate(String id) throws Exception{
-		Interface inter = interfaceService.get(id);
+		InterfaceWithBLOBs inter = interfaceService.selectByPrimaryKey(id);
 		
 		Module module = cacheService.getModule(inter.getModuleId());
 		hasPermission(cacheService.getProject( module.getProjectId() ), modModule);
 		
-		module.setTemplateId( inter.isTemplate() ? null: inter.getId() );
+		module.setTemplateId( inter.getIsTemplate() ? null: inter.getId() );
 		moduleService.update(module);
 		
-		interfaceService.update("update Interface set isTemplate=0 where moduleId ='"+module.getId()+"'", null);
-		if(!inter.isTemplate()){
-			inter.setTemplate(true);;
+		customInterfaceService.deleteTemplateByModuleId(module.getId());
+		if(!inter.getIsTemplate()){
+			inter.setIsTemplate(true);;
 			interfaceService.update(inter);
 		}
 		
@@ -174,7 +167,7 @@ public class ModuleController extends BaseController<cn.crap.model.Module>{
 		Module dbModule = cacheService.getModule(module.getId());
 		hasPermission(cacheService.getProject( dbModule.getProjectId() ), delModule);
 		
-		if(interfaceService.getCount(Tools.getMap("moduleId", dbModule.getId())) >0 ){
+		if(customInterfaceService.countByModuleId(dbModule.getId()) >0 ){
 			throw new MyException("000024");
 		}
 		
@@ -182,7 +175,7 @@ public class ModuleController extends BaseController<cn.crap.model.Module>{
 			throw new MyException("000034");
 		}
 		
-		if(sourceService.getCount(Tools.getMap("moduleId", dbModule.getId())) >0 ){
+		if(customSourceService.countByModuleId(dbModule.getId()) >0 ){
 			throw new MyException("000035");
 		}
 		

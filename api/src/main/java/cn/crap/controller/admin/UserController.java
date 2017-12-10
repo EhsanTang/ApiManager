@@ -7,6 +7,8 @@ import cn.crap.dto.UserDto;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisProjectUserService;
+import cn.crap.service.mybatis.imp.MybatisRoleService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,13 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IProjectUserService;
-import cn.crap.service.IRoleService;
 import cn.crap.springbeans.Config;
 
 @Controller
 public class UserController extends BaseController {
 
     @Autowired
-    private IRoleService roleService;
+    private MybatisRoleService roleService;
     @Autowired
     private MybatisUserService mybatisUserService;
     @Autowired
@@ -41,7 +41,7 @@ public class UserController extends BaseController {
     @Autowired
     private CustomProjectService customProjectService;
     @Autowired
-    private IProjectUserService projectUserService;
+    private MybatisProjectUserService projectUserService;
 
     @RequestMapping("/user/list.do")
     @ResponseBody

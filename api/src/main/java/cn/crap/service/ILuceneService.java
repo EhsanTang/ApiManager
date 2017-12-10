@@ -1,11 +1,11 @@
 package cn.crap.service;
 
+import cn.crap.dto.SearchDto;
+
 import java.util.List;
 
-import cn.crap.dto.ILuceneDto;
-
-public interface ILuceneService<T extends ILuceneDto>{
-	public List<T> getAll();
-	public List<T> getAllByProjectId(String projectId);
+public interface ILuceneService{
+	public List<SearchDto> getAll();
+	public List<SearchDto> getAllByProjectId(String projectId);
 	public String getLuceneType();
 }

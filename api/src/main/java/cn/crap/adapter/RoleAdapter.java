@@ -2,6 +2,8 @@ package cn.crap.adapter;
 
 import cn.crap.dto.RoleDto;
 import cn.crap.model.mybatis.Role;
+import cn.crap.model.mybatis.RoleWithBLOBs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class RoleAdapter {
-    public static RoleDto getDto(Role model){
+    public static RoleDto getDto(RoleWithBLOBs model){
         if (model == null){
             return null;
         }
@@ -30,11 +32,11 @@ public class RoleAdapter {
         return dto;
     }
 
-    public static Role getModel(RoleDto dto){
+    public static RoleWithBLOBs getModel(RoleDto dto){
         if (dto == null){
             return null;
         }
-        Role model = new Role();
+        RoleWithBLOBs model = new RoleWithBLOBs();
         model.setId(dto.getId());
 		model.setRoleName(dto.getRoleName());
 		model.setAuth(dto.getAuth());
@@ -46,12 +48,12 @@ public class RoleAdapter {
         return model;
     }
 
-    public static List<RoleDto> getDto(List<Role> models){
+    public static List<RoleDto> getDto(List<RoleWithBLOBs> models){
         if (models == null){
             return new ArrayList<>();
         }
         List<RoleDto> dtos = new ArrayList<>();
-        for (Role model : models){
+        for (RoleWithBLOBs model : models){
             dtos.add(getDto(model));
         }
         return dtos;

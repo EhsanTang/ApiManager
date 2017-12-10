@@ -3,8 +3,10 @@ package cn.crap.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.mybatis.custom.CustomProjectUserService;
 import cn.crap.service.mybatis.custom.CustomUserService;
 import cn.crap.service.mybatis.imp.MybatisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +41,17 @@ public class ProjectUserController extends BaseController{
 	private ICacheService cacheService;
 	@Autowired
 	private MybatisUserService userService;
+	@Autowired
+	private CustomProjectUserService customProjectUserService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 		Assert.isTrue(currentPage > 0);
-			Page page= new Page(SIZE, currentPage);
-			Map<String,Object> map = Tools.getMap("projectId", projectId);
-			
+			Page<ProjectUser> page= new Page(SIZE, currentPage);
 			hasPermission( cacheService.getProject(projectId) );
-			
-			return new JsonResult(1, projectUserService.findByMap(map, page, null), page);
+			page = customProjectUserService.queryByProjectId(projectId, page);
+			return new JsonResult(1, ProjectUserAdapter.getDto(page.getList()), page);
 	}	
 	
 	@RequestMapping("/detail.do")
@@ -57,7 +59,7 @@ public class ProjectUserController extends BaseController{
 	public JsonResult detail(@RequestParam String id, @RequestParam String projectId) throws MyException{
 		ProjectUser model;
 		if(!id.equals(Const.NULL_ID)){
-			model= projectUserService.get(id);
+			model= projectUserService.selectByPrimaryKey(id);
 			hasPermission(cacheService.getProject( model.getProjectId() ));
 		}else{
 			hasPermission(cacheService.getProject( projectId ));
@@ -92,7 +94,7 @@ public class ProjectUserController extends BaseController{
 		projectUser.setUserName(search.getUserName());
 		// 修改
 		if(!MyString.isEmpty(projectUser.getId())){
-			ProjectUser old = projectUserService.get(projectUser.getId());
+			ProjectUser old = projectUserService.selectByPrimaryKey(projectUser.getId());
 			hasPermission( cacheService.getProject( old.getProjectId() ));
 		}
 		
@@ -100,7 +102,7 @@ public class ProjectUserController extends BaseController{
 			if(!MyString.isEmpty(projectUser.getId())){
 				projectUserService.update(projectUser);
 			}else{
-				projectUserService.save(projectUser);
+				projectUserService.insert(projectUser);
 			}
 		}catch(Exception e){
 			// 重复添加
@@ -113,9 +115,9 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@RequestParam String id) throws Exception{
-		ProjectUser projectUser = projectUserService.get(id);
+		ProjectUser projectUser = projectUserService.selectByPrimaryKey(id);
 		hasPermission(cacheService.getProject( projectUser.getProjectId() ));
-		projectUserService.delete(projectUser);
+		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
 	}
 }

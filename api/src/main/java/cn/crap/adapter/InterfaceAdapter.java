@@ -144,7 +144,18 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static SearchDto toSearchDto(InterfaceWithBLOBs model, ICacheService cacheService) {
+	public static List<SearchDto> getSearchDto(ICacheService cacheService, List<InterfaceWithBLOBs> models){
+		if (models == null){
+			return new ArrayList<>();
+		}
+		List<SearchDto> dtos = new ArrayList<>();
+		for (InterfaceWithBLOBs model : models){
+			dtos.add(getSearchDto(cacheService, model));
+		}
+		return dtos;
+	}
+
+	public static SearchDto getSearchDto(ICacheService cacheService, InterfaceWithBLOBs model) {
 		Assert.notNull(model);
 		Assert.notNull(cacheService);
 		Assert.notNull(model.getProjectId());

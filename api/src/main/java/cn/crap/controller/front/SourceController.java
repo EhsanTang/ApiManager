@@ -1,9 +1,13 @@
 package cn.crap.controller.front;
 
+import java.util.List;
 import java.util.Map;
 
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.Project;
+import cn.crap.adapter.SourceAdapter;
+import cn.crap.dto.SourceDto;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.custom.CustomSourceService;
+import cn.crap.service.mybatis.imp.MybatisSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,11 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ISourceService;
 import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.Source;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -28,7 +30,9 @@ import cn.crap.utils.Tools;
 public class SourceController extends BaseController{
 
 	@Autowired
-	private ISourceService sourceService;
+	private MybatisSourceService sourceService;
+	@Autowired
+	private CustomSourceService customSourceService;
 	@Autowired
 	private ICacheService cacheService;
 	
@@ -37,7 +41,7 @@ public class SourceController extends BaseController{
 	public JsonResult webDetail(@ModelAttribute Source source,String password,String visitCode) throws MyException{
 		Source model;
 		if(!MyString.isEmpty(source.getId())){
-			model = sourceService.get(source.getId());
+			model = sourceService.selectByPrimaryKey(source.getId());
 		}else{
 			throw new MyException("000020");
 		}
@@ -58,13 +62,11 @@ public class SourceController extends BaseController{
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
-		
-		Page page= new Page(15, currentPage);
-		// 搜索条件
-		Map<String,Object> map = Tools.getMap("name|like", source.getName(), "moduleId", source.getModuleId());
 
-		
-		return new JsonResult(1, sourceService.findByMap(map, " new Source(id,createTime,status,sequence,name,remark,filePath,moduleId,updateTime) ", page, null)
-				, page, Tools.getMap("crumbs", Tools.getCrumbs("模块:"+module.getName(),"void")));
+		// TODO page 中放入DTO，不直接返回page即可
+		Page<Source> page= new Page(15, currentPage);
+		List<SourceDto> sourceDtoList = SourceAdapter.getDto(page.getList());
+		page = customSourceService.queryByModuleId(source.getModuleId(), source.getName(), page);
+		return new JsonResult(1, sourceDtoList, page, Tools.getMap("crumbs", Tools.getCrumbs("模块:"+module.getName(),"void")));
 	}
 }

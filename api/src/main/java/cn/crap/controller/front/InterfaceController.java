@@ -12,7 +12,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.model.mybatis.Interface;
 import cn.crap.model.mybatis.Project;
+import cn.crap.service.mybatis.imp.MybatisInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +26,7 @@ import cn.crap.dto.InterfacePDFDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.IInterfaceService;
 import cn.crap.service.ICacheService;
-import cn.crap.model.Interface;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
@@ -44,7 +44,7 @@ import net.sf.json.JSONObject;
 public class InterfaceController extends BaseController{
 
 	@Autowired
-	private IInterfaceService interfaceService;
+	private MybatisInterfaceService interfaceService;
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired
@@ -72,7 +72,7 @@ public class InterfaceController extends BaseController{
 			Module module = null;
 			if( !MyString.isEmpty(id) ){
 				interDto= new InterfacePDFDto();
-				interFace = interfaceService.get(id);
+				interFace = interfaceService.selectByPrimaryKey(id);
 				if(MyString.isEmpty(interFace.getId())){
 					request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
 					return "/WEB-INF/views/result.jsp";
@@ -161,9 +161,8 @@ public class InterfaceController extends BaseController{
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		isPrivateProject(password, visitCode, project);
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-			
+		Page page= new Page(15, currentPage);
+
 		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), 
 				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
 		

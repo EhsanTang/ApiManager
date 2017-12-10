@@ -41,7 +41,7 @@ public class RoleController extends BaseController{
 			example.createCriteria().andRoleNameLike("%" + roleName + "%");
 		}
 
-		return new JsonResult(1, RoleAdapter.getDto(roleService.selectByExample(example)),page);
+		return new JsonResult(1, RoleAdapter.getDto(roleService.selectByExampleWithBLOBs(example)),page);
 	}
 	@RequestMapping("/detail.do")
 	@ResponseBody

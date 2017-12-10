@@ -54,11 +54,10 @@ public class SqlProvider
 
     private Page setPage(Page page) {
         if (page == null){
-            page = new Page(20);
-            page.setCurrentPage(1);
+            page = new Page(20, 1);
         }
         if (page.getSize() > 100){
-            page.setSize(20);
+            page = new Page(100, page.getCurrentPage());
         }
 
         return page;

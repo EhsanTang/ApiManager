@@ -1,16 +1,17 @@
 package cn.crap.service.mybatis.custom;
 
+import cn.crap.adapter.ArticleAdapter;
+import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dao.mybatis.InterfaceMapper;
 import cn.crap.dao.mybatis.ProjectMapper;
+import cn.crap.dao.mybatis.custom.CustomInterfaceMapper;
 import cn.crap.dao.mybatis.custom.CustomProjectMapper;
-import cn.crap.dto.ErrorDto;
-import cn.crap.dto.InterfacePDFDto;
-import cn.crap.dto.ParamDto;
-import cn.crap.dto.ResponseParamDto;
+import cn.crap.dto.*;
 import cn.crap.enumeration.LogType;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.ICacheService;
+import cn.crap.service.ILuceneService;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.springbeans.Config;
@@ -20,6 +21,7 @@ import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,16 +31,17 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class CustomInterfaceService {
+public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private InterfaceMapper mapper;
-
     @Autowired
     private ICacheService cacheService;
     @Autowired
     private MybatisModuleService moduleService;
     @Autowired
     private MybatisLogService logService;
+    @Autowired
+    private CustomInterfaceMapper customInterfaceMapper;
 
     public void getInterDto(Config config, List<InterfacePDFDto> interfaces, InterfaceWithBLOBs interFace, InterfacePDFDto interDto) {
         interDto.setModel(interFace);
@@ -205,5 +208,36 @@ public class CustomInterfaceService {
         example.createCriteria().andModuleIdEqualTo(moduleId);
 
         return mapper.countByExample(example);
+    }
+
+    /**
+     * 根据模块下的所有fullUrl
+     * @param moduleUrl
+     * @param moduleId
+     */
+    public void updateFullUrlByModuleId(String moduleUrl, String moduleId){
+        Assert.notNull(moduleId);
+        if (MyString.isEmpty(moduleUrl)){
+            moduleUrl = "";
+        }
+        customInterfaceMapper.updateFullUrlByModuleId(moduleUrl, moduleId);
+        return;
+    }
+
+    public void  deleteTemplateByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteTemplateByModuleId(moduleId);
+
+    }
+
+    public List<SearchDto> getAll() {
+        return InterfaceAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(new InterfaceCriteria()));
+    }
+
+    @Override
+    public List<SearchDto> getAllByProjectId(String projectId) {
+        InterfaceCriteria example = new InterfaceCriteria();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return  InterfaceAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(example));
     }
 }

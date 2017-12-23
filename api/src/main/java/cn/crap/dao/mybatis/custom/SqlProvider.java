@@ -3,9 +3,7 @@ import cn.crap.utils.Page;
 import org.springframework.stereotype.Service;
 
 
-public class SqlProvider
-{
-
+public class SqlProvider {
     public String queryArticleSql(String moduleId, String name, String type, String category, Page page)
     {
         page = setPage(page);

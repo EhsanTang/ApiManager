@@ -15,6 +15,7 @@ public class ProjectDto {
 	private String remark;
 	private String userId;
 	private Byte type;
+	private String typeName;
 	private String password;
 	private String cover;
 	private Byte luceneSearch;
@@ -96,5 +97,11 @@ public class ProjectDto {
 		return luceneSearch;
 	}
 
+	public String getTypeName() {
+		return typeName;
+	}
 
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
 }

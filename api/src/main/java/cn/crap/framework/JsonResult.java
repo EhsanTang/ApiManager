@@ -15,6 +15,7 @@ public class JsonResult implements Serializable {
 	//传递至前端的其他参数
 	private Object others;
 
+	public JsonResult(){}
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;
 		this.success = success;
@@ -59,10 +60,27 @@ public class JsonResult implements Serializable {
 		this.setError( new ErrorMessage(errorCode,errorMsg) );
 	}
 
+	public JsonResult success(){
+		this.success = 1;
+		return this;
+	}
+
 	public JsonResult others(Object others){
 		this.others = others;
 		return this;
 	}
+
+
+	public JsonResult data(Object data){
+		this.data = data;
+		return this;
+	}
+
+	public JsonResult page(Page page){
+		this.page = page;
+		return this;
+	}
+
 	
 	public Integer getSuccess() {
 		return success;

@@ -170,7 +170,7 @@ public class StaticizeController extends BaseController{
 			// 获取所有类目
 			// 静态化模块文章
 			@SuppressWarnings("unchecked")
-			List<String> categorys =  (List<String>) customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
+			List<String> categorys =  (List<String>) customArticleService.queryTop20Category(module.getId(), "ARTICLE");
 			List<CategoryDto> categoryDtos = new ArrayList<CategoryDto>();
 			// 文章分类，按类目静态化
 			for(String c: categorys){
@@ -400,7 +400,7 @@ public class StaticizeController extends BaseController{
 		for(Module module : moduleService.selectByExample(example)){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文章，分类
-				List<String> categorys = customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
+				List<String> categorys = customArticleService.queryTop20Category(module.getId(), "ARTICLE");
 				// 文章分类，按类目静态化
 				for(String category: categorys){
 					if( MyString.isEmpty( category )){

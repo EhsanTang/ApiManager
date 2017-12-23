@@ -7,6 +7,7 @@ import cn.crap.dto.SettingDto;
 import cn.crap.service.mybatis.imp.MybatisCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,7 @@ public class CommentController extends BaseController {
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
+		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
 		if (cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode(request))) {
 				throw new MyException("000010");

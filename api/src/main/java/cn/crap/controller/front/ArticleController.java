@@ -4,8 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.crap.adapter.ArticleAdapter;
+import cn.crap.adapter.CommentAdapter;
+import cn.crap.dto.ArticleDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.custom.CustomArticleService;
+import cn.crap.service.mybatis.custom.CustomCommentService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisCommentService;
 import cn.crap.utils.TableField;
@@ -29,142 +33,130 @@ import cn.crap.utils.Tools;
 
 /**
  * 项目主页
- * @author Ehsan
  *
+ * @author Ehsan
  */
 @Controller("frontArticleController")
 public class ArticleController extends BaseController {
-	@Autowired
-	private ICacheService cacheService;
-	@Autowired
-	private MybatisCommentService commentService;
-	@Autowired
-	private Config config;
-	@Autowired
-	private CustomArticleService customArticleService;
-	@Autowired
-	private MybatisArticleService articleService;
-	
-	
-	@RequestMapping("/front/article/diclist.do")
-	@ResponseBody
-	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
-		
-		Module module = cacheService.getModule(moduleId);
-		Project project = cacheService.getProject(module.getProjectId());
-		
-		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, project);
-		
-		Page page= new Page(15, currentPage);
-		page.setAllRow(customArticleService.countByProjectId(moduleId, name, ArticleType.DICTIONARY.name(), null));
-		return new JsonResult(1, customArticleService.queryArticle(moduleId, name, ArticleType.DICTIONARY.name(), null, page)  , page,
-				Tools.getMap("crumbs", Tools.getCrumbs( ArticleType.DICTIONARY.getName() +"-" + module.getName(), "void")) );
-	}
-	
-
-	@SuppressWarnings("unchecked")
-	@RequestMapping("/front/article/list.do")
-	@ResponseBody
-	public JsonResult list(@RequestParam(defaultValue="1") Integer currentPage,@RequestParam(defaultValue=Const.WEB_MODULE) String moduleId, @RequestParam String type,@RequestParam String category
-			,String password, String visitCode) throws MyException{
-		
-		Module module = cacheService.getModule(moduleId);
-		Project project = cacheService.getProject(module.getProjectId());
-		
-		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, project);
-		
-		Page page= new Page(15, currentPage);
+    @Autowired
+    private ICacheService cacheService;
+    @Autowired
+    private MybatisCommentService commentService;
+    @Autowired
+    private Config config;
+    @Autowired
+    private CustomArticleService customArticleService;
+    @Autowired
+    private MybatisArticleService articleService;
+    @Autowired
+    private CustomCommentService customCommentService;
 
 
-		// 选择分类，最多显示前20个 TODO
-		List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + module.getId());
-		if( categorys == null){
-			categorys = (List<String>) customArticleService.queryArticleCatetoryByModuleIdAndType(module.getId(), "ARTICLE");
-			cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + module.getId(), categorys, config.getCacheTime());
-		}
+    @RequestMapping("/front/article/diclist.do")
+    @ResponseBody
+    public JsonResult list(@RequestParam String moduleId,
+                           String name,
+                           @RequestParam(defaultValue = "1") Integer currentPage,
+                           String password,
+                           String visitCode) throws MyException {
 
-		List<Article> webPages = customArticleService.queryArticle(moduleId, null, type.equals("PAGE")? "ARTICLE":type, category,page);
-		return new JsonResult(1, webPages, page,
-				Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categorys, 
-						"crumbs", 
-						Tools.getCrumbs( 
-								project.getName(), "#/"+project.getId()+"module/list",
-								module.getName()+":文章列表", "void")));
-	}
+        String type = ArticleType.DICTIONARY.name();
+        Module module = cacheService.getModule(moduleId);
+        Project project = cacheService.getProject(module.getProjectId());
 
-	
-	@SuppressWarnings("unchecked")
-	@RequestMapping("/front/article/detail.do")
-	@ResponseBody
-	public JsonResult webDetail(@ModelAttribute Article webPage,String password,String visitCode, @RequestParam(defaultValue="1") Integer currentPage) throws MyException{
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		Article model = (Article) cacheService.getObj( Const.CACHE_WEBPAGE + webPage.getId() );
-		Map<String,Object> map;
-		if(model == null){
-			// 根据key查询webPage
-			if(webPage.getId().length()<21){
-				map = Tools.getMap("key", webPage.getId());
-				ArticleCriteria example = new ArticleCriteria();
-				example.createCriteria().andMkeyEqualTo(webPage.getId());
-				List<Article>models=articleService.selectByExample(example);
-				if(models.size()>0)
-					model = models.get(0);
-			}
-			// 根据key没有查到，则根据id查
-			if(model==null){
-				model= articleService.selectByPrimaryKey(webPage.getId());
-			}
-			if(model == null)
-				throw new MyException("000020");
-			cacheService.setObj( Const.CACHE_WEBPAGE + webPage.getId(), model, config.getCacheTime());
-		}
-		
-		Module module = cacheService.getModule(model.getModuleId());
-		Project project = cacheService.getProject(module.getProjectId());
-		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		isPrivateProject(password, visitCode, project);
-		
-		Page page = null;
-		// 选择分类，最多显示前20个
-		if( !model.getType().equals(ArticleType.DICTIONARY.name()) ){
-			List<String> categorys = (List<String>) cacheService.getObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId());
-			if( categorys == null){
-				// TODO new Page(20)
-				categorys = customArticleService.queryArticleCatetoryByModuleIdAndType( model.getModuleId(), "ARTICLE");
-				cacheService.setObj(Const.CACHE_ARTICLE_CATEGORY + model.getModuleId(), categorys, config.getCacheTime());
-			}
-			returnMap.put("categorys", categorys);
-			returnMap.put("category", model.getCategory());
-			
-			// 初始化前端js评论对象
-			Comment comment = new Comment();
-			comment.setId(model.getId());
-			returnMap.put("comment",comment );
-			map = Tools.getMap("articleId", model.getId());
-			
-			// 评论
-			page= (Page) cacheService.getObj(Const.CACHE_COMMENT_PAGE + model.getId(), currentPage + "");
-			List<Comment> comments = (List<Comment>) cacheService.getObj(Const.CACHE_COMMENTLIST + model.getId(), currentPage+"");
-			if( comments == null || page == null){
-				page = new Page(10, currentPage);
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        isPrivateProject(password, visitCode, project);
 
-				CommentCriteria example = new CommentCriteria();
-				example.createCriteria().andArticleIdEqualTo(model.getId());
-				example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+        Page page = new Page(15, currentPage);
+        List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, page);
+        page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, null));
 
-				comments = commentService.selectByExample(example);
+        Map<String, Object> others = Tools.getMap("crumbs", Tools.getCrumbs(type + "-" + module.getName(), "void"));
 
-				cacheService.setObj(Const.CACHE_COMMENTLIST + model.getId() , currentPage + "", comments, config.getCacheTime());
-				cacheService.setObj(Const.CACHE_COMMENT_PAGE + model.getId() , currentPage + "", page, config.getCacheTime());
-			}
-			returnMap.put("comments", comments);
-			returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
-		}
-		
-		// 更新点击量
-		customArticleService.updateClickById(model.getId());
-		return new JsonResult(1, model, page, returnMap);
-	}
+        return new JsonResult().success().data(articles).page(page).others(others);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/front/article/list.do")
+    @ResponseBody
+    public JsonResult list(@RequestParam(defaultValue = "1") Integer currentPage,
+                           @RequestParam(defaultValue = Const.WEB_MODULE) String moduleId,
+                           @RequestParam String type,
+                           @RequestParam String category,
+                           String password,
+                           String visitCode) throws MyException {
+
+        Page page = new Page(15, currentPage);
+        if ( ArticleType.ARTICLE.name().equals(type)){
+            type = ArticleType.ARTICLE.name();
+        }
+        Module module = cacheService.getModule(moduleId);
+        Project project = cacheService.getProject(module.getProjectId());
+
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        isPrivateProject(password, visitCode, project);
+
+        List<String> categories = customArticleService.queryTop20Category(module.getId(), type);
+        List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, page);
+        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles);
+
+        // TODO others 结构需要改变
+        Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,
+                "crumbs", Tools.getCrumbs(project.getName(), "#/" + project.getId() + "module/list", module.getName() + ":文章列表", "void"));
+
+        return new JsonResult().success().data(articleDtos).page(page).others(others);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/front/article/detail.do")
+    @ResponseBody
+    public JsonResult webDetail(@RequestParam String id,
+                                String password, String visitCode,
+                                @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+        Map<String, Object> returnMap = new HashMap<>();
+        ArticleWithBLOBs article = null;
+
+        article = articleService.selectByPrimaryKey(id);
+        if (article == null) {
+            article = customArticleService.selectByKey(id);
+        }
+
+        if (article == null) {
+            throw new MyException("000020");
+        }
+        id = article.getId();
+
+
+        Module module = cacheService.getModule(article.getModuleId());
+        Project project = cacheService.getProject(module.getProjectId());
+
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        isPrivateProject(password, visitCode, project);
+
+        if (article.getType().equals(ArticleType.DICTIONARY.name())) {
+            return new JsonResult().success().data(article).others(returnMap);
+        }
+
+        List<String> categories = customArticleService.queryTop20Category(article.getModuleId(), "ARTICLE");
+        returnMap.put("categories", categories);
+        returnMap.put("category", article.getCategory());
+
+        // 初始化前端js评论对象
+        Comment comment = new Comment();
+        comment.setArticleId(id);
+        returnMap.put("comment", comment);
+
+        // 评论
+        Page page = new Page(10, currentPage);
+        List<Comment> comments = customCommentService.selectByArticelId(id, null, page);
+        page.setAllRow(customCommentService.countByArticleId(id));
+        returnMap.put("comments", CommentAdapter.getDto(comments));
+        returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
+
+        // 更新点击量
+        customArticleService.updateClickById(id);
+        return new JsonResult(1, article, page, returnMap);
+    }
 }

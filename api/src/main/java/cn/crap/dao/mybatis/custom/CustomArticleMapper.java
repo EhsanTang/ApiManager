@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomArticleMapper {
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 
     public List<String> queryArticleCategoryByUserId(String userId){
@@ -29,8 +29,8 @@ public class CustomArticleMapper {
 
 	}
 
-    public List<String> queryArticleCategoryByModuleIdAndType(String moduleId, String type){
-		return jdbcTemplate.queryForList("select distinct category from article where moduleId=? and type=?", new Object[]{moduleId, type}, String.class);
+    public List<String> queryTop20Category(String moduleId, String type){
+		return jdbcTemplate.queryForList("select distinct category from article where moduleId=? and type=? limit 0,20", new Object[]{moduleId, type}, String.class);
 	}
 
     public void updateClickById(String id){

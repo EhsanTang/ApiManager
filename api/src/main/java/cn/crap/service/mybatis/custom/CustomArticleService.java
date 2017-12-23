@@ -176,12 +176,19 @@ public class CustomArticleService implements ILuceneService{
         return mapper.selectByExample(example);
     }
 
-    public List<String> queryArticleCatetoryByModuleIdAndType(String moduleId, String type){
-        return customArticleMapper.queryArticleCategoryByModuleIdAndType(moduleId, type);
+    public List<String> queryTop20Category(String moduleId, String type){
+        return customArticleMapper.queryTop20Category(moduleId, type);
     }
 
     public void updateClickById(String id){
         Assert.notNull(id);
         customArticleMapper.updateClickById(id);
+    }
+
+    public ArticleWithBLOBs selectByKey(String key){
+        ArticleCriteria example = new ArticleCriteria();
+        example.createCriteria().andMkeyEqualTo(key);
+        List<ArticleWithBLOBs> models = mapper.selectByExampleWithBLOBs(example);
+        return  models.size() > 0 ? models.get(0) : null;
     }
 }

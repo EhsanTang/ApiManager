@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectDto;
+import cn.crap.enumeration.ProjectType;
 import cn.crap.model.mybatis.Project;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ProjectAdapter {
 		dto.setPassword(model.getPassword());
 		dto.setCover(model.getCover());
 		dto.setLuceneSearch(model.getLuceneSearch());
+		dto.setTypeName(ProjectType.getNameByValue(model.getType()));
 		
         return dto;
     }

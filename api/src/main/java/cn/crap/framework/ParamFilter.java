@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * 过滤无效参数内容
+ */
 public class ParamFilter extends OncePerRequestFilter {
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 									HttpServletResponse response, FilterChain filterChain)

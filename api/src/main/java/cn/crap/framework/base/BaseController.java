@@ -35,6 +35,8 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
 public abstract class BaseController{
+	protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
+
 	protected final static int SIZE = 15;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
@@ -241,20 +243,19 @@ public abstract class BaseController{
 	/**
 	 * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
 	 * 
-	 * @param neddPassword
+	 * @param needPassword
 	 * @param password
 	 * @param visitCode
 	 * @throws MyException
 	 */
-	public void canVisit(String neddPassword, String password, String visitCode) throws MyException {
-		if (!MyString.isEmpty(neddPassword)) {
+	public void canVisit(String needPassword, String password, String visitCode) throws MyException {
+		if (!MyString.isEmpty(needPassword)) {
 			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			String temPwd = cacheService
-					.getStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
-			if (!MyString.isEmpty(temPwd) && temPwd.toString().equals(neddPassword)) {
+			String temPwd = cacheService.getStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
+			if (!MyString.isEmpty(temPwd) && temPwd.toString().equals(needPassword)) {
 				return;
 			}
-			if (MyString.isEmpty(password) || !password.equals(neddPassword)) {
+			if (MyString.isEmpty(password) || !password.equals(needPassword)) {
 				throw new MyException("000007");
 			}
 			if (cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")) {

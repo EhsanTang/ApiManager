@@ -32,8 +32,11 @@ public class CustomInterfaceService implements ILuceneService {
     private MybatisLogService logService;
     @Autowired
     private CustomInterfaceMapper customInterfaceMapper;
+    @Autowired
+    private Config config;
 
-    public void getInterDto(Config config, List<InterfacePDFDto> interfaces, InterfaceWithBLOBs interFace, InterfacePDFDto interDto) {
+    public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace) {
+        InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(interFace);
         if(interFace.getParam().startsWith("form=")){
             interDto.setFormParams(JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
@@ -47,7 +50,7 @@ public class CustomInterfaceService implements ILuceneService {
         interDto.setResponseParam( JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class) );
         interDto.setParamRemarks( JSONArray.toArray(JSONArray.fromObject(interFace.getParamRemark()), ResponseParamDto.class) );
         interDto.setErrors( JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class) );
-        interfaces.add(interDto);
+        return interDto;
     }
 
 

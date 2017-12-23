@@ -18,6 +18,25 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 
+	<!-- 要保证ThreadContext位于所有拦截器的第一个 -->
+	<!-- ThreadContext -->
+	<filter>
+		<filter-name>ThreadContext</filter-name>
+		<filter-class>cn.crap.framework.ThreadContext</filter-class>
+		<init-param>
+			<param-name>ignoreSuffix</param-name><!-- 忽略的后缀 -->
+			<param-value>
+				jpg,jpeg,ico,txt,doc,ppt,xls,pdf,gif,png,bmp,css,js,swf,flv,mp3,htc,eot,svg,ttf,woff
+			</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>ThreadContext</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- 参数处理-->
 	<filter>
 		<filter-name>paramFilter</filter-name>
 		<filter-class>cn.crap.framework.ParamFilter</filter-class>

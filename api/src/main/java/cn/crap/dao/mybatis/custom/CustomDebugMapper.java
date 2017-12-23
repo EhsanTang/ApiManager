@@ -3,6 +3,7 @@ package cn.crap.dao.mybatis.custom;
 import cn.crap.model.mybatis.Article;
 import cn.crap.utils.Page;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

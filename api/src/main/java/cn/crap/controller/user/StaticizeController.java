@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.crap.adapter.ErrorAdapter;
-import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Error;

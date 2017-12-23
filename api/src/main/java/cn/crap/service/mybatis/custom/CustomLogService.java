@@ -1,29 +1,18 @@
 package cn.crap.service.mybatis.custom;
 
-import cn.crap.adapter.ArticleAdapter;
-import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.InterfaceMapper;
 import cn.crap.dao.mybatis.LogMapper;
 import cn.crap.dao.mybatis.SourceMapper;
-import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.dto.ArticleDto;
 import cn.crap.enumeration.LogType;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.tool.CacheService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
-import java.util.List;
 
 @Service
 public class CustomLogService{

@@ -113,7 +113,7 @@ public class CustomMenuService {
             menuVO.setMenu(menu);
 
             menuVO.setSubMenu(new ArrayList<Menu>());
-            List<String> categorys = customArticleMapper.queryArticleCatetoryByWeb();
+            List<String> categorys = customArticleMapper.queryArticleCategoryByWeb();
             int i = 0;
             for (String category : categorys) {
                 if (MyString.isEmpty(category))

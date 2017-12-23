@@ -4,7 +4,6 @@ import java.util.List;
 
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomMenuService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
@@ -26,7 +25,6 @@ import cn.crap.framework.MyException;
 import cn.crap.service.IPickService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
 /**
  * 下拉选着
@@ -53,7 +51,7 @@ public class AdminPickService implements IPickService{
 		switch (code) {
 		case "CATEGORY":
 			int i = 0;
-			List<String> categorys =customArticleMapper.queryArticleCatetoryByUserId(user.getId());
+			List<String> categorys =customArticleMapper.queryArticleCategoryByUserId(user.getId());
 			for (String w : categorys) {
 				if (w == null)
 					continue;
@@ -188,7 +186,7 @@ public class AdminPickService implements IPickService{
 				picks.add(pick);
 				int j = 0;
 
-				List<String> categorys2 = customArticleMapper.queryArticleCatetoryByWeb();
+				List<String> categorys2 = customArticleMapper.queryArticleCategoryByWeb();
 				for (String article : categorys2) {
 					if (MyString.isEmpty(article))
 						continue;

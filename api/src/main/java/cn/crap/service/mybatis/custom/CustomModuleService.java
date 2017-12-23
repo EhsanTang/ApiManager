@@ -1,13 +1,7 @@
 package cn.crap.service.mybatis.custom;
 
-import cn.crap.dao.mybatis.MenuMapper;
 import cn.crap.dao.mybatis.ModuleMapper;
-import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumeration.MenuType;
-import cn.crap.enumeration.ProjectStatus;
-import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.springbeans.Config;
@@ -15,11 +9,9 @@ import cn.crap.springbeans.PickFactory;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service

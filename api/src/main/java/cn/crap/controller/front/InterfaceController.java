@@ -12,8 +12,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.crap.model.mybatis.Interface;
-import cn.crap.model.mybatis.Project;
+import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.dto.InterfaceDto;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.custom.CustomInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ICacheService;
-import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -45,6 +46,8 @@ public class InterfaceController extends BaseController{
 
 	@Autowired
 	private MybatisInterfaceService interfaceService;
+	@Autowired
+	private CustomInterfaceService customInterfaceService;
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired
@@ -67,7 +70,7 @@ public class InterfaceController extends BaseController{
 			}
 			
 			List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
-			Interface interFace = null;
+			InterfaceWithBLOBs interFace = null;
 			InterfacePDFDto interDto = null;
 			Module module = null;
 			if( !MyString.isEmpty(id) ){
@@ -77,23 +80,23 @@ public class InterfaceController extends BaseController{
 					request.setAttribute("result", "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
 					return "/WEB-INF/views/result.jsp";
 				}
-				interfaceService.getInterDto(config, interfaces, interFace, interDto);
+				customInterfaceService.getInterDto(config, interfaces, interFace, interDto);
 			}else{
 				module = moduleService.selectByPrimaryKey(moduleId);
 				if(MyString.isEmpty(module.getId())){
 					request.setAttribute("result", "模块id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！");
 					return "/WEB-INF/views/result.jsp";
 				}
-				for( Interface inter : interfaceService.findByMap(Tools.getMap("moduleId", moduleId), null, null)){
+				for( InterfaceWithBLOBs inter : customInterfaceService.selectByModuleId(moduleId)){
 					interDto= new InterfacePDFDto();
-					interfaceService.getInterDto(config, interfaces, inter, interDto);
+					customInterfaceService.getInterDto(config, interfaces, inter, interDto);
 	
 				}
 			}
 			request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
 			request.setAttribute("ADORN_COLOR", cacheService.getSetting("ADORN_COLOR").getValue());
 			request.setAttribute("interfaces", interfaces);
-			request.setAttribute("moduleName", interFace == null? module.getName():interFace.getModuleName());
+			request.setAttribute("moduleName", module.getName());
 			request.setAttribute("title", cacheService.getSetting("TITLE").getValue());
 			return "/WEB-INF/views/interFacePdf.jsp";
 		}catch(Exception e){
@@ -110,7 +113,7 @@ public class InterfaceController extends BaseController{
 		if( !MyString.isEmpty(moduleId) ){
 			module = cacheService.getModule(moduleId);
 		}else{
-			module = cacheService.getModule( interfaceService.get(id).getModuleId() );
+			module = cacheService.getModule( interfaceService.selectByPrimaryKey(id).getModuleId() );
 		}
 		Project project = cacheService.getProject(module.getProjectId());
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
@@ -163,9 +166,18 @@ public class InterfaceController extends BaseController{
 		
 		Page page= new Page(15, currentPage);
 
-		List<Interface> interfaces  = interfaceService.findByMap( Tools.getMap("moduleId", moduleId, "interfaceName|like", interfaceName, "fullUrl|like", url), 
-				" new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null );
-		
+		InterfaceCriteria example = new InterfaceCriteria();
+		InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
+		if (!MyString.isEmpty(interfaceName)){
+			criteria.andInterfaceNameLike("%" + interfaceName + "%");
+		}
+		if (!MyString.isEmpty(url)){
+			criteria.andFullUrlLike("%" + url + "%");
+		}
+
+		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
+
+
 		return new JsonResult(1, interfaces, page,
 				Tools.getMap("crumbs", Tools.getCrumbs( cacheService.getProject(module.getProjectId()).getName(), "#/"+module.getProjectId()+"/module/list", module.getName(), "void") ));
 	}
@@ -173,7 +185,7 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult webDetail(@ModelAttribute Interface interFace,String password,String visitCode) throws MyException {
-		interFace = interfaceService.get(interFace.getId());
+		interFace = interfaceService.selectByPrimaryKey(interFace.getId());
 		if(interFace!=null){
 			
 			Module module = cacheService.getModule(interFace.getModuleId());
@@ -184,9 +196,14 @@ public class InterfaceController extends BaseController{
 			/**
 			 * 查询相同模块下，相同接口名的其它版本号
 			 */
-			List<Interface> versions = interfaceService.findByMap(
-					Tools.getMap("moduleId",interFace.getModuleId(),"interfaceName",interFace.getInterfaceName(),"version|<>",interFace.getVersion()), null, null);
-			return new JsonResult(1, interFace, null, 
+			InterfaceCriteria example = new InterfaceCriteria();
+			InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(interFace.getModuleId())
+					.andInterfaceNameEqualTo(interFace.getInterfaceName()).andVersionNotEqualTo(interFace.getVersion());
+
+
+			List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
+
+			return new JsonResult(1, interFace, null,
 					Tools.getMap("versions", versions, 
 							"crumbs", 
 							Tools.getCrumbs( 

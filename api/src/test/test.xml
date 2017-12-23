@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="druidStatFilter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="mergeSql" value="false"/>
+        <property name="slowSqlMillis" value="5000"/>
+        <property name="logSlowSql" value="true"/>
+    </bean>
+
+    <bean id="parentDatasource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+        <property name="initialSize" value="${database.initialSize}"/>
+        <property name="maxActive" value="${database.maxActive}"/>
+        <property name="minIdle" value="${database.minIdle}"/>
+        <property name="testWhileIdle" value="${database.testWhileIdle}"/>
+        <property name="validationQuery" value="${database.validationQuery}"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="druidStatFilter"/>
+            </list>
+        </property>
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${database.maxWait}" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${database.timeBetweenEvictionRunsMillis}" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${database.minEvictableIdleTimeMillis}" />
+        <!-- 验证 -->
+        <property name="testOnBorrow" value="${database.testOnBorrow}" />
+    </bean>
+    <!--<bean id="datasource1" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" parent="parentDatasource">
+        <property name="url" value="${database.url1}"/>
+    </bean>
+    <bean id="datasource2" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" parent="parentDatasource">
+        <property name="url" value="${database.url2}"/>
+    </bean>
+    <bean id="datasource3" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" parent="parentDatasource">
+        <property name="url" value="${database.url3}"/>
+    </bean>
+    <bean id="datasource4" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close" parent="parentDatasource">
+        <property name="url" value="${database.url4}"/>
+    </bean>-->
+    <bean id="failoverClient" init-method="init" class="com.lagou.common.datasource.failover.DruidFailoverClient">
+        <property name="commonDataSource" ref="parentDatasource"/>
+
+        <property name="enableMonitor" value="true"/>
+    </bean>
+
+    <!-- <bean id="dataSource" class="com.lagou.mds.common.datasource.MultiDataSource">
+         <property name="targetDataSources">
+             <map>
+                 <entry key-ref="datasource1" value-ref="datasource1"/>
+                 <entry key-ref="datasource2" value-ref="datasource2"/>
+                 <entry key-ref="datasource3" value-ref="datasource3"/>
+                 <entry key-ref="datasource4" value-ref="datasource4"/>
+             </map>
+         </property>
+         <property name="defaultTargetDataSource" ref="datasource1"/>
+         <property name="dataSourceSelector" ref="dataSourceBalanceSelector"/>
+     </bean>-->
+    <bean id="autoRandomDataSourceSelector" class="com.lagou.common.datasource.selector.random.AutoRandomDataSourceSelector">
+        <property name="failoverClient" ref="failoverClient"/>
+        <property name="moduleName" value="${failover.position.name}"/>
+    </bean>
+
+    <bean id="dataSource" class="com.lagou.common.datasource.AutoDataSource">
+        <property name="dataSourceSelector" ref="autoRandomDataSourceSelector" />
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false"
+          lazy-init="false" autowire="default">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+    </bean>
+
+    <!--<bean id="dataSourceBalanceSelector" class="com.lagou.mds.common.datasource.selector.balance.BalanceDataSourceSelector">
+        <property name="dataSources">
+            <list>
+                <ref bean="datasource1"/>
+                <ref bean="datasource2"/>
+                <ref bean="datasource3"/>
+                <ref bean="datasource4"/>
+            </list>
+        </property>
+    </bean>-->
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.lagou.mds.service.position.core"/>
+        <!-- <property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+</beans>

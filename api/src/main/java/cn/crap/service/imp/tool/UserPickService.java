@@ -55,7 +55,7 @@ public class UserPickService implements IPickService{
 				switch (code) {
 					case "CATEGORY":
 					int i = 0;
-					List<String> categorys = customArticleMapper.queryArticleCatetoryByUserId(user.getId());
+					List<String> categorys = customArticleMapper.queryArticleCategoryByUserId(user.getId());
 					for (String w : categorys) {
 						if (w == null)
 							continue;

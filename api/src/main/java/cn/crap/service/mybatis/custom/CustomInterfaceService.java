@@ -1,33 +1,23 @@
 package cn.crap.service.mybatis.custom;
 
-import cn.crap.adapter.ArticleAdapter;
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dao.mybatis.InterfaceMapper;
-import cn.crap.dao.mybatis.ProjectMapper;
 import cn.crap.dao.mybatis.custom.CustomInterfaceMapper;
-import cn.crap.dao.mybatis.custom.CustomProjectMapper;
 import cn.crap.dto.*;
 import cn.crap.enumeration.LogType;
 import cn.crap.model.mybatis.*;
-import cn.crap.model.mybatis.ProjectCriteria;
 import cn.crap.service.ICacheService;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
-import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -194,12 +184,12 @@ public class CustomInterfaceService implements ILuceneService {
         mapper.deleteByPrimaryKey(dbModel.getId());
     }
 
-    public List<Interface> selectByModuleId(String moduleId){
+    public List<InterfaceWithBLOBs> selectByModuleId(String moduleId){
         Assert.notNull(moduleId);
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andModuleIdEqualTo(moduleId);
 
-        return mapper.selectByExample(example);
+        return mapper.selectByExampleWithBLOBs(example);
     }
 
     public int countByModuleId(String moduleId){

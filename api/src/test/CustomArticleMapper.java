@@ -19,6 +19,24 @@ public class CustomArticleMapper {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
+	public List<Article> queryArticle(String moduleId, String name, String type, String category, Page page){
+		StringBuilder sb = new StringBuilder("SELECT id,type,name,click,category,createTime,mkey,moduleId,brief,sequence FROM article ");
+		sb.append(" where moduleId = '" + SqlHelper.checkParams(moduleId) + "'");
+		if (name != null){
+			sb.append(" and name like '%" + SqlHelper.checkParams(name) + "%'");
+		}
+		if (type != null){
+			sb.append(" and type = '" + SqlHelper.checkParams(type) +"'");
+		}
+		if (category != null){
+			sb.append(" and category = '" + SqlHelper.checkParams(category) +"'");
+		}
+
+		sb.append(" order by sequence asc");
+		sb.append(" limit " + page.getStart() + "," + page.getSize());
+		return jdbcTemplate.queryForList(sb.toString(), Article.class);
+	}
+
 
     public List<String> queryArticleCategoryByUserId(String userId){
 		return jdbcTemplate.queryForList("select distinct category from article where moduleId in( select id from Module where userId=?", new Object[]{userId},  String.class);

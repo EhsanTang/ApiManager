@@ -20,21 +20,21 @@ import java.util.List;
 @Service
 public class MybatisModuleService {
     @Autowired
-    private ModuleMapper mapper;
+    private ModuleMapper moduleMapper;
 
     public List<Module> selectByExample(ModuleCriteria example) {
-        return mapper.selectByExample(example);
+        return moduleMapper.selectByExample(example);
     }
 
     public int countByExample(ModuleCriteria example) {
-        return mapper.countByExample(example);
+        return moduleMapper.countByExample(example);
     }
 
     public Module selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
-        return mapper.selectByPrimaryKey(id);
+        return moduleMapper.selectByPrimaryKey(id);
     }
 
     public boolean insert(Module model) {
@@ -54,19 +54,19 @@ public class MybatisModuleService {
             }
         }
         model.setCreateTime(new Date());
-        return mapper.insertSelective(model) > 0;
+        return moduleMapper.insertSelective(model) > 0;
     }
 
     public boolean update(Module model) {
         if (model == null) {
             return false;
         }
-        return mapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
+        return moduleMapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
     }
 
     public boolean delete(String id) {
         Assert.notNull(id, "id can't be null");
-        return mapper.deleteByPrimaryKey(id) > 0 ? true : false;
+        return moduleMapper.deleteByPrimaryKey(id) > 0 ? true : false;
     }
 
 }

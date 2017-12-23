@@ -2,30 +2,23 @@ package cn.crap.service.mybatis.custom;
 
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.mybatis.ArticleMapper;
-import cn.crap.dao.mybatis.ArticleMapper;
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.LogType;
-import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.service.ICacheService;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.imp.tool.CacheService;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
-import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import java.util.Collections;
+import org.springframework.util.StringUtils;
+
 import java.util.List;
 
 
@@ -58,7 +51,20 @@ public class CustomArticleService implements ILuceneService{
 
     public List<Article> queryArticle(String moduleId, String name, String type, String category, Page page) {
         Assert.notNull(moduleId, "moduleId can't be null");
-        return customArticleMapper.queryArticle(moduleId, name, type, category, page);
+        ArticleCriteria example = new ArticleCriteria();
+        ArticleCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
+        if (!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%" + name + "%");
+        }
+        if (!StringUtils.isEmpty(type)){
+            criteria.andTypeEqualTo(type);
+        }
+        if (!StringUtils.isEmpty(category)){
+            criteria.andCategoryEqualTo(category);
+        }
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
+        return mapper.selectByExample(example);
     }
 
     public Project getProject(String moduleId) {
@@ -171,7 +177,7 @@ public class CustomArticleService implements ILuceneService{
     }
 
     public List<String> queryArticleCatetoryByModuleIdAndType(String moduleId, String type){
-        return customArticleMapper.queryArticleCatetoryByModuleIdAndType(moduleId, type);
+        return customArticleMapper.queryArticleCategoryByModuleIdAndType(moduleId, type);
     }
 
     public void updateClickById(String id){

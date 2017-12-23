@@ -268,6 +268,14 @@ public abstract class BaseController{
 		}
 	}
 
+	/**
+	 * private project need login
+	 * public project need check password,
+	 * @param password
+	 * @param visitCode
+	 * @param project
+	 * @throws MyException
+	 */
 	protected void isPrivateProject(String password, String visitCode, Project project) throws MyException {
 		// web项目为默认的公开项目
 		if (project.getId().equals(Const.WEB_MODULE)) {

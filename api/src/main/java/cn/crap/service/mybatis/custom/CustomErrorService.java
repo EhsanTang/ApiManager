@@ -44,20 +44,16 @@ public class CustomErrorService {
         return mapper.selectByExample(example);
     }
 
-    public List<Error> queryByProjectId(String projectId){
+    /**
+     * 根据项目id查询错误码
+     * @param projectId
+     * @param errorCode 非必填
+     * @param errorMsg 非必填
+     * @param page 非必填
+     * @return
+     */
+    public List<Error> queryByProjectId(String projectId, String errorCode, String errorMsg, Page page){
         Assert.notNull(projectId, "projectId can't be null");
-
-        ErrorCriteria example = new ErrorCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
-
-        return mapper.selectByExample(example);
-    }
-
-
-    public List<Error> pageByProjectIdCodeMsg(String projectId, String errorCode, String errorMsg, Page page){
-        Assert.notNull(projectId, "projectId can't be null");
-        Assert.notNull(page.getCurrentPage(), "page.currentPage can't be null");
-        Assert.notNull(page.getSize(), "page.size can't be null");
 
         ErrorCriteria example = new ErrorCriteria();
         ErrorCriteria.Criteria criteria = example.createCriteria().andProjectIdEqualTo(projectId);
@@ -68,8 +64,11 @@ public class CustomErrorService {
             criteria.andErrorMsgLike("%" + errorMsg + "%");
         }
         example.setOrderByClause(TableField.SORT.ERROR_CODE_ASC);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
+
+        if (page != null) {
+            example.setLimitStart(page.getStart());
+            example.setMaxResults(page.getSize());
+        }
 
         page.setAllRow(mapper.countByExample(example));
         return mapper.selectByExample(example);

@@ -88,7 +88,7 @@ public class StaticizeController extends BaseController{
 		Map<String, Object> returnMap = getProjectModuleInfor(null, project, "-错误码");
 		
 		Page page = new Page(15, currentPage);
-		List<Error> errorModels = customErrorService.pageByProjectIdCodeMsg(projectId, null, null, page);
+		List<Error> errorModels = customErrorService.queryByProjectId(projectId, null, null, page);
 
 		returnMap.put("page", page);
 		returnMap.put("errorList", ErrorAdapter.getDto(errorModels));

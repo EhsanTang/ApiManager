@@ -32,8 +32,7 @@ import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 /**
- * 项目主页
- *
+ * front article page
  * @author Ehsan
  */
 @Controller("frontArticleController")
@@ -64,7 +63,7 @@ public class ArticleController extends BaseController {
         Module module = cacheService.getModule(moduleId);
         Project project = cacheService.getProject(module.getProjectId());
 
-        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        // private project need login, public project need check password
         isPrivateProject(password, visitCode, project);
 
         Page page = new Page(15, currentPage);

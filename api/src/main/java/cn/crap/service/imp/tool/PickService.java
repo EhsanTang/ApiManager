@@ -68,7 +68,7 @@ public class PickService implements IPickService{
 				}
 				return;
 			case "ERRORCODE":// 错误码
-				for (Error error : customErrorService.queryByProjectId(key)) {
+				for (Error error : customErrorService.queryByProjectId(key, null, null, null)) {
 					pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
 					picks.add(pick);
 				}

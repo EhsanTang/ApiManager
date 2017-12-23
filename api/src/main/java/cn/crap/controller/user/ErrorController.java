@@ -4,7 +4,6 @@ import java.util.List;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
-import cn.crap.model.mybatis.ErrorCriteria;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import cn.crap.service.mybatis.imp.MybatisErrorService;
 import cn.crap.utils.*;
@@ -51,7 +50,7 @@ public class ErrorController extends BaseController{
 
         Page page = new Page(15, currentPage);
 
-        List<Error> models = customErrorService.pageByProjectIdCodeMsg(projectId, errorCode, errorMsg, page);
+        List<Error> models = customErrorService.queryByProjectId(projectId, errorCode, errorMsg, page);
         List<ErrorDto> dtoList = ErrorAdapter.getDto(models);
 
         return new JsonResult(1, dtoList, page).others(Tools.getMap("crumbs", Tools.getCrumbs("错误码:" + cacheService.getProject(projectId).getName(), "void")));

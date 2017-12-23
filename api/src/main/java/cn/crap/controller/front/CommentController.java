@@ -62,10 +62,6 @@ public class CommentController extends BaseController {
 		comment.setId(null);
 		comment.setUpdateTime(new Date());
 		commentService.insert(comment);
-		
-		cacheService.delObj( Const.CACHE_COMMENTLIST + comment.getArticleId());
-		cacheService.delObj( Const.CACHE_COMMENT_PAGE + comment.getArticleId());
-		
 		return new JsonResult(1, null);
 	}
 }

@@ -1,21 +1,17 @@
 package cn.crap.framework.interceptor;
-import java.net.InetAddress;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.framework.MyException;
+import cn.crap.service.imp.tool.UserCache;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import cn.crap.framework.MyException;
-import cn.crap.dao.ICacheDao;
-import cn.crap.springbeans.Config;
-import cn.crap.springbeans.GetBeanByConfig;
-import cn.crap.utils.Aes;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
 
 
 
@@ -26,71 +22,68 @@ import cn.crap.utils.Tools;
  */
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
-	private GetBeanByConfig getBEanByConfig;
+	private UserCache userCache;
 	@Autowired
 	private Config config;
 	
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(handler.getClass().isAssignableFrom(HandlerMethod.class)){
-        	AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
-        
-        	
-        	 // 未登陆用户唯一识别
-        	String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
-            if( MyString.isEmpty(uuid) ){
-            	MyCookie.addCookie(Const.COOKIE_UUID, System.currentTimeMillis() + Tools.getChar(10), response);
-            }
-            
-            try{
-            	// 返回服务器ip
-            	response.setHeader("serviceIp", InetAddress.getLocalHost().getHostAddress());
-            }catch(Exception e){
-            	e.printStackTrace();
-            	response.setHeader("serviceIp", "服务器配置异常，无法获取服务器IP");
-            }
-            
-            if(authPassport == null || authPassport.validate() == false)
-                return true;
-            
-        	
-        	String token = MyCookie.getCookie(Const.COOKIE_TOKEN, false, request);
-        	String uid = MyCookie.getCookie(Const.COOKIE_USERID, false, request);
-            // 前端没有传递token，未登录
-            if(MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)){
-            	if(request.getRequestURI().endsWith("admin.do"))
-            		response.sendRedirect("loginOrRegister.do#/login");
-            	else
-            		throw new MyException("000021");
-            }
-            
-            // 后端没登录信息：登录超时
-            ICacheDao cacheDao = getBEanByConfig.getCacheDao();
-            Object obj = cacheDao.getObj(Const.CACHE_USER + uid);
-            if(obj == null){
-            	// 删除cookie
-            	MyCookie.deleteCookie(Const.COOKIE_TOKEN, request, response);
-            	if(request.getRequestURI().endsWith("admin.do")){
-            		response.sendRedirect("loginOrRegister.do#/login");
-            		return false;
-            	}
-            	else
-            		throw new MyException("000021");
-            }
-            
-            // 每次访问，将用户登录有效信息延长
-            cacheDao.setObj(Const.CACHE_USER + uid, obj, config.getLoginInforTime());
-            
-            if(!authPassport.authority().equals("")){
-            	return Tools.hasAuth(authPassport.authority());
-            }else{
-            	return true;
-            }
-            
+        if(!handler.getClass().isAssignableFrom(HandlerMethod.class)){
+        	return true;
         }
-        else
-            return true;   
-     }
+
+		/**
+		 * 未登陆用户唯一识别，验证码等需要
+		 */
+		String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false);
+		if( MyString.isEmpty(uuid) ){
+		    uuid = System.currentTimeMillis() + Tools.getChar(10);
+			MyCookie.addCookie(Const.COOKIE_UUID, uuid);
+		}
+
+		try{
+			// 返回服务器ip
+			response.setHeader("serviceIp", InetAddress.getLocalHost().getHostAddress());
+		}catch(Exception e){
+			e.printStackTrace();
+			response.setHeader("serviceIp", "服务器配置异常，无法获取服务器IP");
+		}
+
+		/**
+		 * 不需要登陆的接口
+		 */
+		AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
+		if(authPassport == null || authPassport.validate() == false) {
+			return true;
+		}
+
+
+		String token = MyCookie.getCookie(Const.COOKIE_TOKEN);
+		String uid = MyCookie.getCookie(Const.COOKIE_USERID);
+
+		/**
+		 * 前端没有传递token，未登录
+		 * 前端传递的 uid 和 token不一致，未登陆
+		 */
+        LoginInfoDto user = userCache.get(uid);
+		if(user == null || MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)){
+			if(request.getRequestURI().endsWith("admin.do")) {
+                response.sendRedirect("loginOrRegister.do#/login");
+            }else {
+                throw new MyException("000021");
+            }
+		}
+
+		// 每次访问，将用户登录有效信息延长
+        userCache.add(uid, user);
+
+		if(!authPassport.authority().equals("")){
+			return Tools.hasAuth(authPassport.authority());
+		}else{
+			return true;
+		}
+
+	}
 	
 
 }

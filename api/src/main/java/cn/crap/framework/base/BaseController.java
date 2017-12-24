@@ -7,12 +7,15 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.service.imp.tool.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,10 +28,8 @@ import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.service.imp.tool.CacheService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
@@ -66,8 +67,18 @@ public abstract class BaseController{
 	public final static int addError = 17;
 	public final static int delError = 18;
 
-	@Autowired
-	protected ICacheService cacheService;
+    @Resource(name = "projectCache")
+	protected ProjectCache projectCache;
+	@Resource(name = "moduleCache")
+	protected ModuleCache moduleCache;
+    @Resource(name = "stringCache")
+    protected StringCache stringCache;
+    @Resource(name = "settingCache")
+    protected SettingCache settingCache;
+    @Resource(name = "userCache")
+    protected UserCache userCache;
+    @Resource(name = "objectCache")
+    protected ObjectCache objectCache;
 
 	/**
 	 * spring 中request、response是线程安全的，可以直接注入
@@ -166,7 +177,7 @@ public abstract class BaseController{
 	/**
 	 * 权限检查
 	 * 
-	 * @param project
+	 * @param projectId
 	 * @throws MyException
 	 */
 	protected void hasPermission(Project project, int type) throws MyException {
@@ -208,19 +219,19 @@ public abstract class BaseController{
 	}
 
 	protected void hasPermission(String projectId, int type) throws MyException {
-		hasPermission(cacheService.getProject(projectId), type);
+		hasPermission(projectCache.get(projectId), type);
 	}
 
 	protected void hasPermissionModuleId(String moduleId, int type) throws MyException {
-		hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()), type);
+		hasPermission(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
 	}
 
 	protected void hasPermission(String projectId) throws MyException {
-		hasPermission(cacheService.getProject(projectId), 0);
+		hasPermission(projectCache.get(projectId), 0);
 	}
 
 	protected void hasPermissionModuleId(String moduleId) throws MyException {
-		hasPermission(cacheService.getProject(cacheService.getModule(moduleId).getProjectId()), 0);
+		hasPermission(projectCache.get(moduleCache.get(moduleId).getProjectId()), 0);
 	}
 
 	/**
@@ -230,13 +241,13 @@ public abstract class BaseController{
 	 */
 	/********************** 模块访问密码 ***************************/
 	public void canVisitModuleId(String moduleId, String password, String visitCode) throws MyException {
-		Module module = cacheService.getModule(moduleId);
-		String needPassword = cacheService.getProject(module.getProjectId()).getPassword();
+		Module module = moduleCache.get(moduleId);
+		String needPassword = projectCache.get(module.getProjectId()).getPassword();
 		canVisit(needPassword, password, visitCode);
 	}
 
 	public void canVisitModule(Module module, String password, String visitCode) throws MyException {
-		String needPassword = cacheService.getProject(module.getProjectId()).getPassword();
+		String needPassword = projectCache.get(module.getProjectId()).getPassword();
 		canVisit(needPassword, password, visitCode);
 	}
 
@@ -250,22 +261,20 @@ public abstract class BaseController{
 	 */
 	public void canVisit(String needPassword, String password, String visitCode) throws MyException {
 		if (!MyString.isEmpty(needPassword)) {
-			ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-			String temPwd = cacheService.getStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
+			String temPwd = stringCache.get(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID));
 			if (!MyString.isEmpty(temPwd) && temPwd.toString().equals(needPassword)) {
 				return;
 			}
 			if (MyString.isEmpty(password) || !password.equals(needPassword)) {
 				throw new MyException("000007");
 			}
-			if (cacheService.getSetting(Const.SETTING_VISITCODE).getValue().equals("true")) {
-				Object imgCode = Tools.getImgCode(request);
+			if (settingCache.get(Const.SETTING_VISITCODE).getValue().equals("true")) {
+				String imgCode = Tools.getImgCode();
 				if (MyString.isEmpty(visitCode) || imgCode == null || !visitCode.equals(imgCode.toString())) {
 					throw new MyException("000007");
 				}
 			}
-			cacheService.setStr(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID, false, request), password,
-					10 * 60);
+			stringCache.add(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID), password);
 		}
 	}
 

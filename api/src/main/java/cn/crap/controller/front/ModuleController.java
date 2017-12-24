@@ -1,28 +1,24 @@
 package cn.crap.controller.front;
 
 import cn.crap.adapter.ModuleAdapter;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
+import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.ModuleCriteria;
 import cn.crap.model.mybatis.Project;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.Project;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
 import java.util.List;
 
@@ -32,9 +28,7 @@ public class ModuleController extends BaseController{
 
 	@Autowired
 	private MybatisModuleService moduleService;
-	@Autowired
-	private ICacheService cacheService;
-	
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId,String password, String visitCode) throws MyException{
@@ -43,7 +37,7 @@ public class ModuleController extends BaseController{
 		}
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 		isPrivateProject(password, visitCode, project);
 
 		ModuleCriteria example = new ModuleCriteria();
@@ -61,7 +55,7 @@ public class ModuleController extends BaseController{
 			throw new MyException("000020");
 		}
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 		if(project.getType() == ProjectType.PRIVATE.getType()){
 			LoginInfoDto user = Tools.getUser();
 			if (user == null) {

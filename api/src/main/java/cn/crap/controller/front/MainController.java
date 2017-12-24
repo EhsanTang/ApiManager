@@ -1,43 +1,37 @@
 package cn.crap.controller.front;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.MenuWithSubMenuDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.service.ISearchService;
+import cn.crap.service.imp.tool.LuceneSearchService;
 import cn.crap.service.mybatis.custom.CustomMenuService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.MenuWithSubMenuDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.service.ISearchService;
-import cn.crap.service.imp.tool.LuceneSearchService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller("fontMainController")
 public class MainController extends BaseController{
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
@@ -52,7 +46,7 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping("/home.do")
 	public void home() throws Exception {
-		SettingDto indexUrl = cacheService.getSetting(Const.SETTING_INDEX_PAGE);
+		SettingDto indexUrl = settingCache.get(Const.SETTING_INDEX_PAGE);
 		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
 			response.sendRedirect(indexUrl.getValue());
 		}else{
@@ -100,7 +94,7 @@ public class MainController extends BaseController{
 		// 只显示前10个
 		StringBuilder sb = new StringBuilder("<div class='tl'>");
 		@SuppressWarnings("unchecked")
-		ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
+		ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(Const.CACHE_SEARCH_WORDS);
 		if(searchWords != null){
 			int i = 0;
 			String itemClass = "";
@@ -136,7 +130,7 @@ public class MainController extends BaseController{
 	@ResponseBody
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (SettingDto setting : cacheService.getSetting()) {
+		for (SettingDto setting : settingCache.getAll()) {
 			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}
@@ -150,14 +144,14 @@ public class MainController extends BaseController{
 		returnMap.put("settingMap", settingMap);
 		
 		// 从缓存中获取菜单
-		Object objMenus = cacheService.getObj("cache:leftMenu");
+		Object objMenus = objectCache.get("cache:leftMenu");
 		List<MenuWithSubMenuDto> menus = null;
 		if(objMenus == null){
 			synchronized (MainController.class) {
-				objMenus = cacheService.getObj("cache:leftMenu");
+				objMenus = objectCache.get("cache:leftMenu");
 				if(objMenus == null){
 					menus = customMenuService.getLeftMenu();
-					cacheService.setObj("cache:leftMenu", menus, config.getCacheTime());//缓存10分钟
+					objectCache.add("cache:leftMenu", menus);//缓存10分钟
 				}else{
 					menus = (List<MenuWithSubMenuDto>) objMenus;
 				}
@@ -193,7 +187,7 @@ public class MainController extends BaseController{
 		// 将搜索的内容记入内存
 		if(!MyString.isEmpty(keyword)){
 			@SuppressWarnings("unchecked")
-			ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
+			ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(Const.CACHE_SEARCH_WORDS);
 			if(searchWords == null){
 				searchWords = new ArrayList<String>();
 			}
@@ -213,7 +207,8 @@ public class MainController extends BaseController{
 					searchWords.add(keyword);
 				}
 			}
-			cacheService.setObj(Const.CACHE_SEARCH_WORDS, searchWords, -1);
+			// TODO 搜索关键字存数据库
+			objectCache.add(Const.CACHE_SEARCH_WORDS, searchWords);
 		}
 		
 		return new JsonResult(1, returnMap, page, 

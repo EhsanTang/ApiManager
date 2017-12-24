@@ -1,11 +1,5 @@
 package cn.crap.dto;
 
-import cn.crap.enumeration.ProjectType;
-import cn.crap.model.mybatis.Source;
-import cn.crap.service.ICacheService;
-import cn.crap.utils.GetTextFromFile;
-import cn.crap.utils.MyString;
-
 import java.util.Date;
 
 /**

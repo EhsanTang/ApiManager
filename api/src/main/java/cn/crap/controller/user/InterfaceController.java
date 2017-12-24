@@ -1,20 +1,26 @@
 package cn.crap.controller.user;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.InterfaceDto;
-import cn.crap.dto.InterfacePDFDto;
-import cn.crap.model.mybatis.Project;
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.MonitorType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Error;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.ISearchService;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import cn.crap.service.mybatis.custom.CustomInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisInterfaceService;
-import cn.crap.service.mybatis.imp.MybatisRoleService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -23,24 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.MonitorType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.service.ISearchService;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.*;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user/interface")
@@ -50,8 +42,6 @@ public class InterfaceController extends BaseController{
 	private CustomInterfaceService customInterfaceService;
 	@Autowired
 	private MybatisInterfaceService mybatisInterfaceService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
@@ -66,7 +56,7 @@ public class InterfaceController extends BaseController{
 	public JsonResult list(@RequestParam String projectId, @RequestParam String moduleId, String interfaceName, String url,
 			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
 		Page page= new Page(15, currentPage);
-		hasPermission(cacheService.getProject(projectId), view);
+		hasPermission(projectCache.get(projectId), view);
 
 		InterfaceCriteria example = new InterfaceCriteria();
 		InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
@@ -79,8 +69,8 @@ public class InterfaceController extends BaseController{
 
 		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExample(example));
 		JsonResult result = new JsonResult(1, interfaces, page);
-		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(moduleId),"void"))
-				.putOthers("module",cacheService.getModule(moduleId));
+		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
+				.putOthers("module", moduleCache.get(moduleId));
 
 		return result;
 		
@@ -92,11 +82,11 @@ public class InterfaceController extends BaseController{
 		InterfaceWithBLOBs model;
 		if(!id.equals(Const.NULL_ID)){
 			model= mybatisInterfaceService.selectByPrimaryKey(id);
-			hasPermission(cacheService.getProject(model.getProjectId()), view);
+			hasPermission(projectCache.get(model.getProjectId()), view);
 		}else{
 			model = new InterfaceWithBLOBs();
 			model.setModuleId( moduleId);
-			Module module = cacheService.getModule(moduleId);
+			Module module = moduleCache.get(moduleId);
 			if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = mybatisInterfaceService.selectByPrimaryKey(module.getTemplateId());
 				// 根据模板初始化接口
@@ -129,8 +119,8 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult copy(@ModelAttribute InterfaceWithBLOBs interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
-		hasPermission(cacheService.getProject(interFace.getProjectId()), addInter);
-		Module module = cacheService.getModule(interFace.getModuleId());
+		hasPermission(projectCache.get(interFace.getProjectId()), addInter);
+		Module module = moduleCache.get(interFace.getModuleId());
 
 		if(!config.isCanRepeatUrl()){
 			InterfaceCriteria example = new InterfaceCriteria();
@@ -144,7 +134,7 @@ public class InterfaceController extends BaseController{
 		interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 		mybatisInterfaceService.insert(interFace);
 
-		luceneService.add(InterfaceAdapter.getSearchDto(cacheService, interFace));
+		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		return new JsonResult(1, interFace);
 	}
 	
@@ -201,11 +191,11 @@ public class InterfaceController extends BaseController{
 			}
 		}
 
-		Module module = cacheService.getModule(interFace.getModuleId());
+		Module module = moduleCache.get(interFace.getModuleId());
 		if (!MyString.isEmpty(interFace.getId())) {
 			String oldModuleId = mybatisInterfaceService.selectByPrimaryKey(interFace.getId()).getModuleId();
-			String projectId = cacheService.getModule(oldModuleId).getProjectId();
-			Project project = cacheService.getProject( interFace.getProjectId() );
+			String projectId = moduleCache.get(oldModuleId).getProjectId();
+			Project project = projectCache.get(interFace.getProjectId() );
 
 			// 接口只能在同一个项目下的模块中移动
 			if( !projectId.equals(project.getId())){
@@ -226,16 +216,16 @@ public class InterfaceController extends BaseController{
 			if(interFace.getId().equals(interFace.getProjectId())){
 				throw new MyException("000027");
 			}
-			luceneService.update(InterfaceAdapter.getSearchDto(cacheService, interFace));
+			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
 			
 		} else {
-			hasPermission(cacheService.getProject( interFace.getProjectId() ), addInter);
+			hasPermission(projectCache.get(interFace.getProjectId() ), addInter);
 			if(!config.isCanRepeatUrl() && customInterfaceService.countByFullUrl(interFace.getModuleId(),module.getUrl() + interFace.getUrl(), null)>0){
 				return new JsonResult(new MyException("000004"));
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			mybatisInterfaceService.insert(interFace);
-			luceneService.add(InterfaceAdapter.getSearchDto(cacheService, interFace));
+			luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		}
 		return new JsonResult(1, interFace);
 	}
@@ -255,7 +245,7 @@ public class InterfaceController extends BaseController{
 				continue;
 			}
 			InterfaceWithBLOBs interFace = mybatisInterfaceService.selectByPrimaryKey( tempId );
-			hasPermission(cacheService.getProject( interFace.getProjectId() ), delInter);
+			hasPermission(projectCache.get( interFace.getProjectId() ), delInter);
 			customInterfaceService.delete(interFace.getId(), "接口", "");
 			luceneService.delete(new SearchDto(interFace.getId()));
 		}
@@ -267,8 +257,8 @@ public class InterfaceController extends BaseController{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		InterfaceWithBLOBs change = mybatisInterfaceService.selectByPrimaryKey(changeId);
 		InterfaceWithBLOBs model = mybatisInterfaceService.selectByPrimaryKey(id);
-		hasPermission(cacheService.getProject( model.getProjectId() ), modInter);
-		hasPermission(cacheService.getProject( change.getProjectId() ), modInter);
+		hasPermission(projectCache.get( model.getProjectId() ), modInter);
+		hasPermission(projectCache.get( change.getProjectId() ), modInter);
 		
 		int modelSequence = model.getSequence();
 		

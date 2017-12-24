@@ -1,10 +1,11 @@
 package cn.crap.service.imp.tool;
 
-import java.io.UnsupportedEncodingException;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
+import cn.crap.dto.MailBean;
+import cn.crap.service.IEmailService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.Aes;
+import cn.crap.utils.Const;
+import cn.crap.utils.Tools;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import cn.crap.dto.MailBean;
-import cn.crap.service.ICacheService;
-import cn.crap.service.IEmailService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Aes;
-import cn.crap.utils.Const;
-import cn.crap.utils.Tools;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService implements IEmailService {
@@ -27,13 +24,15 @@ public class EmailService implements IEmailService {
 	@Autowired
 	private JavaMailSenderImpl mailSenderService;
 	@Autowired
-	private ICacheService cacheService;
+	private SettingCache settingCache;
+	@Autowired
+	private StringCache stringCache;
 	@Autowired
 	private Config config;
 	
 	@Override
 	public void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException{
-		String fromName = cacheService.getSetting(Const.SETTING_TITLE).getValue();
+		String fromName = settingCache.get(Const.SETTING_TITLE).getValue();
 		MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
@@ -46,7 +45,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public boolean sendMail(String subject, String toEmail, String context) {
 		try {
-			String fromName = cacheService.getSetting(Const.SETTING_TITLE).getValue();
+			String fromName = settingCache.get(Const.SETTING_TITLE).getValue();
 			MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 			MimeMessageHelper messageHelper;
 			messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -71,7 +70,7 @@ public class EmailService implements IEmailService {
 		mailBean.setToEmail(eamil);
 		mailBean.setSubject("注册邮箱验证-开源API接口管理系统");
 		sendMail(mailBean);
-		cacheService.setStr(code, Const.REGISTER, 10 * 60);
+		stringCache.add(code, Const.REGISTER);
 	}
 	
 	@Override
@@ -82,7 +81,7 @@ public class EmailService implements IEmailService {
 		mailBean.setToEmail(eamil);
 		mailBean.setSubject("找回密码-开源API接口管理系统");
 		sendMail(mailBean);
-		cacheService.setStr(Const.CACHE_FINDPWD+ eamil, code, 10 * 60);
+		stringCache.add(Const.CACHE_FINDPWD+ eamil, code);
 	}
 	
 	private String getMtml(String eamil, String title, String content){

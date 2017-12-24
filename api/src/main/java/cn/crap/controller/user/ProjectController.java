@@ -1,16 +1,23 @@
 package cn.crap.controller.user;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.crap.adapter.ProjectAdapter;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
+import cn.crap.enumeration.ProjectStatus;
+import cn.crap.enumeration.UserType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.service.ISearchService;
 import cn.crap.service.mybatis.custom.CustomErrorService;
 import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.custom.CustomProjectService;
 import cn.crap.service.mybatis.custom.CustomProjectUserService;
 import cn.crap.service.mybatis.imp.*;
+import cn.crap.springbeans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,23 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectStatus;
-import cn.crap.enumeration.UserType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.service.ISearchService;
-import cn.crap.model.mybatis.Project;
-import cn.crap.springbeans.Config;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/project")
 public class ProjectController extends BaseController {
-@Autowired
-private ICacheService cacheService;
 @Autowired
 private MybatisProjectService projectService;
 @Autowired
@@ -99,7 +95,7 @@ private CustomProjectUserService customProjectUserService;
 	public JsonResult detail(@ModelAttribute Project project) throws MyException{
 		Project model;
 		if(!project.getId().equals(Const.NULL_ID)){
-			model= cacheService.getProject(project.getId());
+			model= projectCache.get(project.getId());
 			hasPermission(model);
 		}else{
 			model=new Project();
@@ -120,7 +116,7 @@ private CustomProjectUserService customProjectUserService;
 
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
-			model= cacheService.getProject(project.getId());
+			model= projectCache.get(project.getId());
 			hasPermission(model);
 
 			// 不允许转移项目
@@ -146,10 +142,10 @@ private CustomProjectUserService customProjectUserService;
 		}
 
 		// 清楚缓存
-		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
+		projectCache.del(project.getId());
 
 		// 刷新用户权限 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService), config.getLoginInforTime());
+		userCache.add(user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,project);
 	}
 
@@ -162,7 +158,7 @@ private CustomProjectUserService customProjectUserService;
 			throw new MyException("000009");
 
 
-		Project model= cacheService.getProject(project.getId());
+		Project model= projectCache.get(project.getId());
 		hasPermission(model);
 
 
@@ -181,7 +177,7 @@ private CustomProjectUserService customProjectUserService;
 			throw new MyException("000038");
 		}
 
-		cacheService.delObj(Const.CACHE_PROJECT+project.getId());
+		projectCache.del(project.getId());
 		customProjectService.delete(project.getId(), "项目", "");
 		return new JsonResult(1,null);
 	}
@@ -190,8 +186,8 @@ private CustomProjectUserService customProjectUserService;
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Project change = cacheService.getProject(changeId);
-		Project model = cacheService.getProject(id);
+		Project change = projectCache.get(changeId);
+		Project model = projectCache.get(id);
 
 		hasPermission(change);
 		hasPermission(model);
@@ -210,7 +206,7 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/rebuildIndex.do")
 	@AuthPassport
 	public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
-		Project model= cacheService.getProject(projectId);
+		Project model= projectCache.get(projectId);
 		hasPermission(model);
 		return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
 	}

@@ -2,10 +2,16 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.MenuAdapter;
 import cn.crap.dto.MenuDto;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
 import cn.crap.service.mybatis.imp.MybatisMenuService;
-import cn.crap.utils.*;
+import cn.crap.utils.Const;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,19 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-
 @Controller
 @RequestMapping
 public class MenuController extends BaseController{
 	@Autowired
 	private MybatisMenuService mybatisMenuService;
-	@Autowired
-	ICacheService cacheService;
 
 	/**
 	 * 根据父菜单、菜单名、菜单类型及页码获取菜单列表
@@ -91,7 +89,7 @@ public class MenuController extends BaseController{
 			mybatisMenuService.insert(MenuAdapter.getModel(menuDto));
 		}
 		// 清除缓存
-		cacheService.delObj("cache:leftMenu");
+		objectCache.del("cache:leftMenu");
 		return new JsonResult(1, menuDto);
 	}
 
@@ -108,7 +106,7 @@ public class MenuController extends BaseController{
 		}
 		mybatisMenuService.delete(id);
 		// 清除缓存
-		cacheService.delObj("cache:leftMenu");
+		objectCache.del("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 
@@ -128,7 +126,7 @@ public class MenuController extends BaseController{
 		mybatisMenuService.update(change);
 
 		// 清除缓存
-		cacheService.delObj("cache:leftMenu");
+		objectCache.del("cache:leftMenu");
 		return new JsonResult(1, null);
 	}
 

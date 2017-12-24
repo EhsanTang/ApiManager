@@ -30,7 +30,7 @@
 		<init-param>
 			<param-name>filterSuffixes</param-name><!-- 需要过滤的后缀 -->
 			<param-value>
-				.json,.do
+				.json,.do,/
 			</param-value>
 		</init-param>
 	</filter>

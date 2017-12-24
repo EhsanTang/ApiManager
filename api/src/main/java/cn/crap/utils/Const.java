@@ -29,31 +29,21 @@ public class Const {
 	public static final String AUTH_LOG = "LOG";
 	public static final String AUTH_PROJECT = "PROJECT_";
 	// 缓存
-	public static final String CACHE_USER= ":user";// 用户登录信息
 	public static final String CACHE_IMGCODE = ":imgCode";
 	public static final String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	public static final String CACHE_TEMP_PWD = ":tempPwd";
 	public static final String CACHE_SEARCH_WORDS = ":searchWords";
 	public static final String CACHE_MODULEIDS = ":moduleIds:";
-	public static final String CACHE_ALL_DATACENTER = ":all:datacenter:";
 	public static final String CACHE_ERROR_TIP = ":errorTip:";
 	public static final String CACHE_TUIJIAN_OPEN_MODULEIDS = ":openTuijianModuleIds:";
 	public static final String CACHE_ARTICLE_CATEGORY = ":article:category:";
-	public static final String CACHE_WEBPAGE = ":webPageDetail:";
-	public static final String CACHE_COMMENTLIST = ":commentList:";
-	public static final String CACHE_COMMENT_PAGE = ":commentList:page:";
 	public static final String CACHE_AUTHORIZE = ":authorize:";
 	public static final String CACHE_OSCHINA_AUTHORIZE = ":oschina:authorize:";
 	public static final String CACHE_FINDPWD= ":findPwd:";
 	public static final String CACHE_MONITOR_INTERFACES = ":monitor:interfaces";
 	public static final String CACHE_MONITOR_INTERFACES_HAS_SEND_EMAIL = ":monitor:interfaces:hasSendEmail";// 是否已经发送了告警邮件
 	public static final String CACHE_MONITOR_INTERFACES_EMAIL_TIMES = ":monitor:interfaces:emailTimes";// 发送邮件次数
-	public static final String CACHE_PROJECT = ":project:";
-	public static final String CACHE_MODULE = "cache:model:";
-	public static final String CACHE_SETTING = "cache:setting";
-	public static final String CACHE_USER_MODEL= "cache:user:model";// 用户登录信息
-	public static final String CACHE_SETTINGLIST = "cache:settingList";
-	
+
 	
 	//常量
 	public static final String COOKIE_USERID = "cookieUserId";

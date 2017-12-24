@@ -1,16 +1,15 @@
 package cn.crap.controller.user;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.crap.adapter.ErrorAdapter;
+import cn.crap.dto.CategoryDto;
+import cn.crap.dto.DictionaryDto;
+import cn.crap.dto.InterfacePDFDto;
 import cn.crap.dto.SettingDto;
+import cn.crap.enumeration.ArticleType;
+import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Error;
 import cn.crap.service.mybatis.custom.CustomArticleService;
@@ -20,6 +19,9 @@ import cn.crap.service.mybatis.custom.CustomModuleService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisInterfaceService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.*;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,29 +29,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.crap.dto.CategoryDto;
-import cn.crap.dto.DictionaryDto;
-import cn.crap.dto.InterfacePDFDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.enumeration.ProjectType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.HttpPostGet;
-import cn.crap.utils.MD5;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/staticize")
 public class StaticizeController extends BaseController{
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private CustomInterfaceService customInterfaceService;
 	@Autowired
@@ -74,10 +64,10 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeError(HttpServletRequest req, @RequestParam String projectId,@RequestParam int currentPage,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !cacheService.getSetting(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException("000056");
 		}
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -105,12 +95,12 @@ public class StaticizeController extends BaseController{
 	public ModelAndView interfaceList(HttpServletRequest req, @RequestParam String moduleId, @RequestParam int currentPage,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !cacheService.getSetting(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException("000056");
 		}
 		
-		Module module = cacheService.getModule(moduleId);
-		Project project = cacheService.getProject(module.getProjectId());
+		Module module = moduleCache.get(moduleId);
+		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -139,11 +129,11 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId,@RequestParam String category,@RequestParam int currentPage,
 			String type, String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !cacheService.getSetting(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException("000056");
 		}
-		Module module = cacheService.getModule(moduleId);
-		Project project = cacheService.getProject(module.getProjectId());
+		Module module = moduleCache.get(moduleId);
+		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -211,13 +201,13 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeArticle(HttpServletRequest req, @RequestParam String articleId, 
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !cacheService.getSetting(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException("000056");
 		}		
 		
 		ArticleWithBLOBs article = articleService.selectByPrimaryKey(articleId);
-		Module module = cacheService.getModule(article.getModuleId());
-		Project project = cacheService.getProject(module.getProjectId());
+		Module module = moduleCache.get(article.getModuleId());
+		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -251,13 +241,13 @@ public class StaticizeController extends BaseController{
 	public ModelAndView interfaceDetail(HttpServletRequest req, @RequestParam String interfaceId,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !cacheService.getSetting(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(Const.SETTING_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException("000056");
 		}		
 				
 		InterfaceWithBLOBs interFace = interfaceService.selectByPrimaryKey(interfaceId);
-		Module module = cacheService.getModule(interFace.getModuleId());
-		Project project = cacheService.getProject(module.getProjectId());
+		Module module = moduleCache.get(interFace.getModuleId());
+		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -284,7 +274,7 @@ public class StaticizeController extends BaseController{
 	@RequestMapping("/delStaticize.do")
 	@ResponseBody
 	public JsonResult delStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 		hasPermission(project);
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 		Tools.deleteFile(path);
@@ -299,7 +289,7 @@ public class StaticizeController extends BaseController{
 	@RequestMapping("/downloadStaticize.do")
 	@ResponseBody
 	public JsonResult downloadStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 		hasPermission(project);
 		String path = Tools.getServicePath(req) + "resources/html/staticize/"+project.getId(); 
 		File file = new File(path);
@@ -360,8 +350,8 @@ public class StaticizeController extends BaseController{
 			needStaticizes = ",article," + needStaticizes + ",";
 		}
 		
-		String secretKey = cacheService.getSetting(Const.SETTING_SECRETKEY).getValue();
-		Project project = cacheService.getProject(projectId);
+		String secretKey = settingCache.get(Const.SETTING_SECRETKEY).getValue();
+		Project project = projectCache.get(projectId);
 		
 		hasPermission(project);
 		
@@ -503,7 +493,7 @@ public class StaticizeController extends BaseController{
 	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) {
 		// 静态化
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (SettingDto setting : cacheService.getSetting()) {
+		for (SettingDto setting : settingCache.getAll()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		if(!MyString.isEmpty(project.getCover())){

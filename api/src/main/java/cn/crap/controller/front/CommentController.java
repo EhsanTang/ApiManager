@@ -16,7 +16,6 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Comment;
 import cn.crap.utils.Const;
 import cn.crap.utils.DateFormartUtil;
@@ -27,22 +26,19 @@ import cn.crap.utils.Tools;
 @RequestMapping("/front/comment")
 public class CommentController extends BaseController {
 	@Autowired
-	private ICacheService cacheService;
-
-	@Autowired
 	private MybatisCommentService commentService;
 
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
 		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
-		if (cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
-			if (!comment.getId().equals(Tools.getImgCode(request))) {
+		if (settingCache.get(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
+			if (!comment.getId().equals(Tools.getImgCode())) {
 				throw new MyException("000010");
 			}
 		}
 		LoginInfoDto user = Tools.getUser();
-		SettingDto anonymousComment = cacheService.getSetting(Const.SETTING_ANONYMOUS_COMMENT);
+		SettingDto anonymousComment = settingCache.get(Const.SETTING_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !"true".equals(anonymousComment.getValue())){
 			if (user == null){
 				throw new MyException("000060");

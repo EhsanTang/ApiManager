@@ -1,15 +1,19 @@
 package cn.crap.controller.user;
 
-import java.io.IOException;
-import java.util.Date;
-
 import cn.crap.adapter.SourceAdapter;
+import cn.crap.dto.SearchDto;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Source;
 import cn.crap.model.mybatis.SourceCriteria;
+import cn.crap.service.ISearchService;
 import cn.crap.service.mybatis.custom.CustomSourceService;
-import cn.crap.service.mybatis.imp.MybatisRoleService;
 import cn.crap.service.mybatis.imp.MybatisSourceService;
-import cn.crap.utils.*;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,12 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.SearchDto;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ISearchService;
+import java.io.IOException;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/user/source")
@@ -119,7 +119,7 @@ public class SourceController extends BaseController{
 				}
 			}
 			
-			SearchDto searchDto = SourceAdapter.getSearchDto(cacheService, source);
+			SearchDto searchDto = SourceAdapter.getSearchDto(source);
 			source.setUpdateTime(new Date());
 			if(!MyString.isEmpty(source.getId())){
 				hasPermissionModuleId((source.getModuleId()), modSource);

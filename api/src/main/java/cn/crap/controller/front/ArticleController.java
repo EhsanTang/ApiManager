@@ -24,7 +24,6 @@ import cn.crap.enumeration.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Project;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
@@ -37,8 +36,6 @@ import cn.crap.utils.Tools;
  */
 @Controller("frontArticleController")
 public class ArticleController extends BaseController {
-    @Autowired
-    private ICacheService cacheService;
     @Autowired
     private MybatisCommentService commentService;
     @Autowired
@@ -60,8 +57,8 @@ public class ArticleController extends BaseController {
                            String visitCode) throws MyException {
 
         String type = ArticleType.DICTIONARY.name();
-        Module module = cacheService.getModule(moduleId);
-        Project project = cacheService.getProject(module.getProjectId());
+        Module module = moduleCache.get(moduleId);
+        Project project = projectCache.get(module.getProjectId());
 
         // private project need login, public project need check password
         isPrivateProject(password, visitCode, project);
@@ -90,8 +87,8 @@ public class ArticleController extends BaseController {
         if ( ArticleType.ARTICLE.name().equals(type)){
             type = ArticleType.ARTICLE.name();
         }
-        Module module = cacheService.getModule(moduleId);
-        Project project = cacheService.getProject(module.getProjectId());
+        Module module = moduleCache.get(moduleId);
+        Project project = projectCache.get(module.getProjectId());
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         isPrivateProject(password, visitCode, project);
@@ -128,8 +125,8 @@ public class ArticleController extends BaseController {
         id = article.getId();
 
 
-        Module module = cacheService.getModule(article.getModuleId());
-        Project project = cacheService.getProject(module.getProjectId());
+        Module module = moduleCache.get(article.getModuleId());
+        Project project = projectCache.get(module.getProjectId());
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         isPrivateProject(password, visitCode, project);
@@ -152,7 +149,7 @@ public class ArticleController extends BaseController {
         List<Comment> comments = customCommentService.selectByArticelId(id, null, page);
         page.setAllRow(customCommentService.countByArticleId(id));
         returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", cacheService.getSetting(Const.SETTING_COMMENTCODE).getValue());
+        returnMap.put("commentCode", settingCache.get(Const.SETTING_COMMENTCODE).getValue());
 
         // 更新点击量
         customArticleService.updateClickById(id);

@@ -9,7 +9,8 @@ import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.tool.CacheService;
+import cn.crap.service.imp.tool.ModuleCache;
+import cn.crap.service.imp.tool.ProjectCache;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -28,8 +30,10 @@ public class CustomArticleService implements ILuceneService{
     private ArticleMapper mapper;
     @Autowired
     private CustomArticleMapper customArticleMapper;
-    @Autowired
-    private CacheService cacheService;
+    @Resource(name = "projectCache")
+    protected ProjectCache projectCache;
+    @Resource(name = "moduleCache")
+    protected ModuleCache moduleCache;
     @Autowired
     private MybatisLogService logService;
 
@@ -69,9 +73,9 @@ public class CustomArticleService implements ILuceneService{
 
     public Project getProject(String moduleId) {
         if (!MyString.isEmpty(moduleId)) {
-            Module module = cacheService.getModule(moduleId);
+            Module module = moduleCache.get(moduleId);
             if (module != null){
-                return cacheService.getProject(module.getProjectId());
+                return projectCache.get(module.getProjectId());
             }
         }
         return new Project();
@@ -79,7 +83,7 @@ public class CustomArticleService implements ILuceneService{
 
     public String getProjectId(String moduleId) {
         if (!MyString.isEmpty(moduleId)) {
-            Module module = cacheService.getModule(moduleId);
+            Module module = moduleCache.get(moduleId);
             if (module != null)
                 return module.getProjectId();
         }
@@ -95,7 +99,7 @@ public class CustomArticleService implements ILuceneService{
 
     private Module getModule(String moduleId){
         if(!MyString.isEmpty(moduleId)){
-            Module module = cacheService.getModule(moduleId);
+            Module module = moduleCache.get(moduleId);
             if(module!=null) {
                 return module;
             }
@@ -145,7 +149,7 @@ public class CustomArticleService implements ILuceneService{
     }
 
     public List<SearchDto> getAll() {
-        return ArticleAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(new ArticleCriteria()));
+        return ArticleAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(new ArticleCriteria()));
     }
 
     @Override
@@ -157,7 +161,7 @@ public class CustomArticleService implements ILuceneService{
     public List<SearchDto> getAllByProjectId(String projectId) {
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  ArticleAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(example));
+        return  ArticleAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(example));
     }
 
     public Integer countByModuleIdAndType(String moduleId, String type){

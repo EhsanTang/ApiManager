@@ -19,11 +19,7 @@ public class ThreadContext implements Filter {
     private static final String SEPARATOR_COMMA = ",";
     private static final String CONFIG_FILTER_SUFFIXES = "filterSuffixes";
     private static List<String> FILTER_SUFFIXES;
-    private static ThreadLocal<ThreadObject> THREAD_OBJECT = new ThreadLocal<ThreadObject>() {
-        protected ThreadObject initialValue() {
-            throw new RuntimeException("程序未初始化，请在web.xml中 配置过滤器");
-        }
-    };
+    private static ThreadLocal<ThreadObject> THREAD_OBJECT = new ThreadLocal<ThreadObject>();
 
     /**
      * @param filterConfig web.xml 中filter的配置信息

@@ -1,29 +1,27 @@
 package cn.crap.service.imp.tool;
 
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import cn.crap.dao.mybatis.custom.CustomArticleMapper;
-import cn.crap.model.mybatis.*;
-import cn.crap.service.mybatis.custom.CustomModuleService;
-import cn.crap.service.mybatis.custom.CustomProjectService;
-import cn.crap.service.mybatis.imp.MybatisModuleService;
-import cn.crap.service.mybatis.imp.MybatisProjectService;
-import cn.crap.service.mybatis.imp.MybatisUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
 import cn.crap.framework.MyException;
-import cn.crap.service.ICacheService;
+import cn.crap.model.mybatis.*;
 import cn.crap.service.IPickService;
+import cn.crap.service.mybatis.custom.CustomModuleService;
+import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
+import cn.crap.service.mybatis.imp.MybatisProjectService;
+import cn.crap.service.mybatis.imp.MybatisUserService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 下拉选着
@@ -32,8 +30,6 @@ import cn.crap.utils.Tools;
  */
 @Service("userPickService")
 public class UserPickService implements IPickService{
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private MybatisProjectService projectService;
 	@Autowired

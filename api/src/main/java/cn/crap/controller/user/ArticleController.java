@@ -1,16 +1,23 @@
 package cn.crap.controller.user;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dto.ArticleDto;
+import cn.crap.dto.SearchDto;
+import cn.crap.enumeration.ArticleType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Article;
+import cn.crap.service.ISearchService;
 import cn.crap.service.mybatis.custom.CustomArticleService;
 import cn.crap.service.mybatis.custom.CustomCommentService;
 import cn.crap.service.mybatis.imp.MybatisArticleService;
 import cn.crap.service.mybatis.imp.MybatisCommentService;
-import cn.crap.service.mybatis.imp.MybatisErrorService;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -19,22 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.service.ISearchService;
-import cn.crap.model.mybatis.Article;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.SqlToDictionaryUtil;
-import cn.crap.utils.Tools;
+import java.io.IOException;
+import java.util.List;
 
-// TODO article等中冗余projectId字段
 // TODO 版本升级提供在线接口，调用接口直接检查数据库并升级
 // TODO setting 中记录版本ID（MD5（version））
 @Controller
@@ -44,8 +38,6 @@ public class ArticleController extends BaseController{
 	private MybatisArticleService articleService;
 	@Autowired
 	private CustomArticleService customArticleService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
@@ -59,7 +51,7 @@ public class ArticleController extends BaseController{
 	public JsonResult list(String projectId, String moduleId, String name, String type, String category,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Assert.notNull(moduleId);
 		Assert.notNull(projectId);
-		hasPermission( cacheService.getProject(projectId) , view);
+		hasPermission( projectCache.get(projectId) , view);
 		
 		Page page= new Page(15, currentPage);
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
@@ -77,7 +69,7 @@ public class ArticleController extends BaseController{
 		if(id != null){
 			model= articleService.selectByPrimaryKey(id);
 			String projectId = customArticleService.getProjectId(model.getModuleId());
-			hasPermission( cacheService.getProject(projectId), view);
+			hasPermission( projectCache.get(projectId), view);
 			return new JsonResult(1,model);
 		}
 
@@ -113,20 +105,18 @@ public class ArticleController extends BaseController{
 			// 修改模块
 			if(!dto.getModuleId().equals(dbArticle.getModuleId())){
 				String dbProjectId = customArticleService.getProjectId(dbArticle.getModuleId());
-				hasPermission( cacheService.getProject(dbProjectId) , dbArticle.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+				hasPermission( projectCache.get(dbProjectId) , dbArticle.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 			}	
 			
-			hasPermission( cacheService.getProject(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+			hasPermission( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 
 			customArticleService.update(ArticleAdapter.getModel(dto), ArticleType.getByEnumName(dto.getType()), "");
-			luceneService.update(ArticleAdapter.getSearchDto(cacheService, ArticleAdapter.getModel(dto)));
+			luceneService.update(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
 		}else{
-			hasPermission( cacheService.getProject(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
+			hasPermission( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
 			articleService.insert(ArticleAdapter.getModel(dto));
-			luceneService.add(ArticleAdapter.getSearchDto(cacheService,  ArticleAdapter.getModel(dto)));
+			luceneService.add(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
 		}
-		cacheService.delObj(Const.CACHE_WEBPAGE + dto.getId());
-		cacheService.delObj(Const.CACHE_WEBPAGE + dto.getMkey());
 		return new JsonResult(1,dto);
 	}
 	
@@ -145,7 +135,7 @@ public class ArticleController extends BaseController{
 				continue;
 			}
 			Article model = articleService.selectByPrimaryKey(tempId);
-			hasPermission( cacheService.getProject(customArticleService.getProjectId(model.getModuleId())) , model.getType().equals(ArticleType.ARTICLE.name())? delArticle:delDict);
+			hasPermission( projectCache.get(customArticleService.getProjectId(model.getModuleId())) , model.getType().equals(ArticleType.ARTICLE.name())? delArticle:delDict);
 			if(model.getCanDelete()!=1){
 				throw new MyException("000009");
 			}
@@ -155,9 +145,7 @@ public class ArticleController extends BaseController{
 			}
 
 			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
-			cacheService.delObj(Const.CACHE_WEBPAGE + model.getId());
-			cacheService.delObj(Const.CACHE_WEBPAGE + model.getMkey());
-			
+
 			luceneService.delete(new SearchDto(model.getId()));
 		}
 		return new JsonResult(1,null);
@@ -170,8 +158,8 @@ public class ArticleController extends BaseController{
 		Article change = articleService.selectByPrimaryKey(changeId);
 		Article model = articleService.selectByPrimaryKey(id);
 		// TODO
-		//hasPermission( cacheService.getProject(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-		//hasPermission( cacheService.getProject(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+		//hasPermission( projectCache.get(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+		//hasPermission( projectCache.get(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
 		
 		int modelSequence = model.getSequence();
 		

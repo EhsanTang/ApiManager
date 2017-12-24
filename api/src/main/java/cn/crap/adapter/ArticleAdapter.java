@@ -2,16 +2,14 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.LuceneSearchType;
 import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
-import cn.crap.service.ICacheService;
-import cn.crap.service.mybatis.custom.CustomArticleService;
-import cn.crap.utils.DateFormartUtil;
+import cn.crap.service.imp.tool.ModuleCache;
+import cn.crap.service.imp.tool.ProjectCache;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -104,31 +102,33 @@ public class ArticleAdapter {
 		return dtos;
 	}
 
-	public static List<SearchDto> getSearchDto(ICacheService cacheService, List<ArticleWithBLOBs> models){
+	public static List<SearchDto> getSearchDto(List<ArticleWithBLOBs> models){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<SearchDto> dtos = new ArrayList<>();
 		for (ArticleWithBLOBs model : models){
-			dtos.add(getSearchDto(cacheService, model));
+			dtos.add(getSearchDto(model));
 		}
 		return dtos;
 	}
 
-	public static SearchDto getSearchDto(ICacheService cacheService, ArticleWithBLOBs model){
-		SearchDto dto = new SearchDto();
+	public static SearchDto getSearchDto(ArticleWithBLOBs model){
+        ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
+        ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+        SearchDto dto = new SearchDto();
 		String moduleId = model.getId();
 		dto.setId(moduleId);
 		dto.setCreateTime(model.getCreateTime());
 		dto.setContent(model.getBrief() + model.getContent());
-		dto.setModuleName(cacheService.getModuleName(moduleId));
+		dto.setModuleName(moduleCache.get(moduleId).getName());
 		dto.setTitle(model.getName());
 		dto.setType("Article");
 		dto.setUrl("#/"+model.getProjectId()+"/article/detail/"+model.getModuleId()+"/"+model.getType()+"/"+moduleId);
 		dto.setVersion("");
 		dto.setProjectId(model.getProjectId());
 
-		if(cacheService.getProject(model.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+		if(projectCache.get(model.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
 			dto.setNeedCreateIndex(false);
 		}
 		return dto;

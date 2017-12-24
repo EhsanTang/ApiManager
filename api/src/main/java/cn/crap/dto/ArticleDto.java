@@ -1,16 +1,7 @@
 package cn.crap.dto;
 
-import cn.crap.enumeration.LuceneSearchType;
-import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.mybatis.Module;
-import cn.crap.service.ICacheService;
-
 import java.io.Serializable;
 import java.util.Date;
-import cn.crap.model.mybatis.Article;
-import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.tool.CacheService;
-import cn.crap.utils.MyString;
 
 /**
  * Automatic generation by tools

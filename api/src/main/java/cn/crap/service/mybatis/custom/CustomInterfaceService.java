@@ -6,8 +6,8 @@ import cn.crap.dao.mybatis.custom.CustomInterfaceMapper;
 import cn.crap.dto.*;
 import cn.crap.enumeration.LogType;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.ICacheService;
 import cn.crap.service.ILuceneService;
+import cn.crap.service.imp.tool.ModuleCache;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.service.mybatis.imp.MybatisModuleService;
 import cn.crap.springbeans.Config;
@@ -25,7 +25,7 @@ public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private InterfaceMapper mapper;
     @Autowired
-    private ICacheService cacheService;
+    private ModuleCache moduleCache;
     @Autowired
     private MybatisModuleService moduleService;
     @Autowired
@@ -91,7 +91,7 @@ public class CustomInterfaceService implements ILuceneService {
 //	}
 
     public void getInterFaceRequestExam(InterfaceWithBLOBs interFace) {
-        Module module = cacheService.getModule(interFace.getModuleId());
+        Module module = moduleCache.get(interFace.getModuleId());
         interFace.setRequestExam("请求地址:"+ module.getName() + interFace.getUrl()+"\r\n");
 
         // 请求头
@@ -224,13 +224,13 @@ public class CustomInterfaceService implements ILuceneService {
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(new InterfaceCriteria()));
+        return InterfaceAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(new InterfaceCriteria()));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(cacheService, mapper.selectByExampleWithBLOBs(example));
+        return  InterfaceAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(example));
     }
 }

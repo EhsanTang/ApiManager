@@ -23,21 +23,6 @@ public class Config{
 	@Value("${web.domain}")
 	private String domain;
 	
-	@Value("${web.redisIp}")
-	private String redisIp;
-	
-	@Value("${web.redisPort}")
-	private int redisPort;
-	
-	@Value("${web.redisPwd}")
-	private String redisPwd;
-	
-	@Value("${web.redisPoolSize}")
-	private int redisPoolSize;
-	
-	@Value("${web.redisKeyPrefix}")
-	private String redisKeyPrefix;
-	
 	@Value("${web.cacheTime}")
 	private int cacheTime;
 	
@@ -119,26 +104,6 @@ public class Config{
 
 	public String getDomain() {
 		return domain;
-	}
-
-	public String getRedisIp() {
-		return redisIp;
-	}
-
-	public int getRedisPort() {
-		return redisPort;
-	}
-
-	public String getRedisPwd() {
-		return redisPwd;
-	}
-
-	public int getRedisPoolSize() {
-		return redisPoolSize;
-	}
-
-	public String getRedisKeyPrefix() {
-		return redisKeyPrefix;
 	}
 
 	public int getCacheTime() {

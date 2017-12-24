@@ -1,15 +1,19 @@
 package cn.crap.controller.admin;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Setting;
 import cn.crap.model.mybatis.SettingCriteria;
 import cn.crap.service.mybatis.imp.MybatisSettingService;
-import cn.crap.utils.*;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.Const;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,20 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.springbeans.Config;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class SettingController extends BaseController{
 
 	@Autowired
 	private MybatisSettingService mybatisSettingService;
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private Config config;
 	private final static String[] indexUrls = new String[]{"index.do", "front/","project.do"};
@@ -90,7 +88,7 @@ public class SettingController extends BaseController{
 	@ResponseBody
 	@AuthPassport(authority=Const.AUTH_SETTING)
 	public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto, HttpServletRequest req) throws Exception{
-			if(settingDto.getId() == null){
+			if(settingDto.getId() != null){
 				Setting old = mybatisSettingService.selectByPrimaryKey(settingDto.getId());
 				settingDto.setCanDelete(old.getCanDelete());
 				if (Const.SETTING_INDEX_PAGE.equals(settingDto.getKey())){
@@ -118,14 +116,13 @@ public class SettingController extends BaseController{
 
 				mybatisSettingService.insert(SettingAdapter.getModel(settingDto));
 			}
-			cacheService.delObj(Const.CACHE_SETTING);
-			cacheService.delObj(Const.CACHE_SETTINGLIST);
-			
+			settingCache.del(settingDto.getKey());
+
 			// 更新css模板
 			String path = Tools.getServicePath(req) + "resources/css/"; 
 			Tools.createFile(path);
 			String content = Tools.readFile(path + "setting.tpl.css");
-			for(SettingDto s:cacheService.getSetting()){
+			for(SettingDto s:settingCache.getAll()){
 				String value = s.getValue();
 				if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png")) ){
 					if (!value.startsWith("http://") && !value.startsWith("https://")){
@@ -147,8 +144,7 @@ public class SettingController extends BaseController{
 			throw new MyException("000009");
 		}
 		mybatisSettingService.delete(id);
-		cacheService.delObj(Const.CACHE_SETTING);
-		cacheService.delObj(Const.CACHE_SETTINGLIST);
+		settingCache.del(setting.getMkey());
 		return new JsonResult(1,null);
 	}
 	
@@ -165,8 +161,6 @@ public class SettingController extends BaseController{
 
 		mybatisSettingService.update(model);
 		mybatisSettingService.update(change);
-		cacheService.delObj(Const.CACHE_SETTING);
-		cacheService.delObj(Const.CACHE_SETTINGLIST);
 		return new JsonResult(1, null);
 	}
 

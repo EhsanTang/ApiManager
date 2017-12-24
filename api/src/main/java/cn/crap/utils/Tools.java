@@ -4,8 +4,8 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.ICacheService;
-import cn.crap.service.imp.tool.CacheService;
+import cn.crap.service.imp.tool.StringCache;
+import cn.crap.service.imp.tool.UserCache;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -207,9 +207,9 @@ public class Tools {
 	}
 	
 	// 获取图形验证码
-	public static String getImgCode(HttpServletRequest request) throws MyException{
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		String timesStr = cacheService.getStr(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
+	public static String getImgCode() throws MyException{
+		StringCache settingCache = SpringContextHolder.getBean("settingCache", StringCache.class);
+		String timesStr = settingCache.get(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false));
 		int times = 0;
 		if(timesStr != null){
 			times = Integer.parseInt(timesStr.toString()) + 1;
@@ -217,8 +217,8 @@ public class Tools {
 		if(times > 3){
 			throw new MyException("000011");
 		}
-		cacheService.setStr(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false, request), times + "", 10 * 60);
-		String imgCode = cacheService.getStr(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false, request));
+		settingCache.add(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false), times + "");
+		String imgCode = settingCache.get(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false));
 		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
 	}
 	
@@ -465,9 +465,9 @@ public class Tools {
 	 * @return
 	 */
 	public static LoginInfoDto getUser(){
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		String uId = MyCookie.getCookie(Const.COOKIE_USERID, false, Tools.getRequest());
-		return (LoginInfoDto) cacheService.getObj(Const.CACHE_USER + uId);
+		UserCache userCache = SpringContextHolder.getBean("userCache", UserCache.class);
+		String uId = MyCookie.getCookie(Const.COOKIE_USERID, false);
+		return userCache.get(uId);
 	}
 	
 	public static boolean checkUserName(String userName){

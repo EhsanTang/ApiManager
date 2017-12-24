@@ -2,29 +2,23 @@ package cn.crap.service.mybatis.custom;
 
 import cn.crap.adapter.SourceAdapter;
 import cn.crap.dao.mybatis.SourceMapper;
-import cn.crap.dao.mybatis.UserMapper;
-import cn.crap.dto.LoginDto;
-import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.dto.SourceDto;
 import cn.crap.enumeration.LogType;
-import cn.crap.model.mybatis.*;
-import cn.crap.service.ICacheService;
+import cn.crap.model.mybatis.Log;
+import cn.crap.model.mybatis.Source;
+import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.mybatis.imp.MybatisLogService;
 import cn.crap.service.mybatis.imp.MybatisProjectService;
 import cn.crap.springbeans.Config;
-import cn.crap.utils.*;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import net.sf.json.JSONObject;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 // TODO 重新生成所有的ID，保证ID有序
@@ -32,8 +26,6 @@ import java.util.List;
 public class CustomSourceService implements ILuceneService{
     @Autowired
     private SourceMapper sourceMapper;
-    @Autowired
-    private ICacheService cacheService;
     @Autowired
     private Config config;
     @Autowired
@@ -72,13 +64,13 @@ public class CustomSourceService implements ILuceneService{
 
         public List<SearchDto> getAll() {
             SourceCriteria example = new SourceCriteria();
-            return SourceAdapter.getSearchDto(cacheService, sourceMapper.selectByExample(example));
+            return SourceAdapter.getSearchDto(sourceMapper.selectByExample(example));
         }
 
         public List<SearchDto> getAllByProjectId(String projectId) {
             SourceCriteria example = new SourceCriteria();
             example.createCriteria().andProjectIdEqualTo(projectId);
-            return SourceAdapter.getSearchDto(cacheService, sourceMapper.selectByExample(example));
+            return SourceAdapter.getSearchDto(sourceMapper.selectByExample(example));
         }
 
         public String getLuceneType() {

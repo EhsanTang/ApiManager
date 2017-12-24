@@ -2,36 +2,16 @@ package cn.crap.service;
 
 import java.util.List;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Setting;
 import cn.crap.model.mybatis.User;
 
-public interface ICacheService{
+public interface ICacheService<T>{
+	T get(String key);
+	boolean del(String key);
 
-	boolean setStr(String key, String value, int expireTime);
-	String getStr(String key);
-	boolean delObj(String key);
-
-	SettingDto getSetting(String key);
-
-	List<SettingDto> getSetting();
-
-	String getModuleName(String moduleId);
-
-	Module getModule(String moduleId);
-
-	boolean delObj(String key, String field);
-
-	Object getObj(String key);
-
-	Object setObj(String key, Object value, int expireTime);
-	Object setObj(String key, String field, Object value, int expireTime);
-	void delStr(String string);
-	
 	boolean flushDB();
-	Object getObj(String string, String string2);
-	Project getProject(String projectId);
-	User getUser(String userId);
 }

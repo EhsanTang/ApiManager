@@ -1,8 +1,7 @@
 package cn.crap.dto;
 
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.ICacheService;
-import cn.crap.service.imp.tool.CacheService;
+import cn.crap.service.imp.tool.ProjectCache;
 
 import java.util.Date;
 
@@ -65,8 +64,8 @@ public class ErrorDto {
 	}
 
 	public String getProjectName(){
-		ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		return cacheService.getProject(projectId).getName();
+		ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+		return projectCache.get(projectId).getName();
 	}
 
 }

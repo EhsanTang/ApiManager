@@ -1,5 +1,32 @@
 package cn.crap.service.imp.tool;
 
+import cn.crap.dto.SearchDto;
+import cn.crap.service.ILuceneService;
+import cn.crap.service.ISearchService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.*;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -7,50 +34,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.crap.service.ILuceneService;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Formatter;
-import org.apache.lucene.search.highlight.Fragmenter;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.Scorer;
-import org.apache.lucene.search.highlight.SimpleFragmenter;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.poi.ss.formula.functions.T;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import cn.crap.dto.SearchDto;
-import cn.crap.service.ICacheService;
-import cn.crap.service.ISearchService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
 
 	@Autowired
-	private ICacheService cacheService;
+	private SettingCache settingCache;
+	@Autowired
+	private StringCache stringCache;
 	@Autowired
 	private Config config;
 
@@ -71,7 +61,7 @@ public class LuceneSearchService implements ISearchService {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader
-					.open(FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())));
+					.open(FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
 			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
@@ -119,7 +109,8 @@ public class LuceneSearchService implements ISearchService {
 			return searchDtos;
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			// TODO 消息时间需要修改为12小时
+			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (reader != null)
 				reader.close();
@@ -134,11 +125,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.deleteDocuments(new Term("id", searchDto.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -226,11 +217,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				try {
@@ -255,11 +246,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -281,7 +272,7 @@ public class LuceneSearchService implements ISearchService {
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue());
+				File file = new File(settingCache.get(Const.SETTING_LUCENE_DIR).getValue());
 				File[] tempList = file.listFiles();
 			    for (int i = 0; i < tempList.length; i++) {
 			    	tempList[i].delete();
@@ -292,7 +283,7 @@ public class LuceneSearchService implements ISearchService {
 			    	List<SearchDto> dtos= service.getAll();
 			    	for (SearchDto dto : dtos) {
 			    		i++;
-						cacheService.setStr(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录", 60);
+						stringCache.add(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录");
 						// 避免占用太大的系统资源
 						try {
 							Thread.sleep(100);
@@ -302,7 +293,7 @@ public class LuceneSearchService implements ISearchService {
 						add(dto);
 					}
 			    }
-			    cacheService.setStr(Const.CACHE_ERROR_TIP,"重建索引成功！",60);
+			    stringCache.add(Const.CACHE_ERROR_TIP,"重建索引成功！");
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{

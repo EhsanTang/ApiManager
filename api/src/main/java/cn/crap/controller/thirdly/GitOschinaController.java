@@ -89,7 +89,7 @@ public class GitOschinaController extends BaseController{
 			LoginDto model = new LoginDto();
 			model.setUserName(user.getUserName());
 			model.setRemberPwd("NO");
-			customUserService.login(model, user, request, response);
+			customUserService.login(model, user);
 			
 			response.sendRedirect("../admin.do");
 		return "";

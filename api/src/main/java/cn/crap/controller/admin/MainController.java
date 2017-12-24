@@ -1,32 +1,27 @@
 package cn.crap.controller.admin;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import cn.crap.dto.SettingDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.SettingDto;
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class MainController extends BaseController{
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
@@ -80,7 +75,7 @@ public class MainController extends BaseController{
 	@ResponseBody
 	@AuthPassport(authority = Const.AUTH_ADMIN)
 	public JsonResult closeErrorTips() throws Exception {
-		cacheService.delStr(Const.CACHE_ERROR_TIP);
+		stringCache.del(Const.CACHE_ERROR_TIP);
 		return new JsonResult(1, null);
 	}
 	
@@ -92,7 +87,7 @@ public class MainController extends BaseController{
 	@AuthPassport
 	public JsonResult init(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (SettingDto setting : cacheService.getSetting()) {
+		for (SettingDto setting : settingCache.getAll()) {
 			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}
@@ -105,7 +100,7 @@ public class MainController extends BaseController{
 		returnMap.put("sessionAdminAuthor", user.getAuthStr());
 		returnMap.put("sessionAdminRoleIds", user.getRoleId());
 		returnMap.put("sessionAdminId", user.getId());
-		returnMap.put("errorTips", cacheService.getStr(Const.CACHE_ERROR_TIP));
+		returnMap.put("errorTips", stringCache.get(Const.CACHE_ERROR_TIP));
 		return new JsonResult(1, returnMap);
 	}
 	
@@ -127,6 +122,10 @@ public class MainController extends BaseController{
 	@RequestMapping("/back/flushDB.do")
 	@AuthPassport(authority=Const.SUPER)
 	public JsonResult flushDb(){
-		return new JsonResult(1, cacheService.flushDB());
+		projectCache.flushDB();
+		stringCache.flushDB();
+		moduleCache.flushDB();
+		settingCache.flushDB();
+		return new JsonResult().success();
 	}
 }

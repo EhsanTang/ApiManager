@@ -3,8 +3,9 @@ package cn.crap.adapter;
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
 import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Source;
-import cn.crap.service.ICacheService;
+import cn.crap.service.imp.tool.ProjectCache;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 
@@ -68,18 +69,18 @@ public class SourceAdapter {
         return dtos;
     }
 
-    public static List<SearchDto> getSearchDto(ICacheService cacheService,List<Source> models){
+    public static List<SearchDto> getSearchDto(List<Source> models){
         if (models == null){
             return new ArrayList<>();
         }
         List<SearchDto> dtos = new ArrayList<>();
         for (Source model : models){
-            dtos.add(getSearchDto(cacheService, model));
+            dtos.add(getSearchDto(model));
         }
         return dtos;
     }
 
-    public static SearchDto getSearchDto(ICacheService cacheService, Source source){
+    public static SearchDto getSearchDto(Source source){
         SearchDto dto = new SearchDto();
         dto.setId(source.getId());
         dto.setCreateTime(source.getCreateTime());
@@ -100,8 +101,10 @@ public class SourceAdapter {
         if( MyString.isEmpty(source.getRemark()) ){
             source.setRemark( docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
         }
+        ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+
         // 私有项目不能建立索引
-        if(cacheService.getProject(source.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+        if(projectCache.get(source.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
             dto.setNeedCreateIndex(false);
         }
         return dto;

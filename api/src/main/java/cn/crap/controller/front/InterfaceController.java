@@ -1,5 +1,29 @@
 package cn.crap.controller.front;
 
+import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.dto.InterfaceDto;
+import cn.crap.dto.InterfacePDFDto;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.custom.CustomInterfaceService;
+import cn.crap.service.mybatis.imp.MybatisInterfaceService;
+import cn.crap.service.mybatis.imp.MybatisModuleService;
+import cn.crap.springbeans.Config;
+import cn.crap.utils.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
@@ -7,38 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.dto.InterfaceDto;
-import cn.crap.model.mybatis.*;
-import cn.crap.service.mybatis.custom.CustomInterfaceService;
-import cn.crap.service.mybatis.imp.MybatisInterfaceService;
-import cn.crap.service.mybatis.imp.MybatisModuleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import cn.crap.dto.InterfacePDFDto;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.model.mybatis.Project;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.Html2Pdf;
-import cn.crap.utils.HttpPostGet;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller("frontInterfaceController")
 @RequestMapping("/front/interface")
@@ -50,8 +42,6 @@ public class InterfaceController extends BaseController {
     private CustomInterfaceService customInterfaceService;
     @Autowired
     private MybatisModuleService moduleService;
-    @Autowired
-    private ICacheService cacheService;
     @Autowired
     private Config config;
 
@@ -73,7 +63,7 @@ public class InterfaceController extends BaseController {
                 request.setAttribute("result", "接口ID&模块ID不能同时为空！");
                 return ERROR_VIEW;
             }
-            if (!secretKey.equals(cacheService.getSetting(Const.SETTING_SECRETKEY).getValue())) {
+            if (!secretKey.equals(settingCache.get(Const.SETTING_SECRETKEY).getValue())) {
                 request.setAttribute("result", "秘钥不正确，非法请求！");
                 return ERROR_VIEW;
             }
@@ -84,9 +74,9 @@ public class InterfaceController extends BaseController {
             }
 
             List<InterfacePDFDto> interfacePDFDtos = new ArrayList<>();
-            request.setAttribute("MAIN_COLOR", cacheService.getSetting("MAIN_COLOR").getValue());
-            request.setAttribute("ADORN_COLOR", cacheService.getSetting("ADORN_COLOR").getValue());
-            request.setAttribute("title", cacheService.getSetting("TITLE").getValue());
+            request.setAttribute("MAIN_COLOR", settingCache.get("MAIN_COLOR").getValue());
+            request.setAttribute("ADORN_COLOR", settingCache.get("ADORN_COLOR").getValue());
+            request.setAttribute("title", settingCache.get("TITLE").getValue());
 
             /**
              * 单个生成pdf接口
@@ -131,12 +121,12 @@ public class InterfaceController extends BaseController {
 
         Module module = null;
         if (!MyString.isEmpty(moduleId)) {
-            module = cacheService.getModule(moduleId);
+            module = moduleCache.get(moduleId);
         } else {
-            module = cacheService.getModule(interfaceService.selectByPrimaryKey(id).getModuleId());
+            module = moduleCache.get(interfaceService.selectByPrimaryKey(id).getModuleId());
         }
 
-        Project project = cacheService.getProject(module.getProjectId());
+        Project project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 
         // 使用缓存的密码，不需要验证码
@@ -162,7 +152,7 @@ public class InterfaceController extends BaseController {
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);
         }
-        String secretKey = cacheService.getSetting(Const.SETTING_SECRETKEY).getValue();
+        String secretKey = settingCache.get(Const.SETTING_SECRETKEY).getValue();
         br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId, secretKey)));
         ut = response.getOutputStream();
         while ((len = br.read(buf)) != -1)
@@ -181,7 +171,7 @@ public class InterfaceController extends BaseController {
         }
 
         Module module = moduleService.selectByPrimaryKey(moduleId);
-        Project project = cacheService.getProject(module.getProjectId());
+        Project project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         isPrivateProject(password, visitCode, project);
 
@@ -200,7 +190,7 @@ public class InterfaceController extends BaseController {
 
 
         return new JsonResult(1, interfaces, page,
-                Tools.getMap("crumbs", Tools.getCrumbs(cacheService.getProject(module.getProjectId()).getName(), "#/" + module.getProjectId() + "/module/list", module.getName(), "void")));
+                Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(), "#/" + module.getProjectId() + "/module/list", module.getName(), "void")));
     }
 
     @RequestMapping("/detail.do")
@@ -209,8 +199,8 @@ public class InterfaceController extends BaseController {
         interFace = interfaceService.selectByPrimaryKey(interFace.getId());
         if (interFace != null) {
 
-            Module module = cacheService.getModule(interFace.getModuleId());
-            Project project = cacheService.getProject(module.getProjectId());
+            Module module = moduleCache.get(interFace.getModuleId());
+            Project project = projectCache.get(module.getProjectId());
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             isPrivateProject(password, visitCode, project);
 
@@ -230,7 +220,7 @@ public class InterfaceController extends BaseController {
                             Tools.getCrumbs(
                                     project.getName(), "#/" + project.getId() + "/module/list",
                                     module.getName() + ":接口列表", "#/" + project.getId() + "/interface/list/" + module.getId(),
-                                    interFace.getInterfaceName(), "void"), "module", cacheService.getModule(interFace.getModuleId())));
+                                    interFace.getInterfaceName(), "void"), "module", moduleCache.get(interFace.getModuleId())));
         } else {
             throw new MyException("000012");
         }

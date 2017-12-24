@@ -3,11 +3,13 @@ package cn.crap.adapter;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumeration.ProjectType;
+import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Interface;
 import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.service.ICacheService;
+import cn.crap.service.imp.tool.ModuleCache;
+import cn.crap.service.imp.tool.ProjectCache;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -144,25 +146,27 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static List<SearchDto> getSearchDto(ICacheService cacheService, List<InterfaceWithBLOBs> models){
+	public static List<SearchDto> getSearchDto(List<InterfaceWithBLOBs> models){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<SearchDto> dtos = new ArrayList<>();
 		for (InterfaceWithBLOBs model : models){
-			dtos.add(getSearchDto(cacheService, model));
+			dtos.add(getSearchDto(model));
 		}
 		return dtos;
 	}
 
-	public static SearchDto getSearchDto(ICacheService cacheService, InterfaceWithBLOBs model) {
+	public static SearchDto getSearchDto(InterfaceWithBLOBs model) {
 		Assert.notNull(model);
-		Assert.notNull(cacheService);
 		Assert.notNull(model.getProjectId());
 		Assert.notNull(model.getModuleId());
 
-		Module module = cacheService.getModule(model.getModuleId());
-		Project project = cacheService.getProject(model.getProjectId());
+		ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
+		ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+
+		Module module = moduleCache.get(model.getModuleId());
+		Project project = projectCache.get(model.getProjectId());
 
 		SearchDto dto = new SearchDto();
 		dto.setId(model.getId());

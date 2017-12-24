@@ -1,25 +1,22 @@
 package cn.crap.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-
+import cn.crap.dto.PickDto;
+import cn.crap.framework.base.BaseController;
 import cn.crap.service.mybatis.custom.CustomMenuService;
+import cn.crap.utils.Const;
+import cn.crap.utils.MyCookie;
+import cn.crap.utils.MyString;
+import cn.crap.utils.ValidateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.PickDto;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.ValidateCodeService;
+import javax.servlet.ServletOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 前后台共用的Controller
@@ -30,9 +27,6 @@ import cn.crap.utils.ValidateCodeService;
 public class IndexController extends BaseController {
 	@Autowired
 	CustomMenuService customMenuService;
-	@Autowired
-	private ICacheService cacheService;
-	
 	
 	/**
 	 * 
@@ -82,9 +76,9 @@ public class IndexController extends BaseController {
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
-		String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
-		cacheService.setStr(Const.CACHE_IMGCODE + uuid, vservice.getCode() , 10 * 60);
-		cacheService.setStr(Const.CACHE_IMGCODE_TIMES + uuid, "0" , 10 * 60);
+		String uuid = MyCookie.getCookie(Const.COOKIE_UUID);
+		stringCache.add(Const.CACHE_IMGCODE + uuid, vservice.getCode());
+		stringCache.add(Const.CACHE_IMGCODE_TIMES + uuid, "0");
 		try {
 			vservice.write(out);
 			out.flush();

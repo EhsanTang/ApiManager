@@ -14,7 +14,6 @@ import cn.crap.enumeration.MonitorType;
 import cn.crap.enumeration.RequestMethod;
 import cn.crap.enumeration.TrueOrFalse;
 import cn.crap.framework.MyException;
-import cn.crap.service.ICacheService;
 import cn.crap.service.IPickService;
 import cn.crap.model.mybatis.Error;
 
@@ -25,8 +24,6 @@ import cn.crap.model.mybatis.Error;
  */
 @Service("pickService")
 public class PickService implements IPickService{
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private MybatisModuleService moduleService;
 	@Autowired

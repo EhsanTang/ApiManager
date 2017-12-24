@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
 import cn.crap.model.mybatis.Error;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -23,9 +22,6 @@ import cn.crap.utils.Tools;
 @Controller("frontErrorController")
 @RequestMapping("/front/error")
 public class ErrorController extends BaseController{
-
-	@Autowired
-	private ICacheService cacheService;
 	@Autowired
 	private CustomErrorService customErrorService;
 
@@ -40,7 +36,7 @@ public class ErrorController extends BaseController{
 	@ResponseBody
 	public JsonResult list(String errorCode,String errorMsg, @RequestParam String projectId,
 			@RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
-		Project project = cacheService.getProject(projectId);
+		Project project = projectCache.get(projectId);
 
 		isPrivateProject(password, visitCode, project);
 		

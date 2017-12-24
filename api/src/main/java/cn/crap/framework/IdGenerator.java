@@ -1,15 +1,10 @@
 package cn.crap.framework;
 
-import java.io.Serializable;
+import cn.crap.enumeration.TableId;
+
 import java.net.InetAddress;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import cn.crap.enumeration.TableId;
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.id.IdentifierGenerator;
-import cn.crap.utils.MyString;
 
 public class IdGenerator{
 	private static volatile AtomicInteger idNum = new AtomicInteger(1); // 自增，防止同一毫秒内id重复

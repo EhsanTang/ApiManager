@@ -1,13 +1,5 @@
 package cn.crap.model.mybatis;
 
-import cn.crap.framework.SpringContextHolder;
-import cn.crap.framework.base.BaseController;
-import cn.crap.service.ICacheService;
-import cn.crap.service.imp.tool.CacheService;
-import cn.crap.utils.MyString;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 

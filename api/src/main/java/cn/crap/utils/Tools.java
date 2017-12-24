@@ -1,39 +1,26 @@
 package cn.crap.utils;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.Query;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.service.ICacheService;
 import cn.crap.service.imp.tool.CacheService;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class Tools {
@@ -359,41 +346,6 @@ public class Tools {
 		return hql.toString();
 	}
 
-	public static void setPage(Query query, Page pageBean) {
-		if (pageBean != null) {
-			query.setFirstResult(pageBean.getStart()).setMaxResults(
-					pageBean.getSize());
-		}
-	}
-
-	// 根据map设置参数
-	public static void setQuery(Map<String, Object> map, Query query) {
-		if (map == null)
-			return;
-		for (Entry<String, Object> entry : map.entrySet()) {
-			String key = entry.getKey();
-			String operator = "";
-			if (key.indexOf("|") > 0) {
-				key = entry.getKey().split("\\|")[0];
-				operator = entry.getKey().split("\\|")[1];
-			}
-			Object value = entry.getValue();
-			key = key.replaceAll("\\.", "_");
-			if (operator.toUpperCase().equals("LIKE")) {
-				query.setString(key, "%" + value.toString() +"%");
-			} else if (value instanceof Integer) {
-				query.setInteger(key, Integer.parseInt(value.toString()));
-			} else if (value instanceof String) {
-				query.setString(key, value.toString());
-			} else if (value instanceof Byte) {
-				query.setByte(key, Byte.valueOf(value.toString()));
-			}else if(value instanceof List){
-				query.setParameterList(key+"_in",(List<?>) value); 
-			} else {
-				query.setParameter(key, value);
-			}
-		}
-	}
 //	public static String getConf(String key, String fileName) throws Exception{
 //		return getConf(key,fileName,null);
 //	}

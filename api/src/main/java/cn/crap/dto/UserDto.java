@@ -1,13 +1,7 @@
 package cn.crap.dto;
 
 import cn.crap.enumeration.UserType;
-import cn.crap.utils.MyString;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
 

@@ -3,7 +3,8 @@ package cn.crap.controller.front;
 import java.util.Date;
 
 import cn.crap.dto.SettingDto;
-import cn.crap.service.imp.MybatisCommentService;
+import cn.crap.service.mybatis.CommentService;
+import cn.crap.utils.IConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -16,7 +17,6 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.Comment;
-import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
@@ -24,19 +24,19 @@ import cn.crap.utils.Tools;
 @RequestMapping("/front/comment")
 public class CommentController extends BaseController {
 	@Autowired
-	private MybatisCommentService commentService;
+	private CommentService commentService;
 
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
 		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
-		if (settingCache.get(Const.SETTING_COMMENTCODE).getValue().equals("true")) {
+		if (settingCache.get(IConst.SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode())) {
 				throw new MyException("000010");
 			}
 		}
 		LoginInfoDto user = Tools.getUser();
-		SettingDto anonymousComment = settingCache.get(Const.SETTING_ANONYMOUS_COMMENT);
+		SettingDto anonymousComment = settingCache.get(IConst.SETTING_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !"true".equals(anonymousComment.getValue())){
 			if (user == null){
 				throw new MyException("000060");

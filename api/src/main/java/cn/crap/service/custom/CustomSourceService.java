@@ -8,9 +8,9 @@ import cn.crap.model.mybatis.Log;
 import cn.crap.model.mybatis.Source;
 import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.service.ILuceneService;
-import cn.crap.service.imp.MybatisLogService;
-import cn.crap.service.imp.MybatisProjectService;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.LogService;
+import cn.crap.service.mybatis.ProjectService;
+import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -29,11 +29,11 @@ public class CustomSourceService implements ILuceneService{
     @Autowired
     private Config config;
     @Autowired
-    private MybatisProjectService projectService;
+    private ProjectService projectService;
     @Autowired
     private CustomProjectService customProjectService;
     @Autowired
-    private MybatisLogService logService;
+    private LogService logService;
 
     public Page<Source> queryByModuleId(String moduleId, String name, Page<Source> page){
         Assert.notNull(moduleId, "moduleId can't be null");

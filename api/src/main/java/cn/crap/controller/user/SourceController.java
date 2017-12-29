@@ -10,7 +10,7 @@ import cn.crap.model.mybatis.Source;
 import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomSourceService;
-import cn.crap.service.imp.MybatisSourceService;
+import cn.crap.service.mybatis.SourceService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -29,7 +29,7 @@ import java.util.Date;
 public class SourceController extends BaseController{
 
 	@Autowired
-	private MybatisSourceService sourceService;
+	private SourceService sourceService;
 	@Autowired
 	private CustomSourceService customSourceService;
 	@Autowired
@@ -44,7 +44,7 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@RequestParam String moduleId, String name, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-		hasPermissionModuleId((moduleId), view);
+		checkUserPermissionByModuleId((moduleId), VIEW);
 		Page page= new Page(15, currentPage);
 
 		SourceCriteria example = new SourceCriteria();
@@ -68,7 +68,7 @@ public class SourceController extends BaseController{
 		Source model;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.selectByPrimaryKey(source.getId());
-			hasPermissionModuleId( model.getModuleId(), view);
+			checkUserPermissionByModuleId( model.getModuleId(), VIEW);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
@@ -122,11 +122,11 @@ public class SourceController extends BaseController{
 			SearchDto searchDto = SourceAdapter.getSearchDto(source);
 			source.setUpdateTime(new Date());
 			if(!MyString.isEmpty(source.getId())){
-				hasPermissionModuleId((source.getModuleId()), modSource);
+				checkUserPermissionByModuleId((source.getModuleId()), MOD_SOURCE);
 				customSourceService.update(source, "资源", "");
 
 			}else{
-				hasPermissionModuleId((source.getModuleId()), addSource);
+				checkUserPermissionByModuleId((source.getModuleId()), ADD_SOURCE);
 				sourceService.insert(source);
 			}
 			// 新增的source没有id，必须在持久化后从新设置id
@@ -150,7 +150,7 @@ public class SourceController extends BaseController{
 				continue;
 			}
 			// 权限
-			hasPermissionModuleId(sourceService.selectByPrimaryKey( tempId ).getModuleId(), delSource);
+			checkUserPermissionByModuleId(sourceService.selectByPrimaryKey( tempId ).getModuleId(), DEL_SOURCE);
 			Source source = new Source();
 			source.setId(tempId);
 			
@@ -167,8 +167,8 @@ public class SourceController extends BaseController{
 		Source change = sourceService.selectByPrimaryKey(changeId);
 		Source model = sourceService.selectByPrimaryKey(id);
 		// 权限
-		hasPermissionModuleId(change.getModuleId(), modSource);
-		hasPermissionModuleId(model.getModuleId(), modSource);
+		checkUserPermissionByModuleId(change.getModuleId(), MOD_SOURCE);
+		checkUserPermissionByModuleId(model.getModuleId(), MOD_SOURCE);
 				
 		int modelSequence = model.getSequence();
 		

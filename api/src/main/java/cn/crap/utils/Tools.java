@@ -4,6 +4,7 @@ import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.framework.ThreadContext;
 import cn.crap.service.tool.StringCache;
 import cn.crap.service.tool.UserCache;
 import org.springframework.web.context.ContextLoader;
@@ -208,8 +209,8 @@ public class Tools {
 	
 	// 获取图形验证码
 	public static String getImgCode() throws MyException{
-		StringCache settingCache = SpringContextHolder.getBean("settingCache", StringCache.class);
-		String timesStr = settingCache.get(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false));
+		StringCache stringCache = SpringContextHolder.getBean("stringCache", StringCache.class);
+		String timesStr = stringCache.get(IConst.CACHE_IMGCODE_TIMES + MyCookie.getCookie(IConst.COOKIE_UUID, false));
 		int times = 0;
 		if(timesStr != null){
 			times = Integer.parseInt(timesStr.toString()) + 1;
@@ -217,8 +218,8 @@ public class Tools {
 		if(times > 3){
 			throw new MyException("000011");
 		}
-		settingCache.add(Const.CACHE_IMGCODE_TIMES + MyCookie.getCookie(Const.COOKIE_UUID, false), times + "");
-		String imgCode = settingCache.get(Const.CACHE_IMGCODE + MyCookie.getCookie(Const.COOKIE_UUID, false));
+		stringCache.add(IConst.CACHE_IMGCODE_TIMES + MyCookie.getCookie(IConst.COOKIE_UUID, false), times + "");
+		String imgCode = stringCache.get(IConst.CACHE_IMGCODE + MyCookie.getCookie(IConst.COOKIE_UUID, false));
 		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
 	}
 	
@@ -229,7 +230,7 @@ public class Tools {
 		}
 		
 		String authority = user.getAuthStr();
-		if( user != null && (","+user.getRoleId()).indexOf(","+Const.SUPER+",")>=0){
+		if( user != null && (","+user.getRoleId()).indexOf(","+ IConst.C_SUPER +",")>=0){
 			return true;//超级管理员
 		}
 		
@@ -317,17 +318,17 @@ public class Tools {
 					hql.append(keys[0] + " in (:" + keys[0]+"_in) and ");
 				} 
 				
-				else if (keys[1].equals(Const.NULL)) {
+				else if (keys[1].equals(IConst.NULL)) {
 					hql.append(keys[0] + " =null and ");
 					removes.add(key);
 				} 
 				
-				else if (keys[1].equals(Const.NOT_NULL)) {
+				else if (keys[1].equals(IConst.NOT_NULL)) {
 					hql.append(keys[0] + "!=null and ");
 					removes.add(key);
 				} 
 				
-				else if (keys[1].equals(Const.BLANK)) {
+				else if (keys[1].equals(IConst.BLANK)) {
 					hql.append(keys[0] + " ='' and ");
 					removes.add(key);
 				} else if (keys[1].equals("like")) {
@@ -367,8 +368,8 @@ public class Tools {
 //			}
 //		}
 //	}
-	public static String getServicePath(HttpServletRequest request){
-		return request.getSession().getServletContext().getRealPath("/")+"/";
+	public static String getServicePath(){
+		return ThreadContext.request().getSession().getServletContext().getRealPath("/")+"/";
 	}
 	public static String getChar(int num){
 		String md="123456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ789abcd";
@@ -395,7 +396,7 @@ public class Tools {
 			return false;
 		}
 		
-		if( ( ","+ role + ",").indexOf(","+Const.SUPER+",") >= 0){
+		if( ( ","+ role + ",").indexOf(","+ IConst.C_SUPER +",") >= 0){
 			return true;
 		}
 		return false;
@@ -466,7 +467,7 @@ public class Tools {
 	 */
 	public static LoginInfoDto getUser(){
 		UserCache userCache = SpringContextHolder.getBean("userCache", UserCache.class);
-		String uId = MyCookie.getCookie(Const.COOKIE_USERID, false);
+		String uId = MyCookie.getCookie(IConst.COOKIE_USERID, false);
 		return userCache.get(uId);
 	}
 	

@@ -1,4 +1,4 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
 import cn.crap.dao.mybatis.MenuDao;
 import cn.crap.enumer.TableId;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class MybatisMenuService {
+public class MenuService {
     @Autowired
     private MenuDao menuMapper;
 

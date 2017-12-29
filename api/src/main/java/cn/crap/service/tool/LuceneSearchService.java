@@ -3,8 +3,8 @@ package cn.crap.service.tool;
 import cn.crap.dto.SearchDto;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -61,7 +61,7 @@ public class LuceneSearchService implements ISearchService {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader
-					.open(FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())));
+					.open(FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
 			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
@@ -110,7 +110,7 @@ public class LuceneSearchService implements ISearchService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO 消息时间需要修改为12小时
-			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (reader != null)
 				reader.close();
@@ -125,11 +125,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.deleteDocuments(new Term("id", searchDto.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -217,11 +217,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				try {
@@ -246,11 +246,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			stringCache.add(Const.CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -272,7 +272,7 @@ public class LuceneSearchService implements ISearchService {
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(settingCache.get(Const.SETTING_LUCENE_DIR).getValue());
+				File file = new File(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue());
 				File[] tempList = file.listFiles();
 			    for (int i = 0; i < tempList.length; i++) {
 			    	tempList[i].delete();
@@ -283,7 +283,7 @@ public class LuceneSearchService implements ISearchService {
 			    	List<SearchDto> dtos= service.getAll();
 			    	for (SearchDto dto : dtos) {
 			    		i++;
-						stringCache.add(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录");
+						stringCache.add(IConst.C_CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录");
 						// 避免占用太大的系统资源
 						try {
 							Thread.sleep(100);
@@ -293,7 +293,7 @@ public class LuceneSearchService implements ISearchService {
 						add(dto);
 					}
 			    }
-			    stringCache.add(Const.CACHE_ERROR_TIP,"重建索引成功！");
+			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{

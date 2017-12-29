@@ -1,4 +1,4 @@
-package cn.crap.springbeans;
+package cn.crap.beans;
 
 import java.util.List;
 

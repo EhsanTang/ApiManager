@@ -4,9 +4,10 @@ import java.util.List;
 
 import cn.crap.enumer.UserStatus;
 import cn.crap.enumer.UserType;
+import cn.crap.framework.ThreadContext;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.imp.MybatisUserService;
+import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,10 @@ import cn.crap.enumer.LoginType;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.User;
 import cn.crap.service.thirdly.OschinaService;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 前后台共用的Controller
@@ -33,7 +37,7 @@ public class GitOschinaController extends BaseController{
 	@Autowired
 	private OschinaService oschinaService;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private CustomUserService customUserService;
 	/**
@@ -42,6 +46,7 @@ public class GitOschinaController extends BaseController{
 	 */
 	@RequestMapping("/oschina/authorize.do")
 	public void authorize() throws Exception {
+		HttpServletResponse response = ThreadContext.response();
 		String authorizeUrl = "https://git.oschina.net/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
 		response.sendRedirect(String.format(authorizeUrl, config.getOschinaClientID(), config.getDomain()+"/oschina/login.do"));
 	}
@@ -49,7 +54,7 @@ public class GitOschinaController extends BaseController{
 	public String login(@RequestParam String code) throws Exception {
 			User user = null;
 			GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, config.getDomain()).getAccess_token());
-
+		HttpServletResponse response = ThreadContext.response();
 		UserCriteria example = new UserCriteria();
 		example.createCriteria().andThirdlyIdEqualTo(getThirdlyId(oschinaUser));
 
@@ -96,6 +101,6 @@ public class GitOschinaController extends BaseController{
 	}
 
 	private String getThirdlyId(GitHubUser oschinaUser) {
-		return Const.OSCHINA + oschinaUser.getId();
+		return IConst.OSCHINA + oschinaUser.getId();
 	}
 }

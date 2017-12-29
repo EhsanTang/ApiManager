@@ -3,9 +3,9 @@ package cn.crap.service.custom;
 import cn.crap.dao.mybatis.ModuleDao;
 import cn.crap.dto.PickDto;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.imp.MybatisProjectService;
-import cn.crap.springbeans.Config;
-import cn.crap.springbeans.PickFactory;
+import cn.crap.service.mybatis.ProjectService;
+import cn.crap.beans.Config;
+import cn.crap.beans.PickFactory;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class CustomModuleService {
     @Autowired
     private CustomProjectService customProjectService;
     @Autowired
-    private MybatisProjectService projectService;
+    private ProjectService projectService;
     @Autowired
     private PickFactory pickFactory;
     @Autowired
@@ -66,15 +66,15 @@ public class CustomModuleService {
             List<Module> dcs = queryByProjectId(projectId);
             if(dcs.size()>0){
                 Project project = projectService.selectByPrimaryKey(projectId);
-                pick = new PickDto(Const.SEPARATOR, project == null ? "" : project.getName());
+                pick = new PickDto(IConst.SEPARATOR, project == null ? "" : project.getName());
                 picks.add(pick);
             }
 
             for(Module dc : dcs){
                 if(MyString.isEmpty(value))
-                    pick = new PickDto(idPre+dc.getId(), Const.LEVEL_PRE+dc.getName()+suffix);
+                    pick = new PickDto(idPre+dc.getId(), IConst.LEVEL_PRE+dc.getName()+suffix);
                 else
-                    pick = new PickDto(idPre+dc.getId(), value.replace("moduleId", dc.getId()).replace("moduleName", dc.getName()).replace("projectId", projectId), Const.LEVEL_PRE+dc.getName()+suffix);
+                    pick = new PickDto(idPre+dc.getId(), value.replace("moduleId", dc.getId()).replace("moduleName", dc.getName()).replace("projectId", projectId), IConst.LEVEL_PRE+dc.getName()+suffix);
                 picks.add(pick);
             }
         }

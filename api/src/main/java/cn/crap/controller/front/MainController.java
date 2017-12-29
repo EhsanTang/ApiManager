@@ -6,12 +6,13 @@ import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -45,14 +46,13 @@ public class MainController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")
-	public void home() throws Exception {
-		SettingDto indexUrl = settingCache.get(Const.SETTING_INDEX_PAGE);
+	public void home(HttpServletResponse response) throws Exception {
+		SettingDto indexUrl = settingCache.get(IConst.SETTING_INDEX_PAGE);
 		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
 			response.sendRedirect(indexUrl.getValue());
 		}else{
 			response.sendRedirect("index.do");
 		}
-		
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping("/result.do")
 	public String validateEmail(String result) throws UnsupportedEncodingException, MessagingException {
-		request.setAttribute("result", result);
+		ThreadContext.request().setAttribute("result", result);
 		return "WEB-INF/views/result.jsp";
 	}
 	
@@ -94,7 +94,7 @@ public class MainController extends BaseController{
 		// 只显示前10个
 		StringBuilder sb = new StringBuilder("<div class='tl'>");
 		@SuppressWarnings("unchecked")
-		ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(Const.CACHE_SEARCH_WORDS);
+		ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(IConst.CACHE_SEARCH_WORDS);
 		if(searchWords != null){
 			int i = 0;
 			String itemClass = "";
@@ -131,27 +131,27 @@ public class MainController extends BaseController{
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (SettingDto setting : settingCache.getAll()) {
-			if(Const.SETTING_SECRETKEY.equals(setting.getKey())){
+			if(IConst.C_SETTING_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		settingMap.put(Const.DOMAIN, config.getDomain());
-		settingMap.put(Const.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
-		settingMap.put(Const.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
+		settingMap.put(IConst.DOMAIN, config.getDomain());
+		settingMap.put(IConst.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
+		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
 		
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
 		
 		// 从缓存中获取菜单
-		Object objMenus = objectCache.get("cache:leftMenu");
+		Object objMenus = objectCache.get(C_CACHE_LEFT_MENU);
 		List<MenuWithSubMenuDto> menus = null;
 		if(objMenus == null){
 			synchronized (MainController.class) {
-				objMenus = objectCache.get("cache:leftMenu");
+				objMenus = objectCache.get(C_CACHE_LEFT_MENU);
 				if(objMenus == null){
 					menus = customMenuService.getLeftMenu();
-					objectCache.add("cache:leftMenu", menus);//缓存10分钟
+					objectCache.add(C_CACHE_LEFT_MENU, menus);//缓存10分钟
 				}else{
 					menus = (List<MenuWithSubMenuDto>) objMenus;
 				}
@@ -187,7 +187,7 @@ public class MainController extends BaseController{
 		// 将搜索的内容记入内存
 		if(!MyString.isEmpty(keyword)){
 			@SuppressWarnings("unchecked")
-			ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(Const.CACHE_SEARCH_WORDS);
+			ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(IConst.CACHE_SEARCH_WORDS);
 			if(searchWords == null){
 				searchWords = new ArrayList<String>();
 			}
@@ -208,7 +208,7 @@ public class MainController extends BaseController{
 				}
 			}
 			// TODO 搜索关键字存数据库
-			objectCache.add(Const.CACHE_SEARCH_WORDS, searchWords);
+			objectCache.add(IConst.CACHE_SEARCH_WORDS, searchWords);
 		}
 		
 		return new JsonResult(1, returnMap, page, 

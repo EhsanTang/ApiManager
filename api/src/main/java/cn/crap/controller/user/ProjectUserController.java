@@ -9,9 +9,9 @@ import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.custom.CustomProjectUserService;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.imp.MybatisProjectUserService;
-import cn.crap.service.imp.MybatisUserService;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.ProjectUserService;
+import cn.crap.service.mybatis.UserService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +29,11 @@ import java.util.List;
 public class ProjectUserController extends BaseController{
 
 	@Autowired
-	private MybatisProjectUserService projectUserService;
+	private ProjectUserService projectUserService;
 	@Autowired
 	private CustomUserService customUserService;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private CustomProjectUserService customProjectUserService;
 	
@@ -42,7 +42,7 @@ public class ProjectUserController extends BaseController{
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 		Assert.isTrue(currentPage > 0);
 			Page<ProjectUser> page= new Page(SIZE, currentPage);
-			hasPermission( projectCache.get(projectId) );
+			checkUserPermissionByProject( projectCache.get(projectId) );
 			page = customProjectUserService.queryByProjectId(projectId, page);
 			return new JsonResult(1, ProjectUserAdapter.getDto(page.getList()), page);
 	}	
@@ -51,11 +51,11 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(@RequestParam String id, @RequestParam String projectId) throws MyException{
 		ProjectUser model;
-		if(!id.equals(Const.NULL_ID)){
+		if(!id.equals(IConst.NULL_ID)){
 			model= projectUserService.selectByPrimaryKey(id);
-			hasPermission(projectCache.get( model.getProjectId() ));
+			checkUserPermissionByProject(projectCache.get( model.getProjectId() ));
 		}else{
-			hasPermission(projectCache.get( projectId ));
+			checkUserPermissionByProject(projectCache.get( projectId ));
 			model=new ProjectUser();
 			model.setStatus(Byte.valueOf("1"));
 			model.setProjectId( projectId );
@@ -66,7 +66,7 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectUser projectUser) throws Exception{
-		hasPermission( projectCache.get( projectUser.getProjectId() ));
+		checkUserPermissionByProject( projectCache.get( projectUser.getProjectId() ));
 		User search = null;
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
 			search = userService.selectByPrimaryKey( projectUser.getUserId() );
@@ -88,7 +88,7 @@ public class ProjectUserController extends BaseController{
 		// 修改
 		if(!MyString.isEmpty(projectUser.getId())){
 			ProjectUser old = projectUserService.selectByPrimaryKey(projectUser.getId());
-			hasPermission( projectCache.get( old.getProjectId() ));
+			checkUserPermissionByProject( projectCache.get( old.getProjectId() ));
 		}
 		
 		try{
@@ -109,7 +109,7 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult delete(@RequestParam String id) throws Exception{
 		ProjectUser projectUser = projectUserService.selectByPrimaryKey(id);
-		hasPermission(projectCache.get( projectUser.getProjectId() ));
+		checkUserPermissionByProject(projectCache.get( projectUser.getProjectId() ));
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
 	}

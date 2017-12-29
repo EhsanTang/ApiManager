@@ -1,4 +1,4 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
 import cn.crap.dao.mybatis.RoleDao;
 import cn.crap.framework.IdGenerator;
@@ -19,28 +19,28 @@ import java.util.List;
  * service
  */
 @Service
-public class MybatisRoleService {
+public class RoleService {
     @Autowired
-    private RoleDao mapper;
+    private RoleDao dao;
 
     public List<Role> selectByExample(RoleCriteria example) {
-        return mapper.selectByExample(example);
+        return dao.selectByExample(example);
     }
 
     public List<RoleWithBLOBs> selectByExampleWithBLOBs(RoleCriteria example) {
-        return mapper.selectByExampleWithBLOBs(example);
+        return dao.selectByExampleWithBLOBs(example);
     }
 
 
     public int countByExample(RoleCriteria example) {
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
-    public Role selectByPrimaryKey(String id) {
+    public RoleWithBLOBs selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
-        return mapper.selectByPrimaryKey(id);
+        return dao.selectByPrimaryKey(id);
     }
 
     public boolean insert(RoleWithBLOBs model) {
@@ -60,19 +60,19 @@ public class MybatisRoleService {
             }
         }
         model.setCreateTime(new Date());
-        return mapper.insertSelective(model) > 0;
+        return dao.insertSelective(model) > 0;
     }
 
     public boolean update(RoleWithBLOBs model) {
         if (model == null) {
             return false;
         }
-        return mapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
+        return dao.updateByPrimaryKeySelective(model) > 0 ? true : false;
     }
 
     public boolean delete(String id) {
         Assert.notNull(id, "id can't be null");
-        return mapper.deleteByPrimaryKey(id) > 0 ? true : false;
+        return dao.deleteByPrimaryKey(id) > 0 ? true : false;
     }
 
 }

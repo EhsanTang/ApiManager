@@ -11,9 +11,9 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.model.mybatis.Module;
 import cn.crap.service.custom.*;
-import cn.crap.service.imp.*;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.*;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -30,21 +30,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ModuleController extends BaseController{
 
 	@Autowired
-	private MybatisModuleService moduleService;
+	private ModuleService moduleService;
 	@Autowired
-	private MybatisRoleService roleService;
+	private RoleService roleService;
 	@Autowired
 	private CustomArticleService articleService;
 	@Autowired
-	private MybatisInterfaceService interfaceService;
+	private InterfaceService interfaceService;
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
-	private MybatisProjectUserService projectUserService;
+	private ProjectUserService projectUserService;
 	@Autowired
 	private CustomSourceService customSourceService;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private Config config;
 	@Autowired
@@ -60,7 +60,7 @@ public class ModuleController extends BaseController{
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 			Page<Module> page= new Page(15, currentPage);
 
-			hasPermission(projectCache.get(projectId), view);
+			checkUserPermissionByProject(projectCache.get(projectId), VIEW);
 
 			page = customModuleService.queryByProjectId(projectId, page);
 			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
@@ -70,16 +70,16 @@ public class ModuleController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(@ModelAttribute Module module) throws MyException{
 		Module model;
-		if(!module.getId().equals(Const.NULL_ID)){
+		if(!module.getId().equals(IConst.NULL_ID)){
 			model= moduleService.selectByPrimaryKey(module.getId());
 //			if(!MyString.isEmpty(model.getTemplateId())){
 //				Interface inter = interfaceService.get(model.getTemplateId());
 //				if(inter != null)
 //					model.setTemplateName(inter.getInterfaceName());
 //			}getInterfaceName
-			hasPermission(projectCache.get(model.getProjectId()), view);
+			checkUserPermissionByProject(projectCache.get(model.getProjectId()), VIEW);
 		}else{
-			hasPermission(projectCache.get(module.getProjectId()), view);
+			checkUserPermissionByProject(projectCache.get(module.getProjectId()), VIEW);
 			model=new Module();
 			model.setStatus(Byte.valueOf("1"));
 			model.setProjectId(module.getProjectId());
@@ -96,14 +96,14 @@ public class ModuleController extends BaseController{
 				
 		if(!MyString.isEmpty(module.getId())){
 			module.setProjectId(moduleCache.get(module.getId()).getProjectId());
-			hasPermission(projectCache.get( module.getProjectId() ), modModule);
+			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
 			// 更新该模块下的所有接口的fullUrl
 			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), module.getId());
 			moduleService.update(module);
 			Module dbModule = moduleService.selectByPrimaryKey(module.getId());
-			customLogService.saveLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
+			customLogService.addLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
 		}else{
-			hasPermission(projectCache.get( module.getProjectId() ), addModule);
+			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), ADD_MODULE);
 			module.setUserId(Tools.getUser().getId());
 			module.setVersion(0);
 			moduleService.insert(module);
@@ -131,7 +131,7 @@ public class ModuleController extends BaseController{
 		InterfaceWithBLOBs inter = interfaceService.selectByPrimaryKey(id);
 		
 		Module module = moduleCache.get(inter.getModuleId());
-		hasPermission(projectCache.get( module.getProjectId() ), modModule);
+		checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
 		
 		module.setTemplateId( inter.getIsTemplate() ? null: inter.getId() );
 		moduleService.update(module);
@@ -156,7 +156,7 @@ public class ModuleController extends BaseController{
 			throw new MyException("000009");
 				
 		Module dbModule = moduleCache.get(module.getId());
-		hasPermission(projectCache.get( dbModule.getProjectId() ), delModule);
+		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
 		if(customInterfaceService.countByModuleId(dbModule.getId()) >0 ){
 			throw new MyException("000024");
@@ -177,7 +177,7 @@ public class ModuleController extends BaseController{
 		moduleCache.del(module.getId());
 		moduleService.delete(module.getId());
 
-		customLogService.saveLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.DELTET, Module.class);
+		customLogService.addLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.DELTET, Module.class);
 		return new JsonResult(1,null);
 	}
 	
@@ -188,8 +188,8 @@ public class ModuleController extends BaseController{
 		Module change = moduleService.selectByPrimaryKey(changeId);
 		Module model = moduleService.selectByPrimaryKey(id);
 		
-		hasPermission(projectCache.get( change.getProjectId() ), modModule);
-		hasPermission(projectCache.get( model.getProjectId() ), modModule);
+		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_MODULE);
+		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_MODULE);
 		
 		int modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());

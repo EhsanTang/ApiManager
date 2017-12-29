@@ -3,7 +3,7 @@ package cn.crap.framework.interceptor;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.service.tool.UserCache;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -35,10 +35,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		/**
 		 * 未登陆用户唯一识别，验证码等需要
 		 */
-		String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false);
+		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID, false);
 		if( MyString.isEmpty(uuid) ){
 		    uuid = System.currentTimeMillis() + Tools.getChar(10);
-			MyCookie.addCookie(Const.COOKIE_UUID, uuid);
+			MyCookie.addCookie(IConst.COOKIE_UUID, uuid);
 		}
 
 		try{
@@ -58,8 +58,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}
 
 
-		String token = MyCookie.getCookie(Const.COOKIE_TOKEN);
-		String uid = MyCookie.getCookie(Const.COOKIE_USERID);
+		String token = MyCookie.getCookie(IConst.COOKIE_TOKEN);
+		String uid = MyCookie.getCookie(IConst.COOKIE_USERID);
 
 		/**
 		 * 前端没有传递token，未登录
@@ -69,6 +69,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		if(user == null || MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)){
 			if(request.getRequestURI().endsWith("admin.do")) {
                 response.sendRedirect("loginOrRegister.do#/login");
+                return false;
             }else {
                 throw new MyException("000021");
             }

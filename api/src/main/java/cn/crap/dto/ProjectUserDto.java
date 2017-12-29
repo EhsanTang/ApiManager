@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Automatic generation by tools
- * dto: exchange data with view
+ * dto: exchange data with VIEW
  */
 public class ProjectUserDto{
 	private String id;

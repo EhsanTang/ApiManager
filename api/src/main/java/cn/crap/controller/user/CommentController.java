@@ -7,9 +7,9 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Comment;
 import cn.crap.model.mybatis.CommentCriteria;
-import cn.crap.service.imp.MybatisArticleService;
-import cn.crap.service.imp.MybatisCommentService;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.service.mybatis.CommentService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -28,16 +28,16 @@ import java.util.List;
 @RequestMapping("/user/comment")
 public class CommentController extends BaseController {
 	@Autowired
-	private MybatisCommentService commentService;
+	private CommentService commentService;
 	@Autowired
-	private MybatisArticleService articleService;
+	private ArticleService articleService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(String articleId, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
 		
-		hasPermission( projectCache.get(  articleService.selectByPrimaryKey(articleId).getProjectId() ), view);
+		checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(articleId).getProjectId() ), VIEW);
 		Page page= new Page(15, currentPage);
 
 		CommentCriteria example = new CommentCriteria();
@@ -58,9 +58,9 @@ public class CommentController extends BaseController {
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Comment comment) throws MyException {
 		Comment model;
-		if (!comment.getId().equals(Const.NULL_ID)) {
+		if (!comment.getId().equals(IConst.NULL_ID)) {
 			model = commentService.selectByPrimaryKey(comment.getId());
-			hasPermission( projectCache.get(  articleService.selectByPrimaryKey( model.getArticleId() ).getProjectId() ), view);
+			checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey( model.getArticleId() ).getProjectId() ), VIEW);
 		} else {
 			model = new Comment();
 		}
@@ -71,7 +71,7 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		hasPermission( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ) , modArticle);
+		checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ) , MOD_ARTICLE);
 		comment.setUpdateTime(new Date());
 		commentService.update(comment);
 		return new JsonResult(1, null);
@@ -93,7 +93,7 @@ public class CommentController extends BaseController {
 				continue;
 			}
 			Comment comment = commentService.selectByPrimaryKey(tempId);
-			hasPermission( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ), delArticle);
+			checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ), DEL_ARTICLE);
 			comment = commentService.selectByPrimaryKey(comment.getId());
 			commentService.delete(tempId);
 		}

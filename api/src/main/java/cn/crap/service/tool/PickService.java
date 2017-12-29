@@ -3,7 +3,7 @@ package cn.crap.service.tool;
 import java.util.List;
 
 import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.imp.MybatisModuleService;
+import cn.crap.service.mybatis.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import cn.crap.model.mybatis.Error;
 @Service("pickService")
 public class PickService implements IPickService{
 	@Autowired
-	private MybatisModuleService moduleService;
+	private ModuleService moduleService;
 	@Autowired
 	private CustomErrorService customErrorService;
 

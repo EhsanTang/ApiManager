@@ -1,4 +1,4 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
 import cn.crap.dao.mybatis.SettingDao;
 import cn.crap.enumer.TableId;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class MybatisSettingService {
+public class SettingService {
     @Autowired
     private SettingDao settingMapper;
 

@@ -13,6 +13,9 @@ public class Page<T> implements Serializable{
 	private int totalPage = 0; // totalPage will always big than -1
 	private List<T> list;
 
+	public Page(Integer currentPage){
+		this(15, currentPage);
+	}
 	public Page(Integer size, Integer currentPage){
 		Assert.notNull(size);
 		Assert.notNull(currentPage);

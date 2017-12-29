@@ -21,7 +21,7 @@ import org.apache.xmlbeans.XmlException;
 public class GetTextFromFile {
 	public static String getText(String filePath) throws Exception {
 		if (!filePath.startsWith("http://") && !filePath.startsWith("https://")) {
-			filePath = Tools.getServicePath(Tools.getRequest()) + filePath;
+			filePath = Tools.getServicePath() + filePath;
 		}
 		if (filePath.toUpperCase().endsWith(".PDF")) {
 			return getTextFromPDF(filePath);

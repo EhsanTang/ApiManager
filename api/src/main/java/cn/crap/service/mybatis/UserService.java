@@ -1,4 +1,4 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
 import cn.crap.dao.mybatis.UserDao;
 import cn.crap.enumer.TableId;
@@ -15,7 +15,7 @@ import java.util.List;
 
 // TODO 重新生成所有的ID，保证ID有序
 @Service
-public class MybatisUserService {
+public class UserService {
     @Autowired
     private UserDao userMapper;
 

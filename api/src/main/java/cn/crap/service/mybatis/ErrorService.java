@@ -1,10 +1,10 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
-import cn.crap.dao.mybatis.LogDao;
+import cn.crap.dao.mybatis.ErrorDao;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.IdGenerator;
-import cn.crap.model.mybatis.Log;
-import cn.crap.model.mybatis.LogCriteria;
+import cn.crap.model.mybatis.Error;
+import cn.crap.model.mybatis.ErrorCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,40 +13,36 @@ import org.springframework.util.Assert;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Automatic generation by tools
- * service
- */
 @Service
-public class MybatisLogService {
+public class ErrorService {
     @Autowired
-    private LogDao mapper;
+    private ErrorDao mapper;
 
-    public List<Log> selectByExample(LogCriteria example) {
+    public List<Error> selectByExample(ErrorCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(LogCriteria example) {
+    public int countByExample(ErrorCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public Log selectByPrimaryKey(String id) {
+    public Error selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(Log model) {
+    public boolean insert(Error model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.LOG));
+        model.setId(IdGenerator.getId(TableId.ERROR));
         if (model.getSequence() == null){
-            LogCriteria example = new LogCriteria();
+            ErrorCriteria example = new ErrorCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Log>  models = this.selectByExample(example);
+            List<Error>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -57,7 +53,7 @@ public class MybatisLogService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(Log model) {
+    public boolean update(Error model) {
         if (model == null) {
             return false;
         }
@@ -65,7 +61,7 @@ public class MybatisLogService {
     }
 
     public boolean delete(String id) {
-        Assert.notNull(id, "id can't be null");
+        Assert.notNull(id, "id ????");
         return mapper.deleteByPrimaryKey(id) > 0 ? true : false;
     }
 

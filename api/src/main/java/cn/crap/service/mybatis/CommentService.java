@@ -1,11 +1,10 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
-import cn.crap.dao.mybatis.ArticleDao;
+import cn.crap.dao.mybatis.CommentDao;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.IdGenerator;
-import cn.crap.model.mybatis.Article;
-import cn.crap.model.mybatis.ArticleCriteria;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Comment;
+import cn.crap.model.mybatis.CommentCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,35 +18,35 @@ import java.util.List;
  * service
  */
 @Service
-public class MybatisArticleService {
+public class CommentService {
     @Autowired
-    private ArticleDao mapper;
+    private CommentDao mapper;
 
-    public List<Article> selectByExample(ArticleCriteria example) {
+    public List<Comment> selectByExample(CommentCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(ArticleCriteria example) {
+    public int countByExample(CommentCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public ArticleWithBLOBs selectByPrimaryKey(String id) {
+    public Comment selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(ArticleWithBLOBs model) {
+    public boolean insert(Comment model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.ARTICLE));
+        model.setId(IdGenerator.getId(TableId.COMMENT));
         if (model.getSequence() == null){
-            ArticleCriteria example = new ArticleCriteria();
+            CommentCriteria example = new CommentCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Article>  models = this.selectByExample(example);
+            List<Comment>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -58,7 +57,7 @@ public class MybatisArticleService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(ArticleWithBLOBs model) {
+    public boolean update(Comment model) {
         if (model == null) {
             return false;
         }
@@ -66,7 +65,7 @@ public class MybatisArticleService {
     }
 
     public boolean delete(String id) {
-        Assert.notNull(id, "id can't be null");
+        Assert.notNull(id, "id ????");
         return mapper.deleteByPrimaryKey(id) > 0 ? true : false;
     }
 

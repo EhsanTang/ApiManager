@@ -10,10 +10,10 @@ import cn.crap.model.mybatis.*;
 import cn.crap.service.IPickService;
 import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.custom.CustomProjectService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.service.imp.MybatisProjectService;
-import cn.crap.service.imp.MybatisUserService;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.ModuleService;
+import cn.crap.service.mybatis.ProjectService;
+import cn.crap.service.mybatis.UserService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +31,15 @@ import java.util.TreeSet;
 @Service("userPickService")
 public class UserPickService implements IPickService{
 	@Autowired
-	private MybatisProjectService projectService;
+	private ProjectService projectService;
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
-	private MybatisModuleService moduleService;
+	private ModuleService moduleService;
 	@Autowired
 	private CustomArticleMapper customArticleMapper;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private CustomModuleService customModuleService;
 
@@ -72,7 +72,7 @@ public class UserPickService implements IPickService{
 						ProjectCriteria example = new ProjectCriteria();
 						ProjectCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(Tools.getUser().getId()).andStatusGreaterThan(Byte.valueOf("0"));
 						for (Project p : projectService.selectByExample(example)) {
-							pick = new PickDto(Const.SEPARATOR, p.getName());
+							pick = new PickDto(IConst.SEPARATOR, p.getName());
 							picks.add(pick);
 
 							ModuleCriteria moduleExample = new ModuleCriteria();
@@ -137,7 +137,7 @@ public class UserPickService implements IPickService{
 								}
 							}
 						}else{
-							pick = new PickDto(Const.SEPARATOR, "输入的搜索长度必须大于3");
+							pick = new PickDto(IConst.SEPARATOR, "输入的搜索长度必须大于3");
 							picks.add(pick);
 						}
 				}

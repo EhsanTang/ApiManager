@@ -5,12 +5,13 @@ import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomInterfaceService;
-import cn.crap.service.imp.MybatisInterfaceService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.InterfaceService;
+import cn.crap.service.mybatis.ModuleService;
+import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,11 +38,11 @@ import java.util.Map;
 public class InterfaceController extends BaseController {
 
     @Autowired
-    private MybatisInterfaceService interfaceService;
+    private InterfaceService interfaceService;
     @Autowired
     private CustomInterfaceService customInterfaceService;
     @Autowired
-    private MybatisModuleService moduleService;
+    private ModuleService moduleService;
     @Autowired
     private Config config;
 
@@ -59,11 +60,12 @@ public class InterfaceController extends BaseController {
     @RequestMapping("/detail/pdf.do")
     public String pdf(String id, String moduleId, @RequestParam String secretKey) throws Exception {
         try {
+            HttpServletRequest request = ThreadContext.request();
             if (MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
                 request.setAttribute("result", "接口ID&模块ID不能同时为空！");
                 return ERROR_VIEW;
             }
-            if (!secretKey.equals(settingCache.get(Const.SETTING_SECRETKEY).getValue())) {
+            if (!secretKey.equals(settingCache.get(IConst.C_SETTING_SECRETKEY).getValue())) {
                 request.setAttribute("result", "秘钥不正确，非法请求！");
                 return ERROR_VIEW;
             }
@@ -110,7 +112,7 @@ public class InterfaceController extends BaseController {
             request.setAttribute("moduleName", module.getName());
             return "/WEB-INF/views/interFacePdf.jsp";
         } catch (Exception e) {
-            request.setAttribute("result", "接口数据有误，请修改接口后再试，错误信息：" + e.getMessage());
+            ThreadContext.request().setAttribute("result", "接口数据有误，请修改接口后再试，错误信息：" + e.getMessage());
             return ERROR_VIEW;
         }
     }
@@ -130,7 +132,7 @@ public class InterfaceController extends BaseController {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 
         // 使用缓存的密码，不需要验证码
-        isPrivateProject("", "", project);
+        checkFrontPermission("", "", project);
 
         //interFace = interfaceService.get(interFace.getId());
         String displayFilename = "CrapApi" + System.currentTimeMillis() + ".pdf";
@@ -152,7 +154,7 @@ public class InterfaceController extends BaseController {
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);
         }
-        String secretKey = settingCache.get(Const.SETTING_SECRETKEY).getValue();
+        String secretKey = settingCache.get(IConst.C_SETTING_SECRETKEY).getValue();
         br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId, secretKey)));
         ut = response.getOutputStream();
         while ((len = br.read(buf)) != -1)
@@ -173,7 +175,7 @@ public class InterfaceController extends BaseController {
         Module module = moduleService.selectByPrimaryKey(moduleId);
         Project project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-        isPrivateProject(password, visitCode, project);
+        checkFrontPermission(password, visitCode, project);
 
         Page page = new Page(15, currentPage);
 
@@ -202,7 +204,7 @@ public class InterfaceController extends BaseController {
             Module module = moduleCache.get(interFace.getModuleId());
             Project project = projectCache.get(module.getProjectId());
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-            isPrivateProject(password, visitCode, project);
+            checkFrontPermission(password, visitCode, project);
 
             /**
              * 查询相同模块下，相同接口名的其它版本号

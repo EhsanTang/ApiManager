@@ -2,8 +2,8 @@ package cn.crap.service.tool;
 
 import cn.crap.model.mybatis.Module;
 import cn.crap.service.ICacheService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.ModuleService;
+import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -21,7 +21,7 @@ public class ModuleCache implements ICacheService<Module> {
 	@Autowired
 	private Config config;
 	@Autowired
-	private MybatisModuleService moduleService;
+	private ModuleService moduleService;
 
 	public Cache<String, Module> getCache(){
 		if (cache == null) {

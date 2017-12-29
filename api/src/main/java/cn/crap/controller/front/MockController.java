@@ -1,6 +1,6 @@
 package cn.crap.controller.front;
 
-import cn.crap.service.imp.MybatisInterfaceService;
+import cn.crap.service.mybatis.InterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ import cn.crap.framework.base.BaseController;
 public class MockController extends BaseController{
 
 	@Autowired
-	private MybatisInterfaceService interfaceService;
+	private InterfaceService interfaceService;
 	
 	@RequestMapping("/trueExam.do")
 	@ResponseBody

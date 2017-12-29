@@ -1,7 +1,7 @@
 package cn.crap.service.tool;
 
 import cn.crap.service.ICacheService;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

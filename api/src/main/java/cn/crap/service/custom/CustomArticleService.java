@@ -11,7 +11,7 @@ import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
-import cn.crap.service.imp.MybatisLogService;
+import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import net.sf.json.JSONObject;
@@ -35,7 +35,7 @@ public class CustomArticleService implements ILuceneService{
     @Resource(name = "moduleCache")
     protected ModuleCache moduleCache;
     @Autowired
-    private MybatisLogService logService;
+    private LogService logService;
 
     public int countByProjectId(String moduleId, String name, String type, String category) {
         Assert.notNull(moduleId, "moduleId can't be null");

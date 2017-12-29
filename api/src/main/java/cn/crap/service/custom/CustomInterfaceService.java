@@ -8,9 +8,9 @@ import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.tool.ModuleCache;
-import cn.crap.service.imp.MybatisLogService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.LogService;
+import cn.crap.service.mybatis.ModuleService;
+import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -27,9 +27,9 @@ public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private ModuleCache moduleCache;
     @Autowired
-    private MybatisModuleService moduleService;
+    private ModuleService moduleService;
     @Autowired
-    private MybatisLogService logService;
+    private LogService logService;
     @Autowired
     private CustomInterfaceMapper customInterfaceMapper;
     @Autowired

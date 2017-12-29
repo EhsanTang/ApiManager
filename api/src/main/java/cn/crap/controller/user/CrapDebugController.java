@@ -6,9 +6,9 @@ import cn.crap.adapter.DebugAdapter;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomDebugService;
 import cn.crap.service.custom.CustomModuleService;
-import cn.crap.service.imp.MybatisDebugService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.service.imp.MybatisProjectService;
+import cn.crap.service.mybatis.DebugService;
+import cn.crap.service.mybatis.ModuleService;
+import cn.crap.service.mybatis.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,13 +32,13 @@ import cn.crap.utils.Tools;
 @RequestMapping("/user/crapDebug")
 public class CrapDebugController extends BaseController{
 	@Autowired
-	private MybatisDebugService debugService;
+	private DebugService debugService;
 	@Autowired
 	private CustomDebugService customDebugService;
 	@Autowired
-	private MybatisProjectService projectService;
+	private ProjectService projectService;
 	@Autowired
-	private MybatisModuleService moduleService;
+	private ModuleService moduleService;
 	@Autowired
 	private CustomModuleService customModuleService;
 

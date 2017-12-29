@@ -25,7 +25,6 @@ public class RoleAdapter {
 		dto.setRoleName(model.getRoleName());
 		dto.setAuth(model.getAuth());
 		dto.setAuthName(model.getAuthName());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setStatus(model.getStatus());
 		dto.setSequence(model.getSequence());
 		
@@ -41,7 +40,6 @@ public class RoleAdapter {
 		model.setRoleName(dto.getRoleName());
 		model.setAuth(dto.getAuth());
 		model.setAuthName(dto.getAuthName());
-		model.setCreateTime(dto.getCreateTime());
 		model.setStatus(dto.getStatus());
 		model.setSequence(dto.getSequence());
 		

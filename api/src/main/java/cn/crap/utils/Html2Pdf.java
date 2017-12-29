@@ -11,18 +11,17 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 
 public class Html2Pdf {
 	/**
 	 * 
-	 * @param file
 	 * @throws Exception
 	 */
 
 	public static String createPdf(HttpServletRequest request, Config config, String interFaceId , String moduleId, String secretKey) throws Exception {
 		try {
-			String destDir = Tools.getServicePath(request) + "resources/upload/pdf";
+			String destDir = Tools.getServicePath() + "resources/upload/pdf";
 			// 根据当前时间获取文件夹名（0/1）
 			long newFile = ( System.currentTimeMillis()/(1000 * 60 * 60 * 24) ) % 2;
 			

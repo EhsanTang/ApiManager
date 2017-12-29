@@ -10,8 +10,8 @@ import cn.crap.dto.ArticleDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
-import cn.crap.service.imp.MybatisArticleService;
-import cn.crap.service.imp.MybatisCommentService;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.service.mybatis.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +23,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.Project;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -35,13 +35,13 @@ import cn.crap.utils.Tools;
 @Controller("frontArticleController")
 public class ArticleController extends BaseController {
     @Autowired
-    private MybatisCommentService commentService;
+    private CommentService commentService;
     @Autowired
     private Config config;
     @Autowired
     private CustomArticleService customArticleService;
     @Autowired
-    private MybatisArticleService articleService;
+    private ArticleService articleService;
     @Autowired
     private CustomCommentService customCommentService;
 
@@ -59,7 +59,7 @@ public class ArticleController extends BaseController {
         Project project = projectCache.get(module.getProjectId());
 
         // private project need login, public project need check password
-        isPrivateProject(password, visitCode, project);
+        checkFrontPermission(password, visitCode, project);
 
         Page page = new Page(15, currentPage);
         List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, page);
@@ -75,7 +75,7 @@ public class ArticleController extends BaseController {
     @RequestMapping("/front/article/list.do")
     @ResponseBody
     public JsonResult list(@RequestParam(defaultValue = "1") Integer currentPage,
-                           @RequestParam(defaultValue = Const.WEB_MODULE) String moduleId,
+                           @RequestParam(defaultValue = IConst.WEB_MODULE) String moduleId,
                            @RequestParam String type,
                            @RequestParam String category,
                            String password,
@@ -89,7 +89,7 @@ public class ArticleController extends BaseController {
         Project project = projectCache.get(module.getProjectId());
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-        isPrivateProject(password, visitCode, project);
+        checkFrontPermission(password, visitCode, project);
 
         List<String> categories = customArticleService.queryTop20Category(module.getId(), type);
         List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, page);
@@ -127,7 +127,7 @@ public class ArticleController extends BaseController {
         Project project = projectCache.get(module.getProjectId());
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-        isPrivateProject(password, visitCode, project);
+        checkFrontPermission(password, visitCode, project);
 
         if (article.getType().equals(ArticleType.DICTIONARY.name())) {
             return new JsonResult().success().data(article).others(returnMap);
@@ -147,7 +147,7 @@ public class ArticleController extends BaseController {
         List<Comment> comments = customCommentService.selectByArticelId(id, null, page);
         page.setAllRow(customCommentService.countByArticleId(id));
         returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", settingCache.get(Const.SETTING_COMMENTCODE).getValue());
+        returnMap.put("commentCode", settingCache.get(IConst.SETTING_COMMENTCODE).getValue());
 
         // 更新点击量
         customArticleService.updateClickById(id);

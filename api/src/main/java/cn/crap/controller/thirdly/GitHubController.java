@@ -5,14 +5,15 @@ import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumer.LoginType;
 import cn.crap.enumer.UserStatus;
 import cn.crap.enumer.UserType;
+import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.thirdly.GitHubService;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.imp.MybatisUserService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.UserService;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
@@ -35,7 +36,7 @@ public class GitHubController extends BaseController {
 	@Autowired
 	private GitHubService githHubService;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private CustomUserService customUserService;
 
@@ -48,14 +49,14 @@ public class GitHubController extends BaseController {
 	public void authorize() throws Exception {
 		String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
 		String state = Tools.getChar(20);
-		stringCache.add( MyCookie.getCookie(Const.COOKIE_TOKEN) + Const.CACHE_AUTHORIZE, state);
-		response.sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
+		stringCache.add( MyCookie.getCookie(IConst.COOKIE_TOKEN) + IConst.CACHE_AUTHORIZE, state);
+		ThreadContext.response().sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
 	}
 	@RequestMapping("/github/login.do")
 	public String login(@RequestParam String code,@RequestParam String state) throws Exception {
-		String myState = stringCache.get(MyCookie.getCookie(Const.COOKIE_TOKEN) + Const.CACHE_AUTHORIZE);
+		String myState = stringCache.get(MyCookie.getCookie(IConst.COOKIE_TOKEN) + IConst.CACHE_AUTHORIZE);
 		if(myState == null || !myState.equals(state)){
-			request.setAttribute("result", "非法参数，登陆失败！");
+			ThreadContext.request().setAttribute("result", "非法参数，登陆失败！");
 			return "WEB-INF/views/result.jsp";
 		}else{
 			User user = null;
@@ -100,12 +101,12 @@ public class GitHubController extends BaseController {
 			model.setRemberPwd("NO");
 			customUserService.login(model, user);
 			
-			response.sendRedirect("../admin.do");
+			ThreadContext.response().sendRedirect("../admin.do");
 		}
 		return "";
 	}
 
 	private String getThirdlyId(GitHubUser gitHubUser) {
-		return Const.GITHUB + gitHubUser.getId();
+		return IConst.GITHUB + gitHubUser.getId();
 	}
 }

@@ -9,9 +9,9 @@ import cn.crap.enumer.UserType;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.service.custom.CustomProjectService;
-import cn.crap.service.imp.MybatisRoleService;
-import cn.crap.service.imp.MybatisProjectUserService;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.RoleService;
+import cn.crap.service.mybatis.ProjectUserService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.Tools;
 
 public class LoginInfoDto implements Serializable{
@@ -27,7 +27,7 @@ public class LoginInfoDto implements Serializable{
 	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
 
-	public LoginInfoDto(User user, MybatisRoleService roleService, CustomProjectService customProjectService, MybatisProjectUserService projectUserService){
+	public LoginInfoDto(User user, RoleService roleService, CustomProjectService customProjectService, ProjectUserService projectUserService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
@@ -41,14 +41,14 @@ public class LoginInfoDto implements Serializable{
 		// 将用户的自己的模块添加至权限中
 		List<Project> myProjects = customProjectService.queryMyProjectByUserId(id);
 		for(Project project:myProjects){
-			sb.append(Const.AUTH_PROJECT + project.getId()+",");
+			sb.append(IConst.C_AUTH_PROJECT + project.getId()+",");
 		}
 		
 		// 管理员，将最高管理员，管理员
 		if( type == UserType.ADMIN.getType() ){
 			sb.append(authStr+",");
 			sb.append("ADMIN,");
-			if(roleId.indexOf("super") >= 0)
+			if(roleId != null && roleId.indexOf("super") >= 0)
 				sb.append("super,");
 			if (roleId != null && !"".equals(roleId)) {
 				RoleCriteria example = new RoleCriteria();
@@ -67,7 +67,7 @@ public class LoginInfoDto implements Serializable{
 
 		for(ProjectUser p: projectUserService.selectByExample(example)){
 			projects.put(p.getProjectId(), p);
-			sb.append(Const.AUTH_PROJECT + p.getProjectId()+",");
+			sb.append(IConst.C_AUTH_PROJECT + p.getProjectId()+",");
 		}
 		
 		this.authStr = sb.toString();

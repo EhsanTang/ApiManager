@@ -8,7 +8,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Error;
 import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.imp.MybatisErrorService;
+import cn.crap.service.mybatis.ErrorService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/user/error")
 public class ErrorController extends BaseController{
     @Autowired
-    private MybatisErrorService errorService;
+    private ErrorService errorService;
     @Autowired
     private CustomErrorService customErrorService;
 
@@ -40,7 +40,7 @@ public class ErrorController extends BaseController{
     @ResponseBody
     @AuthPassport
     public JsonResult list(String projectId, String errorCode, String errorMsg, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
-        hasPermission(projectId, view);
+        checkUserPermissionByProject(projectId, VIEW);
 
         if (MyString.isEmpty(projectId)) {
             throw new MyException("000020");
@@ -61,7 +61,7 @@ public class ErrorController extends BaseController{
         Error model;
         if (id != null) {
             model = errorService.selectByPrimaryKey(id);
-            hasPermission(model.getProjectId(), view);
+            checkUserPermissionByProject(model.getProjectId(), VIEW);
         } else {
             model = new Error();
             model.setProjectId(projectId);
@@ -81,7 +81,7 @@ public class ErrorController extends BaseController{
         // update
         if (!MyString.isEmpty(dto.getId())) {
             Error model = errorService.selectByPrimaryKey(dto.getId());
-            hasPermission(model.getProjectId(), modError);
+            checkUserPermissionByProject(model.getProjectId(), MOD_ERROR);
 
             Error newModel = ErrorAdapter.getModel(dto);
             newModel.setProjectId(null);
@@ -92,7 +92,7 @@ public class ErrorController extends BaseController{
         // add
         boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
         if (!existSameErrorCode) {
-            hasPermission(dto.getProjectId(), addError);
+            checkUserPermissionByProject(dto.getProjectId(), ADD_ERROR);
             errorService.insert(ErrorAdapter.getModel(dto));
         } else {
             return new JsonResult(new MyException("000002"));
@@ -109,7 +109,7 @@ public class ErrorController extends BaseController{
         if (model == null) {
             throw new MyException("000063");
         }
-        hasPermission(model.getProjectId(), delError);
+        checkUserPermissionByProject(model.getProjectId(), DEL_ERROR);
 
         errorService.delete(id);
         return new JsonResult(1, null);

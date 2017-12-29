@@ -35,6 +35,13 @@ public class MyCookie {
 	public static void addCookie(String key,String value,boolean jiaMi){
 		addCookie(key,value,jiaMi,60*60*24*7);
 	}
+
+	/**
+	 * @param key
+	 * @param value
+	 * @param jiaMi
+	 * @param time 单位 s
+	 */
 	public static void addCookie(String key,String value,boolean jiaMi, int time){
 		if( MyString.isEmpty(key) || MyString.isEmpty(value)){
 			return;

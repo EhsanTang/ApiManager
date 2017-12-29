@@ -8,6 +8,7 @@ import cn.crap.enumer.LoginType;
 import cn.crap.framework.ErrorInfos;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
+import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.User;
@@ -15,10 +16,10 @@ import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.IEmailService;
 import cn.crap.service.custom.CustomProjectService;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.imp.MybatisProjectUserService;
-import cn.crap.service.imp.MybatisRoleService;
-import cn.crap.service.imp.MybatisUserService;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.ProjectUserService;
+import cn.crap.service.mybatis.RoleService;
+import cn.crap.service.mybatis.UserService;
+import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -41,7 +43,7 @@ public class LoginController extends BaseController{
 	@Autowired
 	private IEmailService emailService;
 	@Autowired
-	private MybatisUserService userService;
+	private UserService userService;
 	@Autowired
 	private CustomUserService customUserService;
 	@Autowired
@@ -49,18 +51,18 @@ public class LoginController extends BaseController{
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
-	private MybatisProjectUserService projectUserService;
+	private ProjectUserService projectUserService;
 	@Autowired
-	private MybatisRoleService roleService;
+	private RoleService roleService;
 	
 	/**
 	 * 退出登录
 	 */
 	@RequestMapping("/back/loginOut.do")
 	public String loginOut() throws IOException {
-		String uid = MyCookie.getCookie(Const.COOKIE_USERID);
+		String uid = MyCookie.getCookie(IConst.COOKIE_USERID);
 		userCache.del(uid);
-		MyCookie.deleteCookie(Const.COOKIE_TOKEN);
+		MyCookie.deleteCookie(IConst.COOKIE_TOKEN);
 		return "resources/html/frontHtml/index.html";
 	}
 	
@@ -76,10 +78,10 @@ public class LoginController extends BaseController{
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
 		LoginDto model = new LoginDto();
-		model.setUserName(MyCookie.getCookie(Const.COOKIE_USERNAME));
-		model.setRemberPwd(MyCookie.getCookie(Const.COOKIE_REMBER_PWD));
+		model.setUserName(MyCookie.getCookie(IConst.COOKIE_USERNAME));
+		model.setRemberPwd(MyCookie.getCookie(IConst.COOKIE_REMBER_PWD));
 		if(!model.getRemberPwd().equalsIgnoreCase("no")){
-			model.setPassword(MyCookie.getCookie(Const.COOKIE_PASSWORD, true));
+			model.setPassword(MyCookie.getCookie(IConst.COOKIE_PASSWORD, true));
 		}else{
 			model.setPassword("");
 		}
@@ -110,11 +112,12 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping("/back/validateEmail.do")
 	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException {
+		HttpServletRequest request = ThreadContext.request();
 		String id =  Aes.desEncrypt(i);
 		String code = stringCache.get(i);
 		stringCache.del(i);
-		if(code == null || !code.equals(Const.REGISTER)){
-			request.setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
+		if(code == null || !code.equals(IConst.REGISTER)){
+			ThreadContext.request().setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
 		}else{
 			User user = userService.selectByPrimaryKey(id);
 			if(user.getId() != null){
@@ -185,7 +188,7 @@ public class LoginController extends BaseController{
 	public JsonResult reset(@ModelAttribute FindPwdDto findPwdDto) throws UnsupportedEncodingException, MessagingException, MyException{
 		findPwdDto.check();
 		
-		String code = stringCache.get(Const.CACHE_FINDPWD + findPwdDto.getEmail());
+		String code = stringCache.get(IConst.CACHE_FINDPWD + findPwdDto.getEmail());
 		if(code == null || !code.equalsIgnoreCase(findPwdDto.getCode())){
 			throw new MyException("000031");
 		}
@@ -225,7 +228,7 @@ public class LoginController extends BaseController{
 			return new JsonResult(1, model);
 		}
 		
-		if (settingCache.get(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+		if (settingCache.get(IConst.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
 			if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode())) {
 				model.setTipMessage("验证码有误");
 				return new JsonResult(1, model);
@@ -284,7 +287,7 @@ public class LoginController extends BaseController{
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
 		try{
-			if (settingCache.get(Const.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+			if (settingCache.get(IConst.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
 				if(MyString.isEmpty(model.getVerificationCode()) ){
 					model.setTipMessage("验证码为空,请刷新浏览器再试！");
 					return new JsonResult(1, model);

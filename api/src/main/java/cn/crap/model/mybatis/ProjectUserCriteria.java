@@ -516,902 +516,902 @@ public class ProjectUserCriteria {
         }
 
         public Criteria andAddModuleIsNull() {
-            addCriterion("addModule is null");
+            addCriterion("ADD_MODULE is null");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleIsNotNull() {
-            addCriterion("addModule is not null");
+            addCriterion("ADD_MODULE is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleEqualTo(Boolean value) {
-            addCriterion("addModule =", value, "addModule");
+            addCriterion("ADD_MODULE =", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleNotEqualTo(Boolean value) {
-            addCriterion("addModule <>", value, "addModule");
+            addCriterion("ADD_MODULE <>", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleGreaterThan(Boolean value) {
-            addCriterion("addModule >", value, "addModule");
+            addCriterion("ADD_MODULE >", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addModule >=", value, "addModule");
+            addCriterion("ADD_MODULE >=", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleLessThan(Boolean value) {
-            addCriterion("addModule <", value, "addModule");
+            addCriterion("ADD_MODULE <", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleLessThanOrEqualTo(Boolean value) {
-            addCriterion("addModule <=", value, "addModule");
+            addCriterion("ADD_MODULE <=", value, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleIn(List<Boolean> values) {
-            addCriterion("addModule in", values, "addModule");
+            addCriterion("ADD_MODULE in", values, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleNotIn(List<Boolean> values) {
-            addCriterion("addModule not in", values, "addModule");
+            addCriterion("ADD_MODULE not in", values, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleBetween(Boolean value1, Boolean value2) {
-            addCriterion("addModule between", value1, value2, "addModule");
+            addCriterion("ADD_MODULE between", value1, value2, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddModuleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addModule not between", value1, value2, "addModule");
+            addCriterion("ADD_MODULE not between", value1, value2, "ADD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleIsNull() {
-            addCriterion("delModule is null");
+            addCriterion("DEL_MODULE is null");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleIsNotNull() {
-            addCriterion("delModule is not null");
+            addCriterion("DEL_MODULE is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleEqualTo(Boolean value) {
-            addCriterion("delModule =", value, "delModule");
+            addCriterion("DEL_MODULE =", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleNotEqualTo(Boolean value) {
-            addCriterion("delModule <>", value, "delModule");
+            addCriterion("DEL_MODULE <>", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleGreaterThan(Boolean value) {
-            addCriterion("delModule >", value, "delModule");
+            addCriterion("DEL_MODULE >", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delModule >=", value, "delModule");
+            addCriterion("DEL_MODULE >=", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleLessThan(Boolean value) {
-            addCriterion("delModule <", value, "delModule");
+            addCriterion("DEL_MODULE <", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleLessThanOrEqualTo(Boolean value) {
-            addCriterion("delModule <=", value, "delModule");
+            addCriterion("DEL_MODULE <=", value, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleIn(List<Boolean> values) {
-            addCriterion("delModule in", values, "delModule");
+            addCriterion("DEL_MODULE in", values, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleNotIn(List<Boolean> values) {
-            addCriterion("delModule not in", values, "delModule");
+            addCriterion("DEL_MODULE not in", values, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleBetween(Boolean value1, Boolean value2) {
-            addCriterion("delModule between", value1, value2, "delModule");
+            addCriterion("DEL_MODULE between", value1, value2, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andDelModuleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delModule not between", value1, value2, "delModule");
+            addCriterion("DEL_MODULE not between", value1, value2, "DEL_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleIsNull() {
-            addCriterion("modModule is null");
+            addCriterion("MOD_MODULE is null");
             return (Criteria) this;
         }
 
         public Criteria andModModuleIsNotNull() {
-            addCriterion("modModule is not null");
+            addCriterion("MOD_MODULE is not null");
             return (Criteria) this;
         }
 
         public Criteria andModModuleEqualTo(Boolean value) {
-            addCriterion("modModule =", value, "modModule");
+            addCriterion("MOD_MODULE =", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleNotEqualTo(Boolean value) {
-            addCriterion("modModule <>", value, "modModule");
+            addCriterion("MOD_MODULE <>", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleGreaterThan(Boolean value) {
-            addCriterion("modModule >", value, "modModule");
+            addCriterion("MOD_MODULE >", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modModule >=", value, "modModule");
+            addCriterion("MOD_MODULE >=", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleLessThan(Boolean value) {
-            addCriterion("modModule <", value, "modModule");
+            addCriterion("MOD_MODULE <", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleLessThanOrEqualTo(Boolean value) {
-            addCriterion("modModule <=", value, "modModule");
+            addCriterion("MOD_MODULE <=", value, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleIn(List<Boolean> values) {
-            addCriterion("modModule in", values, "modModule");
+            addCriterion("MOD_MODULE in", values, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleNotIn(List<Boolean> values) {
-            addCriterion("modModule not in", values, "modModule");
+            addCriterion("MOD_MODULE not in", values, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleBetween(Boolean value1, Boolean value2) {
-            addCriterion("modModule between", value1, value2, "modModule");
+            addCriterion("MOD_MODULE between", value1, value2, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andModModuleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modModule not between", value1, value2, "modModule");
+            addCriterion("MOD_MODULE not between", value1, value2, "MOD_MODULE");
             return (Criteria) this;
         }
 
         public Criteria andAddInterIsNull() {
-            addCriterion("addInter is null");
+            addCriterion("ADD_INTER is null");
             return (Criteria) this;
         }
 
         public Criteria andAddInterIsNotNull() {
-            addCriterion("addInter is not null");
+            addCriterion("ADD_INTER is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddInterEqualTo(Boolean value) {
-            addCriterion("addInter =", value, "addInter");
+            addCriterion("ADD_INTER =", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterNotEqualTo(Boolean value) {
-            addCriterion("addInter <>", value, "addInter");
+            addCriterion("ADD_INTER <>", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterGreaterThan(Boolean value) {
-            addCriterion("addInter >", value, "addInter");
+            addCriterion("ADD_INTER >", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addInter >=", value, "addInter");
+            addCriterion("ADD_INTER >=", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterLessThan(Boolean value) {
-            addCriterion("addInter <", value, "addInter");
+            addCriterion("ADD_INTER <", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterLessThanOrEqualTo(Boolean value) {
-            addCriterion("addInter <=", value, "addInter");
+            addCriterion("ADD_INTER <=", value, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterIn(List<Boolean> values) {
-            addCriterion("addInter in", values, "addInter");
+            addCriterion("ADD_INTER in", values, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterNotIn(List<Boolean> values) {
-            addCriterion("addInter not in", values, "addInter");
+            addCriterion("ADD_INTER not in", values, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterBetween(Boolean value1, Boolean value2) {
-            addCriterion("addInter between", value1, value2, "addInter");
+            addCriterion("ADD_INTER between", value1, value2, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddInterNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addInter not between", value1, value2, "addInter");
+            addCriterion("ADD_INTER not between", value1, value2, "ADD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterIsNull() {
-            addCriterion("delInter is null");
+            addCriterion("DEL_INTER is null");
             return (Criteria) this;
         }
 
         public Criteria andDelInterIsNotNull() {
-            addCriterion("delInter is not null");
+            addCriterion("DEL_INTER is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelInterEqualTo(Boolean value) {
-            addCriterion("delInter =", value, "delInter");
+            addCriterion("DEL_INTER =", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterNotEqualTo(Boolean value) {
-            addCriterion("delInter <>", value, "delInter");
+            addCriterion("DEL_INTER <>", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterGreaterThan(Boolean value) {
-            addCriterion("delInter >", value, "delInter");
+            addCriterion("DEL_INTER >", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delInter >=", value, "delInter");
+            addCriterion("DEL_INTER >=", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterLessThan(Boolean value) {
-            addCriterion("delInter <", value, "delInter");
+            addCriterion("DEL_INTER <", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterLessThanOrEqualTo(Boolean value) {
-            addCriterion("delInter <=", value, "delInter");
+            addCriterion("DEL_INTER <=", value, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterIn(List<Boolean> values) {
-            addCriterion("delInter in", values, "delInter");
+            addCriterion("DEL_INTER in", values, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterNotIn(List<Boolean> values) {
-            addCriterion("delInter not in", values, "delInter");
+            addCriterion("DEL_INTER not in", values, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterBetween(Boolean value1, Boolean value2) {
-            addCriterion("delInter between", value1, value2, "delInter");
+            addCriterion("DEL_INTER between", value1, value2, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andDelInterNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delInter not between", value1, value2, "delInter");
+            addCriterion("DEL_INTER not between", value1, value2, "DEL_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterIsNull() {
-            addCriterion("modInter is null");
+            addCriterion("MOD_INTER is null");
             return (Criteria) this;
         }
 
         public Criteria andModInterIsNotNull() {
-            addCriterion("modInter is not null");
+            addCriterion("MOD_INTER is not null");
             return (Criteria) this;
         }
 
         public Criteria andModInterEqualTo(Boolean value) {
-            addCriterion("modInter =", value, "modInter");
+            addCriterion("MOD_INTER =", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterNotEqualTo(Boolean value) {
-            addCriterion("modInter <>", value, "modInter");
+            addCriterion("MOD_INTER <>", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterGreaterThan(Boolean value) {
-            addCriterion("modInter >", value, "modInter");
+            addCriterion("MOD_INTER >", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modInter >=", value, "modInter");
+            addCriterion("MOD_INTER >=", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterLessThan(Boolean value) {
-            addCriterion("modInter <", value, "modInter");
+            addCriterion("MOD_INTER <", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterLessThanOrEqualTo(Boolean value) {
-            addCriterion("modInter <=", value, "modInter");
+            addCriterion("MOD_INTER <=", value, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterIn(List<Boolean> values) {
-            addCriterion("modInter in", values, "modInter");
+            addCriterion("MOD_INTER in", values, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterNotIn(List<Boolean> values) {
-            addCriterion("modInter not in", values, "modInter");
+            addCriterion("MOD_INTER not in", values, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterBetween(Boolean value1, Boolean value2) {
-            addCriterion("modInter between", value1, value2, "modInter");
+            addCriterion("MOD_INTER between", value1, value2, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andModInterNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modInter not between", value1, value2, "modInter");
+            addCriterion("MOD_INTER not between", value1, value2, "MOD_INTER");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleIsNull() {
-            addCriterion("addArticle is null");
+            addCriterion("ADD_ARTICLE is null");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleIsNotNull() {
-            addCriterion("addArticle is not null");
+            addCriterion("ADD_ARTICLE is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleEqualTo(Boolean value) {
-            addCriterion("addArticle =", value, "addArticle");
+            addCriterion("ADD_ARTICLE =", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleNotEqualTo(Boolean value) {
-            addCriterion("addArticle <>", value, "addArticle");
+            addCriterion("ADD_ARTICLE <>", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleGreaterThan(Boolean value) {
-            addCriterion("addArticle >", value, "addArticle");
+            addCriterion("ADD_ARTICLE >", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addArticle >=", value, "addArticle");
+            addCriterion("ADD_ARTICLE >=", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleLessThan(Boolean value) {
-            addCriterion("addArticle <", value, "addArticle");
+            addCriterion("ADD_ARTICLE <", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleLessThanOrEqualTo(Boolean value) {
-            addCriterion("addArticle <=", value, "addArticle");
+            addCriterion("ADD_ARTICLE <=", value, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleIn(List<Boolean> values) {
-            addCriterion("addArticle in", values, "addArticle");
+            addCriterion("ADD_ARTICLE in", values, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleNotIn(List<Boolean> values) {
-            addCriterion("addArticle not in", values, "addArticle");
+            addCriterion("ADD_ARTICLE not in", values, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleBetween(Boolean value1, Boolean value2) {
-            addCriterion("addArticle between", value1, value2, "addArticle");
+            addCriterion("ADD_ARTICLE between", value1, value2, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddArticleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addArticle not between", value1, value2, "addArticle");
+            addCriterion("ADD_ARTICLE not between", value1, value2, "ADD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleIsNull() {
-            addCriterion("delArticle is null");
+            addCriterion("DEL_ARTICLE is null");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleIsNotNull() {
-            addCriterion("delArticle is not null");
+            addCriterion("DEL_ARTICLE is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleEqualTo(Boolean value) {
-            addCriterion("delArticle =", value, "delArticle");
+            addCriterion("DEL_ARTICLE =", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleNotEqualTo(Boolean value) {
-            addCriterion("delArticle <>", value, "delArticle");
+            addCriterion("DEL_ARTICLE <>", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleGreaterThan(Boolean value) {
-            addCriterion("delArticle >", value, "delArticle");
+            addCriterion("DEL_ARTICLE >", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delArticle >=", value, "delArticle");
+            addCriterion("DEL_ARTICLE >=", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleLessThan(Boolean value) {
-            addCriterion("delArticle <", value, "delArticle");
+            addCriterion("DEL_ARTICLE <", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleLessThanOrEqualTo(Boolean value) {
-            addCriterion("delArticle <=", value, "delArticle");
+            addCriterion("DEL_ARTICLE <=", value, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleIn(List<Boolean> values) {
-            addCriterion("delArticle in", values, "delArticle");
+            addCriterion("DEL_ARTICLE in", values, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleNotIn(List<Boolean> values) {
-            addCriterion("delArticle not in", values, "delArticle");
+            addCriterion("DEL_ARTICLE not in", values, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleBetween(Boolean value1, Boolean value2) {
-            addCriterion("delArticle between", value1, value2, "delArticle");
+            addCriterion("DEL_ARTICLE between", value1, value2, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andDelArticleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delArticle not between", value1, value2, "delArticle");
+            addCriterion("DEL_ARTICLE not between", value1, value2, "DEL_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleIsNull() {
-            addCriterion("modArticle is null");
+            addCriterion("MOD_ARTICLE is null");
             return (Criteria) this;
         }
 
         public Criteria andModArticleIsNotNull() {
-            addCriterion("modArticle is not null");
+            addCriterion("MOD_ARTICLE is not null");
             return (Criteria) this;
         }
 
         public Criteria andModArticleEqualTo(Boolean value) {
-            addCriterion("modArticle =", value, "modArticle");
+            addCriterion("MOD_ARTICLE =", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleNotEqualTo(Boolean value) {
-            addCriterion("modArticle <>", value, "modArticle");
+            addCriterion("MOD_ARTICLE <>", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleGreaterThan(Boolean value) {
-            addCriterion("modArticle >", value, "modArticle");
+            addCriterion("MOD_ARTICLE >", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modArticle >=", value, "modArticle");
+            addCriterion("MOD_ARTICLE >=", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleLessThan(Boolean value) {
-            addCriterion("modArticle <", value, "modArticle");
+            addCriterion("MOD_ARTICLE <", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleLessThanOrEqualTo(Boolean value) {
-            addCriterion("modArticle <=", value, "modArticle");
+            addCriterion("MOD_ARTICLE <=", value, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleIn(List<Boolean> values) {
-            addCriterion("modArticle in", values, "modArticle");
+            addCriterion("MOD_ARTICLE in", values, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleNotIn(List<Boolean> values) {
-            addCriterion("modArticle not in", values, "modArticle");
+            addCriterion("MOD_ARTICLE not in", values, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleBetween(Boolean value1, Boolean value2) {
-            addCriterion("modArticle between", value1, value2, "modArticle");
+            addCriterion("MOD_ARTICLE between", value1, value2, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andModArticleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modArticle not between", value1, value2, "modArticle");
+            addCriterion("MOD_ARTICLE not between", value1, value2, "MOD_ARTICLE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceIsNull() {
-            addCriterion("addSource is null");
+            addCriterion("ADD_SOURCE is null");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceIsNotNull() {
-            addCriterion("addSource is not null");
+            addCriterion("ADD_SOURCE is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceEqualTo(Boolean value) {
-            addCriterion("addSource =", value, "addSource");
+            addCriterion("ADD_SOURCE =", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceNotEqualTo(Boolean value) {
-            addCriterion("addSource <>", value, "addSource");
+            addCriterion("ADD_SOURCE <>", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceGreaterThan(Boolean value) {
-            addCriterion("addSource >", value, "addSource");
+            addCriterion("ADD_SOURCE >", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addSource >=", value, "addSource");
+            addCriterion("ADD_SOURCE >=", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceLessThan(Boolean value) {
-            addCriterion("addSource <", value, "addSource");
+            addCriterion("ADD_SOURCE <", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceLessThanOrEqualTo(Boolean value) {
-            addCriterion("addSource <=", value, "addSource");
+            addCriterion("ADD_SOURCE <=", value, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceIn(List<Boolean> values) {
-            addCriterion("addSource in", values, "addSource");
+            addCriterion("ADD_SOURCE in", values, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceNotIn(List<Boolean> values) {
-            addCriterion("addSource not in", values, "addSource");
+            addCriterion("ADD_SOURCE not in", values, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceBetween(Boolean value1, Boolean value2) {
-            addCriterion("addSource between", value1, value2, "addSource");
+            addCriterion("ADD_SOURCE between", value1, value2, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddSourceNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addSource not between", value1, value2, "addSource");
+            addCriterion("ADD_SOURCE not between", value1, value2, "ADD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceIsNull() {
-            addCriterion("delSource is null");
+            addCriterion("DEL_SOURCE is null");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceIsNotNull() {
-            addCriterion("delSource is not null");
+            addCriterion("DEL_SOURCE is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceEqualTo(Boolean value) {
-            addCriterion("delSource =", value, "delSource");
+            addCriterion("DEL_SOURCE =", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceNotEqualTo(Boolean value) {
-            addCriterion("delSource <>", value, "delSource");
+            addCriterion("DEL_SOURCE <>", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceGreaterThan(Boolean value) {
-            addCriterion("delSource >", value, "delSource");
+            addCriterion("DEL_SOURCE >", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delSource >=", value, "delSource");
+            addCriterion("DEL_SOURCE >=", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceLessThan(Boolean value) {
-            addCriterion("delSource <", value, "delSource");
+            addCriterion("DEL_SOURCE <", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceLessThanOrEqualTo(Boolean value) {
-            addCriterion("delSource <=", value, "delSource");
+            addCriterion("DEL_SOURCE <=", value, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceIn(List<Boolean> values) {
-            addCriterion("delSource in", values, "delSource");
+            addCriterion("DEL_SOURCE in", values, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceNotIn(List<Boolean> values) {
-            addCriterion("delSource not in", values, "delSource");
+            addCriterion("DEL_SOURCE not in", values, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceBetween(Boolean value1, Boolean value2) {
-            addCriterion("delSource between", value1, value2, "delSource");
+            addCriterion("DEL_SOURCE between", value1, value2, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andDelSourceNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delSource not between", value1, value2, "delSource");
+            addCriterion("DEL_SOURCE not between", value1, value2, "DEL_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceIsNull() {
-            addCriterion("modSource is null");
+            addCriterion("MOD_SOURCE is null");
             return (Criteria) this;
         }
 
         public Criteria andModSourceIsNotNull() {
-            addCriterion("modSource is not null");
+            addCriterion("MOD_SOURCE is not null");
             return (Criteria) this;
         }
 
         public Criteria andModSourceEqualTo(Boolean value) {
-            addCriterion("modSource =", value, "modSource");
+            addCriterion("MOD_SOURCE =", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceNotEqualTo(Boolean value) {
-            addCriterion("modSource <>", value, "modSource");
+            addCriterion("MOD_SOURCE <>", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceGreaterThan(Boolean value) {
-            addCriterion("modSource >", value, "modSource");
+            addCriterion("MOD_SOURCE >", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modSource >=", value, "modSource");
+            addCriterion("MOD_SOURCE >=", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceLessThan(Boolean value) {
-            addCriterion("modSource <", value, "modSource");
+            addCriterion("MOD_SOURCE <", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceLessThanOrEqualTo(Boolean value) {
-            addCriterion("modSource <=", value, "modSource");
+            addCriterion("MOD_SOURCE <=", value, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceIn(List<Boolean> values) {
-            addCriterion("modSource in", values, "modSource");
+            addCriterion("MOD_SOURCE in", values, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceNotIn(List<Boolean> values) {
-            addCriterion("modSource not in", values, "modSource");
+            addCriterion("MOD_SOURCE not in", values, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceBetween(Boolean value1, Boolean value2) {
-            addCriterion("modSource between", value1, value2, "modSource");
+            addCriterion("MOD_SOURCE between", value1, value2, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andModSourceNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modSource not between", value1, value2, "modSource");
+            addCriterion("MOD_SOURCE not between", value1, value2, "MOD_SOURCE");
             return (Criteria) this;
         }
 
         public Criteria andAddDictIsNull() {
-            addCriterion("addDict is null");
+            addCriterion("ADD_DICT is null");
             return (Criteria) this;
         }
 
         public Criteria andAddDictIsNotNull() {
-            addCriterion("addDict is not null");
+            addCriterion("ADD_DICT is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddDictEqualTo(Boolean value) {
-            addCriterion("addDict =", value, "addDict");
+            addCriterion("ADD_DICT =", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictNotEqualTo(Boolean value) {
-            addCriterion("addDict <>", value, "addDict");
+            addCriterion("ADD_DICT <>", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictGreaterThan(Boolean value) {
-            addCriterion("addDict >", value, "addDict");
+            addCriterion("ADD_DICT >", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addDict >=", value, "addDict");
+            addCriterion("ADD_DICT >=", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictLessThan(Boolean value) {
-            addCriterion("addDict <", value, "addDict");
+            addCriterion("ADD_DICT <", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictLessThanOrEqualTo(Boolean value) {
-            addCriterion("addDict <=", value, "addDict");
+            addCriterion("ADD_DICT <=", value, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictIn(List<Boolean> values) {
-            addCriterion("addDict in", values, "addDict");
+            addCriterion("ADD_DICT in", values, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictNotIn(List<Boolean> values) {
-            addCriterion("addDict not in", values, "addDict");
+            addCriterion("ADD_DICT not in", values, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictBetween(Boolean value1, Boolean value2) {
-            addCriterion("addDict between", value1, value2, "addDict");
+            addCriterion("ADD_DICT between", value1, value2, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andAddDictNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addDict not between", value1, value2, "addDict");
+            addCriterion("ADD_DICT not between", value1, value2, "ADD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictIsNull() {
-            addCriterion("delDict is null");
+            addCriterion("DEL_DICT is null");
             return (Criteria) this;
         }
 
         public Criteria andDelDictIsNotNull() {
-            addCriterion("delDict is not null");
+            addCriterion("DEL_DICT is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelDictEqualTo(Boolean value) {
-            addCriterion("delDict =", value, "delDict");
+            addCriterion("DEL_DICT =", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictNotEqualTo(Boolean value) {
-            addCriterion("delDict <>", value, "delDict");
+            addCriterion("DEL_DICT <>", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictGreaterThan(Boolean value) {
-            addCriterion("delDict >", value, "delDict");
+            addCriterion("DEL_DICT >", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delDict >=", value, "delDict");
+            addCriterion("DEL_DICT >=", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictLessThan(Boolean value) {
-            addCriterion("delDict <", value, "delDict");
+            addCriterion("DEL_DICT <", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictLessThanOrEqualTo(Boolean value) {
-            addCriterion("delDict <=", value, "delDict");
+            addCriterion("DEL_DICT <=", value, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictIn(List<Boolean> values) {
-            addCriterion("delDict in", values, "delDict");
+            addCriterion("DEL_DICT in", values, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictNotIn(List<Boolean> values) {
-            addCriterion("delDict not in", values, "delDict");
+            addCriterion("DEL_DICT not in", values, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictBetween(Boolean value1, Boolean value2) {
-            addCriterion("delDict between", value1, value2, "delDict");
+            addCriterion("DEL_DICT between", value1, value2, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andDelDictNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delDict not between", value1, value2, "delDict");
+            addCriterion("DEL_DICT not between", value1, value2, "DEL_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictIsNull() {
-            addCriterion("modDict is null");
+            addCriterion("MOD_DICT is null");
             return (Criteria) this;
         }
 
         public Criteria andModDictIsNotNull() {
-            addCriterion("modDict is not null");
+            addCriterion("MOD_DICT is not null");
             return (Criteria) this;
         }
 
         public Criteria andModDictEqualTo(Boolean value) {
-            addCriterion("modDict =", value, "modDict");
+            addCriterion("MOD_DICT =", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictNotEqualTo(Boolean value) {
-            addCriterion("modDict <>", value, "modDict");
+            addCriterion("MOD_DICT <>", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictGreaterThan(Boolean value) {
-            addCriterion("modDict >", value, "modDict");
+            addCriterion("MOD_DICT >", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modDict >=", value, "modDict");
+            addCriterion("MOD_DICT >=", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictLessThan(Boolean value) {
-            addCriterion("modDict <", value, "modDict");
+            addCriterion("MOD_DICT <", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictLessThanOrEqualTo(Boolean value) {
-            addCriterion("modDict <=", value, "modDict");
+            addCriterion("MOD_DICT <=", value, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictIn(List<Boolean> values) {
-            addCriterion("modDict in", values, "modDict");
+            addCriterion("MOD_DICT in", values, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictNotIn(List<Boolean> values) {
-            addCriterion("modDict not in", values, "modDict");
+            addCriterion("MOD_DICT not in", values, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictBetween(Boolean value1, Boolean value2) {
-            addCriterion("modDict between", value1, value2, "modDict");
+            addCriterion("MOD_DICT between", value1, value2, "MOD_DICT");
             return (Criteria) this;
         }
 
         public Criteria andModDictNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modDict not between", value1, value2, "modDict");
+            addCriterion("MOD_DICT not between", value1, value2, "MOD_DICT");
             return (Criteria) this;
         }
 
@@ -1556,182 +1556,182 @@ public class ProjectUserCriteria {
         }
 
         public Criteria andAddErrorIsNull() {
-            addCriterion("addError is null");
+            addCriterion("ADD_ERROR is null");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorIsNotNull() {
-            addCriterion("addError is not null");
+            addCriterion("ADD_ERROR is not null");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorEqualTo(Boolean value) {
-            addCriterion("addError =", value, "addError");
+            addCriterion("ADD_ERROR =", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorNotEqualTo(Boolean value) {
-            addCriterion("addError <>", value, "addError");
+            addCriterion("ADD_ERROR <>", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorGreaterThan(Boolean value) {
-            addCriterion("addError >", value, "addError");
+            addCriterion("ADD_ERROR >", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("addError >=", value, "addError");
+            addCriterion("ADD_ERROR >=", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorLessThan(Boolean value) {
-            addCriterion("addError <", value, "addError");
+            addCriterion("ADD_ERROR <", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorLessThanOrEqualTo(Boolean value) {
-            addCriterion("addError <=", value, "addError");
+            addCriterion("ADD_ERROR <=", value, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorIn(List<Boolean> values) {
-            addCriterion("addError in", values, "addError");
+            addCriterion("ADD_ERROR in", values, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorNotIn(List<Boolean> values) {
-            addCriterion("addError not in", values, "addError");
+            addCriterion("ADD_ERROR not in", values, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorBetween(Boolean value1, Boolean value2) {
-            addCriterion("addError between", value1, value2, "addError");
+            addCriterion("ADD_ERROR between", value1, value2, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andAddErrorNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("addError not between", value1, value2, "addError");
+            addCriterion("ADD_ERROR not between", value1, value2, "ADD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorIsNull() {
-            addCriterion("delError is null");
+            addCriterion("DEL_ERROR is null");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorIsNotNull() {
-            addCriterion("delError is not null");
+            addCriterion("DEL_ERROR is not null");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorEqualTo(Boolean value) {
-            addCriterion("delError =", value, "delError");
+            addCriterion("DEL_ERROR =", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorNotEqualTo(Boolean value) {
-            addCriterion("delError <>", value, "delError");
+            addCriterion("DEL_ERROR <>", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorGreaterThan(Boolean value) {
-            addCriterion("delError >", value, "delError");
+            addCriterion("DEL_ERROR >", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("delError >=", value, "delError");
+            addCriterion("DEL_ERROR >=", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorLessThan(Boolean value) {
-            addCriterion("delError <", value, "delError");
+            addCriterion("DEL_ERROR <", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorLessThanOrEqualTo(Boolean value) {
-            addCriterion("delError <=", value, "delError");
+            addCriterion("DEL_ERROR <=", value, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorIn(List<Boolean> values) {
-            addCriterion("delError in", values, "delError");
+            addCriterion("DEL_ERROR in", values, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorNotIn(List<Boolean> values) {
-            addCriterion("delError not in", values, "delError");
+            addCriterion("DEL_ERROR not in", values, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorBetween(Boolean value1, Boolean value2) {
-            addCriterion("delError between", value1, value2, "delError");
+            addCriterion("DEL_ERROR between", value1, value2, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andDelErrorNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("delError not between", value1, value2, "delError");
+            addCriterion("DEL_ERROR not between", value1, value2, "DEL_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorIsNull() {
-            addCriterion("modError is null");
+            addCriterion("MOD_ERROR is null");
             return (Criteria) this;
         }
 
         public Criteria andModErrorIsNotNull() {
-            addCriterion("modError is not null");
+            addCriterion("MOD_ERROR is not null");
             return (Criteria) this;
         }
 
         public Criteria andModErrorEqualTo(Boolean value) {
-            addCriterion("modError =", value, "modError");
+            addCriterion("MOD_ERROR =", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorNotEqualTo(Boolean value) {
-            addCriterion("modError <>", value, "modError");
+            addCriterion("MOD_ERROR <>", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorGreaterThan(Boolean value) {
-            addCriterion("modError >", value, "modError");
+            addCriterion("MOD_ERROR >", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("modError >=", value, "modError");
+            addCriterion("MOD_ERROR >=", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorLessThan(Boolean value) {
-            addCriterion("modError <", value, "modError");
+            addCriterion("MOD_ERROR <", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorLessThanOrEqualTo(Boolean value) {
-            addCriterion("modError <=", value, "modError");
+            addCriterion("MOD_ERROR <=", value, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorIn(List<Boolean> values) {
-            addCriterion("modError in", values, "modError");
+            addCriterion("MOD_ERROR in", values, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorNotIn(List<Boolean> values) {
-            addCriterion("modError not in", values, "modError");
+            addCriterion("MOD_ERROR not in", values, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorBetween(Boolean value1, Boolean value2) {
-            addCriterion("modError between", value1, value2, "modError");
+            addCriterion("MOD_ERROR between", value1, value2, "MOD_ERROR");
             return (Criteria) this;
         }
 
         public Criteria andModErrorNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("modError not between", value1, value2, "modError");
+            addCriterion("MOD_ERROR not between", value1, value2, "MOD_ERROR");
             return (Criteria) this;
         }
     }

@@ -38,7 +38,7 @@ public class ErrorController extends BaseController{
 			@RequestParam(defaultValue="1") Integer currentPage, String password, String visitCode) throws MyException{
 		Project project = projectCache.get(projectId);
 
-		isPrivateProject(password, visitCode, project);
+		checkFrontPermission(password, visitCode, project);
 		
 		Page page= new Page(20, currentPage);
 

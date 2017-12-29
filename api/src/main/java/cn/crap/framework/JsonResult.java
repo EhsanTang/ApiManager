@@ -15,7 +15,9 @@ public class JsonResult implements Serializable {
 	//传递至前端的其他参数
 	private Object others;
 
-	public JsonResult(){}
+	public JsonResult(){
+		this.success = 1;
+	}
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;
 		this.success = success;

@@ -11,7 +11,6 @@ public class RoleDto{
 	private String roleName;
 	private String auth;
 	private String authName;
-	private Date createTime;
 	private Byte status;
 	private Integer sequence;
 
@@ -41,13 +40,6 @@ public class RoleDto{
 	}
 	public String getAuthName(){
 		return authName;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setStatus(Byte status){

@@ -2,9 +2,9 @@ package cn.crap.service.tool;
 
 import cn.crap.dto.MailBean;
 import cn.crap.service.IEmailService;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 import cn.crap.utils.Aes;
-import cn.crap.utils.Const;
+import cn.crap.utils.IConst;
 import cn.crap.utils.Tools;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +32,7 @@ public class EmailService implements IEmailService {
 	
 	@Override
 	public void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException{
-		String fromName = settingCache.get(Const.SETTING_TITLE).getValue();
+		String fromName = settingCache.get(IConst.SETTING_TITLE).getValue();
 		MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
@@ -45,7 +45,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public boolean sendMail(String subject, String toEmail, String context) {
 		try {
-			String fromName = settingCache.get(Const.SETTING_TITLE).getValue();
+			String fromName = settingCache.get(IConst.SETTING_TITLE).getValue();
 			MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 			MimeMessageHelper messageHelper;
 			messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -70,7 +70,7 @@ public class EmailService implements IEmailService {
 		mailBean.setToEmail(eamil);
 		mailBean.setSubject("注册邮箱验证-开源API接口管理系统");
 		sendMail(mailBean);
-		stringCache.add(code, Const.REGISTER);
+		stringCache.add(code, IConst.REGISTER);
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public class EmailService implements IEmailService {
 		mailBean.setToEmail(eamil);
 		mailBean.setSubject("找回密码-开源API接口管理系统");
 		sendMail(mailBean);
-		stringCache.add(Const.CACHE_FINDPWD+ eamil, code);
+		stringCache.add(IConst.CACHE_FINDPWD+ eamil, code);
 	}
 	
 	private String getMtml(String eamil, String title, String content){

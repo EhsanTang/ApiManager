@@ -12,9 +12,9 @@ import cn.crap.model.mybatis.Article;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
-import cn.crap.service.imp.MybatisArticleService;
-import cn.crap.service.imp.MybatisCommentService;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.service.mybatis.CommentService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -35,13 +35,13 @@ import java.util.List;
 @RequestMapping("/user/article")
 public class ArticleController extends BaseController{
 	@Autowired
-	private MybatisArticleService articleService;
+	private ArticleService articleService;
 	@Autowired
 	private CustomArticleService customArticleService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private MybatisCommentService commentService;
+	private CommentService commentService;
 	@Autowired
 	private CustomCommentService customCommentService;
 
@@ -51,7 +51,7 @@ public class ArticleController extends BaseController{
 	public JsonResult list(String projectId, String moduleId, String name, String type, String category,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Assert.notNull(moduleId);
 		Assert.notNull(projectId);
-		hasPermission( projectCache.get(projectId) , view);
+		checkUserPermissionByProject( projectCache.get(projectId) , VIEW);
 		
 		Page page= new Page(15, currentPage);
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
@@ -69,7 +69,7 @@ public class ArticleController extends BaseController{
 		if(id != null){
 			model= articleService.selectByPrimaryKey(id);
 			String projectId = customArticleService.getProjectId(model.getModuleId());
-			hasPermission( projectCache.get(projectId), view);
+			checkUserPermissionByProject( projectCache.get(projectId), VIEW);
 			return new JsonResult(1,model);
 		}
 
@@ -85,7 +85,7 @@ public class ArticleController extends BaseController{
 
 		// 如果模块为空，表示为管理员，将模块设置为系统模块
 		if(MyString.isEmpty(dto.getModuleId())){
-			dto.setModuleId(Const.WEB_MODULE);
+			dto.setModuleId(IConst.WEB_MODULE);
 		}
 
 		if(MyString.isEmpty(dto.getMkey())){
@@ -105,15 +105,15 @@ public class ArticleController extends BaseController{
 			// 修改模块
 			if(!dto.getModuleId().equals(dbArticle.getModuleId())){
 				String dbProjectId = customArticleService.getProjectId(dbArticle.getModuleId());
-				hasPermission( projectCache.get(dbProjectId) , dbArticle.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+				checkUserPermissionByProject( projectCache.get(dbProjectId) , dbArticle.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
 			}	
 			
-			hasPermission( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+			checkUserPermissionByProject( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
 
 			customArticleService.update(ArticleAdapter.getModel(dto), ArticleType.getByEnumName(dto.getType()), "");
 			luceneService.update(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
 		}else{
-			hasPermission( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
+			checkUserPermissionByProject( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 			articleService.insert(ArticleAdapter.getModel(dto));
 			luceneService.add(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
 		}
@@ -135,7 +135,7 @@ public class ArticleController extends BaseController{
 				continue;
 			}
 			Article model = articleService.selectByPrimaryKey(tempId);
-			hasPermission( projectCache.get(customArticleService.getProjectId(model.getModuleId())) , model.getType().equals(ArticleType.ARTICLE.name())? delArticle:delDict);
+			checkUserPermissionByProject( projectCache.get(customArticleService.getProjectId(model.getModuleId())) , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
 			if(model.getCanDelete()!=1){
 				throw new MyException("000009");
 			}
@@ -158,8 +158,8 @@ public class ArticleController extends BaseController{
 		Article change = articleService.selectByPrimaryKey(changeId);
 		Article model = articleService.selectByPrimaryKey(id);
 		// TODO
-		//hasPermission( projectCache.get(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-		//hasPermission( projectCache.get(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+		//checkUserPermissionByProject( projectCache.get(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
+		//checkUserPermissionByProject( projectCache.get(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
 		
 		int modelSequence = model.getSequence();
 		
@@ -190,7 +190,7 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/markdown.do")
 	public String markdown(@ModelAttribute Article webPage) throws Exception {
 		Article model;
-//		if(!webPage.getId().equals(Const.NULL_ID)){
+//		if(!webPage.getId().equals(IConst.NULL_ID)){
 //			model= articleService.get(webPage.getId());
 //		}else{
 //			model=new Article();

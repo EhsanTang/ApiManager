@@ -5,9 +5,10 @@ import java.util.List;
 import cn.crap.dao.custom.CustomArticleMapper;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.service.imp.MybatisArticleService;
-import cn.crap.service.imp.MybatisProjectService;
-import cn.crap.service.imp.MybatisRoleService;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.service.mybatis.ProjectService;
+import cn.crap.service.mybatis.RoleService;
+import cn.crap.utils.IConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,6 @@ import cn.crap.enumer.SettingType;
 import cn.crap.enumer.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IPickService;
-import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 
 /**
@@ -34,15 +34,15 @@ import cn.crap.utils.MyString;
 @Service("adminPickService")
 public class AdminPickService implements IPickService{
 	@Autowired
-	private MybatisProjectService projectService;
+	private ProjectService projectService;
 	@Autowired
-	private MybatisArticleService articleService;
+	private ArticleService articleService;
 	@Autowired
 	private CustomMenuService customMenuService;
 	@Autowired
 	private CustomArticleMapper customArticleMapper;
 	@Autowired
-	private MybatisRoleService roleService;
+	private RoleService roleService;
 
 	@Override
 	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
@@ -92,7 +92,7 @@ public class AdminPickService implements IPickService{
 		// 权限
 		case "AUTH":
 			// 分割线
-			pick = new PickDto(Const.SEPARATOR, "用户、菜单、角色、系统设置管理");
+			pick = new PickDto(IConst.SEPARATOR, "用户、菜单、角色、系统设置管理");
 			picks.add(pick);
 			pick = new PickDto(DataType.USER.name(), "用户管理");
 			picks.add(pick);
@@ -113,7 +113,7 @@ public class AdminPickService implements IPickService{
 		
 		// 角色
 		case "ROLE":
-			pick = new PickDto(Const.SUPER, "超级管理员");
+			pick = new PickDto(IConst.C_SUPER, "超级管理员");
 			picks.add(pick);
 			for (Role r : roleService.selectByExample(new RoleCriteria())) {
 				pick = new PickDto(r.getId(), r.getRoleName());
@@ -164,25 +164,25 @@ public class AdminPickService implements IPickService{
 		
 		case "MENURUL":
 				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "项目列表");
+				pick = new PickDto(IConst.SEPARATOR, "项目列表");
 				picks.add(pick);
 				pick = new PickDto("m_myproject", "#/project/list/true/NULL", "我的项目列表");
 				picks.add(pick);
 				pick = new PickDto("m_myproject", "#/project/list/false/NULL", "推荐项目列表");
 				picks.add(pick);
 				
-				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
+				pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
 				picks.add(pick);
 
 				ProjectCriteria projectCriteria  = new ProjectCriteria();
 				ProjectCriteria.Criteria projectCriteriaCriteria = projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
 				for (Project project : projectService.selectByExample(projectCriteria)) {
-					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
+					pick = new PickDto(project.getId() , String.format(IConst.FRONT_PROJECT_URL, project.getId()) , project.getName());
 					picks.add(pick);
 				}
 				
 				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "文章列表【站点文章】");
+				pick = new PickDto(IConst.SEPARATOR, "文章列表【站点文章】");
 				picks.add(pick);
 				int j = 0;
 
@@ -191,12 +191,12 @@ public class AdminPickService implements IPickService{
 					if (MyString.isEmpty(article))
 						continue;
 					j++;
-					pick = new PickDto("cat_" + j, String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE,  Const.WEB_MODULE, article) , article);
+					pick = new PickDto("cat_" + j, String.format(IConst.FRONT_ARTICLE_URL, IConst.WEB_MODULE,  IConst.WEB_MODULE, article) , article);
 					picks.add(pick);
 				}
 				
 				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "页面【站点页面】");
+				pick = new PickDto(IConst.SEPARATOR, "页面【站点页面】");
 				picks.add(pick);
 				preUrl = "#/web/article/detail/web/PAGE/";
 				ArticleCriteria example2= new ArticleCriteria();

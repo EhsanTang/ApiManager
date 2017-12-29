@@ -1,36 +1,53 @@
 package cn.crap.service.custom;
 
-import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dao.mybatis.LogDao;
-import cn.crap.dao.mybatis.SourceDao;
 import cn.crap.enumer.LogType;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.imp.MybatisArticleService;
-import cn.crap.service.imp.MybatisModuleService;
-import cn.crap.service.imp.MybatisProjectService;
+import cn.crap.service.mybatis.*;
+import cn.crap.utils.IErrorCode;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+/**
+ * @author Ehsan
+ */
 @Service
-public class CustomLogService{
+public class CustomLogService implements IErrorCode {
 
     @Autowired
-    private MybatisArticleService articleService;
+    private ArticleService articleService;
     @Autowired
-    private MybatisProjectService projectService;
+    private ProjectService projectService;
     @Autowired
-    private MybatisModuleService moduleService;
+    private ModuleService moduleService;
     @Autowired
-    private LogDao logMapper;
+    private InterfaceService interfaceService;
     @Autowired
-    private InterfaceDao interfaceMapper;
+    private SourceService sourceService;
     @Autowired
-    private SourceDao sourceMapper;
+    private LogDao logDao;
 
-    public boolean saveLog(String modelName, String content, String remark, LogType logType, Class clazz){
+    /**
+     * add log
+     * 添加日志
+     *
+     * @param modelName
+     * @param content
+     * @param remark
+     * @param logType   modify or update
+     * @param clazz
+     * @return
+     */
+    public boolean addLog(String modelName, String content, String remark, LogType logType, Class clazz) {
+        Assert.notNull(modelName);
+        Assert.notNull(content);
+        Assert.notNull(logType);
+        Assert.notNull(clazz);
+
         Log log = new Log();
         log.setModelName(modelName);
         log.setRemark(remark);
@@ -38,27 +55,36 @@ public class CustomLogService{
         log.setContent(content);
         log.setModelClass(clazz.getSimpleName());
 
-        logMapper.insert(log);
+        logDao.insert(log);
         return true;
     }
 
-    public void recover(Log log) throws MyException{
-        log = logMapper.selectByPrimaryKey(log.getId());
-        switch(log.getModelClass().toUpperCase()){
+    /**
+     * recover by log
+     * 通过日志恢复
+     *
+     * @param log
+     * @throws MyException
+     */
+    public void recover(Log log) throws MyException {
+        log = logDao.selectByPrimaryKey(log.getId());
+        switch (log.getModelClass().toUpperCase()) {
 
             case "INTERFACE"://恢复接口
                 JSONObject json = JSONObject.fromObject(log.getContent());
-                InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json,Interface.class);
-                checkModuleAndProject(inter.getModuleId());
-                interfaceMapper.updateByPrimaryKeyWithBLOBs(inter);
+                InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, Interface.class);
+                checkModule(inter.getModuleId());
+                checkProject(inter.getProjectId());
+                interfaceService.update(inter);
                 break;
-
             case "ARTICLE":// 恢复文章
                 json = JSONObject.fromObject(log.getContent());
-                ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json,ArticleWithBLOBs.class);
-                checkModuleAndProject(article.getModuleId());
+                ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
+                checkModule(article.getModuleId());
+                checkProject(article.getProjectId());
+
                 // key有唯一约束，不置为null会报错
-                if( MyString.isEmpty(article.getMkey())){
+                if (MyString.isEmpty(article.getMkey())) {
                     article.setMkey(null);
                 }
                 articleService.update(article);
@@ -66,47 +92,45 @@ public class CustomLogService{
 
             case "MODULE"://恢复模块
                 json = JSONObject.fromObject(log.getContent());
-                Module module = (Module) JSONObject.toBean(json,Module.class);
+                Module module = (Module) JSONObject.toBean(json, Module.class);
+                checkProject(module.getProjectId());
 
-                // 查看项目是否存在
-                if(  MyString.isEmpty( projectService.selectByPrimaryKey(module.getProjectId()).getId() ) ){
-                    throw new MyException("000049");
+                // 模块不允许恢复修改操作，需要关联修改接口数据
+                if (!log.getType().equals(LogType.DELTET.name())) {
+                    throw new MyException(E000050);
                 }
-
-                // 模块不允许恢复修改操作
-                if( !log.getType().equals(LogType.DELTET.name()) ){
-                    throw new MyException("000050");
-                }
-
                 moduleService.update(module);
                 break;
 
             case "PROJECT"://恢复项目
                 json = JSONObject.fromObject(log.getContent());
-                Project project = (Project) JSONObject.toBean(json,Project.class);
+                Project project = (Project) JSONObject.toBean(json, Project.class);
                 projectService.update(project);
                 break;
 
             case "SOURCE"://恢复资源
                 json = JSONObject.fromObject(log.getContent());
-                Source source = (Source) JSONObject.toBean(json,Source.class);
-                checkModuleAndProject(source.getModuleId());
-                sourceMapper.updateByPrimaryKey(source);
-                break;
-
+                Source source = (Source) JSONObject.toBean(json, Source.class);
+                checkModule(source.getModuleId());
+                checkProject(source.getProjectId());
+                sourceService.update(source);
+                break;         
         }
     }
 
-    private void checkModuleAndProject(String moduleId) throws MyException {
-        // 查看模块是否存在
+    private void checkModule(String moduleId) throws MyException {
+        Assert.notNull(moduleId);
         Module module = moduleService.selectByPrimaryKey(moduleId);
-        if( MyString.isEmpty(module.getId()) ){
-            throw new MyException("000048");
+        if (module == null) {
+            throw new MyException(E000048);
         }
+    }
 
-        // 查看项目是否存在
-        if(  MyString.isEmpty( projectService.selectByPrimaryKey(module.getProjectId()).getId() ) ){
-            throw new MyException("000049");
+    private void checkProject(String projectId) throws MyException {
+        Assert.notNull(projectId);
+        Project project = projectService.selectByPrimaryKey(projectId);
+        if (project == null) {
+            throw new MyException(E000049);
         }
     }
 }

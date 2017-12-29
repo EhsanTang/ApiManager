@@ -14,9 +14,9 @@ import cn.crap.model.mybatis.*;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.custom.CustomInterfaceService;
-import cn.crap.service.imp.MybatisInterfaceService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
+import cn.crap.service.mybatis.InterfaceService;
+import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,7 @@ public class InterfaceController extends BaseController{
 	@Autowired
 	private CustomInterfaceService customInterfaceService;
 	@Autowired
-	private MybatisInterfaceService mybatisInterfaceService;
+	private InterfaceService mybatisInterfaceService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
@@ -56,7 +55,7 @@ public class InterfaceController extends BaseController{
 	public JsonResult list(@RequestParam String projectId, @RequestParam String moduleId, String interfaceName, String url,
 			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
 		Page page= new Page(15, currentPage);
-		hasPermission(projectCache.get(projectId), view);
+		checkUserPermissionByProject(projectCache.get(projectId), VIEW);
 
 		InterfaceCriteria example = new InterfaceCriteria();
 		InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
@@ -80,9 +79,9 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(@RequestParam String id, String moduleId) throws MyException {
 		InterfaceWithBLOBs model;
-		if(!id.equals(Const.NULL_ID)){
+		if(!id.equals(IConst.NULL_ID)){
 			model= mybatisInterfaceService.selectByPrimaryKey(id);
-			hasPermission(projectCache.get(model.getProjectId()), view);
+			checkUserPermissionByProject(projectCache.get(model.getProjectId()), VIEW);
 		}else{
 			model = new InterfaceWithBLOBs();
 			model.setModuleId( moduleId);
@@ -119,7 +118,7 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult copy(@ModelAttribute InterfaceWithBLOBs interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
-		hasPermission(projectCache.get(interFace.getProjectId()), addInter);
+		checkUserPermissionByProject(projectCache.get(interFace.getProjectId()), ADD_INTER);
 		Module module = moduleCache.get(interFace.getModuleId());
 
 		if(!config.isCanRepeatUrl()){
@@ -202,7 +201,7 @@ public class InterfaceController extends BaseController{
 				throw new MyException("000047");
 			}
 			// 判断是否有修改模块的权限
-			hasPermission(project, modInter);
+			checkUserPermissionByProject(project, MOD_INTER);
 			
 			//同一模块下不允许 url 重复
 			if( !config.isCanRepeatUrl() && customInterfaceService.countByFullUrl(interFace.getModuleId(),
@@ -219,7 +218,7 @@ public class InterfaceController extends BaseController{
 			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
 			
 		} else {
-			hasPermission(projectCache.get(interFace.getProjectId() ), addInter);
+			checkUserPermissionByProject(projectCache.get(interFace.getProjectId() ), ADD_INTER);
 			if(!config.isCanRepeatUrl() && customInterfaceService.countByFullUrl(interFace.getModuleId(),module.getUrl() + interFace.getUrl(), null)>0){
 				return new JsonResult(new MyException("000004"));
 			}
@@ -245,7 +244,7 @@ public class InterfaceController extends BaseController{
 				continue;
 			}
 			InterfaceWithBLOBs interFace = mybatisInterfaceService.selectByPrimaryKey( tempId );
-			hasPermission(projectCache.get( interFace.getProjectId() ), delInter);
+			checkUserPermissionByProject(projectCache.get( interFace.getProjectId() ), DEL_INTER);
 			customInterfaceService.delete(interFace.getId(), "接口", "");
 			luceneService.delete(new SearchDto(interFace.getId()));
 		}
@@ -257,8 +256,8 @@ public class InterfaceController extends BaseController{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		InterfaceWithBLOBs change = mybatisInterfaceService.selectByPrimaryKey(changeId);
 		InterfaceWithBLOBs model = mybatisInterfaceService.selectByPrimaryKey(id);
-		hasPermission(projectCache.get( model.getProjectId() ), modInter);
-		hasPermission(projectCache.get( change.getProjectId() ), modInter);
+		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_INTER);
+		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_INTER);
 		
 		int modelSequence = model.getSequence();
 		
@@ -268,8 +267,5 @@ public class InterfaceController extends BaseController{
 		mybatisInterfaceService.update(model);
 		mybatisInterfaceService.update(change);
 		return new JsonResult(1, null);
-	}
-	public HttpServletResponse getResponse(){
-		return response;
 	}
 }

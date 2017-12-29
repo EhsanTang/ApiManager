@@ -1,76 +1,74 @@
 package cn.crap.controller.admin;
 
 import cn.crap.adapter.RoleAdapter;
+import cn.crap.dto.RoleDto;
 import cn.crap.model.mybatis.Role;
 import cn.crap.model.mybatis.RoleCriteria;
 import cn.crap.model.mybatis.RoleWithBLOBs;
-import cn.crap.service.imp.MybatisRoleService;
+import cn.crap.service.mybatis.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/role")
-public class RoleController extends BaseController{
+public class RoleController extends BaseController {
 
-	@Autowired
-	private MybatisRoleService roleService;
-	
-	@RequestMapping("/list.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult list(String roleName, @RequestParam(defaultValue="1") Integer currentPage){
-		Page page= new Page(15, currentPage);
+    @Autowired
+    private RoleService roleService;
 
-		RoleCriteria example = new RoleCriteria();
+    @RequestMapping("/list.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_ROLE)
+    public JsonResult list(String roleName, @RequestParam(defaultValue = "1") Integer currentPage) {
+        Page page = new Page(currentPage);
 
-		if (!MyString.isEmpty(roleName)) {
-			example.createCriteria().andRoleNameLike("%" + roleName + "%");
-		}
+        RoleCriteria example = new RoleCriteria();
+        if (!MyString.isEmpty(roleName)) {
+            example.createCriteria().andRoleNameLike("%" + roleName + "%");
+        }
+        List<RoleDto> roleDtos = RoleAdapter.getDto(roleService.selectByExampleWithBLOBs(example));
+        return new JsonResult().success().data(roleDtos).page(page);
+    }
 
-		return new JsonResult(1, RoleAdapter.getDto(roleService.selectByExampleWithBLOBs(example)),page);
-	}
-	@RequestMapping("/detail.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult detail(@ModelAttribute Role role){
-		Role model;
-		if(!role.getId().equals(Const.NULL_ID)){
-			model= roleService.selectByPrimaryKey(role.getId());
-		}else{
-			model=new Role();
-		}
-		return new JsonResult(1,model);
-	}
-	
-	@RequestMapping("/addOrUpdate.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult addOrUpdate(@ModelAttribute RoleWithBLOBs role){
-		if(!MyString.isEmpty(role.getId())){
-			roleService.update(role);
-		}else{
-			role.setId(null);
-			roleService.insert(role);
-		}
-		return new JsonResult(1,role);
-	}
-	
-	@RequestMapping("/delete.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_ROLE)
-	public JsonResult delete(String id){
-		roleService.delete(id);
-		return new JsonResult(1,null);
-	}
+    @RequestMapping("/detail.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_ROLE)
+    public JsonResult detail(String id) {
+        RoleWithBLOBs role = new RoleWithBLOBs();
+        if (id != null) {
+            role = roleService.selectByPrimaryKey(id);
+        }
+        return new JsonResult().success().data(RoleAdapter.getDto(role));
+    }
+
+    @RequestMapping("/addOrUpdate.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_ROLE)
+    public JsonResult addOrUpdate(@ModelAttribute RoleDto roleDto) {
+        if (roleDto.getId() != null) {
+            roleService.update(RoleAdapter.getModel(roleDto));
+        } else {
+            roleService.insert(RoleAdapter.getModel(roleDto));
+        }
+        return new JsonResult().data(roleDto);
+    }
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_ROLE)
+    public JsonResult delete(@RequestParam String id) {
+        roleService.delete(id);
+        return SUCCESS;
+    }
 }

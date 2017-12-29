@@ -1,13 +1,15 @@
 package cn.crap.framework;
 
+import org.springframework.util.Assert;
+
 public class MyException  extends Exception{
 
 	private static final long serialVersionUID = 8638237486526577302L;
 	
 	private String msgExtention;
 	
-    public MyException(String errorCode) {       
-        super(errorCode);
+    public MyException(String errorCode) {
+		super(errorCode);
     }
     
     public MyException(String errorCode,String msgExtention) {       

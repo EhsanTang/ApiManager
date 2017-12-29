@@ -48,24 +48,24 @@ public class ProjectUserAdapter {
 		dto.setModError(model.getModError());
 
 		boolean[] projectAuth = new boolean[19];
-		projectAuth[BaseController.addModule] = model.getAddModule();
-		projectAuth[BaseController.delModule] = model.getDelModule();
-		projectAuth[BaseController.modModule] = model.getModModule();
-		projectAuth[BaseController.addInter] = model.getAddInter();
-		projectAuth[BaseController.delInter] = model.getDelInter();
-		projectAuth[BaseController.modInter] = model.getModInter();
-		projectAuth[BaseController.addArticle] = model.getAddArticle();
-		projectAuth[BaseController.delArticle] = model.getDelArticle();
-		projectAuth[BaseController.modArticle] = model.getModArticle();
-		projectAuth[BaseController.addSource] = model.getAddSource();
-		projectAuth[BaseController.delSource] = model.getDelSource();
-		projectAuth[BaseController.modSource] = model.getModSource();
-		projectAuth[BaseController.addDict] = model.getAddDict();
-		projectAuth[BaseController.delDict] = model.getDelDict();
-		projectAuth[BaseController.modDict] = model.getModDict();
-		projectAuth[BaseController.addError] = model.getAddError();
-		projectAuth[BaseController.delError] = model.getDelError();
-		projectAuth[BaseController.modError] = model.getModError();
+		projectAuth[BaseController.ADD_MODULE] = model.getAddModule();
+		projectAuth[BaseController.DEL_MODULE] = model.getDelModule();
+		projectAuth[BaseController.MOD_MODULE] = model.getModModule();
+		projectAuth[BaseController.ADD_INTER] = model.getAddInter();
+		projectAuth[BaseController.DEL_INTER] = model.getDelInter();
+		projectAuth[BaseController.MOD_INTER] = model.getModInter();
+		projectAuth[BaseController.ADD_ARTICLE] = model.getAddArticle();
+		projectAuth[BaseController.DEL_ARTICLE] = model.getDelArticle();
+		projectAuth[BaseController.MOD_ARTICLE] = model.getModArticle();
+		projectAuth[BaseController.ADD_SOURCE] = model.getAddSource();
+		projectAuth[BaseController.DEL_SOURCE] = model.getDelSource();
+		projectAuth[BaseController.MOD_SOURCE] = model.getModSource();
+		projectAuth[BaseController.ADD_DICT] = model.getAddDict();
+		projectAuth[BaseController.DEL_DICT] = model.getDelDict();
+		projectAuth[BaseController.MOD_DICT] = model.getModDict();
+		projectAuth[BaseController.ADD_ERROR] = model.getAddError();
+		projectAuth[BaseController.DEL_ERROR] = model.getDelError();
+		projectAuth[BaseController.MOD_ERROR] = model.getModError();
 		
 		dto.setProjectAuth(projectAuth);
 

@@ -10,9 +10,9 @@ import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
-import cn.crap.springbeans.Config;
-import cn.crap.springbeans.PickFactory;
-import cn.crap.utils.Const;
+import cn.crap.beans.Config;
+import cn.crap.beans.PickFactory;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class CustomMenuService {
                 subMenu.setMenuName(project.getName());
                 subMenu.setParentId("recommendProjectId");
                 subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl(String.format(Const.FRONT_PROJECT_URL, project.getId()));
+                subMenu.setMenuUrl(String.format(IConst.FRONT_PROJECT_URL, project.getId()));
                 menuVO.getSubMenu().add(subMenu);
             }
             // 添加更多按钮
@@ -124,7 +124,7 @@ public class CustomMenuService {
                 subMenu.setMenuName(category);
                 subMenu.setParentId("articleListId");
                 subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl(String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE, Const.WEB_MODULE, category));
+                subMenu.setMenuUrl(String.format(IConst.FRONT_ARTICLE_URL, IConst.WEB_MODULE, IConst.WEB_MODULE, category));
                 menuVO.getSubMenu().add(subMenu);
             }
             menuVOs.add(menuVO);
@@ -168,7 +168,7 @@ public class CustomMenuService {
                     + "&nbsp;&nbsp; <span class='cidName'>%s</span><br></div>";
 
             for (PickDto p : picks) {
-                if (p.getValue().equals(Const.SEPARATOR)) {
+                if (p.getValue().equals(IConst.SEPARATOR)) {
                     pickContent.append(String.format(separator, p.getName()));
                 } else {
                     if (radio.equals("true")) {

@@ -5,7 +5,7 @@ import cn.crap.dto.SettingDto;
 import cn.crap.model.mybatis.Setting;
 import cn.crap.service.ICacheService;
 import cn.crap.service.custom.CustomSettingService;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

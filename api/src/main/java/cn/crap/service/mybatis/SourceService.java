@@ -1,10 +1,10 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
-import cn.crap.dao.mybatis.ProjectUserDao;
-import cn.crap.framework.IdGenerator;
+import cn.crap.dao.mybatis.SourceDao;
 import cn.crap.enumer.TableId;
-import cn.crap.model.mybatis.ProjectUser;
-import cn.crap.model.mybatis.ProjectUserCriteria;
+import cn.crap.framework.IdGenerator;
+import cn.crap.model.mybatis.Source;
+import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,35 +18,35 @@ import java.util.List;
  * service
  */
 @Service
-public class MybatisProjectUserService {
+public class SourceService {
     @Autowired
-    private ProjectUserDao mapper;
+    private SourceDao mapper;
 
-    public List<ProjectUser> selectByExample(ProjectUserCriteria example) {
+    public List<Source> selectByExample(SourceCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(ProjectUserCriteria example) {
+    public int countByExample(SourceCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public ProjectUser selectByPrimaryKey(String id) {
+    public Source selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(ProjectUser model) {
+    public boolean insert(Source model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.PROJECT_USER));
+        model.setId(IdGenerator.getId(TableId.SOURCE));
         if (model.getSequence() == null){
-            ProjectUserCriteria example = new ProjectUserCriteria();
+            SourceCriteria example = new SourceCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<ProjectUser>  models = this.selectByExample(example);
+            List<Source>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -57,7 +57,7 @@ public class MybatisProjectUserService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(ProjectUser model) {
+    public boolean update(Source model) {
         if (model == null) {
             return false;
         }

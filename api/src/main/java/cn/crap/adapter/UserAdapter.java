@@ -32,6 +32,7 @@ public class UserAdapter {
         userDto.setType(user.getType());
         userDto.setUserName(user.getUserName());
         userDto.setStatus(user.getStatus());
+        userDto.setLoginType(user.getLoginType());
         return userDto;
     }
 
@@ -68,6 +69,7 @@ public class UserAdapter {
         user.setType(userDto.getType());
         user.setUserName(userDto.getUserName());
         user.setStatus(userDto.getStatus());
+        user.setLoginType(userDto.getLoginType());
         return user;
     }
 

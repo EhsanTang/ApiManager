@@ -1,9 +1,10 @@
 package cn.crap.controller;
 
 import cn.crap.dto.PickDto;
+import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.utils.Const;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
 import cn.crap.utils.ValidateCodeService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,7 @@ public class IndexController extends BaseController {
 		}
 		List<PickDto> picks = new ArrayList<PickDto>();
 		String pickContent = customMenuService.pick(picks, radio, code, key, def, notNull);
+		HttpServletRequest request = ThreadContext.request();
 		request.setAttribute("radio", radio);
 		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);
@@ -70,15 +74,16 @@ public class IndexController extends BaseController {
 	@ResponseBody
 	public void getImgvcode() throws IOException {
 		// 设置response，输出图片客户端不缓存
+		HttpServletResponse response = ThreadContext.response();
 		response.setDateHeader("Expires", 0);
 		response.addHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
-		String uuid = MyCookie.getCookie(Const.COOKIE_UUID);
-		stringCache.add(Const.CACHE_IMGCODE + uuid, vservice.getCode());
-		stringCache.add(Const.CACHE_IMGCODE_TIMES + uuid, "0");
+		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
+		stringCache.add(IConst.CACHE_IMGCODE + uuid, vservice.getCode());
+		stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");
 		try {
 			vservice.write(out);
 			out.flush();

@@ -16,8 +16,8 @@ import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.custom.CustomProjectService;
 import cn.crap.service.custom.CustomProjectUserService;
-import cn.crap.service.imp.*;
-import cn.crap.springbeans.Config;
+import cn.crap.service.mybatis.*;
+import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,9 +34,9 @@ import java.util.Map;
 @RequestMapping("/user/project")
 public class ProjectController extends BaseController {
 @Autowired
-private MybatisProjectService projectService;
+private ProjectService projectService;
 @Autowired
-private MybatisModuleService moduleService;
+private ModuleService moduleService;
 @Autowired
 private Config config;
 @Autowired
@@ -44,7 +44,7 @@ private ISearchService luceneService;
 @Autowired
 private CustomErrorService customErrorService;
 @Autowired
-private MybatisUserService userService;
+private UserService userService;
 @Autowired
 private CustomModuleService customModuleService;
 @Autowired
@@ -52,9 +52,9 @@ private CustomProjectUserService customProjectUserService;
 	@Autowired
 	private CustomProjectService customProjectService;
 	@Autowired
-	private MybatisProjectUserService projectUserService;
+	private ProjectUserService projectUserService;
 	@Autowired
-	private MybatisRoleService roleService;
+	private RoleService roleService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -94,9 +94,9 @@ private CustomProjectUserService customProjectUserService;
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Project project) throws MyException{
 		Project model;
-		if(!project.getId().equals(Const.NULL_ID)){
+		if(!project.getId().equals(IConst.NULL_ID)){
 			model= projectCache.get(project.getId());
-			hasPermission(model);
+			checkUserPermissionByProject(model);
 		}else{
 			model=new Project();
 		}
@@ -117,7 +117,7 @@ private CustomProjectUserService customProjectUserService;
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
 			model= projectCache.get(project.getId());
-			hasPermission(model);
+			checkUserPermissionByProject(model);
 
 			// 不允许转移项目
 			project.setUserId(model.getUserId());
@@ -159,7 +159,7 @@ private CustomProjectUserService customProjectUserService;
 
 
 		Project model= projectCache.get(project.getId());
-		hasPermission(model);
+		checkUserPermissionByProject(model);
 
 
 		// 只有子模块数量为0，才允许删除项目
@@ -189,8 +189,8 @@ private CustomProjectUserService customProjectUserService;
 		Project change = projectCache.get(changeId);
 		Project model = projectCache.get(id);
 
-		hasPermission(change);
-		hasPermission(model);
+		checkUserPermissionByProject(change);
+		checkUserPermissionByProject(model);
 
 		int modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());
@@ -207,7 +207,7 @@ private CustomProjectUserService customProjectUserService;
 	@AuthPassport
 	public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
 		Project model= projectCache.get(projectId);
-		hasPermission(model);
+		checkUserPermissionByProject(model);
 		return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
 	}
 }

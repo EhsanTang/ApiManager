@@ -4,66 +4,34 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import cn.crap.adapter.ProjectUserAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.ProjectUserDto;
+import cn.crap.framework.ThreadContext;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.service.tool.*;
+import cn.crap.utils.*;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 
-public abstract class BaseController{
+public abstract class BaseController implements IAuthCode, IErrorCode, IConst{
 	protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
-
 	protected final static int SIZE = 15;
-	protected HttpServletRequest request;
-	protected HttpServletResponse response;
 	protected Logger log = Logger.getLogger(getClass());
-	public final static int view = 100;
-	public final static int modInter = 1;
-	public final static int addInter = 2;
-	public final static int delInter = 3;
-
-	public final static int modModule = 4;
-	public final static int addModule = 5;
-	public final static int delModule = 6;
-
-	public final static int modArticle = 7;
-	public final static int addArticle = 8;
-	public final static int delArticle = 9;
-
-	public final static int modDict = 10;
-	public final static int addDict = 11;
-	public final static int delDict = 12;
-
-	public final static int modSource = 13;
-	public final static int addSource = 14;
-	public final static int delSource = 15;
-
-	public final static int modError = 16;
-	public final static int addError = 17;
-	public final static int delError = 18;
-
+    protected final static JsonResult SUCCESS = new JsonResult();
     @Resource(name = "projectCache")
 	protected ProjectCache projectCache;
 	@Resource(name = "moduleCache")
@@ -76,52 +44,8 @@ public abstract class BaseController{
     protected UserCache userCache;
     @Resource(name = "objectCache")
     protected ObjectCache objectCache;
-
-	/**
-	 * spring 中request、response是线程安全的，可以直接注入
-	 * 
-	 * @ModelAttribute注解只有在被
-	 * @Controller和@ControllerAdvice两个注解的类下使用 ModelAttribute的作用 1)放置在方法的形参上：
-	 *                                        表示引用Model中的数据 2)放置在方法上面：
-	 *                                        表示请求该类的每个Action前都会首先执行它也可以将一些准备数据的操作放置在该方法里面。
-	 * @param request
-	 * @param response
-	 */
-	@ModelAttribute
-	public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-	}
-
-	/**
-	 * @return
-	 */
-	protected HashMap<String, String> getRequestHeaders() {
-		HashMap<String, String> requestHeaders = new HashMap<String, String>();
-		@SuppressWarnings("unchecked")
-		Enumeration<String> headerNames = request.getHeaderNames();
-		while (headerNames.hasMoreElements()) {
-			String headerName = headerNames.nextElement();
-			String headerValue = request.getHeader(headerName);
-			requestHeaders.put(headerName, headerValue);
-		}
-		return requestHeaders;
-	}
-
-	/**
-	 * @return
-	 */
-	protected HashMap<String, String> getRequestParams() {
-		HashMap<String, String> requestParams = new HashMap<String, String>();
-		@SuppressWarnings("unchecked")
-		Enumeration<String> paramNames = request.getParameterNames();
-		while (paramNames.hasMoreElements()) {
-			String paramName = paramNames.nextElement();
-			String paramValue = request.getParameter(paramName);
-			requestParams.put(paramName, paramValue);
-		}
-		return requestParams;
-	}
+    @Autowired
+    protected Config config;
 
 	@ExceptionHandler({ Exception.class })
 	@ResponseBody
@@ -130,39 +54,43 @@ public abstract class BaseController{
 			return new JsonResult((MyException) ex);
 		}else if (ex instanceof NullPointerException) {
 			log.error(ex.getMessage(), ex);
-			return new JsonResult(new MyException("000051"));
+			return new JsonResult(new MyException(E000051));
 		}else {
 			log.error(ex.getMessage(), ex);
-
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ex.printStackTrace(new PrintStream(baos));
-			String exceptionDetail[] = baos.toString().split("Caused by:");
+			ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
+			ex.printStackTrace(new PrintStream(outPutStream));
+			String exceptionDetail[] = outPutStream.toString().split("Caused by:");
 			try {
-				baos.close();
-			} catch (IOException e) {
-			}
+				outPutStream.close();
+			} catch (IOException e) {}
 			
-			String cusedBy = "";
+			String errorReason = "";
 			if (exceptionDetail.length > 0) {
-				cusedBy = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
+				errorReason = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
 			}
-			
-			// 字段超过最大长度异常处理
+
+			/**
+			 * field is too long
+			 * 字段超过最大长度异常处理
+			 */
 			if (ex instanceof DataIntegrityViolationException) {
-				if (cusedBy.contains("com.mysql.jdbc.MysqlDataTruncation")) {
-					return new JsonResult(new MyException("000052", "（字段：" + cusedBy.split("'")[1] + "）"));
+				if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
+					return new JsonResult(new MyException(E000052, "（字段：" + errorReason.split("'")[1] + "）"));
 				}
 			}
-
-			return new JsonResult(new MyException("000001", ex.getMessage() + "——" + cusedBy));
+			return new JsonResult(new MyException(E000001, ex.getMessage() + "——" + errorReason));
 		}
 	}
 
+	/**
+	 * 返回响应结果
+	 * @param message
+	 */
 	protected void printMsg(String message) {
-		response.setHeader("Content-Type", "text/html");
-		response.setCharacterEncoding("utf-8");
+		ThreadContext.response().setHeader("Content-Type", "text/html");
+		ThreadContext.response().setCharacterEncoding("utf-8");
 		try {
-			PrintWriter out = response.getWriter();
+			PrintWriter out = ThreadContext.response().getWriter();
 			out.write(message);
 			out.flush();
 			out.close();
@@ -172,110 +100,109 @@ public abstract class BaseController{
 	}
 
 	/**
-	 * 权限检查
-	 * 
-	 * @param projectId
+	 * 用户页面权限检查
+	 * @param project
 	 * @throws MyException
 	 */
-	protected void hasPermission(Project project, int type) throws MyException {
+	protected void checkUserPermissionByProject(Project project, int type) throws MyException {
 		LoginInfoDto user = Tools.getUser();
 		if (user != null) {
-
-			// 最高管理员修改项目
-			if (user != null && ("," + user.getRoleId()).indexOf("," + Const.SUPER + ",") >= 0) {
+			/**
+			 * 最高管理员修改项目
+			 * the supper admin can do anything
+ 			 */
+			if (user != null && ("," + user.getRoleId()).indexOf("," + C_SUPER + ",") >= 0) {
 				return;
 			}
 
-			// 修改自己的项目
+			/**
+			 * 修改自己的项目
+			 * myself project
+ 			 */
 			if (user.getId().equals(project.getUserId())) {
 				return;
 			}
 
-			// 项目成员
-			if (type > 0) {
-				ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
-				if (puDto == null) {
-					throw new MyException("000003");
-				}
-				if (type == view) {
-					return;
-				}
-
-				if (puDto.getProjectAuth()[type]) {
-					return;
-				}
-
+			if (type < 0){
+				throw new MyException(E000003);
 			}
 
+			// 项目成员
+			ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
+			if (puDto == null) {
+				throw new MyException(E000003);
+			}
+
+			/**
+			 * if login user is one member, then he can see the data
+			 */
+			if (type == VIEW) {
+				return;
+			}
+
+			if (type < puDto.getProjectAuth().length - 1 && puDto.getProjectAuth()[type]) {
+				return;
+			}
 		}
-		throw new MyException("000003");
+		throw new MyException(E000003);
 	}
 
-	protected void hasPermission(Project project) throws MyException {
-		hasPermission(project, 0);
+	protected void checkUserPermissionByProject(Project project) throws MyException {
+		checkUserPermissionByProject(project, MY_DATE);
 	}
 
-	protected void hasPermission(String projectId, int type) throws MyException {
-		hasPermission(projectCache.get(projectId), type);
+	protected void checkUserPermissionByProject(String projectId, int type) throws MyException {
+		checkUserPermissionByProject(projectCache.get(projectId), type);
 	}
 
-	protected void hasPermissionModuleId(String moduleId, int type) throws MyException {
-		hasPermission(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
-	}
-
-	protected void hasPermission(String projectId) throws MyException {
-		hasPermission(projectCache.get(projectId), 0);
-	}
-
-	protected void hasPermissionModuleId(String moduleId) throws MyException {
-		hasPermission(projectCache.get(moduleCache.get(moduleId).getProjectId()), 0);
-	}
-
-	/**
-	 * 密码访问
-	 * 
-	 * @return
-	 */
-	/********************** 模块访问密码 ***************************/
-	public void canVisitModuleId(String moduleId, String password, String visitCode) throws MyException {
-		Module module = moduleCache.get(moduleId);
-		String needPassword = projectCache.get(module.getProjectId()).getPassword();
-		canVisit(needPassword, password, visitCode);
-	}
-
-	public void canVisitModule(Module module, String password, String visitCode) throws MyException {
-		String needPassword = projectCache.get(module.getProjectId()).getPassword();
-		canVisit(needPassword, password, visitCode);
+	protected void checkUserPermissionByModuleId(String moduleId, int type) throws MyException {
+		checkUserPermissionByProject(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
 	}
 
 	/**
 	 * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
-	 * 
-	 * @param needPassword
+	 * @param needPassword 如果为空，则表示不需要密码
 	 * @param password
 	 * @param visitCode
 	 * @throws MyException
 	 */
-	public void canVisit(String needPassword, String password, String visitCode) throws MyException {
-		if (!MyString.isEmpty(needPassword)) {
-			String temPwd = stringCache.get(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID));
-			if (!MyString.isEmpty(temPwd) && temPwd.toString().equals(needPassword)) {
-				return;
-			}
-			if (MyString.isEmpty(password) || !password.equals(needPassword)) {
-				throw new MyException("000007");
-			}
-			if (settingCache.get(Const.SETTING_VISITCODE).getValue().equals("true")) {
-				String imgCode = Tools.getImgCode();
-				if (MyString.isEmpty(visitCode) || imgCode == null || !visitCode.equals(imgCode.toString())) {
-					throw new MyException("000007");
-				}
-			}
-			stringCache.add(Const.CACHE_TEMP_PWD + MyCookie.getCookie(Const.COOKIE_UUID), password);
+	public void verifyPassword(String needPassword, String password, String visitCode) throws MyException {
+		String COOKIE_PROJECT_PASSWORD = "cpp" + needPassword;
+		if (MyString.isEmpty(needPassword)){
+			return;
 		}
+
+		String tempPassword = MyCookie.getCookie(COOKIE_PROJECT_PASSWORD, true);
+		/**
+		 * 优先使用缓存密码校验
+		 */
+		if (MyString.equals(tempPassword, needPassword)) {
+			return;
+		}
+
+		if (MyString.notEquals(password, needPassword)) {
+			throw new MyException(E000007);
+		}
+
+		/**
+		 * 如果开启了验证码，则需要校验图形验证码是否正确，防止暴力破解
+		 */
+		if (settingCache.get(IConst.SETTING_VISITCODE).getValue().equals("true")) {
+			String imgCode = Tools.getImgCode();
+			if (MyString.notEquals(imgCode, visitCode)) {
+				throw new MyException(E000007);
+			}
+		}
+
+		/**
+		 * 将密码记入缓存，方便下次使用
+		 * 有效时间为12小时
+		 */
+		MyCookie.addCookie(COOKIE_PROJECT_PASSWORD, password, true,60 * 60 * 12);
 	}
 
 	/**
+     * 前端页面检查权限
 	 * private project need login
 	 * public project need check password,
 	 * @param password
@@ -283,19 +210,19 @@ public abstract class BaseController{
 	 * @param project
 	 * @throws MyException
 	 */
-	protected void isPrivateProject(String password, String visitCode, Project project) throws MyException {
+	protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
 		// web项目为默认的公开项目
-		if (project.getId().equals(Const.WEB_MODULE)) {
+		if (project.getId().equals(IConst.WEB_MODULE)) {
 			return;
 		}
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		if (project.getType() == ProjectType.PRIVATE.getType()) {
 			LoginInfoDto user = Tools.getUser();
 			if (user == null) {
-				throw new MyException("000041");
+				throw new MyException(E000041);
 			}
 			// 最高管理员修改项目
-			if (user != null && ("," + user.getRoleId()).indexOf("," + Const.SUPER + ",") >= 0) {
+			if (user != null && ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") >= 0) {
 				return;
 			}
 
@@ -307,16 +234,16 @@ public abstract class BaseController{
 			// 项目成员
 			ProjectUser pu = user.getProjects().get(project.getId());
 			if (pu == null) {
-				throw new MyException("000042");
+				throw new MyException(E000042);
 			}
 		} else {
 			String needPassword = project.getPassword();
-			canVisit(needPassword, password, visitCode);
+			verifyPassword(needPassword, password, visitCode);
 		}
 	}
 
 	protected Object getParam(String key, String def) {
-		String value = request.getParameter(key);
+		String value = ThreadContext.request().getParameter(key);
 		return value == null ? def : value;
 	}
 

@@ -1,11 +1,10 @@
-package cn.crap.service.imp;
+package cn.crap.service.mybatis;
 
-import cn.crap.dao.mybatis.InterfaceDao;
+import cn.crap.dao.mybatis.DebugDao;
 import cn.crap.framework.IdGenerator;
 import cn.crap.enumer.TableId;
-import cn.crap.model.mybatis.Interface;
-import cn.crap.model.mybatis.InterfaceCriteria;
-import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.mybatis.Debug;
+import cn.crap.model.mybatis.DebugCriteria;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,35 +18,35 @@ import java.util.List;
  * service
  */
 @Service
-public class MybatisInterfaceService {
+public class DebugService {
     @Autowired
-    private InterfaceDao mapper;
+    private DebugDao mapper;
 
-    public List<Interface> selectByExample(InterfaceCriteria example) {
+    public List<Debug> selectByExample(DebugCriteria example) {
         return mapper.selectByExample(example);
     }
 
-    public int countByExample(InterfaceCriteria example) {
+    public int countByExample(DebugCriteria example) {
         return mapper.countByExample(example);
     }
 
-    public InterfaceWithBLOBs selectByPrimaryKey(String id) {
+    public Debug selectByPrimaryKey(String id) {
         if (id == null){
             return null;
         }
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean insert(InterfaceWithBLOBs model) {
+    public boolean insert(Debug model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.INTERFACE));
+        model.setId(IdGenerator.getId(TableId.DEBUG));
         if (model.getSequence() == null){
-            InterfaceCriteria example = new InterfaceCriteria();
+            DebugCriteria example = new DebugCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
             example.setMaxResults(1);
-            List<Interface>  models = this.selectByExample(example);
+            List<Debug>  models = this.selectByExample(example);
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -58,7 +57,7 @@ public class MybatisInterfaceService {
         return mapper.insertSelective(model) > 0;
     }
 
-    public boolean update(InterfaceWithBLOBs model) {
+    public boolean update(Debug model) {
         if (model == null) {
             return false;
         }

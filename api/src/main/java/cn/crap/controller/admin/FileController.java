@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.springbeans.Config;
+import cn.crap.beans.Config;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 
@@ -28,7 +28,7 @@ public class FileController extends BaseController{
 			String property) {
 		String result = "";
 	    String realFileName = file.getOriginalFilename();    
-	    String destDir = Tools.getServicePath(request);
+	    String destDir = Tools.getServicePath();
 	    String saveUrl ="";
 	    String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1).toLowerCase();
 	    JSONObject obj = new JSONObject();

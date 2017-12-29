@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.crap.controller.admin.RoleController;
-import cn.crap.enumeration.UserType;
+import cn.crap.enumer.UserType;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.ProjectUser;
-import cn.crap.service.mybatis.custom.CustomProjectService;
-import cn.crap.service.mybatis.imp.MybatisRoleService;
-import cn.crap.service.mybatis.imp.MybatisProjectUserService;
+import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.imp.MybatisRoleService;
+import cn.crap.service.imp.MybatisProjectUserService;
 import cn.crap.utils.Const;
 import cn.crap.utils.Tools;
 

@@ -1,6 +1,6 @@
-package cn.crap.dao.mybatis.custom;
+package cn.crap.dao.custom;
 
-import cn.crap.dao.mybatis.custom.SqlProvider;
+import cn.crap.dao.custom.SqlProvider;
 import cn.crap.model.mybatis.Article;
 import cn.crap.utils.Page;
 import org.apache.ibatis.annotations.*;

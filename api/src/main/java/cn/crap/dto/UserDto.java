@@ -1,6 +1,6 @@
 package cn.crap.dto;
 
-import cn.crap.enumeration.UserType;
+import cn.crap.enumer.UserType;
 
 import java.io.Serializable;
 

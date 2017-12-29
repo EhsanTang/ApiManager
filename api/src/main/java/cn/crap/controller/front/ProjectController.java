@@ -1,7 +1,7 @@
 package cn.crap.controller.front;
 
 import cn.crap.adapter.ProjectAdapter;
-import cn.crap.service.mybatis.custom.CustomProjectService;
+import cn.crap.service.custom.CustomProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectStatus;
+import cn.crap.enumer.ProjectStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

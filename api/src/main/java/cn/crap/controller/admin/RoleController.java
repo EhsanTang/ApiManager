@@ -1,12 +1,10 @@
 package cn.crap.controller.admin;
 
-import java.util.Map;
-
 import cn.crap.adapter.RoleAdapter;
 import cn.crap.model.mybatis.Role;
 import cn.crap.model.mybatis.RoleCriteria;
 import cn.crap.model.mybatis.RoleWithBLOBs;
-import cn.crap.service.mybatis.imp.MybatisRoleService;
+import cn.crap.service.imp.MybatisRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +18,6 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/role")

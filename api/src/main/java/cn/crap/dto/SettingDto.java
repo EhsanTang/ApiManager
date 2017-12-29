@@ -1,10 +1,7 @@
 package cn.crap.dto;
 
-import cn.crap.enumeration.SettingType;
+import cn.crap.enumer.SettingType;
 import cn.crap.utils.MyString;
-
-import java.io.Serializable;
-import java.util.Date;
 
 public class SettingDto{
     private String id;

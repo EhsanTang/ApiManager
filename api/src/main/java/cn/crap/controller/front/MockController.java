@@ -1,6 +1,6 @@
 package cn.crap.controller.front;
 
-import cn.crap.service.mybatis.imp.MybatisInterfaceService;
+import cn.crap.service.imp.MybatisInterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

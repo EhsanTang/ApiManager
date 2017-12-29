@@ -36,11 +36,11 @@
         <property name="dataSource" ref="mybatisDataSource"></property>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <!-- mybatis配置文件自动扫描路径 -->
-        <property name="mapperLocations" value="classpath:cn/crap/dao/mybatis/mapper/*.xml"></property>
+        <property name="mapperLocations" value="classpath:cn/crap/dao/mapper/*.xml"></property>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cn.crap.dao.mybatis,cn.crap.dao.mybatis.mapper,cn.crap.dao.mybatis.custom" />
+        <property name="basePackage" value="cn.crap.dao" />
         <property name="sqlSessionFactoryBeanName" value="mybatisqlSessionFactory"></property>
     </bean>
 
@@ -50,12 +50,5 @@
             <ref bean="mybatisDataSource" />
         </property>
     </bean>
-
-    <!--<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false"-->
-          <!--lazy-init="false" autowire="default">-->
-        <!--<property name="dataSource">-->
-            <!--<ref bean="mybatisDataSource" />-->
-        <!--</property>-->
-    <!--</bean>-->
 
 </beans>

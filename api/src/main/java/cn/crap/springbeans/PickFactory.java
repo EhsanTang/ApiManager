@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumeration.UserType;
+import cn.crap.enumer.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.service.IPickService;
 import cn.crap.utils.Tools;

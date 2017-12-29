@@ -1,10 +1,9 @@
 package cn.crap.controller.front;
 
 import java.util.Date;
-import java.util.Random;
 
 import cn.crap.dto.SettingDto;
-import cn.crap.service.mybatis.imp.MybatisCommentService;
+import cn.crap.service.imp.MybatisCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -18,7 +17,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.Comment;
 import cn.crap.utils.Const;
-import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 

@@ -2,11 +2,11 @@ package cn.crap.controller.thirdly;
 
 import java.util.List;
 
-import cn.crap.enumeration.UserStatus;
-import cn.crap.enumeration.UserType;
+import cn.crap.enumer.UserStatus;
+import cn.crap.enumer.UserType;
 import cn.crap.model.mybatis.UserCriteria;
-import cn.crap.service.mybatis.custom.CustomUserService;
-import cn.crap.service.mybatis.imp.MybatisUserService;
+import cn.crap.service.custom.CustomUserService;
+import cn.crap.service.imp.MybatisUserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
-import cn.crap.enumeration.LoginType;
+import cn.crap.enumer.LoginType;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.User;
-import cn.crap.service.imp.thirdly.OschinaService;
+import cn.crap.service.thirdly.OschinaService;
 import cn.crap.springbeans.Config;
 
 /**

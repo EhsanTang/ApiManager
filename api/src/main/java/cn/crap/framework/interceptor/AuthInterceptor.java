@@ -2,7 +2,7 @@ package cn.crap.framework.interceptor;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
-import cn.crap.service.imp.tool.UserCache;
+import cn.crap.service.tool.UserCache;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;

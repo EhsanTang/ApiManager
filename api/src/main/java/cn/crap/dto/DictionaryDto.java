@@ -2,7 +2,7 @@ package cn.crap.dto;
 
 import java.io.Serializable;
 
-import cn.crap.enumeration.DictionaryPropertyType;
+import cn.crap.enumer.DictionaryPropertyType;
 
 /**
  * 

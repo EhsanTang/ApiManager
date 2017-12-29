@@ -6,7 +6,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import cn.crap.dto.SettingDto;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.service.imp.tool.SettingCache;
+import cn.crap.service.tool.SettingCache;
 
 
 public class Aes

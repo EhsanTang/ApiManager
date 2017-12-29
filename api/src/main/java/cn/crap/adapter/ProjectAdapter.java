@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectDto;
-import cn.crap.enumeration.ProjectType;
+import cn.crap.enumer.ProjectType;
 import cn.crap.model.mybatis.Project;
 
 import java.util.ArrayList;

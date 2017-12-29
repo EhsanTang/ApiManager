@@ -1,10 +1,7 @@
 package cn.crap.dto;
 
-import cn.crap.enumeration.MenuType;
+import cn.crap.enumer.MenuType;
 import cn.crap.utils.MyString;
-
-import java.io.Serializable;
-import java.util.Date;
 
 public class MenuDto{
     private String id;

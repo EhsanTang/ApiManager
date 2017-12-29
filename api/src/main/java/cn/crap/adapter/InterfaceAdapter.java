@@ -2,14 +2,14 @@ package cn.crap.adapter;
 
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.ProjectType;
+import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Interface;
 import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
-import cn.crap.service.imp.tool.ModuleCache;
-import cn.crap.service.imp.tool.ProjectCache;
+import cn.crap.service.tool.ModuleCache;
+import cn.crap.service.tool.ProjectCache;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;

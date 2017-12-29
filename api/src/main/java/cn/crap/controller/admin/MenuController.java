@@ -8,7 +8,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
-import cn.crap.service.mybatis.imp.MybatisMenuService;
+import cn.crap.service.imp.MybatisMenuService;
 import cn.crap.utils.Const;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;

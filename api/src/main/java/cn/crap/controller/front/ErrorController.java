@@ -5,7 +5,7 @@ import java.util.List;
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
 import cn.crap.model.mybatis.Project;
-import cn.crap.service.mybatis.custom.CustomErrorService;
+import cn.crap.service.custom.CustomErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

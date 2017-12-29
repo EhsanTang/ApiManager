@@ -1,6 +1,6 @@
 package cn.crap.framework;
 
-import cn.crap.enumeration.TableId;
+import cn.crap.enumer.TableId;
 
 import java.net.InetAddress;
 import java.util.Random;

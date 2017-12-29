@@ -8,7 +8,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Setting;
 import cn.crap.model.mybatis.SettingCriteria;
-import cn.crap.service.mybatis.imp.MybatisSettingService;
+import cn.crap.service.imp.MybatisSettingService;
 import cn.crap.springbeans.Config;
 import cn.crap.utils.Const;
 import cn.crap.utils.Page;

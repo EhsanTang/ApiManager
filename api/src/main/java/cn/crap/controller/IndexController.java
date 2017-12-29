@@ -2,7 +2,7 @@ package cn.crap.controller;
 
 import cn.crap.dto.PickDto;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.mybatis.custom.CustomMenuService;
+import cn.crap.service.custom.CustomMenuService;
 import cn.crap.utils.Const;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;

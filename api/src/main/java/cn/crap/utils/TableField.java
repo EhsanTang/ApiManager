@@ -10,6 +10,7 @@ public class TableField {
         public final static String SEQUENCE_DESC = "sequence desc";
         public final static String ERROR_CODE_ASC = "errorCode asc";
         public final static String CREATE_TIME_DES = "createTime desc";
+        public final static String TIMES_DESC = "times desc";
 
     }
 

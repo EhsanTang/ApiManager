@@ -14,7 +14,7 @@ public class Page<T> implements Serializable{
 	private List<T> list;
 
 	public Page(Integer currentPage){
-		this(15, currentPage);
+		this(15, currentPage == null ? 1 : currentPage);
 	}
 	public Page(Integer size, Integer currentPage){
 		Assert.notNull(size);

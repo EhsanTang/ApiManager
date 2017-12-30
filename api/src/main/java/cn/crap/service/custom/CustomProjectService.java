@@ -1,7 +1,7 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.ProjectDao;
-import cn.crap.dao.custom.CustomProjectMapper;
+import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.model.mybatis.*;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -17,7 +17,7 @@ public class CustomProjectService {
     @Autowired
     private ProjectDao mapper;
     @Autowired
-    private CustomProjectMapper customMapper;
+    private CustomProjectDao customMapper;
     public List<Project> queryMyProjectByUserId(String userId){
         Assert.notNull(userId, "userId can't be null");
         ProjectCriteria example = new ProjectCriteria();

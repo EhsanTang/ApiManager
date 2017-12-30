@@ -170,7 +170,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('configProperties', {
+	}).state('hotSearchList', {
+        url : '/hotSearch/list',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/backHtml/hotSearchList.tpl.html'
+            },
+            'page@hotSearchList' : {
+                templateUrl : 'resources/html/backHtml/page.tpl.html'
+            }
+        }
+    }).state('configProperties', {
 		url : '/config/properties',
 		views : {
 			'main' :{

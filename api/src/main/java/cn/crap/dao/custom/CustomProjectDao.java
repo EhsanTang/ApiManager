@@ -17,7 +17,7 @@ import java.util.List;
  * @author nico 2017-07-28
  */
 @Service
-public class CustomProjectMapper {
+public class CustomProjectDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 

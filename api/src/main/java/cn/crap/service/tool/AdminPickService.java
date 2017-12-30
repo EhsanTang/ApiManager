@@ -2,7 +2,7 @@ package cn.crap.service.tool;
 
 import java.util.List;
 
-import cn.crap.dao.custom.CustomArticleMapper;
+import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomMenuService;
 import cn.crap.service.mybatis.ArticleService;
@@ -40,7 +40,7 @@ public class AdminPickService implements IPickService{
 	@Autowired
 	private CustomMenuService customMenuService;
 	@Autowired
-	private CustomArticleMapper customArticleMapper;
+	private CustomArticleDao customArticleMapper;
 	@Autowired
 	private RoleService roleService;
 
@@ -94,14 +94,12 @@ public class AdminPickService implements IPickService{
 			// 分割线
 			pick = new PickDto(IConst.SEPARATOR, "用户、菜单、角色、系统设置管理");
 			picks.add(pick);
-			pick = new PickDto(DataType.USER.name(), "用户管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.ROLE.name(), "角色管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.MENU.name(), "菜单管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.SETTING.name(), "系统设置管理");
-			picks.add(pick);
+
+			for (DataType dataType : DataType.values()){
+				pick = new PickDto(dataType.name(), dataType.getName());
+				picks.add(pick);
+			}
+
 			pick = new PickDto(ArticleType.ARTICLE.name(), "站点文章管理");
 			picks.add(pick);
 			pick = new PickDto(ArticleType.PAGE.name(), "站点页面管理");

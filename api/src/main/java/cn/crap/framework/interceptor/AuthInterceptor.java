@@ -1,9 +1,9 @@
 package cn.crap.framework.interceptor;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.service.tool.UserCache;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -20,7 +20,7 @@ import java.net.InetAddress;
  * @author 
  *
  */
-public class AuthInterceptor extends HandlerInterceptorAdapter {
+public class AuthInterceptor extends HandlerInterceptorAdapter implements IErrorCode{
 	@Autowired
 	private UserCache userCache;
 	@Autowired
@@ -59,7 +59,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 
 		String token = MyCookie.getCookie(IConst.COOKIE_TOKEN);
-		String uid = MyCookie.getCookie(IConst.COOKIE_USERID);
+		String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
 
 		/**
 		 * 前端没有传递token，未登录
@@ -71,7 +71,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                 response.sendRedirect("loginOrRegister.do#/login");
                 return false;
             }else {
-                throw new MyException("000021");
+                throw new MyException(E000021);
             }
 		}
 
@@ -79,11 +79,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         userCache.add(uid, user);
 
 		if(!authPassport.authority().equals("")){
-			return Tools.hasAuth(authPassport.authority());
+			return LoginUserHelper.checkAuthPassport(authPassport.authority());
 		}else{
 			return true;
 		}
-
 	}
 	
 

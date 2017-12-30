@@ -60,7 +60,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping("/back/loginOut.do")
 	public String loginOut() throws IOException {
-		String uid = MyCookie.getCookie(IConst.COOKIE_USERID);
+		String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
 		userCache.del(uid);
 		MyCookie.deleteCookie(IConst.COOKIE_TOKEN);
 		return "resources/html/frontHtml/index.html";
@@ -87,7 +87,7 @@ public class LoginController extends BaseController{
 		}
 	
 		model.setTipMessage("");
-		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		model.setSessionAdminName(user == null? null:user.getUserName());
 		Map<String,Object> returnMap = new HashMap<>();
 		returnMap.put("model", model);
@@ -143,8 +143,8 @@ public class LoginController extends BaseController{
 	@RequestMapping("/back/sendValidateEmail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult sendValidateEmail() throws UnsupportedEncodingException, MessagingException {
-		LoginInfoDto user = Tools.getUser();
+	public JsonResult sendValidateEmail() throws Exception {
+		LoginInfoDto user = LoginUserHelper.getUser();
 		emailService.sendRegisterEmail(user.getEmail(), user.getId());
 		return new JsonResult(1, null);
 	}

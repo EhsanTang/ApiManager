@@ -1,6 +1,6 @@
 package cn.crap.service.custom;
 
-import cn.crap.dao.custom.CustomDebugMapper;
+import cn.crap.dao.custom.CustomDebugDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 @Service
 public class CustomDebugService {
     @Autowired
-    private CustomDebugMapper customDebugMapper;
+    private CustomDebugDao customDebugMapper;
 
     public void deleteByModelId(String moduleId) {
         Assert.notNull(moduleId);

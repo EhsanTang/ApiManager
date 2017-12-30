@@ -6,6 +6,7 @@ package cn.crap.utils;
  */
 public interface IConst {
 	String NULL = "_NULL";
+	String C_TRUE = "true";
 	public final static String NULL_ID = "NULL"; //当新增数据时，前段传递的id=NULL
 	String NOT_NULL = "NOT_NULL";
 	String BLANK = "_BLANK"; 
@@ -15,6 +16,7 @@ public interface IConst {
 	String MODULEID = "MODULEID"; 
 	String PROJECTID = "PROJECTID"; 
 	String C_AUTH_USER = "USER";
+	String C_HOT_SEARCH = "HOTS_EARCH";
 	String C_AUTH_MENU = "MENU";
 	String C_AUTH_SETTING = "SETTING";
 	String AUTH_COMMENT = "COMMENT";
@@ -29,7 +31,6 @@ public interface IConst {
 	String CACHE_IMGCODE = ":imgCode";
 	String CACHE_IMGCODE_TIMES = ":imgCodeTimes";
 	String CACHE_TEMP_PWD = ":tempPwd";
-	String CACHE_SEARCH_WORDS = ":searchWords";
 	String CACHE_MODULEIDS = ":moduleIds:";
 	String C_CACHE_ERROR_TIP = ":errorTip:";
 	String CACHE_TUIJIAN_OPEN_MODULEIDS = ":openTuijianModuleIds:";
@@ -45,7 +46,7 @@ public interface IConst {
 	/**
 	 * cookie前端名称要尽量短，且不易识别
 	 */
-	String COOKIE_USERID = "cookieUserId";
+	String C_COOKIE_USERID = "cookieUserId";
 	String COOKIE_USERNAME = "cookieUserName";
 	String COOKIE_PASSWORD = "cookiePassword";
 	String COOKIE_TOKEN= "token";
@@ -72,13 +73,13 @@ public interface IConst {
 	String C_SETTING_SECRETKEY = "SECRETKEY";
 	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";
 	public final static String SETTING_VISITCODE = "VISITCODE";
-	String SETTING_COMMENTCODE = "COMMENTCODE";
+	String C_SETTING_COMMENTCODE = "COMMENTCODE";
 	String SETTING_LUCENE_DIR = "LUCENE_DIR";
 	String SETTING_INDEX_PAGE = "INDEX_PAGE";
 	String SETTING_TITLE = "TITLE";
 	String SETTING_OPEN_REGISTER = "openRegister";
 	String SETTING_GITHUB_ID = "githubClientID";
-	String SETTING_ANONYMOUS_COMMENT = "ANONYMOUS_COMMENT";
+	String C_SETTING_ANONYMOUS_COMMENT = "ANONYMOUS_COMMENT";
 	
 	
 	//SOLR

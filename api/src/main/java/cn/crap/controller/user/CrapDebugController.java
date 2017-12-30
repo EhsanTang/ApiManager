@@ -9,6 +9,7 @@ import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.mybatis.DebugService;
 import cn.crap.service.mybatis.ModuleService;
 import cn.crap.service.mybatis.ProjectService;
+import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +48,7 @@ public class CrapDebugController extends BaseController{
 	@AuthPassport
 	public JsonResult synch(@RequestBody String body) throws MyException{
 		List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 		
 		// 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
 		String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";

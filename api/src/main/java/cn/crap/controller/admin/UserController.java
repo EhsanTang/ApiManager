@@ -43,7 +43,7 @@ public class UserController extends BaseController {
     @RequestMapping("/user/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
-    public JsonResult list(String userName, String email, String trueName, @RequestParam(defaultValue = "1") Integer currentPage) {
+    public JsonResult list(String userName, String email, String trueName,  Integer currentPage) {
         Page page = new Page(currentPage);
         UserCriteria userCriteria = new UserCriteria();
         UserCriteria.Criteria criteria = userCriteria.createCriteria();
@@ -110,7 +110,7 @@ public class UserController extends BaseController {
             throw new MyException(E000061);
         }
 
-        LoginInfoDto loginUser = Tools.getUser();
+        LoginInfoDto loginUser = LoginUserHelper.getUser();
         // 如果不是最高管理员，不允许修改权限、角色、类型
         if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
             user.setAuth("");
@@ -146,7 +146,7 @@ public class UserController extends BaseController {
             throw new MyException(E000013);
         }
 
-        LoginInfoDto loginUser = Tools.getUser();
+        LoginInfoDto loginUser = LoginUserHelper.getUser();
         // 超级管理员账号不能修改其它超级管理员账号信息，但是用户名为admin的超级管理员能修改其他超级管理员的信息
         if (Tools.isSuperAdmin(dbUser.getRoleId())) {
             if (!dbUser.getId().equals(loginUser.getId()) && !loginUser.getUserName().equals("admin")) {

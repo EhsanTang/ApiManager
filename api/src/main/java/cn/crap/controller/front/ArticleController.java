@@ -3,7 +3,6 @@ package cn.crap.controller.front;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.ArticleDto;
@@ -17,14 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.crap.enumer.ArticleType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.Project;
-import cn.crap.beans.Config;
-import cn.crap.utils.IConst;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
@@ -37,8 +33,6 @@ public class ArticleController extends BaseController {
     @Autowired
     private CommentService commentService;
     @Autowired
-    private Config config;
-    @Autowired
     private CustomArticleService customArticleService;
     @Autowired
     private ArticleService articleService;
@@ -50,7 +44,7 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public JsonResult list(@RequestParam String moduleId,
                            String name,
-                           @RequestParam(defaultValue = "1") Integer currentPage,
+                            Integer currentPage,
                            String password,
                            String visitCode) throws MyException {
 
@@ -71,20 +65,15 @@ public class ArticleController extends BaseController {
     }
 
 
-    @SuppressWarnings("unchecked")
     @RequestMapping("/front/article/list.do")
     @ResponseBody
-    public JsonResult list(@RequestParam(defaultValue = "1") Integer currentPage,
-                           @RequestParam(defaultValue = IConst.WEB_MODULE) String moduleId,
+    public JsonResult list( Integer currentPage,
+                           @RequestParam(defaultValue = WEB_MODULE) String moduleId,
                            @RequestParam String type,
                            @RequestParam String category,
                            String password,
                            String visitCode) throws MyException {
-
-        Page page = new Page(15, currentPage);
-        if ( ArticleType.ARTICLE.name().equals(type)){
-            type = ArticleType.ARTICLE.name();
-        }
+        Page page = new Page(currentPage);
         Module module = moduleCache.get(moduleId);
         Project project = projectCache.get(module.getProjectId());
 
@@ -103,12 +92,11 @@ public class ArticleController extends BaseController {
     }
 
 
-    @SuppressWarnings("unchecked")
     @RequestMapping("/front/article/detail.do")
     @ResponseBody
-    public JsonResult webDetail(@RequestParam String id,
+    public JsonResult articleDetail(@RequestParam String id,
                                 String password, String visitCode,
-                                @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+                                 Integer currentPage) throws MyException {
         Map<String, Object> returnMap = new HashMap<>();
         ArticleWithBLOBs article = null;
 
@@ -121,7 +109,6 @@ public class ArticleController extends BaseController {
             throw new MyException("000020");
         }
         id = article.getId();
-
 
         Module module = moduleCache.get(article.getModuleId());
         Project project = projectCache.get(module.getProjectId());
@@ -147,7 +134,7 @@ public class ArticleController extends BaseController {
         List<Comment> comments = customCommentService.selectByArticelId(id, null, page);
         page.setAllRow(customCommentService.countByArticleId(id));
         returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", settingCache.get(IConst.SETTING_COMMENTCODE).getValue());
+        returnMap.put("commentCode", settingCache.get(C_SETTING_COMMENTCODE).getValue());
 
         // 更新点击量
         customArticleService.updateClickById(id);

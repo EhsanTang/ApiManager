@@ -2,6 +2,7 @@ package cn.crap.controller.front;
 
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.service.custom.CustomProjectService;
+import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +28,10 @@ public class ProjectController extends BaseController{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam(defaultValue="1") int currentPage, 
-			@RequestParam(defaultValue="false") boolean myself, String name) throws MyException{
+	public JsonResult list(Integer currentPage, @RequestParam(defaultValue="false") boolean myself, String name) throws MyException{
 		
-		Page page= new Page(15, currentPage);
-		LoginInfoDto user =  Tools.getUser();
+		Page page= new Page(currentPage);
+		LoginInfoDto user =  LoginUserHelper.tryGetUser();
 		
 		if(user != null && myself){
 			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), name));

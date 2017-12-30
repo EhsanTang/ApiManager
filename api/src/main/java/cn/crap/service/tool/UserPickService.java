@@ -1,6 +1,6 @@
 package cn.crap.service.tool;
 
-import cn.crap.dao.custom.CustomArticleMapper;
+import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumer.LuceneSearchType;
@@ -14,6 +14,7 @@ import cn.crap.service.mybatis.ModuleService;
 import cn.crap.service.mybatis.ProjectService;
 import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class UserPickService implements IPickService{
 	@Autowired
 	private ModuleService moduleService;
 	@Autowired
-	private CustomArticleMapper customArticleMapper;
+	private CustomArticleDao customArticleMapper;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -70,7 +71,7 @@ public class UserPickService implements IPickService{
 					case "MYMODULE":// 用户所有模块
 						// 普通用户，只能查看自己的模块
 						ProjectCriteria example = new ProjectCriteria();
-						ProjectCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(Tools.getUser().getId()).andStatusGreaterThan(Byte.valueOf("0"));
+						ProjectCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(LoginUserHelper.getUser().getId()).andStatusGreaterThan(Byte.valueOf("0"));
 						for (Project p : projectService.selectByExample(example)) {
 							pick = new PickDto(IConst.SEPARATOR, p.getName());
 							picks.add(pick);
@@ -86,7 +87,7 @@ public class UserPickService implements IPickService{
 						return;
 					case "PROJECT_MODULE":
 						// 普通用户，只能查看自己的项目和模块
-						projectIds = customProjectService.queryProjectIdByUid(Tools.getUser().getId());
+						projectIds = customProjectService.queryProjectIdByUid(LoginUserHelper.getUser().getId());
 						customModuleService.getDataCenterPick(picks, projectIds , "", "", "");
 						return;
 					case "MODULES":

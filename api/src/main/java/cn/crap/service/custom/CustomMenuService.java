@@ -1,7 +1,7 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.MenuDao;
-import cn.crap.dao.custom.CustomArticleMapper;
+import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enumer.MenuType;
@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class CustomMenuService {
     @Autowired
-    private MenuDao mapper;
+    private MenuDao dao;
 
     @Autowired
     private CustomProjectService customProjectService;
@@ -35,13 +35,13 @@ public class CustomMenuService {
     @Autowired
     private Config config;
     @Autowired
-    private CustomArticleMapper customArticleMapper;
+    private CustomArticleDao customArticleMapper;
 
     public List<Menu> queryByParentId(String parentId){
         Assert.notNull(parentId, "parentId can't be null");
         MenuCriteria example = new MenuCriteria();
         example.createCriteria().andParentIdEqualTo(parentId);
-        return  mapper.selectByExample(example);
+        return  dao.selectByExample(example);
     }
 
     public List<Menu> queryByParentIds(List<String> parentIds){
@@ -51,7 +51,7 @@ public class CustomMenuService {
         }
         MenuCriteria example = new MenuCriteria();
         example.createCriteria().andParentIdIn(parentIds);
-        return  mapper.selectByExample(example);
+        return  dao.selectByExample(example);
     }
 
 

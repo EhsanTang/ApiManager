@@ -222,31 +222,7 @@ public class Tools {
 		String imgCode = stringCache.get(IConst.CACHE_IMGCODE + MyCookie.getCookie(IConst.COOKIE_UUID, false));
 		return imgCode == null? System.currentTimeMillis()+"" : imgCode.toString();
 	}
-	
-	public static boolean hasAuth(String authPassport) throws MyException {
-		LoginInfoDto user = Tools.getUser();
-		if(user == null ){
-			throw new MyException("000003");
-		}
-		
-		String authority = user.getAuthStr();
-		if( user != null && (","+user.getRoleId()).indexOf(","+ IConst.C_SUPER +",")>=0){
-			return true;//超级管理员
-		}
-		
-		// 管理员修改自己的资料
-		if(authPassport.equals("USER")){
-			// 如果session中的管理员id和参数中的id一致
-			if( MyString.isEquals(  user.getId(),  user.getId() )  ){
-				return true;
-			}
-		}
-		
-		if(authority.indexOf(","+authPassport+",")>=0){
-			return true;
-		}
-		throw new MyException("000003");
-	}
+
 	
 	/**
 	 * 构造查询Map集合
@@ -460,15 +436,6 @@ public class Tools {
 		}
 		
 		return str;
-	}
-	/**
-	 * 获取用户登录信息
-	 * @return
-	 */
-	public static LoginInfoDto getUser(){
-		UserCache userCache = SpringContextHolder.getBean("userCache", UserCache.class);
-		String uId = MyCookie.getCookie(IConst.COOKIE_USERID, false);
-		return userCache.get(uId);
 	}
 	
 	public static boolean checkUserName(String userName){

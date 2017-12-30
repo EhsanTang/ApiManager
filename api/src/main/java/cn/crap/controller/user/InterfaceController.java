@@ -16,10 +16,7 @@ import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.custom.CustomInterfaceService;
 import cn.crap.service.mybatis.InterfaceService;
 import cn.crap.beans.Config;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +50,7 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@RequestParam String projectId, @RequestParam String moduleId, String interfaceName, String url,
-			@RequestParam(defaultValue = "1") Integer currentPage) throws MyException{
+			 Integer currentPage) throws MyException{
 		Page page= new Page(15, currentPage);
 		checkUserPermissionByProject(projectCache.get(projectId), VIEW);
 
@@ -168,7 +165,7 @@ public class InterfaceController extends BaseController{
 		List<Error> errors  = customErrorService.queryByProjectIdAndErrorCode(interFace.getProjectId(), Tools.getIdsFromField(errorIds));
 		interFace.setErrors(JSONArray.fromObject(errors).toString());
 
-		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 		interFace.setUpdateTime(new Date());
 		

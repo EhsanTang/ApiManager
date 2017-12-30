@@ -6,10 +6,8 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.tool.UserCache;
-import cn.crap.service.mybatis.ProjectService;
 import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
-import cn.crap.beans.Config;
 import cn.crap.utils.Aes;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyCookie;
@@ -36,7 +34,7 @@ public class CustomUserService {
         MyCookie.addCookie(IConst.COOKIE_TOKEN, token);
         // 将用户信息存入缓存
         userCache.add(user.getId(), new LoginInfoDto(user, roleService, customProjectService, projectUserService));
-        MyCookie.addCookie(IConst.COOKIE_USERID, user.getId());
+        MyCookie.addCookie(IConst.C_COOKIE_USERID, user.getId());
         MyCookie.addCookie(IConst.COOKIE_USERNAME, model.getUserName());
         MyCookie.addCookie(IConst.COOKIE_REMBER_PWD, model.getRemberPwd());
 

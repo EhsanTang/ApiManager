@@ -13,10 +13,7 @@ import cn.crap.model.mybatis.Module;
 import cn.crap.service.custom.*;
 import cn.crap.service.mybatis.*;
 import cn.crap.beans.Config;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,7 +101,7 @@ public class ModuleController extends BaseController{
 			customLogService.addLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
 		}else{
 			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), ADD_MODULE);
-			module.setUserId(Tools.getUser().getId());
+			module.setUserId(LoginUserHelper.getUser().getId());
 			module.setVersion(0);
 			moduleService.insert(module);
 		}
@@ -113,7 +110,7 @@ public class ModuleController extends BaseController{
 		/**
 		 * 刷新用户权限
 		 */
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
 		userCache.add(user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,module);

@@ -2,7 +2,7 @@ package cn.crap.service.custom;
 
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.mybatis.ArticleDao;
-import cn.crap.dao.custom.CustomArticleMapper;
+import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.*;
@@ -27,9 +27,9 @@ import java.util.List;
 @Service
 public class CustomArticleService implements ILuceneService{
     @Autowired
-    private ArticleDao mapper;
+    private ArticleDao dao;
     @Autowired
-    private CustomArticleMapper customArticleMapper;
+    private CustomArticleDao customArticleMapper;
     @Resource(name = "projectCache")
     protected ProjectCache projectCache;
     @Resource(name = "moduleCache")
@@ -50,7 +50,7 @@ public class CustomArticleService implements ILuceneService{
         if (category != null) {
             criteria.andCategoryLike("%" + category + "%");
         }
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
     public List<Article> queryArticle(String moduleId, String name, String type, String category, Page page) {
@@ -68,7 +68,7 @@ public class CustomArticleService implements ILuceneService{
         }
         example.setLimitStart(page.getStart());
         example.setMaxResults(page.getSize());
-        return mapper.selectByExample(example);
+        return dao.selectByExample(example);
     }
 
     public Project getProject(String moduleId) {
@@ -115,7 +115,7 @@ public class CustomArticleService implements ILuceneService{
      * @param remark
      */
     public void update(ArticleWithBLOBs model, String modelName, String remark) {
-        Article dbModel = mapper.selectByPrimaryKey(model.getId());
+        Article dbModel = dao.selectByPrimaryKey(model.getId());
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
@@ -128,12 +128,12 @@ public class CustomArticleService implements ILuceneService{
             log.setModelClass(dbModel.getClass().getSimpleName());
 
         logService.insert(log);
-        mapper.updateByPrimaryKeyWithBLOBs(model);
+        dao.updateByPrimaryKeyWithBLOBs(model);
     }
 
     public void delete(String id, String modelName, String remark){
         Assert.notNull(id);
-        Article dbModel = mapper.selectByPrimaryKey(id);
+        Article dbModel = dao.selectByPrimaryKey(id);
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
@@ -145,11 +145,11 @@ public class CustomArticleService implements ILuceneService{
         log.setModelClass(dbModel.getClass().getSimpleName());
 
        logService.insert(log);
-        mapper.deleteByPrimaryKey(dbModel.getId());
+        dao.deleteByPrimaryKey(dbModel.getId());
     }
 
     public List<SearchDto> getAll() {
-        return ArticleAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(new ArticleCriteria()));
+        return ArticleAdapter.getSearchDto(dao.selectByExampleWithBLOBs(new ArticleCriteria()));
     }
 
     @Override
@@ -161,7 +161,7 @@ public class CustomArticleService implements ILuceneService{
     public List<SearchDto> getAllByProjectId(String projectId) {
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  ArticleAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(example));
+        return  ArticleAdapter.getSearchDto(dao.selectByExampleWithBLOBs(example));
     }
 
     public Integer countByModuleIdAndType(String moduleId, String type){
@@ -169,7 +169,7 @@ public class CustomArticleService implements ILuceneService{
         Assert.notNull(type);
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andModuleIdEqualTo(moduleId).andTypeEqualTo(type);
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
     public List<Article> queryByModuleIdAndType(String moduleId, String type){
@@ -177,13 +177,23 @@ public class CustomArticleService implements ILuceneService{
         Assert.notNull(type);
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andModuleIdEqualTo(moduleId).andTypeEqualTo(type);
-        return mapper.selectByExample(example);
+        return dao.selectByExample(example);
     }
 
+    /**
+     * 查询前20个分类
+     * @param moduleId
+     * @param type
+     * @return
+     */
     public List<String> queryTop20Category(String moduleId, String type){
         return customArticleMapper.queryTop20Category(moduleId, type);
     }
 
+    /**
+     * 跟新点击量
+     * @param id
+     */
     public void updateClickById(String id){
         Assert.notNull(id);
         customArticleMapper.updateClickById(id);
@@ -192,7 +202,7 @@ public class CustomArticleService implements ILuceneService{
     public ArticleWithBLOBs selectByKey(String key){
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andMkeyEqualTo(key);
-        List<ArticleWithBLOBs> models = mapper.selectByExampleWithBLOBs(example);
+        List<ArticleWithBLOBs> models = dao.selectByExampleWithBLOBs(example);
         return  models.size() > 0 ? models.get(0) : null;
     }
 }

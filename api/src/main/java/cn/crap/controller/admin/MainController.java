@@ -7,6 +7,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
 import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ public class MainController extends BaseController {
         }
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);
-        LoginInfoDto user = (LoginInfoDto) Tools.getUser();
+        LoginInfoDto user = LoginUserHelper.getUser();
         returnMap.put("sessionAdminName", user.getUserName());
         returnMap.put("sessionAdminAuthor", user.getAuthStr());
         returnMap.put("sessionAdminRoleIds", user.getRoleId());

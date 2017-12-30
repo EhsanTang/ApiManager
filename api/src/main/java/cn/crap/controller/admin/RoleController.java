@@ -30,7 +30,7 @@ public class RoleController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_ROLE)
-    public JsonResult list(String roleName, @RequestParam(defaultValue = "1") Integer currentPage) {
+    public JsonResult list(String roleName,  Integer currentPage) {
         Page page = new Page(currentPage);
 
         RoleCriteria example = new RoleCriteria();

@@ -277,6 +277,14 @@ mainModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state,
     };
     $scope.getData();
 });
+/************************hotSearchCtrl********/
+mainModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+    $scope.getData = function(page) {
+        var params = "iUrl=hotSearch/list.do|iLoading=FLOAT";
+        $rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {

@@ -2,7 +2,7 @@ package cn.crap.service.custom;
 
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dao.mybatis.InterfaceDao;
-import cn.crap.dao.custom.CustomInterfaceMapper;
+import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.*;
@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class CustomInterfaceService implements ILuceneService {
     @Autowired
-    private InterfaceDao mapper;
+    private InterfaceDao dao;
     @Autowired
     private ModuleCache moduleCache;
     @Autowired
@@ -31,7 +31,7 @@ public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private LogService logService;
     @Autowired
-    private CustomInterfaceMapper customInterfaceMapper;
+    private CustomInterfaceDao customInterfaceMapper;
     @Autowired
     private Config config;
 
@@ -132,7 +132,7 @@ public class CustomInterfaceService implements ILuceneService {
     public List<InterfaceWithBLOBs> getByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         InterfaceCriteria.Criteria criteria = example.createCriteria().andProjectIdEqualTo(projectId);
-        return mapper.selectByExampleWithBLOBs(example);
+        return dao.selectByExampleWithBLOBs(example);
     }
 
     public int countByFullUrl(String moduleId, String fullUrl, String expectId){
@@ -144,7 +144,7 @@ public class CustomInterfaceService implements ILuceneService {
         if (expectId != null){
             criteria.andIdNotEqualTo(expectId);
         }
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
     /**
@@ -154,7 +154,7 @@ public class CustomInterfaceService implements ILuceneService {
      * @param remark
      */
     public void update(InterfaceWithBLOBs model, String modelName, String remark) {
-        InterfaceWithBLOBs dbModel = mapper.selectByPrimaryKey(model.getId());
+        InterfaceWithBLOBs dbModel = dao.selectByPrimaryKey(model.getId());
         if(MyString.isEmpty(remark)) {
             remark = model.getInterfaceName();
         }
@@ -167,12 +167,12 @@ public class CustomInterfaceService implements ILuceneService {
         log.setModelClass(dbModel.getClass().getSimpleName());
 
         logService.insert(log);
-        mapper.updateByPrimaryKeyWithBLOBs(model);
+        dao.updateByPrimaryKeyWithBLOBs(model);
     }
 
     public void delete(String id, String modelName, String remark){
         Assert.notNull(id);
-        InterfaceWithBLOBs dbModel = mapper.selectByPrimaryKey(id);
+        InterfaceWithBLOBs dbModel = dao.selectByPrimaryKey(id);
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getInterfaceName();
         }
@@ -184,7 +184,7 @@ public class CustomInterfaceService implements ILuceneService {
         log.setModelClass(dbModel.getClass().getSimpleName());
 
         logService.insert(log);
-        mapper.deleteByPrimaryKey(dbModel.getId());
+        dao.deleteByPrimaryKey(dbModel.getId());
     }
 
     public List<InterfaceWithBLOBs> selectByModuleId(String moduleId){
@@ -192,7 +192,7 @@ public class CustomInterfaceService implements ILuceneService {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andModuleIdEqualTo(moduleId);
 
-        return mapper.selectByExampleWithBLOBs(example);
+        return dao.selectByExampleWithBLOBs(example);
     }
 
     public int countByModuleId(String moduleId){
@@ -200,7 +200,7 @@ public class CustomInterfaceService implements ILuceneService {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andModuleIdEqualTo(moduleId);
 
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
     /**
@@ -224,13 +224,13 @@ public class CustomInterfaceService implements ILuceneService {
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(new InterfaceCriteria()));
+        return InterfaceAdapter.getSearchDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria()));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(mapper.selectByExampleWithBLOBs(example));
+        return  InterfaceAdapter.getSearchDto(dao.selectByExampleWithBLOBs(example));
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
  * @author nico 2017-07-28
  */
 @Service
-public class CustomArticleMapper {
+public class CustomArticleDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;

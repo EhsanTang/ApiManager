@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.crap.utils.LoginUserHelper;
 import org.springframework.stereotype.Component;
 
 import cn.crap.dto.LoginInfoDto;
@@ -28,7 +29,7 @@ public class PickFactory {
 	public void getPickList(List<PickDto> picks, String code, String key) throws MyException {
 		
 		// 1.查询管理员中是否有对应的pick
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		if( user != null && user.getType() == UserType.ADMIN.getType()){
 			adminPickService.getPickList(picks, code, key, user);
 		}

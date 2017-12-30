@@ -22,7 +22,7 @@ public class ErrorAdapter {
 		dto.setErrorCode(model.getErrorCode());
 		dto.setErrorMsg(model.getErrorMsg());
 		dto.setProjectId(model.getProjectId());
-//		dto.setCreateTime(model.getCreateTime());
+//		dto.setCreateTimeStr(model.getCreateTimeStr());
 //		dto.setStatus(model.getStatus());
 //		dto.setSequence(model.getSequence());
 		
@@ -39,7 +39,7 @@ public class ErrorAdapter {
 		model.setErrorCode(dto.getErrorCode());
 		model.setErrorMsg(dto.getErrorMsg());
 		model.setProjectId(dto.getProjectId());
-//		model.setCreateTime(dto.getCreateTime());
+//		model.setCreateTimeStr(dto.getCreateTimeStr());
 //		model.setStatus(dto.getStatus());
 //		model.setSequence(dto.getSequence());
 

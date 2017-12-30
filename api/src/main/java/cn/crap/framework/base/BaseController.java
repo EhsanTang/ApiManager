@@ -27,15 +27,15 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Project;
 
-public abstract class BaseController implements IAuthCode, IErrorCode, IConst{
-	protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
-	protected final static int SIZE = 15;
-	protected Logger log = Logger.getLogger(getClass());
+public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
+    protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
+    protected final static int SIZE = 15;
+    protected Logger log = Logger.getLogger(getClass());
     protected final static JsonResult SUCCESS = new JsonResult();
     @Resource(name = "projectCache")
-	protected ProjectCache projectCache;
-	@Resource(name = "moduleCache")
-	protected ModuleCache moduleCache;
+    protected ProjectCache projectCache;
+    @Resource(name = "moduleCache")
+    protected ModuleCache moduleCache;
     @Resource(name = "stringCache")
     protected StringCache stringCache;
     @Resource(name = "settingCache")
@@ -47,204 +47,204 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst{
     @Autowired
     protected Config config;
 
-	@ExceptionHandler({ Exception.class })
-	@ResponseBody
-	public JsonResult expHandler(HttpServletRequest request, Exception ex) {
-		if (ex instanceof MyException) {
-			return new JsonResult((MyException) ex);
-		}else if (ex instanceof NullPointerException) {
-			log.error(ex.getMessage(), ex);
-			return new JsonResult(new MyException(E000051));
-		}else {
-			log.error(ex.getMessage(), ex);
-			ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
-			ex.printStackTrace(new PrintStream(outPutStream));
-			String exceptionDetail[] = outPutStream.toString().split("Caused by:");
-			try {
-				outPutStream.close();
-			} catch (IOException e) {}
-			
-			String errorReason = "";
-			if (exceptionDetail.length > 0) {
-				errorReason = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
-			}
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public JsonResult expHandler(HttpServletRequest request, Exception ex) {
+        if (ex instanceof MyException) {
+            return new JsonResult((MyException) ex);
+        } else if (ex instanceof NullPointerException) {
+            log.error(ex.getMessage(), ex);
+            return new JsonResult(new MyException(E000051));
+        } else {
+            log.error(ex.getMessage(), ex);
+            ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
+            ex.printStackTrace(new PrintStream(outPutStream));
+            String exceptionDetail[] = outPutStream.toString().split("Caused by:");
+            try {
+                outPutStream.close();
+            } catch (IOException e) {
+            }
 
-			/**
-			 * field is too long
-			 * 字段超过最大长度异常处理
-			 */
-			if (ex instanceof DataIntegrityViolationException) {
-				if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
-					return new JsonResult(new MyException(E000052, "（字段：" + errorReason.split("'")[1] + "）"));
-				}
-			}
-			return new JsonResult(new MyException(E000001, ex.getMessage() + "——" + errorReason));
-		}
-	}
+            String errorReason = "";
+            if (exceptionDetail.length > 0) {
+                errorReason = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
+            }
 
-	/**
-	 * 返回响应结果
-	 * @param message
-	 */
-	protected void printMsg(String message) {
-		ThreadContext.response().setHeader("Content-Type", "text/html");
-		ThreadContext.response().setCharacterEncoding("utf-8");
-		try {
-			PrintWriter out = ThreadContext.response().getWriter();
-			out.write(message);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            /**
+             * field is too long
+             * 字段超过最大长度异常处理
+             */
+            if (ex instanceof DataIntegrityViolationException) {
+                if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
+                    return new JsonResult(new MyException(E000052, "（字段：" + errorReason.split("'")[1] + "）"));
+                }
+            }
+            return new JsonResult(new MyException(E000001, ex.getMessage() + "——" + errorReason));
+        }
+    }
 
-	/**
-	 * 用户页面权限检查
-	 * @param project
-	 * @throws MyException
-	 */
-	protected void checkUserPermissionByProject(Project project, int type) throws MyException {
-		LoginInfoDto user = Tools.getUser();
-		if (user != null) {
-			/**
-			 * 最高管理员修改项目
-			 * the supper admin can do anything
- 			 */
-			if (user != null && ("," + user.getRoleId()).indexOf("," + C_SUPER + ",") >= 0) {
-				return;
-			}
+    /**
+     * 返回响应结果
+     *
+     * @param message
+     */
+    protected void printMsg(String message) {
+        ThreadContext.response().setHeader("Content-Type", "text/html");
+        ThreadContext.response().setCharacterEncoding("utf-8");
+        try {
+            PrintWriter out = ThreadContext.response().getWriter();
+            out.write(message);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			/**
-			 * 修改自己的项目
-			 * myself project
- 			 */
-			if (user.getId().equals(project.getUserId())) {
-				return;
-			}
+    /**
+     * 用户页面权限检查
+     *
+     * @param project
+     * @throws MyException
+     */
+    protected void checkUserPermissionByProject(Project project, int type) throws MyException {
+        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        /**
+         * 最高管理员修改项目
+         * the supper admin can do anything
+         */
+        if (user != null && ("," + user.getRoleId()).indexOf("," + C_SUPER + ",") >= 0) {
+            return;
+        }
 
-			if (type < 0){
-				throw new MyException(E000003);
-			}
+        /**
+         * 修改自己的项目
+         * myself project
+         */
+        if (user.getId().equals(project.getUserId())) {
+            return;
+        }
 
-			// 项目成员
-			ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
-			if (puDto == null) {
-				throw new MyException(E000003);
-			}
+        if (type < 0) {
+            throw new MyException(E000003);
+        }
 
-			/**
-			 * if login user is one member, then he can see the data
-			 */
-			if (type == VIEW) {
-				return;
-			}
+        // 项目成员
+        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
+        if (puDto == null) {
+            throw new MyException(E000003);
+        }
 
-			if (type < puDto.getProjectAuth().length - 1 && puDto.getProjectAuth()[type]) {
-				return;
-			}
-		}
-		throw new MyException(E000003);
-	}
+        /**
+         * if login user is one member, then he can see the data
+         */
+        if (type == VIEW) {
+            return;
+        }
 
-	protected void checkUserPermissionByProject(Project project) throws MyException {
-		checkUserPermissionByProject(project, MY_DATE);
-	}
+        if (type < puDto.getProjectAuth().length - 1 && puDto.getProjectAuth()[type]) {
+            return;
+        }
+    }
 
-	protected void checkUserPermissionByProject(String projectId, int type) throws MyException {
-		checkUserPermissionByProject(projectCache.get(projectId), type);
-	}
+    protected void checkUserPermissionByProject(Project project) throws MyException {
+        checkUserPermissionByProject(project, MY_DATE);
+    }
 
-	protected void checkUserPermissionByModuleId(String moduleId, int type) throws MyException {
-		checkUserPermissionByProject(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
-	}
+    protected void checkUserPermissionByProject(String projectId, int type) throws MyException {
+        checkUserPermissionByProject(projectCache.get(projectId), type);
+    }
 
-	/**
-	 * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
-	 * @param needPassword 如果为空，则表示不需要密码
-	 * @param password
-	 * @param visitCode
-	 * @throws MyException
-	 */
-	public void verifyPassword(String needPassword, String password, String visitCode) throws MyException {
-		String COOKIE_PROJECT_PASSWORD = "cpp" + needPassword;
-		if (MyString.isEmpty(needPassword)){
-			return;
-		}
+    protected void checkUserPermissionByModuleId(String moduleId, int type) throws MyException {
+        checkUserPermissionByProject(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
+    }
 
-		String tempPassword = MyCookie.getCookie(COOKIE_PROJECT_PASSWORD, true);
-		/**
-		 * 优先使用缓存密码校验
-		 */
-		if (MyString.equals(tempPassword, needPassword)) {
-			return;
-		}
+    /**
+     * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
+     *
+     * @param needPassword 如果为空，则表示不需要密码
+     * @param password
+     * @param visitCode
+     * @throws MyException
+     */
+    public void verifyPassword(String needPassword, String password, String visitCode) throws MyException {
+        String COOKIE_PROJECT_PASSWORD = "cpp" + needPassword;
+        if (MyString.isEmpty(needPassword)) {
+            return;
+        }
 
-		if (MyString.notEquals(password, needPassword)) {
-			throw new MyException(E000007);
-		}
+        String tempPassword = MyCookie.getCookie(COOKIE_PROJECT_PASSWORD, true);
+        /**
+         * 优先使用缓存密码校验
+         */
+        if (MyString.equals(tempPassword, needPassword)) {
+            return;
+        }
 
-		/**
-		 * 如果开启了验证码，则需要校验图形验证码是否正确，防止暴力破解
-		 */
-		if (settingCache.get(IConst.SETTING_VISITCODE).getValue().equals("true")) {
-			String imgCode = Tools.getImgCode();
-			if (MyString.notEquals(imgCode, visitCode)) {
-				throw new MyException(E000007);
-			}
-		}
+        if (MyString.notEquals(password, needPassword)) {
+            throw new MyException(E000007);
+        }
 
-		/**
-		 * 将密码记入缓存，方便下次使用
-		 * 有效时间为12小时
-		 */
-		MyCookie.addCookie(COOKIE_PROJECT_PASSWORD, password, true,60 * 60 * 12);
-	}
+        /**
+         * 如果开启了验证码，则需要校验图形验证码是否正确，防止暴力破解
+         */
+        if (settingCache.get(IConst.SETTING_VISITCODE).getValue().equals("true")) {
+            String imgCode = Tools.getImgCode();
+            if (MyString.notEquals(imgCode, visitCode)) {
+                throw new MyException(E000007);
+            }
+        }
 
-	/**
+        /**
+         * 将密码记入缓存，方便下次使用
+         * 有效时间为12小时
+         */
+        MyCookie.addCookie(COOKIE_PROJECT_PASSWORD, password, true, 60 * 60 * 12);
+    }
+
+    /**
      * 前端页面检查权限
-	 * private project need login
-	 * public project need check password,
-	 * @param password
-	 * @param visitCode
-	 * @param project
-	 * @throws MyException
-	 */
-	protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
-		// web项目为默认的公开项目
-		if (project.getId().equals(IConst.WEB_MODULE)) {
-			return;
-		}
-		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		if (project.getType() == ProjectType.PRIVATE.getType()) {
-			LoginInfoDto user = Tools.getUser();
-			if (user == null) {
-				throw new MyException(E000041);
-			}
-			// 最高管理员修改项目
-			if (user != null && ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") >= 0) {
-				return;
-			}
+     * private project need login
+     * public project need check password,
+     *
+     * @param password
+     * @param visitCode
+     * @param project
+     * @throws MyException
+     */
+    protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
+        // web项目为默认的公开项目
+        if (project.getId().equals(IConst.WEB_MODULE)) {
+            return;
+        }
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        if (project.getType() == ProjectType.PRIVATE.getType()) {
+            LoginInfoDto user = LoginUserHelper.getUser(E000041);
 
-			// 自己的项目
-			if (user.getId().equals(project.getUserId())) {
-				return;
-			}
+            // 最高管理员修改项目
+            if (user != null && ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") >= 0) {
+                return;
+            }
 
-			// 项目成员
-			ProjectUser pu = user.getProjects().get(project.getId());
-			if (pu == null) {
-				throw new MyException(E000042);
-			}
-		} else {
-			String needPassword = project.getPassword();
-			verifyPassword(needPassword, password, visitCode);
-		}
-	}
+            // 自己的项目
+            if (user.getId().equals(project.getUserId())) {
+                return;
+            }
 
-	protected Object getParam(String key, String def) {
-		String value = ThreadContext.request().getParameter(key);
-		return value == null ? def : value;
-	}
+            // 项目成员
+            ProjectUser pu = user.getProjects().get(project.getId());
+            if (pu == null) {
+                throw new MyException(E000042);
+            }
+        } else {
+            String needPassword = project.getPassword();
+            verifyPassword(needPassword, password, visitCode);
+        }
+    }
+
+    protected Object getParam(String key, String def) {
+        String value = ThreadContext.request().getParameter(key);
+        return value == null ? def : value;
+    }
 
 }

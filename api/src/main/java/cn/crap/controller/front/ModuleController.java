@@ -11,6 +11,7 @@ import cn.crap.model.mybatis.ModuleCriteria;
 import cn.crap.model.mybatis.Project;
 import cn.crap.service.mybatis.ModuleService;
 import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +34,7 @@ public class ModuleController extends BaseController{
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId,String password, String visitCode) throws MyException{
 		if( MyString.isEmpty(projectId) ){
-			throw new MyException("000020");
+			throw new MyException(E000020);
 		}
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
@@ -57,10 +58,8 @@ public class ModuleController extends BaseController{
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = projectCache.get(projectId);
 		if(project.getType() == ProjectType.PRIVATE.getType()){
-			LoginInfoDto user = Tools.getUser();
-			if (user == null) {
-				throw new MyException("000041");
-			}
+			LoginInfoDto user = LoginUserHelper.getUser(E000041);
+
 			// 最高管理员修改项目
 			// 自己的项目
 			if ( ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") < 0 && !user.getId().equals(project.getUserId())

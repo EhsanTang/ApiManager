@@ -1,21 +1,20 @@
 package cn.crap.controller.front;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.HotSearch;
 import cn.crap.service.ISearchService;
-import cn.crap.service.tool.LuceneSearchService;
+import cn.crap.service.custom.CustomHotSearchService;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.beans.Config;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.service.mybatis.HotSearchService;
+import cn.crap.service.tool.LuceneSearchService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,10 @@ public class MainController extends BaseController{
 	private ISearchService luceneService;
 	@Autowired
 	private CustomMenuService customMenuService;
+	@Autowired
+	private HotSearchService hotSearchService;
+	@Autowired
+    private CustomHotSearchService customHotSearchService;
 	@Autowired
 	private Config config;
 	
@@ -93,8 +96,7 @@ public class MainController extends BaseController{
 	public void searchList(HttpServletResponse response) throws Exception {
 		// 只显示前10个
 		StringBuilder sb = new StringBuilder("<div class='tl'>");
-		@SuppressWarnings("unchecked")
-		ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(IConst.CACHE_SEARCH_WORDS);
+		List<String> searchWords = customHotSearchService.queryTop10();
 		if(searchWords != null){
 			int i = 0;
 			String itemClass = "";
@@ -105,8 +107,7 @@ public class MainController extends BaseController{
 				else if(i == 2) itemClass = " text-info ";
 				else if(i == 3) itemClass = " text-warning ";
 				else itemClass = " C555 ";
-				
-				
+
 				String showText = searchWord.substring(0, searchWord.length()>20?20:searchWord.length());
 				if(searchWord.length()>20){
 					showText = showText + "...";
@@ -162,7 +163,7 @@ public class MainController extends BaseController{
 		}
 		
 		returnMap.put("menuList", menus);
-		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
 
 		returnMap.put("sessionAdminName", user == null? "": user.getUserName());
 		return new JsonResult(1, returnMap);
@@ -171,45 +172,36 @@ public class MainController extends BaseController{
 
 	@RequestMapping("/frontSearch.do")
 	@ResponseBody
-	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
+	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
 		if(config.isLuceneSearchNeedLogin()){
-			LoginInfoDto user = Tools.getUser();
-			if(user == null){
-				throw new MyException("000043");
-			}
+			LoginInfoDto user = LoginUserHelper.getUser(E000043);
 		}
 		keyword = keyword.trim();
-		Page page= new Page(10, currentPage);
+        if (keyword.length() > 200){
+            keyword = keyword.substring(0, 200);
+        }
+
+		Page page= new Page(currentPage);
 		List<SearchDto> searchResults = luceneService.search(keyword, page);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
-		
-		// 将搜索的内容记入内存
-		if(!MyString.isEmpty(keyword)){
-			@SuppressWarnings("unchecked")
-			ArrayList<String> searchWords = (ArrayList<String>) objectCache.get(IConst.CACHE_SEARCH_WORDS);
-			if(searchWords == null){
-				searchWords = new ArrayList<String>();
-			}
-			// 如果已经存在，则将排序+1
-			if(searchWords.contains(keyword)){
-				int index = searchWords.indexOf(keyword);
-				if(index>0){
-					searchWords.remove(keyword);
-					searchWords.add(index-1, keyword);
-				}
-			}else{
-				// 最多存200个，超过200个，则移除最后一个，并将新搜索的词放在100
-				if(searchWords.size() >= 200){
-					searchWords.remove(199);
-					searchWords.add(100, keyword);
-				}else{
-					searchWords.add(keyword);
-				}
-			}
-			// TODO 搜索关键字存数据库
-			objectCache.add(IConst.CACHE_SEARCH_WORDS, searchWords);
-		}
+
+
+		// 将搜索的内容记入数据库
+		if(MyString.isNotEmpty(keyword)){
+            HotSearch hotSearch = customHotSearchService.tryGetByKeyWord(keyword);
+            if (hotSearch == null){
+                hotSearch = new HotSearch();
+                hotSearch.setCreateTime(new Date());
+                hotSearch.setUpdateTime(new Date());
+                hotSearch.setTimes(1);
+                hotSearch.setKeyword(keyword);
+                hotSearchService.insert(hotSearch);
+            }else{
+                hotSearch.setTimes(hotSearch.getTimes() + 1);
+                hotSearchService.update(hotSearch);
+            }
+        }
 		
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));

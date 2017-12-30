@@ -65,10 +65,10 @@ private CustomProjectUserService customProjectUserService;
 		Page page= new Page(SIZE, currentPage);
 
 		// 普通用户，管理员我的项目菜单只能查看自己的项目
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 		List<Project> models = null;
 		List<ProjectDto> dtos = null;
-		if( Tools.getUser().getType() == UserType.USER.getType() || myself){
+		if( user.getType() == UserType.USER.getType() || myself){
 			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
 			models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
 			dtos = ProjectAdapter.getDto(models);
@@ -112,7 +112,7 @@ private CustomProjectUserService customProjectUserService;
 			throw new MyException("000009");
 
 		Project model;
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
@@ -123,7 +123,7 @@ private CustomProjectUserService customProjectUserService;
 			project.setUserId(model.getUserId());
 
 			// 普通用户不能推荐项目，将项目类型修改为原有类型
-			if( Tools.getUser().getType() == UserType.USER.getType()){
+			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(model.getStatus());
 			}
 
@@ -134,7 +134,7 @@ private CustomProjectUserService customProjectUserService;
 		else{
 			project.setUserId(user.getId());
 			// 普通用户不能推荐项目
-			if( Tools.getUser().getType() == UserType.USER.getType()){
+			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
 			}
 

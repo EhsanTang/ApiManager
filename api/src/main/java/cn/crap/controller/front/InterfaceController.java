@@ -134,7 +134,6 @@ public class InterfaceController extends BaseController {
         // 使用缓存的密码，不需要验证码
         checkFrontPermission("", "", project);
 
-        //interFace = interfaceService.get(interFace.getId());
         String displayFilename = "CrapApi" + System.currentTimeMillis() + ".pdf";
         byte[] buf = new byte[1024 * 1024 * 10];
         int len = 0;
@@ -167,7 +166,7 @@ public class InterfaceController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     public JsonResult webList(@RequestParam String moduleId, String interfaceName, String url,
-                              @RequestParam(defaultValue = "1") Integer currentPage, String password, String visitCode) throws MyException {
+                               Integer currentPage, String password, String visitCode) throws MyException {
         if (MyString.isEmpty(moduleId)) {
             throw new MyException("000020");
         }
@@ -177,7 +176,7 @@ public class InterfaceController extends BaseController {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
 
-        Page page = new Page(15, currentPage);
+        Page page = new Page(currentPage);
 
         InterfaceCriteria example = new InterfaceCriteria();
         InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
@@ -190,7 +189,6 @@ public class InterfaceController extends BaseController {
 
         List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
 
-
         return new JsonResult(1, interfaces, page,
                 Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(), "#/" + module.getProjectId() + "/module/list", module.getName(), "void")));
     }
@@ -200,9 +198,8 @@ public class InterfaceController extends BaseController {
     public JsonResult webDetail(@ModelAttribute Interface interFace, String password, String visitCode) throws MyException {
         interFace = interfaceService.selectByPrimaryKey(interFace.getId());
         if (interFace != null) {
-
             Module module = moduleCache.get(interFace.getModuleId());
-            Project project = projectCache.get(module.getProjectId());
+            Project project = projectCache.get(interFace.getProjectId());
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             checkFrontPermission(password, visitCode, project);
 
@@ -213,10 +210,9 @@ public class InterfaceController extends BaseController {
             InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(interFace.getModuleId())
                     .andInterfaceNameEqualTo(interFace.getInterfaceName()).andVersionNotEqualTo(interFace.getVersion());
 
-
             List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
 
-            return new JsonResult(1, interFace, null,
+            return new JsonResult(1, InterfaceAdapter.getDto(interFace), null,
                     Tools.getMap("versions", versions,
                             "crumbs",
                             Tools.getCrumbs(
@@ -224,7 +220,7 @@ public class InterfaceController extends BaseController {
                                     module.getName() + ":接口列表", "#/" + project.getId() + "/interface/list/" + module.getId(),
                                     interFace.getInterfaceName(), "void"), "module", moduleCache.get(interFace.getModuleId())));
         } else {
-            throw new MyException("000012");
+            throw new MyException(E000012);
         }
     }
 

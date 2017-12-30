@@ -35,7 +35,7 @@ public class CommentController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String articleId, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+	public JsonResult list(String articleId,  Integer currentPage) throws MyException {
 		
 		checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(articleId).getProjectId() ), VIEW);
 		Page page= new Page(15, currentPage);

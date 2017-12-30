@@ -4,7 +4,7 @@ import java.util.Date;
 
 import cn.crap.dto.SettingDto;
 import cn.crap.service.mybatis.CommentService;
-import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -30,16 +30,18 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
 		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
-		if (settingCache.get(IConst.SETTING_COMMENTCODE).getValue().equals("true")) {
+		
+		if (settingCache.get(C_SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode())) {
-				throw new MyException("000010");
+				throw new MyException(E000010);
 			}
 		}
-		LoginInfoDto user = Tools.getUser();
-		SettingDto anonymousComment = settingCache.get(IConst.SETTING_ANONYMOUS_COMMENT);
-		if (anonymousComment != null && !"true".equals(anonymousComment.getValue())){
+
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
+		SettingDto anonymousComment = settingCache.get(C_SETTING_ANONYMOUS_COMMENT);
+		if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
 			if (user == null){
-				throw new MyException("000060");
+				throw new MyException(E000060);
 			}
 		}
 		

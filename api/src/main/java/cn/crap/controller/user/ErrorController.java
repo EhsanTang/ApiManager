@@ -39,7 +39,7 @@ public class ErrorController extends BaseController{
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult list(String projectId, String errorCode, String errorMsg, @RequestParam(defaultValue = "1") Integer currentPage) throws MyException {
+    public JsonResult list(String projectId, String errorCode, String errorMsg,  Integer currentPage) throws MyException {
         checkUserPermissionByProject(projectId, VIEW);
 
         if (MyString.isEmpty(projectId)) {

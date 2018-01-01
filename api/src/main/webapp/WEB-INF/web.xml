@@ -28,9 +28,9 @@
 		<filter-name>ThreadContext</filter-name>
 		<filter-class>cn.crap.framework.ThreadContext</filter-class>
 		<init-param>
-			<param-name>filterSuffixes</param-name><!-- 需要拦截的后缀 -->
+			<param-name>ignoreSuffixes</param-name><!-- 需要忽略的后缀 -->
 			<param-value>
-				.json,.do,/,home
+				.jpg,.png,.html,.js,.css,.jpeg,.doc,.pdf
 			</param-value>
 		</init-param>
 	</filter>

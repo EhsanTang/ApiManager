@@ -36,7 +36,7 @@ public class LogController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_LOG)
-    public JsonResult list(@ModelAttribute Log log,  Integer currentPage) {
+    public JsonResult list(@ModelAttribute Log log, Integer currentPage) {
         Page page = new Page(currentPage);
         LogCriteria example = new LogCriteria();
         example.createCriteria().andModelNameEqualTo(log.getModelName()).andIdNotEqualTo(log.getIdenty());

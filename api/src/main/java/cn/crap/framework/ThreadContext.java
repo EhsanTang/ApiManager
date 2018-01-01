@@ -17,8 +17,8 @@ public class ThreadContext implements Filter {
     protected Logger log = Logger.getLogger(getClass());
 
     private static final String SEPARATOR_COMMA = ",";
-    private static final String CONFIG_FILTER_SUFFIXES = "filterSuffixes";
-    private static List<String> FILTER_SUFFIXES;
+    private static final String CONFIG_IGNORE_SUFFIXES = "ignoreSuffixes";
+    private static List<String> IGNORE_SUFFIXES;
     private static ThreadLocal<ThreadObject> THREAD_OBJECT = new ThreadLocal<ThreadObject>();
 
     /**
@@ -27,7 +27,7 @@ public class ThreadContext implements Filter {
      */
     @Override
     final public void init(FilterConfig filterConfig) throws ServletException {
-        this.FILTER_SUFFIXES = initFilterSuffix(filterConfig);
+        this.IGNORE_SUFFIXES = initIgnoreSuffix(filterConfig);
         log.info("ThreadContext:初始化..........");
 
     }
@@ -37,14 +37,14 @@ public class ThreadContext implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isFilterSuffix(request)) {
-            THREAD_OBJECT.set(new ThreadObject((HttpServletRequest) request, (HttpServletResponse) response));
+        if (isIgnoreSuffix(request)) {
             chain.doFilter(request, response);
-            THREAD_OBJECT.set(null);
             return;
         }
 
+        THREAD_OBJECT.set(new ThreadObject((HttpServletRequest) request, (HttpServletResponse) response));
         chain.doFilter(request, response);
+        THREAD_OBJECT.set(null);
         return;
 
     }
@@ -60,39 +60,45 @@ public class ThreadContext implements Filter {
      *
      * @return
      */
-    protected List<String> initFilterSuffix(FilterConfig filterConfig) {
-        String filterSuffixStr = filterConfig.getInitParameter(CONFIG_FILTER_SUFFIXES);
-        if (filterSuffixStr == null || StringUtils.isBlank(filterSuffixStr)) {
+    protected List<String> initIgnoreSuffix(FilterConfig filterConfig) {
+        String ignoreSuffixStr = filterConfig.getInitParameter(CONFIG_IGNORE_SUFFIXES);
+        if (ignoreSuffixStr == null || StringUtils.isBlank(ignoreSuffixStr)) {
             return new ArrayList<String>(0);
         }
-        if (filterSuffixStr.trim().length() == 0) {
+        if (ignoreSuffixStr.trim().length() == 0) {
             return new ArrayList<String>(0);
         }
 
-        String[] filterSuffixes = filterSuffixStr.split(SEPARATOR_COMMA);
+        String[] filterSuffixes = ignoreSuffixStr.split(SEPARATOR_COMMA);
         for (int i = 0; i < filterSuffixes.length; i++) {
             filterSuffixes[i] = filterSuffixes[i].trim();
         }
         return Arrays.asList(filterSuffixes);
     }
 
-    protected boolean isFilterSuffix(ServletRequest request) {
+    /**
+     * 判断地址是否是需要忽略的
+     * @param request
+     * @return
+     */
+    protected boolean isIgnoreSuffix(ServletRequest request) {
         if (request instanceof HttpServletRequest) {
             String uri = ((HttpServletRequest) request).getRequestURI();
             if (uri == null) {
-                return false;
+                return true;
             }
-            if (CollectionUtils.isEmpty(FILTER_SUFFIXES)) {
-                return false;
+            if (CollectionUtils.isEmpty(IGNORE_SUFFIXES)) {
+                return true;
             }
 
-            for (String filterSuffix : FILTER_SUFFIXES) {
-                if (uri.toLowerCase().endsWith(filterSuffix.toLowerCase())) {
+            for (String ignoreSuffix : IGNORE_SUFFIXES) {
+                if (uri.toLowerCase().endsWith(ignoreSuffix.toLowerCase())) {
                     return true;
                 }
             }
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static HttpServletRequest request() {

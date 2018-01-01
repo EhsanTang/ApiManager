@@ -39,7 +39,7 @@ public class SettingController extends BaseController {
     @RequestMapping("/setting/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
-    public JsonResult list(String key, String remark,  int currentPage) {
+    public JsonResult list(String key, String remark, Integer currentPage) {
         Page page = new Page(currentPage);
 
         SettingCriteria example = new SettingCriteria();

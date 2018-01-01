@@ -43,7 +43,7 @@ public class UserController extends BaseController {
     @RequestMapping("/user/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
-    public JsonResult list(String userName, String email, String trueName,  Integer currentPage) {
+    public JsonResult list(String userName, String email, String trueName, Integer currentPage) {
         Page page = new Page(currentPage);
         UserCriteria userCriteria = new UserCriteria();
         UserCriteria.Criteria criteria = userCriteria.createCriteria();

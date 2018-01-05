@@ -14,7 +14,10 @@ public enum LuceneSearchType {
 		this.value = value;
 	}
 	
-	public LuceneSearchType getMonitorType(int value){
+	public LuceneSearchType getMonitorType(Integer value){
+		if (value == null){
+			return null;
+		}
 		for (LuceneSearchType c : LuceneSearchType.values())
 		{
 			if (c.getValue() == value)
@@ -26,8 +29,11 @@ public enum LuceneSearchType {
 	}
 	
 	// 普通方法
-	public static String getName(byte value)
+	public static String getName(Byte value)
 	{
+		if (value == null){
+			return "";
+		}
 		for (LuceneSearchType c : LuceneSearchType.values())
 		{
 			if (c.getValue() == value)

@@ -15,7 +15,7 @@ public class CustomInterfaceDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public void updateFullUrlByModuleId(String moduleUrl, String moduleId){
-		jdbcTemplate.update("update interface set fullUrl=CONCAT(?,url) where moduleId=#{moduleId}", moduleUrl, moduleId);
+		jdbcTemplate.update("update interface set fullUrl=CONCAT(?,url) where moduleId=?", moduleUrl, moduleId);
 	}
 
 	public void deleteTemplateByModuleId(String moduleId){

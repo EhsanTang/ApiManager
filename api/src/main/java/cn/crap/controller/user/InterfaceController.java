@@ -49,10 +49,10 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@RequestParam String projectId, @RequestParam String moduleId, String interfaceName, String url,
+	public JsonResult list(@RequestParam String moduleId, String interfaceName, String url,
 			 Integer currentPage) throws MyException{
 		Page page= new Page(15, currentPage);
-		checkUserPermissionByProject(projectCache.get(projectId), VIEW);
+		checkUserPermissionByModuleId(moduleId, VIEW);
 
 		InterfaceCriteria example = new InterfaceCriteria();
 		InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);

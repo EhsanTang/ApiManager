@@ -68,6 +68,7 @@
 				<entry key="000062" value="该邮箱已经被其他用户绑定，不能为该邮箱设置登陆密码，请更换账号邮箱" />
 				<entry key="000063" value="数据不存在" />
 				<entry key="000064" value="未登录，请登录后再试" />
+				<entry key="000065" value="" />
 			</map>
 		</property>
 	</bean>

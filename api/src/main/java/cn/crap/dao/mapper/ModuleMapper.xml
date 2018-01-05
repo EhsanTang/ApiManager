@@ -14,6 +14,7 @@
     <result column="projectId" property="projectId" jdbcType="VARCHAR" />
     <result column="templateId" property="templateId" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, createTime, status, sequence, url, canDelete, remark, userId, projectId, 
-    templateId, version
+    templateId, version, category
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.ModuleCriteria" >
     select
@@ -122,13 +123,13 @@
     insert into module (id, name, createTime, 
       status, sequence, url, 
       canDelete, remark, userId, 
-      projectId, templateId, version
-      )
+      projectId, templateId, version, 
+      category)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
       #{canDelete,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{projectId,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
-      )
+      #{projectId,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{category,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Module" >
     
@@ -170,6 +171,9 @@
       <if test="version != null" >
         version,
       </if>
+      <if test="category != null" >
+        category,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{id,jdbcType=VARCHAR},
@@ -205,6 +209,9 @@
       </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -253,6 +260,9 @@
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -271,7 +281,8 @@
       userId = #{record.userId,jdbcType=VARCHAR},
       projectId = #{record.projectId,jdbcType=VARCHAR},
       templateId = #{record.templateId,jdbcType=VARCHAR},
-      version = #{record.version,jdbcType=INTEGER}
+      version = #{record.version,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -312,6 +323,9 @@
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -327,7 +341,8 @@
       userId = #{userId,jdbcType=VARCHAR},
       projectId = #{projectId,jdbcType=VARCHAR},
       templateId = #{templateId,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER}
+      version = #{version,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

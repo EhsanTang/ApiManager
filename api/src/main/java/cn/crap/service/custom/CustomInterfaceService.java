@@ -1,5 +1,6 @@
 package cn.crap.service.custom;
 
+import cn.crap.adapter.Adapter;
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dao.custom.CustomInterfaceDao;
@@ -158,15 +159,10 @@ public class CustomInterfaceService implements ILuceneService {
         if(MyString.isEmpty(remark)) {
             remark = model.getInterfaceName();
         }
-        // TODO 提取代码
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(LogType.UPDATE.name());
-        log.setContent(JSONObject.fromObject(dbModel).toString());
-        log.setModelClass(dbModel.getClass().getSimpleName());
 
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
+
         dao.updateByPrimaryKeyWithBLOBs(model);
     }
 
@@ -176,14 +172,10 @@ public class CustomInterfaceService implements ILuceneService {
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getInterfaceName();
         }
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(LogType.DELTET.name());
-        log.setContent(JSONObject.fromObject(dbModel).toString());
-        log.setModelClass(dbModel.getClass().getSimpleName());
 
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
+
         dao.deleteByPrimaryKey(dbModel.getId());
     }
 

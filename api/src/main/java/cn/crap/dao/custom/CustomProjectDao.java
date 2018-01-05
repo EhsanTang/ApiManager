@@ -48,7 +48,7 @@ public class CustomProjectDao {
 			params.add("%" + name + "%");
 		}
 
-		sb.append(" order by sequence asc");
+		sb.append(" order by sequence desc");
 		sb.append(" limit " + page.getStart() + "," + page.getSize());
 
 		return jdbcTemplate.query(sb.toString(), params.toArray(), new RowMapper<Project>() {

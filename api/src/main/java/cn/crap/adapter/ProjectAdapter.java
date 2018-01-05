@@ -1,6 +1,8 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectDto;
+import cn.crap.enumer.LuceneSearchType;
+import cn.crap.enumer.ProjectStatus;
 import cn.crap.enumer.ProjectType;
 import cn.crap.model.mybatis.Project;
 
@@ -22,16 +24,16 @@ public class ProjectAdapter {
         ProjectDto dto = new ProjectDto();
         dto.setId(model.getId());
 		dto.setName(model.getName());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setStatus(model.getStatus());
 		dto.setSequence(model.getSequence());
 		dto.setRemark(model.getRemark());
 		dto.setUserId(model.getUserId());
 		dto.setType(model.getType());
-		dto.setPassword(model.getPassword());
 		dto.setCover(model.getCover());
 		dto.setLuceneSearch(model.getLuceneSearch());
 		dto.setTypeName(ProjectType.getNameByValue(model.getType()));
+		dto.setStatusName(ProjectStatus.getNameByValue(model.getStatus()));
+		dto.setLuceneSearchName(LuceneSearchType.getName(model.getLuceneSearch()));
 		
         return dto;
     }
@@ -43,11 +45,9 @@ public class ProjectAdapter {
         Project model = new Project();
         model.setId(dto.getId());
 		model.setName(dto.getName());
-		model.setCreateTime(dto.getCreateTime());
 		model.setStatus(dto.getStatus());
 		model.setSequence(dto.getSequence());
 		model.setRemark(dto.getRemark());
-		model.setUserId(dto.getUserId());
 		model.setType(dto.getType());
 		model.setCover(dto.getCover());
 		model.setLuceneSearch(dto.getLuceneSearch());

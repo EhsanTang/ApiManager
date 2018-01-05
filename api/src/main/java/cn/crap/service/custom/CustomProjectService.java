@@ -52,7 +52,7 @@ public class CustomProjectService {
     /**
      * 根据用户ID查询所有该用户加入的项目、创建的项目
      */
-    public List<String> queryProjectIdByUid(String userId) {
+    public List<String> queryMyProjectIdByUserId(String userId) {
         Assert.notNull(userId, "userId can't be null");
         return customMapper.queryProjectIdByUserId(userId);
     }
@@ -87,7 +87,7 @@ public class CustomProjectService {
 //        Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(dbModel).toString(),
 //                model.getClass().getSimpleName(), model.getId());
 //        // logDao.save(log); TODO
-        mapper.updateByPrimaryKey(model);
+        mapper.updateByPrimaryKeySelective(model);
     }
 
     public void delete(String id, String modelName, String remark){

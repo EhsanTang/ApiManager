@@ -4,35 +4,43 @@ import cn.crap.dao.mybatis.ModuleDao;
 import cn.crap.dto.PickDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.ProjectService;
-import cn.crap.beans.Config;
-import cn.crap.beans.PickFactory;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class CustomModuleService {
     @Autowired
-    private ModuleDao mapper;
-    @Autowired
-    private CustomProjectService customProjectService;
+    private ModuleDao dao;
     @Autowired
     private ProjectService projectService;
-    @Autowired
-    private PickFactory pickFactory;
-    @Autowired
-    private Config config;
 
+    /**
+     * 根据模块id查询分类
+     * @param moduleId
+     * @return
+     */
+    public List<String> queryCategoryByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        Module module = dao.selectByPrimaryKey(moduleId);
+        if (module == null || MyString.isEmpty(module.getCategory())){
+            return new ArrayList<>();
+        }
+        List<String> categories = Arrays.asList(module.getCategory().split(","));
+        categories.remove("");
+        return categories;
+    }
     public List<Module> queryByProjectId(String projectId){
         Assert.notNull(projectId, "projectId can't be null");
         ModuleCriteria example = new ModuleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
 
-        return mapper.selectByExample(example);
+        return dao.selectByExample(example);
     }
 
     public int countByProjectId(String projectId){
@@ -40,7 +48,7 @@ public class CustomModuleService {
         ModuleCriteria example = new ModuleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
 
-        return mapper.countByExample(example);
+        return dao.countByExample(example);
     }
 
     public Page<Module> queryByProjectId(String projectId, Page<Module> page){
@@ -53,31 +61,9 @@ public class CustomModuleService {
         example.setMaxResults(page.getSize());
         example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
-        page.setAllRow(mapper.countByExample(example));
-        page.setList(mapper.selectByExample(example));
+        page.setAllRow(dao.countByExample(example));
+        page.setList(dao.selectByExample(example));
         return page;
-    }
-
-    public void getDataCenterPick(List<PickDto> picks,List<String> projectIds, String idPre, String value,String suffix){
-        if(MyString.isEmpty(suffix))
-            suffix = "";
-        PickDto pick = null;
-        for (String projectId : projectIds) {
-            List<Module> dcs = queryByProjectId(projectId);
-            if(dcs.size()>0){
-                Project project = projectService.selectByPrimaryKey(projectId);
-                pick = new PickDto(IConst.SEPARATOR, project == null ? "" : project.getName());
-                picks.add(pick);
-            }
-
-            for(Module dc : dcs){
-                if(MyString.isEmpty(value))
-                    pick = new PickDto(idPre+dc.getId(), IConst.LEVEL_PRE+dc.getName()+suffix);
-                else
-                    pick = new PickDto(idPre+dc.getId(), value.replace("moduleId", dc.getId()).replace("moduleName", dc.getName()).replace("projectId", projectId), IConst.LEVEL_PRE+dc.getName()+suffix);
-                picks.add(pick);
-            }
-        }
     }
 
     public List<String> getList(Byte status, String userId) {
@@ -103,7 +89,7 @@ public class CustomModuleService {
         example.setMaxResults(page.getSize());
         example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
-        List<Module> dcs = mapper.selectByExample(example);
+        List<Module> dcs = dao.selectByExample(example);
         for(Module dc:dcs){
             ids.add(dc.getId());
         }

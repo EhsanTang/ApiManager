@@ -56,11 +56,9 @@ public class IndexController extends BaseController {
 		if (MyString.isEmpty(radio)) {
 			radio = "true";
 		}
-		List<PickDto> picks = new ArrayList<PickDto>();
-		String pickContent = customMenuService.pick(picks, radio, code, key, def, notNull);
+		String pickContent = customMenuService.pick(radio, code, key, def, notNull);
 		HttpServletRequest request = ThreadContext.request();
 		request.setAttribute("radio", radio);
-		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);
 		request.setAttribute("def", def);
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));

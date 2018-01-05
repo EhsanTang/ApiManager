@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +72,6 @@ private CustomProjectUserService customProjectUserService;
 		if( user.getType() == UserType.USER.getType() || myself){
 			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
 			models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
-			dtos = ProjectAdapter.getDto(models);
-			return new JsonResult(1,dtos, page);
 		}else{
 			Map<String,Object> map = null;
 			ProjectCriteria example = new ProjectCriteria();
@@ -86,6 +85,7 @@ private CustomProjectUserService customProjectUserService;
 			page.setAllRow(projectService.countByExample(example));
 			models = projectService.selectByExample(example);
 		}
+		dtos = ProjectAdapter.getDto(models);
 		return new JsonResult(1,dtos, page);
 	}
 
@@ -94,51 +94,46 @@ private CustomProjectUserService customProjectUserService;
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Project project) throws MyException{
 		Project model;
-		if(!project.getId().equals(IConst.NULL_ID)){
+		if(project.getId() != null){
 			model= projectCache.get(project.getId());
 			checkUserPermissionByProject(model);
 		}else{
 			model=new Project();
 		}
-		return new JsonResult(1,model);
+		return new JsonResult(1,ProjectAdapter.getDto(model));
 	}
 
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Project project) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception{
 		// 系统数据，不允许删除
-		if(project.getId().equals("web"))
+		if(project.getId() != null && project.getId().equals("web")) {
 			throw new MyException("000009");
+		}
 
-		Project model;
 		LoginInfoDto user = LoginUserHelper.getUser();
 
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
-			model= projectCache.get(project.getId());
-			checkUserPermissionByProject(model);
-
-			// 不允许转移项目
-			project.setUserId(model.getUserId());
+			checkUserPermissionByProject( projectCache.get(project.getId()) );
 
 			// 普通用户不能推荐项目，将项目类型修改为原有类型
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
-				project.setStatus(model.getStatus());
+				project.setStatus(null);
 			}
-
-			customProjectService.update(project , "项目" , "");
+			customProjectService.update(ProjectAdapter.getModel(project) , "项目" , "");
 		}
-
 		// 新增
 		else{
-			project.setUserId(user.getId());
+			Project model = ProjectAdapter.getModel(project);
+			model.setUserId(user.getId());
+			model.setPassword(project.getPassword());
 			// 普通用户不能推荐项目
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus()+""));
 			}
-
-			projectService.insert(project);
+			projectService.insert(model);
 		}
 
 		// 清楚缓存

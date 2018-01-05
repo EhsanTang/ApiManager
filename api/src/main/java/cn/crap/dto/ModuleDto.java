@@ -9,7 +9,6 @@ import java.util.Date;
 public class ModuleDto {
 	private String id;
 	private String name;
-	private Date createTime;
 	private Byte status;
 	private Integer sequence;
 	private String url;
@@ -19,6 +18,8 @@ public class ModuleDto {
 	private String projectId;
 	private String templateId;
 	private Integer version;
+	private String category;
+	private String projectName;
 
 	public void setId(String id){
 		this.id=id;
@@ -32,13 +33,6 @@ public class ModuleDto {
 	}
 	public String getName(){
 		return name;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setStatus(Byte status){
@@ -104,5 +98,19 @@ public class ModuleDto {
 		return version;
 	}
 
+	public String getCategory() {
+		return category;
+	}
 
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

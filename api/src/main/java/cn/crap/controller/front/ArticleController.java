@@ -9,6 +9,7 @@ import cn.crap.dto.ArticleDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
+import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.mybatis.ArticleService;
 import cn.crap.service.mybatis.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import cn.crap.utils.Tools;
 @Controller("frontArticleController")
 public class ArticleController extends BaseController {
     @Autowired
-    private CommentService commentService;
+    private CustomModuleService customModuleService;
     @Autowired
     private CustomArticleService customArticleService;
     @Autowired
@@ -68,7 +69,7 @@ public class ArticleController extends BaseController {
     @RequestMapping("/front/article/list.do")
     @ResponseBody
     public JsonResult list( Integer currentPage,
-                           @RequestParam(defaultValue = WEB_MODULE) String moduleId,
+                           @RequestParam(defaultValue = C_WEB_MODULE) String moduleId,
                            @RequestParam String type,
                            @RequestParam String category,
                            String password,
@@ -80,7 +81,7 @@ public class ArticleController extends BaseController {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
 
-        List<String> categories = customArticleService.queryTop20Category(module.getId(), type);
+        List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
         List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, page);
         List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles);
 
@@ -120,7 +121,7 @@ public class ArticleController extends BaseController {
             return new JsonResult().success().data(article).others(returnMap);
         }
 
-        List<String> categories = customArticleService.queryTop20Category(article.getModuleId(), "ARTICLE");
+        List<String> categories = customModuleService.queryCategoryByModuleId(article.getModuleId());
         returnMap.put("categories", categories);
         returnMap.put("category", article.getCategory());
 

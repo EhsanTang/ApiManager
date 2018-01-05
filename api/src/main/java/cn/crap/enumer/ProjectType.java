@@ -10,10 +10,14 @@ public enum ProjectType {
 		this.name = name;
 	}
 	
-	public static String getNameByValue(int type){
+	public static String getNameByValue(Byte type){
+	    if (type == null){
+	        return "";
+        }
 		for(ProjectType projectType : ProjectType.values()){
-			if(projectType.getType() == type)
+			if(projectType.getType() == type) {
 				return projectType.getName();
+			}
 		}
 		return "";
 	}

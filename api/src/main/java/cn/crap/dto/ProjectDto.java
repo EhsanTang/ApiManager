@@ -9,7 +9,6 @@ import java.util.Date;
 public class ProjectDto {
 	private String id;
 	private String name;
-	private Date createTime;
 	private Byte status;
 	private Integer sequence;
 	private String remark;
@@ -19,6 +18,8 @@ public class ProjectDto {
 	private String password;
 	private String cover;
 	private Byte luceneSearch;
+	private String luceneSearchName;
+	private String statusName;
 
 	public void setId(String id){
 		this.id=id;
@@ -32,13 +33,6 @@ public class ProjectDto {
 	}
 	public String getName(){
 		return name;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setStatus(Byte status){
@@ -103,5 +97,21 @@ public class ProjectDto {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public String getLuceneSearchName() {
+		return luceneSearchName;
+	}
+
+	public void setLuceneSearchName(String luceneSearchName) {
+		this.luceneSearchName = luceneSearchName;
 	}
 }

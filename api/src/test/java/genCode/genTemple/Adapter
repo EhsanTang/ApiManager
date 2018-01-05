@@ -4,6 +4,7 @@ import cn.crap.dto._DEMAIN_Dto;
 import cn.crap.model.mybatis._DEMAIN_;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.util.CollectionUtils;
 
 
 
@@ -33,8 +34,8 @@ public class _DEMAIN_Adapter {
     }
 
     public static List<_DEMAIN_Dto> getDto(List<_DEMAIN_> models){
-        if (models == null){
-            return new ArrayList<>();
+       if (CollectionUtils.isEmpty(models)){
+                   return new ArrayList<>();
         }
         List<_DEMAIN_Dto> dtos = new ArrayList<>();
         for (_DEMAIN_ model : models){

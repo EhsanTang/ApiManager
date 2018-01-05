@@ -1,7 +1,10 @@
 package cn.crap.controller.user;
 
+import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
+import cn.crap.dao.mybatis.ModuleDao;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.ModuleDto;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LogType;
 import cn.crap.framework.JsonResult;
@@ -9,7 +12,9 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.mybatis.Log;
 import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
 import cn.crap.service.custom.*;
 import cn.crap.service.mybatis.*;
 import cn.crap.beans.Config;
@@ -43,11 +48,9 @@ public class ModuleController extends BaseController{
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private Config config;
-	@Autowired
 	private CustomModuleService customModuleService;
 	@Autowired
-	private CustomLogService customLogService;
+	private LogService logService;
 	@Autowired
 	private CustomInterfaceService customInterfaceService;
 	
@@ -65,40 +68,50 @@ public class ModuleController extends BaseController{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Module module) throws MyException{
+	public JsonResult detail(String id, String projectId) throws MyException{
 		Module model;
-		if(!module.getId().equals(IConst.NULL_ID)){
-			model= moduleService.selectByPrimaryKey(module.getId());
-//			if(!MyString.isEmpty(model.getTemplateId())){
-//				Interface inter = interfaceService.get(model.getTemplateId());
-//				if(inter != null)
-//					model.setTemplateName(inter.getInterfaceName());
-//			}getInterfaceName
-			checkUserPermissionByProject(projectCache.get(model.getProjectId()), VIEW);
+        Project project;
+		if(id != null){
+			model= moduleService.selectByPrimaryKey(id);
+			project = projectCache.get(model.getProjectId());
+			checkUserPermissionByProject(project, VIEW);
 		}else{
-			checkUserPermissionByProject(projectCache.get(module.getProjectId()), VIEW);
+		    project = projectCache.get(projectId);
+			checkUserPermissionByProject(project, VIEW);
 			model=new Module();
 			model.setStatus(Byte.valueOf("1"));
-			model.setProjectId(module.getProjectId());
+			model.setProjectId(projectId);
 		}
-		return new JsonResult(1,model);
+		return new JsonResult(1, ModuleAdapter.getDto(model, project));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Module module) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
 		// 系统数据，不允许删除 TODO web移至单独表
-		if(module.getId().equals("web"))
-			throw new MyException("000009");
-				
-		if(!MyString.isEmpty(module.getId())){
-			module.setProjectId(moduleCache.get(module.getId()).getProjectId());
-			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
-			// 更新该模块下的所有接口的fullUrl
-			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), module.getId());
-			moduleService.update(module);
-			Module dbModule = moduleService.selectByPrimaryKey(module.getId());
-			customLogService.addLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.UPDATE, Module.class);
+        String id = moduleDto.getId();
+		if(id != null && C_WEB_MODULE.equals(id)) {
+			throw new MyException(E000009);
+		}
+
+		if (MyString.isEmpty(moduleDto.getCategory())){
+            moduleDto.setCategory("默认分类");
+		}
+
+        Module module = ModuleAdapter.getModel(moduleDto);
+		if(id != null){
+			checkUserPermissionByModuleId(id, MOD_MODULE);
+
+            Module dbModule = moduleService.selectByPrimaryKey(module.getId());
+
+            Log log = Adapter.getLog(dbModule.getId(), "模块", "", LogType.UPDATE, dbModule.getClass(), dbModule);
+            logService.insert(log);
+
+            moduleService.update(module);
+            // 更新该模块下的所有接口的fullUrl
+			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
+
+
 		}else{
 			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
@@ -170,11 +183,13 @@ public class ModuleController extends BaseController{
 		if(articleService.countByModuleIdAndType(dbModule.getId(),  ArticleType.DICTIONARY.name()) >0 ){
 			throw new MyException("000036");
 		}
-		
+
+        Log log = Adapter.getLog(dbModule.getId(), "模块", "", LogType.DELTET, dbModule.getClass(), dbModule);
+        logService.insert(log);
+
 		moduleCache.del(module.getId());
 		moduleService.delete(module.getId());
 
-		customLogService.addLog("模块", JSONObject.fromObject(dbModule).toString(), "", LogType.DELTET, Module.class);
 		return new JsonResult(1,null);
 	}
 	

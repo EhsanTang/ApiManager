@@ -2,6 +2,8 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ModuleDto;
 import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ModuleAdapter {
-    public static ModuleDto getDto(Module model){
+    public static ModuleDto getDto(Module model, Project project){
         if (model == null){
             return null;
         }
@@ -21,7 +23,6 @@ public class ModuleAdapter {
         ModuleDto dto = new ModuleDto();
         dto.setId(model.getId());
 		dto.setName(model.getName());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setStatus(model.getStatus());
 		dto.setSequence(model.getSequence());
 		dto.setUrl(model.getUrl());
@@ -31,6 +32,10 @@ public class ModuleAdapter {
 		dto.setProjectId(model.getProjectId());
 		dto.setTemplateId(model.getTemplateId());
 		dto.setVersion(model.getVersion());
+		dto.setCategory(model.getCategory());
+		if (project != null) {
+            dto.setProjectName(project.getName());
+        }
 		
         return dto;
     }
@@ -42,27 +47,28 @@ public class ModuleAdapter {
         Module model = new Module();
         model.setId(dto.getId());
 		model.setName(dto.getName());
-		model.setCreateTime(dto.getCreateTime());
-		model.setStatus(dto.getStatus());
+		// model.setCreateTime(dto.getCreateTime());
+		// model.setStatus(dto.getStatus());
 		model.setSequence(dto.getSequence());
 		model.setUrl(dto.getUrl());
-		model.setCanDelete(dto.getCanDelete());
+		// model.setCanDelete(dto.getCanDelete());
 		model.setRemark(dto.getRemark());
-		model.setUserId(dto.getUserId());
-		model.setProjectId(dto.getProjectId());
-		model.setTemplateId(dto.getTemplateId());
-		model.setVersion(dto.getVersion());
+		// model.setUserId(dto.getUserId());
+		// model.setProjectId(dto.getProjectId());
+		// model.setTemplateId(dto.getTemplateId());
+		// model.setVersion(dto.getVersion());
+		model.setCategory(dto.getCategory());
 		
         return model;
     }
 
     public static List<ModuleDto> getDto(List<Module> models){
-        if (models == null){
+        if (CollectionUtils.isEmpty(models)){
             return new ArrayList<>();
         }
         List<ModuleDto> dtos = new ArrayList<>();
         for (Module model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, null));
         }
         return dtos;
     }

@@ -1,5 +1,6 @@
 package cn.crap.service.custom;
 
+import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.mybatis.ArticleDao;
 import cn.crap.dao.custom.CustomArticleDao;
@@ -25,7 +26,7 @@ import java.util.List;
 
 
 @Service
-public class CustomArticleService implements ILuceneService{
+public class CustomArticleService implements ILuceneService {
     @Autowired
     private ArticleDao dao;
     @Autowired
@@ -57,13 +58,13 @@ public class CustomArticleService implements ILuceneService{
         Assert.notNull(moduleId, "moduleId can't be null");
         ArticleCriteria example = new ArticleCriteria();
         ArticleCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
-        if (!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if (!StringUtils.isEmpty(type)){
+        if (!StringUtils.isEmpty(type)) {
             criteria.andTypeEqualTo(type);
         }
-        if (!StringUtils.isEmpty(category)){
+        if (!StringUtils.isEmpty(category)) {
             criteria.andCategoryEqualTo(category);
         }
         example.setLimitStart(page.getStart());
@@ -74,7 +75,7 @@ public class CustomArticleService implements ILuceneService{
     public Project getProject(String moduleId) {
         if (!MyString.isEmpty(moduleId)) {
             Module module = moduleCache.get(moduleId);
-            if (module != null){
+            if (module != null) {
                 return projectCache.get(module.getProjectId());
             }
         }
@@ -90,17 +91,17 @@ public class CustomArticleService implements ILuceneService{
         return "";
     }
 
-    public String getModuleName(String moduleId){
-        if(!MyString.isEmpty(moduleId)){
+    public String getModuleName(String moduleId) {
+        if (!MyString.isEmpty(moduleId)) {
             return getModule(moduleId).getName();
         }
         return "";
     }
 
-    private Module getModule(String moduleId){
-        if(!MyString.isEmpty(moduleId)){
+    private Module getModule(String moduleId) {
+        if (!MyString.isEmpty(moduleId)) {
             Module module = moduleCache.get(moduleId);
-            if(module!=null) {
+            if (module != null) {
                 return module;
             }
         }
@@ -110,41 +111,32 @@ public class CustomArticleService implements ILuceneService{
 
     /**
      * update article and add update log
+     *
      * @param model
      * @param modelName
      * @param remark
      */
     public void update(ArticleWithBLOBs model, String modelName, String remark) {
         Article dbModel = dao.selectByPrimaryKey(model.getId());
-        if(MyString.isEmpty(remark)) {
+        if (MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-// TODO 提取代码
-            Log log = new Log();
-            log.setModelName(modelName);
-            log.setRemark(remark);
-            log.setType(LogType.UPDATE.name());
-            log.setContent(JSONObject.fromObject(dbModel).toString());
-            log.setModelClass(dbModel.getClass().getSimpleName());
 
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
+
         dao.updateByPrimaryKeyWithBLOBs(model);
     }
 
-    public void delete(String id, String modelName, String remark){
+    public void delete(String id, String modelName, String remark) {
         Assert.notNull(id);
         Article dbModel = dao.selectByPrimaryKey(id);
-        if(MyString.isEmpty(remark)) {
+        if (MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(LogType.DELTET.name());
-        log.setContent(JSONObject.fromObject(dbModel).toString());
-        log.setModelClass(dbModel.getClass().getSimpleName());
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
+        logService.insert(log);
 
-       logService.insert(log);
         dao.deleteByPrimaryKey(dbModel.getId());
     }
 
@@ -161,10 +153,10 @@ public class CustomArticleService implements ILuceneService{
     public List<SearchDto> getAllByProjectId(String projectId) {
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  ArticleAdapter.getSearchDto(dao.selectByExampleWithBLOBs(example));
+        return ArticleAdapter.getSearchDto(dao.selectByExampleWithBLOBs(example));
     }
 
-    public Integer countByModuleIdAndType(String moduleId, String type){
+    public Integer countByModuleIdAndType(String moduleId, String type) {
         Assert.notNull(moduleId);
         Assert.notNull(type);
         ArticleCriteria example = new ArticleCriteria();
@@ -172,7 +164,7 @@ public class CustomArticleService implements ILuceneService{
         return dao.countByExample(example);
     }
 
-    public List<Article> queryByModuleIdAndType(String moduleId, String type){
+    public List<Article> queryByModuleIdAndType(String moduleId, String type) {
         Assert.notNull(moduleId);
         Assert.notNull(type);
         ArticleCriteria example = new ArticleCriteria();
@@ -181,28 +173,19 @@ public class CustomArticleService implements ILuceneService{
     }
 
     /**
-     * 查询前20个分类
-     * @param moduleId
-     * @param type
-     * @return
-     */
-    public List<String> queryTop20Category(String moduleId, String type){
-        return customArticleMapper.queryTop20Category(moduleId, type);
-    }
-
-    /**
      * 跟新点击量
+     *
      * @param id
      */
-    public void updateClickById(String id){
+    public void updateClickById(String id) {
         Assert.notNull(id);
         customArticleMapper.updateClickById(id);
     }
 
-    public ArticleWithBLOBs selectByKey(String key){
+    public ArticleWithBLOBs selectByKey(String key) {
         ArticleCriteria example = new ArticleCriteria();
         example.createCriteria().andMkeyEqualTo(key);
         List<ArticleWithBLOBs> models = dao.selectByExampleWithBLOBs(example);
-        return  models.size() > 0 ? models.get(0) : null;
+        return models.size() > 0 ? models.get(0) : null;
     }
 }

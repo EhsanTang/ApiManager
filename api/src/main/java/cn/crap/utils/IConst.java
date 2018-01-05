@@ -58,7 +58,7 @@ public interface IConst {
 	String SOURCE = "SOURCE";
 	String SEPARATOR = "SEPARATOR";
 	String ADMIN_MODULE= "0";
-	String WEB_MODULE= "web";
+	String C_WEB_MODULE = "web";
 	String LEVEL_PRE = "- - ";
 	String REGISTER = "register";
 	String GITHUB = "gitHub:";

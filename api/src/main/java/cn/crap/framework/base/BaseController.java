@@ -214,7 +214,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
      */
     protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
         // web项目为默认的公开项目
-        if (project.getId().equals(IConst.WEB_MODULE)) {
+        if (project.getId().equals(IConst.C_WEB_MODULE)) {
             return;
         }
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码

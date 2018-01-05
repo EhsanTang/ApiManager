@@ -48,10 +48,9 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String projectId, String moduleId, String name, String type, String category,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult list(String moduleId, String name, String type, String category,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
 		Assert.notNull(moduleId);
-		Assert.notNull(projectId);
-		checkUserPermissionByProject( projectCache.get(projectId) , VIEW);
+		checkUserPermissionByModuleId(moduleId, VIEW);
 		
 		Page page= new Page(15, currentPage);
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
@@ -76,7 +75,7 @@ public class ArticleController extends BaseController{
 		model=new Article();
 		model.setType(type);
 		model.setModuleId(moduleId);
-		return new JsonResult(1,model);
+		return new JsonResult(1, model);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
@@ -85,7 +84,7 @@ public class ArticleController extends BaseController{
 
 		// 如果模块为空，表示为管理员，将模块设置为系统模块
 		if(MyString.isEmpty(dto.getModuleId())){
-			dto.setModuleId(IConst.WEB_MODULE);
+			dto.setModuleId(IConst.C_WEB_MODULE);
 		}
 
 		if(MyString.isEmpty(dto.getMkey())){

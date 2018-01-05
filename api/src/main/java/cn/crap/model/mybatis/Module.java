@@ -28,6 +28,8 @@ public class Module implements Serializable {
 
     private Integer version;
 
+    private String category;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -124,5 +126,13 @@ public class Module implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
     }
 }

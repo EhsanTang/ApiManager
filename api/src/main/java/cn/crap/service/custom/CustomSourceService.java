@@ -1,5 +1,6 @@
 package cn.crap.service.custom;
 
+import cn.crap.adapter.Adapter;
 import cn.crap.adapter.SourceAdapter;
 import cn.crap.dao.mybatis.SourceDao;
 import cn.crap.dto.SearchDto;
@@ -82,13 +83,7 @@ public class CustomSourceService implements ILuceneService{
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-    // TODO 提取代码
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(LogType.UPDATE.name());
-        log.setContent(JSONObject.fromObject(dbModel).toString());
-        log.setModelClass(dbModel.getClass().getSimpleName());
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
 
         logService.insert(log);
         sourceMapper.updateByPrimaryKey(model);
@@ -100,14 +95,9 @@ public class CustomSourceService implements ILuceneService{
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(LogType.DELTET.name());
-        log.setContent(JSONObject.fromObject(dbModel).toString());
-        log.setModelClass(dbModel.getClass().getSimpleName());
-
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
+
         sourceMapper.deleteByPrimaryKey(dbModel.getId());
     }
 

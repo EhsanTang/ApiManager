@@ -69,4 +69,5 @@ public interface IErrorCode {
     String E000062 = "000062";
     String E000063 = "000063";
     String E000064 = "000064";
+    String E000065 = "000065";
 }

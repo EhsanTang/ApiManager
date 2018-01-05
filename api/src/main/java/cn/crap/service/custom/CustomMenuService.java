@@ -11,7 +11,7 @@ import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
 import cn.crap.beans.Config;
-import cn.crap.beans.PickFactory;
+import cn.crap.service.IPickService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +28,16 @@ import java.util.List;
 public class CustomMenuService {
     @Autowired
     private MenuDao dao;
-
     @Autowired
     private CustomProjectService customProjectService;
-    @Autowired
-    private PickFactory pickFactory;
     @Autowired
     private Config config;
     @Autowired
     private CustomArticleDao customArticleMapper;
+    @Autowired
+    private CustomModuleService customModuleService;
+    @Resource(name="pickService")
+    private IPickService pickService;
 
     public List<Menu> queryByParentId(String parentId){
         Assert.notNull(parentId, "parentId can't be null");
@@ -113,7 +115,7 @@ public class CustomMenuService {
             menuVO.setMenu(menu);
 
             menuVO.setSubMenu(new ArrayList<Menu>());
-            List<String> categorys = customArticleMapper.queryArticleCategoryByWeb();
+            List<String> categorys = customModuleService.queryCategoryByModuleId(IConst.C_WEB_MODULE);
             int i = 0;
             for (String category : categorys) {
                 if (MyString.isEmpty(category))
@@ -124,7 +126,7 @@ public class CustomMenuService {
                 subMenu.setMenuName(category);
                 subMenu.setParentId("articleListId");
                 subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl(String.format(IConst.FRONT_ARTICLE_URL, IConst.WEB_MODULE, IConst.WEB_MODULE, category));
+                subMenu.setMenuUrl(String.format(IConst.FRONT_ARTICLE_URL, IConst.C_WEB_MODULE, IConst.C_WEB_MODULE, category));
                 menuVO.getSubMenu().add(subMenu);
             }
             menuVOs.add(menuVO);
@@ -144,17 +146,18 @@ public class CustomMenuService {
         return menuVOs;
     }
 
-    public String pick(List<PickDto> picks, String radio, String code, String key, String def, String notNull) throws MyException {
-        PickDto pick = null;
+    public String pick(String radio, String code, String key, String def, String notNull) throws MyException{
 
-        // 单选是否可以为空
-        if (radio.equals("true") && !MyString.isEmpty(notNull) && notNull.equals("false")) {
-            pick = new PickDto("pick_null", "", "");
-            picks.add(pick);
-        }
+        List<PickDto> picks =  pickService.getPickList(code, key);
 
-        // 根据code，key加载pick列表
-        pickFactory.getPickList(picks, code, key);
+            // 单选是否可以为空
+            if (radio.equals("true") && !MyString.isEmpty(notNull) && notNull.equals("false")) {
+                PickDto pick = new PickDto("pick_null", "", "");
+                picks.add(0, pick);
+            }
+
+
+
 
         // 组装字符串，返回至前端页面
         if (!radio.equals("")) {

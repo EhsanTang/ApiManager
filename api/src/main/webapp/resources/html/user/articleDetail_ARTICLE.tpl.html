@@ -16,10 +16,10 @@
 				<td>
 					* 类目没有管理界面，初始化时没有类目，需要手动写入类目。下次选择将显示项目中所有之前输入过的类目
 					<div class="input-group">
-							<input class="form-control" type="text" id="category" required
+							<input class="form-control" type="text" id="category" readonly
 								ng-model="model.category"  placeholder="点击“选择”按钮选择，或输入新类目">
 							<div class="input-group-addon cursor btn-purple"
-								ng-click="loadPick($event,220,250,'true','category','CATEGORY','','');">
+								ng-click="loadPick($event,220,250,'true','category','CATEGORY',model.category, '&key='+model.moduleId,0);">
 								选择</div>
 					</div>
 				</td>
@@ -41,7 +41,7 @@
 				<td class="tl">
 					* 点击选择模块
 					<input class="form-control cursor" type="text"  id="moduleName" required readonly ng-model="model.moduleName"
-							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				</td>
 			</tr>
 			<tr>

@@ -1,6 +1,5 @@
 package cn.crap.service.custom;
 
-import cn.crap.dao.mybatis.LogDao;
 import cn.crap.enumer.LogType;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
@@ -29,35 +28,7 @@ public class CustomLogService implements IErrorCode {
     @Autowired
     private SourceService sourceService;
     @Autowired
-    private LogDao logDao;
-
-    /**
-     * add log
-     * 添加日志
-     *
-     * @param modelName
-     * @param content
-     * @param remark
-     * @param logType   modify or update
-     * @param clazz
-     * @return
-     */
-    public boolean addLog(String modelName, String content, String remark, LogType logType, Class clazz) {
-        Assert.notNull(modelName);
-        Assert.notNull(content);
-        Assert.notNull(logType);
-        Assert.notNull(clazz);
-
-        Log log = new Log();
-        log.setModelName(modelName);
-        log.setRemark(remark);
-        log.setType(logType.name());
-        log.setContent(content);
-        log.setModelClass(clazz.getSimpleName());
-
-        logDao.insert(log);
-        return true;
-    }
+    private LogService logService;
 
     /**
      * recover by log
@@ -67,7 +38,7 @@ public class CustomLogService implements IErrorCode {
      * @throws MyException
      */
     public void recover(Log log) throws MyException {
-        log = logDao.selectByPrimaryKey(log.getId());
+        log = logService.selectByPrimaryKey(log.getId());
         switch (log.getModelClass().toUpperCase()) {
 
             case "INTERFACE"://恢复接口

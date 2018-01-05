@@ -13,7 +13,7 @@ public enum ArticleType {
 		return "";
 	}
 	
-	private ArticleType(String name){
+	ArticleType(String name){
 		this.name = name;
 	}
 	public String getName(){

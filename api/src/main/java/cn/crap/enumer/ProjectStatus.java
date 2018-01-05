@@ -10,7 +10,10 @@ public enum ProjectStatus {
 		this.name = name;
 	}
 	
-	public static String getNameByValue(int status){
+	public static String getNameByValue(Byte status){
+		if (status == null){
+			return "";
+		}
 		for(ProjectStatus projectStatus : ProjectStatus.values()){
 			if(projectStatus.getStatus() == status)
 				return projectStatus.getName();

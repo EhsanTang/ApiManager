@@ -12,7 +12,7 @@ public enum DataType {
 		}
 	}
 	
-	private DataType(String name){
+	DataType(String name){
 		this.name = name;
 	}
 	public String getName(){

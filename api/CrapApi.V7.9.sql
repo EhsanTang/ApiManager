@@ -75,3 +75,18 @@ ADD COLUMN `projectId` VARCHAR(50) NOT NULL DEFAULT '' AFTER `isTemplate`;
 ALTER TABLE `apidev`.`source`
 ADD COLUMN `projectId` VARCHAR(50) NOT NULL DEFAULT '' AFTER `filePath`;
 
+CREATE TABLE `hot_search` (
+  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `times` int(11) NOT NULL DEFAULT '0' COMMENT '搜索次数',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateTime` timestamp NOT NULL DEFAULT '2015-12-31 08:00:00',
+  `keyword` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT '搜索关键字',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `keyword_UNIQUE` (`keyword`),
+  KEY `index_times` (`times`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `apidev`.`module`
+ADD COLUMN `category` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字';
+
+

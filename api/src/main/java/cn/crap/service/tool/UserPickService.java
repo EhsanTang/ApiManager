@@ -28,7 +28,6 @@ import java.util.TreeSet;
 /**
  * 采用责任链模式
  * 下拉选择框
- *
  * @author Ehsan
  */
 @Service("userPickService")
@@ -51,13 +50,10 @@ public class UserPickService implements IPickService, IErrorCode {
             throw new MyException(E000065, "code 有误");
         }
 
-        LoginInfoDto user = LoginUserHelper.tryGetUser();
-        if (user == null) {
-            throw new MyException(E000065, "用户未登录");
-        }
-
+        LoginInfoDto user = LoginUserHelper.getUser();
         List<PickDto> picks = new ArrayList<>();
         PickDto pick = null;
+
         switch (pickCode) {
             case ERROR_CODE:
                 if (StringUtils.isEmpty(key)) {

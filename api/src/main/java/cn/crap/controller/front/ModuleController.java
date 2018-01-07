@@ -32,7 +32,7 @@ public class ModuleController extends BaseController{
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId,String password, String visitCode) throws MyException{
+	public JsonResult list(String projectId,String password, String visitCode) throws MyException{
 		if( MyString.isEmpty(projectId) ){
 			throw new MyException(E000020);
 		}

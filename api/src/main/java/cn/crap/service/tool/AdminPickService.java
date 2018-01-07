@@ -44,11 +44,7 @@ public class AdminPickService implements IPickService, IErrorCode {
             throw new MyException(E000065, "code 有误");
         }
 
-        LoginInfoDto user = LoginUserHelper.tryGetUser();
-        if (user == null) {
-            throw new MyException(E000065, "用户未登录");
-        }
-
+        LoginInfoDto user = LoginUserHelper.getUser();
         if (user.getType() != UserType.ADMIN.getType()) {
             throw new MyException(E000065, "权限不足，非管理员");
         }

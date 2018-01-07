@@ -204,7 +204,7 @@ public class StaticizeController extends BaseController{
 			throw new MyException("000056");
 		}		
 		
-		ArticleWithBLOBs article = articleService.selectByPrimaryKey(articleId);
+		ArticleWithBLOBs article = articleService.getById(articleId);
 		Module module = moduleCache.get(article.getModuleId());
 		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath() + "resources/html/staticize/"+project.getId();
@@ -244,7 +244,7 @@ public class StaticizeController extends BaseController{
 			throw new MyException("000056");
 		}		
 				
-		InterfaceWithBLOBs interFace = interfaceService.selectByPrimaryKey(interfaceId);
+		InterfaceWithBLOBs interFace = interfaceService.getById(interfaceId);
 		Module module = moduleCache.get(interFace.getModuleId());
 		Project project = projectCache.get(module.getProjectId());
 		String path = Tools.getServicePath() + "resources/html/staticize/"+project.getId();

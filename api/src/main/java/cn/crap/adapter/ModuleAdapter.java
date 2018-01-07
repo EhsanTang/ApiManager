@@ -47,16 +47,9 @@ public class ModuleAdapter {
         Module model = new Module();
         model.setId(dto.getId());
 		model.setName(dto.getName());
-		// model.setCreateTime(dto.getCreateTime());
-		// model.setStatus(dto.getStatus());
 		model.setSequence(dto.getSequence());
 		model.setUrl(dto.getUrl());
-		// model.setCanDelete(dto.getCanDelete());
 		model.setRemark(dto.getRemark());
-		// model.setUserId(dto.getUserId());
-		// model.setProjectId(dto.getProjectId());
-		// model.setTemplateId(dto.getTemplateId());
-		// model.setVersion(dto.getVersion());
 		model.setCategory(dto.getCategory());
 		
         return model;

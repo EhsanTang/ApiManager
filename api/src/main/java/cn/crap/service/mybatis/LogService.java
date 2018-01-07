@@ -30,7 +30,7 @@ public class LogService {
         return mapper.countByExample(example);
     }
 
-    public Log selectByPrimaryKey(String id) {
+    public Log getById(String id) {
         if (id == null){
             return null;
         }

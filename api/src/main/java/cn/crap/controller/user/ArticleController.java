@@ -9,15 +9,14 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Article;
+import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
 import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.CommentService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,80 +41,77 @@ public class ArticleController extends BaseController{
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private CommentService commentService;
-	@Autowired
 	private CustomCommentService customCommentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String moduleId, String name, String type, String category,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult list(String moduleId, String name, String type, String category, Integer currentPage) throws MyException{
 		Assert.notNull(moduleId);
 		checkUserPermissionByModuleId(moduleId, VIEW);
 		
-		Page page= new Page(15, currentPage);
+		Page page= new Page(currentPage);
+
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
 		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, page);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models);
 
-		return new JsonResult(1, dtos, page).others(Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category));
+		return new JsonResult().success().data(dtos).page(page)
+                .others(Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category));
 	}
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, String type, String moduleId) throws MyException{
-		Article model;
 		if(id != null){
-			model= articleService.selectByPrimaryKey(id);
-			String projectId = customArticleService.getProjectId(model.getModuleId());
-			checkUserPermissionByProject( projectCache.get(projectId), VIEW);
-			return new JsonResult(1,model);
+            ArticleWithBLOBs article =  articleService.getById(id);
+            checkUserPermissionByProject(article.getProjectId(), VIEW);
+            Module module = moduleCache.get(article.getModuleId());
+			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
 		}
 
-		model=new Article();
+        Assert.notNull(moduleId);
+        Module module = moduleCache.get(moduleId);
+        checkUserPermissionByProject( module.getProjectId(), VIEW);
+
+        ArticleWithBLOBs model = new ArticleWithBLOBs();
 		model.setType(type);
 		model.setModuleId(moduleId);
-		return new JsonResult(1, model);
+		model.setProjectId(module.getProjectId());
+		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws MyException, IOException{
+	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
+	    Assert.notNull(dto.getModuleId());
+        Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
+        checkUserPermissionByProject(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 
-		// 如果模块为空，表示为管理员，将模块设置为系统模块
-		if(MyString.isEmpty(dto.getModuleId())){
-			dto.setModuleId(IConst.C_WEB_MODULE);
-		}
-
-		if(MyString.isEmpty(dto.getMkey())){
-			dto.setMkey(null);
-		}
-
-		dto.setCanDelete(Byte.valueOf("1"));
+        dto.setCanDelete(Byte.valueOf("1"));
 		if(!MyString.isEmpty(dto.getId())){
 			/**
 			 * 判断是否为系统数据，系统数据不允许修改mkey和canDelete字段
 			 */
-			Article dbArticle = articleService.selectByPrimaryKey(dto.getId());
+			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
 			if(dbArticle.getCanDelete()!=1){
 				dto.setMkey(null);
 				dto.setCanDelete(null);
 			}
-			// 修改模块
-			if(!dto.getModuleId().equals(dbArticle.getModuleId())){
-				String dbProjectId = customArticleService.getProjectId(dbArticle.getModuleId());
-				checkUserPermissionByProject( projectCache.get(dbProjectId) , dbArticle.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
-			}	
-			
-			checkUserPermissionByProject( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
 
-			customArticleService.update(ArticleAdapter.getModel(dto), ArticleType.getByEnumName(dto.getType()), "");
-			luceneService.update(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
+            ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+			customArticleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
+
+            dbArticle = articleService.getById(dto.getId());
+			luceneService.update(ArticleAdapter.getSearchDto(dbArticle));
 		}else{
-			checkUserPermissionByProject( projectCache.get(dto.getProjectId()) , dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
-			articleService.insert(ArticleAdapter.getModel(dto));
-			luceneService.add(ArticleAdapter.getSearchDto(ArticleAdapter.getModel(dto)));
+            ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+            article.setProjectId(project.getId());
+            article.setMarkdown("");
+			articleService.insert(article);
+
+			luceneService.add(ArticleAdapter.getSearchDto(article));
 		}
 		return new JsonResult(1,dto);
 	}
@@ -133,8 +130,8 @@ public class ArticleController extends BaseController{
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			Article model = articleService.selectByPrimaryKey(tempId);
-			checkUserPermissionByProject( projectCache.get(customArticleService.getProjectId(model.getModuleId())) , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
+			Article model = articleService.getById(tempId);
+			checkUserPermissionByProject(model.getProjectId() , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
 			if(model.getCanDelete()!=1){
 				throw new MyException("000009");
 			}
@@ -153,21 +150,19 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Article change = articleService.selectByPrimaryKey(changeId);
-		Article model = articleService.selectByPrimaryKey(id);
-		// TODO
-		//checkUserPermissionByProject( projectCache.get(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
-		//checkUserPermissionByProject( projectCache.get(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
+	public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) throws MyException {
+		ArticleWithBLOBs change = articleService.getById(changeId);
+        ArticleWithBLOBs model = articleService.getById(id);
+
+		checkUserPermissionByProject(change.getProjectId(), change.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
+		checkUserPermissionByProject(model.getProjectId(), model.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
 		
 		int modelSequence = model.getSequence();
-		
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);
 
-		// TODO
-		//articleService.update(model);
-		//articleService.update(change);
+		articleService.update(model);
+		articleService.update(change);
 		return new JsonResult(1, null);
 	}
 	
@@ -176,28 +171,28 @@ public class ArticleController extends BaseController{
 	@AuthPassport
 	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue="") String brief, @RequestParam String moduleId, String name,
 			@RequestParam(defaultValue="") boolean isMysql) throws MyException {
-//		Article article = null;
-//		if(isMysql){
-//			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
-//		}else{
-//			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
-//		}
-//		articleService.save(article);
+		ArticleWithBLOBs article = null;
+		if(isMysql){
+			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
+		}else{
+			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
+		}
+		articleService.insert(article);
 		return new JsonResult(1, new Article());
 	}
 
 	@RequestMapping("/markdown.do")
-	public String markdown(@ModelAttribute Article webPage) throws Exception {
-		Article model;
-//		if(!webPage.getId().equals(IConst.NULL_ID)){
-//			model= articleService.get(webPage.getId());
-//		}else{
-//			model=new Article();
-//			model.setType(webPage.getType());
-//			model.setModuleId(webPage.getModuleId());
-//		}
-//		request.setAttribute("markdownPreview", model.getContent());
-//		request.setAttribute("markdownText", model.getMarkdown());
+	public String markdown(@ModelAttribute Article article, HttpServletRequest request) throws Exception {
+		ArticleWithBLOBs model;
+		if(article.getId() != null){
+			model= articleService.getById(article.getId());
+		}else{
+			model= new ArticleWithBLOBs();
+			model.setType(article.getType());
+			model.setModuleId(article.getModuleId());
+		}
+		request.setAttribute("markdownPreview", model.getContent());
+		request.setAttribute("markdownText", model.getMarkdown());
 		return "/WEB-INF/views/markdown.jsp";
 	}
 }

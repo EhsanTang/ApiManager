@@ -67,7 +67,7 @@ public class SourceController extends BaseController{
 	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
 		if(!MyString.isEmpty(source.getId())){
-			model = sourceService.selectByPrimaryKey(source.getId());
+			model = sourceService.getById(source.getId());
 			checkUserPermissionByModuleId( model.getModuleId(), VIEW);
 		}else{
 			model=new Source();
@@ -102,7 +102,7 @@ public class SourceController extends BaseController{
 			}
 			
 			if(!MyString.isEmpty(source.getId())){
-				Source oldSource = sourceService.selectByPrimaryKey(source.getId());
+				Source oldSource = sourceService.getById(source.getId());
 				String oldVsesions[]  = oldSource.getFilePath().split("\\.");
 				if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){
 					// 文件标识有误
@@ -150,7 +150,7 @@ public class SourceController extends BaseController{
 				continue;
 			}
 			// 权限
-			checkUserPermissionByModuleId(sourceService.selectByPrimaryKey( tempId ).getModuleId(), DEL_SOURCE);
+			checkUserPermissionByModuleId(sourceService.getById( tempId ).getModuleId(), DEL_SOURCE);
 			Source source = new Source();
 			source.setId(tempId);
 			
@@ -164,8 +164,8 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Source change = sourceService.selectByPrimaryKey(changeId);
-		Source model = sourceService.selectByPrimaryKey(id);
+		Source change = sourceService.getById(changeId);
+		Source model = sourceService.getById(id);
 		// 权限
 		checkUserPermissionByModuleId(change.getModuleId(), MOD_SOURCE);
 		checkUserPermissionByModuleId(model.getModuleId(), MOD_SOURCE);

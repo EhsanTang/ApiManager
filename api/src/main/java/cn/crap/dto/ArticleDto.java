@@ -14,9 +14,10 @@ public class ArticleDto implements Serializable {
 	private String content;
 	private Integer click;
 	private String type;
+	private String typeName;
 	private Byte status;
-	private Date createTime;
 	private String moduleId;
+	private String moduleName;
 	private String mkey;
 	private Byte canDelete;
 	private String category;
@@ -73,13 +74,6 @@ public class ArticleDto implements Serializable {
 	}
 	public Byte getStatus(){
 		return status;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setModuleId(String moduleId){
@@ -143,5 +137,21 @@ public class ArticleDto implements Serializable {
 	}
 	public String getProjectId(){
 		return projectId;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

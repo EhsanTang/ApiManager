@@ -19,12 +19,12 @@ public class MockController extends BaseController{
 	@RequestMapping("/trueExam.do")
 	@ResponseBody
 	public void trueExam(@RequestParam String id) throws Exception {
-		printMsg(interfaceService.selectByPrimaryKey(id).getTrueExam());
+		printMsg(interfaceService.getById(id).getTrueExam());
 	}
 	
 	@RequestMapping("/falseExam.do")
 	@ResponseBody
 	public void falseExam(@RequestParam String id) throws Exception {
-		printMsg(interfaceService.selectByPrimaryKey(id).getFalseExam());
+		printMsg(interfaceService.getById(id).getFalseExam());
 	}
 }

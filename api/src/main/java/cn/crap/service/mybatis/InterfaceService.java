@@ -31,7 +31,7 @@ public class InterfaceService {
         return mapper.countByExample(example);
     }
 
-    public InterfaceWithBLOBs selectByPrimaryKey(String id) {
+    public InterfaceWithBLOBs getById(String id) {
         if (id == null){
             return null;
         }

@@ -64,7 +64,7 @@ public class SettingController extends BaseController {
     public JsonResult detail(String id, String key, String type) {
         Setting setting = null;
         if (id != null) {
-            setting = settingService.selectByPrimaryKey(id);
+            setting = settingService.getById(id);
         } else if (key != null) {
             setting = customSettingService.getByKey(key);
         }
@@ -125,7 +125,7 @@ public class SettingController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult delete(@RequestParam String id) throws MyException {
-        Setting setting = settingService.selectByPrimaryKey(id);
+        Setting setting = settingService.getById(id);
         if (setting.getCanDelete() == 0) {
             throw new MyException(E000009);
         }
@@ -138,8 +138,8 @@ public class SettingController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {
-        Setting change = settingService.selectByPrimaryKey(changeId);
-        Setting model = settingService.selectByPrimaryKey(id);
+        Setting change = settingService.getById(changeId);
+        Setting model = settingService.getById(id);
         int modelSequence = model.getSequence();
 
         model.setSequence(change.getSequence());

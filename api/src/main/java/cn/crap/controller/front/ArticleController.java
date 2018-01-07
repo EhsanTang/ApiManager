@@ -11,7 +11,6 @@ import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
 import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,7 +100,7 @@ public class ArticleController extends BaseController {
         Map<String, Object> returnMap = new HashMap<>();
         ArticleWithBLOBs article = null;
 
-        article = articleService.selectByPrimaryKey(id);
+        article = articleService.getById(id);
         if (article == null) {
             article = customArticleService.selectByKey(id);
         }

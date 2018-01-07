@@ -52,7 +52,7 @@ public class ProjectUserController extends BaseController{
 	public JsonResult detail(@RequestParam String id, @RequestParam String projectId) throws MyException{
 		ProjectUser model;
 		if(!id.equals(IConst.NULL_ID)){
-			model= projectUserService.selectByPrimaryKey(id);
+			model= projectUserService.getById(id);
 			checkUserPermissionByProject(projectCache.get( model.getProjectId() ));
 		}else{
 			checkUserPermissionByProject(projectCache.get( projectId ));
@@ -69,7 +69,7 @@ public class ProjectUserController extends BaseController{
 		checkUserPermissionByProject( projectCache.get( projectUser.getProjectId() ));
 		User search = null;
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
-			search = userService.selectByPrimaryKey( projectUser.getUserId() );
+			search = userService.getById( projectUser.getUserId() );
 		}else if( !MyString.isEmpty( projectUser.getUserEmail()) ){
 			UserCriteria example = new UserCriteria();
 			example.createCriteria().andEmailEqualTo(projectUser.getUserEmail());
@@ -87,7 +87,7 @@ public class ProjectUserController extends BaseController{
 		projectUser.setUserName(search.getUserName());
 		// 修改
 		if(!MyString.isEmpty(projectUser.getId())){
-			ProjectUser old = projectUserService.selectByPrimaryKey(projectUser.getId());
+			ProjectUser old = projectUserService.getById(projectUser.getId());
 			checkUserPermissionByProject( projectCache.get( old.getProjectId() ));
 		}
 		
@@ -108,7 +108,7 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@RequestParam String id) throws Exception{
-		ProjectUser projectUser = projectUserService.selectByPrimaryKey(id);
+		ProjectUser projectUser = projectUserService.getById(id);
 		checkUserPermissionByProject(projectCache.get( projectUser.getProjectId() ));
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);

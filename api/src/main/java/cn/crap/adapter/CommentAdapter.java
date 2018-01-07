@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.CommentDto;
 import cn.crap.model.mybatis.Comment;
+import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,9 @@ public class CommentAdapter {
 		dto.setUserId(model.getUserId());
 		dto.setParentId(model.getParentId());
 		dto.setStatus(model.getStatus());
-		dto.setCreateTime(model.getCreateTime());
+		dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
 		dto.setSequence(model.getSequence());
 		dto.setReply(model.getReply());
-		dto.setUpdateTime(model.getUpdateTime());
 		dto.setUserName(model.getUserName());
 		dto.setAvatarUrl(model.getAvatarUrl());
 		
@@ -41,18 +41,10 @@ public class CommentAdapter {
         }
         Comment model = new Comment();
         model.setId(dto.getId());
-		model.setArticleId(dto.getArticleId());
 		model.setContent(dto.getContent());
-		model.setUserId(dto.getUserId());
-		model.setParentId(dto.getParentId());
 		model.setStatus(dto.getStatus());
-		model.setCreateTime(dto.getCreateTime());
-		model.setSequence(dto.getSequence());
 		model.setReply(dto.getReply());
-		model.setUpdateTime(dto.getUpdateTime());
-		model.setUserName(dto.getUserName());
-		model.setAvatarUrl(dto.getAvatarUrl());
-		
+
         return model;
     }
 

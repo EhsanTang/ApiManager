@@ -2,7 +2,6 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.RoleAdapter;
 import cn.crap.dto.RoleDto;
-import cn.crap.model.mybatis.Role;
 import cn.crap.model.mybatis.RoleCriteria;
 import cn.crap.model.mybatis.RoleWithBLOBs;
 import cn.crap.service.mybatis.RoleService;
@@ -47,7 +46,7 @@ public class RoleController extends BaseController {
     public JsonResult detail(String id) {
         RoleWithBLOBs role = new RoleWithBLOBs();
         if (id != null) {
-            role = roleService.selectByPrimaryKey(id);
+            role = roleService.getById(id);
         }
         return new JsonResult().success().data(RoleAdapter.getDto(role));
     }

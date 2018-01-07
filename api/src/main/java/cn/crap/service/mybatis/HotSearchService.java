@@ -29,7 +29,7 @@ public class HotSearchService {
         return dao.countByExample(example);
     }
 
-    public HotSearch selectByPrimaryKey(String id) {
+    public HotSearch getById(String id) {
         if (id == null){
             return null;
         }

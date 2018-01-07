@@ -29,9 +29,9 @@
 			<tr ng-repeat="item in list">
 				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
 				<td class="tc">{{item.content| cut:true:25:' ...'}}</td>
-				<td class="tc w10w2000">{{item.reply| cut:true:15:' ...'}}</td>
-				<td class="tc">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</td>
-				<td class="tc w100">
+				<td class="tc w200">{{item.reply| cut:true:15:' ...'}}</td>
+				<td class="tc w200">{{item.createTimeStr}}</td>
+				<td class="tc w200">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					ng-click="detail('编辑【'+item.content+'】',700,'user/comment/detail.do?id='+item.id)"
 					data-toggle="tooltip" data-placement="top"

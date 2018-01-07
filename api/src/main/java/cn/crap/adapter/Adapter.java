@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.Log;
+import cn.crap.utils.LoginUserHelper;
 import net.sf.json.JSONObject;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.util.Assert;
@@ -21,6 +22,11 @@ public class Adapter {
         log.setContent(JSONObject.fromObject(model).toString());
         log.setModelClass(c.getSimpleName());
         log.setIdenty(id);
+        try {
+            log.setUpdateBy(LoginUserHelper.getUser().getTrueName());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return  log;
     }
 }

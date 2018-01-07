@@ -9,7 +9,6 @@ import java.util.Date;
 public class LogDto {
 	private String id;
 	private Byte status;
-	private Date createTime;
 	private Integer sequence;
 	private String modelClass;
 	private String modelName;
@@ -18,6 +17,7 @@ public class LogDto {
 	private String remark;
 	private String content;
 	private String identy;
+	private String createTimeStr;
 
 	public void setId(String id){
 		this.id=id;
@@ -31,13 +31,6 @@ public class LogDto {
 	}
 	public Byte getStatus(){
 		return status;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setSequence(Integer sequence){
@@ -96,5 +89,11 @@ public class LogDto {
 		return identy;
 	}
 
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
 
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
 }

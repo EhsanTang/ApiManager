@@ -2,10 +2,12 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Module;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ArticleAdapter {
-    public static ArticleDto getDto(Article model){
+    public static ArticleDto getDto(Article model, Module module){
         if (model == null){
             return null;
         }
@@ -31,7 +33,6 @@ public class ArticleAdapter {
 		dto.setClick(model.getClick());
 		dto.setType(model.getType());
 		dto.setStatus(model.getStatus());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setModuleId(model.getModuleId());
 		dto.setMkey(model.getMkey());
 		dto.setCanDelete(model.getCanDelete());
@@ -40,15 +41,18 @@ public class ArticleAdapter {
 		dto.setCommentCount(model.getCommentCount());
 		dto.setSequence(model.getSequence());
 		dto.setProjectId(model.getProjectId());
-
+		dto.setTypeName(ArticleType.getByEnumName(model.getType()));
+		if (module != null){
+			dto.setModuleName(module.getName());
+		}
 		return dto;
     }
 
-	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model) {
+	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model, Module module) {
 		if (model == null) {
 			return null;
 		}
-		ArticleDto dto = getDto(model);
+		ArticleDto dto = getDto(model, module);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
 		return dto;
@@ -66,7 +70,6 @@ public class ArticleAdapter {
 		model.setClick(dto.getClick());
 		model.setType(dto.getType());
 		model.setStatus(dto.getStatus());
-		model.setCreateTime(dto.getCreateTime());
 		model.setModuleId(dto.getModuleId());
 		model.setMkey(dto.getMkey());
 		model.setCanDelete(dto.getCanDelete());
@@ -75,8 +78,7 @@ public class ArticleAdapter {
 		model.setCommentCount(dto.getCommentCount());
 		model.setSequence(dto.getSequence());
 		model.setMarkdown(dto.getMarkdown());
-		model.setProjectId(dto.getProjectId());
-		
+
         return model;
     }
 
@@ -86,7 +88,7 @@ public class ArticleAdapter {
         }
         List<ArticleDto> dtos = new ArrayList<>();
         for (ArticleWithBLOBs model : models){
-            dtos.add(getDtoWithBLOBs(model));
+            dtos.add(getDtoWithBLOBs(model, null));
         }
         return dtos;
     }
@@ -97,7 +99,7 @@ public class ArticleAdapter {
 		}
 		List<ArticleDto> dtos = new ArrayList<>();
 		for (Article model : models){
-			dtos.add(getDto(model));
+			dtos.add(getDto(model, null));
 		}
 		return dtos;
 	}

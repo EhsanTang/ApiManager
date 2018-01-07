@@ -42,9 +42,11 @@ public class CustomProjectDao {
 		List <Object> params = new ArrayList<Object>();
 		params.add(userId);
 		params.add(userId);
-		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence from project where userId=? or id in (select projectId from project_user where userId=?) ");
+
+		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence from project where" +
+                " (userId= ? or id in (select projectId from project_user where userId=?))");
 		if (name != null){
-			sb.append(" and name like ?");
+			sb.append(" and name like ? ");
 			params.add("%" + name + "%");
 		}
 
@@ -71,15 +73,14 @@ public class CustomProjectDao {
 	public int countProjectByUserId(String userId, String name){
 		Assert.notNull(userId);
 
-		List <Object> params = new ArrayList<Object>();
+		List <Object> params = new ArrayList<>();
 		params.add(userId);
 		params.add(userId);
-		StringBuilder sb = new StringBuilder("select count(0) from project where userId=? or " +
-				"id in (select projectId from project_user where userId=?) ");
-		if (name != null){
-			sb.append(" and name like ?");
-			params.add("%" + name + "%");
-		}
+		StringBuilder sb = new StringBuilder("select count(0) from project where (userId=? or id in (select projectId from project_user where userId=?))");
+        if (name != null){
+            sb.append(" and name like ?");
+            params.add("%" + name + "%");
+        }
 
 		return jdbcTemplate.queryForObject(sb.toString(), params.toArray(), Integer.class);
 	}

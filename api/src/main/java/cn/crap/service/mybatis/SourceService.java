@@ -30,7 +30,7 @@ public class SourceService {
         return mapper.countByExample(example);
     }
 
-    public Source selectByPrimaryKey(String id) {
+    public Source getById(String id) {
         if (id == null){
             return null;
         }

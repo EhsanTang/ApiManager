@@ -30,7 +30,7 @@ public class CommentService {
         return mapper.countByExample(example);
     }
 
-    public Comment selectByPrimaryKey(String id) {
+    public Comment getById(String id) {
         if (id == null){
             return null;
         }

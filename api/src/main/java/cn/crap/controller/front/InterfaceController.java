@@ -84,12 +84,12 @@ public class InterfaceController extends BaseController {
              * 单个生成pdf接口
              */
             if (!MyString.isEmpty(id)) {
-                InterfaceWithBLOBs interFace = interfaceService.selectByPrimaryKey(id);
+                InterfaceWithBLOBs interFace = interfaceService.getById(id);
                 if (interFace == null) {
                     request.setAttribute("result", ERROR_INTERFACE_ID);
                     return ERROR_VIEW;
                 }
-                Module module = moduleService.selectByPrimaryKey(interFace.getModuleId());
+                Module module = moduleService.getById(interFace.getModuleId());
                 interfacePDFDtos.add(customInterfaceService.getInterDto(interFace));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
@@ -99,7 +99,7 @@ public class InterfaceController extends BaseController {
             /**
              * 按模块批量生成pdf接口
              */
-            Module module = moduleService.selectByPrimaryKey(moduleId);
+            Module module = moduleService.getById(moduleId);
             if (module == null) {
                 request.setAttribute("result", ERROR_MODULE_ID);
                 return ERROR_VIEW;
@@ -125,7 +125,7 @@ public class InterfaceController extends BaseController {
         if (!MyString.isEmpty(moduleId)) {
             module = moduleCache.get(moduleId);
         } else {
-            module = moduleCache.get(interfaceService.selectByPrimaryKey(id).getModuleId());
+            module = moduleCache.get(interfaceService.getById(id).getModuleId());
         }
 
         Project project = projectCache.get(module.getProjectId());
@@ -171,7 +171,7 @@ public class InterfaceController extends BaseController {
             throw new MyException("000020");
         }
 
-        Module module = moduleService.selectByPrimaryKey(moduleId);
+        Module module = moduleService.getById(moduleId);
         Project project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
@@ -196,7 +196,7 @@ public class InterfaceController extends BaseController {
     @RequestMapping("/detail.do")
     @ResponseBody
     public JsonResult webDetail(@ModelAttribute Interface interFace, String password, String visitCode) throws MyException {
-        interFace = interfaceService.selectByPrimaryKey(interFace.getId());
+        interFace = interfaceService.getById(interFace.getId());
         if (interFace != null) {
             Module module = moduleCache.get(interFace.getModuleId());
             Project project = projectCache.get(interFace.getProjectId());

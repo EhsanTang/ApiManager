@@ -10,7 +10,6 @@ import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Source;
 import cn.crap.service.custom.CustomSourceService;
 import cn.crap.service.mybatis.SourceService;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class SourceController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult webDetail(String id, String password,String visitCode) throws MyException{
-		Source model = sourceService.selectByPrimaryKey(id);
+		Source model = sourceService.getById(id);
 		Project project = projectCache.get(model.getProjectId());
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		checkFrontPermission(password, visitCode, project);

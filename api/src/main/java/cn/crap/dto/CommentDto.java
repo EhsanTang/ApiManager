@@ -13,10 +13,9 @@ public class CommentDto {
 	private String userId;
 	private String parentId;
 	private Byte status;
-	private Date createTime;
+	private String createTimeStr;
 	private Integer sequence;
 	private String reply;
-	private Date updateTime;
 	private String userName;
 	private String avatarUrl;
 
@@ -62,12 +61,6 @@ public class CommentDto {
 		return status;
 	}
 
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
-	}
 
 	public void setSequence(Integer sequence){
 		this.sequence=sequence;
@@ -83,12 +76,6 @@ public class CommentDto {
 		return reply;
 	}
 
-	public void setUpdateTime(Date updateTime){
-		this.updateTime=updateTime;
-	}
-	public Date getUpdateTime(){
-		return updateTime;
-	}
 
 	public void setUserName(String userName){
 		this.userName=userName;
@@ -104,5 +91,11 @@ public class CommentDto {
 		return avatarUrl;
 	}
 
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
 
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
 }

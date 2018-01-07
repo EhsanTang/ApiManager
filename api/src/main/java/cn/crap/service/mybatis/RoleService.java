@@ -36,7 +36,7 @@ public class RoleService {
         return dao.countByExample(example);
     }
 
-    public RoleWithBLOBs selectByPrimaryKey(String id) {
+    public RoleWithBLOBs getById(String id) {
         if (id == null){
             return null;
         }

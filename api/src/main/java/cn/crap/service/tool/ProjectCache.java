@@ -42,7 +42,7 @@ public class ProjectCache implements ICacheService<Project> {
 		String cacheKey = assembleKey(projectId);
 		Project project = getCache().getIfPresent(cacheKey);
 		if(project == null){
-			project = projectService.selectByPrimaryKey(projectId);
+			project = projectService.getById(projectId);
 			if(project == null) {
 				project = new Project();
 			}

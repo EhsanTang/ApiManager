@@ -52,7 +52,7 @@ public class CrapDebugController extends BaseController{
 		
 		// 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
 		String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
-		Project project = projectService.selectByPrimaryKey(projectId);
+		Project project = projectService.getById(projectId);
 		if( project == null){
 			project = new Project();
 			project.setId(projectId);
@@ -74,7 +74,7 @@ public class CrapDebugController extends BaseController{
 				continue;
 			}
 			d.setModuleId( Tools.handleId(user,d.getModuleId()) );
-			Module module = moduleService.selectByPrimaryKey(d.getModuleId());
+			Module module = moduleService.getById(d.getModuleId());
 			if( module == null && d.getStatus()!=-1){
 				try{
 					module = new Module();
@@ -119,7 +119,7 @@ public class CrapDebugController extends BaseController{
 					if(MyString.isEmpty( debug.getId())){
 						continue;
 					}
-					Debug old = debugService.selectByPrimaryKey(debug.getId());
+					Debug old = debugService.getById(debug.getId());
 					if (debug.getStatus() == -1 && old != null && old.getModuleId().equals(debug.getModuleId())){
 						debugService.delete(debug.getId());
 					}
@@ -150,7 +150,7 @@ public class CrapDebugController extends BaseController{
 					debugService.insert(DebugAdapter.getModel(debug));
 					totalNum = totalNum + 1;
 				}catch(Exception e){
-					Debug old = debugService.selectByPrimaryKey(debug.getId());
+					Debug old = debugService.getById(debug.getId());
 					if(old.getVersion() <= debug.getVersion()){
 						debug.setCreateTime(old.getCreateTime());
 						if(old.getModuleId().equals(debug.getModuleId())){

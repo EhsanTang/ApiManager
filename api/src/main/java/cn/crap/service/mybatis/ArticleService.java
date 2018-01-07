@@ -31,7 +31,7 @@ public class ArticleService {
         return mapper.countByExample(example);
     }
 
-    public ArticleWithBLOBs selectByPrimaryKey(String id) {
+    public ArticleWithBLOBs getById(String id) {
         if (id == null){
             return null;
         }

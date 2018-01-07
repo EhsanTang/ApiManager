@@ -30,7 +30,7 @@ public class ProjectService {
         return mapper.countByExample(example);
     }
 
-    public Project selectByPrimaryKey(String id) {
+    public Project getById(String id) {
         if (id == null){
             return null;
         }

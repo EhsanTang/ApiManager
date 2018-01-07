@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +35,6 @@ import java.util.Map;
 public class ProjectController extends BaseController {
 @Autowired
 private ProjectService projectService;
-@Autowired
-private ModuleService moduleService;
-@Autowired
-private Config config;
 @Autowired
 private ISearchService luceneService;
 @Autowired
@@ -60,20 +55,19 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Project project, @RequestParam(defaultValue="1") int currentPage,
+	public JsonResult list(@ModelAttribute Project project, Integer currentPage,
 						   @RequestParam(defaultValue="false") boolean myself) throws MyException{
-		Assert.isTrue(currentPage > 0);
-		Page page= new Page(SIZE, currentPage);
-
-		// 普通用户，管理员我的项目菜单只能查看自己的项目
+		Page page= new Page(currentPage);
 		LoginInfoDto user = LoginUserHelper.getUser();
+		String userId = user.getId();
 		List<Project> models = null;
 		List<ProjectDto> dtos = null;
+
+        // 普通用户，管理员我的项目菜单只能查看自己的项目
 		if( user.getType() == UserType.USER.getType() || myself){
-			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), project.getName()));
-			models = customProjectService.pageProjectByUserIdName(user.getId(), project.getName(), page);
+			page.setAllRow(customProjectService.countProjectByUserIdName(userId, project.getName()));
+			models = customProjectService.pageProjectByUserIdName(userId, project.getName(), page);
 		}else{
-			Map<String,Object> map = null;
 			ProjectCriteria example = new ProjectCriteria();
 			ProjectCriteria.Criteria criteria = example.createCriteria();
 			if (project.getName() != null){
@@ -85,6 +79,7 @@ private CustomProjectUserService customProjectUserService;
 			page.setAllRow(projectService.countByExample(example));
 			models = projectService.selectByExample(example);
 		}
+
 		dtos = ProjectAdapter.getDto(models);
 		return new JsonResult(1,dtos, page);
 	}
@@ -107,12 +102,12 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception{
-		// 系统数据，不允许删除
-		if(project.getId() != null && project.getId().equals("web")) {
-			throw new MyException("000009");
+		if(project.getId() != null && project.getId().equals(C_WEB_MODULE)) {
+			throw new MyException(E000009);
 		}
 
 		LoginInfoDto user = LoginUserHelper.getUser();
+		String userId = user.getId();
 
 		// 修改
 		if(!MyString.isEmpty(project.getId())){
@@ -140,7 +135,7 @@ private CustomProjectUserService customProjectUserService;
 		projectCache.del(project.getId());
 
 		// 刷新用户权限 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService));
+		userCache.add(userId, new LoginInfoDto(userService.getById(user.getId()), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,project);
 	}
 

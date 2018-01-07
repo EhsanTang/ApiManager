@@ -15,6 +15,7 @@ import cn.crap.service.tool.ProjectCache;
 import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,45 +70,9 @@ public class CustomArticleService implements ILuceneService {
         }
         example.setLimitStart(page.getStart());
         example.setMaxResults(page.getSize());
+        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
         return dao.selectByExample(example);
     }
-
-    public Project getProject(String moduleId) {
-        if (!MyString.isEmpty(moduleId)) {
-            Module module = moduleCache.get(moduleId);
-            if (module != null) {
-                return projectCache.get(module.getProjectId());
-            }
-        }
-        return new Project();
-    }
-
-    public String getProjectId(String moduleId) {
-        if (!MyString.isEmpty(moduleId)) {
-            Module module = moduleCache.get(moduleId);
-            if (module != null)
-                return module.getProjectId();
-        }
-        return "";
-    }
-
-    public String getModuleName(String moduleId) {
-        if (!MyString.isEmpty(moduleId)) {
-            return getModule(moduleId).getName();
-        }
-        return "";
-    }
-
-    private Module getModule(String moduleId) {
-        if (!MyString.isEmpty(moduleId)) {
-            Module module = moduleCache.get(moduleId);
-            if (module != null) {
-                return module;
-            }
-        }
-        return new Module();
-    }
-
 
     /**
      * update article and add update log
@@ -125,7 +90,7 @@ public class CustomArticleService implements ILuceneService {
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        dao.updateByPrimaryKeyWithBLOBs(model);
+        dao.updateByPrimaryKeySelective(model);
     }
 
     public void delete(String id, String modelName, String remark) {

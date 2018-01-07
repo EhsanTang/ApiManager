@@ -30,7 +30,7 @@ public class ModuleService {
         return moduleMapper.countByExample(example);
     }
 
-    public Module selectByPrimaryKey(String id) {
+    public Module getById(String id) {
         if (id == null){
             return null;
         }

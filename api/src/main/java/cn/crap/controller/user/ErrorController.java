@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class ErrorController extends BaseController{
             throw new MyException("000020");
         }
 
-        Page page = new Page(15, currentPage);
+        Page page = new Page(currentPage);
 
         List<Error> models = customErrorService.queryByProjectId(projectId, errorCode, errorMsg, page);
         List<ErrorDto> dtoList = ErrorAdapter.getDto(models);
@@ -60,7 +59,7 @@ public class ErrorController extends BaseController{
     public JsonResult detail(String id, String projectId) throws MyException {
         Error model;
         if (id != null) {
-            model = errorService.selectByPrimaryKey(id);
+            model = errorService.getById(id);
             checkUserPermissionByProject(model.getProjectId(), VIEW);
         } else {
             model = new Error();
@@ -80,8 +79,8 @@ public class ErrorController extends BaseController{
 
         // update
         if (!MyString.isEmpty(dto.getId())) {
-            Error model = errorService.selectByPrimaryKey(dto.getId());
-            checkUserPermissionByProject(model.getProjectId(), MOD_ERROR);
+            Error dbError = errorService.getById(dto.getId());
+            checkUserPermissionByProject(dbError.getProjectId(), MOD_ERROR);
 
             Error newModel = ErrorAdapter.getModel(dto);
             newModel.setProjectId(null);
@@ -92,7 +91,7 @@ public class ErrorController extends BaseController{
         // add
         boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
         if (!existSameErrorCode) {
-            checkUserPermissionByProject(dto.getProjectId(), ADD_ERROR);
+            checkUserPermissionByProject(projectId, ADD_ERROR);
             errorService.insert(ErrorAdapter.getModel(dto));
         } else {
             return new JsonResult(new MyException("000002"));
@@ -105,7 +104,7 @@ public class ErrorController extends BaseController{
     public JsonResult delete(String id) throws MyException {
         Assert.notNull(id, "id can't be null");
 
-        Error model = errorService.selectByPrimaryKey(id);
+        Error model = errorService.getById(id);
         if (model == null) {
             throw new MyException("000063");
         }

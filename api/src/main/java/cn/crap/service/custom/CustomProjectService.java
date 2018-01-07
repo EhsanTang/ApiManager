@@ -1,8 +1,11 @@
 package cn.crap.service.custom;
 
+import cn.crap.adapter.Adapter;
 import cn.crap.dao.mybatis.ProjectDao;
 import cn.crap.dao.custom.CustomProjectDao;
+import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.*;
+import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -16,6 +19,8 @@ import java.util.List;
 public class CustomProjectService {
     @Autowired
     private ProjectDao mapper;
+    @Autowired
+    private LogService logService;
     @Autowired
     private CustomProjectDao customMapper;
     public List<Project> queryMyProjectByUserId(String userId){
@@ -58,10 +63,10 @@ public class CustomProjectService {
     }
 
 
-    public List<String> queryProjectIdByType(int type) {
-        Assert.notNull(type, "type can't be null");
-       return customMapper.queryMyProjectIdByType(type);
-    }
+//    public List<String> queryProjectIdByType(int type) {
+//        Assert.notNull(type, "type can't be null");
+//       return customMapper.queryMyProjectIdByType(type);
+//    }
 
     public List<Project> pageProjectByUserIdName(String userId, String name, Page page){
         Assert.notNull(userId, "userId can't be null");
@@ -84,9 +89,10 @@ public class CustomProjectService {
         if(MyString.isEmpty(remark)) {
             remark = model.getName();
         }
-//        Log log = new Log(modelName, remark, LogType.UPDATE.name(), JSONObject.fromObject(dbModel).toString(),
-//                model.getClass().getSimpleName(), model.getId());
-//        // logDao.save(log); TODO
+
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
+        logService.insert(log);
+
         mapper.updateByPrimaryKeySelective(model);
     }
 
@@ -96,9 +102,10 @@ public class CustomProjectService {
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
-//        Log log = new Log(modelName, remark, LogType.DELTET.name(), JSONObject.fromObject(dbModel).toString(),
-//                dbModel.getClass().getSimpleName(), dbModel.getId());
-        // logDao.save(log);
+
+        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
+        logService.insert(log);
+
         mapper.deleteByPrimaryKey(dbModel.getId());
     }
 }

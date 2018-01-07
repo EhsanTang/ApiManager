@@ -51,7 +51,7 @@ public class InterfaceController extends BaseController{
 	@AuthPassport
 	public JsonResult list(@RequestParam String moduleId, String interfaceName, String url,
 			 Integer currentPage) throws MyException{
-		Page page= new Page(15, currentPage);
+		Page page= new Page(currentPage);
 		checkUserPermissionByModuleId(moduleId, VIEW);
 
 		InterfaceCriteria example = new InterfaceCriteria();
@@ -76,15 +76,15 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(@RequestParam String id, String moduleId) throws MyException {
 		InterfaceWithBLOBs model;
-		if(!id.equals(IConst.NULL_ID)){
-			model= mybatisInterfaceService.selectByPrimaryKey(id);
-			checkUserPermissionByProject(projectCache.get(model.getProjectId()), VIEW);
+		if(id != null){
+			model= mybatisInterfaceService.getById(id);
+			checkUserPermissionByProject(model.getProjectId(), VIEW);
 		}else{
 			model = new InterfaceWithBLOBs();
 			model.setModuleId( moduleId);
 			Module module = moduleCache.get(moduleId);
 			if(!MyString.isEmpty(module.getTemplateId())){
-				InterfaceWithBLOBs template = mybatisInterfaceService.selectByPrimaryKey(module.getTemplateId());
+				InterfaceWithBLOBs template = mybatisInterfaceService.getById(module.getTemplateId());
 				// 根据模板初始化接口
 				if(template != null){
 					model.setHeader(template.getHeader());
@@ -115,7 +115,7 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult copy(@ModelAttribute InterfaceWithBLOBs interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
-		checkUserPermissionByProject(projectCache.get(interFace.getProjectId()), ADD_INTER);
+		checkUserPermissionByProject(interFace.getProjectId(), ADD_INTER);
 		Module module = moduleCache.get(interFace.getModuleId());
 
 		if(!config.isCanRepeatUrl()){
@@ -189,7 +189,7 @@ public class InterfaceController extends BaseController{
 
 		Module module = moduleCache.get(interFace.getModuleId());
 		if (!MyString.isEmpty(interFace.getId())) {
-			String oldModuleId = mybatisInterfaceService.selectByPrimaryKey(interFace.getId()).getModuleId();
+			String oldModuleId = mybatisInterfaceService.getById(interFace.getId()).getModuleId();
 			String projectId = moduleCache.get(oldModuleId).getProjectId();
 			Project project = projectCache.get(interFace.getProjectId() );
 
@@ -240,8 +240,8 @@ public class InterfaceController extends BaseController{
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			InterfaceWithBLOBs interFace = mybatisInterfaceService.selectByPrimaryKey( tempId );
-			checkUserPermissionByProject(projectCache.get( interFace.getProjectId() ), DEL_INTER);
+			InterfaceWithBLOBs interFace = mybatisInterfaceService.getById( tempId );
+			checkUserPermissionByProject(interFace.getProjectId(), DEL_INTER);
 			customInterfaceService.delete(interFace.getId(), "接口", "");
 			luceneService.delete(new SearchDto(interFace.getId()));
 		}
@@ -251,10 +251,10 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		InterfaceWithBLOBs change = mybatisInterfaceService.selectByPrimaryKey(changeId);
-		InterfaceWithBLOBs model = mybatisInterfaceService.selectByPrimaryKey(id);
-		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_INTER);
-		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_INTER);
+		InterfaceWithBLOBs change = mybatisInterfaceService.getById(changeId);
+		InterfaceWithBLOBs model = mybatisInterfaceService.getById(id);
+		checkUserPermissionByProject(model.getProjectId(), MOD_INTER);
+		checkUserPermissionByProject(change.getProjectId(), MOD_INTER);
 		
 		int modelSequence = model.getSequence();
 		

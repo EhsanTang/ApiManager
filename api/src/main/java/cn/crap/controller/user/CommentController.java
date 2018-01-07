@@ -1,6 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.CommentAdapter;
+import cn.crap.dto.CommentDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -9,7 +10,6 @@ import cn.crap.model.mybatis.Comment;
 import cn.crap.model.mybatis.CommentCriteria;
 import cn.crap.service.mybatis.ArticleService;
 import cn.crap.service.mybatis.CommentService;
-import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
@@ -37,8 +36,8 @@ public class CommentController extends BaseController {
 	@AuthPassport
 	public JsonResult list(String articleId,  Integer currentPage) throws MyException {
 		
-		checkUserPermissionByProject( articleService.selectByPrimaryKey(articleId).getProjectId(), VIEW);
-		Page page= new Page(15, currentPage);
+		checkUserPermissionByProject( articleService.getById(articleId).getProjectId(), VIEW);
+		Page page= new Page(currentPage);
 
 		CommentCriteria example = new CommentCriteria();
 		example.createCriteria().andArticleIdEqualTo(articleId);
@@ -49,29 +48,31 @@ public class CommentController extends BaseController {
 		page.setAllRow(commentService.countByExample(example));
 
 		List<Comment> commentList = commentService.selectByExample(example);
-
 		return new JsonResult(1, CommentAdapter.getDto(commentList), page);
 	}
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Comment comment) throws MyException {
-		Comment model;
-		if (!comment.getId().equals(IConst.NULL_ID)) {
-			model = commentService.selectByPrimaryKey(comment.getId());
-			checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey( model.getArticleId() ).getProjectId() ), VIEW);
-		} else {
-			model = new Comment();
+	public JsonResult detail(String id) throws MyException {
+		Comment dbComment = null;
+		if (id != null) {
+			dbComment = commentService.getById(id);
+			checkUserPermissionByProject( articleService.getById( dbComment.getArticleId() ).getProjectId(), VIEW);
 		}
-		return new JsonResult(1, model);
+
+		if (dbComment == null){
+			dbComment = new Comment();
+		}
+		return new JsonResult(1, dbComment);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ) , MOD_ARTICLE);
+	public JsonResult addOrUpdate(@ModelAttribute CommentDto commentDto) throws MyException {
+		checkUserPermissionByProject(articleService.getById(commentDto.getArticleId()).getProjectId() , MOD_ARTICLE);
+		Comment comment = CommentAdapter.getModel(commentDto);
 		comment.setUpdateTime(new Date());
 		commentService.update(comment);
 		return new JsonResult(1, null);
@@ -92,9 +93,8 @@ public class CommentController extends BaseController {
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			Comment comment = commentService.selectByPrimaryKey(tempId);
-			checkUserPermissionByProject( projectCache.get(  articleService.selectByPrimaryKey(  comment.getArticleId()  ).getProjectId() ), DEL_ARTICLE);
-			comment = commentService.selectByPrimaryKey(comment.getId());
+			Comment comment = commentService.getById(tempId);
+			checkUserPermissionByProject(articleService.getById(comment.getArticleId()).getProjectId(), DEL_ARTICLE);
 			commentService.delete(tempId);
 		}
 		return new JsonResult(1, null);

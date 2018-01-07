@@ -27,7 +27,7 @@ public class UserService {
         return userMapper.countByExample(example);
     }
 
-    public User selectByPrimaryKey(String id) {
+    public User getById(String id) {
         return userMapper.selectByPrimaryKey(id);
     }
 

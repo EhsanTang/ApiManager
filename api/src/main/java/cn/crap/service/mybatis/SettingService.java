@@ -26,7 +26,7 @@ public class SettingService {
         return settingMapper.countByExample(example);
     }
 
-    public Setting selectByPrimaryKey(String id) {
+    public Setting getById(String id) {
         if (id == null){
             return null;
         }

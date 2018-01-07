@@ -2,7 +2,6 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
-import cn.crap.dao.mybatis.ModuleDao;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
 import cn.crap.enumer.ArticleType;
@@ -17,11 +16,10 @@ import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.service.custom.*;
 import cn.crap.service.mybatis.*;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,9 +56,8 @@ public class ModuleController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-			Page<Module> page= new Page(15, currentPage);
-
-			checkUserPermissionByProject(projectCache.get(projectId), VIEW);
+			Page<Module> page= new Page(currentPage);
+			checkUserPermissionByProject(projectId, VIEW);
 
 			page = customModuleService.queryByProjectId(projectId, page);
 			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
@@ -69,27 +66,29 @@ public class ModuleController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(String id, String projectId) throws MyException{
-		Module model;
+		Module module;
         Project project;
 		if(id != null){
-			model= moduleService.selectByPrimaryKey(id);
-			project = projectCache.get(model.getProjectId());
+			module= moduleService.getById(id);
+			project = projectCache.get(module.getProjectId());
 			checkUserPermissionByProject(project, VIEW);
 		}else{
 		    project = projectCache.get(projectId);
 			checkUserPermissionByProject(project, VIEW);
-			model=new Module();
-			model.setStatus(Byte.valueOf("1"));
-			model.setProjectId(projectId);
+			module=new Module();
+			module.setStatus(Byte.valueOf("1"));
+			module.setProjectId(projectId);
 		}
-		return new JsonResult(1, ModuleAdapter.getDto(model, project));
+		return new JsonResult(1, ModuleAdapter.getDto(module, project));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
-		// 系统数据，不允许删除 TODO web移至单独表
-        String id = moduleDto.getId();
+		// 系统数据，不允许删除
+		Assert.notNull(moduleDto.getProjectId());
+
+		String id = moduleDto.getId();
 		if(id != null && C_WEB_MODULE.equals(id)) {
 			throw new MyException(E000009);
 		}
@@ -102,18 +101,16 @@ public class ModuleController extends BaseController{
 		if(id != null){
 			checkUserPermissionByModuleId(id, MOD_MODULE);
 
-            Module dbModule = moduleService.selectByPrimaryKey(module.getId());
-
+            Module dbModule = moduleService.getById(module.getId());
             Log log = Adapter.getLog(dbModule.getId(), "模块", "", LogType.UPDATE, dbModule.getClass(), dbModule);
             logService.insert(log);
 
             moduleService.update(module);
             // 更新该模块下的所有接口的fullUrl
 			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
-
-
 		}else{
-			checkUserPermissionByProject(projectCache.get( module.getProjectId() ), ADD_MODULE);
+			module.setProjectId(moduleDto.getProjectId());
+			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
 			module.setVersion(0);
 			moduleService.insert(module);
@@ -125,7 +122,7 @@ public class ModuleController extends BaseController{
 		 */
 		LoginInfoDto user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.selectByPrimaryKey(user.getId()), roleService, customProjectService, projectUserService));
+		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	
@@ -138,7 +135,7 @@ public class ModuleController extends BaseController{
 	@RequestMapping("/setTemplate.do")
 	@ResponseBody
 	public JsonResult setTemplate(String id) throws Exception{
-		InterfaceWithBLOBs inter = interfaceService.selectByPrimaryKey(id);
+		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
 		Module module = moduleCache.get(inter.getModuleId());
 		checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
@@ -197,8 +194,8 @@ public class ModuleController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Module change = moduleService.selectByPrimaryKey(changeId);
-		Module model = moduleService.selectByPrimaryKey(id);
+		Module change = moduleService.getById(changeId);
+		Module model = moduleService.getById(id);
 		
 		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_MODULE);
 		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_MODULE);

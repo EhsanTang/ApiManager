@@ -119,7 +119,7 @@ public class LoginController extends BaseController{
 		if(code == null || !code.equals(IConst.REGISTER)){
 			ThreadContext.request().setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
 		}else{
-			User user = userService.selectByPrimaryKey(id);
+			User user = userService.getById(id);
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);

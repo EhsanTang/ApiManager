@@ -30,7 +30,7 @@ public class ProjectUserService {
         return mapper.countByExample(example);
     }
 
-    public ProjectUser selectByPrimaryKey(String id) {
+    public ProjectUser getById(String id) {
         if (id == null){
             return null;
         }

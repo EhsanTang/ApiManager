@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.LogDto;
 import cn.crap.model.mybatis.Log;
+import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class LogAdapter {
         LogDto dto = new LogDto();
         dto.setId(model.getId());
 		dto.setStatus(model.getStatus());
-		dto.setCreateTime(model.getCreateTime());
+        dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
 		dto.setSequence(model.getSequence());
 		dto.setModelClass(model.getModelClass());
 		dto.setModelName(model.getModelName());
@@ -41,7 +42,6 @@ public class LogAdapter {
         Log model = new Log();
         model.setId(dto.getId());
 		model.setStatus(dto.getStatus());
-		model.setCreateTime(dto.getCreateTime());
 		model.setSequence(dto.getSequence());
 		model.setModelClass(dto.getModelClass());
 		model.setModelName(dto.getModelName());

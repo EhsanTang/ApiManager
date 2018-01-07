@@ -1,7 +1,6 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.ModuleDao;
-import cn.crap.dto.PickDto;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.ProjectService;
 import cn.crap.utils.*;
@@ -67,23 +66,23 @@ public class CustomModuleService {
     }
 
     public List<String> getList(Byte status, String userId) {
-        List<Byte> statuss = null;
+        List<Byte> statuses = null;
         if(status != null){
-            statuss= new ArrayList<Byte>();
-            statuss.add(status);
+            statuses= new ArrayList<Byte>();
+            statuses.add(status);
         }
-        return getListByStatuss(statuss, userId);
+        return getListByStatuses(statuses, userId);
     }
 
-    public List<String> getListByStatuss(List<Byte> statuss, String userId) {
-        Assert.notNull(statuss);
+    public List<String> getListByStatuses(List<Byte> statuses, String userId) {
+        Assert.notNull(statuses);
         Assert.notNull(userId);
 
         Page page = new Page(1, 2000);// 最多显示钱2000条
         List<String> ids = new ArrayList<>();
 
         ModuleCriteria example = new ModuleCriteria();
-        example.createCriteria().andStatusIn(statuss).andUserIdEqualTo(userId);
+        example.createCriteria().andStatusIn(statuses).andUserIdEqualTo(userId);
 
         example.setLimitStart(page.getStart());
         example.setMaxResults(page.getSize());

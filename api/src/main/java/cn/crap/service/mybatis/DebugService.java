@@ -30,7 +30,7 @@ public class DebugService {
         return mapper.countByExample(example);
     }
 
-    public Debug selectByPrimaryKey(String id) {
+    public Debug getById(String id) {
         if (id == null){
             return null;
         }

@@ -12,11 +12,11 @@ import cn.crap.service.custom.CustomLogService;
 import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -36,10 +36,11 @@ public class LogController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_LOG)
-    public JsonResult list(@ModelAttribute Log log, Integer currentPage) {
+    public JsonResult list(String identy, Integer currentPage) {
         Page page = new Page(currentPage);
         LogCriteria example = new LogCriteria();
-        example.createCriteria().andModelNameEqualTo(log.getModelName()).andIdNotEqualTo(log.getIdenty());
+        example.createCriteria().andIdentyEqualTo(identy);
+        example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
 
         page.setAllRow(logService.countByExample(example));
         List<LogDto> logDtoList = LogAdapter.getDto(logService.selectByExample(example));
@@ -52,7 +53,7 @@ public class LogController extends BaseController {
     public JsonResult detail(@ModelAttribute Log log) {
         Log model;
         if (!log.getId().equals(IConst.NULL_ID)) {
-            model = logService.selectByPrimaryKey(log.getId());
+            model = logService.getById(log.getId());
         } else {
             model = new Log();
         }

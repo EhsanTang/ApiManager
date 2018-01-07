@@ -1,28 +1,15 @@
 package cn.crap.controller.admin;
 
 import cn.crap.adapter.HotSearchAdapter;
-import cn.crap.adapter.UserAdapter;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.UserDto;
-import cn.crap.enumer.LoginType;
-import cn.crap.enumer.UserStatus;
-import cn.crap.enumer.UserType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.*;
-import cn.crap.service.custom.CustomProjectService;
-import cn.crap.service.custom.CustomUserService;
 import cn.crap.service.mybatis.HotSearchService;
-import cn.crap.service.mybatis.ProjectUserService;
-import cn.crap.service.mybatis.RoleService;
-import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,7 +41,7 @@ public class HotSearchController extends BaseController {
     public JsonResult detail(String id) {
         HotSearch hotSearch = new HotSearch();
         if (id != null) {
-            hotSearch = hotSearchService.selectByPrimaryKey(id);
+            hotSearch = hotSearchService.getById(id);
         }
         return new JsonResult().data(HotSearchAdapter.getDto(hotSearch));
     }

@@ -26,7 +26,7 @@ public class MenuService {
         return menuMapper.countByExample(example);
     }
 
-    public Menu selectByPrimaryKey(String id) {
+    public Menu getById(String id) {
         if (id == null){
             return null;
         }

@@ -38,9 +38,9 @@ public class CustomLogService implements IErrorCode {
      * @throws MyException
      */
     public void recover(Log log) throws MyException {
-        log = logService.selectByPrimaryKey(log.getId());
+        log = logService.getById(log.getId());
         switch (log.getModelClass().toUpperCase()) {
-
+            case "INTERFACEWITHBLOBS"://恢复接口
             case "INTERFACE"://恢复接口
                 JSONObject json = JSONObject.fromObject(log.getContent());
                 InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, Interface.class);
@@ -48,6 +48,7 @@ public class CustomLogService implements IErrorCode {
                 checkProject(inter.getProjectId());
                 interfaceService.update(inter);
                 break;
+            case "ARTICLEWITHBLOBS":// 恢复文章
             case "ARTICLE":// 恢复文章
                 json = JSONObject.fromObject(log.getContent());
                 ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
@@ -60,7 +61,7 @@ public class CustomLogService implements IErrorCode {
                 }
                 articleService.update(article);
                 break;
-
+            case "MODULEWITHBLOBS"://恢复模块
             case "MODULE"://恢复模块
                 json = JSONObject.fromObject(log.getContent());
                 Module module = (Module) JSONObject.toBean(json, Module.class);
@@ -72,13 +73,13 @@ public class CustomLogService implements IErrorCode {
                 }
                 moduleService.update(module);
                 break;
-
+            case "PROJECTWITHBLOBS":
             case "PROJECT"://恢复项目
                 json = JSONObject.fromObject(log.getContent());
                 Project project = (Project) JSONObject.toBean(json, Project.class);
                 projectService.update(project);
                 break;
-
+            case "SOURCEWITHBLOBS":
             case "SOURCE"://恢复资源
                 json = JSONObject.fromObject(log.getContent());
                 Source source = (Source) JSONObject.toBean(json, Source.class);
@@ -91,7 +92,7 @@ public class CustomLogService implements IErrorCode {
 
     private void checkModule(String moduleId) throws MyException {
         Assert.notNull(moduleId);
-        Module module = moduleService.selectByPrimaryKey(moduleId);
+        Module module = moduleService.getById(moduleId);
         if (module == null) {
             throw new MyException(E000048);
         }
@@ -99,7 +100,7 @@ public class CustomLogService implements IErrorCode {
 
     private void checkProject(String projectId) throws MyException {
         Assert.notNull(projectId);
-        Project project = projectService.selectByPrimaryKey(projectId);
+        Project project = projectService.getById(projectId);
         if (project == null) {
             throw new MyException(E000049);
         }

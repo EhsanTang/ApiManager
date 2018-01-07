@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -71,7 +70,7 @@ public class UserController extends BaseController {
     public JsonResult detail(String id) {
         User user = new User();
         if (id != null) {
-            user = userService.selectByPrimaryKey(id);
+            user = userService.getById(id);
         }
         return new JsonResult().data(UserAdapter.getDto(user));
     }
@@ -141,7 +140,7 @@ public class UserController extends BaseController {
             throw new MyException(E000028);
         }
 
-        User dbUser = userService.selectByPrimaryKey(user.getId());
+        User dbUser = userService.getById(user.getId());
         if (dbUser == null) {
             throw new MyException(E000013);
         }

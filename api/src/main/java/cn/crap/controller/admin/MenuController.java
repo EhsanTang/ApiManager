@@ -62,7 +62,7 @@ public class MenuController extends BaseController {
         Menu menu = new Menu();
         menu.setParentId(parentId);
         if (id != null) {
-            menu = menuService.selectByPrimaryKey(id);
+            menu = menuService.getById(id);
         }
         return new JsonResult().data(MenuAdapter.getDto(menu));
     }
@@ -75,7 +75,7 @@ public class MenuController extends BaseController {
     @AuthPassport(authority = C_AUTH_MENU)
     public JsonResult addOrUpdate(@ModelAttribute MenuDto menuDto) {
         // 子菜单类型和父菜单类型一致
-        Menu parentMenu = menuService.selectByPrimaryKey(menuDto.getParentId());
+        Menu parentMenu = menuService.getById(menuDto.getParentId());
         if (parentMenu != null && parentMenu.getId() != null) {
             menuDto.setType(parentMenu.getType());
         }
@@ -112,8 +112,8 @@ public class MenuController extends BaseController {
     @AuthPassport(authority = C_AUTH_MENU)
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {
 
-        Menu change = menuService.selectByPrimaryKey(changeId);
-        Menu model = menuService.selectByPrimaryKey(id);
+        Menu change = menuService.getById(changeId);
+        Menu model = menuService.getById(id);
         int modelSequence = model.getSequence();
 
         model.setSequence(change.getSequence());

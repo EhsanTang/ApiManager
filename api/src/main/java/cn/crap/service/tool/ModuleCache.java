@@ -42,7 +42,7 @@ public class ModuleCache implements ICacheService<Module> {
 		String cacheKey = assembleKey(moduleId);
 		Module module = getCache().getIfPresent(cacheKey);
 		if(module == null){
-			module = moduleService.selectByPrimaryKey(moduleId);
+			module = moduleService.getById(moduleId);
 			if(module == null) {
 				module = new Module();
 			}

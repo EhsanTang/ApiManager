@@ -26,7 +26,7 @@ public class ErrorService {
         return mapper.countByExample(example);
     }
 
-    public Error selectByPrimaryKey(String id) {
+    public Error getById(String id) {
         if (id == null){
             return null;
         }

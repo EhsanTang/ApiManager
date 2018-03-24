@@ -10,8 +10,8 @@ public class ProjectUserDto{
 	private String id;
 	private Byte status;
 	private Integer sequence;
-	private Date createTime;
 	private String projectId;
+	private String projectName;
 	private String userId;
 	private Boolean addModule;
 	private Boolean delModule;
@@ -33,7 +33,7 @@ public class ProjectUserDto{
 	private Boolean addError;
 	private Boolean delError;
 	private Boolean modError;
-	private boolean[] projectAuth;
+	private Boolean[] projectAuth;
 
 	public void setId(String id){
 		this.id=id;
@@ -54,13 +54,6 @@ public class ProjectUserDto{
 	}
 	public Integer getSequence(){
 		return sequence;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setProjectId(String projectId){
@@ -217,11 +210,21 @@ public class ProjectUserDto{
 		return modError;
 	}
 
-	public boolean[] getProjectAuth() {
+	public Boolean[] getProjectAuth() {
 		return projectAuth;
 	}
 
-	public void setProjectAuth(boolean[] projectAuth) {
+	public void setProjectAuth(Boolean[] projectAuth) {
 		this.projectAuth = projectAuth;
 	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+
 }

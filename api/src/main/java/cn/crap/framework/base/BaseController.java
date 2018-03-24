@@ -130,7 +130,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
         }
 
         // 项目成员
-        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()));
+        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
         if (puDto == null) {
             throw new MyException(E000003);
         }

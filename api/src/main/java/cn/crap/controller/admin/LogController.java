@@ -57,7 +57,7 @@ public class LogController extends BaseController {
         } else {
             model = new Log();
         }
-        return new JsonResult(1, model);
+        return new JsonResult(1, LogAdapter.getDto(model));
     }
 
     @RequestMapping("/recover.do")

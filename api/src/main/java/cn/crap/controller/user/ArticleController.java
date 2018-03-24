@@ -71,9 +71,11 @@ public class ArticleController extends BaseController{
 			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
 		}
 
-        Assert.notNull(moduleId);
-        Module module = moduleCache.get(moduleId);
-        checkUserPermissionByProject( module.getProjectId(), VIEW);
+		Module module = new Module();
+		if (moduleId != null) {
+			module = moduleCache.get(moduleId);
+			checkUserPermissionByProject(module.getProjectId(), VIEW);
+		}
 
         ArticleWithBLOBs model = new ArticleWithBLOBs();
 		model.setType(type);

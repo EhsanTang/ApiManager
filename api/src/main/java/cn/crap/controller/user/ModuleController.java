@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController{
+public class ModuleController extends BaseController implements ILogConst{
 
 	@Autowired
 	private ModuleService moduleService;
@@ -102,7 +102,7 @@ public class ModuleController extends BaseController{
 			checkUserPermissionByModuleId(id, MOD_MODULE);
 
             Module dbModule = moduleService.getById(module.getId());
-            Log log = Adapter.getLog(dbModule.getId(), "模块", "", LogType.UPDATE, dbModule.getClass(), dbModule);
+            Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.UPDATE, dbModule.getClass(), dbModule);
             logService.insert(log);
 
             moduleService.update(module);
@@ -181,7 +181,7 @@ public class ModuleController extends BaseController{
 			throw new MyException("000036");
 		}
 
-        Log log = Adapter.getLog(dbModule.getId(), "模块", "", LogType.DELTET, dbModule.getClass(), dbModule);
+        Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
         logService.insert(log);
 
 		moduleCache.del(module.getId());

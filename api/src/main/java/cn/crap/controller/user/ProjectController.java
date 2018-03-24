@@ -117,7 +117,7 @@ private CustomProjectUserService customProjectUserService;
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(null);
 			}
-			customProjectService.update(ProjectAdapter.getModel(project) , "项目" , "");
+			customProjectService.update(ProjectAdapter.getModel(project));
 		}
 		// 新增
 		else{
@@ -168,7 +168,7 @@ private CustomProjectUserService customProjectUserService;
 		}
 
 		projectCache.del(project.getId());
-		customProjectService.delete(project.getId(), "项目", "");
+		customProjectService.delete(project.getId());
 		return new JsonResult(1,null);
 	}
 

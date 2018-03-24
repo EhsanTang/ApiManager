@@ -25,7 +25,7 @@
 			</tr>
 			<tr>
 				<td>时间</td>
-				<td ng-bind="getDate(model.createTime)|date:'yyyy-MM-dd HH:mm'"></td>
+				<td ng-bind="model.createTimeStr"></td>
 			</tr>
 			<tr>
 				<td>修改前的类容</td>
@@ -35,9 +35,9 @@
 			</tr>
 	</table>
 		<a  type="button" class="btn btn-danger btn-sm fr" title="恢复" ng-if="showOperation('LOG','');"
-					ng-click="del('log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
-					<i class="iconfont f12">&#xe627;&nbsp;恢复</i>
-				</a>				
+			ng-click="del('log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
+			<i class="iconfont f12">&#xe627;&nbsp;恢复</i>
+		</a>
 </div>
 </div>
 <div class="cb"></div>

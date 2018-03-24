@@ -1,9 +1,11 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectUserAdapter;
+import cn.crap.dto.ProjectUserDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
@@ -41,7 +43,7 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 		Assert.isTrue(currentPage > 0);
-			Page<ProjectUser> page= new Page(SIZE, currentPage);
+        Page<ProjectUser> page= new Page(SIZE, currentPage);
 			checkUserPermissionByProject( projectCache.get(projectId) );
 			page = customProjectUserService.queryByProjectId(projectId, page);
 			return new JsonResult(1, ProjectUserAdapter.getDto(page.getList()), page);
@@ -49,23 +51,26 @@ public class ProjectUserController extends BaseController{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@RequestParam String id, @RequestParam String projectId) throws MyException{
-		ProjectUser model;
-		if(!id.equals(IConst.NULL_ID)){
-			model= projectUserService.getById(id);
-			checkUserPermissionByProject(projectCache.get( model.getProjectId() ));
+	public JsonResult detail(String id, @RequestParam String projectId) throws MyException{
+		ProjectUser projectUser;
+		Project project = projectCache.get(projectId);
+		if(id != null){
+			projectUser= projectUserService.getById(id);
+			checkUserPermissionByProject(project);
 		}else{
-			checkUserPermissionByProject(projectCache.get( projectId ));
-			model=new ProjectUser();
-			model.setStatus(Byte.valueOf("1"));
-			model.setProjectId( projectId );
+			checkUserPermissionByProject(project);
+			projectUser = new ProjectUser();
+			projectUser.setStatus(Byte.valueOf("1"));
+			projectUser.setProjectId(projectId);
 		}
-		return new JsonResult(1,model);
+        ProjectUserDto projectUserDto = ProjectUserAdapter.getDto(projectUser, project);
+        projectUserDto.setProjectAuth(null);
+		return new JsonResult(1, projectUserDto);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute ProjectUser projectUser) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ProjectUserDto projectUser) throws Exception{
 		checkUserPermissionByProject( projectCache.get( projectUser.getProjectId() ));
 		User search = null;
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
@@ -93,9 +98,9 @@ public class ProjectUserController extends BaseController{
 		
 		try{
 			if(!MyString.isEmpty(projectUser.getId())){
-				projectUserService.update(projectUser);
+				projectUserService.update(ProjectUserAdapter.getModel(projectUser));
 			}else{
-				projectUserService.insert(projectUser);
+				projectUserService.insert(ProjectUserAdapter.getModel(projectUser));
 			}
 		}catch(Exception e){
 			// 重复添加

@@ -6,9 +6,7 @@ import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.enumer.LogType;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.LogService;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -16,7 +14,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @Service
-public class CustomProjectService {
+public class CustomProjectService implements ILogConst{
     @Autowired
     private ProjectDao mapper;
     @Autowired
@@ -79,31 +77,27 @@ public class CustomProjectService {
     }
 
     /**
-     * update project and add update log
-     * @param model
-     * @param modelName
-     * @param remark
+     * update project and add log
+     * @param project
      */
-    public void update(Project model, String modelName, String remark) {
-        Project dbModel = mapper.selectByPrimaryKey(model.getId());
-        if(MyString.isEmpty(remark)) {
-            remark = model.getName();
-        }
+    public void update(Project project) {
+        Project dbModel = mapper.selectByPrimaryKey(project.getId());
 
-        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
+        Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        mapper.updateByPrimaryKeySelective(model);
+        mapper.updateByPrimaryKeySelective(project);
     }
 
-    public void delete(String id, String modelName, String remark){
+    /**
+     * delete project and add log
+     * @param id
+     */
+    public void delete(String id){
         Assert.notNull(id);
         Project dbModel = mapper.selectByPrimaryKey(id);
-        if(MyString.isEmpty(remark)) {
-            remark = dbModel.getName();
-        }
 
-        Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
+        Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
 
         mapper.deleteByPrimaryKey(dbModel.getId());

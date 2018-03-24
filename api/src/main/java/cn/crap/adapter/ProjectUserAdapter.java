@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.ProjectUser;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectUserAdapter {
-    public static ProjectUserDto getDto(ProjectUser model){
+    public static ProjectUserDto getDto(ProjectUser model, Project project){
         if (model == null){
             return null;
         }
@@ -23,8 +24,8 @@ public class ProjectUserAdapter {
         dto.setId(model.getId());
 		dto.setStatus(model.getStatus());
 		dto.setSequence(model.getSequence());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setProjectId(model.getProjectId());
+		dto.setProjectName(project == null ? "" : project.getName());
 		dto.setUserId(model.getUserId());
 		dto.setAddModule(model.getAddModule());
 		dto.setDelModule(model.getDelModule());
@@ -47,7 +48,7 @@ public class ProjectUserAdapter {
 		dto.setDelError(model.getDelError());
 		dto.setModError(model.getModError());
 
-		boolean[] projectAuth = new boolean[19];
+		Boolean[] projectAuth = new Boolean[19];
 		projectAuth[BaseController.ADD_MODULE] = model.getAddModule();
 		projectAuth[BaseController.DEL_MODULE] = model.getDelModule();
 		projectAuth[BaseController.MOD_MODULE] = model.getModModule();
@@ -80,7 +81,6 @@ public class ProjectUserAdapter {
         model.setId(dto.getId());
 		model.setStatus(dto.getStatus());
 		model.setSequence(dto.getSequence());
-		model.setCreateTime(dto.getCreateTime());
 		model.setProjectId(dto.getProjectId());
 		model.setUserId(dto.getUserId());
 		model.setAddModule(dto.getAddModule());
@@ -113,7 +113,7 @@ public class ProjectUserAdapter {
         }
         List<ProjectUserDto> dtos = new ArrayList<>();
         for (ProjectUser model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, null));
         }
         return dtos;
     }

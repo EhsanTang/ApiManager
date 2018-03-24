@@ -80,11 +80,4 @@ public interface IConst {
 	String SETTING_OPEN_REGISTER = "openRegister";
 	String SETTING_GITHUB_ID = "githubClientID";
 	String C_SETTING_ANONYMOUS_COMMENT = "ANONYMOUS_COMMENT";
-	
-	
-	//SOLR
-	String SOLR_URL = "SOLR_URL";
-	String SOLR_QUEUESIZE  = "SOLR_QUEUESIZE";
-	String SOLR_THREADCOUNT = "SOLR_THREADCOUNT";
-	String SEARCH_TYPE = "SEARCH_TYPE";
 }

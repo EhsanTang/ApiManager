@@ -63,7 +63,7 @@ public class InterfaceController extends BaseController{
 			criteria.andFullUrlLike("%" + url + "%");
 		}
 
-		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExample(example));
+		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExampleWithBLOBs(example));
 		JsonResult result = new JsonResult(1, interfaces, page);
 		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
 				.putOthers("module", moduleCache.get(moduleId));
@@ -74,15 +74,22 @@ public class InterfaceController extends BaseController{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@RequestParam String id, String moduleId) throws MyException {
+	public JsonResult detail(String id, String moduleId) throws MyException {
 		InterfaceWithBLOBs model;
+		Module module = null;
 		if(id != null){
 			model= mybatisInterfaceService.getById(id);
+			module = moduleCache.get(model.getModuleId());
 			checkUserPermissionByProject(model.getProjectId(), VIEW);
 		}else{
 			model = new InterfaceWithBLOBs();
+			module = moduleCache.get(moduleId);
 			model.setModuleId( moduleId);
-			Module module = moduleCache.get(moduleId);
+			model.setProjectId(module.getProjectId());
+			model.setParam("form=[]");
+			model.setResponseParam("[]");
+			model.setHeader("[]");
+			model.setParamRemark("[]");
 			if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = mybatisInterfaceService.getById(module.getTemplateId());
 				// 根据模板初始化接口
@@ -102,7 +109,7 @@ public class InterfaceController extends BaseController{
 			}
 			
 		}
-		return new JsonResult(1, model);
+		return new JsonResult(1, InterfaceAdapter.getDto(model, module));
 	}
 	
 	/**
@@ -113,7 +120,7 @@ public class InterfaceController extends BaseController{
 	 */
 	@RequestMapping("/copy.do")
 	@ResponseBody
-	public JsonResult copy(@ModelAttribute InterfaceWithBLOBs interFace) throws MyException, IOException {
+	public JsonResult copy(@ModelAttribute InterfaceDto interFace) throws MyException, IOException {
 		//判断是否拥有该模块的权限
 		checkUserPermissionByProject(interFace.getProjectId(), ADD_INTER);
 		Module module = moduleCache.get(interFace.getModuleId());
@@ -128,7 +135,7 @@ public class InterfaceController extends BaseController{
 		}
 		interFace.setId(null);
 		interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-		mybatisInterfaceService.insert(interFace);
+		mybatisInterfaceService.insert(InterfaceAdapter.getModel(interFace));
 
 		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		return new JsonResult(1, interFace);
@@ -142,7 +149,7 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/getRequestExam.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult getRequestExam(@ModelAttribute InterfaceWithBLOBs interFace) {
+	public JsonResult getRequestExam(@ModelAttribute InterfaceDto interFace) {
 		customInterfaceService.getInterFaceRequestExam(interFace);
 		return new JsonResult(1, interFace);
 	}
@@ -150,7 +157,7 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute InterfaceWithBLOBs interFace) throws IOException, MyException {
+	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto interFace) throws IOException, MyException {
 		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
 
 		if(MyString.isEmpty(interFace.getUrl())) {
@@ -167,15 +174,14 @@ public class InterfaceController extends BaseController{
 
 		LoginInfoDto user = LoginUserHelper.getUser();
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
-		interFace.setUpdateTime(new Date());
-		
+
 		//请求示例为空，则自动添加
 		if(MyString.isEmpty(interFace.getRequestExam())){
 			customInterfaceService.getInterFaceRequestExam(interFace);
 		}
-		
+        interFace.setMonitorType(MonitorType.No.getValue());
 		//检查邮件格式是否正确
-		if(interFace.getMonitorType() != MonitorType.No.getValue()){
+		/**if(interFace.getMonitorType() != MonitorType.No.getValue()){
 			if(!MyString.isEmpty(interFace.getMonitorEmails())){
 				for(String email : interFace.getMonitorEmails().split(";")){
 					if( !Tools.checkEmail(email) ){
@@ -185,7 +191,7 @@ public class InterfaceController extends BaseController{
 			}else{
 				throw new MyException("000032");
 			}
-		}
+		}**/
 
 		Module module = moduleCache.get(interFace.getModuleId());
 		if (!MyString.isEmpty(interFace.getId())) {
@@ -207,8 +213,7 @@ public class InterfaceController extends BaseController{
 			}
 			
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-			customInterfaceService.update(interFace, "接口", "");
-			// TODO 添加日志
+			customInterfaceService.update(InterfaceAdapter.getModel(interFace), "接口", "");
 			if(interFace.getId().equals(interFace.getProjectId())){
 				throw new MyException("000027");
 			}
@@ -220,7 +225,7 @@ public class InterfaceController extends BaseController{
 				return new JsonResult(new MyException("000004"));
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-			mybatisInterfaceService.insert(interFace);
+			mybatisInterfaceService.insert(InterfaceAdapter.getModel(interFace));
 			luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		}
 		return new JsonResult(1, interFace);

@@ -43,7 +43,7 @@ public class CustomLogService implements IErrorCode {
             case "INTERFACEWITHBLOBS"://恢复接口
             case "INTERFACE"://恢复接口
                 JSONObject json = JSONObject.fromObject(log.getContent());
-                InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, Interface.class);
+                InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, InterfaceWithBLOBs.class);
                 checkModule(inter.getModuleId());
                 checkProject(inter.getProjectId());
                 interfaceService.update(inter);

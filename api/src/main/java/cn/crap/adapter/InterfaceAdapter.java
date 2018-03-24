@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.InterfaceStatus;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Interface;
@@ -10,6 +11,7 @@ import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
+import cn.crap.utils.DateFormartUtil;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDto(InterfaceWithBLOBs model){
+    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module){
         if (model == null){
             return null;
         }
@@ -45,8 +47,6 @@ public class InterfaceAdapter {
 		dto.setRemark(model.getRemark());
 		dto.setErrors(model.getErrors());
 		dto.setUpdateBy(model.getUpdateBy());
-		dto.setUpdateTime(model.getUpdateTime());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setVersion(model.getVersion());
 		dto.setSequence(model.getSequence());
 		dto.setHeader(model.getHeader());
@@ -56,6 +56,21 @@ public class InterfaceAdapter {
 		dto.setMonitorEmails(model.getMonitorEmails());
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
+		if (model.getCreateTime() != null) {
+            dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+        }
+        if (model.getUpdateTime() != null) {
+            dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
+        }
+
+        if (model.getStatus() != null){
+		    dto.setStatusName(InterfaceStatus.getNameByValue(model.getStatus()));
+        }
+
+		if (module != null){
+			dto.setModuleName(module.getName());
+			dto.setModuleUrl(module.getUrl());
+		}
 		
         return dto;
     }
@@ -73,8 +88,6 @@ public class InterfaceAdapter {
 		dto.setModuleId(model.getModuleId());
 		dto.setInterfaceName(model.getInterfaceName());
 		dto.setUpdateBy(model.getUpdateBy());
-		dto.setUpdateTime(model.getUpdateTime());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setVersion(model.getVersion());
 		dto.setSequence(model.getSequence());
 		dto.setFullUrl(model.getFullUrl());
@@ -109,8 +122,6 @@ public class InterfaceAdapter {
 		model.setRemark(dto.getRemark());
 		model.setErrors(dto.getErrors());
 		model.setUpdateBy(dto.getUpdateBy());
-		model.setUpdateTime(dto.getUpdateTime());
-		model.setCreateTime(dto.getCreateTime());
 		model.setVersion(dto.getVersion());
 		model.setSequence(dto.getSequence());
 		model.setHeader(dto.getHeader());
@@ -135,7 +146,7 @@ public class InterfaceAdapter {
         return dtos;
     }
 
-	public static List<InterfaceDto> getDto(List<Interface> models){
+	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models){
 		if (models == null){
 			return new ArrayList<>();
 		}
@@ -146,18 +157,18 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static List<SearchDto> getSearchDto(List<InterfaceWithBLOBs> models){
+	public static List<SearchDto> getSearchDto(List<InterfaceDto> models){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<SearchDto> dtos = new ArrayList<>();
-		for (InterfaceWithBLOBs model : models){
+		for (InterfaceDto model : models){
 			dtos.add(getSearchDto(model));
 		}
 		return dtos;
 	}
 
-	public static SearchDto getSearchDto(InterfaceWithBLOBs model) {
+	public static SearchDto getSearchDto(InterfaceDto model) {
 		Assert.notNull(model);
 		Assert.notNull(model.getProjectId());
 		Assert.notNull(model.getModuleId());
@@ -170,7 +181,7 @@ public class InterfaceAdapter {
 
 		SearchDto dto = new SearchDto();
 		dto.setId(model.getId());
-		dto.setCreateTime(model.getCreateTime());
+		dto.setCreateTime(DateFormartUtil.getByFormat(model.getCreateTimeStr(), DateFormartUtil.YYYY_MM_DD_HH_mm));
 		dto.setContent(model.getRemark() + model.getResponseParam() + model.getParam());
 		dto.setModuleName(module.getName());
 		dto.setTitle(model.getInterfaceName());

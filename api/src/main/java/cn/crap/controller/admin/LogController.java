@@ -11,6 +11,7 @@ import cn.crap.model.mybatis.LogCriteria;
 import cn.crap.service.custom.CustomLogService;
 import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.IConst;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,14 @@ public class LogController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_LOG)
-    public JsonResult list(String identy, Integer currentPage) {
+    public JsonResult list(String identy, Integer currentPage, String modelName) {
         Page page = new Page(currentPage);
         LogCriteria example = new LogCriteria();
-        example.createCriteria().andIdentyEqualTo(identy);
+        LogCriteria.Criteria criteria = example.createCriteria().andIdentyEqualTo(identy);
         example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+        if (MyString.isNotEmpty(modelName)){
+            criteria.andModelNameEqualTo(modelName);
+        }
 
         page.setAllRow(logService.countByExample(example));
         List<LogDto> logDtoList = LogAdapter.getDto(logService.selectByExample(example));

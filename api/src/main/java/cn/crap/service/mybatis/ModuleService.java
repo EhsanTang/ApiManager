@@ -61,6 +61,8 @@ public class ModuleService {
         if (model == null) {
             return false;
         }
+        model.setCreateTime(null);
+        model.setProjectId(null);
         return moduleMapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
     }
 

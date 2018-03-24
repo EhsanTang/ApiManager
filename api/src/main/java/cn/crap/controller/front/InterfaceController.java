@@ -187,7 +187,7 @@ public class InterfaceController extends BaseController {
             criteria.andFullUrlLike("%" + url + "%");
         }
 
-        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
+        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example));
 
         return new JsonResult(1, interfaces, page,
                 Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(), "#/" + module.getProjectId() + "/module/list", module.getName(), "void")));
@@ -210,7 +210,7 @@ public class InterfaceController extends BaseController {
             InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(interFace.getModuleId())
                     .andInterfaceNameEqualTo(interFace.getInterfaceName()).andVersionNotEqualTo(interFace.getVersion());
 
-            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExample(example));
+            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example));
 
             return new JsonResult(1, InterfaceAdapter.getDto(interFace), null,
                     Tools.getMap("versions", versions,

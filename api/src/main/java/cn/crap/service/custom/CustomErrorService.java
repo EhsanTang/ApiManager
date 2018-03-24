@@ -68,9 +68,9 @@ public class CustomErrorService {
         if (page != null) {
             example.setLimitStart(page.getStart());
             example.setMaxResults(page.getSize());
+            page.setAllRow(mapper.countByExample(example));
         }
 
-        page.setAllRow(mapper.countByExample(example));
         return mapper.selectByExample(example);
     }
 

@@ -48,7 +48,7 @@ public class PickService implements IPickService, IErrorCode {
 
             case INTERFACE_STATUS:
                 for (InterfaceStatus status : InterfaceStatus.values()) {
-                    pick = new PickDto(status.getName(), status.name());
+                    pick = new PickDto(status.getValue(), status.name());
                     picks.add(pick);
                 }
                 return picks;

@@ -18,13 +18,16 @@ public class InterfaceDto{
 	private String trueExam;
 	private String falseExam;
 	private Byte status;
+	private String statusName;
 	private String moduleId;
+	private String moduleName;
+	private String moduleUrl;
 	private String interfaceName;
 	private String remark;
 	private String errors;
 	private String updateBy;
-	private Date updateTime;
-	private Date createTime;
+    private String createTimeStr;
+    private String updateTimeStr;
 	private String version;
 	private Integer sequence;
 	private String header;
@@ -147,20 +150,6 @@ public class InterfaceDto{
 		return updateBy;
 	}
 
-	public void setUpdateTime(Date updateTime){
-		this.updateTime=updateTime;
-	}
-	public Date getUpdateTime(){
-		return updateTime;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
-	}
-
 	public void setVersion(String version){
 		this.version=version;
 	}
@@ -224,5 +213,51 @@ public class InterfaceDto{
 		return projectId;
 	}
 
+	public String getModuleName() {
+		return moduleName;
+	}
 
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	public String getModuleUrl() {
+		return moduleUrl;
+	}
+
+	public void setModuleUrl(String moduleUrl) {
+		this.moduleUrl = moduleUrl;
+	}
+
+	public Boolean getTemplate() {
+		return isTemplate;
+	}
+
+	public void setTemplate(Boolean template) {
+		isTemplate = template;
+	}
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
+
+    public String getUpdateTimeStr() {
+        return updateTimeStr;
+    }
+
+    public void setUpdateTimeStr(String updateTimeStr) {
+        this.updateTimeStr = updateTimeStr;
+    }
 }

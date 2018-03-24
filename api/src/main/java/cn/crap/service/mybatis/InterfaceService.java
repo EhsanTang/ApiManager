@@ -27,6 +27,10 @@ public class InterfaceService {
         return mapper.selectByExample(example);
     }
 
+    public List<InterfaceWithBLOBs> selectByExampleWithBLOBs(InterfaceCriteria example) {
+        return mapper.selectByExampleWithBLOBs(example);
+    }
+
     public int countByExample(InterfaceCriteria example) {
         return mapper.countByExample(example);
     }
@@ -55,6 +59,7 @@ public class InterfaceService {
             }
         }
         model.setCreateTime(new Date());
+        model.setUpdateTime(new Date());
         return mapper.insertSelective(model) > 0;
     }
 
@@ -62,6 +67,8 @@ public class InterfaceService {
         if (model == null) {
             return false;
         }
+        model.setUpdateTime(new Date());
+        model.setCreateTime(null);
         return mapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
     }
 

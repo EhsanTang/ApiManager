@@ -36,9 +36,8 @@
 					</td>
 					<td class="tc">状态</td>
 					<td>
-						<input class="form-control" type="text" id="status"
-							ng-focus="loadPick($event,220,220,'true','status','INTERFACE_STATUS',model.status);"
-								ng-model="model.status" required placeholder="请点击输入框选择">
+						<input class="form-control" type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
+							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
 					</td>
 				</tr>
 				<tr>
@@ -49,6 +48,7 @@
 					<td class="tc">
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
+				<!--
 				<tr>
 					<td class="tc w80">监控类型</td>
 					<td class="tc">
@@ -74,6 +74,7 @@
 						</textarea>
 					</td>
 				</tr>
+				 -->
 				<tr>
 					<td class="tc">请求头</td>
 					<td class="tc" colspan="3" ui-view="interHeaderDiv"></td>

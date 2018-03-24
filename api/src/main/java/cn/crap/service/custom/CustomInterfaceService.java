@@ -91,9 +91,9 @@ public class CustomInterfaceService implements ILuceneService {
 //						"module",cacheService.getModule(interFace.getModuleId())));
 //	}
 
-    public void getInterFaceRequestExam(InterfaceWithBLOBs interFace) {
+    public void getInterFaceRequestExam(InterfaceDto interFace) {
         Module module = moduleCache.get(interFace.getModuleId());
-        interFace.setRequestExam("请求地址:"+ module.getName() + interFace.getUrl()+"\r\n");
+        interFace.setRequestExam("请求地址:"+ module.getUrl() + interFace.getUrl()+"\r\n");
 
         // 请求头
         JSONArray headers = JSONArray.fromObject(interFace.getHeader());
@@ -163,7 +163,7 @@ public class CustomInterfaceService implements ILuceneService {
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        dao.updateByPrimaryKeyWithBLOBs(model);
+        dao.updateByPrimaryKeySelective(model);
     }
 
     public void delete(String id, String modelName, String remark){
@@ -216,13 +216,13 @@ public class CustomInterfaceService implements ILuceneService {
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria()));
+        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria())));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(dao.selectByExampleWithBLOBs(example));
+        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(example)));
     }
 }

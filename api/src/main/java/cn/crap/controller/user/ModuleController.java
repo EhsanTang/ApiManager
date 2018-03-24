@@ -137,10 +137,10 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult setTemplate(String id) throws Exception{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
-		Module module = moduleCache.get(inter.getModuleId());
+		Module module = moduleService.getById(inter.getModuleId());
 		checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
 		
-		module.setTemplateId( inter.getIsTemplate() ? null: inter.getId() );
+		module.setTemplateId( inter.getIsTemplate() ? "-1" : inter.getId() );
 		moduleService.update(module);
 		
 		customInterfaceService.deleteTemplateByModuleId(module.getId());

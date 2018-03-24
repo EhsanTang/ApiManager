@@ -34,7 +34,7 @@ public class ErrorController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(String errorCode,String errorMsg, @RequestParam String projectId,
-						   Integer currentPage, String password, String visitCode) throws MyException{
+						   @RequestParam(defaultValue = "1") Integer currentPage, String password, String visitCode) throws MyException{
 		Project project = projectCache.get(projectId);
 
 		checkFrontPermission(password, visitCode, project);

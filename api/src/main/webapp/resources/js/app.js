@@ -157,7 +157,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 	}
 	
-	$rootScope.submitForm = function(iurl,callBack,myLoading){
+	$rootScope.submitForm = function(iurl,callBack,myLoading, afterCallBack){
 		/**
 		  * 回调刷新当前页面数据
 		  */
@@ -181,6 +181,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $timeout(function() {
 					 $("#refresh").click();
                  })
+                if(afterCallBack){
+                    afterCallBack();
+                }
 			 }
 		}).error(function(result) {
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
@@ -266,6 +269,12 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
             return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
         }
 	}
+    /**
+	 * 发布文章评论回调
+     */
+    $rootScope.changeimg = function () {
+        changeimg('imgCode2','verificationCode');
+    }
 	/**
 	 * 提交数据字典时回调将表格数据转换为json
 	 */

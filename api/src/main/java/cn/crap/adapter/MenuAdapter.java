@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.MenuDto;
+import cn.crap.enumer.MenuType;
 import cn.crap.model.mybatis.Menu;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class MenuAdapter {
         menuDto.setSequence(menu.getSequence());
         menuDto.setStatus(menu.getStatus());
         menuDto.setType(menu.getType());
+        menuDto.setTypeName(menu.getType() == null ? "" : MenuType.getChineseNameByValue(menu.getType()));
+
         return menuDto;
     }
 

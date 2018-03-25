@@ -98,7 +98,7 @@ public class PickService implements IPickService, IErrorCode {
 
             case MENU_TYPE:
                 for (MenuType type : MenuType.values()) {
-                    pick = new PickDto(type.name(), type.getName());
+                    pick = new PickDto(type.name(), type.getChineseName());
                     picks.add(pick);
                 }
                 return picks;

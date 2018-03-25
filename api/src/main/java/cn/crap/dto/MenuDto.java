@@ -11,6 +11,7 @@ public class MenuDto{
     private String parentId;
     private String iconRemark;
     private String type;
+    private String typeName;
     private Byte status;
     private Integer sequence;
 
@@ -86,9 +87,11 @@ public class MenuDto{
         this.sequence = sequence;
     }
 
-    public String getTypeName(){
-        if(!MyString.isEmpty(type))
-            return MenuType.valueOf(type).getName();
-        return "";
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getTypeName() {
+        return typeName;
     }
 }

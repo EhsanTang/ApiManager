@@ -2,6 +2,7 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.MenuAdapter;
 import cn.crap.dto.MenuDto;
+import cn.crap.enumer.MenuType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -33,7 +34,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_MENU)
     public JsonResult list(String type, String menuName, String parentId, Integer currentPage) {
-        Page page = new Page(15, currentPage);
+        Page page = new Page(currentPage);
 
         MenuCriteria menuCriteria = new MenuCriteria();
         MenuCriteria.Criteria criteria = menuCriteria.createCriteria();
@@ -61,10 +62,15 @@ public class MenuController extends BaseController {
     public JsonResult detail(String id, String parentId) {
         Menu menu = new Menu();
         menu.setParentId(parentId);
+        Menu parentMenu = menuService.getById(parentId);
         if (id != null) {
             menu = menuService.getById(id);
+        }else{
+            menu.setType(parentMenu == null ? null : parentMenu.getType());
         }
-        return new JsonResult().data(MenuAdapter.getDto(menu));
+        MenuDto menuDto = MenuAdapter.getDto(menu);
+
+        return new JsonResult().data(menuDto);
     }
 
     /**

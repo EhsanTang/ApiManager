@@ -56,17 +56,24 @@ public class MenuController extends BaseController {
         return new JsonResult(1, MenuAdapter.getDto(menuService.selectByExample(menuCriteria)), page);
     }
 
+    /**
+     * 菜单详情
+     * @param id
+     * @param parentId
+     * @param type 菜单类型，当id为null，parentId为null时，表示新增父菜单，需要根据传入的type默认选中菜单类型
+     * @return
+     */
     @RequestMapping("/menu/detail.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_MENU)
-    public JsonResult detail(String id, String parentId) {
+    public JsonResult detail(String id, String parentId, String type) {
         Menu menu = new Menu();
         menu.setParentId(parentId);
         Menu parentMenu = menuService.getById(parentId);
         if (id != null) {
             menu = menuService.getById(id);
         }else{
-            menu.setType(parentMenu == null ? null : parentMenu.getType());
+            menu.setType(parentMenu == null ? type : parentMenu.getType());
         }
         MenuDto menuDto = MenuAdapter.getDto(menu);
 

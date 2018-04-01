@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('moduleList', {
-		url : '/user/module/list/:projectId',
+		url : '/user/module/list/:projectId/:name',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html'

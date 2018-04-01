@@ -14,7 +14,7 @@
 			<i class="iconfont">&#xe610;</i>&nbsp;查询
 		</button>
 		<div class="form-group w200 fr">
-			<label class="sr-only" for="">名称</label>
+			<label class="sr-only">名称</label>
 			<div class="input-group">
 				<div class="input-group-addon">项目名称</div>
 				<input type="text" class="form-control input-xs dis-in-blo w120" placeholder="项目名称" ng-model="$stateParams.name">
@@ -50,7 +50,7 @@
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}/NULL">
 						<i class="iconfont f12">&#xe613;模块</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 

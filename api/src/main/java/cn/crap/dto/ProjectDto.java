@@ -13,6 +13,7 @@ public class ProjectDto {
 	private Integer sequence;
 	private String remark;
 	private String userId;
+	private String userName;
 	private Byte type;
 	private String typeName;
 	private String password;
@@ -114,4 +115,12 @@ public class ProjectDto {
 	public void setLuceneSearchName(String luceneSearchName) {
 		this.luceneSearchName = luceneSearchName;
 	}
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

@@ -37,18 +37,19 @@ public class Config{
 	
 	@Value("${web.fileType}")
 	private String fileType;
-	
-	@Value("${web.monitorThreadNum}")
-	private int monitorThreadNum;
-	
-	@Value("${web.monitorCacheTime}")
-	private int monitorCacheTime;
-	
-	@Value("${web.monitorTryTimes}")
-	private int monitorTryTimes;
-	
-	@Value("${web.monitorEmailSendIndex}")
-	private int monitorEmailSendIndex;
+
+	// 该功能暂时关闭
+//	@Value("${web.monitorThreadNum}")
+//	private int monitorThreadNum;
+//
+//	@Value("${web.monitorCacheTime}")
+//	private int monitorCacheTime;
+//
+//	@Value("${web.monitorTryTimes}")
+//	private int monitorTryTimes;
+//
+//	@Value("${web.monitorEmailSendIndex}")
+//	private int monitorEmailSendIndex;
 	
 	@Value("${web.showRecommendProject}")
 	private boolean showRecommendProject;
@@ -126,34 +127,34 @@ public class Config{
 		return fileType;
 	}
 
-	public int getMonitorThreadNum() {
-		if(monitorThreadNum > 1000){
-			return 1000;
-		}
-		return monitorThreadNum;
-	}
-	
-	public int getMonitorCacheTime() {
-		return monitorCacheTime;
-	}
-	
-	public int getMonitorTryTimes(){
-		if(monitorTryTimes > 100)
-			return 100;
-		if(monitorTryTimes<1)
-			return 1;
-		return monitorTryTimes;
-	}
-	
-	public int getMonitorEmailSendIndex(){
-		if(monitorEmailSendIndex<2){
-			return 2;
-		}
-		if(monitorEmailSendIndex>10){
-			return 10;
-		}
-		return monitorEmailSendIndex;
-	}
+//	public int getMonitorThreadNum() {
+//		if(monitorThreadNum > 1000){
+//			return 1000;
+//		}
+//		return monitorThreadNum;
+//	}
+//
+//	public int getMonitorCacheTime() {
+//		return monitorCacheTime;
+//	}
+//
+//	public int getMonitorTryTimes(){
+//		if(monitorTryTimes > 100)
+//			return 100;
+//		if(monitorTryTimes<1)
+//			return 1;
+//		return monitorTryTimes;
+//	}
+//
+//	public int getMonitorEmailSendIndex(){
+//		if(monitorEmailSendIndex<2){
+//			return 2;
+//		}
+//		if(monitorEmailSendIndex>10){
+//			return 10;
+//		}
+//		return monitorEmailSendIndex;
+//	}
 
 	public boolean isShowRecommendProject() {
 		return showRecommendProject;

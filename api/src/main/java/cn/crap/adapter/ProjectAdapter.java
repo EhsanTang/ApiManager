@@ -5,6 +5,8 @@ import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectStatus;
 import cn.crap.enumer.ProjectType;
 import cn.crap.model.mybatis.Project;
+import cn.crap.model.mybatis.User;
+import cn.crap.service.mybatis.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDto getDto(Project model){
+    public static ProjectDto getDto(Project model, User user){
         if (model == null){
             return null;
         }
@@ -28,6 +30,7 @@ public class ProjectAdapter {
 		dto.setSequence(model.getSequence());
 		dto.setRemark(model.getRemark());
 		dto.setUserId(model.getUserId());
+		dto.setUserName(user == null ? "" : user.getUserName());
 		dto.setType(model.getType());
 		dto.setCover(model.getCover());
 		dto.setLuceneSearch(model.getLuceneSearch());
@@ -55,13 +58,13 @@ public class ProjectAdapter {
         return model;
     }
 
-    public static List<ProjectDto> getDto(List<Project> models){
+    public static List<ProjectDto> getDto(List<Project> models, UserService userService){
         if (models == null){
             return new ArrayList<>();
         }
         List<ProjectDto> dtos = new ArrayList<>();
         for (Project model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, userService == null? null : userService.getById(model.getUserId())));
         }
         return dtos;
     }

@@ -55,11 +55,11 @@ public class ModuleController extends BaseController implements ILogConst{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage, String name) throws MyException{
 			Page<Module> page= new Page(currentPage);
 			checkUserPermissionByProject(projectId, VIEW);
 
-			page = customModuleService.queryByProjectId(projectId, page);
+			page = customModuleService.queryByProjectId(projectId, name, page);
 			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
 		}
 
@@ -85,12 +85,15 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
-		// 系统数据，不允许删除
 		Assert.notNull(moduleDto.getProjectId());
 
+		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
 		if(id != null && C_WEB_MODULE.equals(id)) {
-			throw new MyException(E000009);
+			moduleDto.setCanDelete(null);
+			moduleDto.setName(null);
+			moduleDto.setProjectId(null);
+			moduleDto.setStatus(null);
 		}
 
 		if (MyString.isEmpty(moduleDto.getCategory())){

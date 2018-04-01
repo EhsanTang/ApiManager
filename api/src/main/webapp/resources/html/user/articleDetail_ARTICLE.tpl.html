@@ -14,7 +14,9 @@
 			<tr>
 				<td class="tc">类目</td>
 				<td>
-					* 类目没有管理界面，初始化时没有类目，需要手动写入类目。下次选择将显示项目中所有之前输入过的类目
+					* 没有找到合适的类目？进入文章所在模块，点击编辑模块即可新增类目-》[
+					<a ng-href="#/user/module/list/{{model.projectId}}/{{model.moduleName}}" target="_blank">修改模块【{{model.moduleName}}】的文章类目</a>
+					]
 					<div class="input-group">
 							<input class="form-control" type="text" id="category" readonly
 								ng-model="model.category"  placeholder="点击“选择”按钮选择，或输入新类目">

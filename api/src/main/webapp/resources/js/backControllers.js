@@ -496,7 +496,7 @@ mainModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, 
 /*************************模块列表**********************/
 mainModule.controller('userModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId;
+		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

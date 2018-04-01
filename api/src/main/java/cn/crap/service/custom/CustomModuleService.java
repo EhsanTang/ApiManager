@@ -50,11 +50,14 @@ public class CustomModuleService {
         return dao.countByExample(example);
     }
 
-    public Page<Module> queryByProjectId(String projectId, Page<Module> page){
+    public Page<Module> queryByProjectId(String projectId, String name, Page<Module> page){
         Assert.notNull(projectId, "projectId can't be null");
         Assert.notNull(page, "page can't be null");
         ModuleCriteria example = new ModuleCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        ModuleCriteria.Criteria criteria = example.createCriteria().andProjectIdEqualTo(projectId);
+        if (MyString.isNotEmpty(name)){
+            criteria.andNameLike("%" + name +"%");
+        }
 
         example.setLimitStart(page.getStart());
         example.setMaxResults(page.getSize());

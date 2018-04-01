@@ -80,7 +80,7 @@ private CustomProjectUserService customProjectUserService;
 			models = projectService.selectByExample(example);
 		}
 
-		dtos = ProjectAdapter.getDto(models);
+		dtos = ProjectAdapter.getDto(models, userService);
 		return new JsonResult(1,dtos, page);
 	}
 
@@ -95,7 +95,7 @@ private CustomProjectUserService customProjectUserService;
 		}else{
 			model=new Project();
 		}
-		return new JsonResult(1,ProjectAdapter.getDto(model));
+		return new JsonResult(1,ProjectAdapter.getDto(model, null));
 	}
 
 

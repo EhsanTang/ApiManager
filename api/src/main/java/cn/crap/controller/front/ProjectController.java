@@ -42,7 +42,7 @@ public class ProjectController extends BaseController{
 			page.setAllRow(customProjectService.countProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), name));
 			List<Project> projects = customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), name, page);
 
-			return new JsonResult(1, ProjectAdapter.getDto(projects), page);
+			return new JsonResult(1, ProjectAdapter.getDto(projects, null), page);
 		}
 		
 	}

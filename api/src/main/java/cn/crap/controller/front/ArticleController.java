@@ -69,8 +69,7 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public JsonResult list( Integer currentPage,
                            @RequestParam(defaultValue = C_WEB_MODULE) String moduleId,
-                           @RequestParam String type,
-                           @RequestParam String category,
+                           @RequestParam String type, String category,
                            String password,
                            String visitCode) throws MyException {
         Page page = new Page(currentPage);

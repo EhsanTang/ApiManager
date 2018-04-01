@@ -56,6 +56,7 @@ public class EmailService implements IEmailService {
 			mailSenderService.send(mimeMessage);
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("邮件发送失败：subject="+subject+"，toEmail="+toEmail, e);
 			return false;
 		}

@@ -8,8 +8,11 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Comment;
 import cn.crap.model.mybatis.CommentCriteria;
+import cn.crap.model.mybatis.User;
 import cn.crap.service.mybatis.ArticleService;
 import cn.crap.service.mybatis.CommentService;
+import cn.crap.service.mybatis.UserService;
+import cn.crap.service.tool.EmailService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -30,7 +33,12 @@ public class CommentController extends BaseController {
 	private CommentService commentService;
 	@Autowired
 	private ArticleService articleService;
-	
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private EmailService emailService;
+
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
@@ -75,6 +83,16 @@ public class CommentController extends BaseController {
 		Comment comment = CommentAdapter.getModel(commentDto);
 		comment.setUpdateTime(new Date());
 		commentService.update(comment);
+
+		// 发送邮件通知
+		Comment dbComment = commentService.getById(commentDto.getId());
+		if (MyString.isNotEmpty(dbComment.getUserId())){
+			User user = userService.getById(dbComment.getUserId());
+			if (MyString.isNotEmpty(user.getEmail())){
+				String context = "问题【" + dbComment.getContent() + "】收到回复，【" + comment.getReply() + "】";
+				emailService.sendMail(dbComment.getContent(), user.getEmail(), context);
+			}
+		}
 		return new JsonResult(1, null);
 	}
 

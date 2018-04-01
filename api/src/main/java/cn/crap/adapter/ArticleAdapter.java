@@ -82,24 +82,24 @@ public class ArticleAdapter {
         return model;
     }
 
-    public static List<ArticleDto> getDtoWithBLOBs(List<ArticleWithBLOBs> models){
+    public static List<ArticleDto> getDtoWithBLOBs(List<ArticleWithBLOBs> models, Module module){
         if (models == null){
             return new ArrayList<>();
         }
         List<ArticleDto> dtos = new ArrayList<>();
         for (ArticleWithBLOBs model : models){
-            dtos.add(getDtoWithBLOBs(model, null));
+            dtos.add(getDtoWithBLOBs(model, module));
         }
         return dtos;
     }
 
-	public static List<ArticleDto> getDto(List<Article> models){
+	public static List<ArticleDto> getDto(List<Article> models, Module module){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<ArticleDto> dtos = new ArrayList<>();
 		for (Article model : models){
-			dtos.add(getDto(model, null));
+			dtos.add(getDto(model, module));
 		}
 		return dtos;
 	}

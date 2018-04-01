@@ -44,7 +44,7 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public JsonResult list(@RequestParam String moduleId,
                            String name,
-                            Integer currentPage,
+                           @RequestParam(defaultValue = "1") Integer currentPage,
                            String password,
                            String visitCode) throws MyException {
 
@@ -55,13 +55,13 @@ public class ArticleController extends BaseController {
         // private project need login, public project need check password
         checkFrontPermission(password, visitCode, project);
 
-        Page page = new Page(15, currentPage);
+        Page page = new Page(currentPage);
         List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, page);
         page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, null));
 
         Map<String, Object> others = Tools.getMap("crumbs", Tools.getCrumbs(type + "-" + module.getName(), "void"));
 
-        return new JsonResult().success().data(articles).page(page).others(others);
+        return new JsonResult().success().data(ArticleAdapter.getDto(articles, module)).page(page).others(others);
     }
 
 
@@ -81,7 +81,7 @@ public class ArticleController extends BaseController {
 
         List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
         List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, page);
-        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles);
+        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
 
         // TODO others 结构需要改变
         Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,

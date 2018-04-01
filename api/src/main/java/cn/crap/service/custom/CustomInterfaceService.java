@@ -216,13 +216,13 @@ public class CustomInterfaceService implements ILuceneService {
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria())));
+        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria()), null));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(example)));
+        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(example), null));
     }
 }

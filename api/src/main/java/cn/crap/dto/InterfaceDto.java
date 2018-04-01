@@ -37,6 +37,7 @@ public class InterfaceDto{
 	private String monitorEmails;
 	private Boolean isTemplate;
 	private String projectId;
+	private String remarkNoHtml;
 
 	public void setId(String id){
 		this.id=id;
@@ -260,4 +261,12 @@ public class InterfaceDto{
     public void setUpdateTimeStr(String updateTimeStr) {
         this.updateTimeStr = updateTimeStr;
     }
+
+	public String getRemarkNoHtml() {
+		return remarkNoHtml;
+	}
+
+	public void setRemarkNoHtml(String remarkNoHtml) {
+		this.remarkNoHtml = remarkNoHtml;
+	}
 }

@@ -12,6 +12,7 @@ import cn.crap.model.mybatis.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.Tools;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ public class InterfaceAdapter {
 		dto.setMonitorEmails(model.getMonitorEmails());
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
+		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
+
 		if (model.getCreateTime() != null) {
             dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
         }
@@ -74,31 +77,6 @@ public class InterfaceAdapter {
 		
         return dto;
     }
-
-	public static InterfaceDto getDto(Interface model){
-		if (model == null){
-			return null;
-		}
-
-		InterfaceDto dto = new InterfaceDto();
-		dto.setId(model.getId());
-		dto.setUrl(model.getUrl());
-		dto.setMethod(model.getMethod());
-		dto.setStatus(model.getStatus());
-		dto.setModuleId(model.getModuleId());
-		dto.setInterfaceName(model.getInterfaceName());
-		dto.setUpdateBy(model.getUpdateBy());
-		dto.setVersion(model.getVersion());
-		dto.setSequence(model.getSequence());
-		dto.setFullUrl(model.getFullUrl());
-		dto.setMonitorType(model.getMonitorType());
-		dto.setMonitorText(model.getMonitorText());
-		dto.setMonitorEmails(model.getMonitorEmails());
-		dto.setIsTemplate(model.getIsTemplate());
-		dto.setProjectId(model.getProjectId());
-
-		return dto;
-	}
 
 
     public static InterfaceWithBLOBs getModel(InterfaceDto dto){
@@ -141,18 +119,18 @@ public class InterfaceAdapter {
         }
         List<InterfaceDto> dtos = new ArrayList<>();
         for (InterfaceWithBLOBs model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, null));
         }
         return dtos;
     }
 
-	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models){
+	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models, Module module){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<InterfaceDto> dtos = new ArrayList<>();
-		for (Interface model : models){
-			dtos.add(getDto(model));
+		for (InterfaceWithBLOBs model : models){
+			dtos.add(getDto(model, module));
 		}
 		return dtos;
 	}

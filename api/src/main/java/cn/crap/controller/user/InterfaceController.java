@@ -63,7 +63,7 @@ public class InterfaceController extends BaseController{
 			criteria.andFullUrlLike("%" + url + "%");
 		}
 
-		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExampleWithBLOBs(example));
+		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExampleWithBLOBs(example), null);
 		JsonResult result = new JsonResult(1, interfaces, page);
 		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
 				.putOthers("module", moduleCache.get(moduleId));

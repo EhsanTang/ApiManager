@@ -54,7 +54,7 @@ public class ArticleController extends BaseController{
 
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
 		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, page);
-		List<ArticleDto> dtos = ArticleAdapter.getDto(models);
+		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
 
 		return new JsonResult().success().data(dtos).page(page)
                 .others(Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category));

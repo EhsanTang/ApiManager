@@ -187,7 +187,7 @@ public class InterfaceController extends BaseController {
             criteria.andFullUrlLike("%" + url + "%");
         }
 
-        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example));
+        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example), module);
 
         return new JsonResult(1, interfaces, page,
                 Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(), "#/" + module.getProjectId() + "/module/list", module.getName(), "void")));
@@ -195,7 +195,7 @@ public class InterfaceController extends BaseController {
 
     @RequestMapping("/detail.do")
     @ResponseBody
-    public JsonResult webDetail(@ModelAttribute Interface interFace, String password, String visitCode) throws MyException {
+    public JsonResult webDetail(@ModelAttribute InterfaceWithBLOBs interFace, String password, String visitCode) throws MyException {
         interFace = interfaceService.getById(interFace.getId());
         if (interFace != null) {
             Module module = moduleCache.get(interFace.getModuleId());
@@ -210,9 +210,9 @@ public class InterfaceController extends BaseController {
             InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(interFace.getModuleId())
                     .andInterfaceNameEqualTo(interFace.getInterfaceName()).andVersionNotEqualTo(interFace.getVersion());
 
-            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example));
+            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example), module);
 
-            return new JsonResult(1, InterfaceAdapter.getDto(interFace), null,
+            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module), null,
                     Tools.getMap("versions", versions,
                             "crumbs",
                             Tools.getCrumbs(

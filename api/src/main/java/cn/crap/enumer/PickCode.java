@@ -39,7 +39,9 @@ public enum PickCode {
     INDEX_PAGE("INDEX_PAGE", "首页地址"),
     ROLE("ROLE", "角色"),
     AUTH("AUTH", "权限"),
-    MENU_URL("MENU_URL", "菜单地址");
+    MENU_URL("MENU_URL", "菜单地址"),
+	ARTICLE_STATUS("ARTICLE_STATUS", "文章状态");
+
 
 	private final String code;
 	private final String name;

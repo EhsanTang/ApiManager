@@ -39,6 +39,10 @@ public class CustomArticleService implements ILuceneService {
     @Autowired
     private LogService logService;
 
+    public List<String> queryTop10RecommendCategory(){
+        return customArticleMapper.queryTop10RecommendCategory();
+    }
+
     public int countByProjectId(String moduleId, String name, String type, String category) {
         Assert.notNull(moduleId, "moduleId can't be null");
         ArticleCriteria example = new ArticleCriteria();
@@ -46,19 +50,21 @@ public class CustomArticleService implements ILuceneService {
         if (name != null) {
             criteria.andNameLike("%" + name + "%");
         }
-        if (type != null) {
-            criteria.andTypeLike("%" + type + "%");
+        if (!StringUtils.isEmpty(type)) {
+            criteria.andTypeEqualTo(type);
         }
-        if (category != null) {
-            criteria.andCategoryLike("%" + category + "%");
+        if (!StringUtils.isEmpty(category)) {
+            criteria.andCategoryEqualTo(category);
         }
         return dao.countByExample(example);
     }
 
-    public List<Article> queryArticle(String moduleId, String name, String type, String category, Page page) {
-        Assert.notNull(moduleId, "moduleId can't be null");
+    public List<Article> queryArticle(String moduleId, String name, String type, String category,Byte status, Page page) {
         ArticleCriteria example = new ArticleCriteria();
-        ArticleCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
+        ArticleCriteria.Criteria criteria = example.createCriteria();
+        if (!StringUtils.isEmpty(moduleId)){
+            criteria.andModuleIdEqualTo(moduleId);
+        }
         if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
@@ -67,6 +73,9 @@ public class CustomArticleService implements ILuceneService {
         }
         if (!StringUtils.isEmpty(category)) {
             criteria.andCategoryEqualTo(category);
+        }
+        if (status != null){
+            criteria.andStatusEqualTo(status);
         }
         example.setLimitStart(page.getStart());
         example.setMaxResults(page.getSize());
@@ -145,6 +154,15 @@ public class CustomArticleService implements ILuceneService {
     public void updateClickById(String id) {
         Assert.notNull(id);
         customArticleMapper.updateClickById(id);
+    }
+
+    /**
+     * 将非PAGE类型的article key修改为null
+     * @param id
+     */
+    public void updateTypeToNullById(String id){
+        Assert.notNull(id);
+        customArticleMapper.updateTypeToNullById(id);
     }
 
     public ArticleWithBLOBs selectByKey(String key) {

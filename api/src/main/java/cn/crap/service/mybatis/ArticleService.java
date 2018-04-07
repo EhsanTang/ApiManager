@@ -1,6 +1,8 @@
 package cn.crap.service.mybatis;
 
 import cn.crap.dao.mybatis.ArticleDao;
+import cn.crap.enumer.ArticleStatus;
+import cn.crap.enumer.CanDeleteEnum;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.model.mybatis.Article;
@@ -38,9 +40,26 @@ public class ArticleService {
         return mapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 新增
+     * @param model
+     * @return
+     */
     public boolean insert(ArticleWithBLOBs model) {
         if (model == null) {
             return false;
+        }
+        if (model.getCanDelete() == null) {
+            model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+        }
+        if (model.getMarkdown() == null) {
+            model.setMarkdown(null);
+        }
+        if (model.getStatus() == null) {
+            model.setStatus(ArticleStatus.COMMON.getStatus());
+        }
+        if (!ArticleStatus.PAGE.getStatus().equals(model.getStatus())) {
+            model.setMkey(null);
         }
         model.setId(IdGenerator.getId(TableId.ARTICLE));
         if (model.getSequence() == null){

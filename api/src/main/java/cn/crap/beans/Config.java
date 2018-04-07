@@ -56,13 +56,7 @@ public class Config{
 	
 	@Value("${web.recommendProjectMenuName}")
 	private String recommendProjectMenuName;
-	
-	@Value("${web.showArticle}")
-	private boolean showArticle;
-	
-	@Value("${web.articleMenuName}")
-	private String articleMenuName;
-	
+
 	@Value("${web.subMenuSize}")
 	private int subMenuSize;
 	
@@ -162,14 +156,6 @@ public class Config{
 
 	public String getRecommendProjectMenuName() {
 		return recommendProjectMenuName;
-	}
-
-	public boolean isShowArticle() {
-		return showArticle;
-	}
-
-	public String getArticleMenuName() {
-		return articleMenuName;
 	}
 
 	public int getSubMenuSize() {

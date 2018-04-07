@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
@@ -55,9 +56,15 @@ public class ArticleAdapter {
 		ArticleDto dto = getDto(model, module);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
+		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
 		return dto;
 	}
 
+    /**
+     * projectId不能修改
+     * @param dto
+     * @return
+     */
     public static ArticleWithBLOBs getModel(ArticleDto dto){
         if (dto == null){
             return null;
@@ -78,6 +85,8 @@ public class ArticleAdapter {
 		model.setCommentCount(dto.getCommentCount());
 		model.setSequence(dto.getSequence());
 		model.setMarkdown(dto.getMarkdown());
+		model.setStatus(dto.getStatus());
+		model.setProjectId(null);
 
         return model;
     }

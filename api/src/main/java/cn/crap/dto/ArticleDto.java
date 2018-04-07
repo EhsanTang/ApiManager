@@ -16,6 +16,7 @@ public class ArticleDto implements Serializable {
 	private String type;
 	private String typeName;
 	private Byte status;
+	private String statusName;
 	private String moduleId;
 	private String moduleName;
 	private String mkey;
@@ -153,5 +154,13 @@ public class ArticleDto implements Serializable {
 
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 }

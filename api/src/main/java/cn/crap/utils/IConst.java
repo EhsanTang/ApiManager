@@ -66,7 +66,6 @@ public interface IConst {
 	String DOMAIN = "DOMAIN";
 	String ADMIN = "admin";
 	// url
-	String FRONT_ARTICLE_URL = "#%s/article/list/%s/ARTICLE/%s/NULL";
 	String FRONT_PROJECT_URL = "#/%s/module/list";
 	
 	//系统设置

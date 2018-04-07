@@ -3,7 +3,9 @@ package cn.crap.utils;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.model.mybatis.Project;
 import cn.crap.service.tool.UserCache;
+import org.springframework.util.Assert;
 
 /**
  * @author Ehsan
@@ -11,7 +13,7 @@ import cn.crap.service.tool.UserCache;
  */
 public class LoginUserHelper implements IConst, IErrorCode{
     /**
-     * if not login, throw exception
+     * 如果未登陆，则返回指定的错误码
      * @return
      */
     public static LoginInfoDto getUser(String errorCode) throws MyException{
@@ -22,13 +24,17 @@ public class LoginUserHelper implements IConst, IErrorCode{
         return loginInfoDto;
     }
 
+    /**
+     * 如果未登陆，则返回错误码
+     * @return
+     * @throws MyException
+     */
     public static LoginInfoDto getUser() throws MyException{
        return getUser(null);
     }
 
     /**
-     * if login, then return loginInfo
-     * else return null
+     * 如果登陆了，则返回用户信息，否则返回null
      * @return
      */
     public static LoginInfoDto tryGetUser(){
@@ -61,7 +67,41 @@ public class LoginUserHelper implements IConst, IErrorCode{
         if(authority.indexOf(","+authPassport+",")>=0){
             return true;
         }
-
         return false;
     }
+
+    /**
+     * 判断是否是超级管理员
+     * @return
+     * @throws MyException
+     */
+    public static boolean isAdmin() throws MyException {
+        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        String authority = user.getAuthStr();
+        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否是超级管理员或项目拥有者
+     * @return
+     * @throws MyException
+     */
+    public static boolean isAdminOrProjectOwner(Project project) throws MyException {
+        Assert.notNull(project);
+        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        String authority = user.getAuthStr();
+        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+            return true;
+        }
+
+        if (project.getUserId() != null && project.getUserId().equals(user.getId())){
+            return true;
+        }
+        return false;
+    }
+
+
 }

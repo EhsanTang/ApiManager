@@ -103,35 +103,6 @@ public class CustomMenuService {
             menuVOs.add(menuVO);
         }
 
-        // 加载默认推荐文章
-        if(config.isShowArticle()){
-            MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
-            Menu menu = new Menu();
-            menu.setIconRemark("<i class=\"iconfont\">&#xe637;</i>");
-            menu.setId("articleListId");
-            menu.setMenuName(config.getArticleMenuName());
-            menu.setParentId("0");
-            menu.setType(MenuType.FRONT.name());
-            menuVO.setMenu(menu);
-
-            menuVO.setSubMenu(new ArrayList<Menu>());
-            List<String> categorys = customModuleService.queryCategoryByModuleId(IConst.C_WEB_MODULE);
-            int i = 0;
-            for (String category : categorys) {
-                if (MyString.isEmpty(category))
-                    continue;
-                i ++ ;
-                Menu subMenu = new Menu();
-                subMenu.setId("arcList_cate_"+i);
-                subMenu.setMenuName(category);
-                subMenu.setParentId("articleListId");
-                subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl(String.format(IConst.FRONT_ARTICLE_URL, IConst.C_WEB_MODULE, IConst.C_WEB_MODULE, category));
-                menuVO.getSubMenu().add(subMenu);
-            }
-            menuVOs.add(menuVO);
-        }
-
         for (Menu menu : menus) {
             MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
             menuVO.setMenu(menu);

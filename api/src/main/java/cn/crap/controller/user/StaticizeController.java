@@ -181,7 +181,7 @@ public class StaticizeController extends BaseController{
 		
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId, "type", type, "category", category);
 		Page page = new Page(15, currentPage);
-		List<Article> articleList = customArticleService.queryArticle(moduleId, null, type, category, page);
+		List<Article> articleList = customArticleService.queryArticle(moduleId, null, type, category, null, page);
 		returnMap.put("page", page);
 		returnMap.put("articleList", articleList);
 		returnMap.put("needStaticizes", needStaticizes);

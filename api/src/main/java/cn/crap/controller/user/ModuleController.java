@@ -89,7 +89,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
-		if(id != null && C_WEB_MODULE.equals(id)) {
+		if(id != null) {
 			moduleDto.setCanDelete(null);
 			moduleDto.setName(null);
 			moduleDto.setProjectId(null);

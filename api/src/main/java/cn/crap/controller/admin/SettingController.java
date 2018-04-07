@@ -105,9 +105,9 @@ public class SettingController extends BaseController {
         settingCache.del(settingDto.getKey());
 
         // 更新css模板，静态化css文件
-        String path = Tools.getServicePath() + "resources/css/";
-        Tools.createFile(path);
-        String content = Tools.readFile(path + "setting.tpl.css");
+        String cssPath = Tools.getServicePath() + "resources/css/";
+        Tools.createFile(cssPath);
+        String cssContent = Tools.readFile(cssPath + "setting.tpl.css");
         for (SettingDto s : settingCache.getAll()) {
             String value = s.getValue();
             if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
@@ -115,9 +115,9 @@ public class SettingController extends BaseController {
                     value = config.getDomain() + "/" + value;
                 }
             }
-            content = content.replace("{{settings." + s.getKey() + "}}", value);
+            cssContent = cssContent.replace("{{settings." + s.getKey() + "}}", value);
         }
-        Tools.staticize(content, path + "/setting.css");
+        Tools.staticize(cssContent, cssPath + "/setting.css");
         return new JsonResult().data(settingDto);
     }
 

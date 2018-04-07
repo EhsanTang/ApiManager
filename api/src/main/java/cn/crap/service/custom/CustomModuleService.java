@@ -1,5 +1,6 @@
 package cn.crap.service.custom;
 
+import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dao.mybatis.ModuleDao;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.ProjectService;

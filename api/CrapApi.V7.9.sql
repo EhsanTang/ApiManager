@@ -89,4 +89,6 @@ CREATE TABLE `hot_search` (
 ALTER TABLE `apidev`.`module`
 ADD COLUMN `category` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字';
 
+update article set mkey=null where  type!='PAGE';
 
+update article set status=100 where  type='PAGE'

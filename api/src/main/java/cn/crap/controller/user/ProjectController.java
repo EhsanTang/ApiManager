@@ -102,10 +102,6 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception{
-		if(project.getId() != null && project.getId().equals(C_WEB_MODULE)) {
-			throw new MyException(E000009);
-		}
-
 		LoginInfoDto user = LoginUserHelper.getUser();
 		String userId = user.getId();
 

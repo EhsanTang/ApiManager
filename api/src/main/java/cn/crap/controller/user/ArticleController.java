@@ -3,7 +3,10 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.CanDeleteEnum;
+import cn.crap.enumer.DataType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -31,6 +34,7 @@ import java.util.List;
 
 // TODO 版本升级提供在线接口，调用接口直接检查数据库并升级
 // TODO setting 中记录版本ID（MD5（version））
+// TODO 最高管理员可以将文章置顶，将文章修改为站点页面
 @Controller
 @RequestMapping("/user/article")
 public class ArticleController extends BaseController{
@@ -53,7 +57,7 @@ public class ArticleController extends BaseController{
 		Page page= new Page(currentPage);
 
 		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
-		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, page);
+		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, null, page);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
 
 		return new JsonResult().success().data(dtos).page(page)
@@ -81,6 +85,7 @@ public class ArticleController extends BaseController{
 		model.setType(type);
 		model.setModuleId(moduleId);
 		model.setProjectId(module.getProjectId());
+        model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
 		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module));
 	}
 	
@@ -91,32 +96,44 @@ public class ArticleController extends BaseController{
         Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
         checkUserPermissionByProject(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 
-        dto.setCanDelete(Byte.valueOf("1"));
 		if(!MyString.isEmpty(dto.getId())){
-			/**
-			 * 判断是否为系统数据，系统数据不允许修改mkey和canDelete字段
-			 */
-			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
-			if(dbArticle.getCanDelete()!=1){
-				dto.setMkey(null);
-				dto.setCanDelete(null);
-			}
-
             ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+
+            // key、type、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+            if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
+                article.setMkey(null);
+				article.setType(null);
+				article.setStatus(null);
+            }
+
+            // 只有项目拥有者可以修改是否可以删除属性
+            if (!LoginUserHelper.isAdminOrProjectOwner(project)){
+                article.setCanDelete(null);
+            }
+
 			customArticleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
 
-            dbArticle = articleService.getById(dto.getId());
+			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
 			luceneService.update(ArticleAdapter.getSearchDto(dbArticle));
-		}else{
-            ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
-            article.setProjectId(project.getId());
-            article.setMarkdown("");
-			articleService.insert(article);
-
-			luceneService.add(ArticleAdapter.getSearchDto(article));
+            return new JsonResult(1,dto);
 		}
-		return new JsonResult(1,dto);
-	}
+
+        ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+        article.setProjectId(project.getId());
+
+		// key、type、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+		if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
+			article.setMkey(null);
+			article.setType(null);
+			article.setStatus(null);
+		}
+
+        articleService.insert(article);
+
+        luceneService.add(ArticleAdapter.getSearchDto(article));
+        return new JsonResult(1, dto);
+
+    }
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
@@ -133,14 +150,21 @@ public class ArticleController extends BaseController{
 				continue;
 			}
 			Article model = articleService.getById(tempId);
-			checkUserPermissionByProject(model.getProjectId() , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
-			if(model.getCanDelete()!=1){
-				throw new MyException("000009");
+			Project project = projectCache.get(model.getProjectId());
+			checkUserPermissionByProject(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
+
+			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
+				throw new MyException(E000009);
 			}
 
 			if (customCommentService.countByArticleId(model.getId()) > 0){
-				throw new MyException("000037");
+				throw new MyException(E000037);
 			}
+
+			// 非管理员不能删除PAGE
+			if (ArticleStatus.PAGE.getStatus().equals(model.getStatus()) && !LoginUserHelper.isAdmin()){
+                throw new MyException(E000009);
+            }
 
 			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
 

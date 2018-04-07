@@ -52,6 +52,8 @@ public class AdminPickService implements IPickService, IErrorCode {
         List<PickDto> picks = new ArrayList<>();
         PickDto pick = null;
         String preUrl = "";
+        ProjectCriteria projectCriteria = new ProjectCriteria();
+        ArticleCriteria articleCriteria = new ArticleCriteria();
         switch (pickCode) {
 
             case AUTH:
@@ -62,11 +64,6 @@ public class AdminPickService implements IPickService, IErrorCode {
                     pick = new PickDto(dataType.name(), dataType.getName());
                     picks.add(pick);
                 }
-
-                pick = new PickDto(ArticleType.ARTICLE.name(), "站点文章管理");
-                picks.add(pick);
-                pick = new PickDto(ArticleType.PAGE.name(), "站点页面管理");
-                picks.add(pick);
 
                 return picks;
 
@@ -91,55 +88,61 @@ public class AdminPickService implements IPickService, IErrorCode {
                 pick = new PickDto("modelName_5", "数据字典", "数据字典");
                 picks.add(pick);
                 return picks;
+            case INDEX_PAGE:// 首页
+                for (IndexPageUrl indexPage : IndexPageUrl.values()) {
+                    pick = new PickDto(indexPage.name(), indexPage.getValue(), indexPage.getName());
+                    picks.add(pick);
+                }
 
+                pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
+                picks.add(pick);
+
+                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
+                for (Project project : projectService.selectByExample(projectCriteria)) {
+                    pick = new PickDto(project.getId(), String.format("project.do" + IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
+                    picks.add(pick);
+                }
+
+                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
+                picks.add(pick);
+
+                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                picks.add(pick);
+
+                preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
+                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
+                for (Article w : articleService.selectByExample(articleCriteria)) {
+                    pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
+                    picks.add(pick);
+                }
+                return picks;
             case MENU_URL:
                 pick = new PickDto(IConst.SEPARATOR, "项目列表");
                 picks.add(pick);
                 pick = new PickDto("m_myproject", "#/project/list/true/NULL", "我的项目列表");
                 picks.add(pick);
-                pick = new PickDto("m_myproject", "#/project/list/false/NULL", "推荐项目列表");
+                pick = new PickDto("recommend_project", "#/project/list/false/NULL", "推荐项目列表");
                 picks.add(pick);
 
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
-                ProjectCriteria projectCriteria = new ProjectCriteria();
-                ProjectCriteria.Criteria projectCriteriaCriteria = projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
+                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
                 for (Project project : projectService.selectByExample(projectCriteria)) {
                     pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }
 
-                // 分割线
-                pick = new PickDto(IConst.SEPARATOR, "文章列表【站点文章】");
+                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
-                int j = 0;
-                List<String> categories = customModuleService.queryCategoryByModuleId(IConst.C_WEB_MODULE);
-                for (String article : categories) {
-                    if (MyString.isEmpty(article))
-                        continue;
-                    j++;
-                    pick = new PickDto("cat_" + j, String.format(IConst.FRONT_ARTICLE_URL, IConst.C_WEB_MODULE, IConst.C_WEB_MODULE, article), article);
-                    picks.add(pick);
-                }
-
-                // 分割线
-                pick = new PickDto(IConst.SEPARATOR, "页面【站点页面】");
+                pick = new PickDto("recommend_article", "#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
                 picks.add(pick);
 
-                preUrl = "#/web/article/detail/web/PAGE/";
-                ArticleCriteria example2 = new ArticleCriteria();
-                example2.createCriteria().andTypeEqualTo("PAGE").andMkeyIsNotNull();
-                for (Article w : articleService.selectByExample(example2)) {
-                    pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName());
-                    picks.add(pick);
-                }
-                return picks;
-
-            case INDEX_PAGE:// 首页
-                for (IndexPageUrl indexPage : IndexPageUrl.values()) {
-                    pick = new PickDto(indexPage.name(), indexPage.getValue(), indexPage.getName());
+                preUrl = "#/NULL/article/detail/NULL/PAGE/";
+                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
+                for (Article w : articleService.selectByExample(articleCriteria)) {
+                    pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
                     picks.add(pick);
                 }
                 return picks;
@@ -150,6 +153,13 @@ public class AdminPickService implements IPickService, IErrorCode {
                     picks.add(pick);
                 }
                 return picks;
+            case ARTICLE_STATUS:
+                for (ArticleStatus status : ArticleStatus.values()) {
+                    pick = new PickDto("article-status" + status.getStatus(), status.getStatus() + "", status.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
         }
 
         throw new MyException(E000065, "查询失败");

@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.ArticleDto;
+import cn.crap.enumer.ArticleStatus;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
@@ -56,7 +57,7 @@ public class ArticleController extends BaseController {
         checkFrontPermission(password, visitCode, project);
 
         Page page = new Page(currentPage);
-        List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, page);
+        List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, null, page);
         page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, null));
 
         Map<String, Object> others = Tools.getMap("crumbs", Tools.getCrumbs(type + "-" + module.getName(), "void"));
@@ -68,24 +69,37 @@ public class ArticleController extends BaseController {
     @RequestMapping("/front/article/list.do")
     @ResponseBody
     public JsonResult list( Integer currentPage,
-                           @RequestParam(defaultValue = C_WEB_MODULE) String moduleId,
+                           String moduleId,
                            @RequestParam String type, String category,
                            String password,
-                           String visitCode) throws MyException {
+                           String visitCode, Byte status) throws MyException {
         Page page = new Page(currentPage);
-        Module module = moduleCache.get(moduleId);
-        Project project = projectCache.get(module.getProjectId());
+        if (status == null || !status.equals(ArticleStatus.RECOMMEND.getStatus())){
+            Module module = moduleCache.get(moduleId);
+            Project project = projectCache.get(module.getProjectId());
 
-        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-        checkFrontPermission(password, visitCode, project);
+            // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+            checkFrontPermission(password, visitCode, project);
 
-        List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
-        List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, page);
-        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
+            List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
 
-        // TODO others 结构需要改变
+            List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, status, page);
+            List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
+
+            Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,
+                    "crumbs", Tools.getCrumbs(project.getName(), "#/" + project.getId() + "module/list", module.getName() + ":文章列表", "void"));
+
+            return new JsonResult().success().data(articleDtos).page(page).others(others);
+        }
+
+        // 推荐的文章
+        List<String> categories = customArticleService.queryTop10RecommendCategory();
+
+        List<Article> articles = customArticleService.queryArticle(null, null,  type, category, status, page);
+        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null);
+
         Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,
-                "crumbs", Tools.getCrumbs(project.getName(), "#/" + project.getId() + "module/list", module.getName() + ":文章列表", "void"));
+                "crumbs", Tools.getCrumbs( "推荐文章" + ":文章列表", "void"));
 
         return new JsonResult().success().data(articleDtos).page(page).others(others);
     }

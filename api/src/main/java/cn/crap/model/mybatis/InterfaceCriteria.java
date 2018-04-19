@@ -1254,6 +1254,76 @@ public class InterfaceCriteria {
             addCriterion("projectId not between", value1, value2, "projectId");
             return (Criteria) this;
         }
+
+        public Criteria andContentTypeIsNull() {
+            addCriterion("contentType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeIsNotNull() {
+            addCriterion("contentType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeEqualTo(String value) {
+            addCriterion("contentType =", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotEqualTo(String value) {
+            addCriterion("contentType <>", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeGreaterThan(String value) {
+            addCriterion("contentType >", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("contentType >=", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeLessThan(String value) {
+            addCriterion("contentType <", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeLessThanOrEqualTo(String value) {
+            addCriterion("contentType <=", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeLike(String value) {
+            addCriterion("contentType like", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotLike(String value) {
+            addCriterion("contentType not like", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeIn(List<String> values) {
+            addCriterion("contentType in", values, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotIn(List<String> values) {
+            addCriterion("contentType not in", values, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeBetween(String value1, String value2) {
+            addCriterion("contentType between", value1, value2, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotBetween(String value1, String value2) {
+            addCriterion("contentType not between", value1, value2, "contentType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -92,3 +92,6 @@ ADD COLUMN `category` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '文章分类，�
 update article set mkey=null where  type!='PAGE';
 
 update article set status=100 where  type='PAGE'
+
+ALTER TABLE `apidev`.`interface`
+ADD COLUMN `contentType` VARCHAR(45) NOT NULL DEFAULT 'application/json' COMMENT '接口返回contentType' AFTER `projectId`;

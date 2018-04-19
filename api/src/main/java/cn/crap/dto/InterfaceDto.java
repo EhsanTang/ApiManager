@@ -38,6 +38,8 @@ public class InterfaceDto{
 	private Boolean isTemplate;
 	private String projectId;
 	private String remarkNoHtml;
+	private String contentType;
+    private String contentTypeName;
 
 	public void setId(String id){
 		this.id=id;
@@ -269,4 +271,20 @@ public class InterfaceDto{
 	public void setRemarkNoHtml(String remarkNoHtml) {
 		this.remarkNoHtml = remarkNoHtml;
 	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+    public String getContentTypeName() {
+        return contentTypeName;
+    }
+
+    public void setContentTypeName(String contentTypeName) {
+        this.contentTypeName = contentTypeName;
+    }
 }

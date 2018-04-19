@@ -1,5 +1,7 @@
 package cn.crap.controller.front;
 
+import cn.crap.enumer.InterfaceContentType;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.service.mybatis.InterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,14 @@ public class MockController extends BaseController{
 	@RequestMapping("/trueExam.do")
 	@ResponseBody
 	public void trueExam(@RequestParam String id) throws Exception {
-		printMsg(interfaceService.getById(id).getTrueExam());
+		InterfaceWithBLOBs interfaceWithBLOBs = interfaceService.getById(id);
+		printMsg(interfaceWithBLOBs.getTrueExam(), InterfaceContentType.getByType(interfaceWithBLOBs.getContentType()));
 	}
 	
 	@RequestMapping("/falseExam.do")
 	@ResponseBody
 	public void falseExam(@RequestParam String id) throws Exception {
-		printMsg(interfaceService.getById(id).getFalseExam());
+		InterfaceWithBLOBs interfaceWithBLOBs = interfaceService.getById(id);
+		printMsg(interfaceWithBLOBs.getFalseExam(), InterfaceContentType.getByType(interfaceWithBLOBs.getContentType()));
 	}
 }

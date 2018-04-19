@@ -38,6 +38,8 @@ public class Interface implements Serializable {
 
     private String projectId;
 
+    private String contentType;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -174,5 +176,13 @@ public class Interface implements Serializable {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType == null ? null : contentType.trim();
     }
 }

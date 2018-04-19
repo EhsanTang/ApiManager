@@ -13,7 +13,7 @@
 					* 点击选择模块
 					</td>
 					<td>
-						<input class="form-control cursor" type="text"  id="moduleName" required readonly ng-model="model.moduleName"
+						<input class="form-control cursor" type="text"  id="moduleName" required ng-model="model.moduleName"
 							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				
 					</td>
@@ -110,6 +110,16 @@
 						<div id="paramEditorDiv" ui-view="interParamRemakDiv"></div>
 					</td>
 				</tr>
+
+
+				<tr>
+					<td class="tc w80">返回类型</td>
+					<td colspan="3">
+						<input class="form-control" type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
+							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">
+					</td>
+				</tr>
+
 				<tr>
 					<td class="tc">
 						返回参数

@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.InterfaceStatus;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
@@ -58,6 +59,8 @@ public class InterfaceAdapter {
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
 		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
+		dto.setContentType(model.getContentType());
+		dto.setContentTypeName(InterfaceContentType.getNameByType(model.getContentType()));
 
 		if (model.getCreateTime() != null) {
             dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
@@ -109,6 +112,7 @@ public class InterfaceAdapter {
 		model.setMonitorEmails(dto.getMonitorEmails());
 		model.setIsTemplate(dto.getIsTemplate());
 		model.setProjectId(dto.getProjectId());
+		model.setContentType(dto.getContentType());
 		
         return model;
     }

@@ -53,6 +53,13 @@ public class PickService implements IPickService, IErrorCode {
                 }
                 return picks;
 
+            case INTERFACE_CONTENT_TYPE:
+                for (InterfaceContentType contentType : InterfaceContentType.values()) {
+                    pick = new PickDto(contentType.name(), contentType.getType(), contentType.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
             case MONITOR_TYPE:
                 for (MonitorType monitorType : MonitorType.values()) {
                     pick = new PickDto(monitorType.name(), monitorType.getValue() + "", monitorType.getName());

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.ProjectUserDto;
+import cn.crap.enumer.InterfaceContentType;
 import cn.crap.framework.ThreadContext;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.service.tool.*;
@@ -89,7 +90,14 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
      * @param message
      */
     protected void printMsg(String message) {
-        ThreadContext.response().setHeader("Content-Type", "text/html");
+        printMsg(message, InterfaceContentType.JSON);
+    }
+
+    protected void printMsg(String message, InterfaceContentType contentType) {
+        if (contentType == null){
+            contentType = InterfaceContentType.JSON;
+        }
+        ThreadContext.response().setHeader("Content-Type", contentType.getType());
         ThreadContext.response().setCharacterEncoding("utf-8");
         try {
             PrintWriter out = ThreadContext.response().getWriter();

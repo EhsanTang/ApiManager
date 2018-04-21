@@ -27,8 +27,6 @@
 	<!-- 必须放在component-scan之上，优先创建该bean -->
 	<bean class="cn.crap.framework.SpringContextHolder" />
 	<context:component-scan base-package="cn.crap" />
-	<!-- 业务错误码 -->
-	<import resource="errorInfo.xml" />
 	<!-- 定时任务
 	<import resource="monitor.xml" /> -->
 	<!-- <import resource="mongo.xml" /> -->

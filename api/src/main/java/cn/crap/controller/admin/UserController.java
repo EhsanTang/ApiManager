@@ -4,6 +4,7 @@ import cn.crap.adapter.UserAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.UserDto;
 import cn.crap.enumer.LoginType;
+import cn.crap.enumer.MyError;
 import cn.crap.enumer.UserStatus;
 import cn.crap.enumer.UserType;
 import cn.crap.framework.JsonResult;
@@ -81,7 +82,7 @@ public class UserController extends BaseController {
     public JsonResult add(@ModelAttribute UserDto userDto) throws MyException {
         // 邮箱错误
         if (MyString.isEmpty(userDto.getEmail()) || !Tools.checkEmail(userDto.getEmail())) {
-            throw new MyException(E000032);
+            throw new MyException(MyError.E000032);
         }
 
         User user = UserAdapter.getModel(userDto);
@@ -94,7 +95,7 @@ public class UserController extends BaseController {
 
     private JsonResult addUser(@ModelAttribute User user) throws MyException {
         if (user.getUserName().isEmpty() || !Tools.checkUserName(user.getUserName()) || ADMIN.equals(user.getUserName())) {
-            throw new MyException(E000028);
+            throw new MyException(MyError.E000028);
         }
 
         // 判断是否重名
@@ -102,11 +103,11 @@ public class UserController extends BaseController {
         UserCriteria.Criteria criteria = userCriteria.createCriteria().andUserNameEqualTo(user.getUserName());
         int userSize = userService.countByExample(userCriteria);
         if (userSize > 0) {
-            throw new MyException(E000015);
+            throw new MyException(MyError.E000015);
         }
 
         if (MyString.isEmpty(user.getPassword())) {
-            throw new MyException(E000061);
+            throw new MyException(MyError.E000061);
         }
 
         LoginInfoDto loginUser = LoginUserHelper.getUser();
@@ -133,35 +134,35 @@ public class UserController extends BaseController {
         // 判断是否重名
         
         if (customUserService.countByNameExceptUserId(user.getUserName(), user.getId()) > 0) {
-            throw new MyException(E000015);
+            throw new MyException(MyError.E000015);
         }
 
         if (user.getUserName().isEmpty() || !Tools.checkUserName(user.getUserName())) {
-            throw new MyException(E000028);
+            throw new MyException(MyError.E000028);
         }
 
         User dbUser = userService.getById(user.getId());
         if (dbUser == null) {
-            throw new MyException(E000013);
+            throw new MyException(MyError.E000013);
         }
 
         LoginInfoDto loginUser = LoginUserHelper.getUser();
         // 超级管理员账号不能修改其它超级管理员账号信息，但是用户名为admin的超级管理员能修改其他超级管理员的信息
         if (Tools.isSuperAdmin(dbUser.getRoleId())) {
             if (!dbUser.getId().equals(loginUser.getId()) && !loginUser.getUserName().equals("admin")) {
-                throw new MyException(E000053);
+                throw new MyException(MyError.E000053);
             }
         }
 
         // admin 用户名不允许修改
         if (dbUser.getUserName().equals("admin") && !user.getUserName().equals("admin")) {
-            throw new MyException(E000055);
+            throw new MyException(MyError.E000055);
         }
 
         // 普通管理员不能修改管理员信息
         if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
             if (!dbUser.getId().equals(loginUser.getId()) && dbUser.getType() == UserType.ADMIN.getType()) {
-                throw new MyException(E000054);
+                throw new MyException(MyError.E000054);
             }
         }
 
@@ -192,7 +193,7 @@ public class UserController extends BaseController {
         example.createCriteria().andEmailEqualTo(user.getEmail()).andLoginTypeEqualTo(user.getLoginType()).andIdNotEqualTo(dbUser.getId());
         int userSize = userService.countByExample(example);
         if (userSize > 0){
-            throw new MyException(E000062);
+            throw new MyException(MyError.E000062);
         }
 
         userService.update(user);

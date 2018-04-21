@@ -2,6 +2,7 @@ package cn.crap.service.thirdly;
 
 import java.util.Map;
 
+import cn.crap.enumer.MyError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,9 @@ public class OschinaService {
 	        String rs = HttpPostGet.post(oschinaAuthUrl, params, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);
 	        GitHubAccessToken accessToken = JSON.parseObject(rs,GitHubAccessToken.class);
-	        if(accessToken == null || accessToken.getAccess_token() == null)
-	            throw new MyException("000026");
+	        if(accessToken == null || accessToken.getAccess_token() == null) {
+				throw new MyException(MyError.E000026);
+			}
 	        return accessToken;
 	    }
 
@@ -38,7 +40,7 @@ public class OschinaService {
 	        String rs = HttpPostGet.get(url, null, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);
 	        if(rs.contains("message"))
-	        	throw new MyException("000026",rs);
+	        	throw new MyException(MyError.E000026, rs);
 	        return JSON.parseObject(rs,GitHubUser.class);
 	    }
 }

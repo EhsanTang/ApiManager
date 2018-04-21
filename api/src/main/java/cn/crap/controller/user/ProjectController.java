@@ -3,6 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
+import cn.crap.enumer.MyError;
 import cn.crap.enumer.ProjectStatus;
 import cn.crap.enumer.UserType;
 import cn.crap.framework.JsonResult;
@@ -141,7 +142,7 @@ private CustomProjectUserService customProjectUserService;
 	public JsonResult delete(@ModelAttribute Project project) throws Exception{
 		// 系统数据，不允许删除
 		if(project.getId().equals("web"))
-			throw new MyException("000009");
+			throw new MyException(MyError.E000009);
 
 
 		Project model= projectCache.get(project.getId());
@@ -150,17 +151,17 @@ private CustomProjectUserService customProjectUserService;
 
 		// 只有子模块数量为0，才允许删除项目
 		if(customModuleService.countByProjectId(model.getId()) > 0){
-			throw new MyException("000023");
+			throw new MyException(MyError.E000023);
 		}
 
 		// 只有错误码数量为0，才允许删除项目
 		if(customErrorService.countByProjectId(model.getId()) > 0){
-			throw new MyException("000033");
+			throw new MyException(MyError.E000033);
 		}
 
 		// 只有项目成员数量为0，才允许删除项目
 		if(customProjectUserService.countByProjectId(model.getId())>0){
-			throw new MyException("000038");
+			throw new MyException(MyError.E000038);
 		}
 
 		projectCache.del(project.getId());

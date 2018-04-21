@@ -8,6 +8,7 @@ import java.util.Map;
 import cn.crap.dto.DictionaryDto;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.DictionaryPropertyType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
 import net.sf.json.JSONArray;
@@ -17,7 +18,7 @@ public class SqlToDictionaryUtil {
 		
 	public static ArticleWithBLOBs mysqlToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
 		if(!sql.toLowerCase().replaceAll(" ", "").startsWith("createtable")){
-			throw new MyException("000046");
+			throw new MyException(MyError.E000046);
 		}
 		// 联合主键等被切分
 		sql = sql.replace("`,`", "");
@@ -131,7 +132,7 @@ public class SqlToDictionaryUtil {
 	
 	public static ArticleWithBLOBs sqlserviceToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
 		if(!sql.toLowerCase().replaceAll(" ", "").startsWith("createtable")){
-			throw new MyException("000046");
+			throw new MyException(MyError.E000046);
 		}
 		String[]  descriptions = null;
 		sql = sql.replace("\n", " ");

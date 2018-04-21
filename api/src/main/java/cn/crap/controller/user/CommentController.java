@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.CommentDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -101,7 +102,7 @@ public class CommentController extends BaseController {
 	@AuthPassport
 	public JsonResult delete(String id, String ids) throws MyException, IOException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 		if( MyString.isEmpty(ids) ){
 			ids = id;

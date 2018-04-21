@@ -5,6 +5,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
@@ -174,7 +175,7 @@ public class MainController extends BaseController{
 	@ResponseBody
 	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
 		if(config.isLuceneSearchNeedLogin()){
-			LoginInfoDto user = LoginUserHelper.getUser(E000043);
+			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
 		}
 		keyword = keyword.trim();
         if (keyword.length() > 200){

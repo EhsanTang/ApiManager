@@ -1,6 +1,7 @@
 package cn.crap.utils;
 
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Project;
@@ -11,15 +12,15 @@ import org.springframework.util.Assert;
  * @author Ehsan
  * @date 17/12/30 15:59
  */
-public class LoginUserHelper implements IConst, IErrorCode{
+public class LoginUserHelper implements IConst{
     /**
      * 如果未登陆，则返回指定的错误码
      * @return
      */
-    public static LoginInfoDto getUser(String errorCode) throws MyException{
+    public static LoginInfoDto getUser(MyError error) throws MyException{
         LoginInfoDto loginInfoDto = tryGetUser();
         if (loginInfoDto == null){
-            throw new MyException(MyString.isEmpty(errorCode) ? E000064 : errorCode);
+            throw new MyException(error == null ? MyError.E000064 : error);
         }
         return loginInfoDto;
     }
@@ -50,7 +51,7 @@ public class LoginUserHelper implements IConst, IErrorCode{
      * @throws MyException
      */
     public static boolean checkAuthPassport(String authPassport) throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
         if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
             return true;//超级管理员
@@ -76,7 +77,7 @@ public class LoginUserHelper implements IConst, IErrorCode{
      * @throws MyException
      */
     public static boolean isAdmin() throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
         if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
             return true;
@@ -91,7 +92,7 @@ public class LoginUserHelper implements IConst, IErrorCode{
      */
     public static boolean isAdminOrProjectOwner(Project project) throws MyException {
         Assert.notNull(project);
-        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
         if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
             return true;

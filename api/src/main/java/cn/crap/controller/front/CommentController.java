@@ -3,6 +3,7 @@ package cn.crap.controller.front;
 import java.util.Date;
 
 import cn.crap.dto.SettingDto;
+import cn.crap.enumer.MyError;
 import cn.crap.service.mybatis.CommentService;
 import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CommentController extends BaseController {
 		
 		if (settingCache.get(C_SETTING_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode())) {
-				throw new MyException(E000010);
+				throw new MyException(MyError.E000010);
 			}
 		}
 
@@ -41,7 +42,7 @@ public class CommentController extends BaseController {
 		SettingDto anonymousComment = settingCache.get(C_SETTING_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
 			if (user == null){
-				throw new MyException(E000060);
+				throw new MyException(MyError.E000060);
 			}
 		}
 		

@@ -6,6 +6,7 @@ import cn.crap.dto.DictionaryDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.MyError;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -65,14 +66,14 @@ public class StaticizeController extends BaseController{
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
 		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
-			throw new MyException("000056");
+			throw new MyException(MyError.E000056);
 		}
 		Project project = projectCache.get(projectId);
 		String path = Tools.getServicePath() + "resources/html/staticize/"+project.getId();
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(null, project, "-错误码");
@@ -96,7 +97,7 @@ public class StaticizeController extends BaseController{
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
 		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
-			throw new MyException("000056");
+			throw new MyException(MyError.E000056);
 		}
 		
 		Module module = moduleCache.get(moduleId);
@@ -106,7 +107,7 @@ public class StaticizeController extends BaseController{
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口");
@@ -130,7 +131,7 @@ public class StaticizeController extends BaseController{
 			String type, String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
 		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
-			throw new MyException("000056");
+			throw new MyException(MyError.E000056);
 		}
 		Module module = moduleCache.get(moduleId);
 		Project project = projectCache.get(module.getProjectId());
@@ -139,7 +140,7 @@ public class StaticizeController extends BaseController{
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文章");
@@ -201,7 +202,7 @@ public class StaticizeController extends BaseController{
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
 		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
-			throw new MyException("000056");
+			throw new MyException(MyError.E000056);
 		}		
 		
 		ArticleWithBLOBs article = articleService.getById(articleId);
@@ -212,7 +213,7 @@ public class StaticizeController extends BaseController{
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		if(article.getType().equals(ArticleType.ARTICLE.name())){
 			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文章详情");
@@ -241,7 +242,7 @@ public class StaticizeController extends BaseController{
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
 		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
-			throw new MyException("000056");
+			throw new MyException(MyError.E000056);
 		}		
 				
 		InterfaceWithBLOBs interFace = interfaceService.getById(interfaceId);
@@ -252,7 +253,7 @@ public class StaticizeController extends BaseController{
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口详情");
 		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
@@ -293,7 +294,7 @@ public class StaticizeController extends BaseController{
 		String path = Tools.getServicePath() + "resources/html/staticize/"+project.getId();
 		File file = new File(path);
     	if( !file.exists()){
-    		throw new MyException("000057");
+    		throw new MyException(MyError.E000057);
     	}
     	
     	String webBasePath = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort() + req.getContextPath() +"/";
@@ -359,7 +360,7 @@ public class StaticizeController extends BaseController{
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
-			throw new MyException("000044");
+			throw new MyException(MyError.E000044);
 		}
 		// 静态化错误码// 查询页码
 		int pageSize = 15;

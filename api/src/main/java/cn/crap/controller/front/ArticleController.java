@@ -7,6 +7,7 @@ import cn.crap.adapter.ArticleAdapter;
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.ArticleDto;
 import cn.crap.enumer.ArticleStatus;
+import cn.crap.enumer.MyError;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
@@ -119,7 +120,7 @@ public class ArticleController extends BaseController {
         }
 
         if (article == null) {
-            throw new MyException("000020");
+            throw new MyException(MyError.E000020);
         }
         id = article.getId();
 

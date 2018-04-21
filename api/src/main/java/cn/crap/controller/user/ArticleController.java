@@ -3,10 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.ArticleStatus;
-import cn.crap.enumer.ArticleType;
-import cn.crap.enumer.CanDeleteEnum;
-import cn.crap.enumer.DataType;
+import cn.crap.enumer.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -94,7 +91,7 @@ public class ArticleController extends BaseController{
 	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
 	    Assert.notNull(dto.getModuleId());
 	    if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
-            throw new MyException(E000066);
+            throw new MyException(MyError.E000066);
         }
 
         Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
@@ -141,7 +138,7 @@ public class ArticleController extends BaseController{
 	@ResponseBody
 	public JsonResult delete(String id, String ids) throws MyException, IOException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 		if( MyString.isEmpty(ids) ){
 			ids = id;
@@ -156,16 +153,16 @@ public class ArticleController extends BaseController{
 			checkUserPermissionByProject(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
 
 			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
-				throw new MyException(E000009);
+				throw new MyException(MyError.E000009);
 			}
 
 			if (customCommentService.countByArticleId(model.getId()) > 0){
-				throw new MyException(E000037);
+				throw new MyException(MyError.E000037);
 			}
 
 			// 非管理员不能删除PAGE
 			if (ArticleStatus.PAGE.getStatus().equals(model.getStatus()) && !LoginUserHelper.isAdmin()){
-                throw new MyException(E000009);
+                throw new MyException(MyError.E000009);
             }
 
 			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");

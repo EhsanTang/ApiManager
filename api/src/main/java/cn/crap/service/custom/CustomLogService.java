@@ -1,10 +1,10 @@
 package cn.crap.service.custom;
 
 import cn.crap.enumer.LogType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.mybatis.*;
-import cn.crap.utils.IErrorCode;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
  * @author Ehsan
  */
 @Service
-public class CustomLogService implements IErrorCode {
+public class CustomLogService{
 
     @Autowired
     private ArticleService articleService;
@@ -69,7 +69,7 @@ public class CustomLogService implements IErrorCode {
 
                 // 模块不允许恢复修改操作，需要关联修改接口数据
                 if (!log.getType().equals(LogType.DELTET.name())) {
-                    throw new MyException(E000050);
+                    throw new MyException(MyError.E000050);
                 }
                 moduleService.update(module);
                 break;
@@ -94,7 +94,7 @@ public class CustomLogService implements IErrorCode {
         Assert.notNull(moduleId);
         Module module = moduleService.getById(moduleId);
         if (module == null) {
-            throw new MyException(E000048);
+            throw new MyException(MyError.E000048);
         }
     }
 
@@ -102,7 +102,7 @@ public class CustomLogService implements IErrorCode {
         Assert.notNull(projectId);
         Project project = projectService.getById(projectId);
         if (project == null) {
-            throw new MyException(E000049);
+            throw new MyException(MyError.E000049);
         }
     }
 }

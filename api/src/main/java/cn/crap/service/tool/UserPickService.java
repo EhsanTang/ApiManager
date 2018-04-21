@@ -2,6 +2,7 @@ package cn.crap.service.tool;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
+import cn.crap.enumer.MyError;
 import cn.crap.enumer.PickCode;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Error;
@@ -12,7 +13,6 @@ import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.custom.CustomProjectService;
 import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.IConst;
-import cn.crap.utils.IErrorCode;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * @author Ehsan
  */
 @Service("userPickService")
-public class UserPickService implements IPickService, IErrorCode {
+public class UserPickService implements IPickService{
     @Autowired
     private CustomErrorService customErrorService;
     @Autowired
@@ -47,7 +47,7 @@ public class UserPickService implements IPickService, IErrorCode {
     public List<PickDto> getPickList(String code, String key) throws MyException {
         PickCode pickCode = PickCode.getByCode(code);
         if (pickCode == null) {
-            throw new MyException(E000065, "code 有误");
+            throw new MyException(MyError.E000065, "code 有误");
         }
 
         LoginInfoDto user = LoginUserHelper.getUser();
@@ -57,7 +57,7 @@ public class UserPickService implements IPickService, IErrorCode {
         switch (pickCode) {
             case ERROR_CODE:
                 if (StringUtils.isEmpty(key)) {
-                    throw new MyException(E000065, "key（项目ID）不能为空");
+                    throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
 
                 for (Error error : customErrorService.queryByProjectId(key, null, null, null)) {
@@ -94,7 +94,7 @@ public class UserPickService implements IPickService, IErrorCode {
 
             case PROJECT_MODULES:
                 if (MyString.isEmpty(key)) {
-                    throw new MyException(E000065, "key（项目ID）不能为空");
+                    throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
                 for (Module m : customModuleService.queryByProjectId(key)) {
                     pick = new PickDto(m.getId(), m.getName());
@@ -105,7 +105,7 @@ public class UserPickService implements IPickService, IErrorCode {
 
             case USER:
                 if (MyString.isEmpty(key) || key.trim().length() < 4) {
-                    throw new MyException(E000065, "输入的搜索长度必须大于3");
+                    throw new MyException(MyError.E000065, "输入的搜索长度必须大于3");
                 }
                 key = "%" + key + "%";
                 Set<String> userIds = new TreeSet<>();

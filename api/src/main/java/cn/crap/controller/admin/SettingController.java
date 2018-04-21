@@ -3,6 +3,7 @@ package cn.crap.controller.admin;
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.SettingDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -91,14 +92,14 @@ public class SettingController extends BaseController {
                     }
                 }
                 if (!legalUrl) {
-                    return new JsonResult(new MyException(E000059));
+                    return new JsonResult(MyError.E000059);
                 }
             }
             settingService.update(SettingAdapter.getModel(settingDto));
         } else {
             Setting dbSetting = customSettingService.getByKey(settingDto.getKey());
             if (dbSetting != null) {
-                return new JsonResult(new MyException(E000006));
+                return new JsonResult(MyError.E000006);
             }
             settingService.insert(SettingAdapter.getModel(settingDto));
         }
@@ -127,7 +128,7 @@ public class SettingController extends BaseController {
     public JsonResult delete(@RequestParam String id) throws MyException {
         Setting setting = settingService.getById(id);
         if (setting.getCanDelete() == 0) {
-            throw new MyException(E000009);
+            throw new MyException(MyError.E000009);
         }
         settingService.delete(id);
         settingCache.del(setting.getMkey());

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.crap.enumer.MyError;
 import cn.crap.utils.Page;
 
 public class JsonResult implements Serializable {
@@ -43,9 +44,8 @@ public class JsonResult implements Serializable {
 	public JsonResult(MyException exception){
 		this.data = null;
 		this.success = 0;
-		String errorCode = exception.getMessage();
-		String errorMsg =  ErrorInfos.getMessage(errorCode);
-		this.setError( new ErrorMessage(errorCode,errorMsg+(exception.getMsgExtention()==null?"":exception.getMsgExtention())));
+		String errorMsg =  exception.getMessage() + (exception.getEnMessage() == null ? "" : "「" + exception.getEnMessage()+ "」");
+		this.setError( new ErrorMessage(exception.getErrorCode(),errorMsg + (exception.getMsgExtention() == null ? "" : exception.getMsgExtention())));
 	}
 
 	public JsonResult putOthers(String key, Object value){
@@ -55,11 +55,11 @@ public class JsonResult implements Serializable {
 		((Map<String, Object>)this.others).put(key, value);
 		return this;
 	}
-	public JsonResult(String errorCode){
+	public JsonResult(MyError myError){
 		this.data = null;
 		this.success = 0;
-		String errorMsg =  ErrorInfos.getMessage(errorCode);
-		this.setError( new ErrorMessage(errorCode,errorMsg) );
+		String errorMsg =  myError.getMessage() + (myError.getEnMessage() == null ? "" : "「" + myError.getEnMessage()+ "」");
+		this.setError( new ErrorMessage(myError.name(),errorMsg));
 	}
 
 	public JsonResult success(){

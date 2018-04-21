@@ -3,6 +3,7 @@ package cn.crap.controller.front;
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
+import cn.crap.enumer.MyError;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -34,7 +35,7 @@ public class ModuleController extends BaseController{
 	@ResponseBody
 	public JsonResult list(String projectId,String password, String visitCode) throws MyException{
 		if( MyString.isEmpty(projectId) ){
-			throw new MyException(E000020);
+			throw new MyException(MyError.E000020);
 		}
 		
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
@@ -53,18 +54,18 @@ public class ModuleController extends BaseController{
 	@ResponseBody
 	public JsonResult menu(@RequestParam String projectId) throws MyException{
 		if( MyString.isEmpty(projectId) ){
-			throw new MyException("000020");
+			throw new MyException(MyError.E000020);
 		}
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = projectCache.get(projectId);
 		if(project.getType() == ProjectType.PRIVATE.getType()){
-			LoginInfoDto user = LoginUserHelper.getUser(E000041);
+			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);
 
 			// 最高管理员修改项目
 			// 自己的项目
 			if ( ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") < 0 && !user.getId().equals(project.getUserId())
 					&& user.getProjects().get(project.getId()) == null) {
-				throw new MyException("000042");
+				throw new MyException(MyError.E000042);
 			}
 		}
 		

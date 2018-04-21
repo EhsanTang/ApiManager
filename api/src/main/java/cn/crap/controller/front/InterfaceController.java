@@ -3,6 +3,7 @@ package cn.crap.controller.front;
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -168,7 +169,7 @@ public class InterfaceController extends BaseController {
     public JsonResult webList(@RequestParam String moduleId, String interfaceName, String url,
                                Integer currentPage, String password, String visitCode) throws MyException {
         if (MyString.isEmpty(moduleId)) {
-            throw new MyException("000020");
+            throw new MyException(MyError.E000020);
         }
 
         Module module = moduleService.getById(moduleId);
@@ -220,7 +221,7 @@ public class InterfaceController extends BaseController {
                                     module.getName() + ":接口列表", "#/" + project.getId() + "/interface/list/" + module.getId(),
                                     interFace.getInterfaceName(), "void"), "module", moduleCache.get(interFace.getModuleId())));
         } else {
-            throw new MyException(E000012);
+            throw new MyException(MyError.E000012);
         }
     }
 

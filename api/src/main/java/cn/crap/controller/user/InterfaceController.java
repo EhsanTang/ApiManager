@@ -5,6 +5,7 @@ import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.MonitorType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -130,7 +131,7 @@ public class InterfaceController extends BaseController{
 			InterfaceCriteria.Criteria criteria = example.createCriteria();
 			criteria.andModuleIdEqualTo(interFace.getModuleId()).andFullUrlEqualTo(module.getUrl() + interFace.getUrl());
 			if (mybatisInterfaceService.countByExample(example) > 0){
-				throw new MyException("000004");
+				throw new MyException(MyError.E000004);
 			}
 		}
 		interFace.setId(null);
@@ -161,7 +162,7 @@ public class InterfaceController extends BaseController{
 		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
 
 		if(MyString.isEmpty(interFace.getUrl())) {
-			return new JsonResult(new MyException("000005"));
+			return new JsonResult(MyError.E000005);
 		}
 		interFace.setUrl(interFace.getUrl().trim());
 		
@@ -185,11 +186,11 @@ public class InterfaceController extends BaseController{
 			if(!MyString.isEmpty(interFace.getMonitorEmails())){
 				for(String email : interFace.getMonitorEmails().split(";")){
 					if( !Tools.checkEmail(email) ){
-						throw new MyException("000032");
+						throw new MyException(E000032");
 					}
 				}
 			}else{
-				throw new MyException("000032");
+				throw new MyException(E000032");
 			}
 		}**/
 
@@ -201,7 +202,7 @@ public class InterfaceController extends BaseController{
 
 			// 接口只能在同一个项目下的模块中移动
 			if( !projectId.equals(project.getId())){
-				throw new MyException("000047");
+				throw new MyException(MyError.E000047);
 			}
 			// 判断是否有修改模块的权限
 			checkUserPermissionByProject(project, MOD_INTER);
@@ -209,20 +210,20 @@ public class InterfaceController extends BaseController{
 			//同一模块下不允许 url 重复
 			if( !config.isCanRepeatUrl() && customInterfaceService.countByFullUrl(interFace.getModuleId(),
 					module.getUrl() +interFace.getUrl(), interFace.getId()) >0 ){
-				throw new MyException("000004");
+				throw new MyException(MyError.E000004);
 			}
 			
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			customInterfaceService.update(InterfaceAdapter.getModel(interFace), "接口", "");
 			if(interFace.getId().equals(interFace.getProjectId())){
-				throw new MyException("000027");
+				throw new MyException(MyError.E000027);
 			}
 			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
 			
 		} else {
 			checkUserPermissionByProject(projectCache.get(interFace.getProjectId() ), ADD_INTER);
 			if(!config.isCanRepeatUrl() && customInterfaceService.countByFullUrl(interFace.getModuleId(),module.getUrl() + interFace.getUrl(), null)>0){
-				return new JsonResult(new MyException("000004"));
+				return new JsonResult(MyError.E000004);
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			mybatisInterfaceService.insert(InterfaceAdapter.getModel(interFace));
@@ -235,7 +236,7 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult delete(String id, String ids) throws MyException, IOException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 		if( MyString.isEmpty(ids) ){
 			ids = id;

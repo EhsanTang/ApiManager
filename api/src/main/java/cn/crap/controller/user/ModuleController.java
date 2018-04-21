@@ -6,6 +6,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LogType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -163,25 +164,25 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult delete(@ModelAttribute Module module) throws Exception{
 		// 系统数据，不允许删除
 		if(module.getId().equals("web"))
-			throw new MyException("000009");
+			throw new MyException(MyError.E000009);
 				
 		Module dbModule = moduleCache.get(module.getId());
 		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
 		if(customInterfaceService.countByModuleId(dbModule.getId()) >0 ){
-			throw new MyException("000024");
+			throw new MyException(MyError.E000024);
 		}
 		
 		if(articleService.countByModuleIdAndType(dbModule.getId(), ArticleType.ARTICLE.name()) >0 ){
-			throw new MyException("000034");
+			throw new MyException(MyError.E000034);
 		}
 		
 		if(customSourceService.countByModuleId(dbModule.getId()) >0 ){
-			throw new MyException("000035");
+			throw new MyException(MyError.E000035);
 		}
 		
 		if(articleService.countByModuleIdAndType(dbModule.getId(),  ArticleType.DICTIONARY.name()) >0 ){
-			throw new MyException("000036");
+			throw new MyException(MyError.E000036);
 		}
 
         Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);

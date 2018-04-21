@@ -5,7 +5,7 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.LoginType;
-import cn.crap.framework.ErrorInfos;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -161,7 +161,7 @@ public class LoginController extends BaseController{
 	public JsonResult findPwdSendEmail(@RequestParam String email, @RequestParam String imgCode) throws UnsupportedEncodingException, MessagingException, MyException{
 		
 		if (MyString.isEmpty(imgCode) || !imgCode.equals(Tools.getImgCode())) {
-			throw new MyException("000010");
+			throw new MyException(MyError.E000010);
 		}
 
 		UserCriteria example = new UserCriteria();
@@ -169,7 +169,7 @@ public class LoginController extends BaseController{
 
 		List<User> user = userService.selectByExample(example);
 		if(user.size()!=1){
-			throw new MyException("000030");
+			throw new MyException(MyError.E000030);
 		}
 		emailService.sendFindPwdEmail(user.get(0).getEmail());
 		return new JsonResult(1, user.get(0));
@@ -190,7 +190,7 @@ public class LoginController extends BaseController{
 		
 		String code = stringCache.get(IConst.CACHE_FINDPWD + findPwdDto.getEmail());
 		if(code == null || !code.equalsIgnoreCase(findPwdDto.getCode())){
-			throw new MyException("000031");
+			throw new MyException(MyError.E000031);
 		}
 
 		UserCriteria example = new UserCriteria();
@@ -198,7 +198,7 @@ public class LoginController extends BaseController{
 
 		List<User> users = userService.selectByExample(example);
 		if(users.size()!=1){
-			throw new MyException("000030");
+			throw new MyException(MyError.E000030);
 		}
 		User user = users.get(0);
 		user.setPasswordSalt(Tools.getChar(20));
@@ -324,7 +324,8 @@ public class LoginController extends BaseController{
 			}
 		}catch(Exception e){
 			if(e instanceof MyException){
-				model.setTipMessage( ErrorInfos.getMessage( e.getMessage() ) );
+				MyException myException = (MyException) e;
+				model.setTipMessage( myException.getMessage() );
 			}else{
 				log.error(e.getMessage(), e);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();

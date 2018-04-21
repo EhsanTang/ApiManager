@@ -2,6 +2,7 @@ package cn.crap.framework.interceptor;
 
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.service.tool.UserCache;
 import cn.crap.utils.*;
@@ -20,7 +21,7 @@ import java.net.InetAddress;
  * @author 
  *
  */
-public class AuthInterceptor extends HandlerInterceptorAdapter implements IErrorCode{
+public class AuthInterceptor extends HandlerInterceptorAdapter{
 	@Autowired
 	private UserCache userCache;
 	@Autowired
@@ -71,7 +72,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter implements IError
                 response.sendRedirect("loginOrRegister.do#/login");
                 return false;
             }else {
-                throw new MyException(E000021);
+                throw new MyException(MyError.E000021);
             }
 		}
 

@@ -3,6 +3,7 @@ package cn.crap.controller.admin;
 import cn.crap.adapter.MenuAdapter;
 import cn.crap.dto.MenuDto;
 import cn.crap.enumer.MenuType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -112,7 +113,7 @@ public class MenuController extends BaseController {
         criteria.andParentIdEqualTo(id);
 
         if (menuService.countByExample(menuCriteria) > 0) {
-            throw new MyException("000025");
+            throw new MyException(MyError.E000025);
         }
         menuService.delete(id);
         // 清除缓存

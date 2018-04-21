@@ -12,6 +12,7 @@ import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enumer.InterfaceContentType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.ThreadContext;
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.service.tool.*;
@@ -28,7 +29,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Project;
 
-public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
+public abstract class BaseController implements IAuthCode, IConst {
     protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
     protected final static int SIZE = 15;
     protected Logger log = Logger.getLogger(getClass());
@@ -55,7 +56,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
             return new JsonResult((MyException) ex);
         } else if (ex instanceof NullPointerException) {
             log.error(ex.getMessage(), ex);
-            return new JsonResult(new MyException(E000051));
+            return new JsonResult(new MyException(MyError.E000051));
         } else {
             log.error(ex.getMessage(), ex);
             ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
@@ -77,10 +78,10 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
              */
             if (ex instanceof DataIntegrityViolationException) {
                 if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
-                    return new JsonResult(new MyException(E000052, "（字段：" + errorReason.split("'")[1] + "）"));
+                    return new JsonResult(new MyException(MyError.E000052, "（字段：" + errorReason.split("'")[1] + "）"));
                 }
             }
-            return new JsonResult(new MyException(E000001, ex.getMessage() + "——" + errorReason));
+            return new JsonResult(new MyException(MyError.E000001, ex.getMessage() + "——" + errorReason));
         }
     }
 
@@ -116,7 +117,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
      * @throws MyException
      */
     protected void checkUserPermissionByProject(Project project, int type) throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(E000003);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         /**
          * 最高管理员修改项目
          * the supper admin can do anything
@@ -134,13 +135,13 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
         }
 
         if (type < 0) {
-            throw new MyException(E000003);
+            throw new MyException(MyError.E000003);
         }
 
         // 项目成员
         ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
         if (puDto == null) {
-            throw new MyException(E000003);
+            throw new MyException(MyError.E000003);
         }
 
         /**
@@ -190,7 +191,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
         }
 
         if (MyString.notEquals(password, needPassword)) {
-            throw new MyException(E000007);
+            throw new MyException(MyError.E000007);
         }
 
         /**
@@ -199,7 +200,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
         if (settingCache.get(IConst.SETTING_VISITCODE).getValue().equals("true")) {
             String imgCode = Tools.getImgCode();
             if (MyString.notEquals(imgCode, visitCode)) {
-                throw new MyException(E000007);
+                throw new MyException(MyError.E000007);
             }
         }
 
@@ -223,7 +224,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
     protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         if (project.getType() == ProjectType.PRIVATE.getType()) {
-            LoginInfoDto user = LoginUserHelper.getUser(E000041);
+            LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);
 
             // 最高管理员修改项目
             if (user != null && ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") >= 0) {
@@ -238,7 +239,7 @@ public abstract class BaseController implements IAuthCode, IErrorCode, IConst {
             // 项目成员
             ProjectUser pu = user.getProjects().get(project.getId());
             if (pu == null) {
-                throw new MyException(E000042);
+                throw new MyException(MyError.E000042);
             }
         } else {
             String needPassword = project.getPassword();

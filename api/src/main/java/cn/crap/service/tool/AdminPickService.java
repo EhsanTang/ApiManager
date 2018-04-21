@@ -11,7 +11,6 @@ import cn.crap.service.mybatis.ArticleService;
 import cn.crap.service.mybatis.ProjectService;
 import cn.crap.service.mybatis.RoleService;
 import cn.crap.utils.IConst;
-import cn.crap.utils.IErrorCode;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import java.util.List;
  * @author Ehsan
  */
 @Service("adminPickService")
-public class AdminPickService implements IPickService, IErrorCode {
+public class AdminPickService implements IPickService{
     @Autowired
     private ProjectService projectService;
     @Autowired
@@ -41,12 +40,12 @@ public class AdminPickService implements IPickService, IErrorCode {
     public List<PickDto> getPickList(String code, String key) throws MyException {
         PickCode pickCode = PickCode.getByCode(code);
         if (pickCode == null) {
-            throw new MyException(E000065, "code 有误");
+            throw new MyException(MyError.E000065, "code 有误");
         }
 
         LoginInfoDto user = LoginUserHelper.getUser();
         if (user.getType() != UserType.ADMIN.getType()) {
-            throw new MyException(E000065, "权限不足，非管理员");
+            throw new MyException(MyError.E000065, "权限不足，非管理员");
         }
 
         List<PickDto> picks = new ArrayList<>();
@@ -162,7 +161,7 @@ public class AdminPickService implements IPickService, IErrorCode {
 
         }
 
-        throw new MyException(E000065, "查询失败");
+        throw new MyException(MyError.E000065, "查询失败");
 
     }
 

@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.ProjectUserDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -85,7 +86,7 @@ public class ProjectUserController extends BaseController{
 		}
 		
 		if(search == null ||  MyString.isEmpty( search.getId() )){
-			throw new MyException("000040");
+			throw new MyException(MyError.E000040);
 		}
 		
 		projectUser.setUserEmail(search.getEmail());
@@ -104,7 +105,7 @@ public class ProjectUserController extends BaseController{
 			}
 		}catch(Exception e){
 			// 重复添加
-			throw new MyException("000039");
+			throw new MyException(MyError.E000039);
 		}
 		
 		return new JsonResult(1,projectUser);

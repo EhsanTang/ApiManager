@@ -6,7 +6,6 @@ import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.service.IPickService;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.utils.IErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ import java.util.List;
  * @author Ehsan
  */
 @Service("pickService")
-public class PickService implements IPickService, IErrorCode {
+public class PickService implements IPickService{
     @Resource(name = "userPickService")
     private IPickService userPickService;
 
@@ -32,7 +31,7 @@ public class PickService implements IPickService, IErrorCode {
     public List<PickDto> getPickList(String code, String key) throws MyException {
         PickCode pickCode = PickCode.getByCode(code);
         if (pickCode == null) {
-            throw new MyException(E000065, "code 有误");
+            throw new MyException(MyError.E000065, "code 有误");
         }
 
         PickDto pick = null;

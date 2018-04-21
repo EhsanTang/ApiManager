@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.SourceAdapter;
 import cn.crap.dto.SearchDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -81,12 +82,12 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
 			if(MyString.isEmpty(source.getFilePath())){
-				throw new MyException("000016");
+				throw new MyException(MyError.E000016);
 			}
 			
 			// 判断版本号是否正确 .CAV.文件标识.版本号 
 			if( !source.getFilePath().contains(".CAV.") ){
-				throw new MyException("000017");
+				throw new MyException(MyError.E000017);
 			}
 			
 			// 校验文件名是否正确
@@ -94,11 +95,11 @@ public class SourceController extends BaseController{
 			try{
 				vsesions = source.getFilePath().split("\\.");
 				if( !vsesions[vsesions.length-4].equals("CAV") ){
-					throw new MyException("000017");
+					throw new MyException(MyError.E000017);
 				}
 	  			Long.parseLong(vsesions[vsesions.length-2]);
 			}catch(Exception e){
-				throw new MyException("000017");
+				throw new MyException(MyError.E000017);
 			}
 			
 			if(!MyString.isEmpty(source.getId())){
@@ -106,13 +107,13 @@ public class SourceController extends BaseController{
 				String oldVsesions[]  = oldSource.getFilePath().split("\\.");
 				if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){
 					// 文件标识有误
-					throw new MyException("000018");
+					throw new MyException(MyError.E000018);
 				}
 					
 				// 新版本号必须 >= 旧版本号
 				if( (Long.parseLong(oldVsesions[oldVsesions.length-2])) > Long.parseLong(vsesions[vsesions.length-2]) ){
 						// 文件标识有误
-					throw new MyException("000019");
+					throw new MyException(MyError.E000019);
 				}else if((Long.parseLong(oldVsesions[oldVsesions.length-2])) == Long.parseLong(vsesions[vsesions.length-2]) ){
 					// 新旧版本号一致，不更新文档地址
 					source.setFilePath(oldSource.getFilePath());
@@ -139,7 +140,7 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult delete(String id, String ids) throws MyException, IOException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 		if( MyString.isEmpty(ids) ){
 			ids = id;

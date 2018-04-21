@@ -2,6 +2,7 @@ package cn.crap.dto;
 
 import java.io.Serializable;
 
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.utils.MyString;
 
@@ -17,7 +18,7 @@ public class FindPwdDto implements Serializable{
 	
 	public void check() throws MyException{
 		if(MyString.isEmpty(email) || MyString.isEmpty(code) || MyString.isEmpty(newPwd)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 	}
 	public String getEmail() {

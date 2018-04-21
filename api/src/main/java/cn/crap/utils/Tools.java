@@ -2,6 +2,7 @@ package cn.crap.utils;
 
 import cn.crap.dto.CrumbDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.ThreadContext;
@@ -27,7 +28,7 @@ import java.util.zip.ZipOutputStream;
 public class Tools {
 	public static void staticize(String html, String filePath) throws MyException, IOException{
 		if(html == null){
-			throw new MyException("000045");
+			throw new MyException(MyError.E000045);
 		}
 		OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(filePath),"UTF-8");
 		try{
@@ -35,7 +36,7 @@ public class Tools {
 			fw.flush();
 		}catch(Exception e){
 			e.printStackTrace();
-			throw new MyException("000001", e.getMessage());
+			throw new MyException(MyError.E000001, e.getMessage());
 		}finally{
 			fw.close();
 		}
@@ -216,7 +217,7 @@ public class Tools {
 			times = Integer.parseInt(timesStr.toString()) + 1;
 		}
 		if(times > 3){
-			throw new MyException("000011");
+			throw new MyException(MyError.E000011);
 		}
 		stringCache.add(IConst.CACHE_IMGCODE_TIMES + MyCookie.getCookie(IConst.COOKIE_UUID, false), times + "");
 		String imgCode = stringCache.get(IConst.CACHE_IMGCODE + MyCookie.getCookie(IConst.COOKIE_UUID, false));

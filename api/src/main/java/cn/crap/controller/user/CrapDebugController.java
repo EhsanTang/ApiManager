@@ -3,6 +3,7 @@ package cn.crap.controller.user;
 import java.util.*;
 
 import cn.crap.adapter.DebugAdapter;
+import cn.crap.enumer.MyError;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomDebugService;
 import cn.crap.service.custom.CustomModuleService;
@@ -133,7 +134,7 @@ public class CrapDebugController extends BaseController{
 			example.createCriteria().andUidEqualTo(user.getId());
 			int totalNum = debugService.countByExample(example);
 			if (totalNum > 100){
-				return new JsonResult("000058");
+				return new JsonResult(MyError.E000058);
 			}
 			int debugSequence = 0;
 			for(DebugDto debug : d.getDebugs()){

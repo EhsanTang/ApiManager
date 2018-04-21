@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -42,7 +43,7 @@ public class ErrorController extends BaseController{
         checkUserPermissionByProject(projectId, VIEW);
 
         if (MyString.isEmpty(projectId)) {
-            throw new MyException("000020");
+            throw new MyException(MyError.E000020);
         }
 
         Page page = new Page(currentPage);
@@ -94,7 +95,7 @@ public class ErrorController extends BaseController{
             checkUserPermissionByProject(projectId, ADD_ERROR);
             errorService.insert(ErrorAdapter.getModel(dto));
         } else {
-            return new JsonResult(new MyException("000002"));
+            return new JsonResult(MyError.E000002);
         }
         return new JsonResult(1, dto);
     }
@@ -106,7 +107,7 @@ public class ErrorController extends BaseController{
 
         Error model = errorService.getById(id);
         if (model == null) {
-            throw new MyException("000063");
+            throw new MyException(MyError.E000063);
         }
         checkUserPermissionByProject(model.getProjectId(), DEL_ERROR);
 

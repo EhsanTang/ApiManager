@@ -53,7 +53,10 @@ public class ArticleService {
             model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
         }
         if (model.getMarkdown() == null) {
-            model.setMarkdown(null);
+            model.setMarkdown("");
+        }
+        if (model.getContent() == null){
+            model.setContent("");
         }
         if (model.getStatus() == null) {
             model.setStatus(ArticleStatus.COMMON.getStatus());

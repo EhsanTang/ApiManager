@@ -93,16 +93,19 @@ public class ArticleController extends BaseController{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
 	    Assert.notNull(dto.getModuleId());
+	    if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
+            throw new MyException(E000066);
+        }
+
         Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
         checkUserPermissionByProject(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 
 		if(!MyString.isEmpty(dto.getId())){
             ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
 
-            // key、type、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+            // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
             if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
                 article.setMkey(null);
-				article.setType(null);
 				article.setStatus(null);
             }
 
@@ -121,10 +124,9 @@ public class ArticleController extends BaseController{
         ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
         article.setProjectId(project.getId());
 
-		// key、type、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+		// key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
 		if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
 			article.setMkey(null);
-			article.setType(null);
 			article.setStatus(null);
 		}
 

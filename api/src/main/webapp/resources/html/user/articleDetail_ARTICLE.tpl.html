@@ -11,10 +11,10 @@
 				</td>
 			</tr>
 
-			<tr>
+			<tr ng-if="model.status == 100">
 				<td class="tc w50">Key</td>
 				<td class="tc">
-					<input  class="form-control" type="text" ng-model="model.mkey" required placeholder="页面唯一标识，不可重复，英文，如：HELP">
+					<input  class="form-control" type="text" ng-model="model.mkey" placeholder="页面唯一标识，不可重复，英文，如：HELP">
 				</td>
 			</tr>
 
@@ -41,10 +41,10 @@
 				</td>
 			</tr>
 
-			<tr>
+			<tr ng-if="showOperation('ARTICLE','');">
 				<td class="tc">状态</td>
 				<td>
-					* 推荐：将出现在首页推荐文章菜单下，站点页面：需要添加key，后端菜单将支持选着跳转至该文章详情页（如果首页、联系页面等）
+					* 推荐：将出现在首页推荐文章菜单下，站点页面：需要添加key，后端菜单将支持选着跳转至该站点页面（如果首页、联系页面等）
 					<input class="form-control" type="text" id="statusName"  placeholder="点击选择状态" ng-model="model.statusName"
 						   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=statusName|tag=status|code=ARTICLE_STATUS|def='+model.status,$event)">
 				</td>

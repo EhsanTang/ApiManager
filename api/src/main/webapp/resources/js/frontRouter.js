@@ -36,7 +36,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/moduleList.tpl.html'
-			}
+            },
+            'page@frontModuleCtrl' : {
+                templateUrl : 'resources/html/frontHtml/page.tpl.html'
+            }
 		}
 	}).state('frontInterfaceCtrl', {
 		url : '/:projectId/interface/list/:moduleId',

@@ -1,14 +1,13 @@
 package cn.crap.framework;
 
 import cn.crap.enumer.MyError;
-import org.springframework.util.Assert;
 
 public class MyException  extends Exception{
 
 	private static final long serialVersionUID = 8638237486526577302L;
 
 	private MyError myError;
-	private String msgExtention;
+	private String tip;
 	
     public MyException(MyError error) {
 		this.myError = error;
@@ -16,15 +15,15 @@ public class MyException  extends Exception{
     
     public MyException(MyError error, String msgExtention) {
     	this.myError = error;
-        this.setMsgExtention(msgExtention);
+        this.setTip(msgExtention);
     }
 
-	public String getMsgExtention() {
-		return msgExtention;
+	public String getTip() {
+		return tip;
 	}
 
-	private void setMsgExtention(String msgExtention) {
-		this.msgExtention = msgExtention;
+	private void setTip(String tip) {
+		this.tip = tip;
 	}
 
 	public String getMessage(){

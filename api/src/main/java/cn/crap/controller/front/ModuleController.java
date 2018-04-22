@@ -8,13 +8,12 @@ import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.ModuleCriteria;
 import cn.crap.model.mybatis.Project;
+import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.mybatis.ModuleService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,32 +29,33 @@ public class ModuleController extends BaseController{
 
 	@Autowired
 	private ModuleService moduleService;
+    @Autowired
+    private CustomModuleService customModuleService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(String projectId,String password, String visitCode) throws MyException{
-		if( MyString.isEmpty(projectId) ){
-			throw new MyException(MyError.E000020);
-		}
-		
-		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+	public JsonResult list(String projectId, String password, String visitCode, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+        throwExceptionWhenIsNull(projectId, "projectId");
+
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = projectCache.get(projectId);
 		checkFrontPermission(password, visitCode, project);
 
-		ModuleCriteria example = new ModuleCriteria();
-		example.createCriteria().andProjectIdEqualTo(projectId);
+        Page<Module> page= new Page(currentPage);
+        page = customModuleService.queryByProjectId(projectId, null, page);
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.selectByExample(example));
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(page.getList());
+		page.setList(null);
 
-		return new JsonResult(1, moduleDtoList, null,
+		return new JsonResult(1, moduleDtoList, page,
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),  "project", project) );
-	}	
+	}
+
 	@RequestMapping("/menu.do")
 	@ResponseBody
 	public JsonResult menu(@RequestParam String projectId) throws MyException{
-		if( MyString.isEmpty(projectId) ){
-			throw new MyException(MyError.E000020);
-		}
+		throwExceptionWhenIsNull(projectId, "projectId");
+
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		Project project = projectCache.get(projectId);
 		if(project.getType() == ProjectType.PRIVATE.getType()){
@@ -75,6 +75,9 @@ public class ModuleController extends BaseController{
 
 		ModuleCriteria example = new ModuleCriteria();
 		example.createCriteria().andProjectIdEqualTo(projectId);
+        example.setLimitStart(0);
+        example.setMaxResults(5);
+        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
 		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.selectByExample(example));
 		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  returnProject) );

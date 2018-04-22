@@ -49,6 +49,25 @@ public abstract class BaseController implements IAuthCode, IConst {
     @Autowired
     protected Config config;
 
+    /**
+     * @param param 待校验参数
+     * @param tip 前端提示文案
+     * @param myError
+     * @throws MyException
+     */
+    protected void throwExceptionWhenIsNull(String param, String tip, MyError myError) throws MyException{
+        if (myError == null){
+            myError = MyError.E000020;
+        }
+        if (MyString.isEmpty(param)) {
+            throw new MyException(myError, tip);
+        }
+    }
+
+    protected void throwExceptionWhenIsNull(String param, String tip) throws MyException{
+        throwExceptionWhenIsNull(param, tip, null);
+    }
+
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public JsonResult expHandler(HttpServletRequest request, Exception ex) {
@@ -81,7 +100,7 @@ public abstract class BaseController implements IAuthCode, IConst {
                     return new JsonResult(new MyException(MyError.E000052, "（字段：" + errorReason.split("'")[1] + "）"));
                 }
             }
-            return new JsonResult(new MyException(MyError.E000001, ex.getMessage() + "——" + errorReason));
+            return new JsonResult(new MyException(MyError.E000001, ex.getMessage() + "，详细错误：" + errorReason));
         }
     }
 
@@ -91,7 +110,7 @@ public abstract class BaseController implements IAuthCode, IConst {
      * @param message
      */
     protected void printMsg(String message) {
-        printMsg(message, InterfaceContentType.JSON);
+        printMsg(message, InterfaceContentType.HTML);
     }
 
     protected void printMsg(String message, InterfaceContentType contentType) {

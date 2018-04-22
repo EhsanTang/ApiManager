@@ -47,11 +47,20 @@
 
 				<div class="r2 BGFFF p10 C555 mr15 mt10">
 					<div class="adorn-bl-3 pl10">
+						<a class="C555 cursor" ng-href="#/{{project.id}}/module/list">全部模块</a>
+					</div>
+				</div>
+
+				<div class="r2 BGFFF p10 C555 mr15 mt10">
+					<div class="adorn-bl-3 pl10">
 						<a class="C555 cursor" ng-href="#{{project.id}}/error/list">错误码</a>
 					</div>
 				</div>
 
 				<div class="mb0 r2 f14 mr15 mt10 BGFFF pt10 pb20" id="accordion" role="tablist">
+					<div ng-if="projectMenu.length==0" class="no-radius b0 mt0 C999">
+						<i class="iconfont mt-5 ml10">&#xe626;</i>该项目下没有模块
+					</div>
 					<div class="no-radius b0 mt0" ng-repeat="item in projectMenu">
 						<div class="no-radius p10" data-parent="#accordion">
 							<div class="a cursor adorn-bl-3 pl10 no_unl " data-toggle="collapse" data-parent="#accordion" href="#panel{{item.id}}">

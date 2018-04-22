@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-// TODO jsonResult 优化，错误码提示国际化，html页面国际化
+// TODO jsonResult 优化，html页面国际化
 @Controller
 @RequestMapping("/user/error")
 public class ErrorController extends BaseController{
@@ -32,22 +32,22 @@ public class ErrorController extends BaseController{
     private CustomErrorService customErrorService;
 
     /**
+     * 错误码列表
+     * @param projectId
+     * @param errorCode
+     * @param errorMsg
+     * @param currentPage
      * @return
      * @throws MyException
-     * @throws Exception
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport
     public JsonResult list(String projectId, String errorCode, String errorMsg,  Integer currentPage) throws MyException {
+        throwExceptionWhenIsNull(projectId, "projectId");
         checkUserPermissionByProject(projectId, VIEW);
 
-        if (MyString.isEmpty(projectId)) {
-            throw new MyException(MyError.E000020);
-        }
-
         Page page = new Page(currentPage);
-
         List<Error> models = customErrorService.queryByProjectId(projectId, errorCode, errorMsg, page);
         List<ErrorDto> dtoList = ErrorAdapter.getDto(models);
 
@@ -78,9 +78,15 @@ public class ErrorController extends BaseController{
         Assert.notNull(projectId, "projectId can't be null");
         Assert.notNull(errorCode, "errorCode can't be null");
 
-        // update
         if (!MyString.isEmpty(dto.getId())) {
+            // 错误码重复及权限检查
             Error dbError = errorService.getById(dto.getId());
+            if (!dbError.getErrorCode().equals(dto.getErrorCode())){
+                boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
+                if (existSameErrorCode) {
+                    return new JsonResult(MyError.E000002);
+                }
+            }
             checkUserPermissionByProject(dbError.getProjectId(), MOD_ERROR);
 
             Error newModel = ErrorAdapter.getModel(dto);
@@ -89,21 +95,20 @@ public class ErrorController extends BaseController{
             return new JsonResult(1, dto);
         }
 
-        // add
         boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
-        if (!existSameErrorCode) {
-            checkUserPermissionByProject(projectId, ADD_ERROR);
-            errorService.insert(ErrorAdapter.getModel(dto));
-        } else {
+        if (existSameErrorCode) {
             return new JsonResult(MyError.E000002);
         }
+
+        checkUserPermissionByProject(projectId, ADD_ERROR);
+        errorService.insert(ErrorAdapter.getModel(dto));
         return new JsonResult(1, dto);
     }
 
     @RequestMapping("/delete.do")
     @ResponseBody
     public JsonResult delete(String id) throws MyException {
-        Assert.notNull(id, "id can't be null");
+        throwExceptionWhenIsNull(id, "id");
 
         Error model = errorService.getById(id);
         if (model == null) {

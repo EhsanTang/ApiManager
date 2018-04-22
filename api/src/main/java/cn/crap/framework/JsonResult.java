@@ -6,6 +6,7 @@ import java.util.Map;
 
 import cn.crap.enumer.MyError;
 import cn.crap.utils.Page;
+import org.springframework.util.StringUtils;
 
 public class JsonResult implements Serializable {
 	private static final long serialVersionUID = 7553249056983455065L;
@@ -44,8 +45,15 @@ public class JsonResult implements Serializable {
 	public JsonResult(MyException exception){
 		this.data = null;
 		this.success = 0;
-		String errorMsg =  exception.getMessage() + (exception.getEnMessage() == null ? "" : "「" + exception.getEnMessage()+ "」");
-		this.setError( new ErrorMessage(exception.getErrorCode(),errorMsg + (exception.getMsgExtention() == null ? "" : exception.getMsgExtention())));
+
+        String errorMsg =  exception.getMessage();
+        String enMessage = exception.getEnMessage();
+        String tip = exception.getTip();
+
+		errorMsg += (StringUtils.isEmpty(enMessage) ? "" : "「" + enMessage + "」");
+        errorMsg += (StringUtils.isEmpty(tip) ? "" : "，提示：" + tip + "");
+
+		this.setError( new ErrorMessage(exception.getErrorCode(), errorMsg));
 	}
 
 	public JsonResult putOthers(String key, Object value){
@@ -58,7 +66,8 @@ public class JsonResult implements Serializable {
 	public JsonResult(MyError myError){
 		this.data = null;
 		this.success = 0;
-		String errorMsg =  myError.getMessage() + (myError.getEnMessage() == null ? "" : "「" + myError.getEnMessage()+ "」");
+        String enMessage = myError.getEnMessage();
+		String errorMsg =  myError.getMessage() + (StringUtils.isEmpty(enMessage) ? "" : "「" + enMessage + "」");
 		this.setError( new ErrorMessage(myError.name(),errorMsg));
 	}
 

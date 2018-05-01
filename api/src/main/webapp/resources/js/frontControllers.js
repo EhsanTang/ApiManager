@@ -184,7 +184,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 		
 		var url = $location.absUrl();
 		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
-		var params = "&projectId=" + projectId;
+		var params = "&projectId=" + projectId + "&currentPage="+page;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		params = "iUrl=front/module/list.do|iLoading=FLOAT|iParams="+params;
@@ -197,6 +197,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 				 $rootScope.moduleList = result.data;
 				 $rootScope.others = result.others;
 				 $rootScope.project = result.others.project;
+				 $rootScope.page = result.page;
 			 }
 		});
     };

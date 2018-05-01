@@ -1,8 +1,10 @@
 package cn.crap.controller.front;
 
 import cn.crap.adapter.ModuleAdapter;
+import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
+import cn.crap.dto.ProjectDto;
 import cn.crap.enumer.MyError;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
@@ -34,7 +36,8 @@ public class ModuleController extends BaseController{
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(String projectId, String password, String visitCode, @RequestParam(defaultValue="1") int currentPage) throws MyException{
+	public JsonResult list(String projectId, String password, String visitCode,
+                           @RequestParam(defaultValue="1") int currentPage) throws MyException{
         throwExceptionWhenIsNull(projectId, "projectId");
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
@@ -48,7 +51,8 @@ public class ModuleController extends BaseController{
 		page.setList(null);
 
 		return new JsonResult(1, moduleDtoList, page,
-				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),  "project", project) );
+				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),
+						"project", ProjectAdapter.getDto(project, null)) );
 	}
 
 	@RequestMapping("/menu.do")
@@ -69,17 +73,13 @@ public class ModuleController extends BaseController{
 			}
 		}
 		
-		Project returnProject = new Project();
-		BeanUtils.copyProperties(project, returnProject);
-		returnProject.setPassword("");
-
 		ModuleCriteria example = new ModuleCriteria();
 		example.createCriteria().andProjectIdEqualTo(projectId);
         example.setLimitStart(0);
-        example.setMaxResults(5);
+        example.setMaxResults(10);
         example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
 		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.selectByExample(example));
-		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  returnProject) );
+		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
 	}	
 }

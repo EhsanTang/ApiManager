@@ -1,7 +1,7 @@
 /****************密码访问*****************/
 function propUpPsswordDiv(obj){
 	var msg = obj.textContent;
-	if(msg.indexOf("[000007]")>=0 || msg.indexOf("[000011]")>=0){
+	if(msg.indexOf(INVALID_PASSWORD_CODE)>=0 || msg.indexOf(NEED_PASSWORD_CODE)>=0){
 		lookUp('passwordDiv', '', 300, 300 ,6,'');
 		showMessage('passwordDiv','false',false,-1);
 		showMessage('fade','false',false,-1);
@@ -91,6 +91,9 @@ function getParamFromTable(tableId) {
 function setPassword(){
 	$.cookie('password', $.base64.encode(escape($("#password").val())));
 	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
+    if (getRootScope().error.indexOf(NEED_PASSWORD_CODE) > 0){
+        getRootScope().error = "";
+	}
 }
 /** ***************pick控件搜索*************** */
 var navigateText = "";

@@ -15,6 +15,7 @@ import cn.crap.service.IPickService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -43,6 +44,7 @@ public class CustomMenuService {
         Assert.notNull(parentId, "parentId can't be null");
         MenuCriteria example = new MenuCriteria();
         example.createCriteria().andParentIdEqualTo(parentId);
+        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
         return  dao.selectByExample(example);
     }
 
@@ -60,7 +62,7 @@ public class CustomMenuService {
 
     public List<MenuWithSubMenuDto> getLeftMenu() {
         List<Menu> menus = queryByParentId("0");
-        List<String> menuIds = new ArrayList<String>();
+        List<String> menuIds = new ArrayList<>();
         for (Menu menu : menus) {
             menuIds.add(menu.getId());
         }

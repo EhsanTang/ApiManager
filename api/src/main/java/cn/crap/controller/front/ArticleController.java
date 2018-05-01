@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.ArticleDto;
+import cn.crap.dto.CrumbDto;
 import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.MyError;
 import cn.crap.model.mybatis.*;
@@ -13,6 +14,8 @@ import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
 import cn.crap.service.custom.CustomModuleService;
 import cn.crap.service.mybatis.ArticleService;
+import cn.crap.utils.MyCrumbDtoList;
+import cn.crap.utils.MyHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,9 +90,11 @@ public class ArticleController extends BaseController {
             List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, status, page);
             List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
 
-            Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,
-                    "crumbs", Tools.getCrumbs(project.getName(), "#/" + project.getId() + "module/list", module.getName() + ":文章列表", "void"));
-
+            Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(type).getName())
+                    .put("category", category)
+                    .put("categorys", categories)
+                    .put("crumbs", Tools.getCrumbs("模块:" + project.getName(), "#/" + project.getId() + "/module/list", "文章:" + module.getName(), "void"))
+                    .getMap();
             return new JsonResult().success().data(articleDtos).page(page).others(others);
         }
 
@@ -99,8 +104,11 @@ public class ArticleController extends BaseController {
         List<Article> articles = customArticleService.queryArticle(null, null,  type, category, status, page);
         List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null);
 
-        Map<String, Object> others = Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category, "categorys", categories,
-                "crumbs", Tools.getCrumbs( "推荐文章" + ":文章列表", "void"));
+        Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(type).getName())
+                .put("category", category)
+                .put("categorys", categories)
+                .put("crumbs", Tools.getCrumbs( "推荐文章列表", "void"))
+                .getMap();
 
         return new JsonResult().success().data(articleDtos).page(page).others(others);
     }
@@ -152,6 +160,12 @@ public class ArticleController extends BaseController {
 
         // 更新点击量
         customArticleService.updateClickById(id);
-        return new JsonResult(1, article, page, returnMap);
+
+        List<CrumbDto> crumbDtos = MyCrumbDtoList.getList("模块:" + project.getName(), "#/" + project.getId() + "/module/list")
+                .add("文章:" + module.getName(), "#/" + project.getId() + "/article/list/" + module.getId() + "/ARTICLE/NULL/NULL/NULL")
+                .add(article.getName(), "void")
+                .getList();
+
+        return new JsonResult(1, article, page, returnMap).others(Tools.getMap("crumbs", crumbDtos));
     }
 }

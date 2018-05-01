@@ -240,7 +240,6 @@ public class Tools {
 				map.put(params[i].toString(), params[i + 1]);
 		}
 		return map;
-
 	}
 	
 	public static Map<String, String> getStrMap(String... params) {

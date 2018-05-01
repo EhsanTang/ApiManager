@@ -31,7 +31,7 @@
 		*权限不足，若为新增模块，请刷新页面
 	</span>
 	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		ng-click="detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)"> 
+		ng-click="changeDisplay('interFaceDetail','copyInterFace');detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)">
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
 	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"

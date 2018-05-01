@@ -49,5 +49,14 @@ body{min-width:800px;}
 /****************字体*********************/
 body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;;}
+	font-family: "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;;
+}
+/***remote iconfont*****/
+@font-face {
+    font-family: 'iconfont';  /* project id 73680 */
+    src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot');
+    src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.woff') format('woff'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.svg#iconfont') format('svg');
 }

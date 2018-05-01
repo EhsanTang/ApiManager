@@ -95,3 +95,6 @@ update article set status=100 where  type='PAGE'
 
 ALTER TABLE `apidev`.`interface`
 ADD COLUMN `contentType` VARCHAR(45) NOT NULL DEFAULT 'application/json' COMMENT '接口返回contentType' AFTER `projectId`;
+
+
+INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fff-8888-d4839-b38a-898343435462', 'ICONFONT', '//at.alicdn.com/t/font_afbmuhv5zc15rk9', '图标地址（cdn图标库或本地图标库）', 'ICONFONT', '0', '100');

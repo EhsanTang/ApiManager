@@ -27,15 +27,6 @@ html,body{
 blockquote{
 	padding-left:10px;
 }
-/***remote iconfont*****/
-@font-face {
-  font-family: 'iconfont';  /* project id 73680 */
-  src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot');
-  src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.svg#iconfont') format('svg');
-}
                                    
 .pager-sm li > a, .pager-sm li > span {
     padding: 1px 8px;

@@ -1,5 +1,5 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">前端首页</div>
+<div class="col-xs-6 f16 fb p0 mb5">系统设置【图标地址】</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
@@ -14,16 +14,15 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">前端首页地址</td>
+					<td class="tc">图标地址</td>
 					<td class="tc">
-					* 首页地址只能为站内相对地址，必须以font/、index.do、project.do开头
-						<div class="input-group w">
-							<textarea  class="form-control no-resize" id="value" ng-model="model.value" rows="3"
-									   placeholder="请点击“选择地址”按钮选择链接地址，亦可手动输入链接"></textarea>
-							<div class="input-group-addon cursor btn-adorn" ng-click="loadPick($event,300,460,'true','value','INDEX_PAGE','', model.value);">
-								选择地址
-							</div>
-						</div>
+					 <div class="input-group">
+							<input class="form-control" type="text" id="value" required
+								ng-model="model.value"  placeholder="点击“选择”按钮图标地址">
+							<div class="input-group-addon cursor btn-adorn"
+								ng-click="loadPick($event,220,250,'true','value','ICONFONT', '', model.value);">
+								选择图标地址</div>
+					</div>
 
 					</td>
 				</tr>

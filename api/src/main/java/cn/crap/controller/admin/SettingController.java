@@ -108,7 +108,7 @@ public class SettingController extends BaseController {
         // 更新css模板，静态化css文件
         String cssPath = Tools.getServicePath() + "resources/css/";
         Tools.createFile(cssPath);
-        String cssContent = Tools.readFile(cssPath + "setting.tpl.css");
+        String cssContent = Tools.readFile(cssPath + "setting.tpl");
         for (SettingDto s : settingCache.getAll()) {
             String value = s.getValue();
             if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {

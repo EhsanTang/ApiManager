@@ -49,5 +49,14 @@ body{min-width:800px;}
 /****************字体*********************/
 body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	pre, form, fieldset, legend, button, input, textarea, th, td {
-	font-family: {{settings.FONT_FAMILY}};}
+	font-family: {{settings.FONT_FAMILY}};
+}
+/***remote iconfont*****/
+@font-face {
+    font-family: 'iconfont';  /* project id 73680 */
+    src: url('{{settings.ICONFONT}}.eot');
+    src: url('{{settings.ICONFONT}}.eot?#iefix') format('embedded-opentype'),
+    url('{{settings.ICONFONT}}.woff') format('woff'),
+    url('{{settings.ICONFONT}}.ttf') format('truetype'),
+    url('{{settings.ICONFONT}}.svg#iconfont') format('svg');
 }

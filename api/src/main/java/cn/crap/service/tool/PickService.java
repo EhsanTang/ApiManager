@@ -115,6 +115,12 @@ public class PickService implements IPickService{
                     picks.add(pick);
                 }
                 return picks;
+            case ICONFONT:// 图标库
+                for (Iconfont iconfont : Iconfont.values()) {
+                    pick = new PickDto(iconfont.name(), iconfont.getValue(), iconfont.getName());
+                    picks.add(pick);
+                }
+                return picks;
         }
 
         return userPickService.getPickList(code, key);

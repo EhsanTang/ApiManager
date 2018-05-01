@@ -15,6 +15,7 @@ public enum PickCode {
     SETTING_TYPE("SETTING_TYPE", "设置类型"),
     MENU_TYPE("MENU_TYPE", "菜单类型"),
     FONT_FAMILY("FONT_FAMILY", "字体选择"),
+	ICONFONT("ICONFONT", "图标库地址"),
     MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文章）"),
     INTERFACE_CONTENT_TYPE("INTERFACE_CONTENT_TYPE", "返回类型"),
 

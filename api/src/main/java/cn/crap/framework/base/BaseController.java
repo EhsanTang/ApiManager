@@ -190,26 +190,41 @@ public abstract class BaseController implements IAuthCode, IConst {
     /**
      * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
      *
-     * @param needPassword 如果为空，则表示不需要密码
-     * @param password
+     * @param projectPassword 如果为空，则表示不需要密码
+     * @param inputPassword
      * @param visitCode
      * @throws MyException
      */
-    public void verifyPassword(String needPassword, String password, String visitCode) throws MyException {
-        String COOKIE_PROJECT_PASSWORD = "cpp" + needPassword;
-        if (MyString.isEmpty(needPassword)) {
+    public void verifyPassword(String projectId, String projectPassword, String inputPassword, String visitCode) throws MyException {
+        String COOKIE_PROJECT_PASSWORD = "cpp" + projectPassword;
+        if (MyString.isEmpty(projectPassword)) {
             return;
         }
 
         String tempPassword = MyCookie.getCookie(COOKIE_PROJECT_PASSWORD, true);
         /**
+         * 兼容旧版未加密的项目密码
          * 优先使用缓存密码校验
          */
-        if (MyString.equals(tempPassword, needPassword)) {
+        if (projectPassword.length() < 20 && MyString.equals(tempPassword, projectPassword)) {
             return;
         }
 
-        if (MyString.notEquals(password, needPassword)) {
+        /**
+         * 升级后的项目密码以md5+盐的方式存储
+         */
+        if (MyString.equals(MD5.encrytMD5(tempPassword, projectId), projectPassword)) {
+            return;
+        }
+
+        /**
+         * 兼容旧版未加密的项目密码
+         */
+        if (projectPassword.length() < 20 && MyString.notEquals(inputPassword, projectPassword)) {
+            throw new MyException(MyError.E000007);
+        }
+
+        if (projectPassword.length() >= 20 && MyString.notEquals(MD5.encrytMD5(inputPassword, projectId), projectPassword)) {
             throw new MyException(MyError.E000007);
         }
 
@@ -227,7 +242,7 @@ public abstract class BaseController implements IAuthCode, IConst {
          * 将密码记入缓存，方便下次使用
          * 有效时间为12小时
          */
-        MyCookie.addCookie(COOKIE_PROJECT_PASSWORD, password, true, 60 * 60 * 12);
+        MyCookie.addCookie(COOKIE_PROJECT_PASSWORD, inputPassword, true, 60 * 60 * 12);
     }
 
     /**
@@ -235,12 +250,12 @@ public abstract class BaseController implements IAuthCode, IConst {
      * private project need login
      * public project need check password,
      *
-     * @param password
+     * @param inputPassword
      * @param visitCode
      * @param project
      * @throws MyException
      */
-    protected void checkFrontPermission(String password, String visitCode, Project project) throws MyException {
+    protected void checkFrontPermission(String inputPassword, String visitCode, Project project) throws MyException {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         if (project.getType() == ProjectType.PRIVATE.getType()) {
             LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);
@@ -261,8 +276,8 @@ public abstract class BaseController implements IAuthCode, IConst {
                 throw new MyException(MyError.E000042);
             }
         } else {
-            String needPassword = project.getPassword();
-            verifyPassword(needPassword, password, visitCode);
+            String projectPassword = project.getPassword();
+            verifyPassword(project.getId(), projectPassword, inputPassword, visitCode);
         }
     }
 

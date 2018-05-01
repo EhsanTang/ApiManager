@@ -86,6 +86,10 @@ public class CustomProjectService implements ILogConst{
         Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
+        if (MyString.isNotEmpty(project.getPassword())){
+            project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
+        }
+
         mapper.updateByPrimaryKeySelective(project);
     }
 

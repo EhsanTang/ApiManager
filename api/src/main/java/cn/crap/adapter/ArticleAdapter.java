@@ -4,11 +4,14 @@ import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
 import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
+import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 
@@ -127,6 +130,7 @@ public class ArticleAdapter {
 	public static SearchDto getSearchDto(ArticleWithBLOBs model){
         ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
         ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+        Project project = projectCache.get(model.getProjectId());
         SearchDto dto = new SearchDto();
 		String moduleId = model.getId();
 		dto.setId(moduleId);
@@ -139,9 +143,14 @@ public class ArticleAdapter {
 		dto.setVersion("");
 		dto.setProjectId(model.getProjectId());
 
-		if(projectCache.get(model.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+		if(project.getType() == ProjectType.PRIVATE.getType()){
 			dto.setNeedCreateIndex(false);
 		}
+
+		if(project.getLuceneSearch().intValue() == LuceneSearchType.No.getValue()){
+			dto.setNeedCreateIndex(false);
+		}
+
 		return dto;
 	}
 }

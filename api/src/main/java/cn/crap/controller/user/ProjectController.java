@@ -3,9 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.ProjectStatus;
-import cn.crap.enumer.UserType;
+import cn.crap.enumer.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -103,23 +101,35 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception{
-		LoginInfoDto user = LoginUserHelper.getUser();
-		String userId = user.getId();
+		String userId = LoginUserHelper.getUser().getId();
+		String projectId = project.getId();
+
+		// 私有项目不能建立索引
+		if (project.getType() == ProjectType.PRIVATE.getType()){
+			project.setLuceneSearch(LuceneSearchType.No.getByteValue());
+		}
 
 		// 修改
-		if(!MyString.isEmpty(project.getId())){
-			checkUserPermissionByProject( projectCache.get(project.getId()) );
+		if(!MyString.isEmpty(projectId)){
+            Project dbProject = projectCache.get(projectId);
+			checkUserPermissionByProject(dbProject);
 
 			// 普通用户不能推荐项目，将项目类型修改为原有类型
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(null);
 			}
 			customProjectService.update(ProjectAdapter.getModel(project));
+
+            // 需要重建索引
+            projectCache.del(projectId);
+            if (!project.getType().equals(dbProject.getType()) || !project.getLuceneSearch().equals(dbProject.getLuceneSearch())){
+                luceneService.rebuildByProjectId(projectId);
+            }
 		}
 		// 新增
 		else{
 			Project model = ProjectAdapter.getModel(project);
-			model.setUserId(user.getId());
+			model.setUserId(userId);
 			model.setPassword(project.getPassword());
 			// 普通用户不能推荐项目
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
@@ -129,10 +139,10 @@ private CustomProjectUserService customProjectUserService;
 		}
 
 		// 清楚缓存
-		projectCache.del(project.getId());
+		projectCache.del(projectId);
 
 		// 刷新用户权限 将用户信息存入缓存
-		userCache.add(userId, new LoginInfoDto(userService.getById(user.getId()), roleService, customProjectService, projectUserService));
+		userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,project);
 	}
 

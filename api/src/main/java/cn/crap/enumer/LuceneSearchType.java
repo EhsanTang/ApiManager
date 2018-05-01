@@ -52,6 +52,11 @@ public enum LuceneSearchType {
 	public int getValue() {
 		return value;
 	}
+
+	public Byte getByteValue() {
+		return new Byte(value);
+	}
+
 	public void setValue(byte value) {
 		this.value = value;
 	}

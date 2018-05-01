@@ -54,6 +54,7 @@ public class ProjectAdapter {
 		model.setType(dto.getType());
 		model.setCover(dto.getCover());
 		model.setLuceneSearch(dto.getLuceneSearch());
+		model.setPassword(dto.getPassword());
 		
         return model;
     }

@@ -4,6 +4,7 @@ import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.InterfaceStatus;
+import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.mybatis.Interface;
@@ -175,6 +176,10 @@ public class InterfaceAdapter {
 		// 私有项目不能建立索引
 
 		if(project.getType() == ProjectType.PRIVATE.getType()){
+			dto.setNeedCreateIndex(false);
+		}
+
+		if(LuceneSearchType.No.getByteValue().equals(project.getLuceneSearch())){
 			dto.setNeedCreateIndex(false);
 		}
 		return dto;

@@ -16,7 +16,7 @@ public class SearchDto implements Serializable{
 	private String version;// 不参与分词搜索
 	private String moduleName;
 	private Date createTime;// 时间，不参与分词搜索
-	private boolean needCreateIndex = true; // 是否需要建立索引 
+	private boolean needCreateIndex = true; // 是否需要建立索引
 	private String href;//接口、文章的地址，不需要分词，需要建立索引
 	private String projectId; // 不参与分词
 	

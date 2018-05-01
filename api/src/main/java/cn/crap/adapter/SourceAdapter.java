@@ -2,8 +2,10 @@ package cn.crap.adapter;
 
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
+import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Source;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.GetTextFromFile;
@@ -102,9 +104,13 @@ public class SourceAdapter {
             source.setRemark( docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
         }
         ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
-
+        Project project = projectCache.get(source.getProjectId());
         // 私有项目不能建立索引
-        if(projectCache.get(source.getProjectId()).getType() == ProjectType.PRIVATE.getType()){
+        if(project.getType() == ProjectType.PRIVATE.getType()){
+            dto.setNeedCreateIndex(false);
+        }
+
+        if(LuceneSearchType.No.getByteValue().equals(project.getLuceneSearch())){
             dto.setNeedCreateIndex(false);
         }
         return dto;

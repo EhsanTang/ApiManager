@@ -51,6 +51,10 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>paramFilter</filter-name>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>paramFilter</filter-name>
 		<url-pattern>*.json</url-pattern>
 	</filter-mapping>
 
@@ -69,6 +73,7 @@
 	<servlet-mapping>
 		<servlet-name>spring</servlet-name>
 		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
 	
 	<!-- 加载spring配置文件 -->

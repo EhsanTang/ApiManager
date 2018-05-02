@@ -1,10 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 	<div class="col-xs-12 col-md-3 p0 m0">
 				<div class="r2 BGFFF p20 C555 mr15 col-md-mr0">
-					<div class=" fb f18 adorn-color fl">
-						<i class="iconfont">&#xe61f;</i>
-					</div>
-					<a class="fl dis C000 f16 mt2 ml10">${project.name}</a>
+					<table>
+						<tr>
+							<td class="fb f18 adorn-color w20"><i class="iconfont">&#xe61f;</i></td>
+							<td><a class="fl dis C000 f16 mt2 ml10">${project.name}</a></td>
+						</tr>
+					</table>
+
 					<div class="cb"></div>
 					<div class="f12 C999 lh20 mt10">${project.remark}</div>
 				

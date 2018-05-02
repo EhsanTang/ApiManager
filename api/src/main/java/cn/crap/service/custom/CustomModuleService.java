@@ -39,7 +39,7 @@ public class CustomModuleService {
         Assert.notNull(projectId, "projectId can't be null");
         ModuleCriteria example = new ModuleCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-
+        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
         return dao.selectByExample(example);
     }
 

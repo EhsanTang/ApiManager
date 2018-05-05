@@ -53,7 +53,7 @@ public class ArticleController extends BaseController{
 		
 		Page page= new Page(currentPage);
 
-		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
+		page.setAllRow(customArticleService.countByModuleId(moduleId, name, type, category, null));
 		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, null, page);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
 

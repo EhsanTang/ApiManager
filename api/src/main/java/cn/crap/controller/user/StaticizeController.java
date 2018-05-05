@@ -399,7 +399,7 @@ public class StaticizeController extends BaseController{
 						continue; // 空类目不静态化
 					}
 					// 查询页码
-					int articleSize = customArticleService.countByProjectId(module.getId(), null, "ARTICLE", category);
+					int articleSize = customArticleService.countByModuleId(module.getId(), null, "ARTICLE", category, null);
 					// 计算总页数
 					totalPage = (articleSize+pageSize-1)/pageSize;
 					if(totalPage == 0){
@@ -414,7 +414,7 @@ public class StaticizeController extends BaseController{
 				}
 				
 				// 文章分类，不分类
-				int articleSize = customArticleService.countByProjectId(module.getId(), null, "ARTICLE", null);
+				int articleSize = customArticleService.countByModuleId(module.getId(), null, "ARTICLE", null, null);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){
@@ -440,7 +440,7 @@ public class StaticizeController extends BaseController{
 			
 			if(needStaticizes.indexOf(",dictionary,") >= 0){
 				// 数据字典列表
-				int articleSize = customArticleService.countByProjectId(module.getId(), null, "DICTIONARY", null);
+				int articleSize = customArticleService.countByModuleId(module.getId(), null, "DICTIONARY", null, null);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){

@@ -62,7 +62,7 @@ public class ArticleController extends BaseController {
 
         Page page = new Page(currentPage);
         List<Article> articles = customArticleService.queryArticle(moduleId, name, type, null, null, page);
-        page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, null));
+        page.setAllRow(customArticleService.countByModuleId(moduleId, name, type, null, null));
 
         Map<String, Object> others = Tools.getMap("crumbs", Tools.getCrumbs(type + "-" + module.getName(), "void"));
 
@@ -88,6 +88,7 @@ public class ArticleController extends BaseController {
             List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
 
             List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, status, page);
+            page.setAllRow(customArticleService.countByModuleId(moduleId, null,  type, category, status));
             List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
 
             Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(type).getName())
@@ -100,7 +101,6 @@ public class ArticleController extends BaseController {
 
         // 推荐的文章
         List<String> categories = customArticleService.queryTop10RecommendCategory();
-
         List<Article> articles = customArticleService.queryArticle(null, null,  type, category, status, page);
         List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null);
 

@@ -43,7 +43,7 @@ public class CustomArticleService implements ILuceneService {
         return customArticleMapper.queryTop10RecommendCategory();
     }
 
-    public int countByProjectId(String moduleId, String name, String type, String category) {
+    public int countByModuleId(String moduleId, String name, String type, String category, Byte status) {
         Assert.notNull(moduleId, "moduleId can't be null");
         ArticleCriteria example = new ArticleCriteria();
         ArticleCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
@@ -56,10 +56,13 @@ public class CustomArticleService implements ILuceneService {
         if (!StringUtils.isEmpty(category)) {
             criteria.andCategoryEqualTo(category);
         }
+        if (status != null){
+            criteria.andStatusEqualTo(status);
+        }
         return dao.countByExample(example);
     }
 
-    public List<Article> queryArticle(String moduleId, String name, String type, String category,Byte status, Page page) {
+    public List<Article> queryArticle(String moduleId, String name, String type, String category, Byte status, Page page) {
         ArticleCriteria example = new ArticleCriteria();
         ArticleCriteria.Criteria criteria = example.createCriteria();
         if (!StringUtils.isEmpty(moduleId)){

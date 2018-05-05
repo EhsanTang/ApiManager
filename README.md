@@ -1,5 +1,4 @@
 # CrapApi
-[![视屏演示](http://git.oschina.net/CrapApi/CrapApi/raw/master/CrapApiFiles/webPlay.jpg "视屏演示")](http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1)
 
 [CrapApi是什么]
 ```
@@ -53,7 +52,7 @@ API接口管理系统,API接口管理,在线API接口管理,API接口调试工�
 
 
 [效果图]
-[![视屏演示](http://api.crap.cn/resources/upload/images/2018-05-05/180938Jf1aif.CAV.3LqtmR.1.png "效果图")]
+![视屏演示](http://api.crap.cn/resources/upload/images/2018-05-05/180938Jf1aif.CAV.3LqtmR.1.png "效果图")
 
 
 最新消息：</br>

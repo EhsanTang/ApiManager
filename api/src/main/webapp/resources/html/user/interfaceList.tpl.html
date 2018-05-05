@@ -2,7 +2,7 @@
 <div class="col-xs-6 f16 fb p0 mb5">接口管理-【{{$stateParams.moduleName}}】</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
@@ -31,7 +31,7 @@
 		*权限不足，若为新增模块，请刷新页面
 	</span>
 	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		ng-click="detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)"> 
+		ng-click="changeDisplay('interFaceDetail','copyInterFace');detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)">
 		<i class="iconfont fb">&#xe604;</i>&nbsp;新增接口 
 	</a>
 	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
@@ -65,7 +65,7 @@
 				<td class="tc">{{item.moduleName}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">{{item.updateBy}}</td>
-				<td class="tc">{{getDate(item.updateTime)|date:'yyyy-MM-dd HH:mm'}}</td>
+				<td class="tc">{{item.updateTimeStr}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					ng-click="detail('编辑【'+item.interfaceName+'】',1100,'user/interface/detail.do?id='+item.id,'',initEditInterFace)"> 
@@ -75,7 +75,10 @@
 					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'user/interface/detail.do?id='+item.id,'',copyInterface)"> 
 					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?id={{item.id}}">
+						<i class="iconfont f12">&#xe61e; 下载接口</i>
+					</a>
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">

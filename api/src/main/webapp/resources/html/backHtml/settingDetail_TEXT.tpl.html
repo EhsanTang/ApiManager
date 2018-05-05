@@ -1,7 +1,7 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
 <div class="col-xs-6 f16 fb p0 mb5">系统设置【文本】</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 p0 pt10 bt1">
 		<form  ng-submit="submitForm('setting/addOrUpdate.do')">
@@ -23,7 +23,7 @@
 					<td class="tc">类型</td>
 					<td class="tc">
 						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
-						<!-- ng-focus="loadPickByName('iwidth=200|iheight=250|radio=true|tagName=typeName|tag=type|code=SETTINGTYPE|def='+model.type,$event)" -->
+						<!-- ng-focus="loadPickByName('iwidth=200|iheight=250|radio=true|tagName=typeName|tag=type|code=SETTING_TYPE|def='+model.type,$event)" -->
 					</td>
 				</tr>
 				<tr>

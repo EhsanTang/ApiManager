@@ -1,7 +1,7 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
 <div class="col-xs-6 f16 fb p0 mb5">系统设置【字体】</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 p0 pt10 bt1">
 		<form  ng-submit="submitForm('setting/addOrUpdate.do')">
@@ -19,8 +19,8 @@
 					 <div class="input-group">
 							<input class="form-control" type="text" id="value" required
 								ng-model="model.value"  placeholder="点击“选择”按钮选择，或输入字体">
-							<div class="input-group-addon cursor btn-purple"
-								ng-click="loadPick($event,220,250,'true','value','FONTFAMILY','',model.value);">
+							<div class="input-group-addon cursor btn-adorn"
+								ng-click="loadPick($event,220,250,'true','value','FONT_FAMILY', '', model.value);">
 								选择字体</div>
 					</div>
 

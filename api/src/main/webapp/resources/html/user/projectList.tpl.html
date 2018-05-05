@@ -2,7 +2,7 @@
 <div class="col-xs-6 f16 fb p0 mb5">项目管理：{{$stateParams.name}}</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 btn mt1 btn-success btn-sm cursor fr"
@@ -14,7 +14,7 @@
 			<i class="iconfont">&#xe610;</i>&nbsp;查询
 		</button>
 		<div class="form-group w200 fr">
-			<label class="sr-only" for="">名称</label>
+			<label class="sr-only">名称</label>
 			<div class="input-group">
 				<div class="input-group-addon">项目名称</div>
 				<input type="text" class="form-control input-xs dis-in-blo w120" placeholder="项目名称" ng-model="$stateParams.name">
@@ -24,7 +24,7 @@
 		<div class="cb"></div>
 </div>
 <div class="col-xs-12 mt20 p0 mb10 f12 tr C999">
-	静态化项目：暂时只支持文章静态化，公开项目可以静态化成html，静态化后的文件目录：【项目根目录】/resources/html/staticize/项目ID
+	静态化项目：暂时只支持文章静态化，公开项目可以静态化成html，静态化后的文件目录：【项目根目录】/static/项目ID
 </div>
 
 <div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">
@@ -50,7 +50,7 @@
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}/NULL">
 						<i class="iconfont f12">&#xe613;模块</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 
@@ -81,7 +81,10 @@
 						ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();"> 
 						<i class="iconfont f12">&#xe640;静态化</i>
 					</a>
-					
+					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+						ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + item.id, 'PROPUPFLOAT重建索引中...')"> 
+						<i class="iconfont f12">&#xe611;重建索引</i>
+					</a>
 				</td>
 				<td>
 					<div class="w50 fr tl">

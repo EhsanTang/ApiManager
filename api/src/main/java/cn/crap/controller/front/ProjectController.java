@@ -1,5 +1,8 @@
 package cn.crap.controller.front;
 
+import cn.crap.adapter.ProjectAdapter;
+import cn.crap.service.custom.CustomProjectService;
+import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,54 +10,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ProjectStatus;
+import cn.crap.enumer.ProjectStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.model.Project;
-import cn.crap.utils.MyString;
+import cn.crap.model.mybatis.Project;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
+import java.util.List;
 @Controller("forntProjectController")
 @RequestMapping("/front/project")
-public class ProjectController extends BaseController<Project> {
+public class ProjectController extends BaseController{
 	@Autowired
-	IMenuService menuService;
-	@Autowired
-	private IProjectService projectService;
+	private CustomProjectService customProjectService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam(defaultValue="1") int currentPage, 
-			@RequestParam(defaultValue="false") boolean myself, String name) throws MyException{
+	public JsonResult list(Integer currentPage, @RequestParam(defaultValue="false") boolean myself, String name) throws MyException{
 		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		LoginInfoDto user =  Tools.getUser();
+		Page page= new Page(currentPage);
+		LoginInfoDto user =  LoginUserHelper.tryGetUser();
 		
 		if(user != null && myself){
-			if(MyString.isEmpty(name)){
-				return new JsonResult(1, 
-						projectService.queryByHql("select new Project(id, name, type, remark, userId, createTime, cover) from Project where userId=:userId or id in (select projectId from ProjectUser where userId=:userId)", 
-								Tools.getMap("userId", user.getId()), page)
-						, page);
-
-			}else{
-				return new JsonResult(1, 
-						projectService.queryByHql("select new Project(id, name, type, remark, userId, createTime, cover) from Project where (userId=:userId or id in (select projectId from ProjectUser where userId=:userId)) and name like :name", 
-						Tools.getMap("userId", user.getId(), "name|like", name), page)
-						, page);
-
-			}
+			page.setAllRow(customProjectService.countProjectByUserIdName(user.getId(), name));
+			return new JsonResult(1, customProjectService.pageProjectByUserIdName(user.getId(), name, page), page);
 		}
 		// 未登陆用户，查看推荐的项目
 		else{
-			return new JsonResult(1,
-				projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus(), "name|like", name),
-						"new Project(id, name, type, remark, userId, createTime, cover)" ,page, null), page);
+			page.setAllRow(customProjectService.countProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), name));
+			List<Project> projects = customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), name, page);
+
+			return new JsonResult(1, ProjectAdapter.getDto(projects, null), page);
 		}
 		
 	}

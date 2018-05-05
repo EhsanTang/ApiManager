@@ -1,96 +1,129 @@
 package cn.crap.service.tool;
 
-import java.util.List;
-
+import cn.crap.dto.PickDto;
+import cn.crap.enumer.*;
+import cn.crap.framework.MyException;
+import cn.crap.model.mybatis.Menu;
+import cn.crap.service.IPickService;
+import cn.crap.service.custom.CustomMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.PickDto;
-import cn.crap.enumeration.InterfaceStatus;
-import cn.crap.enumeration.MonitorType;
-import cn.crap.enumeration.RequestMethod;
-import cn.crap.enumeration.TrueOrFalse;
-import cn.crap.framework.MyException;
-import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IErrorService;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IModuleService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IRoleService;
-import cn.crap.inter.service.table.IUserService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.IPickService;
-import cn.crap.model.Error;
-import cn.crap.utils.Tools;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 下拉选着
- * @author Ehsan
+ * 采用责任链模式
+ * 下拉选择框
  *
+ * @author Ehsan
  */
 @Service("pickService")
 public class PickService implements IPickService{
-	@Autowired
-	IMenuService menuService;
-	@Autowired
-	private ICacheService cacheService;
-	@Autowired
-	private IUserService userService;
-	@Autowired
-	private IProjectService projectService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private IModuleService moduleService;
-	@Autowired
-	private IArticleService articleService;
-	@Autowired
-	private IErrorService errorService;
+    @Resource(name = "userPickService")
+    private IPickService userPickService;
 
-	@Override
-	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
-		PickDto pick = null;
-		switch (code) {
-//			case "RECOMMENDPROJECT": // 推荐的模块
-//				for (Project p : projectService.findByMap(Tools.getMap("type", ProjectType.RECOMMEND.getType() ), null, null)) {
-//					pick = new PickDto(p.getId(), p.getName());
-//					picks.add(pick);
-//				}
-//				return;
-			case "REQUESTMETHOD": // 枚举 请求方式 post get
-				for (RequestMethod status : RequestMethod.values()) {
-					pick = new PickDto(status.name(), status.getName(), status.getName());
-					picks.add(pick);
-				}
-				return;
-				// 枚举 接口状态
-			case "INTERFACESTATUS":
-				for (InterfaceStatus status : InterfaceStatus.values()) {
-					pick = new PickDto(status.getName(), status.name());
-					picks.add(pick);
-				}
-				return;
-			case "TRUEORFALSE":// 枚举true or false
-				for (TrueOrFalse status : TrueOrFalse.values()) {
-					pick = new PickDto(status.getName(), status.name());
-					picks.add(pick);
-				}
-				return;
-			case "MONITORTYPE":// 监控类型
-				for (MonitorType monitorType : MonitorType.values()) {
-					pick = new PickDto(monitorType.name(), monitorType.getValue()+"", monitorType.getName());
-					picks.add(pick);
-				}
-				return;
-			case "ERRORCODE":// 错误码
-				for (Error error : errorService.findByMap(
-						Tools.getMap("moduleId", key), null, "errorCode asc")) {
-					pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
-					picks.add(pick);
-				}
-				return;
-		}
-	}
+    @Autowired
+    private CustomMenuService customMenuService;
+
+    @Override
+    public List<PickDto> getPickList(String code, String key) throws MyException {
+        PickCode pickCode = PickCode.getByCode(code);
+        if (pickCode == null) {
+            throw new MyException(MyError.E000065, "code 有误");
+        }
+
+        PickDto pick = null;
+        List<PickDto> picks = new ArrayList<>();
+
+        switch (pickCode) {
+            case REQUEST_METHOD:
+                for (RequestMethod status : RequestMethod.values()) {
+                    pick = new PickDto(status.name(), status.getName(), status.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case INTERFACE_STATUS:
+                for (InterfaceStatus status : InterfaceStatus.values()) {
+                    pick = new PickDto(status.getValue(), status.name());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case INTERFACE_CONTENT_TYPE:
+                for (InterfaceContentType contentType : InterfaceContentType.values()) {
+                    pick = new PickDto(contentType.name(), contentType.getType(), contentType.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case MONITOR_TYPE:
+                for (MonitorType monitorType : MonitorType.values()) {
+                    pick = new PickDto(monitorType.name(), monitorType.getValue() + "", monitorType.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case PROJECT_TYPE:
+                for (ProjectType pt : ProjectType.values()) {
+                    pick = new PickDto(pt.getType() + "", pt.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case LUCENE_SEARCH_TYPE:
+                for (LuceneSearchType lc : LuceneSearchType.values()) {
+                    pick = new PickDto(lc.getValue() + "", lc.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case PROJECT_STATUE:// 管理员项目、推荐项目...
+                for (ProjectStatus ps : ProjectStatus.values()) {
+                    pick = new PickDto(ps.name(), ps.getStatus() + "", ps.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            // 一级菜单
+            case MENU:
+                for (Menu m : customMenuService.queryByParentId("0")) {
+                    pick = new PickDto(m.getId(), m.getMenuName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case SETTING_TYPE:
+                for (SettingType type : SettingType.values()) {
+                    pick = new PickDto(type.name(), type.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case MENU_TYPE:
+                for (MenuType type : MenuType.values()) {
+                    pick = new PickDto(type.name(), type.getChineseName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case FONT_FAMILY:// 字体
+                for (FontFamilyType font : FontFamilyType.values()) {
+                    pick = new PickDto(font.name(), font.getValue(), font.getName());
+                    picks.add(pick);
+                }
+                return picks;
+            case ICONFONT:// 图标库
+                for (Iconfont iconfont : Iconfont.values()) {
+                    pick = new PickDto(iconfont.name(), iconfont.getValue(), iconfont.getName());
+                    picks.add(pick);
+                }
+                return picks;
+        }
+
+        return userPickService.getPickList(code, key);
+    }
 
 }

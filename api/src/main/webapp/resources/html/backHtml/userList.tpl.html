@@ -2,7 +2,7 @@
 <div class="col-xs-6 f16 fb p0 mb5">用户管理</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
@@ -34,7 +34,7 @@
 		</div>
 		<div class="cb"></div>
 </div>
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">用户列表</div>
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20 adorn-bl-3 p3 pl10">用户列表</div>
 <div class="col-xs-9 mt20 p0 mb10 f14 tr">
 	<span class=" mt20 p0 mb10 f12 tr C999">
 		如有疑问请点击 →
@@ -56,12 +56,12 @@
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr class="BGEEE">
-				<th class="tc w100">用户名</th>
-				<th class="tc w100">真实名称/昵称</th>
-				<th class="tc">类型</th>
-				<th class="tc">角色</th>
-				<th class="tc">权限</th>
-				<th class="w200 tc">操作</th>
+				<th class="tc w100 b0">用户名</th>
+				<th class="tc w100 b0">真实名称/昵称</th>
+				<th class="tc b0">类型</th>
+				<th class="tc b0">角色</th>
+				<th class="tc b0">权限</th>
+				<th class="w100 tc b0">操作</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -1,123 +1,132 @@
 package cn.crap.controller.user;
 
-import java.util.Map;
-
+import cn.crap.adapter.Adapter;
+import cn.crap.adapter.ModuleAdapter;
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.ModuleDto;
+import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.LogType;
+import cn.crap.enumer.MyError;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.mybatis.Log;
+import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
+import cn.crap.service.custom.*;
+import cn.crap.service.mybatis.*;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IInterfaceService;
-import cn.crap.inter.service.table.IModuleService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IProjectUserService;
-import cn.crap.inter.service.table.IRoleService;
-import cn.crap.inter.service.table.ISourceService;
-import cn.crap.inter.service.table.IUserService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Interface;
-import cn.crap.model.Module;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController<Module>{
+public class ModuleController extends BaseController implements ILogConst{
 
 	@Autowired
-	private IModuleService moduleService;
+	private ModuleService moduleService;
 	@Autowired
-	private ICacheService cacheService;
+	private RoleService roleService;
 	@Autowired
-	private IRoleService roleService;
+	private CustomArticleService articleService;
 	@Autowired
-	private IArticleService articleService;
+	private InterfaceService interfaceService;
 	@Autowired
-	private IUserService userService;
+	private CustomProjectService customProjectService;
 	@Autowired
-	private IInterfaceService interfaceService;
+	private ProjectUserService projectUserService;
 	@Autowired
-	private IProjectService projectService;
+	private CustomSourceService customSourceService;
 	@Autowired
-	private IProjectUserService projectUserService;
+	private UserService userService;
 	@Autowired
-	private ISourceService sourceService;
+	private CustomModuleService customModuleService;
 	@Autowired
-	private Config config;
+	private LogService logService;
+	@Autowired
+	private CustomInterfaceService customInterfaceService;
 	
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute  Module module, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-			Page page= new Page(15);
-			page.setCurrentPage(currentPage);
-			Map<String,Object> map = Tools.getMap("projectId", module.getProjectId());
-			
-			hasPermission(cacheService.getProject(module.getProjectId()), view);
-			
-			return new JsonResult(1, moduleService.findByMap(map, page, null), page);
-		}	
+	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage, String name) throws MyException{
+			Page<Module> page= new Page(currentPage);
+			checkUserPermissionByProject(projectId, VIEW);
+
+			page = customModuleService.queryByProjectId(projectId, name, page);
+			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
+		}
+
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(@ModelAttribute Module module) throws MyException{
-		Module model;
-		if(!module.getId().equals(Const.NULL_ID)){
-			model= moduleService.get(module.getId());
-			if(!MyString.isEmpty(model.getTemplateId())){
-				Interface inter = interfaceService.get(model.getTemplateId());
-				if(inter != null)
-					model.setTemplateName(inter.getInterfaceName());
-			}
-			hasPermission(cacheService.getProject(model.getProjectId()), view);
+	public JsonResult detail(String id, String projectId) throws MyException{
+		Module module;
+        Project project;
+		if(id != null){
+			module= moduleService.getById(id);
+			project = projectCache.get(module.getProjectId());
+			checkUserPermissionByProject(project, VIEW);
 		}else{
-			hasPermission(cacheService.getProject(module.getProjectId()), view);
-			model=new Module();
-			model.setStatus(Byte.valueOf("1"));
-			model.setProjectId(module.getProjectId());
+		    project = projectCache.get(projectId);
+			checkUserPermissionByProject(project, VIEW);
+			module=new Module();
+			module.setStatus(Byte.valueOf("1"));
+			module.setProjectId(projectId);
 		}
-		return new JsonResult(1,model);
+		return new JsonResult(1, ModuleAdapter.getDto(module, project));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Module module) throws Exception{
-		// 系统数据，不允许删除
-		if(module.getId().equals("web"))
-			throw new MyException("000009");
-				
-		if(!MyString.isEmpty(module.getId())){
-			module.setProjectId(cacheService.getModule(module.getId()).getProjectId());
-			hasPermission(cacheService.getProject( module.getProjectId() ), modModule);
-			// 更新该模块下的所有接口的fullUrl
-			interfaceService.update("update Interface set fullUrl=CONCAT('"+(module.getUrl() == null? "":module.getUrl())+
-					"',url) where moduleId ='"+module.getId()+"'", null);
-			moduleService.update(module, "模块" , "");
-		}else{
-			hasPermission(cacheService.getProject( module.getProjectId() ), addModule);
-			module.setUserId(Tools.getUser().getId());
-			moduleService.save(module);
+	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
+		Assert.notNull(moduleDto.getProjectId());
+
+		// 系统数据，不允许修改名称等
+		String id = moduleDto.getId();
+		if(id != null) {
+			moduleDto.setCanDelete(null);
+			moduleDto.setName(null);
+			moduleDto.setProjectId(null);
+			moduleDto.setStatus(null);
 		}
-		cacheService.delObj(Const.CACHE_MODULE+module.getId());
+
+		if (MyString.isEmpty(moduleDto.getCategory())){
+            moduleDto.setCategory("默认分类");
+		}
+
+        Module module = ModuleAdapter.getModel(moduleDto);
+		if(id != null){
+			checkUserPermissionByModuleId(id, MOD_MODULE);
+
+            Module dbModule = moduleService.getById(module.getId());
+            Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.UPDATE, dbModule.getClass(), dbModule);
+            logService.insert(log);
+
+            moduleService.update(module);
+            // 更新该模块下的所有接口的fullUrl
+			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
+		}else{
+			module.setProjectId(moduleDto.getProjectId());
+			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);
+			module.setUserId(LoginUserHelper.getUser().getId());
+			module.setVersion(0);
+			moduleService.insert(module);
+		}
+		moduleCache.del(module.getId());
 		
 		/**
 		 * 刷新用户权限
 		 */
-		LoginInfoDto user = Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
-		cacheService.setObj(Const.CACHE_USER + user.getId(), 
-				new LoginInfoDto(userService.get(user.getId()), roleService, projectService, projectUserService), config.getLoginInforTime());
+		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, customProjectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	
@@ -130,21 +139,21 @@ public class ModuleController extends BaseController<Module>{
 	@RequestMapping("/setTemplate.do")
 	@ResponseBody
 	public JsonResult setTemplate(String id) throws Exception{
-		Interface inter = interfaceService.get(id);
+		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
-		Module module = cacheService.getModule(inter.getModuleId());
-		hasPermission(cacheService.getProject( module.getProjectId() ), modModule);
+		Module module = moduleService.getById(inter.getModuleId());
+		checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
 		
-		module.setTemplateId( inter.isTemplate() ? null: inter.getId() );
+		module.setTemplateId( inter.getIsTemplate() ? "-1" : inter.getId() );
 		moduleService.update(module);
 		
-		interfaceService.update("update Interface set isTemplate=0 where moduleId ='"+module.getId()+"'", null);
-		if(!inter.isTemplate()){
-			inter.setTemplate(true);;
+		customInterfaceService.deleteTemplateByModuleId(module.getId());
+		if(!inter.getIsTemplate()){
+			inter.setIsTemplate(true);;
 			interfaceService.update(inter);
 		}
 		
-		cacheService.delObj(Const.CACHE_MODULE+module.getId());
+		moduleCache.del(module.getId());
 		return new JsonResult(1,module);
 	}
 	
@@ -155,29 +164,33 @@ public class ModuleController extends BaseController<Module>{
 	public JsonResult delete(@ModelAttribute Module module) throws Exception{
 		// 系统数据，不允许删除
 		if(module.getId().equals("web"))
-			throw new MyException("000009");
+			throw new MyException(MyError.E000009);
 				
-		Module oldDataCenter = cacheService.getModule(module.getId());
-		hasPermission(cacheService.getProject( oldDataCenter.getProjectId() ), delModule);
+		Module dbModule = moduleCache.get(module.getId());
+		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
-		if(interfaceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
-			throw new MyException("000024");
+		if(customInterfaceService.countByModuleId(dbModule.getId()) >0 ){
+			throw new MyException(MyError.E000024);
 		}
 		
-		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.ARTICLE.name())) >0 ){
-			throw new MyException("000034");
+		if(articleService.countByModuleIdAndType(dbModule.getId(), ArticleType.ARTICLE.name()) >0 ){
+			throw new MyException(MyError.E000034);
 		}
 		
-		if(sourceService.getCount(Tools.getMap("moduleId", oldDataCenter.getId())) >0 ){
-			throw new MyException("000035");
+		if(customSourceService.countByModuleId(dbModule.getId()) >0 ){
+			throw new MyException(MyError.E000035);
 		}
 		
-		if(articleService.getCount(Tools.getMap("moduleId", oldDataCenter.getId(), "type", ArticleType.DICTIONARY.name())) >0 ){
-			throw new MyException("000036");
+		if(articleService.countByModuleIdAndType(dbModule.getId(),  ArticleType.DICTIONARY.name()) >0 ){
+			throw new MyException(MyError.E000036);
 		}
-		
-		cacheService.delObj(Const.CACHE_MODULE+module.getId());
-		moduleService.delete(module, "模块", "");
+
+        Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
+        logService.insert(log);
+
+		moduleCache.del(module.getId());
+		moduleService.delete(module.getId());
+
 		return new JsonResult(1,null);
 	}
 	
@@ -185,11 +198,11 @@ public class ModuleController extends BaseController<Module>{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Module change = moduleService.get(changeId);
-		Module model = moduleService.get(id);
+		Module change = moduleService.getById(changeId);
+		Module model = moduleService.getById(id);
 		
-		hasPermission(cacheService.getProject( change.getProjectId() ), modModule);
-		hasPermission(cacheService.getProject( model.getProjectId() ), modModule);
+		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_MODULE);
+		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_MODULE);
 		
 		int modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());

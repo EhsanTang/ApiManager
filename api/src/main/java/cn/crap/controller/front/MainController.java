@@ -1,58 +1,86 @@
 package cn.crap.controller.front;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.crap.adapter.ArticleAdapter;
+import cn.crap.beans.Config;
+import cn.crap.dto.*;
+import cn.crap.enumer.ArticleStatus;
+import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.MyError;
+import cn.crap.enumer.ProjectStatus;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.ThreadContext;
+import cn.crap.framework.base.BaseController;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.ISearchService;
+import cn.crap.service.custom.CustomArticleService;
+import cn.crap.service.custom.CustomHotSearchService;
+import cn.crap.service.custom.CustomMenuService;
+import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.mybatis.*;
+import cn.crap.service.tool.LuceneSearchService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.MenuDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.ISearchService;
-import cn.crap.model.Setting;
-import cn.crap.model.User;
-import cn.crap.service.tool.LuceneSearchService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller("fontMainController")
-public class MainController extends BaseController<User> {
-	@Autowired
-	IMenuService menuService;
-	@Autowired
-	private ICacheService cacheService;
+public class MainController extends BaseController{
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
+	private CustomMenuService customMenuService;
+	@Autowired
+	private HotSearchService hotSearchService;
+	@Autowired
+    private CustomHotSearchService customHotSearchService;
+	@Autowired
+    private UserService userService;
+	@Autowired
+    private ArticleService articleService;
+	@Autowired
+    private ProjectService projectService;
+	@Autowired
+    private InterfaceService interfaceService;
+	@Autowired
+    private CustomProjectService customProjectService;
+	@Autowired
+    private CustomArticleService customArticleService;
+	@Autowired
 	private Config config;
-	/**
+
+	private static final String TOTAL_USER = "totalUser";
+    private static final String TOTAL_PROJECT = "totalProject";
+    private static final String TOTAL_INTERFACE = "totalInterface";
+    private static final String TOTAL_ARTICLE = "totalArticle";
+    private static final String PROJECT_LIST = "projectList";
+    private static final String ARTICLE_LIST = "articleList";
+
+    /**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
-	 * @param response
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")
-	public void home() throws Exception {
-		response.sendRedirect("index.do");
+	public void home(HttpServletResponse response) throws Exception {
+		SettingDto indexUrl = settingCache.get(S_INDEX_PAGE);
+		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
+			response.sendRedirect(indexUrl.getValue());
+		}else{
+			response.sendRedirect("index.do");
+		}
 	}
 	
 	/**
@@ -62,7 +90,73 @@ public class MainController extends BaseController<User> {
 	 */
 	@RequestMapping({"/index.do","/web.do"})
 	public String index() throws Exception {
-		return "resources/html/frontHtml/index.html";
+		return "resources/html/frontHtml/indexNew.html";
+	}
+
+	@RequestMapping(value = "dashboard.htm")
+	public String dashboard(ModelMap modelMap) {
+
+		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+		modelMap.addAttribute("login", loginInfoDto != null);
+        modelMap.addAttribute("title", settingCache.get(S_TITLE).getValue());
+        modelMap.addAttribute("keywords", settingCache.get(S_KEYWORDS).getValue());
+        modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
+        modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
+        modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+
+        String totalUser = stringCache.get(TOTAL_USER);
+        if (MyString.isEmpty(totalUser)){
+            totalUser = userService.countByExample(new UserCriteria()) + "";
+            stringCache.add(TOTAL_USER, totalUser);
+        }
+        String totalProject = stringCache.get(TOTAL_PROJECT);
+        if (MyString.isEmpty(totalProject)){
+            totalProject = projectService.countByExample(new ProjectCriteria()) + "";
+            stringCache.add(TOTAL_PROJECT, totalProject);
+        }
+        String totalInterface = stringCache.get(TOTAL_INTERFACE);
+        if (MyString.isEmpty(totalInterface)){
+            totalInterface = interfaceService.countByExample(new InterfaceCriteria()) + "";
+            stringCache.add(TOTAL_INTERFACE, totalInterface);
+        }
+        String totalArticle = stringCache.get(TOTAL_ARTICLE);
+        if (MyString.isEmpty(totalArticle)){
+            totalArticle = articleService.countByExample(new ArticleCriteria()) + "";
+            stringCache.add(TOTAL_ARTICLE, totalArticle);
+        }
+
+        modelMap.addAttribute("totalUser", totalUser);
+        modelMap.addAttribute("totalProject", totalProject);
+        modelMap.addAttribute("totalInterface", totalInterface);
+        modelMap.addAttribute("totalArticle", totalArticle);
+
+        List<Project> projectList =(List<Project>) objectCache.get(PROJECT_LIST);
+        Page page = new Page(12, 1);
+        if (CollectionUtils.isEmpty(projectList)) {
+            projectList = customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), null, page);
+            objectCache.add(PROJECT_LIST, projectList);
+        }
+        modelMap.addAttribute("projectList", projectList);
+
+
+        page = new Page(5, 1);
+        List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
+        if (CollectionUtils.isEmpty(articleList)){
+            articleList = ArticleAdapter.getDto(customArticleService.queryArticle(null, null, ArticleType.ARTICLE.name(),
+                    null, ArticleStatus.RECOMMEND.getStatus(), page), null);
+            objectCache.add(ARTICLE_LIST, articleList);
+        }
+        modelMap.addAttribute("articleList", articleList);
+
+        // 从缓存中获取菜单
+        List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+        if(menuList == null){
+            menuList = customMenuService.getLeftMenu();
+            objectCache.add(C_CACHE_LEFT_MENU, menuList);
+        }
+        modelMap.addAttribute("menuList", menuList);
+
+        return "WEB-INF/views/dashboard.jsp";
 	}
 	/**
 	 * 公共
@@ -73,7 +167,7 @@ public class MainController extends BaseController<User> {
 	 */
 	@RequestMapping("/result.do")
 	public String validateEmail(String result) throws UnsupportedEncodingException, MessagingException {
-		request.setAttribute("result", result);
+		ThreadContext.request().setAttribute("result", result);
 		return "WEB-INF/views/result.jsp";
 	}
 	
@@ -93,8 +187,7 @@ public class MainController extends BaseController<User> {
 	public void searchList(HttpServletResponse response) throws Exception {
 		// 只显示前10个
 		StringBuilder sb = new StringBuilder("<div class='tl'>");
-		@SuppressWarnings("unchecked")
-		ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
+		List<String> searchWords = customHotSearchService.queryTop10();
 		if(searchWords != null){
 			int i = 0;
 			String itemClass = "";
@@ -105,8 +198,7 @@ public class MainController extends BaseController<User> {
 				else if(i == 2) itemClass = " text-info ";
 				else if(i == 3) itemClass = " text-warning ";
 				else itemClass = " C555 ";
-				
-				
+
 				String showText = searchWord.substring(0, searchWord.length()>20?20:searchWord.length());
 				if(searchWord.length()>20){
 					showText = showText + "...";
@@ -130,36 +222,28 @@ public class MainController extends BaseController<User> {
 	@ResponseBody
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
-		for (Setting setting : cacheService.getSetting()) {
+		for (SettingDto setting : settingCache.getAll()) {
+			if(S_SECRETKEY.equals(setting.getKey())){
+				continue;
+			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		settingMap.put(Const.DOMAIN, config.getDomain());
-		settingMap.put(Const.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
-		settingMap.put(Const.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
+		settingMap.put(IConst.DOMAIN, config.getDomain());
+		settingMap.put(IConst.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
+		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
 		
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
-		
+
 		// 从缓存中获取菜单
-		Object objMenus = cacheService.getObj("cache:leftMenu");
-		List<MenuDto> menus = null;
-		if(objMenus == null){
-			synchronized (MainController.class) {
-				objMenus = cacheService.getObj("cache:leftMenu");
-				if(objMenus == null){
-					menus = menuService.getLeftMenu(null);
-					cacheService.setObj("cache:leftMenu", menus, config.getCacheTime());//缓存10分钟
-				}else{
-					menus = (List<MenuDto>) objMenus;
-				}
-			}
-			
-		}else{
-			menus = (List<MenuDto>) objMenus;
+		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+		if(menus == null){
+			menus = customMenuService.getLeftMenu();
+			objectCache.add(C_CACHE_LEFT_MENU, menus);
 		}
 		
 		returnMap.put("menuList", menus);
-		LoginInfoDto user = (LoginInfoDto) Tools.getUser();
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
 
 		returnMap.put("sessionAdminName", user == null? "": user.getUserName());
 		return new JsonResult(1, returnMap);
@@ -168,46 +252,36 @@ public class MainController extends BaseController<User> {
 
 	@RequestMapping("/frontSearch.do")
 	@ResponseBody
-	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, @RequestParam(defaultValue = "1") Integer currentPage) throws Exception{
+	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
 		if(config.isLuceneSearchNeedLogin()){
-			LoginInfoDto user = Tools.getUser();
-			if(user == null){
-				throw new MyException("000043");
-			}
+			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
 		}
 		keyword = keyword.trim();
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		page.setSize(10);
+        if (keyword.length() > 200){
+            keyword = keyword.substring(0, 200);
+        }
+
+		Page page= new Page(currentPage);
 		List<SearchDto> searchResults = luceneService.search(keyword, page);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
-		
-		// 将搜索的内容记入内存
-		if(!MyString.isEmpty(keyword)){
-			@SuppressWarnings("unchecked")
-			ArrayList<String> searchWords = (ArrayList<String>) cacheService.getObj(Const.CACHE_SEARCH_WORDS);
-			if(searchWords == null){
-				searchWords = new ArrayList<String>();
-			}
-			// 如果已经存在，则将排序+1
-			if(searchWords.contains(keyword)){
-				int index = searchWords.indexOf(keyword);
-				if(index>0){
-					searchWords.remove(keyword);
-					searchWords.add(index-1, keyword);
-				}
-			}else{
-				// 最多存200个，超过200个，则移除最后一个，并将新搜索的词放在100
-				if(searchWords.size() >= 200){
-					searchWords.remove(199);
-					searchWords.add(100, keyword);
-				}else{
-					searchWords.add(keyword);
-				}
-			}
-			cacheService.setObj(Const.CACHE_SEARCH_WORDS, searchWords, -1);
-		}
+
+
+		// 将搜索的内容记入数据库
+		if(MyString.isNotEmpty(keyword)){
+            HotSearch hotSearch = customHotSearchService.tryGetByKeyWord(keyword);
+            if (hotSearch == null){
+                hotSearch = new HotSearch();
+                hotSearch.setCreateTime(new Date());
+                hotSearch.setUpdateTime(new Date());
+                hotSearch.setTimes(1);
+                hotSearch.setKeyword(keyword);
+                hotSearchService.insert(hotSearch);
+            }else{
+                hotSearch.setTimes(hotSearch.getTimes() + 1);
+                hotSearchService.update(hotSearch);
+            }
+        }
 		
 		return new JsonResult(1, returnMap, page, 
 				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));

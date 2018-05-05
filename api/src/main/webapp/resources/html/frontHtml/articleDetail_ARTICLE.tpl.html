@@ -1,12 +1,6 @@
 <div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="articleDetailCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
-<div class="col-xs-12 f14 pl0 mb10 pb5 mt10">
-	<div class="fl mt2">文章筛选：</div>
-	<a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl cursor" 
-		href="#/{{$stateParams.projectId}}/article/list/{{$stateParams.moduleId}}/{{$stateParams.type}}/{{item}}/NULL" ng-repeat="item in others.categorys" ng-bind="item"
-	ng-class="{true: ' CFFF adorn-bg b0', false: ' C999'}[item == others.category]"></a>
-</div>
-<div class="col-xs-12 p0 lh26 code dashed-t pt10">
+<div class="col-xs-12 p0 lh26 code pt10">
 	<div class="pl10 pr10 mr10 f16 fb mb10 adorn-bl-3">{{webpage.name}}</div>
 	<div class="mb10 pl20 C999 f12 dashed-b pb10" ng-if="webpage.brief!=''">
 			{{webpage.brief}}

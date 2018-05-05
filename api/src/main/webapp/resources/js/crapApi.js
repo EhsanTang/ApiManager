@@ -1,7 +1,7 @@
 /****************密码访问*****************/
 function propUpPsswordDiv(obj){
 	var msg = obj.textContent;
-	if(msg.indexOf("[000007]")>=0 || msg.indexOf("[000011]")>=0){
+	if(msg.indexOf(INVALID_PASSWORD_CODE)>=0 || msg.indexOf(NEED_PASSWORD_CODE)>=0){
 		lookUp('passwordDiv', '', 300, 300 ,6,'');
 		showMessage('passwordDiv','false',false,-1);
 		showMessage('fade','false',false,-1);
@@ -91,6 +91,9 @@ function getParamFromTable(tableId) {
 function setPassword(){
 	$.cookie('password', $.base64.encode(escape($("#password").val())));
 	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
+    if (getRootScope().error && getRootScope().error.indexOf(NEED_PASSWORD_CODE) > 0){
+        getRootScope().error = "";
+	}
 }
 /** ***************pick控件搜索*************** */
 var navigateText = "";
@@ -175,12 +178,14 @@ function setPick() {
 				rootScope.$apply(function() {
 					if(pickTagName){
 						$("#"+pickTagName).val($(".cidName")[i].textContent);
-						if(rootScope.model)
-							rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+						if(rootScope.model) {
+                            rootScope.model[pickTagName] = $(".cidName")[i].textContent;
+                        }
 					}
 					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
-					if(rootScope.model)
-						rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
+					if(rootScope.model) {
+                        rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
+                    }
 				});
 				break;
 			}
@@ -256,15 +261,19 @@ function saveMarkdown(markdown,content){
 }
 // 重建索引
 function rebuildIndex(obj){
-	if (confirm("确定重建索引？")) {
+	if (myConfirm("确定重建索引？")) {
 		selectButton(obj,'menu-a');
 		callAjaxByName('iUrl=back/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
 	}
 }
 
+function loginOut(){
+    callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+    location.reload();
+}
 //刷新缓存
 function flushDB(obj){
-	if (confirm("确定刷新缓存？登陆信息等缓存将被删除")) {
+	if (myConfirm("确定刷新缓存？")) {
 		selectButton(obj,'menu-a');
 		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}

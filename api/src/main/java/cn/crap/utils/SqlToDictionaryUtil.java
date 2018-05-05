@@ -6,22 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 import cn.crap.dto.DictionaryDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.enumeration.DictionaryPropertyType;
+import cn.crap.enumer.ArticleType;
+import cn.crap.enumer.DictionaryPropertyType;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
-import cn.crap.model.Article;
+import cn.crap.model.mybatis.ArticleWithBLOBs;
 import net.sf.json.JSONArray;
 
 public class SqlToDictionaryUtil {
 	
 		
-	public static Article mysqlToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
+	public static ArticleWithBLOBs mysqlToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
 		if(!sql.toLowerCase().replaceAll(" ", "").startsWith("createtable")){
-			throw new MyException("000046");
+			throw new MyException(MyError.E000046);
 		}
 		// 联合主键等被切分
 		sql = sql.replace("`,`", "");
-		Article article = new Article();
+		ArticleWithBLOBs article = new ArticleWithBLOBs();
 		article.setType(ArticleType.DICTIONARY.name());
 		article.setBrief(brief);
 		article.setModuleId(moduleId);
@@ -129,9 +130,9 @@ public class SqlToDictionaryUtil {
 		return article;
 	}
 	
-	public static Article sqlserviceToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
+	public static ArticleWithBLOBs sqlserviceToDictionary(String sql, String brief, String moduleId, String name) throws MyException{
 		if(!sql.toLowerCase().replaceAll(" ", "").startsWith("createtable")){
-			throw new MyException("000046");
+			throw new MyException(MyError.E000046);
 		}
 		String[]  descriptions = null;
 		sql = sql.replace("\n", " ");
@@ -139,8 +140,8 @@ public class SqlToDictionaryUtil {
 			descriptions = sql.split("@value = N");
 			sql = sql.split(" GO ")[0];
 		}
-		
-		Article article = new Article();
+
+		ArticleWithBLOBs article = new ArticleWithBLOBs();
 		article.setType(ArticleType.DICTIONARY.name());
 		article.setBrief(brief);
 		article.setModuleId(moduleId);

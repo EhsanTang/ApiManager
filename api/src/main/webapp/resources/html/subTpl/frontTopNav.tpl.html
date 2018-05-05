@@ -8,17 +8,17 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand p0 pt10" href="index.do#">
+				<a class="navbar-brand p0 pt10" href="home.do">
 					<img class="h30" ng-src="{{settings.LOGO}}" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
 	               	<li>
-	                	<a ng-href="#/project/list/false/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
+	                	<a ng-href="index.do#/project/list/false/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
 	                </li>
 	                <li ng-if="sessionAdminName!=''">
-	                	<a ng-href="#/project/list/true/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
+	                	<a ng-href="index.do#/project/list/true/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
 	                </li>
 	                
 					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
@@ -36,7 +36,7 @@
 	                </li>
 					<li ng-if="sessionAdminName==''"><a href="loginOrRegister.do#/login"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;登录</a></li>
 					<li ng-if="sessionAdminName!=''"><a href="admin.do" target="_blank"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-					<li ng-if="sessionAdminName!=''"><a href="index.do" ng-click="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+					<li ng-if="sessionAdminName!=''"><a href="home.do" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 				</ul>
 			</div>
 		</div>

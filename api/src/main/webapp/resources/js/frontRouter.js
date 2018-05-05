@@ -8,8 +8,15 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/web/article/detail/web/PAGE/WELCOME');
-	$stateProvider.state('frontSearchCtrl', {
+	$urlRouterProvider.otherwise('/notFound');
+	$stateProvider.state('notFound', {
+        url : '/notFound',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/frontHtml/notFound.tpl.html'
+            }
+        }
+    }).state('frontSearchCtrl', {
 		url : '/frontSearch/:keyword',
 		views : {
 			'main' :{
@@ -36,7 +43,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/frontHtml/moduleList.tpl.html'
-			}
+            },
+            'page@frontModuleCtrl' : {
+                templateUrl : 'resources/html/frontHtml/page.tpl.html'
+            }
 		}
 	}).state('frontInterfaceCtrl', {
 		url : '/:projectId/interface/list/:moduleId',

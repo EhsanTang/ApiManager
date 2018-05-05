@@ -141,6 +141,9 @@ public class HttpPostGet {
 			while (iterator.hasNext()) {
 				String key = (String) iterator.next();
 				method.setHeader(key, headers.get(key));
+				method.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				method.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63");
+
 			}
 		}
 
@@ -165,6 +168,8 @@ public class HttpPostGet {
 			while (iterator.hasNext()) {
 				String key = (String) iterator.next();
 				method.setHeader(key, headers.get(key));
+				method.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+				method.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63");
 			}
 		}
 		HttpResponse response = client.execute(method);

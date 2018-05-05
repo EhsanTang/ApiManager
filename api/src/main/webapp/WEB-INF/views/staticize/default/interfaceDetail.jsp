@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="fl m0">Url：${f.model.moduleUrl}${f.model.url}</div>
 			<div class="fr m0">
 				版本号：
-				<a href="javascript:void(0)" class="f12 btn btn-purple btn-xs" ><i class="iconfont">&#xe620;&nbsp;</i>${f.model.version}</a>
+				<a href="javascript:void(0)" class="f12 btn btn-adorn btn-xs" ><i class="iconfont">&#xe620;&nbsp;</i>${f.model.version}</a>
 			</div>
 			<div class="cb"></div>
 		</div>

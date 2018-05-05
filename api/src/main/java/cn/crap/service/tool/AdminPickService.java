@@ -1,223 +1,168 @@
 package cn.crap.service.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.PickDto;
+import cn.crap.enumer.*;
+import cn.crap.framework.MyException;
+import cn.crap.model.mybatis.*;
+import cn.crap.service.IPickService;
+import cn.crap.service.custom.CustomModuleService;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.service.mybatis.ProjectService;
+import cn.crap.service.mybatis.RoleService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.PickDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.enumeration.DataType;
-import cn.crap.enumeration.FontFamilyType;
-import cn.crap.enumeration.MenuType;
-import cn.crap.enumeration.ProjectStatus;
-import cn.crap.enumeration.SettingType;
-import cn.crap.enumeration.UserType;
-import cn.crap.framework.MyException;
-import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IRoleService;
-import cn.crap.inter.service.tool.IPickService;
-import cn.crap.model.Article;
-import cn.crap.model.Menu;
-import cn.crap.model.Project;
-import cn.crap.model.Role;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 下拉选着
- * @author Ehsan
+ * 采用责任链模式
+ * 下拉选择框
  *
+ * @author Ehsan
  */
 @Service("adminPickService")
 public class AdminPickService implements IPickService{
-	@Autowired
-	IMenuService menuService;
-	@Autowired
-	private IProjectService projectService;
-	@Autowired
-	private IRoleService roleService;
-	@Autowired
-	private IArticleService articleService;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private CustomModuleService customModuleService;
+    @Autowired
+    private RoleService roleService;
 
-	@Override
-	public void getPickList(List<PickDto> picks, String code, String key, LoginInfoDto user) throws MyException {
-		PickDto pick = null;
-		String preUrl = "";
-		switch (code) {
-		case "CATEGORY":
-			int i = 0;
-			@SuppressWarnings("unchecked")
-			List<String> categorys = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web' "
-					+ "or moduleId in( select id from Module where userId='" + user.getId()+"')", null);
-			for (String w : categorys) {
-				if (w == null)
-					continue;
-				i++;
-				pick = new PickDto("cat_" + i, w, w);
-				picks.add(pick);
-			}
-			return;
-			
-//		case "MYPROJECT":
-//			for (Project p : projectService.findByMap(null, null, null)) {
-//				pick = new PickDto(p.getId(), p.getName());
-//				picks.add(pick);
-//			}
-//			return;
-		case "PROJECT":
-			for (Project p : projectService.findByMap(null, null, null)) {
-				pick = new PickDto(p.getId(), p.getName());
-				picks.add(pick);
-			}
-			return;
-		case "PROJECTSTATUE":// 管理员项目、推荐项目...
-			for (ProjectStatus ps : ProjectStatus.values()) {
-				pick = new PickDto(ps.name(), ps.getStatus()+"", ps.getName());
-				picks.add(pick);
-			}
-			return;
-		// 一级菜单
-		case "MENU":
-			for (Menu m : menuService.findByMap(Tools.getMap("parentId", "0"), null, null)) {
-				pick = new PickDto(m.getId(), m.getMenuName());
-				picks.add(pick);
-			}
-			return;
-			
-		// 权限
-		case "AUTH":
-			// 分割线
-			pick = new PickDto(Const.SEPARATOR, "用户、菜单、角色、系统设置管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.USER.name(), "用户管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.ROLE.name(), "角色管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.MENU.name(), "菜单管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.SETTING.name(), "系统设置管理");
-			picks.add(pick);
-			pick = new PickDto(ArticleType.ARTICLE.name(), "站点文章管理");
-			picks.add(pick);
-			pick = new PickDto(ArticleType.PAGE.name(), "站点页面管理");
-			picks.add(pick);
-			pick = new PickDto(DataType.LOG.name(), "操作日志管理");
-			picks.add(pick);
-			
-			return;
-		
-		// 角色
-		case "ROLE":
-			pick = new PickDto(Const.SUPER, "超级管理员");
-			picks.add(pick);
-			for (Role r : roleService.findByMap(null, null, null)) {
-				pick = new PickDto(r.getId(), r.getRoleName());
-				picks.add(pick);
-			}
-			return;
-			
-		// 枚举 webPage
-		case "WEBPAGETYPE":
-			for (ArticleType type : ArticleType.values()) {
-				pick = new PickDto(type.name(), type.getName());
-				picks.add(pick);
-			}
-			return;
-		// 枚举 菜单类型
-		case "MENUTYPE":
-			for (MenuType type : MenuType.values()) {
-				pick = new PickDto(type.name(), type.getName());
-				picks.add(pick);
-			}
-			return;
-		
-		// 枚举 设置类型
-		case "SETTINGTYPE":
-			for (SettingType type : SettingType.values()) {
-				pick = new PickDto(type.name(), type.getName());
-				picks.add(pick);
-			}
-			return;
-		case "DATATYPE":// 枚举 数据类型
-			for (DataType status : DataType.values()) {
-				pick = new PickDto(status.name(), status.getName());
-				picks.add(pick);
-			}
-			return;
-		case "MODELNAME":// 数据类型
-			i = 0;
-			List<String> modelNames = (List<String>) articleService.queryByHql("select distinct modelName from Log", null);
-			for (String w : modelNames) {
-				if (w == null)
-					continue;
-				i++;
-				pick = new PickDto("modelName_" + i, w, w);
-				picks.add(pick);
-			}
-			return;
-		
-		case "MENURUL":
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "项目列表");
-				picks.add(pick);
-				pick = new PickDto("m_myproject", "#/project/list/true/NULL", "我的项目列表");
-				picks.add(pick);
-				pick = new PickDto("m_myproject", "#/project/list/false/NULL", "推荐项目列表");
-				picks.add(pick);
-				
-				pick = new PickDto(Const.SEPARATOR, "项目主页【推荐项目】");
-				picks.add(pick);
-				
-				for (Project project : projectService.findByMap(Tools.getMap("status", ProjectStatus.RECOMMEND.getStatus()), null, null)) {
-					pick = new PickDto(project.getId() , String.format(Const.FRONT_PROJECT_URL, project.getId()) , project.getName());
-					picks.add(pick);
-				}
-				
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "文章列表【站点文章】");
-				picks.add(pick);
-				int j = 0;
-				@SuppressWarnings("unchecked")
-				List<String> categorys2 = (List<String>) articleService.queryByHql("select distinct category from Article where moduleId='web'", null);
-				for (String article : categorys2) {
-					if (MyString.isEmpty(article))
-						continue;
-					j++;
-					pick = new PickDto("cat_" + j, String.format(Const.FRONT_ARTICLE_URL, Const.WEB_MODULE,  Const.WEB_MODULE, article) , article);
-					picks.add(pick);
-				}
-				
-				// 分割线
-				pick = new PickDto(Const.SEPARATOR, "页面【站点页面】");
-				picks.add(pick);
-				preUrl = "#/web/article/detail/web/PAGE/";
-				for (Article w : articleService
-						.findByMap(Tools.getMap("key|" + Const.NOT_NULL, Const.NOT_NULL, "type", "PAGE"), null, null)) {
-					pick = new PickDto("wp_" + w.getKey(), preUrl + w.getKey(), w.getName());
-					picks.add(pick);
-				}
-				// 分割线
-				return;
-				
-		case "FONTFAMILY":// 字体
-			for (FontFamilyType font : FontFamilyType.values()) {
-				pick = new PickDto(font.name(), font.getValue(), font.getName());
-				picks.add(pick);
-			}
-			return;
-		case "USERTYPE": // 用户类型
-			for (UserType type : UserType.values()) {
-				pick = new PickDto("user-type"+type.getType(), type.getType()+"", type.getName());
-				picks.add(pick);
-			}
-			return;
-		}
-	}
+    @Override
+    public List<PickDto> getPickList(String code, String key) throws MyException {
+        PickCode pickCode = PickCode.getByCode(code);
+        if (pickCode == null) {
+            throw new MyException(MyError.E000065, "code 有误");
+        }
+
+        LoginInfoDto user = LoginUserHelper.getUser();
+        if (user.getType() != UserType.ADMIN.getType()) {
+            throw new MyException(MyError.E000065, "权限不足，非管理员");
+        }
+
+        List<PickDto> picks = new ArrayList<>();
+        PickDto pick = null;
+        String preUrl = "";
+        ProjectCriteria projectCriteria = new ProjectCriteria();
+        ArticleCriteria articleCriteria = new ArticleCriteria();
+        switch (pickCode) {
+
+            case AUTH:
+                pick = new PickDto(IConst.SEPARATOR, "用户、菜单、角色、系统设置管理");
+                picks.add(pick);
+
+                for (DataType dataType : DataType.values()) {
+                    pick = new PickDto(dataType.name(), dataType.getName());
+                    picks.add(pick);
+                }
+
+                return picks;
+
+            case ROLE:
+                pick = new PickDto(IConst.C_SUPER, "超级管理员");
+                picks.add(pick);
+                for (Role r : roleService.selectByExample(new RoleCriteria())) {
+                    pick = new PickDto(r.getId(), r.getRoleName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case MODEL_NAME:
+                pick = new PickDto("modelName_1", "文章", "文章");
+                picks.add(pick);
+                pick = new PickDto("modelName_2", "项目", "项目");
+                picks.add(pick);
+                pick = new PickDto("modelName_3", "模块", "模块");
+                picks.add(pick);
+                pick = new PickDto("modelName_4", "接口", "接口");
+                picks.add(pick);
+                pick = new PickDto("modelName_5", "数据字典", "数据字典");
+                picks.add(pick);
+                return picks;
+            case INDEX_PAGE:// 首页
+                for (IndexPageUrl indexPage : IndexPageUrl.values()) {
+                    pick = new PickDto(indexPage.name(), indexPage.getValue(), indexPage.getName());
+                    picks.add(pick);
+                }
+
+                pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
+                picks.add(pick);
+
+                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
+                for (Project project : projectService.selectByExample(projectCriteria)) {
+                    pick = new PickDto(project.getId(), String.format("project.do" + IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
+                    picks.add(pick);
+                }
+
+                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
+                picks.add(pick);
+
+                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                picks.add(pick);
+
+                preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
+                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
+                for (Article w : articleService.selectByExample(articleCriteria)) {
+                    pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
+                    picks.add(pick);
+                }
+                return picks;
+            case MENU_URL:
+                pick = new PickDto(IConst.SEPARATOR, "项目列表");
+                picks.add(pick);
+                pick = new PickDto("m_myproject", "index.do#/project/list/true/NULL", "我的项目列表");
+                picks.add(pick);
+                pick = new PickDto("recommend_project", "index.do#/project/list/false/NULL", "推荐项目列表");
+                picks.add(pick);
+
+                pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
+                picks.add(pick);
+
+                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
+                for (Project project : projectService.selectByExample(projectCriteria)) {
+                    pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
+                    picks.add(pick);
+                }
+
+                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
+                picks.add(pick);
+
+                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                picks.add(pick);
+
+                preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
+                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
+                for (Article w : articleService.selectByExample(articleCriteria)) {
+                    pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
+                    picks.add(pick);
+                }
+                return picks;
+
+            case USER_TYPE:
+                for (UserType type : UserType.values()) {
+                    pick = new PickDto("user-type" + type.getType(), type.getType() + "", type.getName());
+                    picks.add(pick);
+                }
+                return picks;
+            case ARTICLE_STATUS:
+                for (ArticleStatus status : ArticleStatus.values()) {
+                    pick = new PickDto("article-status" + status.getStatus(), status.getStatus() + "", status.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+        }
+
+        throw new MyException(MyError.E000065, "查询失败");
+
+    }
 
 }

@@ -20,7 +20,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('frontArticleList', {
-		url : '/:projectId/article/list/:moduleId/:type/:category/:name',
+		url : '/:projectId/article/list/:moduleId/:type/:category/:name/:status',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){

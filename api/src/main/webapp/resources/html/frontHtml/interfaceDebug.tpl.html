@@ -4,7 +4,7 @@
 			<div class="fl m0">Url：{{model.fullUrl}}</div>
 			<div class="fr m0">
 				版本号：
-				<a href="javascript:void(0)" class="f12 btn btn-purple btn-xs" ><i class="iconfont">&#xe625;&nbsp;</i>{{model.version}}</a>
+				<a href="javascript:void(0)" class="f12 btn btn-adorn btn-xs" ><i class="iconfont">&#xe625;&nbsp;</i>{{model.version}}</a>
 				<a ng-href="#/{{model.projectId}}/front/interface/debug/{{version.id}}" 
 					class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
 					<i class="iconfont">&#xe625;&nbsp;</i>{{version.version}}
@@ -34,7 +34,7 @@
 						<td>请求方式</td>
 						<td>
 							<input class="form-control cursor" type="text" id="debugMethod" placeholder="请点击输入框选择" required ng-model="model.debugMethod"
-							ng-focus="loadPickByName('iwidth=220|iheight=250|showType=5|tag=debugMethod|code=REQUESTMETHOD|def='+model.debugMethod,$event)">
+							ng-focus="loadPickByName('iwidth=220|iheight=250|showType=5|tag=debugMethod|code=REQUEST_METHOD|def='+model.debugMethod,$event)">
 						</td>
 					</tr>
 					<tr ng-if="headers!=null&& headers.length>0">

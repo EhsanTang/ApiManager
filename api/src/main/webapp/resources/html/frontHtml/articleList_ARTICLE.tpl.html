@@ -3,7 +3,7 @@
 <div class="col-xs-12 f14 pl0 mb10 pb5 mt20">
 	<div class="fl mt2">文章筛选：</div>
 	<a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl cursor" 
-		href="#/{{$stateParams.projectId}}/article/list/{{$stateParams.moduleId}}/{{$stateParams.type}}/{{item}}/NULL" ng-repeat="item in others.categorys" ng-bind="item"
+		href="#/{{$stateParams.projectId}}/article/list/{{$stateParams.moduleId}}/{{$stateParams.type}}/{{item}}/NULL/{{$stateParams.status}}" ng-repeat="item in others.categorys" ng-bind="item"
 	ng-class="{true: ' CFFF adorn-bg b0', false: ' C999'}[item == others.category]"></a>
 </div>
 <div ng-if="list.length==0" class="col-xs-12 tc mt10 mb10 C999">

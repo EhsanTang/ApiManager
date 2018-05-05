@@ -4,13 +4,13 @@
     	<a ng-click="getData(page.currentPage-1)"><span aria-hidden="true">&larr;</span> 上一页</a>
     </li>
     <li ng-if="page.currentPage<=1" class="disabled cursor">
-    	<a ng-click="getData(page.currentPage-1)"><span aria-hidden="true">&larr;</span> 上一页</a>
+    	<a><span aria-hidden="true">&larr;</span> 上一页</a>
     </li>
     <li ng-if="page.currentPage<page.totalPage" class="cursor">
     	<a ng-click="getData(page.currentPage+1)">下一页 <span aria-hidden="true">&rarr;</span></a>
     </li>
     <li ng-if="page.currentPage>=page.totalPage" class="disabled cursor">
-    	<a ng-click="getData(page.currentPage+1)">下一页 <span aria-hidden="true">&rarr;</span></a>
+    	<a>下一页 <span aria-hidden="true">&rarr;</span></a>
     </li>
   </ul>
 </nav>

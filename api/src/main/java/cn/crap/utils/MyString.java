@@ -35,7 +35,25 @@ public class MyString {
 		}
 		return false;
 	}
-	
+
+	public static boolean isNotEmpty(Object object){
+		return !isEmpty(object);
+	}
+
+	public static boolean notEquals(String value, String targetValue){
+		return !equals(value, targetValue);
+	}
+
+	public static boolean equals(String value, String targetValue){
+		if (value == null && targetValue == null){
+			return true;
+		}
+		if (value == null || targetValue == null){
+			return false;
+		}
+		return value.equals(targetValue);
+	}
+
 	// 从request中获取值
 	public static String getValueFromRequest(HttpServletRequest request, String name){
 		return getValueFromRequest(request, name, "");

@@ -8,7 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/web/article/detail/web/PAGE/ADMINHELP');
+	$urlRouterProvider.otherwise('user/project/list/true/-1');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('moduleList', {
-		url : '/user/module/list/:projectId',
+		url : '/user/module/list/:projectId/:name',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html'
@@ -170,7 +170,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('configProperties', {
+	}).state('hotSearchList', {
+        url : '/hotSearch/list',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/backHtml/hotSearchList.tpl.html'
+            },
+            'page@hotSearchList' : {
+                templateUrl : 'resources/html/backHtml/page.tpl.html'
+            }
+        }
+    }).state('configProperties', {
 		url : '/config/properties',
 		views : {
 			'main' :{

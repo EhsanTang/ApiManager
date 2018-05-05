@@ -277,6 +277,14 @@ mainModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state,
     };
     $scope.getData();
 });
+/************************hotSearchCtrl********/
+mainModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+    $scope.getData = function(page) {
+        var params = "iUrl=hotSearch/list.do|iLoading=FLOAT";
+        $rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
@@ -337,7 +345,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     		
     		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
     		if(item.param.length<5 || item.param.substring(0,5)!="form="){
-    			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+    			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
     				$rootScope.model.params = eval("([])");
     			}else{
     				return;
@@ -347,7 +355,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
         		try{
         			$rootScope.model.params = eval("("+item.param.substring(5)+")");
         		}catch(e){
-        			if(confirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
+        			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
         				$rootScope.model.params = eval("([])");
         			}else{
         				return;
@@ -414,6 +422,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     	newObj.deep=0;
     	newObj.type="string";
     	newObj.necessary="true";
+        newObj.inUrl="false";
     	$rootScope.model[field][$rootScope.model[field].length] = newObj;
     }
     /***********添加嵌套参数**************/
@@ -469,7 +478,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
 /**************************日志列表****************************/
 mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$stateParams.modelName+"&identy="+$stateParams.identy;
+		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -488,7 +497,7 @@ mainModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, 
 /*************************模块列表**********************/
 mainModule.controller('userModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId;
+		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

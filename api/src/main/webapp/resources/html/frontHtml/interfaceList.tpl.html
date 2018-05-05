@@ -2,10 +2,10 @@
 	<button type="button" class="ndis" id="refresh"
 		ng-click="getData(1,true);"></button>
 		
-	<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt10 mb20 adorn-bl-3">搜索接口</div>
+	<div class="col-xs-12 p3 pl10 pr10 mr10 f16 mt10 mb20 adorn-bl-3">接口列表</div>
 	<div class="col-xs-12 dashed-t pt15 p0 pb10">
 		<button type="button"
-			class="ml5 mt1 btn btn-success btn-sm fr no-radius"
+			class="ml5 mt1 btn btn-adorn btn-sm fr no-radius"
 			ng-click="getData(1);">
 			<i class="iconfont">&#xe60d;</i>&nbsp;查询
 		</button>
@@ -34,13 +34,11 @@
 			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>抱歉，该模块下没有接口
 	</div>
 	
-	
-	<div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt10 mb20 adorn-bl-3" ng-if="list.length>0">接口列表</div>
 	<div ng-repeat="item in list" ng-if="list.length>0" class="col-xs-12 mb20 p0 dashed-t">
 		<a ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"
-			class="p10 pl0 f16 fb dis w C000 no_unl" ng-bind="item.interfaceName"></a>
+			class="p10 pl0 f16 dis w C000 no_unl" ng-bind="item.interfaceName"></a>
 		<div class="f14 C555">{{item.remarkNoHtml}}</div>
-		<div class="tr C999 f12">
+		<div class="tr C999 f12 mt5">
 			模块：{{item.moduleName}} &nbsp;&nbsp;版本号:{{item.version}} <a
 				class="ml5 f12 text-primary mr10 cursor"
 				ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"><i

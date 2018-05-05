@@ -1,60 +1,74 @@
 package cn.crap.controller.admin;
 
-import java.util.Map;
-
+import cn.crap.adapter.LogAdapter;
+import cn.crap.dto.LogDto;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Log;
+import cn.crap.model.mybatis.LogCriteria;
+import cn.crap.service.custom.CustomLogService;
+import cn.crap.service.mybatis.LogService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.ILogService;
-import cn.crap.model.Log;
-import cn.crap.utils.Const;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import java.util.List;
 
+/**
+ * @author Ehsan
+ */
 @Controller
 @RequestMapping("/log")
-public class LogController extends BaseController<Log>{
+public class LogController extends BaseController {
 
-	@Autowired
-	private ILogService logService;
-	
-	@RequestMapping("/list.do")
-	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_LOG)
-	public JsonResult list(@ModelAttribute Log log,@RequestParam(defaultValue="1") Integer currentPage){
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		Map<String,Object> map = Tools.getMap("modelName",log.getModelName(),"identy", log.getIdenty());
-		return new JsonResult(1,logService.findByMap(map,page,null),page);
-	}
-	
-	@RequestMapping("/detail.do")
-	@ResponseBody
-	@AuthPassport(authority = Const.AUTH_LOG)
-	public JsonResult detail(@ModelAttribute Log log){
-		Log model;
-		if(!log.getId().equals(Const.NULL_ID)){
-			model= logService.get(log.getId());
-		}else{
-			model=new Log();
-		}
-		return new JsonResult(1,model);
-	}
-	
-		
-	@RequestMapping("/recover.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_LOG)
-	public JsonResult recover(@ModelAttribute Log log) throws MyException{
-		logService.recover(log);
-		return new JsonResult(1,null);
-	}
+    @Autowired
+    private LogService logService;
+    @Autowired
+    private CustomLogService customLogService;
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_LOG)
+    public JsonResult list(String identy, Integer currentPage, String modelName) {
+        Page page = new Page(currentPage);
+        LogCriteria example = new LogCriteria();
+        LogCriteria.Criteria criteria = example.createCriteria().andIdentyEqualTo(identy);
+        example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+        if (MyString.isNotEmpty(modelName)){
+            criteria.andModelNameEqualTo(modelName);
+        }
+
+        page.setAllRow(logService.countByExample(example));
+        List<LogDto> logDtoList = LogAdapter.getDto(logService.selectByExample(example));
+        return new JsonResult().success().data(logDtoList).page(page);
+    }
+
+    @RequestMapping("/detail.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_LOG)
+    public JsonResult detail(@ModelAttribute Log log) {
+        Log model;
+        if (!log.getId().equals(IConst.NULL_ID)) {
+            model = logService.getById(log.getId());
+        } else {
+            model = new Log();
+        }
+        return new JsonResult(1, LogAdapter.getDto(model));
+    }
+
+    @RequestMapping("/recover.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_LOG)
+    public JsonResult recover(@ModelAttribute Log log) throws MyException {
+        customLogService.recover(log);
+        return new JsonResult(1, null);
+    }
 }

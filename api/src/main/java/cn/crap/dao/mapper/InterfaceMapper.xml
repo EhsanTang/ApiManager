@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.InterfaceDao" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.Interface" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="moduleId" property="moduleId" jdbcType="VARCHAR" />
+    <result column="interfaceName" property="interfaceName" jdbcType="VARCHAR" />
+    <result column="updateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="fullUrl" property="fullUrl" jdbcType="VARCHAR" />
+    <result column="monitorType" property="monitorType" jdbcType="INTEGER" />
+    <result column="monitorText" property="monitorText" jdbcType="VARCHAR" />
+    <result column="monitorEmails" property="monitorEmails" jdbcType="VARCHAR" />
+    <result column="isTemplate" property="isTemplate" jdbcType="BIT" />
+    <result column="projectId" property="projectId" jdbcType="VARCHAR" />
+    <result column="contentType" property="contentType" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.mybatis.InterfaceWithBLOBs" extends="BaseResultMap" >
+    <result column="param" property="param" jdbcType="LONGVARCHAR" />
+    <result column="paramRemark" property="paramRemark" jdbcType="LONGVARCHAR" />
+    <result column="requestExam" property="requestExam" jdbcType="LONGVARCHAR" />
+    <result column="responseParam" property="responseParam" jdbcType="LONGVARCHAR" />
+    <result column="errorList" property="errorList" jdbcType="LONGVARCHAR" />
+    <result column="trueExam" property="trueExam" jdbcType="LONGVARCHAR" />
+    <result column="falseExam" property="falseExam" jdbcType="LONGVARCHAR" />
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+    <result column="errors" property="errors" jdbcType="LONGVARCHAR" />
+    <result column="header" property="header" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, url, method, status, moduleId, interfaceName, updateBy, updateTime, createTime,
+    version, sequence, fullUrl, monitorType, monitorText, monitorEmails, isTemplate,
+    projectId, contentType
+  </sql>
+  <sql id="Blob_Column_List" >
+    param, paramRemark, requestExam, responseParam, errorList, trueExam, falseExam, remark,
+    errors, header
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <choose >
+      <when test="limitStart != null and limitStart != -1 and maxResults != null and maxResults != -1" >
+        limit ${limitStart} , ${maxResults}
+      </when>
+      <when test="limitStart != null and limitStart != -1" >
+        limit ${limitStart}
+      </when>
+    </choose>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from interface
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from interface
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+    delete from interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+
+
+
+    insert into interface (id, url, method,
+    status, moduleId, interfaceName,
+    updateBy, updateTime, createTime,
+    version, sequence, fullUrl,
+    monitorType, monitorText, monitorEmails,
+    isTemplate, projectId, contentType,
+    param, paramRemark, requestExam,
+    responseParam, errorList, trueExam,
+    falseExam, remark, errors,
+    header)
+    values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
+    #{status,jdbcType=TINYINT}, #{moduleId,jdbcType=VARCHAR}, #{interfaceName,jdbcType=VARCHAR},
+    #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+    #{version,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER}, #{fullUrl,jdbcType=VARCHAR},
+    #{monitorType,jdbcType=INTEGER}, #{monitorText,jdbcType=VARCHAR}, #{monitorEmails,jdbcType=VARCHAR},
+    #{isTemplate,jdbcType=BIT}, #{projectId,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR},
+    #{param,jdbcType=LONGVARCHAR}, #{paramRemark,jdbcType=LONGVARCHAR}, #{requestExam,jdbcType=LONGVARCHAR},
+    #{responseParam,jdbcType=LONGVARCHAR}, #{errorList,jdbcType=LONGVARCHAR}, #{trueExam,jdbcType=LONGVARCHAR},
+    #{falseExam,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{errors,jdbcType=LONGVARCHAR},
+    #{header,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+
+
+
+    insert into interface
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="method != null" >
+        method,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="moduleId != null" >
+        moduleId,
+      </if>
+      <if test="interfaceName != null" >
+        interfaceName,
+      </if>
+      <if test="updateBy != null" >
+        updateBy,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+      <if test="fullUrl != null" >
+        fullUrl,
+      </if>
+      <if test="monitorType != null" >
+        monitorType,
+      </if>
+      <if test="monitorText != null" >
+        monitorText,
+      </if>
+      <if test="monitorEmails != null" >
+        monitorEmails,
+      </if>
+      <if test="isTemplate != null" >
+        isTemplate,
+      </if>
+      <if test="projectId != null" >
+        projectId,
+      </if>
+      <if test="contentType != null" >
+        contentType,
+      </if>
+      <if test="param != null" >
+        param,
+      </if>
+      <if test="paramRemark != null" >
+        paramRemark,
+      </if>
+      <if test="requestExam != null" >
+        requestExam,
+      </if>
+      <if test="responseParam != null" >
+        responseParam,
+      </if>
+      <if test="errorList != null" >
+        errorList,
+      </if>
+      <if test="trueExam != null" >
+        trueExam,
+      </if>
+      <if test="falseExam != null" >
+        falseExam,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="errors != null" >
+        errors,
+      </if>
+      <if test="header != null" >
+        header,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceName != null" >
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="fullUrl != null" >
+        #{fullUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorType != null" >
+        #{monitorType,jdbcType=INTEGER},
+      </if>
+      <if test="monitorText != null" >
+        #{monitorText,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorEmails != null" >
+        #{monitorEmails,jdbcType=VARCHAR},
+      </if>
+      <if test="isTemplate != null" >
+        #{isTemplate,jdbcType=BIT},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null" >
+        #{param,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="paramRemark != null" >
+        #{paramRemark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requestExam != null" >
+        #{requestExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseParam != null" >
+        #{responseParam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="errorList != null" >
+        #{errorList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trueExam != null" >
+        #{trueExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="falseExam != null" >
+        #{falseExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="errors != null" >
+        #{errors,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="header != null" >
+        #{header,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.crap.model.mybatis.InterfaceCriteria" resultType="java.lang.Integer" >
+    select count(*) from interface
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update interface
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.method != null" >
+        method = #{record.method,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.moduleId != null" >
+        moduleId = #{record.moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceName != null" >
+        interfaceName = #{record.interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateBy != null" >
+        updateBy = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sequence != null" >
+        sequence = #{record.sequence,jdbcType=INTEGER},
+      </if>
+      <if test="record.fullUrl != null" >
+        fullUrl = #{record.fullUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monitorType != null" >
+        monitorType = #{record.monitorType,jdbcType=INTEGER},
+      </if>
+      <if test="record.monitorText != null" >
+        monitorText = #{record.monitorText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monitorEmails != null" >
+        monitorEmails = #{record.monitorEmails,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isTemplate != null" >
+        isTemplate = #{record.isTemplate,jdbcType=BIT},
+      </if>
+      <if test="record.projectId != null" >
+        projectId = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentType != null" >
+        contentType = #{record.contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.param != null" >
+        param = #{record.param,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.paramRemark != null" >
+        paramRemark = #{record.paramRemark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.requestExam != null" >
+        requestExam = #{record.requestExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.responseParam != null" >
+        responseParam = #{record.responseParam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.errorList != null" >
+        errorList = #{record.errorList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.trueExam != null" >
+        trueExam = #{record.trueExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.falseExam != null" >
+        falseExam = #{record.falseExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.errors != null" >
+        errors = #{record.errors,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.header != null" >
+        header = #{record.header,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update interface
+    set id = #{record.id,jdbcType=VARCHAR},
+    url = #{record.url,jdbcType=VARCHAR},
+    method = #{record.method,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=TINYINT},
+    moduleId = #{record.moduleId,jdbcType=VARCHAR},
+    interfaceName = #{record.interfaceName,jdbcType=VARCHAR},
+    updateBy = #{record.updateBy,jdbcType=VARCHAR},
+    updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+    createTime = #{record.createTime,jdbcType=TIMESTAMP},
+    version = #{record.version,jdbcType=VARCHAR},
+    sequence = #{record.sequence,jdbcType=INTEGER},
+    fullUrl = #{record.fullUrl,jdbcType=VARCHAR},
+    monitorType = #{record.monitorType,jdbcType=INTEGER},
+    monitorText = #{record.monitorText,jdbcType=VARCHAR},
+    monitorEmails = #{record.monitorEmails,jdbcType=VARCHAR},
+    isTemplate = #{record.isTemplate,jdbcType=BIT},
+    projectId = #{record.projectId,jdbcType=VARCHAR},
+    contentType = #{record.contentType,jdbcType=VARCHAR},
+    param = #{record.param,jdbcType=LONGVARCHAR},
+    paramRemark = #{record.paramRemark,jdbcType=LONGVARCHAR},
+    requestExam = #{record.requestExam,jdbcType=LONGVARCHAR},
+    responseParam = #{record.responseParam,jdbcType=LONGVARCHAR},
+    errorList = #{record.errorList,jdbcType=LONGVARCHAR},
+    trueExam = #{record.trueExam,jdbcType=LONGVARCHAR},
+    falseExam = #{record.falseExam,jdbcType=LONGVARCHAR},
+    remark = #{record.remark,jdbcType=LONGVARCHAR},
+    errors = #{record.errors,jdbcType=LONGVARCHAR},
+    header = #{record.header,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update interface
+    set id = #{record.id,jdbcType=VARCHAR},
+    url = #{record.url,jdbcType=VARCHAR},
+    method = #{record.method,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=TINYINT},
+    moduleId = #{record.moduleId,jdbcType=VARCHAR},
+    interfaceName = #{record.interfaceName,jdbcType=VARCHAR},
+    updateBy = #{record.updateBy,jdbcType=VARCHAR},
+    updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+    createTime = #{record.createTime,jdbcType=TIMESTAMP},
+    version = #{record.version,jdbcType=VARCHAR},
+    sequence = #{record.sequence,jdbcType=INTEGER},
+    fullUrl = #{record.fullUrl,jdbcType=VARCHAR},
+    monitorType = #{record.monitorType,jdbcType=INTEGER},
+    monitorText = #{record.monitorText,jdbcType=VARCHAR},
+    monitorEmails = #{record.monitorEmails,jdbcType=VARCHAR},
+    isTemplate = #{record.isTemplate,jdbcType=BIT},
+    projectId = #{record.projectId,jdbcType=VARCHAR},
+    contentType = #{record.contentType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+    update interface
+    <set >
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="moduleId != null" >
+        moduleId = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceName != null" >
+        interfaceName = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null" >
+        updateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="fullUrl != null" >
+        fullUrl = #{fullUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorType != null" >
+        monitorType = #{monitorType,jdbcType=INTEGER},
+      </if>
+      <if test="monitorText != null" >
+        monitorText = #{monitorText,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorEmails != null" >
+        monitorEmails = #{monitorEmails,jdbcType=VARCHAR},
+      </if>
+      <if test="isTemplate != null" >
+        isTemplate = #{isTemplate,jdbcType=BIT},
+      </if>
+      <if test="projectId != null" >
+        projectId = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        contentType = #{contentType,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null" >
+        param = #{param,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="paramRemark != null" >
+        paramRemark = #{paramRemark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="requestExam != null" >
+        requestExam = #{requestExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="responseParam != null" >
+        responseParam = #{responseParam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="errorList != null" >
+        errorList = #{errorList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trueExam != null" >
+        trueExam = #{trueExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="falseExam != null" >
+        falseExam = #{falseExam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="errors != null" >
+        errors = #{errors,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="header != null" >
+        header = #{header,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+    update interface
+    set url = #{url,jdbcType=VARCHAR},
+    method = #{method,jdbcType=VARCHAR},
+    status = #{status,jdbcType=TINYINT},
+    moduleId = #{moduleId,jdbcType=VARCHAR},
+    interfaceName = #{interfaceName,jdbcType=VARCHAR},
+    updateBy = #{updateBy,jdbcType=VARCHAR},
+    updateTime = #{updateTime,jdbcType=TIMESTAMP},
+    createTime = #{createTime,jdbcType=TIMESTAMP},
+    version = #{version,jdbcType=VARCHAR},
+    sequence = #{sequence,jdbcType=INTEGER},
+    fullUrl = #{fullUrl,jdbcType=VARCHAR},
+    monitorType = #{monitorType,jdbcType=INTEGER},
+    monitorText = #{monitorText,jdbcType=VARCHAR},
+    monitorEmails = #{monitorEmails,jdbcType=VARCHAR},
+    isTemplate = #{isTemplate,jdbcType=BIT},
+    projectId = #{projectId,jdbcType=VARCHAR},
+    contentType = #{contentType,jdbcType=VARCHAR},
+    param = #{param,jdbcType=LONGVARCHAR},
+    paramRemark = #{paramRemark,jdbcType=LONGVARCHAR},
+    requestExam = #{requestExam,jdbcType=LONGVARCHAR},
+    responseParam = #{responseParam,jdbcType=LONGVARCHAR},
+    errorList = #{errorList,jdbcType=LONGVARCHAR},
+    trueExam = #{trueExam,jdbcType=LONGVARCHAR},
+    falseExam = #{falseExam,jdbcType=LONGVARCHAR},
+    remark = #{remark,jdbcType=LONGVARCHAR},
+    errors = #{errors,jdbcType=LONGVARCHAR},
+    header = #{header,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Interface" >
+    update interface
+    set url = #{url,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      moduleId = #{moduleId,jdbcType=VARCHAR},
+      interfaceName = #{interfaceName,jdbcType=VARCHAR},
+      updateBy = #{updateBy,jdbcType=VARCHAR},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=INTEGER},
+      fullUrl = #{fullUrl,jdbcType=VARCHAR},
+      monitorType = #{monitorType,jdbcType=INTEGER},
+      monitorText = #{monitorText,jdbcType=VARCHAR},
+      monitorEmails = #{monitorEmails,jdbcType=VARCHAR},
+      isTemplate = #{isTemplate,jdbcType=BIT},
+      projectId = #{projectId,jdbcType=VARCHAR},
+      contentType = #{contentType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

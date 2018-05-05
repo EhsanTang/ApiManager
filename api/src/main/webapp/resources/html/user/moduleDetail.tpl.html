@@ -30,9 +30,15 @@
 						<textarea rows="5" class="form-control no-resize" ng-model="model.remark"></textarea>
 				</tr>
 				<tr>
+					<td class="tc">文章分类</td>
+					<td class="tl" colspan="3">
+						* 分类以英文逗号分隔，每个分类建议不超过5个字，分类个数不建议超过10个<br/>
+						<textarea rows="5" class="form-control no-resize" ng-model="model.category"></textarea>
+				</tr>
+				<tr>
 					<td class="tc">排序</td>
-					<td class="tc" colspan="3">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+					<td class="tl" colspan="3">
+					<input class="form-control" min="0" max="10000" type="number" ng-model="model.sequence"></td>
 				</tr>
 				<tr>
 					<td class="tc">接口模板</td>

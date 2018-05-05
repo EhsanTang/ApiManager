@@ -1,0 +1,39 @@
+﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="hotSearchCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">系统设置管理</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
+</div>
+
+<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">搜索热词列表</div>
+
+<div class="col-xs-12 p0">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr class="BGEEE">
+				<th class="tc">搜索关键字</th>
+				<th class="tc w100">次数</th>
+				<th class="tc w200">创建时间</th>
+				<th class="w200 tc">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list">
+				<td class="tc" title="{{item.keyword}}">{{item.keyword|cut:true:20:' ...'}}</td>
+				<th class="tc">{{item.times}}</th>
+				<td class="tc">{{item.createTimeStr}}</td>
+				<td class="tc">
+
+				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('HOT_SEARCH','')"
+					ng-click="del('hotSearch/delete.do?id='+item.id,item.keyword)">
+					<i class="iconfont f12">&#xe60e;删除</i>
+				</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+	<div ui-view="page"></div>
+</div>
+</div>
+<div class="cb"></div>
+

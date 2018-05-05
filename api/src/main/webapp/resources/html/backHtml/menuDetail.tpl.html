@@ -11,7 +11,7 @@
 				<!-- 二级菜单不需要选着类型 -->
 				<td class="tc" ng-if="model.parentId=='0'">
 					<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选着类型" required
-					ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=typeName|tag=type|code=MENUTYPE|def='+model.type,$event)">
+					ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=typeName|tag=type|code=MENU_TYPE|def='+model.type,$event)">
 				</td>
 				<td class="tc" ng-if="model.parentId!='0'">
 					<input  class="form-control" type="text" ng-model="model.typeName" readonly>
@@ -23,7 +23,7 @@
 					<div class="input-group w">
 						<textarea  class="form-control no-resize" id="menuUrl" ng-model="model.menuUrl" rows="3"
 						placeholder="请点击“选择地址”按钮选择链接地址，亦可手动输入链接，若有二级菜单，一级菜单链接无效"></textarea>
-						<div class="input-group-addon cursor btn-purple" ng-click="loadPick($event,300,460,'true','menuUrl','MENURUL','','','');">
+						<div class="input-group-addon cursor btn-adorn" ng-click="loadPick($event,300,460,'true','menuUrl','MENU_URL','','');">
 						选择地址
 						</div>
 					</div>
@@ -35,11 +35,10 @@
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 			</tr>
 			<tr ng-if="model.parentId=='0'">
-				<td class="tc" rowspan="2" ng-if="model.parentId=='0'">图标</td>
-				<td class="tc" rowspan="2" ng-if="model.parentId!='0'">备注</td>
+				<td class="tc" rowspan="2">图标</td>
 				<td class="tc">
-					<textarea class="form-control no-resize" ng-model="model.iconRemark" rows="3"
-					placeholder='图片格式：<i class="iconfont">&xxxxx;</i>'></textarea>
+					<input class="form-control" id="iconRemarkName" ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=iconRemarkName|tag=iconRemark|code=MENU_ICON|def='+model.iconRemark,$event)"
+						   placeholder="点击输入框选着图标" ng-model="model.iconRemarkName"/>
 				</td>
 			</tr>
 			<tr>

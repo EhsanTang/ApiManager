@@ -87,15 +87,14 @@ function fullMyDialog(tagDiv){
 	}
 	
 }
-function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam) { 
+function loadPick(event,iwidth,iheight,radio,tag,code,def,params,showType,iCallBack,iCallBackParam) {
 	/***********加载选择对话框********************/
 	if(!params)
 		params='';
 	if(showType!=0&&!showType)
 		showType=5
 	//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
-	callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&type="
-			+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&def="+def+params,iCallBack,iCallBackParam);
+	callAjaxByName("iUrl=pick.do|isHowMethod=updateDiv|iParams=&radio="+radio+"&code="+code+"&tag="+tag+"&def="+def+params,iCallBack,iCallBackParam);
 	lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 	showMessage('lookUp','false',false,-1);
 }
@@ -278,9 +277,32 @@ function selectRadio(className,id,radioId){
 }
 
 /** ********************************** */
-function selectButton(obj,className){
+function selectButton(obj,className, activeCss){
+	if (!activeCss){
+        activeCss = "iactive";
+	}
 	window.editorId = new Date().getTime();
 	var objs = $("."+className);
-	objs.removeClass("iactive");
-	$(obj).addClass("iactive");
+	objs.removeClass(activeCss);
+	$(obj).addClass(activeCss);
 }
+
+function myConfirm(message){
+    var begin = Date.now();
+    var result = window.confirm(message);
+    var end = Date.now();
+    if (end - begin < 10) {
+    	$("#global-error").text("Please do not disable popups,it's dangerous!「请勿禁用【确认】弹窗，直接操作非常危险」");
+    	$("#global-error").removeClass("ndis");
+        return true;
+    }
+    return result;
+}
+function sleep(numberMillis) { 
+	   var now = new Date();
+	   var exitTime = now.getTime() + numberMillis;  
+	   while (true) { 
+	       now = new Date(); 
+	       if (now.getTime() > exitTime)    return;
+	    }
+	}

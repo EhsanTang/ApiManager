@@ -1,3 +1,4 @@
+/*P结尾代表%*/
 body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,textarea,th,td
 {margin:0;padding:0;font-family: Georgia, 'Times New Roman', Times,'Microsoft Yahei','Hiragino Sans GB',sans-serif;}
 .fm{font-family: Tahoma,"\5b8b\4f53",Arial,Helvetica,Arial,sans-serif;}
@@ -79,7 +80,7 @@ table{border-collapse:collapse;border-spacing:0}
 .r10{-moz-border-radius: 10px;-webkit-border-radius: 10px;border-radius: 10px;-khtml-border-radius: 10px;}
 .r12{-moz-border-radius: 12px;-webkit-border-radius: 12px;border-radius: 12px;-khtml-border-radius: 12px;}
 .r20{-moz-border-radius: 20px;-webkit-border-radius: 20px;border-radius: 20px;-khtml-border-radius: 20px;}
-
+.r50P{-moz-border-radius: 50%; -webkit-border-radius: 50%;border-radius: 50%;-khtml-border-radius: 50%;}
 
 .bg-feng{background-color:#ffebe8;}
 .bg-lan{background-color:#b2d1ff;}
@@ -104,6 +105,8 @@ table{border-collapse:collapse;border-spacing:0}
 .f50{font-size:50px}
 .f60{font-size:60px}
 .fb{font-weight:bold}
+.fw400{font-weight: 400!important;}
+.fw600{font-weight: 600!important;}
 .fn{font-weight:normal!important}
 .t2{text-indent:2em}
 .lh20{line-height:20px!important}
@@ -152,11 +155,11 @@ table{border-collapse:collapse;border-spacing:0}
 .m30{margin:30px}
 .mt-5{margin-top:-5px!important;}.mt-3{margin-top:-3px!important;}.mt-1{margin-top:-1px!important;}
 .mt-8{margin-top:-8px!important;}
-.mt-10{margin-top:-10px!important;}.mt0{margin-top:0px!important}
+.mt-10{margin-top:-10px!important;}.mt0{margin-top:0px!important}.mt-20{margin-top:-20px!important;}
 .mt1{margin-top:1px!important}.mt2{margin-top:2px!important}
 .mt5{margin-top:5px!important}.mt10{margin-top:10px!important}
 .mt15{margin-top:15px!important}.mt20{margin-top:20px!important}.mt30{margin-top:30px!important}.mt40{margin-top:40px!important}.mt50{margin-top:50px!important}
-.mt75{margin-top:75px!important}.mt100{margin-top:100px!important}
+.mt75{margin-top:75px!important}.mt100{margin-top:100px!important}.mt130{margin-top:130px!important}.mt150{margin-top:150px!important}
 /***********display*************************/
 .ndis{
 	display:none;
@@ -267,7 +270,6 @@ table{border-collapse:collapse;border-spacing:0}
 	content: '';
     width: 100%;
     height: 100%;
-    position: absolute;
     left: 0;
     top: 0;
     background: rgba(0,0,0,.6);

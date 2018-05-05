@@ -1,10 +1,12 @@
 package cn.crap.service.tool;
 
-import java.io.UnsupportedEncodingException;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
+import cn.crap.dto.MailBean;
+import cn.crap.service.IEmailService;
+import cn.crap.beans.Config;
+import cn.crap.utils.Aes;
+import cn.crap.utils.IConst;
+import cn.crap.utils.ISetting;
+import cn.crap.utils.Tools;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import cn.crap.dto.MailBean;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.IEmailService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Aes;
-import cn.crap.utils.Const;
-import cn.crap.utils.SerializeUtil;
-import cn.crap.utils.Tools;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService implements IEmailService {
@@ -28,13 +25,15 @@ public class EmailService implements IEmailService {
 	@Autowired
 	private JavaMailSenderImpl mailSenderService;
 	@Autowired
-	private ICacheService cacheService;
+	private SettingCache settingCache;
+	@Autowired
+	private StringCache stringCache;
 	@Autowired
 	private Config config;
 	
 	@Override
 	public void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException{
-		String fromName = cacheService.getSetting(Const.SETTING_TITLE).getValue();
+		String fromName = settingCache.get(ISetting.S_TITLE).getValue();
 		MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
@@ -47,7 +46,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public boolean sendMail(String subject, String toEmail, String context) {
 		try {
-			String fromName = cacheService.getSetting(Const.SETTING_TITLE).getValue();
+			String fromName = settingCache.get(ISetting.S_TITLE).getValue();
 			MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 			MimeMessageHelper messageHelper;
 			messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -58,6 +57,7 @@ public class EmailService implements IEmailService {
 			mailSenderService.send(mimeMessage);
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("邮件发送失败：subject="+subject+"，toEmail="+toEmail, e);
 			return false;
 		}
@@ -68,11 +68,12 @@ public class EmailService implements IEmailService {
 		String code =  Aes.encrypt(id);
 		String domain = config.getDomain() + "/back/validateEmail.do?i=" + code;
 		MailBean mailBean = new MailBean();
-		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "<a href=\""+domain+"\">"+domain+"</a>"));
+		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "点击验证邮箱：<a href=\""+domain+"\">"+domain+"</a>"));
 		mailBean.setToEmail(eamil);
-		mailBean.setSubject("注册邮箱验证");
+		mailBean.setSubject("注册邮箱验证-开源API接口管理系统");
 		sendMail(mailBean);
-		cacheService.setStr(code, Const.REGISTER, 10 * 60);
+        logger.warn(mailBean.getContext());
+		stringCache.add(code, IConst.REGISTER);
 	}
 	
 	@Override
@@ -81,9 +82,9 @@ public class EmailService implements IEmailService {
 		String code = Tools.getChar(6);
 		mailBean.setContext( getMtml(eamil, "找回密码", "邮件验证码为："+code));
 		mailBean.setToEmail(eamil);
-		mailBean.setSubject("找回密码");
+		mailBean.setSubject("找回密码-开源API接口管理系统");
 		sendMail(mailBean);
-		cacheService.setStr(Const.CACHE_FINDPWD+ eamil, code, 10 * 60);
+		stringCache.add(IConst.CACHE_FINDPWD+ eamil, code);
 	}
 	
 	private String getMtml(String eamil, String title, String content){

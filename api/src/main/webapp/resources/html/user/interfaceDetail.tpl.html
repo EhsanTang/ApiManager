@@ -13,8 +13,8 @@
 					* 点击选择模块
 					</td>
 					<td>
-						<input class="form-control cursor" type="text"  id="moduleName" required readonly ng-model="model.moduleName"
-							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+						<input class="form-control cursor" type="text"  id="moduleName" required ng-model="model.moduleName"
+							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				
 					</td>
 				</tr>
@@ -32,13 +32,12 @@
 					<td class="tc w80">请求方式</td>
 					<td class="tc">
 						<input class="form-control cursor" type="text"  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
-							ng-focus="loadPickByName('iwidth=220|radio=false|iheight=250|tag=method|code=REQUESTMETHOD|def='+model.method,$event)">
+							ng-focus="loadPickByName('iwidth=220|radio=false|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
 					</td>
 					<td class="tc">状态</td>
 					<td>
-						<input class="form-control" type="text" id="status"
-							ng-focus="loadPick($event,220,220,'true','status','INTERFACESTATUS','',model.status);"
-								ng-model="model.status" required placeholder="请点击输入框选择">
+						<input class="form-control" type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
+							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
 					</td>
 				</tr>
 				<tr>
@@ -49,11 +48,12 @@
 					<td class="tc">
 					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
 				</tr>
+				<!--
 				<tr>
 					<td class="tc w80">监控类型</td>
 					<td class="tc">
 					<input  class="form-control" type="text" ng-model="model.monitorTypeName" id="monitorTypeName" required placeholder="点击选择"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITORTYPE|def='+model.monitorType,$event)">
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITOR_TYPE|def='+model.monitorType,$event)">
 					</td>
 					<td class="tc"></td>
 					<td class="tc"></td>
@@ -74,6 +74,7 @@
 						</textarea>
 					</td>
 				</tr>
+				 -->
 				<tr>
 					<td class="tc">请求头</td>
 					<td class="tc" colspan="3" ui-view="interHeaderDiv"></td>
@@ -109,6 +110,16 @@
 						<div id="paramEditorDiv" ui-view="interParamRemakDiv"></div>
 					</td>
 				</tr>
+
+
+				<tr>
+					<td class="tc w80">返回类型</td>
+					<td colspan="3">
+						<input class="form-control" type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
+							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">
+					</td>
+				</tr>
+
 				<tr>
 					<td class="tc">
 						返回参数
@@ -191,7 +202,7 @@
 退格键可删除输入"
 								ng-model="model.errorList" rows="5" readonly></textarea>
 							<div class="input-group-addon cursor btn-main"
-								ng-click="loadPick($event,300,400,'false','errorList','ERRORCODE','',model.errorList,'&key='+model.projectId,0);">
+								ng-click="loadPick($event,300,400,'false','errorList','ERROR_CODE',model.errorList,'&key='+model.projectId,0);">
 								选择</div>
 						</div>
 					</td>
@@ -208,7 +219,7 @@
 			<input class="form-control mb10" type="text" ng-model="model.url" required
 							placeholder="示例：http://api.crap.cn/CustomerOrder/GetMyOrderList">
 			<input  class="form-control mb10" id="moduleName" type="text" ng-model="model.moduleName" required placeholder="点击输入框选择模块"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=moduleName|showType=4|tag=moduleId|code=MYMODULE|def='+model.moduleId,$event)">
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=moduleName|showType=4|tag=moduleId|code=MY_MODULE|def='+model.moduleId,$event)">
 			<button type="submit" class="btn btn-adorn fr">拷贝</button>
 		</form>
 	</div>

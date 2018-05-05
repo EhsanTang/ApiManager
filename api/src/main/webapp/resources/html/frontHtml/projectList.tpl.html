@@ -1,8 +1,8 @@
 <div class="col-xs-12 r0 p20 pt10" ng-controller="frontProjectCtrl">
 	<button type="button" class="ndis" id="refresh"
 		ng-click="getData(1,true);"></button>
-<div class="col-xs-6 fl p3 pl10 pr10 f16 fb mt10 mb20 adorn-bl-3" ng-if="$stateParams.myself=='false'">推荐项目</div>
-<div class="col-xs-6 fl p3 pl10 pr10 f16 fb mt10 mb20 adorn-bl-3" ng-if="$stateParams.myself!='false'">我的项目</div>
+<div class="col-xs-6 fl p3 pl10 pr10 f16 mt10 mb20 adorn-bl-3" ng-if="$stateParams.myself=='false'">推荐项目</div>
+<div class="col-xs-6 fl p3 pl10 pr10 f16 mt10 mb20 adorn-bl-3" ng-if="$stateParams.myself!='false'">我的项目</div>
 <div class="col-xs-6 pt5 p0 pb10 tr">
 			<input type="text" class="form-control input-xs dis-in-blo w200 r20 no-b-s" onkeypress="if(event.keyCode==13) {refresh.click();}"
 						placeholder="搜索|回车确认"  ng-model="$stateParams.name">
@@ -14,20 +14,27 @@
 <div class="col-xs-12 p0"  ng-if="list.length>0">
 
 	<div class="col-sm-6 col-md-4 col-lg-3 m0 p0" ng-repeat="item in list">
-			<div class="b1 tc r3 h220 m15 p15">
-				<a ng-href="project.do#/{{item.id}}/module/list" target="_blank">
-					<img class="h60" ng-src="{{item.cover}}"/>
-				</a>
-				<div class="h30 of-h f14 C000 p10">
-					<a ng-href="project.do#/{{item.id}}/module/list" target="_blank" class="fb adorn-color" ng-bind="item.name|cut:true:8:' ...'"></a>	
-				</div>
-				<div class="h80 of-h C555 p10 pb5"
-					ng-bind="item.remark|cut:true:20:' ...'">
-				</div>
-				<div class="lh26">
-					<a class="f12 text-primary mr5 cursor" ng-href="#{{item.id}}/error/list"> 
-						<i class="iconfont f12">&#xe608; 错误码</i>
+			<div class="b1 tl r3 h220 m15 p15">
+				<div>
+					<a class="fl" ng-href="project.do#/{{item.id}}/module/list" target="_blank">
+						<img class="h70 w70 r50P" ng-src="{{item.cover}}"/>
 					</a>
+					<div class="lh26 fl mt20 ml10">
+						<a class="f12 text-primary mr5 cursor" ng-href="project.do#/{{item.id}}/error/list" target="_blank">
+							<i class="iconfont f12">&#xe608; 错误码</i>
+						</a>
+						<br/>
+						<a class="f12 text-primary mr5 cursor mt10" ng-href="project.do#/{{item.id}}/module/list" target="_blank">
+							<i class="iconfont f12">&#xe613; 模块列表</i>
+						</a>
+					</div>
+				</div>
+				<div class="cb"></div>
+				<div class="h30 of-h f14 C000 pt10">
+					<a ng-href="project.do#/{{item.id}}/module/list" target="_blank" class="adorn-color" ng-bind="item.name|cut:true:9:' ...'"></a>
+				</div>
+				<div class="h80 of-h C555 pt10 pb5"
+					ng-bind="item.remark|cut:true:46:' ...'">
 				</div>
 			</div>
 	</div>

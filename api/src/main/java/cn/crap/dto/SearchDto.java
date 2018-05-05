@@ -1,6 +1,7 @@
 package cn.crap.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class SearchDto implements Serializable{
 	/**
@@ -14,13 +15,13 @@ public class SearchDto implements Serializable{
 	private String content;// 参与搜索的类容：简介、备注、参数等的组合 或 搜索到的结果（高亮显示）
 	private String version;// 不参与分词搜索
 	private String moduleName;
-	private String createTime;// 时间，不参与分词搜索
-	private boolean needCreateIndex = true; // 是否需要建立索引 
+	private Date createTime;// 时间，不参与分词搜索
+	private boolean needCreateIndex = true; // 是否需要建立索引
 	private String href;//接口、文章的地址，不需要分词，需要建立索引
 	private String projectId; // 不参与分词
 	
 	public SearchDto(){};
-	public SearchDto(String id, String title, String type, String url, String content, String version, String moduleName, String createTime){
+	public SearchDto(String id, String title, String type, String url, String content, String version, String moduleName, Date createTime){
 			this.id = id;
 			this.title = title;
 			this.type = type;
@@ -91,12 +92,12 @@ public class SearchDto implements Serializable{
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		if(createTime == null)
-			return "";
+			return null;
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	public boolean isNeedCreateIndex() {

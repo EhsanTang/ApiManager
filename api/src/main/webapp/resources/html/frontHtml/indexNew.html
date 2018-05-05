@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="fontInit">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理,api接口管理" />
+	<meta name="description" content="免费开源的API接口管理系统、文档管理系统。系统特点：极致简单、开源开放、技术前沿。主要功能有：接口管理、接口调试、文档管理、数据字典管理、文章管理....。" />
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+	<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/setting.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
+	<title ng-bind="settings.TITLE">Api接口管理系统</title>
+</head>
+<body class="BG_COLOR">
+	<!-- Top Nav -->
+	<div ng-include="'resources/html/subTpl/frontTopNav.tpl.html'"></div>
+	<!-- Top Nav End -->
+	<!-- Top Search-->
+	<div ng-include="'resources/html/subTpl/topSearch.tpl.html'"></div>
+	<!-- Top Search End-->
+	
+	<div class="container p0">
+		<div class="row min-h p0 m0">
+			<div class="col-xs-12 col-sm-12 p0 BG_COLOR m0 p10 pt0 r5">
+				<div class="col-xs-12 f16 fb p20 pt10 pb0 mb5 BGFFF r5"
+					ng-if="error">
+					<button type="button" class="btn btn-danger btn-xs break-word"
+						onclick="propUpPsswordDiv(this)" ng-bind="error"></button>
+				</div>
+				<div ui-view="main" class="BGFFF r5 min-h700"></div>
+			</div>
+		</div>
+	</div>
+	<!-- footer -->
+	<div ng-include="'resources/html/subTpl/footer.tpl.html'"></div>
+	<script src="resources/framework/jquery-1.9.1.min.js"></script>
+	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
+
+	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
+	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
+	
+	<script src="resources/js/app.js?v=2010"></script>
+	<script src="resources/js/services.js"></script>
+	<script src="resources/js/frontRouter.js"></script>
+	<script src="resources/js/router.js"></script>
+	<script src="resources/js/backControllers.js?v=2010"></script>
+    <script src="resources/js/frontControllers.js?v=2010"></script>
+    <script src="resources/js/interfaceMethods.js"></script>
+     
+	<script
+		src='resources/framework/textAngular-1.5.0/textAngular-rangy.min.js'></script>
+	<script
+		src='resources/framework/textAngular-1.5.0/textAngular-sanitize.min.js'></script>
+	<script src='resources/framework/textAngular-1.5.0/textAngular.min.js'></script>
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
+	<script
+		src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+	<script
+		src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="resources/js/validateAndRefresh.js?v=200"></script>
+	<script src="resources/js/core.js?v=200"></script>
+	<script src="resources/js/global.js?v=200"></script>
+	<script src="resources/js/crapApi.js?v=200"></script>
+	<script src="resources/js/json.js?v=200"></script>
+</body>
+</html>

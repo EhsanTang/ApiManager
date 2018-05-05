@@ -1,0 +1,74 @@
+/********setting.css 由模板setting.tpl.css生成*********/
+body{min-width:800px;}
+@media ( min-width : 1210px) {.container {width: 1100px!important}}
+.BG_COLOR {background-color: #f7f7f7}
+.FOOTER_BG_COLOR {background-color: #000000}
+.FOOTER_COLOR {color: #a9a9a9}
+.FOOTER_COLOR a {color: #a9a9a9}
+/* 默认主色:#B768A5*/
+.main-bg {background-color: #407aaa!important;}
+.main-color {color: #407aaa}
+.adorn-color {color: #f82c1d}
+.adorn-bl-3{ border-left:3px solid #f82c1d}
+.adorn-bb-1{ border-bottom:1px solid #f82c1d}
+.adorn-color:hover {color: #f82c1d}
+.adorn-bg {background-color: #f82c1d}
+.interface-detail blockquote {color: #407aaa}
+.bt-5 {border-top: 5px solid#407aaa}
+.bl-5 {border-left: 5px solid#407aaa}
+.menu-a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:1;}
+.iactive {background-color: #407aaa!important;color:#ffffff!important;opacity: 0.8;}
+.pickActive {color: #407aaa}
+.pickSelect {color: #407aaa}
+.separator {border-bottom: 1px dotted#407aaa;color: #407aaa}
+.look-up-content {border-top: 3px solid#407aaa;}
+.sk-wave .sk-rect {background-color: #407aaa;}
+.btn-adorn {
+  color: #ffffff;
+  background-color:#f82c1d;
+}
+.btn-adorn:hover{
+  color: #ffffff;
+  background-color: #f82c1d;
+  opacity: 0.8;
+}
+.btn-main {
+  color: #ffffff;
+  background-color:#407aaa;
+}
+.btn-main:hover{
+  color: #ffffff;
+  background-color: #407aaa;
+  opacity: 0.8;
+}
+.hover-a:hover{
+    color: #ffffff;
+    background-color: #f82c1d;
+    cursor: pointer;
+    text-underline: none;
+}
+.active-a{
+    color: #f82c1d!important;
+    font-weight: bold;
+    cursor: pointer;
+    text-underline: none;
+}
+.login-bg{background: url('https://dn-coding-net-production-static.qbox.me/d58141c9-9a0c-40b0-a408-5935fd70670f.jpg') 50% 50% / cover no-repeat fixed;}
+.title-bg-img{
+	background-image:url('http://img0.imgtn.bdimg.com/it/u=3868857301,2026493913&fm=21&gp=0.jpg')!important; background-position:center;
+}
+/****************End:颜色*****************/
+/****************字体*********************/
+body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
+	pre, form, fieldset, legend, button, input, textarea, th, td {
+	font-family: "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;;
+}
+/***remote iconfont*****/
+@font-face {
+    font-family: 'iconfont';  /* project id 73680 */
+    src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot');
+    src: url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.woff') format('woff'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_afbmuhv5zc15rk9.svg#iconfont') format('svg');
+}

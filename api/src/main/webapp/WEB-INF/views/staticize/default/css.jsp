@@ -12,7 +12,9 @@
 	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 	<link href="<%=basePath %>resources/css/base.css" rel="stylesheet" type="text/css" />
 	<link href="<%=basePath %>resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="<%=basePath %>resources/css/setting.css" rel="stylesheet" type="text/css" />
 	<title>${title}</title>
+<!-- TODO 样式提取到setting.css中-->
 <style type="text/css"> 
 body{overflow-x:hidden;}
 @media ( min-width : 1210px) {.container {width: {{settings.MAX_WIDTH}}px!important}}

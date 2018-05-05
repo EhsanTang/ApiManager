@@ -1,121 +1,144 @@
 package cn.crap.controller.user;
 
-import java.io.IOException;
-import java.util.Map;
-
+import cn.crap.adapter.ArticleAdapter;
+import cn.crap.dto.ArticleDto;
+import cn.crap.dto.SearchDto;
+import cn.crap.enumer.*;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Article;
+import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Module;
+import cn.crap.model.mybatis.Project;
+import cn.crap.service.ISearchService;
+import cn.crap.service.custom.CustomArticleService;
+import cn.crap.service.custom.CustomCommentService;
+import cn.crap.service.mybatis.ArticleService;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.SearchDto;
-import cn.crap.enumeration.ArticleType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IArticleService;
-import cn.crap.inter.service.table.ICommentService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.ISearchService;
-import cn.crap.model.Article;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.SqlToDictionaryUtil;
-import cn.crap.utils.Tools;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
 
+// TODO 版本升级提供在线接口，调用接口直接检查数据库并升级
+// TODO setting 中记录版本ID（MD5（version））
+// TODO 最高管理员可以将文章置顶，将文章修改为站点页面
 @Controller
 @RequestMapping("/user/article")
-public class ArticleController extends BaseController<Article>{
+public class ArticleController extends BaseController{
 	@Autowired
-	private IArticleService articleService;
+	private ArticleService articleService;
 	@Autowired
-	private ICacheService cacheService;
+	private CustomArticleService customArticleService;
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private ICommentService commentService;
+	private CustomCommentService customCommentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Article article,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
+	public JsonResult list(String moduleId, String name, String type, String category, Integer currentPage) throws MyException{
+		Assert.notNull(moduleId);
+		checkUserPermissionByModuleId(moduleId, VIEW);
 		
-		hasPermission( cacheService.getProject(article.getProjectId()) , view);
-		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		
-		Map<String,Object> map = Tools.getMap("name|like",article.getName(),"moduleId",article.getModuleId(),"type", article.getType(),"category",article.getCategory());
-		
-		return new JsonResult(1,articleService.findByMap(map, " new Article(id, type, name, click, category, createTime, key, moduleId, brief, sequence) ", page,null), page,
-				Tools.getMap("type", ArticleType.valueOf(article.getType()).getName(), "category", article.getCategory()));
+		Page page= new Page(currentPage);
+
+		page.setAllRow(customArticleService.countByProjectId(moduleId, name, type, category));
+		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, null, page);
+		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
+
+		return new JsonResult().success().data(dtos).page(page)
+                .others(Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category));
 	}
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(@ModelAttribute Article article) throws MyException{
-		Article model;
-		if(!article.getId().equals(Const.NULL_ID)){
-			model= articleService.get(article.getId());
-			hasPermission( cacheService.getProject(model.getProjectId()), view);
-		}else{
-			model=new Article();
-			model.setType(article.getType());
-			model.setModuleId(article.getModuleId());
+	public JsonResult detail(String id, String type, String moduleId) throws MyException{
+		if(id != null){
+            ArticleWithBLOBs article =  articleService.getById(id);
+            checkUserPermissionByProject(article.getProjectId(), VIEW);
+            Module module = moduleCache.get(article.getModuleId());
+			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
 		}
-		return new JsonResult(1,model);
+
+		Module module = new Module();
+		if (moduleId != null) {
+			module = moduleCache.get(moduleId);
+			checkUserPermissionByProject(module.getProjectId(), VIEW);
+		}
+
+        ArticleWithBLOBs model = new ArticleWithBLOBs();
+		model.setType(type);
+		model.setModuleId(moduleId);
+		model.setProjectId(module.getProjectId());
+        model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Article article) throws MyException, IOException{
-		
-		// 如果模块为空，表示为管理员，将模块设置为系统模块
-		if(MyString.isEmpty(article.getModuleId())){
-			article.setModuleId(Const.WEB_MODULE);
+	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
+	    Assert.notNull(dto.getModuleId());
+	    if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
+            throw new MyException(MyError.E000066);
+        }
+
+        Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
+        checkUserPermissionByProject(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
+
+		if(!MyString.isEmpty(dto.getId())){
+            ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+
+            // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+            if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
+                article.setMkey(null);
+				article.setStatus(null);
+            }
+
+            // 只有项目拥有者可以修改是否可以删除属性
+            if (!LoginUserHelper.isAdminOrProjectOwner(project)){
+                article.setCanDelete(null);
+            }
+
+			customArticleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
+
+			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
+			luceneService.update(ArticleAdapter.getSearchDto(dbArticle));
+            return new JsonResult(1,dto);
 		}
-		if(MyString.isEmpty(article.getKey())){
-			article.setKey(null);
+
+        ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+        article.setProjectId(project.getId());
+
+		// key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+		if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
+			article.setMkey(null);
+			article.setStatus(null);
 		}
-		
-		article.setCanDelete(Byte.valueOf("1"));
-		if(!MyString.isEmpty(article.getId())){
-			/**
-			 * 判断是否为系统数据，系统数据不允许修改可以和canDelete字段
-			 */
-			Article old = articleService.get(article.getId());
-			if(old.getCanDelete()!=1){
-				article.setKey(old.getKey());
-				article.setCanDelete(Byte.valueOf("0"));
-			}
-			// 修改模块
-			if(!article.getModuleId().equals(old.getModuleId())){
-				hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-			}	
-			
-			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
-			luceneService.update(article.toSearchDto(cacheService));
-		}else{
-			hasPermission( cacheService.getProject(article.getProjectId()) , article.getType().equals(ArticleType.ARTICLE.name())? addArticle:addDict);
-			articleService.save(article);
-			luceneService.add(article.toSearchDto(cacheService));
-		}
-		cacheService.delObj(Const.CACHE_WEBPAGE + article.getId());
-		cacheService.delObj(Const.CACHE_WEBPAGE + article.getKey());
-		return new JsonResult(1,article);
-	}
+
+        articleService.insert(article);
+
+        luceneService.add(ArticleAdapter.getSearchDto(article));
+        return new JsonResult(1, dto);
+
+    }
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(String id, String ids) throws MyException, IOException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
-			throw new MyException("000029");
+			throw new MyException(MyError.E000029);
 		}
 		if( MyString.isEmpty(ids) ){
 			ids = id;
@@ -125,19 +148,25 @@ public class ArticleController extends BaseController<Article>{
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			Article model = articleService.get(tempId);
-			hasPermission( cacheService.getProject(model.getProjectId()) , model.getType().equals(ArticleType.ARTICLE.name())? delArticle:delDict);
-			if(model.getCanDelete()!=1){
-				throw new MyException("000009");
+			Article model = articleService.getById(tempId);
+			Project project = projectCache.get(model.getProjectId());
+			checkUserPermissionByProject(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
+
+			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
+				throw new MyException(MyError.E000009);
 			}
-			
-			if( commentService.getCount(Tools.getMap("articleId", model.getId()))>0){
-				throw new MyException("000037");
+
+			if (customCommentService.countByArticleId(model.getId()) > 0){
+				throw new MyException(MyError.E000037);
 			}
-			articleService.delete(model, ArticleType.getByEnumName(model.getType()) , "");
-			cacheService.delObj(Const.CACHE_WEBPAGE + model.getId());
-			cacheService.delObj(Const.CACHE_WEBPAGE + model.getKey());
-			
+
+			// 非管理员不能删除PAGE
+			if (ArticleStatus.PAGE.getStatus().equals(model.getStatus()) && !LoginUserHelper.isAdmin()){
+                throw new MyException(MyError.E000009);
+            }
+
+			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
+
 			luceneService.delete(new SearchDto(model.getId()));
 		}
 		return new JsonResult(1,null);
@@ -146,18 +175,17 @@ public class ArticleController extends BaseController<Article>{
 	@RequestMapping("/changeSequence.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Article change = articleService.get(changeId);
-		Article model = articleService.get(id);
-		
-		hasPermission( cacheService.getProject(change.getProjectId()), change.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
-		hasPermission( cacheService.getProject(model.getProjectId()), model.getType().equals(ArticleType.ARTICLE.name())? modArticle:modDict);
+	public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) throws MyException {
+		ArticleWithBLOBs change = articleService.getById(changeId);
+        ArticleWithBLOBs model = articleService.getById(id);
+
+		checkUserPermissionByProject(change.getProjectId(), change.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
+		checkUserPermissionByProject(model.getProjectId(), model.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
 		
 		int modelSequence = model.getSequence();
-		
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);
-		
+
 		articleService.update(model);
 		articleService.update(change);
 		return new JsonResult(1, null);
@@ -168,25 +196,25 @@ public class ArticleController extends BaseController<Article>{
 	@AuthPassport
 	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue="") String brief, @RequestParam String moduleId, String name,
 			@RequestParam(defaultValue="") boolean isMysql) throws MyException {
-		Article article = null;
+		ArticleWithBLOBs article = null;
 		if(isMysql){
 			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
 		}else{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
-		articleService.save(article);
+		articleService.insert(article);
 		return new JsonResult(1, new Article());
 	}
 
 	@RequestMapping("/markdown.do")
-	public String markdown(@ModelAttribute Article webPage) throws Exception {
-		Article model;
-		if(!webPage.getId().equals(Const.NULL_ID)){
-			model= articleService.get(webPage.getId());
+	public String markdown(@ModelAttribute Article article, HttpServletRequest request) throws Exception {
+		ArticleWithBLOBs model;
+		if(article.getId() != null){
+			model= articleService.getById(article.getId());
 		}else{
-			model=new Article();
-			model.setType(webPage.getType());
-			model.setModuleId(webPage.getModuleId());
+			model= new ArticleWithBLOBs();
+			model.setType(article.getType());
+			model.setModuleId(article.getModuleId());
 		}
 		request.setAttribute("markdownPreview", model.getContent());
 		request.setAttribute("markdownText", model.getMarkdown());

@@ -1,99 +1,123 @@
 package cn.crap.controller.user;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import cn.crap.adapter.ErrorAdapter;
+import cn.crap.dto.ErrorDto;
+import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
 import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IErrorService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Error;
-import cn.crap.utils.Const;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Error;
+import cn.crap.service.custom.CustomErrorService;
+import cn.crap.service.mybatis.ErrorService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
+// TODO jsonResult 优化，html页面国际化
 @Controller
 @RequestMapping("/user/error")
-public class ErrorController extends BaseController<Error>{
-	@Autowired
-	private ICacheService cacheService;
-	@Autowired
-	private IErrorService errorService;
+public class ErrorController extends BaseController{
+    @Autowired
+    private ErrorService errorService;
+    @Autowired
+    private CustomErrorService customErrorService;
 
-	/**
-	 * @return 
-	 * @throws MyException 
-	 * @throws Exception 
-	 * */
-	@RequestMapping("/list.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult list(@ModelAttribute Error error,@RequestParam(defaultValue="1") Integer currentPage) throws MyException{
-		hasPermission(cacheService.getProject(error.getProjectId()), view);
-		
-		if(MyString.isEmpty(error.getProjectId())){
-			throw new MyException("000020");
-		}
-		
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		
-		Map<String,Object> map = Tools.getMap("errorCode|like",error.getErrorCode(),"errorMsg|like",error.getErrorMsg(),"projectId",error.getProjectId());
-		return new JsonResult(1,errorService.findByMap(map,page,"errorCode asc"),page,
-				Tools.getMap("crumbs", Tools.getCrumbs("错误码:"+cacheService.getProject(error.getProjectId()).getName(), "void")));
-	}
-	
-	@RequestMapping("/detail.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult detail(@ModelAttribute Error error) throws MyException{
-		Error model;
-		if(!error.getId().equals(Const.NULL_ID)){
-			model= errorService.get(error.getId());
-			hasPermission(cacheService.getProject(model.getProjectId()), view);
-		}else{
-			model=new Error();
-			model.setProjectId(error.getProjectId());
-		}
-		return new JsonResult(1,model);
-	}
-	
-	@RequestMapping("/addOrUpdate.do")
-	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Error error) throws MyException{
-		
-		if(!MyString.isEmpty(error.getId())){
-			// 不允许修改项目
-			error.setProjectId( errorService.get(error.getId()).getProjectId() );
-			hasPermission(cacheService.getProject(error.getProjectId()), modError);
-			errorService.update(error);
-		}else{
-			if(errorService.getCount(Tools.getMap("errorCode",error.getErrorCode(),"projectId",error.getProjectId()))==0){
-				hasPermission(cacheService.getProject(error.getProjectId()), addError);
-				errorService.save(error);
-			}else{
-				return new JsonResult(new MyException("000002"));
-			}
-		}
-		return new JsonResult(1,error);
-	}
-	
-	@RequestMapping("/delete.do")
-	@ResponseBody
-	public JsonResult delete(@ModelAttribute Error error) throws MyException{
-		error = errorService.get(error.getId());
-		hasPermission(cacheService.getProject(error.getProjectId()), delError);
-		errorService.delete(error);
-		return new JsonResult(1,null);
-	}
-	
+    /**
+     * 错误码列表
+     * @param projectId
+     * @param errorCode
+     * @param errorMsg
+     * @param currentPage
+     * @return
+     * @throws MyException
+     */
+    @RequestMapping("/list.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult list(String projectId, String errorCode, String errorMsg,  Integer currentPage) throws MyException {
+        throwExceptionWhenIsNull(projectId, "projectId");
+        checkUserPermissionByProject(projectId, VIEW);
+
+        Page page = new Page(currentPage);
+        List<Error> models = customErrorService.queryByProjectId(projectId, errorCode, errorMsg, page);
+        List<ErrorDto> dtoList = ErrorAdapter.getDto(models);
+
+        return new JsonResult(1, dtoList, page).others(Tools.getMap("crumbs", Tools.getCrumbs("错误码:" + projectCache.get(projectId).getName(), "void")));
+    }
+
+    @RequestMapping("/detail.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult detail(String id, String projectId) throws MyException {
+        Error model;
+        if (id != null) {
+            model = errorService.getById(id);
+            checkUserPermissionByProject(model.getProjectId(), VIEW);
+        } else {
+            model = new Error();
+            model.setProjectId(projectId);
+        }
+        return new JsonResult(1, ErrorAdapter.getDto(model));
+    }
+
+    @RequestMapping("/addOrUpdate.do")
+    @ResponseBody
+    public JsonResult addOrUpdate(@ModelAttribute ErrorDto dto) throws MyException {
+        String projectId = dto.getProjectId();
+        String errorCode = dto.getErrorCode();
+
+        Assert.notNull(projectId, "projectId can't be null");
+        Assert.notNull(errorCode, "errorCode can't be null");
+
+        if (!MyString.isEmpty(dto.getId())) {
+            // 错误码重复及权限检查
+            Error dbError = errorService.getById(dto.getId());
+            if (!dbError.getErrorCode().equals(dto.getErrorCode())){
+                boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
+                if (existSameErrorCode) {
+                    return new JsonResult(MyError.E000002);
+                }
+            }
+            checkUserPermissionByProject(dbError.getProjectId(), MOD_ERROR);
+
+            Error newModel = ErrorAdapter.getModel(dto);
+            newModel.setProjectId(null);
+            errorService.update(newModel);
+            return new JsonResult(1, dto);
+        }
+
+        boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
+        if (existSameErrorCode) {
+            return new JsonResult(MyError.E000002);
+        }
+
+        checkUserPermissionByProject(projectId, ADD_ERROR);
+        errorService.insert(ErrorAdapter.getModel(dto));
+        return new JsonResult(1, dto);
+    }
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    public JsonResult delete(String id) throws MyException {
+        throwExceptionWhenIsNull(id, "id");
+
+        Error model = errorService.getById(id);
+        if (model == null) {
+            throw new MyException(MyError.E000063);
+        }
+        checkUserPermissionByProject(model.getProjectId(), DEL_ERROR);
+
+        errorService.delete(id);
+        return new JsonResult(1, null);
+    }
+
 }

@@ -1,6 +1,5 @@
 <div class="bb1 mt20 C999 fb f16 pb5">发表评论</div>
-
-<form ng-submit="submitForm('front/comment/add.do')" class="mt10">
+<form ng-submit="submitForm('front/comment/add.do', '', '', changeimg)" class="mt10">
 	<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="model.content"
 			rows="4" required placeholder="请输入评论内容">
 	</textarea>
@@ -12,16 +11,19 @@
 								onclick="changeimg('imgCode2','verificationCode')"
 								src="getImgCode.do">
 			</div>
-			<button type="submit" class="btn btn-purple btn-sm mt10 imgCode">发表评论</button>
+			<button type="submit" class="btn btn-adorn btn-sm mt10 imgCode">发表评论</button>
 	</div>
 </form>
 <div class="cb"></div>
 <div ng-repeat="item in comments" class="p10 dashed-t mt10 lh20">
-	<div class="f12 text-primary">匿名 · <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
-	<div class="fn lh20 mt5 C555 f14">{{item.content}}</div>
-	<div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
-		<span class="text-primary">回复</span>:  {{item.reply}}<br>
-		<span class="c-time ftime">{{getDate(item.updateTime)|date:'yyyy.MM.dd HH:mm'}}</span>
+	<div class="pl50">
+		<img ng-src="{{item.avatarUrl}}" class="avatar">
+		<div class="f12 text-primary">{{item.userName}} · <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
+		<div class="fn lh20 mt5 C555 f14">{{item.content}}</div>
+		<div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
+			<span class="text-primary">回复</span>:  {{item.reply}}<br>
+			<span class="c-time ftime">{{getDate(item.updateTime)|date:'yyyy.MM.dd HH:mm'}}</span>
+		</div>
 	</div>
 </div>
 <div ui-view="page" ng-if="comments.length>0"></div>

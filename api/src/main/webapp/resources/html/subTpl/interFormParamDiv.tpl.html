@@ -21,15 +21,18 @@
 							<option value="true" ng-selected="item.necessary=='true'">true</option>
 							<option value="false" ng-selected="item.necessary=='false'">false</option>
 					</select></td>
-					<td class="w100"><select name="inUrl"
+					<td class="w100">
+						<select name="inUrl"
 						ng-if="item.inUrl && item.inUrl=='false'" class="form-control">
 							<option value="false" selected="selected">普通参数</option>
 							<option value="true">URL路径</option>
-					</select> <select name="inUrl" ng-if="!item.inUrl || item.inUrl!='false'"
+						</select>
+						<select name="inUrl" ng-if="!item.inUrl || item.inUrl!='false'"
 						class="form-control">
 							<option value="false">普通参数</option>
 							<option value="true" selected="selected">URL路径</option>
-					</select></td>
+						</select>
+					</td>
 					<td class="w100"><select name="type" class="form-control">
 							<option value="string" ng-selected="item.type=='string'">string</option>
 							<option value="int" ng-selected="item.type=='int'">int</option>

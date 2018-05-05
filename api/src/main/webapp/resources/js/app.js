@@ -1,4 +1,7 @@
 var app = angular.module('app', [ 'ui.router', 'mainModule','webModule','interfaceMethods','textAngular']);
+var NEED_PASSWORD_CODE = "E000007";
+var INVALID_PASSWORD_CODE = "E000011";
+
 /**
  * 由于整个应用都会和路由打交道，所以这里把$state和$stateParams这两个对象放到$rootScope上，方便其它地方引用和注入。
  * 这里的run方法只会在angular启动的时候运行一次。
@@ -40,7 +43,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 		$("#pickContent").html(loadText);
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
-		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iParams=&type="
+		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iPost=POST|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
 		if(tagName)
 			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);
@@ -114,7 +117,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	$rootScope.del = function(iUrl,id,title){
 		title = title? title:"确认要删除【"+id+"】？";
-		if (confirm(title)) {
+		if (myConfirm(title)) {
 			var params = "iUrl="+iUrl+"|iLoading=TIP";
 			httpService.callHttpMethod($http,params).success(function(result) {
 				var isSuccess = httpSuccess(result,'iLoading=TIP')
@@ -157,7 +160,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		}
 	}
 	
-	$rootScope.submitForm = function(iurl,callBack,myLoading){
+	$rootScope.submitForm = function(iurl,callBack,myLoading, afterCallBack){
 		/**
 		  * 回调刷新当前页面数据
 		  */
@@ -181,6 +184,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $timeout(function() {
 					 $("#refresh").click();
                  })
+                if(afterCallBack){
+                    afterCallBack();
+                }
 			 }
 		}).error(function(result) {
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
@@ -262,9 +268,16 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	}
 	
 	$rootScope.getDate = function(str){
-		if(str && str.indexOf(".")>0)
-			return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
+		if(str && (str+"").indexOf(".")>0) {
+            return new Date(str.split(".")[0].replace("-", "/").replace("-", "/"));
+        }
 	}
+    /**
+	 * 发布文章评论回调
+     */
+    $rootScope.changeimg = function () {
+        changeimg('imgCode2','verificationCode');
+    }
 	/**
 	 * 提交数据字典时回调将表格数据转换为json
 	 */

@@ -102,6 +102,22 @@ public class DateFormartUtil {
 		}
 		return getDateByFormat(myDate1,fromat);
 	}
+
+	public static Date getByFormat(String date,String fromat)
+	{
+		if (MyString.isEmpty(date)){
+			return new Date();
+		}
+		SimpleDateFormat dateFormat1 = new SimpleDateFormat(fromat);
+		Date myDate1= new Date();
+		try {
+			myDate1 = dateFormat1.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return myDate1;
+	}
+
 	public static String getDateByFormat(String date,String inFormat,String outFormat)
 	{
 		SimpleDateFormat dateInFormat = new SimpleDateFormat(inFormat);
@@ -160,6 +176,9 @@ public class DateFormartUtil {
 		return  dateStr;
 	}
 	public static String getDateByTimeMillis(Long str){
+		if (str == null){
+			return "";
+		}
 		return getDateByTimeMillis(str.toString(),YYYY_MM_DD_HH_mm);
 	}
 }

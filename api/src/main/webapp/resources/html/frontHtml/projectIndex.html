@@ -13,12 +13,12 @@
 	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 	<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 	<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/setting.css" rel="stylesheet" type="text/css" />
 	<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
 	<title ng-bind="settings.TITLE">CrapApi|接口管理系统</title>
 </head>
 <body class="BG_COLOR">
-	<div ng-include="'resources/html/subTpl/css.tpl.html'"></div>
 	<!-- Top Nav -->
 	<div ng-include="'resources/html/subTpl/frontTopNav.tpl.html'"></div>
 	<!-- Top Nav End -->
@@ -35,7 +35,7 @@
 					<table>
 						<tr>
 							<td class="w50">
-								<img class="w50" ng-src="{{project.cover}}"/>
+								<img class="w50 h50 r50P" ng-src="{{project.cover}}"/>
 							</td>
 							<td class="pl10">
 								<a class="C000 f16 mt2" ng-href="#/{{project.id}}/module/list" ng-bind="project.name"></a>
@@ -44,10 +44,22 @@
 					</table>
 					<div class="f12 C999 lh20 mt10" ng-bind="project.remark"></div>
 				</div>
-				
-				<div class="mb0 r2 f14 mr15 mt20 BGFFF pt20 pb20" id="accordion" role="tablist">
-					<div class="ml10 pl10 adorn-bl-3 pl10">
+
+				<div class="r2 BGFFF p10 C555 mr15 mt10">
+					<div class="adorn-bl-3 pl10">
+						<a class="C555 cursor" ng-href="#/{{project.id}}/module/list">全部模块</a>
+					</div>
+				</div>
+
+				<div class="r2 BGFFF p10 C555 mr15 mt10">
+					<div class="adorn-bl-3 pl10">
 						<a class="C555 cursor" ng-href="#{{project.id}}/error/list">错误码</a>
+					</div>
+				</div>
+
+				<div class="mb0 r2 f14 mr15 mt10 BGFFF pt10 pb20" id="accordion" role="tablist">
+					<div ng-if="projectMenu.length==0" class="no-radius b0 mt0 C999">
+						<i class="iconfont mt-5 ml10">&#xe626;</i> &nbsp; 该项目下没有模块
 					</div>
 					<div class="no-radius b0 mt0" ng-repeat="item in projectMenu">
 						<div class="no-radius p10" data-parent="#accordion">
@@ -58,10 +70,10 @@
 						<div id="panel{{item.id}}" class="panel-collapse BGFFF collapse"
 							ng-class="{true: 'panel-collapse BGFFF collapse in', false: 'panel-collapse BGFFF collapse'}[$index == 0]">
 							<div class="panel-body b0 p0">
-								<a class="p5 pl30" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">接口列表</a>
-								<a class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL">数据字典</a>
-								<a class="p5 pl30" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL">文章</a>
-								<a class="p5 pl30" ng-href="#/{{item.projectId}}/source/list/{{item.id}}">资源</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">接口列表</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL/NULL">数据字典</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL/NULL">文章</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/source/list/{{item.id}}">资源</a>
 							</div>
 						</div>
 					</div>
@@ -94,7 +106,6 @@
 								+ "s95.cnzz.com/z_stat.php%3Fid%3D1258389938' type='text/javascript'%3E%3C/script%3E"));
 			</script>
 		</div>
-	
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>
 	<script src="resources/framework/jquery.base64.js"></script>

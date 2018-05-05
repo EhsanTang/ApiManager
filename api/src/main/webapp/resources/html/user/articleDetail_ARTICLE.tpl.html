@@ -9,19 +9,23 @@
 				<td class="tc">
 						<input  class="form-control" type="text" ng-model="model.name" required>
 				</td>
-				
 			</tr>
+
+			<tr ng-if="model.status == 100">
+				<td class="tc w50">Key</td>
+				<td class="tc">
+					<input  class="form-control" type="text" ng-model="model.mkey" placeholder="页面唯一标识，不可重复，英文，如：HELP">
+				</td>
+			</tr>
+
 			<tr>
 				<td class="tc">类目</td>
 				<td>
-					* 类目没有管理界面，初始化时没有类目，需要手动写入类目。下次选择将显示项目中所有之前输入过的类目
-					<div class="input-group">
-							<input class="form-control" type="text" id="category" required
-								ng-model="model.category"  placeholder="点击“选择”按钮选择，或输入新类目">
-							<div class="input-group-addon cursor btn-purple"
-								ng-click="loadPick($event,220,250,'true','category','CATEGORY','','');">
-								选择</div>
-					</div>
+					* 没有找到合适的类目？进入文章所在模块，点击编辑模块即可新增类目-》[
+					<a ng-href="#/user/module/list/{{model.projectId}}/{{model.moduleName}}" target="_blank">修改模块【{{model.moduleName}}】的文章类目</a>
+					]
+					<input class="form-control" type="text" id="category" ng-model="model.category"  placeholder="点击选择类目"
+								   ng-click="loadPick($event,220,250,'true','category','CATEGORY', '', model.category, '&key='+model.moduleId,0);">
 				</td>
 			</tr>
 			
@@ -36,12 +40,22 @@
 					<input  class="form-control" type="text" ng-model="model.typeName" readonly>
 				</td>
 			</tr>
+
+			<tr ng-if="showOperation('ARTICLE','');">
+				<td class="tc">状态</td>
+				<td>
+					* 推荐：将出现在首页推荐文章菜单下，站点页面：需要添加key，后端菜单将支持选着跳转至该站点页面（如果首页、联系页面等）
+					<input class="form-control" type="text" id="statusName"  placeholder="点击选择状态" ng-model="model.statusName"
+						   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=statusName|tag=status|code=ARTICLE_STATUS|def='+model.status,$event)">
+				</td>
+			</tr>
+
 			<tr>
 				<td class="tc">模块</td>
 				<td class="tl">
 					* 点击选择模块
-					<input class="form-control cursor" type="text"  id="moduleName" required readonly ng-model="model.moduleName"
-							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+					<input class="form-control cursor" type="text"  id="moduleName" required ng-model="model.moduleName"
+							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				</td>
 			</tr>
 			<tr>
@@ -55,9 +69,10 @@
 				
 			</tr>
 			<tr>
-					<td class="tc">排序</td>
-					<td class="tc">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+				<td class="tc">排序</td>
+				<td class="tc">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence">
+				</td>
 			</tr>
 			<tr>
 				<td class="tc">

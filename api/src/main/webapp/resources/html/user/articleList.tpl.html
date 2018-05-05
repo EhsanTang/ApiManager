@@ -2,7 +2,7 @@
 <div class="col-xs-6 f16 fb p0 mb5">{{others.type}}管理</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-purple btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
 		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
@@ -20,7 +20,7 @@
 			<div class="input-group">
 				<div class="input-group-addon">类目</div>
 				<input type="text" class="form-control dis-in-blo w120" placeholder="点击输入框选择类目" id="searchCategory"
-					ng-focus="loadPickByName('iwidth=220|iheight=320|tag=searchCategory|code=CATEGORY',$event);">
+					ng-focus="loadPickByName('iwidth=220|iheight=320|tag=searchCategory|code=CATEGORY|params=&key='+$stateParams.moduleId,$event);">
 			</div>
 		</div>
 		<div class="cb"></div>
@@ -68,7 +68,7 @@
 					ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)"> 
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank">
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
@@ -78,6 +78,7 @@
 				<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/{{item.projectId}}/comment/list/{{item.id}}"> 
 					<i class="iconfont f12">&#xe60f;评论列表</i>
 				</a>
+
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
 					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 				</a>

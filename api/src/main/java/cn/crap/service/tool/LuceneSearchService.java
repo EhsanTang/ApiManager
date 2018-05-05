@@ -1,66 +1,54 @@
 package cn.crap.service.tool;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
+import cn.crap.dto.SearchDto;
+import cn.crap.service.ILuceneService;
+import cn.crap.service.ISearchService;
+import cn.crap.beans.Config;
+import cn.crap.utils.*;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Formatter;
-import org.apache.lucene.search.highlight.Fragmenter;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.Scorer;
-import org.apache.lucene.search.highlight.SimpleFragmenter;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import cn.crap.dto.ILuceneDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.inter.service.tool.ILuceneService;
-import cn.crap.inter.service.tool.ISearchService;
-import cn.crap.springbeans.Config;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
-	
+
 	@Autowired
-	private ICacheService cacheService;
+	private SettingCache settingCache;
+	@Autowired
+	private StringCache stringCache;
 	@Autowired
 	private Config config;
-	
+
 	/**
 	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个
 	 * @Autowired(required = false)，这等于告诉 Spring：在找不到匹配 Bean 时也不报错
 	 */
 	@SuppressWarnings("rawtypes")
 	@Autowired(required=false)
-	private ILuceneService[] luceneServices;
-	
+	private cn.crap.service.ILuceneService[] luceneServices;
+
 
 	@Override
 	public List<SearchDto> search(String keyword, Page page) throws Exception {
@@ -70,7 +58,7 @@ public class LuceneSearchService implements ISearchService {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader
-					.open(FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())));
+					.open(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
 			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
@@ -97,8 +85,9 @@ public class LuceneSearchService implements ISearchService {
 
 			// 取出当前页的数据
 			page.setAllRow(topDocs.totalHits);
-			if (page.getCurrentPage() > page.getTotalPage())
-				page.setCurrentPage(page.getTotalPage());
+			if (page.getCurrentPage() > page.getTotalPage()){
+			    return new ArrayList<>();
+            }
 
 			int end = Math.min(page.getStart() + page.getSize(), topDocs.totalHits);
 			for (int i = page.getStart(); i < end; i++) {
@@ -117,7 +106,8 @@ public class LuceneSearchService implements ISearchService {
 			return searchDtos;
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			// TODO 消息时间需要修改为12小时
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (reader != null)
 				reader.close();
@@ -132,11 +122,11 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.deleteDocuments(new Term("id", searchDto.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -150,7 +140,7 @@ public class LuceneSearchService implements ISearchService {
 		SearchDto dto = new SearchDto();
 		// 高亮处理的搜索结果
 		dto.setContent(doc.get("r_contents"));
-		dto.setCreateTime(doc.get("createTime"));
+		dto.setCreateTime(doc.get("createTime") == null? null : new Date(Long.parseLong(doc.get("createTime"))));
 		// 恢复反斜杠
 		dto.setUrl(unHandleHref(doc.get("url")));
 		dto.setId(doc.get("id"));
@@ -173,7 +163,7 @@ public class LuceneSearchService implements ISearchService {
 		doc.add(new StringField("id", dto.getId(), Field.Store.YES));
 		doc.add(new StringField("url", handleHref(dto.getUrl()), Field.Store.YES));
 		doc.add(new StringField("version", dto.getVersion(), Field.Store.YES));
-		doc.add(new StringField("createTime", dto.getCreateTime(), Field.Store.YES));
+		doc.add(new StringField("createTime", dto.getCreateTime() == null ? System.currentTimeMillis() + "" : dto.getCreateTime().getTime() + "", Field.Store.YES));
 		doc.add(new TextField("contents", Tools.removeHtml(dto.getContent()), Field.Store.YES));
 		doc.add(new TextField("moduleName", dto.getModuleName(), Field.Store.YES));
 		doc.add(new TextField("title", dto.getTitle(), Field.Store.YES));
@@ -187,7 +177,7 @@ public class LuceneSearchService implements ISearchService {
 
 	/**
 	 * 为某个属性设置高亮操作
-	 * 
+	 *
 	 * @param highlighter
 	 *            高亮器
 	 * @param doc
@@ -216,20 +206,19 @@ public class LuceneSearchService implements ISearchService {
 	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
-			// 如果是私有项目，且配置了私有项目不建立索引，则不建立索引
-			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
+			if(!searchDto.isNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}
-			
+
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene添加异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				try {
@@ -241,25 +230,24 @@ public class LuceneSearchService implements ISearchService {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean update(SearchDto searchDto) throws IOException {
 		IndexWriter writer = null;
 		try {
-			// 如果是私有项目，且配置了私有项目不简历索引，则不简历索引
-			if(!searchDto.isNeedCreateIndex() && !config.isPrivateProjectNeedCreateIndex()){
+			if(!searchDto.isNeedCreateIndex()){
 				delete(searchDto);
 				return true;
 			}
-			
+
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
-			cacheService.setStr(Const.CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留12小时，请及时处理）：" + e.getMessage(), 60 * 60 *12);
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene更新异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -281,37 +269,56 @@ public class LuceneSearchService implements ISearchService {
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(cacheService.getSetting(Const.SETTING_LUCENE_DIR).getValue());
+				File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
 				File[] tempList = file.listFiles();
 			    for (int i = 0; i < tempList.length; i++) {
 			    	tempList[i].delete();
 			    }
-			    
-			    for(ILuceneService<ILuceneDto> service:luceneServices){
+
+			    for(ILuceneService service:luceneServices){
 			    	int i = 0;
-			    	List<ILuceneDto> dtos= service.getAll();
-			    	for (ILuceneDto dto : dtos) {
+			    	List<SearchDto> dtos= service.getAll();
+			    	for (SearchDto dto : dtos) {
 			    		i++;
-						cacheService.setStr(Const.CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录", 60);
+						stringCache.add(IConst.C_CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录");
 						// 避免占用太大的系统资源
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						add(dto.toSearchDto(cacheService));
+						add(dto);
 					}
 			    }
-			    cacheService.setStr(Const.CACHE_ERROR_TIP,"重建索引成功！",60);
+			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{
 				isRebuild = false;
 			}
-		   
+
 		}
 	    return true;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean rebuildByProjectId(String projectId){
+		for (ILuceneService service : luceneServices) {
+			List<SearchDto> dtos = service.getAllByProjectId(projectId);
+			for (SearchDto dto : dtos) {
+				// 避免占用太大的系统资源
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				add(dto);
+			}
+		}
+		return true;
+	}
+
 	public static String handleHref(String href){
 		if(href == null)
 			return "";

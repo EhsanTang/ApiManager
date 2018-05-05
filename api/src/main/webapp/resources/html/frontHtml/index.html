@@ -13,12 +13,12 @@
 	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 	<link href="resources/css/base.css" rel="stylesheet" type="text/css" />
 	<link href="resources/css/crapApi.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/setting.css" rel="stylesheet" type="text/css" />
 	<link href="resources/framework/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	<link href="resources/framework/textAngular-1.5.0/textAngular.css" rel="stylesheet" type="text/css" />
 	<title ng-bind="settings.TITLE">Api接口管理系统</title>
 </head>
 <body class="BG_COLOR">
-	<div ng-include="'resources/html/subTpl/css.tpl.html'"></div>
 	<!-- Top Nav -->
 	<div ng-include="'resources/html/subTpl/frontTopNav.tpl.html'"></div>
 	<!-- Top Nav End -->
@@ -49,20 +49,6 @@
 	</div>
 	<!-- footer -->
 	<div ng-include="'resources/html/subTpl/footer.tpl.html'"></div>
-	<!-- End:footer -->
-	<div class="ndis">
-			<script type="text/javascript">
-				var cnzz_protocol = (("https:" == document.location.protocol) ? " https://"
-						: " http://");
-				document
-						.write(unescape("%3Cspan id='cnzz_stat_icon_1258389938'%3E%3C/span%3E%3Cscript src='"
-								+ cnzz_protocol
-								+ "s95.cnzz.com/z_stat.php%3Fid%3D1258389938' type='text/javascript'%3E%3C/script%3E"));
-			</script>
-		</div>
-	
-	
-	
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>
 	<script src="resources/framework/jquery.base64.js"></script>

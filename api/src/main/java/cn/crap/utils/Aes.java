@@ -4,27 +4,26 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import cn.crap.dto.SettingDto;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Setting;
-import cn.crap.service.tool.CacheService;
+import cn.crap.service.tool.SettingCache;
 
- 
+
 public class Aes
 {
 	private static String handlerKey(String apiKey) {
-		String tempkey = "HDALd)9dkA*&1kS$CKSJ}{|A";
+		String tempKey = "HDALd)9dkA*&1kS$CKSJ}{|A";
 		if (apiKey.length() > 16) {
 			apiKey = apiKey.substring(0, 16);
 		} else if (apiKey.length() < 16) {
-			apiKey = apiKey + tempkey.substring(0, 16 - apiKey.length());
+			apiKey = apiKey + tempKey.substring(0, 16 - apiKey.length());
 		}
 		return apiKey;
 	}
 	 public static final String iv="CRAPG_@W8#_19#10";
 	 public static String encrypt(String data){
-		 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-		 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
+         SettingCache settingCache = SpringContextHolder.getBean("settingCache", SettingCache.class);
+		 SettingDto setting = settingCache.get(ISetting.S_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();
@@ -57,8 +56,8 @@ public class Aes
      }
  
      public static String desEncrypt(String data){
-    	 ICacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
-    	 Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
+         SettingCache settingCache = SpringContextHolder.getBean("settingCache", SettingCache.class);
+    	 SettingDto setting = settingCache.get(ISetting.S_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();

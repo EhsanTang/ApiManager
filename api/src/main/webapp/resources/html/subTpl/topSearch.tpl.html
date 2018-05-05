@@ -4,7 +4,7 @@
 				<div class="col-xs-7">
 					<div class="pt30 CFFF"><h3>站内导航</h3></div>
 					<ul class="nls m0 p0 f12 ACFFF fl mt10">
-		 			 <li class="fl p0"><a href="index.do" class="ACFFF">首页</a></li>
+		 			 <li class="fl p0"><a href="home.do" class="ACFFF">首页</a></li>
 		 			 <li class="fl p0" ng-repeat="item in others.crumbs">&nbsp;>&nbsp; 
 		 			 	<a ng-href="{{item.url}}" class="ACFFF" ng-if="item.url!='void'" ng-bind="item.name|cut:true:20:' ...'"></a>
 		 			 	<span class="ACFFF" ng-if="item.url=='void'" ng-bind="item.name|cut:true:20:' ...'"></span>	

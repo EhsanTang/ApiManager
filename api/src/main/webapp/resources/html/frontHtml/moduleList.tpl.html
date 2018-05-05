@@ -1,8 +1,7 @@
 <div class="r0 p20 pt10 col-xs-12" ng-controller="frontModuleCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
-	<div class="col-xs-12 p3 pl10 pr10 mr10 f16 fb  mt10 mb20 adorn-bl-3">
-		<a ng-href="project.do#/{{project.id}}/module/list" class="cursor adorn-color" ng-bind="project.name"></a>
-		&nbsp;<span class="C999 f12"> > </span>&nbsp;模块列表
+	<div class="col-xs-12 p3 pl10 pr10 mr10 f16 mt10 mb20 adorn-bl-3">
+		全部模块
 	</div>
 	
 	<div ng-if="moduleList.length==0" class="col-xs-12 tc mt10 mb10 C999">
@@ -10,21 +9,21 @@
 	</div>
 	
 	<div ng-repeat="item in moduleList" class="dashed-t col-xs-12 pl0"  ng-if="moduleList.length>0">
-		<a class="p10 pl0 f16 fb dis w C000 no_unl cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">{{item.name}}</a>
-		<div class ="f14 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
+		<a class="p10 pl0 f14 dis w C000 no_unl cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">{{item.name}}</a>
+		<div class ="f12 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
 		<div class="tr C999 f12 p10">
 			<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}"> 
 						<i class="iconfont f12">&#xe614; 接口</i>
 					</a>
 					
-					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL"> 
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL/NULL">
 						<i class="iconfont f12">&#xe637; 文章</i>
 					</a>
 					
 					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/source/list/{{item.id}}"> 
 						<i class="iconfont f12">&#xe638; 资源</i>
 					</a>
-					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL"> 
+					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL/NULL">
 						<i class="iconfont f12">&#xe61c; 数据字典</i>
 					</a>
 					
@@ -33,7 +32,10 @@
 					</a>
 		</div>
 	</div>
-		
+
+	<div class="cb"></div>
+	<div ui-view="page" ng-if="moduleList.length>0"></div>
+
 </div>
 <div class="cb"></div>
 

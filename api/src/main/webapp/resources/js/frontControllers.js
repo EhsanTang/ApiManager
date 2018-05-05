@@ -123,7 +123,7 @@ mainModule.controller('frontDictCtrl', function($rootScope,$scope, $http, $state
 mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=front/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type
-		+"&moduleId="+$stateParams.moduleId+"&name="+$stateParams.name+"&category="+$stateParams.category;
+		+"&moduleId="+$stateParams.moduleId+"&name="+$stateParams.name+"&category="+$stateParams.category+"&status=" + $stateParams.status;
 		if(setPwd) setPassword();
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
@@ -184,7 +184,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 		
 		var url = $location.absUrl();
 		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
-		var params = "&projectId=" + projectId;
+		var params = "&projectId=" + projectId + "&currentPage="+page;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');
 		params = "iUrl=front/module/list.do|iLoading=FLOAT|iParams="+params;
@@ -197,6 +197,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 				 $rootScope.moduleList = result.data;
 				 $rootScope.others = result.others;
 				 $rootScope.project = result.others.project;
+				 $rootScope.page = result.page;
 			 }
 		});
     };
@@ -359,10 +360,6 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
 			$rootScope.fontMenus = result.data.menuList;
 		});
     };
-    $scope.loginOut = function(){
-		callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
-		location.reload();
-	}
     $scope.getData();
 });
 

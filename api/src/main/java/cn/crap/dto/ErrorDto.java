@@ -1,32 +1,71 @@
 package cn.crap.dto;
 
-import java.io.Serializable;
+import cn.crap.framework.SpringContextHolder;
+import cn.crap.service.tool.ProjectCache;
 
-/**
- * 
- * @author Ehsan
- *
- */
-public class ErrorDto implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+import java.util.Date;
 
+public class ErrorDto {
+	private String id;
 	private String errorCode;
 	private String errorMsg;
-	public String getErrorCode() {
+	private String projectId;
+	private Date createTime;
+	private Byte status;
+	private Integer sequence;
+
+	public void setId(String id){
+		this.id=id;
+	}
+	public String getId(){
+		return id;
+	}
+
+	public void setErrorCode(String errorCode){
+		this.errorCode=errorCode;
+	}
+	public String getErrorCode(){
 		return errorCode;
 	}
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
+
+	public void setErrorMsg(String errorMsg){
+		this.errorMsg=errorMsg;
 	}
-	public String getErrorMsg() {
+	public String getErrorMsg(){
 		return errorMsg;
 	}
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
+
+	public void setProjectId(String projectId){
+		this.projectId=projectId;
 	}
-	
-	
+	public String getProjectId(){
+		return projectId;
+	}
+
+	public void setCreateTime(Date createTime){
+		this.createTime=createTime;
+	}
+	public Date getCreateTime(){
+		return createTime;
+	}
+
+	public void setStatus(Byte status){
+		this.status=status;
+	}
+	public Byte getStatus(){
+		return status;
+	}
+
+	public void setSequence(Integer sequence){
+		this.sequence=sequence;
+	}
+	public Integer getSequence(){
+		return sequence;
+	}
+
+	public String getProjectName(){
+		ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+		return projectCache.get(projectId).getName();
+	}
+
 }

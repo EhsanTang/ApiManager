@@ -1,54 +1,77 @@
 package cn.crap.utils;
 
+import org.springframework.util.Assert;
+
 import java.io.Serializable;
+import java.util.List;
 
-public class Page implements Serializable{
+public class Page<T> implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private Integer allRow=0;
-	private Integer currentPage =1;
-	private Integer size =5;
-	private Integer totalPage;
+	private int allRow = 0; // allRow will always big than -1
+	private int currentPage; // currentPage will always big than 0
+	private int size; // size will always big than 0
+	private int totalPage = 0; // totalPage will always big than -1
+	private List<T> list;
 
-	public Page(){}
-	public Page(Integer size){
-		this.size=size;
+	public Page(Integer currentPage){
+		this(15, currentPage == null ? 1 : currentPage);
 	}
-	public Integer getAllRow() {
+	public Page(Integer size, Integer currentPage){
+		Assert.notNull(size);
+		Assert.notNull(currentPage);
+		Assert.isTrue(size > 0 && size <= 1000);
+		Assert.notNull(currentPage > 0);
+
+		this.currentPage = currentPage;
+		this.size = size;
+	}
+
+	/**
+	 * the total number of result
+	 * @return
+	 */
+	public int getAllRow() {
 		return allRow;
 	}
+
+	/**
+	 * allRow must big or equal 0
+	 * @param allRow
+	 */
 	public void setAllRow(Integer allRow) {
+		Assert.notNull(allRow);
+		Assert.notNull(allRow >= 0);
+
 		this.totalPage = (allRow+size-1)/size;
 		this.allRow = allRow;
 	}
-	public Integer getCurrentPage() {
-		if(currentPage < 1)
-			return 1;
+
+
+	public int getCurrentPage() {
 		return currentPage;
 	}
-	public void setCurrentPage(Integer currentPage) {
-		if(currentPage != null)
-			this.currentPage = currentPage;
-	}
-	public void setStrCurrentPage(String str) {
-		try{
-			this.currentPage = Integer.parseInt(str);
-		}catch(Exception e){
-			this.currentPage =1;
-		};
-		if(this.currentPage<1)
-			this.currentPage=1;
-	}
-	public Integer getStart(){
+
+	/**
+	 * according to size and currentPage calculate the start row num for databases
+	 * @return
+	 */
+	public int getStart(){
 		return  this.getSize() * (this.getCurrentPage() - 1);
 	}
-	public Integer getSize() {
+
+	public int getSize() {
 		return size;
 	}
-	public void setSize(Integer size) {
-		this.size = size;
-	}
-	public Integer getTotalPage() {
+
+	public int getTotalPage() {
 		return totalPage;
 	}
-	
+
+	public List<T> getList() {
+		return list;
+	}
+
+	public void setList(List<T> list) {
+		this.list = list;
+	}
 }

@@ -1,26 +1,25 @@
 package cn.crap.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-
+import cn.crap.dto.PickDto;
+import cn.crap.framework.ThreadContext;
+import cn.crap.framework.base.BaseController;
+import cn.crap.service.custom.CustomMenuService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.MyCookie;
+import cn.crap.utils.MyString;
+import cn.crap.utils.ValidateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.PickDto;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.IMenuService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.User;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.ValidateCodeService;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 前后台共用的Controller
@@ -28,12 +27,9 @@ import cn.crap.utils.ValidateCodeService;
  *
  */
 @Controller
-public class IndexController extends BaseController<User> {
+public class IndexController extends BaseController {
 	@Autowired
-	IMenuService menuService;
-	@Autowired
-	private ICacheService cacheService;
-	
+	CustomMenuService customMenuService;
 	
 	/**
 	 * 
@@ -60,10 +56,9 @@ public class IndexController extends BaseController<User> {
 		if (MyString.isEmpty(radio)) {
 			radio = "true";
 		}
-		List<PickDto> picks = new ArrayList<PickDto>();
-		String pickContent = menuService.pick(picks, radio, code, key, def, notNull);
+		String pickContent = customMenuService.pick(radio, code, key, def, notNull);
+		HttpServletRequest request = ThreadContext.request();
 		request.setAttribute("radio", radio);
-		request.setAttribute("picks", picks);
 		request.setAttribute("tag", tag);
 		request.setAttribute("def", def);
 		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
@@ -77,15 +72,16 @@ public class IndexController extends BaseController<User> {
 	@ResponseBody
 	public void getImgvcode() throws IOException {
 		// 设置response，输出图片客户端不缓存
+		HttpServletResponse response = ThreadContext.response();
 		response.setDateHeader("Expires", 0);
 		response.addHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
 		ValidateCodeService vservice = new ValidateCodeService();
-		String uuid = MyCookie.getCookie(Const.COOKIE_UUID, false, request);
-		cacheService.setStr(Const.CACHE_IMGCODE + uuid, vservice.getCode() , 10 * 60);
-		cacheService.setStr(Const.CACHE_IMGCODE_TIMES + uuid, "0" , 10 * 60);
+		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
+		stringCache.add(IConst.CACHE_IMGCODE + uuid, vservice.getCode());
+		stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");
 		try {
 			vservice.write(out);
 			out.flush();
@@ -96,7 +92,7 @@ public class IndexController extends BaseController<User> {
 
 	/**
 	 * 
-	 * @param 跳转至指定页面
+	 * @param p 跳转至指定页面
 	 * @return
 	 */
 	@RequestMapping("go.do")

@@ -27,15 +27,6 @@ html,body{
 blockquote{
 	padding-left:10px;
 }
-/***remote iconfont*****/
-@font-face {
-  font-family: 'iconfont';  /* project id 73680 */
-  src: url('//at.alicdn.com/t/font_uijls6i8fl4k7qfr.eot');
-  src: url('//at.alicdn.com/t/font_uijls6i8fl4k7qfr.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_uijls6i8fl4k7qfr.woff') format('woff'),
-  url('//at.alicdn.com/t/font_uijls6i8fl4k7qfr.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_uijls6i8fl4k7qfr.svg#iconfont') format('svg');
-}
                                    
 .pager-sm li > a, .pager-sm li > span {
     padding: 1px 8px;
@@ -56,7 +47,13 @@ blockquote{
 }  
 .search-section:hover .search-button{
 	opacity:0.8!important;
-}  
+}
+/*****新版首页******/
+.dashboard{
+    background: rgba(255,255,255,0.2);
+    color: #ffffff;
+    line-height: 20px;
+}
 /*****登陆框*******/
 .login{
 	position: relative;
@@ -64,7 +61,15 @@ blockquote{
     margin-left: auto;
     margin-right: auto;
 }    
-
+/*** 头像**/
+.avatar{
+	width:40px;
+	height:40px;
+	border-radius: 50%;
+	margin-left:-50px;
+	display: block;
+	float:left;
+}
 /*****左边菜单*****/
  .left-menu-border-top{
  	border-top: 1px solid #888!important;

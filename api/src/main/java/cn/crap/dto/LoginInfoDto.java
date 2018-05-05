@@ -5,15 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.crap.enumeration.UserType;
-import cn.crap.inter.service.table.IProjectService;
-import cn.crap.inter.service.table.IProjectUserService;
-import cn.crap.inter.service.table.IRoleService;
-import cn.crap.model.Project;
-import cn.crap.model.ProjectUser;
-import cn.crap.model.Role;
-import cn.crap.model.User;
-import cn.crap.utils.Const;
+import cn.crap.enumer.UserType;
+import cn.crap.model.mybatis.*;
+import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.mybatis.RoleService;
+import cn.crap.service.mybatis.ProjectUserService;
+import cn.crap.utils.IConst;
 import cn.crap.utils.Tools;
 
 public class LoginInfoDto implements Serializable{
@@ -26,43 +24,50 @@ public class LoginInfoDto implements Serializable{
 	private String id;
 	private byte type;
 	private String email;
+	private String avatarUrl;
 	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
-	
-	public LoginInfoDto(User user, IRoleService roleService, IProjectService projectService, IProjectUserService projectUserService){
+
+	public LoginInfoDto(User user, RoleService roleService, CustomProjectService customProjectService, ProjectUserService projectUserService){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
 		this.id = user.getId();
 		this.type = user.getType();
 		this.email = user.getEmail();
+		this.avatarUrl = user.getAvatarUrl();
+		this.authStr = user.getAuth();
 		
 		StringBuilder sb = new StringBuilder(",");
 		// 将用户的自己的模块添加至权限中
-		List<Project> myProjects = projectService.findByMap(Tools.getMap("userId", user.getId()), null, null);
+		List<Project> myProjects = customProjectService.queryMyProjectByUserId(id);
 		for(Project project:myProjects){
-			sb.append(Const.AUTH_PROJECT + project.getId()+",");
+			sb.append(IConst.C_AUTH_PROJECT + project.getId()+",");
 		}
 		
 		// 管理员，将最高管理员，管理员
-		if( (user.getType() + "").equals(UserType.ADMIN.getType() +"") ){
-			sb.append(user.getAuth()+",");
+		if( type == UserType.ADMIN.getType() ){
+			sb.append(authStr+",");
 			sb.append("ADMIN,");
-			if(user.getRoleId().indexOf("super") >= 0)
+			if(roleId != null && roleId.indexOf("super") >= 0)
 				sb.append("super,");
-			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
-				List<Role> roles = roleService.findByMap(
-						Tools.getMap("id|in", Tools.getIdsFromField(user.getRoleId())), null, null);
+			if (roleId != null && !"".equals(roleId)) {
+				RoleCriteria example = new RoleCriteria();
+				RoleCriteria.Criteria criteria = example.createCriteria().andIdIn(Tools.getIdsFromField(roleId));
+				List<RoleWithBLOBs> roles = roleService.selectByExampleWithBLOBs(example);
 				// 将角色中的权限添加至用户权限中
-				for (Role role : roles) {
+				for (RoleWithBLOBs role : roles) {
 					sb.append(role.getAuth()+",");
 				}
 			}
 		}
 		
 		// 项目成员
-		for(ProjectUser p: projectUserService.findByMap(Tools.getMap("userId", user.getId()), null, null)){
+		ProjectUserCriteria example = new ProjectUserCriteria();
+		ProjectUserCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(id);
+
+		for(ProjectUser p: projectUserService.selectByExample(example)){
 			projects.put(p.getProjectId(), p);
-			sb.append(Const.AUTH_PROJECT + p.getProjectId()+",");
+			sb.append(IConst.C_AUTH_PROJECT + p.getProjectId()+",");
 		}
 		
 		this.authStr = sb.toString();
@@ -108,6 +113,14 @@ public class LoginInfoDto implements Serializable{
 
 	public void setProjects(Map<String, ProjectUser> projects) {
 		this.projects = projects;
+	}
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
 	}
 
 }

@@ -1,8 +1,20 @@
 package cn.crap.controller.admin;
 
-import java.util.List;
-import java.util.Map;
-
+import cn.crap.adapter.SettingAdapter;
+import cn.crap.beans.Config;
+import cn.crap.dto.SettingDto;
+import cn.crap.enumer.MyError;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Setting;
+import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.service.custom.CustomSettingService;
+import cn.crap.service.mybatis.SettingService;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,112 +22,133 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.auth.AuthPassport;
-import cn.crap.framework.base.BaseController;
-import cn.crap.inter.service.table.ISettingService;
-import cn.crap.inter.service.tool.ICacheService;
-import cn.crap.model.Setting;
-import cn.crap.utils.Const;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
-
 @Controller
-public class SettingController extends BaseController<Setting>{
+public class SettingController extends BaseController {
 
-	@Autowired
-	private ISettingService settingService;
-	@Autowired
-	private ICacheService cacheService;
-	/**
-	 * 
-	 * @param setting
-	 * @param currentPage 当前页
-	 * @param pageSize 每页显示多少条，-1表示查询全部
-	 * @return
-	 */
-	@RequestMapping("/setting/list.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult list(@ModelAttribute Setting setting,@RequestParam(defaultValue="1") int currentPage){
-		Page page= new Page(15);
-		page.setCurrentPage(currentPage);
-		// 搜索条件
-		Map<String,Object> map = Tools.getMap(  "key|like", setting.getKey()  ,  "remark|like", setting.getRemark()  );
-		return new JsonResult(1,  settingService.findByMap(map, page, null)   , page);
-	}
-	
-	@RequestMapping("/setting/detail.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult detail(@ModelAttribute Setting setting){
-		Setting model = null;
-		if(!MyString.isEmpty(setting.getId())){
-			model = settingService.get(setting.getId());
-		}else if(!MyString.isEmpty(setting.getKey())){
-			List<Setting> settings= settingService.findByMap(Tools.getMap("key",setting.getKey()),null,null);
-			if(settings.size()>0){
-				model = settings.get(0);
-			}
-		}
-		if(model==null){
-			model=new Setting();
-			model.setType(setting.getType());
-		}
-		return new JsonResult(1,model);
-	}
-	
-	@RequestMapping("/setting/addOrUpdate.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult addOrUpdate(@ModelAttribute Setting setting){
-			if(!MyString.isEmpty(setting.getId())){
-				settingService.update(setting);
-			}else{
-				setting.setId(null);
-				if(settingService.getCount(Tools.getMap("key",setting.getKey()))==0){
-					setting.setCanDelete(Byte.valueOf("1"));
-					settingService.save(setting);
-				}else{
-					return new JsonResult(new MyException("000006"));
-				}
-			}
-			cacheService.delObj(Const.CACHE_SETTING);
-			cacheService.delObj(Const.CACHE_SETTINGLIST);
-		return new JsonResult(1,setting);
-	}
-	@RequestMapping("/setting/delete.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult delete(@ModelAttribute Setting setting) throws MyException{
-		setting = settingService.get(setting.getId());
-		if(setting.getCanDelete()==0){
-			throw new MyException("000009");
-		}
-		settingService.delete(setting);
-		cacheService.delObj(Const.CACHE_SETTING);
-		cacheService.delObj(Const.CACHE_SETTINGLIST);
-		return new JsonResult(1,null);
-	}
-	
-	@RequestMapping("/back/setting/changeSequence.do")
-	@ResponseBody
-	@AuthPassport(authority=Const.AUTH_SETTING)
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) {
-		Setting change = settingService.get(changeId);
-		Setting model = settingService.get(id);
-		int modelSequence = model.getSequence();
-		
-		model.setSequence(change.getSequence());
-		change.setSequence(modelSequence);
-		
-		settingService.update(model);
-		settingService.update(change);
-		cacheService.delObj(Const.CACHE_SETTING);
-		cacheService.delObj(Const.CACHE_SETTINGLIST);
-		return new JsonResult(1, null);
-	}
+    @Autowired
+    private SettingService settingService;
+    @Autowired
+    private CustomSettingService customSettingService;
+    @Autowired
+    private Config config;
+    private final static String[] indexUrls = new String[]{"index.do", "front/", "project.do", "dashboard.htm"};
+
+    /**
+     * @param currentPage 当前页
+     * @return
+     */
+    @RequestMapping("/setting/list.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public JsonResult list(String key, String remark, Integer currentPage) {
+        Page page = new Page(currentPage);
+
+        SettingCriteria example = new SettingCriteria();
+        SettingCriteria.Criteria criteria = example.createCriteria();
+        if (key != null) {
+            criteria.andMkeyLike(key);
+        }
+        if (remark != null) {
+            criteria.andRemarkLike(remark);
+        }
+        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
+
+        page.setAllRow(settingService.countByExample(example));
+        return new JsonResult().data(SettingAdapter.getDto(settingService.selectByExample(example))).page(page);
+    }
+
+    @RequestMapping("/setting/detail.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public JsonResult detail(String id, String key, String type) {
+        Setting setting = null;
+        if (id != null) {
+            setting = settingService.getById(id);
+        } else if (key != null) {
+            setting = customSettingService.getByKey(key);
+        }
+
+        if (setting == null) {
+            setting = new Setting();
+            setting.setType(type);
+        }
+        return new JsonResult().data(SettingAdapter.getDto(setting));
+    }
+
+    @RequestMapping("/setting/addOrUpdate.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto) throws Exception {
+        if (settingDto.getId() != null) {
+            // index url must start with indexUrls
+            if (S_INDEX_PAGE.equals(settingDto.getKey())) {
+                boolean legalUrl = false;
+                for (String indexUrl : indexUrls) {
+                    if (settingDto.getValue().startsWith(indexUrl)) {
+                        legalUrl = true;
+                        break;
+                    }
+                }
+                if (!legalUrl) {
+                    return new JsonResult(MyError.E000059);
+                }
+            }
+            settingService.update(SettingAdapter.getModel(settingDto));
+        } else {
+            Setting dbSetting = customSettingService.getByKey(settingDto.getKey());
+            if (dbSetting != null) {
+                return new JsonResult(MyError.E000006);
+            }
+            settingService.insert(SettingAdapter.getModel(settingDto));
+        }
+        settingCache.del(settingDto.getKey());
+
+        // 更新css模板，静态化css文件
+        String cssPath = Tools.getServicePath() + "resources/css/";
+        Tools.createFile(cssPath);
+        String cssContent = Tools.readFile(cssPath + "setting.tpl");
+        for (SettingDto s : settingCache.getAll()) {
+            String value = s.getValue();
+            if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
+                if (!value.startsWith("http://") && !value.startsWith("https://")) {
+                    value = config.getDomain() + "/" + value;
+                }
+            }
+            cssContent = cssContent.replace("{{settings." + s.getKey() + "}}", value);
+        }
+        Tools.staticize(cssContent, cssPath + "/setting.css");
+        return new JsonResult().data(settingDto);
+    }
+
+    @RequestMapping("/setting/delete.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public JsonResult delete(@RequestParam String id) throws MyException {
+        Setting setting = settingService.getById(id);
+        if (setting.getCanDelete() == 0) {
+            throw new MyException(MyError.E000009);
+        }
+        settingService.delete(id);
+        settingCache.del(setting.getMkey());
+        return SUCCESS;
+    }
+
+    @RequestMapping("/back/setting/changeSequence.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {
+        Setting change = settingService.getById(changeId);
+        Setting model = settingService.getById(id);
+        int modelSequence = model.getSequence();
+
+        model.setSequence(change.getSequence());
+        change.setSequence(modelSequence);
+
+        settingService.update(model);
+        settingService.update(change);
+        return SUCCESS;
+    }
 
 }

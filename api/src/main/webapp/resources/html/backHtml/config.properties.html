@@ -24,20 +24,11 @@
 				域名：<span class="C000 pr20" ng-bind="list.properties.domain"></span>
 				是否允许注册：<span class="adorn-color pr20" ng-bind="list.properties.openRegister"></span>
 				全文索引是否需要登陆才能使用：<span class="adorn-color pr20" ng-bind="list.properties.luceneSearchNeedLogin"></span>
-				私有项目是否建立索引：<span class="adorn-color pr20" ng-bind="list.properties.privateProjectNeedCreateIndex"></span>
 				模块中是否允许接口地址重复：<span class="adorn-color pr20" ng-bind="list.properties.canRepeatUrl"></span>
 				<br/>
 				<br/>
-				是否使用Redis缓存：<span class="adorn-color pr20" ng-bind="list.properties.redisIp==''?'false':'true'"></span>
 				缓存时间(单位:s)：<span class="adorn-color pr20" ng-bind="list.properties.cacheTime"></span>
 				登陆有效时间：<span class="adorn-color pr20" ng-bind="list.properties.loginInforTime"></span>
-				<br/>
-				<br/>
-				首页左边菜单是否显示推荐的项目：<span class="adorn-color pr20" ng-bind="list.properties.showRecommendProject"></span>
-				首页左边推荐项目显目的菜单名称：<span class="adorn-color pr20" ng-bind="list.properties.recommendProjectMenuName"></span>
-				首页左边是否显示站点文章：<span class="adorn-color pr20" ng-bind="list.properties.showArticle"></span>
-				首页左边站点文章的菜单名称：<span class="adorn-color pr20" ng-bind="list.properties.articleMenuName"></span>
-				文章分类、项目显示的数量：<span class="adorn-color pr20" ng-bind="list.properties.subMenuSize"></span>
 				<br/>
 				<br/>
 				上传文件大小限制(单位:M)：<span class="adorn-color pr20" ng-bind="list.properties.fileSize"></span>
@@ -45,12 +36,12 @@
 				允许上传的图片类型：<span class="adorn-color pr20" ng-bind="list.properties.imageType"></span>
 				<br/>
 				<br/>
-				接口监控线程数量，最高1000个：<span class="adorn-color pr20" ng-bind="list.properties.monitorThreadNum"></span>
+				<!-- 接口监控线程数量，最高1000个：<span class="adorn-color pr20" ng-bind="list.properties.monitorThreadNum"></span>
 				接口监控查询数据库缓存时间(单位:s)：<span class="adorn-color pr20" ng-bind="list.properties.monitorCacheTime"></span>
 				接口访问失败后尝试次数，最多100次，最小1次：<span class="adorn-color pr20" ng-bind="list.properties.monitorTryTimes"></span>
 				告警邮件发送指数(告警邮件发送指数，最小为2，最大为10：指数越小，3小时内告警邮件发送越多。如为2，则邮件发送时间为第1、2、4、8、16、32、64、128...s)：<span class="adorn-color pr20" ng-bind="list.properties.monitorEmailSendIndex"></span>
 				<br/>
-				<br/>
+				<br/>-->
 				邮件发送账号：<span class="adorn-color pr20" ng-bind="list.properties.mail"></span>
 				GitHub第三方登陆账号：<span class="adorn-color pr20" ng-bind="list.properties.clientID"></span>
 				<br/>

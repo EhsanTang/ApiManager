@@ -1,0 +1,53 @@
+﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
+<div class="col-xs-6 f16 fb p0 mb5">前端首页</div>
+<div class="col-xs-6 f14 p0 mb5 tr">
+	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+</div>
+<div class="col-xs-12 p0 pt10 bt1">
+		<form  ng-submit="submitForm('setting/addOrUpdate.do')">
+			<table class="table table-bordered">
+				<tr>
+					<td class="tc w80">key</td>
+					<td class="tc w200">
+						<input class="form-control" type="text" ng-model="model.key" required ng-if="model.id==null">
+						<input class="form-control" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">前端首页地址</td>
+					<td class="tc">
+					* 首页地址只能为站内相对地址，必须以font/、index.do、project.do开头
+						<div class="input-group w">
+							<textarea  class="form-control no-resize" id="value" ng-model="model.value" rows="3"
+									   placeholder="请点击“选择地址”按钮选择链接地址，亦可手动输入链接"></textarea>
+							<div class="input-group-addon cursor btn-adorn" ng-click="loadPick($event,300,460,'true','value','INDEX_PAGE','', model.value);">
+								选择地址
+							</div>
+						</div>
+
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">类型</td>
+					<td class="tc">
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">备注</td>
+					<td class="tc"><textarea class="form-control no-resize"
+							ng-model="model.remark" rows="6" placeholder="备注信息"></textarea></td>
+				</tr>
+				<tr>
+					<td class="tc">排序</td>
+					<td class="tc">
+					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+			</tr>
+			</table>
+			<button type="submit" class="btn btn-success fr">提交</button>
+		</form>
+
+	</div>
+</div>
+<div class="cb"></div>
+

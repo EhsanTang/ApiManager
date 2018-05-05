@@ -1,6 +1,6 @@
 # CrapApi
 [CrapApi视频介绍-用户版]
-[![CrapApi视频介绍-用户版](https://github.com/EhsanTang/ApiManager/blob/master/api/src/main/webapp/resources/images/guidev8.0.png)](http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html)
+[![CrapApi视频介绍-用户版](https://github.com/EhsanTang/ApiManager/blob/master/api/src/main/webapp/resources/images/guidev8.0.0.png)](http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html)
 
 [CrapApi是什么]
 ```

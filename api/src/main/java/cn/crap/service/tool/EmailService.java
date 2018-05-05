@@ -72,6 +72,7 @@ public class EmailService implements IEmailService {
 		mailBean.setToEmail(eamil);
 		mailBean.setSubject("注册邮箱验证-开源API接口管理系统");
 		sendMail(mailBean);
+        logger.warn(mailBean.getContext());
 		stringCache.add(code, IConst.REGISTER);
 	}
 	

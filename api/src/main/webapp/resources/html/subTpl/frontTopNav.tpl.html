@@ -15,10 +15,10 @@
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
 	               	<li>
-	                	<a ng-href="#/project/list/false/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
+	                	<a ng-href="index.do#/project/list/false/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
 	                </li>
 	                <li ng-if="sessionAdminName!=''">
-	                	<a ng-href="#/project/list/true/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
+	                	<a ng-href="index.do#/project/list/true/NULL" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
 	                </li>
 	                
 					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">

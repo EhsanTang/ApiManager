@@ -422,6 +422,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
     	newObj.deep=0;
     	newObj.type="string";
     	newObj.necessary="true";
+        newObj.inUrl="false";
     	$rootScope.model[field][$rootScope.model[field].length] = newObj;
     }
     /***********添加嵌套参数**************/

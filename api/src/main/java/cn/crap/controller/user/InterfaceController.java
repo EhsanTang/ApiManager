@@ -106,6 +106,7 @@ public class InterfaceController extends BaseController{
 					model.setFalseExam(template.getFalseExam());
 					model.setTrueExam(template.getTrueExam());
 					model.setStatus(template.getStatus());
+					model.setContentType(template.getContentType());
 				}
 			}
 			

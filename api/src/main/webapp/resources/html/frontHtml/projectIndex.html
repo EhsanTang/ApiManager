@@ -35,7 +35,7 @@
 					<table>
 						<tr>
 							<td class="w50">
-								<img class="w50" ng-src="{{project.cover}}"/>
+								<img class="w50 h50 r50P" ng-src="{{project.cover}}"/>
 							</td>
 							<td class="pl10">
 								<a class="C000 f16 mt2" ng-href="#/{{project.id}}/module/list" ng-bind="project.name"></a>
@@ -59,7 +59,7 @@
 
 				<div class="mb0 r2 f14 mr15 mt10 BGFFF pt10 pb20" id="accordion" role="tablist">
 					<div ng-if="projectMenu.length==0" class="no-radius b0 mt0 C999">
-						<i class="iconfont mt-5 ml10">&#xe626;</i>该项目下没有模块
+						<i class="iconfont mt-5 ml10">&#xe626;</i> &nbsp; 该项目下没有模块
 					</div>
 					<div class="no-radius b0 mt0" ng-repeat="item in projectMenu">
 						<div class="no-radius p10" data-parent="#accordion">

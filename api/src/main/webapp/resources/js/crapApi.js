@@ -91,7 +91,7 @@ function getParamFromTable(tableId) {
 function setPassword(){
 	$.cookie('password', $.base64.encode(escape($("#password").val())));
 	$.cookie('visitCode', $.base64.encode(escape($("#visitCode").val())));
-    if (getRootScope().error.indexOf(NEED_PASSWORD_CODE) > 0){
+    if (getRootScope().error && getRootScope().error.indexOf(NEED_PASSWORD_CODE) > 0){
         getRootScope().error = "";
 	}
 }

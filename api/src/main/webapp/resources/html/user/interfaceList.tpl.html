@@ -65,7 +65,7 @@
 				<td class="tc">{{item.moduleName}}</td>
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">{{item.updateBy}}</td>
-				<td class="tc">{{getDate(item.updateTime)|date:'yyyy-MM-dd HH:mm'}}</td>
+				<td class="tc">{{item.updateTimeStr}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					ng-click="detail('编辑【'+item.interfaceName+'】',1100,'user/interface/detail.do?id='+item.id,'',initEditInterFace)"> 
@@ -75,7 +75,7 @@
 					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'user/interface/detail.do?id='+item.id,'',copyInterface)"> 
 					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank"> 
+				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">

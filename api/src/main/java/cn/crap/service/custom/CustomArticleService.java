@@ -44,10 +44,13 @@ public class CustomArticleService implements ILuceneService {
     }
 
     public int countByModuleId(String moduleId, String name, String type, String category, Byte status) {
-        Assert.notNull(moduleId, "moduleId can't be null");
         ArticleCriteria example = new ArticleCriteria();
-        ArticleCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
-        if (name != null) {
+        ArticleCriteria.Criteria criteria = example.createCriteria();
+
+        if (!StringUtils.isEmpty(moduleId)){
+            criteria.andModuleIdEqualTo(moduleId);
+        }
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         if (!StringUtils.isEmpty(type)) {
@@ -59,6 +62,7 @@ public class CustomArticleService implements ILuceneService {
         if (status != null){
             criteria.andStatusEqualTo(status);
         }
+
         return dao.countByExample(example);
     }
 

@@ -104,6 +104,7 @@ public class ArticleController extends BaseController {
         List<Article> articles = customArticleService.queryArticle(null, null,  type, category, status, page);
         List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null);
 
+        page.setAllRow(customArticleService.countByModuleId(null, null,  type, category, status));
         Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(type).getName())
                 .put("category", category)
                 .put("categorys", categories)

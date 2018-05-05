@@ -3,7 +3,8 @@ package cn.crap.enumer;
 import org.springframework.util.StringUtils;
 
 public enum InterfaceContentType {
-	JSON("json", "application/json"), HTML("html", "text/html");
+	JSON("application/json", "application/json"), HTML("text/html", "text/html"),
+	X_APPLICATION("x-application", "x-application"), XML("application/xml", "application/xml");
 	private final String name;
 	private final String type;
 

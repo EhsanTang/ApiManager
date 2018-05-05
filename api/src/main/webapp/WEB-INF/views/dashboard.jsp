@@ -138,7 +138,7 @@
                 <div class="b1 tl r3 h220 m15 p15">
                     <div>
                         <a class="fl" href="project.do#/${item.id}/module/list" target="_blank">
-                            <img class="h70 r50P" src="${item.cover}"/>
+                            <img class="h70 w70 r50P" src="${item.cover}"/>
                         </a>
                         <div class="lh26 fl mt20 ml10">
                             <a class="f12 text-primary mr5 cursor" href="project.do#/${item.id}/error/list"

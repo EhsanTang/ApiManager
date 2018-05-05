@@ -5,6 +5,7 @@ import cn.crap.service.IEmailService;
 import cn.crap.beans.Config;
 import cn.crap.utils.Aes;
 import cn.crap.utils.IConst;
+import cn.crap.utils.ISetting;
 import cn.crap.utils.Tools;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +33,7 @@ public class EmailService implements IEmailService {
 	
 	@Override
 	public void sendMail(MailBean mailBean) throws UnsupportedEncodingException, MessagingException{
-		String fromName = settingCache.get(IConst.SETTING_TITLE).getValue();
+		String fromName = settingCache.get(ISetting.S_TITLE).getValue();
 		MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
@@ -45,7 +46,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public boolean sendMail(String subject, String toEmail, String context) {
 		try {
-			String fromName = settingCache.get(IConst.SETTING_TITLE).getValue();
+			String fromName = settingCache.get(ISetting.S_TITLE).getValue();
 			MimeMessage mimeMessage = mailSenderService.createMimeMessage();
 			MimeMessageHelper messageHelper;
 			messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");

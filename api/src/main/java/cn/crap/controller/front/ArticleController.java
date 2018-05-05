@@ -156,7 +156,7 @@ public class ArticleController extends BaseController {
         List<Comment> comments = customCommentService.selectByArticelId(id, null, page);
         page.setAllRow(customCommentService.countByArticleId(id));
         returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", settingCache.get(C_SETTING_COMMENTCODE).getValue());
+        returnMap.put("commentCode", settingCache.get(S_COMMENTCODE).getValue());
 
         // 更新点击量
         customArticleService.updateClickById(id);

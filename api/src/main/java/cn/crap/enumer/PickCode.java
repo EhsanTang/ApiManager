@@ -30,6 +30,7 @@ public enum PickCode {
     MY_MODULE("MY_MODULE", "我的所有模块"),
     PROJECT_MODULES("PROJECT_MODULES", "项目中的模块"),
     USER("USER", "用户列表"),
+	MENU_ICON("MENU_ICON", "菜单图标"),
     // 推荐项目...
     PROJECT_STATUE("PROJECT_STATUE", "项目状态"),
 

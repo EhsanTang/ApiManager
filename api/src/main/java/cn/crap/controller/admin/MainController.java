@@ -103,7 +103,7 @@ public class MainController extends BaseController {
     public JsonResult init(HttpServletRequest request) throws Exception {
         Map<String, String> settingMap = new HashMap<String, String>();
         for (SettingDto setting : settingCache.getAll()) {
-            if (C_SETTING_SECRETKEY.equals(setting.getKey())) {
+            if (S_SECRETKEY.equals(setting.getKey())) {
                 continue;
             }
             settingMap.put(setting.getKey(), setting.getValue());

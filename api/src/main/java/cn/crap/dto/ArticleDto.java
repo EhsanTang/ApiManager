@@ -27,6 +27,7 @@ public class ArticleDto implements Serializable {
 	private Integer sequence;
 	private String markdown;
 	private String projectId;
+	private String createTimeStr;
 
 	public void setId(String id){
 		this.id=id;
@@ -162,5 +163,13 @@ public class ArticleDto implements Serializable {
 
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
 	}
 }

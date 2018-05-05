@@ -118,9 +118,9 @@ public class AdminPickService implements IPickService{
             case MENU_URL:
                 pick = new PickDto(IConst.SEPARATOR, "项目列表");
                 picks.add(pick);
-                pick = new PickDto("m_myproject", "#/project/list/true/NULL", "我的项目列表");
+                pick = new PickDto("m_myproject", "index.do#/project/list/true/NULL", "我的项目列表");
                 picks.add(pick);
-                pick = new PickDto("recommend_project", "#/project/list/false/NULL", "推荐项目列表");
+                pick = new PickDto("recommend_project", "index.do#/project/list/false/NULL", "推荐项目列表");
                 picks.add(pick);
 
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
@@ -135,10 +135,10 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
                 picks.add(pick);
 
-                preUrl = "#/NULL/article/detail/NULL/PAGE/";
+                preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
                 articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
                 for (Article w : articleService.selectByExample(articleCriteria)) {
                     pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");

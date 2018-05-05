@@ -29,7 +29,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Project;
 
-public abstract class BaseController implements IAuthCode, IConst {
+public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
     protected final static int SIZE = 15;
     protected Logger log = Logger.getLogger(getClass());
@@ -231,7 +231,7 @@ public abstract class BaseController implements IAuthCode, IConst {
         /**
          * 如果开启了验证码，则需要校验图形验证码是否正确，防止暴力破解
          */
-        if (settingCache.get(IConst.SETTING_VISITCODE).getValue().equals("true")) {
+        if (settingCache.get(S_VISITCODE).getValue().equals("true")) {
             String imgCode = Tools.getImgCode();
             if (MyString.notEquals(imgCode, visitCode)) {
                 throw new MyException(MyError.E000007);

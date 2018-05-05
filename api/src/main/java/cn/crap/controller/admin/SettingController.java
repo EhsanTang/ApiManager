@@ -31,7 +31,7 @@ public class SettingController extends BaseController {
     private CustomSettingService customSettingService;
     @Autowired
     private Config config;
-    private final static String[] indexUrls = new String[]{"index.do", "front/", "project.do"};
+    private final static String[] indexUrls = new String[]{"index.do", "front/", "project.do", "dashboard.htm"};
 
     /**
      * @param currentPage 当前页
@@ -83,7 +83,7 @@ public class SettingController extends BaseController {
     public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto) throws Exception {
         if (settingDto.getId() != null) {
             // index url must start with indexUrls
-            if (SETTING_INDEX_PAGE.equals(settingDto.getKey())) {
+            if (S_INDEX_PAGE.equals(settingDto.getKey())) {
                 boolean legalUrl = false;
                 for (String indexUrl : indexUrls) {
                     if (settingDto.getValue().startsWith(indexUrl)) {

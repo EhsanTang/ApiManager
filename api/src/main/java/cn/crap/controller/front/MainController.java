@@ -1,23 +1,28 @@
 package cn.crap.controller.front;
 
+import cn.crap.adapter.ArticleAdapter;
 import cn.crap.beans.Config;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.MenuWithSubMenuDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.dto.SettingDto;
+import cn.crap.dto.*;
+import cn.crap.enumer.ArticleStatus;
+import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.ProjectStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.HotSearch;
+import cn.crap.model.mybatis.*;
 import cn.crap.service.ISearchService;
+import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomHotSearchService;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.service.mybatis.HotSearchService;
+import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.mybatis.*;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,16 +47,35 @@ public class MainController extends BaseController{
 	@Autowired
     private CustomHotSearchService customHotSearchService;
 	@Autowired
+    private UserService userService;
+	@Autowired
+    private ArticleService articleService;
+	@Autowired
+    private ProjectService projectService;
+	@Autowired
+    private InterfaceService interfaceService;
+	@Autowired
+    private CustomProjectService customProjectService;
+	@Autowired
+    private CustomArticleService customArticleService;
+	@Autowired
 	private Config config;
-	
-	/**
+
+	private static final String TOTAL_USER = "totalUser";
+    private static final String TOTAL_PROJECT = "totalProject";
+    private static final String TOTAL_INTERFACE = "totalInterface";
+    private static final String TOTAL_ARTICLE = "totalArticle";
+    private static final String PROJECT_LIST = "projectList";
+    private static final String ARTICLE_LIST = "articleList";
+
+    /**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
 	 * 
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")
 	public void home(HttpServletResponse response) throws Exception {
-		SettingDto indexUrl = settingCache.get(IConst.SETTING_INDEX_PAGE);
+		SettingDto indexUrl = settingCache.get(S_INDEX_PAGE);
 		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
 			response.sendRedirect(indexUrl.getValue());
 		}else{
@@ -66,7 +90,73 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping({"/index.do","/web.do"})
 	public String index() throws Exception {
-		return "resources/html/frontHtml/index.html";
+		return "resources/html/frontHtml/indexNew.html";
+	}
+
+	@RequestMapping(value = "dashboard.htm")
+	public String dashboard(ModelMap modelMap) {
+
+		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+		modelMap.addAttribute("login", loginInfoDto != null);
+        modelMap.addAttribute("title", settingCache.get(S_TITLE).getValue());
+        modelMap.addAttribute("keywords", settingCache.get(S_KEYWORDS).getValue());
+        modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
+        modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
+        modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+
+        String totalUser = stringCache.get(TOTAL_USER);
+        if (MyString.isEmpty(totalUser)){
+            totalUser = userService.countByExample(new UserCriteria()) + "";
+            stringCache.add(TOTAL_USER, totalUser);
+        }
+        String totalProject = stringCache.get(TOTAL_PROJECT);
+        if (MyString.isEmpty(totalProject)){
+            totalProject = projectService.countByExample(new ProjectCriteria()) + "";
+            stringCache.add(TOTAL_PROJECT, totalProject);
+        }
+        String totalInterface = stringCache.get(TOTAL_INTERFACE);
+        if (MyString.isEmpty(totalInterface)){
+            totalInterface = interfaceService.countByExample(new InterfaceCriteria()) + "";
+            stringCache.add(TOTAL_INTERFACE, totalInterface);
+        }
+        String totalArticle = stringCache.get(TOTAL_ARTICLE);
+        if (MyString.isEmpty(totalArticle)){
+            totalArticle = articleService.countByExample(new ArticleCriteria()) + "";
+            stringCache.add(TOTAL_ARTICLE, totalArticle);
+        }
+
+        modelMap.addAttribute("totalUser", totalUser);
+        modelMap.addAttribute("totalProject", totalProject);
+        modelMap.addAttribute("totalInterface", totalInterface);
+        modelMap.addAttribute("totalArticle", totalArticle);
+
+        List<Project> projectList =(List<Project>) objectCache.get(PROJECT_LIST);
+        Page page = new Page(12, 1);
+        if (CollectionUtils.isEmpty(projectList)) {
+            projectList = customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), null, page);
+            objectCache.add(PROJECT_LIST, projectList);
+        }
+        modelMap.addAttribute("projectList", projectList);
+
+
+        page = new Page(5, 1);
+        List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
+        if (CollectionUtils.isEmpty(articleList)){
+            articleList = ArticleAdapter.getDto(customArticleService.queryArticle(null, null, ArticleType.ARTICLE.name(),
+                    null, ArticleStatus.RECOMMEND.getStatus(), page), null);
+            objectCache.add(ARTICLE_LIST, articleList);
+        }
+        modelMap.addAttribute("articleList", articleList);
+
+        // 从缓存中获取菜单
+        List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+        if(menuList == null){
+            menuList = customMenuService.getLeftMenu();
+            objectCache.add(C_CACHE_LEFT_MENU, menuList);
+        }
+        modelMap.addAttribute("menuList", menuList);
+
+        return "WEB-INF/views/dashboard.jsp";
 	}
 	/**
 	 * 公共
@@ -133,7 +223,7 @@ public class MainController extends BaseController{
 	public JsonResult frontInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (SettingDto setting : settingCache.getAll()) {
-			if(IConst.C_SETTING_SECRETKEY.equals(setting.getKey())){
+			if(S_SECRETKEY.equals(setting.getKey())){
 				continue;
 			}
 			settingMap.put(setting.getKey(), setting.getValue());
@@ -144,23 +234,12 @@ public class MainController extends BaseController{
 		
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
-		
+
 		// 从缓存中获取菜单
-		Object objMenus = objectCache.get(C_CACHE_LEFT_MENU);
-		List<MenuWithSubMenuDto> menus = null;
-		if(objMenus == null){
-			synchronized (MainController.class) {
-				objMenus = objectCache.get(C_CACHE_LEFT_MENU);
-				if(objMenus == null){
-					menus = customMenuService.getLeftMenu();
-					objectCache.add(C_CACHE_LEFT_MENU, menus);//缓存10分钟
-				}else{
-					menus = (List<MenuWithSubMenuDto>) objMenus;
-				}
-			}
-			
-		}else{
-			menus = (List<MenuWithSubMenuDto>) objMenus;
+		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+		if(menus == null){
+			menus = customMenuService.getLeftMenu();
+			objectCache.add(C_CACHE_LEFT_MENU, menus);
 		}
 		
 		returnMap.put("menuList", menus);

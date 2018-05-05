@@ -32,14 +32,14 @@ public class CommentController extends BaseController {
 	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
 		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
 		
-		if (settingCache.get(C_SETTING_COMMENTCODE).getValue().equals("true")) {
+		if (settingCache.get(S_COMMENTCODE).getValue().equals("true")) {
 			if (!comment.getId().equals(Tools.getImgCode())) {
 				throw new MyException(MyError.E000010);
 			}
 		}
 
 		LoginInfoDto user = LoginUserHelper.tryGetUser();
-		SettingDto anonymousComment = settingCache.get(C_SETTING_ANONYMOUS_COMMENT);
+		SettingDto anonymousComment = settingCache.get(S_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
 			if (user == null){
 				throw new MyException(MyError.E000060);

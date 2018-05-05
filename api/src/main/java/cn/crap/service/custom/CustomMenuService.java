@@ -68,42 +68,7 @@ public class CustomMenuService {
         }
 
         List<Menu> subMenus = queryByParentIds(menuIds);
-        List<MenuWithSubMenuDto> menuVOs = new ArrayList<MenuWithSubMenuDto>();
-
-        Page page = new Page(config.getSubMenuSize(),1);
-        // 加载默认推荐项目菜单
-        if(config.isShowRecommendProject()){
-            MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();
-            Menu menu = new Menu();
-            menu.setIconRemark("<i class=\"iconfont\">&#xe636;</i>");
-            menu.setId("recommendProjectId");
-            menu.setMenuName(config.getRecommendProjectMenuName());
-            menu.setParentId("0");
-            menu.setType(MenuType.FRONT.name());
-            menuVO.setMenu(menu);
-
-            menuVO.setSubMenu(new ArrayList<Menu>());
-            for (Project project : customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), null, page)) {
-                Menu subMenu = new Menu();
-                subMenu.setId("recPro_"+project.getId());
-                subMenu.setMenuName(project.getName());
-                subMenu.setParentId("recommendProjectId");
-                subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl(String.format(IConst.FRONT_PROJECT_URL, project.getId()));
-                menuVO.getSubMenu().add(subMenu);
-            }
-            // 添加更多按钮
-            if(menuVO.getSubMenu().size() == page.getSize()){
-                Menu subMenu = new Menu();
-                subMenu.setId("recPro_more");
-                subMenu.setMenuName("更多项目...");
-                subMenu.setParentId("recommendProjectId");
-                subMenu.setType(MenuType.FRONT.name());
-                subMenu.setMenuUrl("#/project/list/false/NULL");
-                menuVO.getSubMenu().add(subMenu);
-            }
-            menuVOs.add(menuVO);
-        }
+        List<MenuWithSubMenuDto> menuVOs = new ArrayList<>();
 
         for (Menu menu : menus) {
             MenuWithSubMenuDto menuVO = new MenuWithSubMenuDto();

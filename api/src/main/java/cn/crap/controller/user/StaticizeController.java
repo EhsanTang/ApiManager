@@ -65,7 +65,7 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeError(HttpServletRequest req, @RequestParam String projectId,@RequestParam int currentPage,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}
 		Project project = projectCache.get(projectId);
@@ -100,7 +100,7 @@ public class StaticizeController extends BaseController{
 	public ModelAndView interfaceList(HttpServletRequest req, @RequestParam String moduleId, @RequestParam int currentPage,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}
 		
@@ -134,7 +134,7 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId,@RequestParam String category,@RequestParam int currentPage,
 			String type, String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}
 		Module module = moduleCache.get(moduleId);
@@ -205,7 +205,7 @@ public class StaticizeController extends BaseController{
 	public ModelAndView staticizeArticle(HttpServletRequest req, @RequestParam String articleId, 
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}		
 		
@@ -245,7 +245,7 @@ public class StaticizeController extends BaseController{
 	public ModelAndView interfaceDetail(HttpServletRequest req, @RequestParam String interfaceId,
 			String needStaticizes, @RequestParam String secretKey) throws MyException {
 		// 验证是否是非法请求
-		if( !settingCache.get(IConst.C_SETTING_SECRETKEY).getValue().equals(secretKey) ){
+		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}		
 				
@@ -354,7 +354,7 @@ public class StaticizeController extends BaseController{
 			needStaticizes = ",article," + needStaticizes + ",";
 		}
 		
-		String secretKey = settingCache.get(IConst.C_SETTING_SECRETKEY).getValue();
+		String secretKey = settingCache.get(S_SECRETKEY).getValue();
 		Project project = projectCache.get(projectId);
 		
 		checkUserPermissionByProject(project);

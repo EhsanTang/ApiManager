@@ -14,6 +14,7 @@ import cn.crap.model.mybatis.Project;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
+import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,9 @@ public class ArticleAdapter {
 		dto.setSequence(model.getSequence());
 		dto.setProjectId(model.getProjectId());
 		dto.setTypeName(ArticleType.getByEnumName(model.getType()));
+		if (model.getCreateTime() != null) {
+			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+		}
 		if (module != null){
 			dto.setModuleName(module.getName());
 		}

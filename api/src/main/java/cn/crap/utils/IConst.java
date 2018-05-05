@@ -66,17 +66,9 @@ public interface IConst {
 	String DOMAIN = "DOMAIN";
 	String ADMIN = "admin";
 	// url
-	String FRONT_PROJECT_URL = "#/%s/module/list";
+	String FRONT_PROJECT_URL = "index.do#/%s/module/list";
 	
 	//系统设置
-	String C_SETTING_SECRETKEY = "SECRETKEY";
-	public final static String SETTING_VERIFICATIONCODE = "VERIFICATIONCODE";
-	public final static String SETTING_VISITCODE = "VISITCODE";
-	String C_SETTING_COMMENTCODE = "COMMENTCODE";
-	String SETTING_LUCENE_DIR = "LUCENE_DIR";
-	String SETTING_INDEX_PAGE = "INDEX_PAGE";
-	String SETTING_TITLE = "TITLE";
 	String SETTING_OPEN_REGISTER = "openRegister";
 	String SETTING_GITHUB_ID = "githubClientID";
-	String C_SETTING_ANONYMOUS_COMMENT = "ANONYMOUS_COMMENT";
 }

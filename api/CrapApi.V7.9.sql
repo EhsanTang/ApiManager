@@ -98,3 +98,5 @@ ADD COLUMN `contentType` VARCHAR(45) NOT NULL DEFAULT 'application/json' COMMENT
 
 
 INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fff-8888-d4839-b38a-898343435462', 'ICONFONT', '//at.alicdn.com/t/font_afbmuhv5zc15rk9', '图标地址（cdn图标库或本地图标库）', 'ICONFONT', '0', '100');
+INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fff-9999-d4839-b38a-898343435462', 'KEYWORDS', 'CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理,api接口管理', '搜索引擎关键字', 'TEXT', '0', '100');
+INSERT INTO `setting` (`id`, `mkey`, `value`, `remark`, `type`, `canDelete`, `sequence`) VALUES ('fff-9191-d4839-b38a-898343435462', 'DESCRIPTION', '免费开源的API接口管理系统、文档管理系统。系统特点：极致简单、开源开放、技术前沿。主要功能有：接口管理、接口调试、文档管理、数据字典管理、文章管理....。', '搜索引描述', 'TEXT', '0', '100');

@@ -23,7 +23,7 @@ public class Aes
 	 public static final String iv="CRAPG_@W8#_19#10";
 	 public static String encrypt(String data){
          SettingCache settingCache = SpringContextHolder.getBean("settingCache", SettingCache.class);
-		 SettingDto setting = settingCache.get(IConst.C_SETTING_SECRETKEY);
+		 SettingDto setting = settingCache.get(ISetting.S_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();
@@ -57,7 +57,7 @@ public class Aes
  
      public static String desEncrypt(String data){
          SettingCache settingCache = SpringContextHolder.getBean("settingCache", SettingCache.class);
-    	 SettingDto setting = settingCache.get(IConst.C_SETTING_SECRETKEY);
+    	 SettingDto setting = settingCache.get(ISetting.S_SECRETKEY);
 		 String PWD = "";
 		 if(setting!=null)
 			 PWD = setting.getValue();

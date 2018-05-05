@@ -228,7 +228,7 @@ public class LoginController extends BaseController{
 			return new JsonResult(1, model);
 		}
 		
-		if (settingCache.get(IConst.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+		if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
 			if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode())) {
 				model.setTipMessage("验证码有误");
 				return new JsonResult(1, model);
@@ -287,7 +287,7 @@ public class LoginController extends BaseController{
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
 		try{
-			if (settingCache.get(IConst.SETTING_VERIFICATIONCODE).getValue().equals("true")) {
+			if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
 				if(MyString.isEmpty(model.getVerificationCode()) ){
 					model.setTipMessage("验证码为空,请刷新浏览器再试！");
 					return new JsonResult(1, model);

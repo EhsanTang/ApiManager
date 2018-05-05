@@ -4,10 +4,7 @@ import cn.crap.dto.SearchDto;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
 import cn.crap.beans.Config;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -61,7 +58,7 @@ public class LuceneSearchService implements ISearchService {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader
-					.open(FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())));
+					.open(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
 			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
@@ -125,7 +122,7 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.deleteDocuments(new Term("id", searchDto.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -217,7 +214,7 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -246,7 +243,7 @@ public class LuceneSearchService implements ISearchService {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
 			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue())), conf);
+					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,7 +269,7 @@ public class LuceneSearchService implements ISearchService {
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(settingCache.get(IConst.SETTING_LUCENE_DIR).getValue());
+				File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
 				File[] tempList = file.listFiles();
 			    for (int i = 0; i < tempList.length; i++) {
 			    	tempList[i].delete();

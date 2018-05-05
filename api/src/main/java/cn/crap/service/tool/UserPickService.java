@@ -2,6 +2,7 @@ package cn.crap.service.tool;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
+import cn.crap.enumer.IconfontCode;
 import cn.crap.enumer.MyError;
 import cn.crap.enumer.PickCode;
 import cn.crap.framework.MyException;
@@ -62,6 +63,12 @@ public class UserPickService implements IPickService{
 
                 for (Error error : customErrorService.queryByProjectId(key, null, null, null)) {
                     pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
+                    picks.add(pick);
+                }
+                return picks;
+            case MENU_ICON:
+                for (IconfontCode iconfontCode : IconfontCode.values()) {
+                    pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
                     picks.add(pick);
                 }
                 return picks;

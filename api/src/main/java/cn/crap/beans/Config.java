@@ -50,16 +50,7 @@ public class Config{
 //
 //	@Value("${web.monitorEmailSendIndex}")
 //	private int monitorEmailSendIndex;
-	
-	@Value("${web.showRecommendProject}")
-	private boolean showRecommendProject;
-	
-	@Value("${web.recommendProjectMenuName}")
-	private String recommendProjectMenuName;
 
-	@Value("${web.subMenuSize}")
-	private int subMenuSize;
-	
 	@Value("${web.openRegister}")
 	private boolean openRegister;
 	
@@ -149,18 +140,6 @@ public class Config{
 //		}
 //		return monitorEmailSendIndex;
 //	}
-
-	public boolean isShowRecommendProject() {
-		return showRecommendProject;
-	}
-
-	public String getRecommendProjectMenuName() {
-		return recommendProjectMenuName;
-	}
-
-	public int getSubMenuSize() {
-		return subMenuSize;
-	}
 	
 	public String getMail(){
 		return mail;

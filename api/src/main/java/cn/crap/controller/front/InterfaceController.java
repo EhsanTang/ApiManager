@@ -66,7 +66,7 @@ public class InterfaceController extends BaseController {
                 request.setAttribute("result", "接口ID&模块ID不能同时为空！");
                 return ERROR_VIEW;
             }
-            if (!secretKey.equals(settingCache.get(IConst.C_SETTING_SECRETKEY).getValue())) {
+            if (!secretKey.equals(settingCache.get(S_SECRETKEY).getValue())) {
                 request.setAttribute("result", "秘钥不正确，非法请求！");
                 return ERROR_VIEW;
             }
@@ -154,7 +154,7 @@ public class InterfaceController extends BaseController {
             displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
             response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);
         }
-        String secretKey = settingCache.get(IConst.C_SETTING_SECRETKEY).getValue();
+        String secretKey = settingCache.get(S_SECRETKEY).getValue();
         br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId, secretKey)));
         ut = response.getOutputStream();
         while ((len = br.read(buf)) != -1)

@@ -47,7 +47,13 @@ blockquote{
 }  
 .search-section:hover .search-button{
 	opacity:0.8!important;
-}  
+}
+/*****新版首页******/
+.dashboard{
+    background: rgba(255,255,255,0.2);
+    color: #ffffff;
+    line-height: 20px;
+}
 /*****登陆框*******/
 .login{
 	position: relative;

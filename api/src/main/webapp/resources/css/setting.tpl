@@ -41,6 +41,12 @@ body{min-width:800px;}
   background-color: {{settings.MAIN_COLOR}};
   opacity: 0.8;
 }
+.active-a:hover{
+  color: #ffffff;
+  background-color: {{settings.ADORN_COLOR}};
+  cursor: pointer;
+  text-underline: none;
+}
 .login-bg{background: url('{{settings.LOGINBG}}') 50% 50% / cover no-repeat fixed;}
 .title-bg-img{
 	background-image:url('{{settings.TITLEBG}}')!important; background-position:center;

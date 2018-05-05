@@ -43,9 +43,14 @@
             <ul class="nav navbar-nav navbar-right ml20">
                 <li><a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="menu-a">帮助文档
                     <i class="iconfont adorn-color f14">&#xe63e;</i></a>
+                </li>
                 <li>
                     <a href='https://chrome.google.com/webstore/detail/ieoejemkppmjcdfbnfphhpbfmallhfnc?utm_source=chrome-app-launcher-info-dialog'
                        target="_blank" class="menu-a">插件下载 <i class="iconfont adorn-color f14">&#xe624;</i></a>
+                </li>
+                <c:if test="${login}">
+                    <li><a class="cursor" onclick="loginOut()"><i class="iconfont f16 mt-5 adorn-color">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+                </c:if>
             </ul>
         </div>
     </div>
@@ -95,14 +100,14 @@
 
 <div class="container p0 mt10">
     <div class="row p0 m0">
-        <div class="col-sm-3 col-xs-12">
+        <div class="col-sm-3 col-xs-12 shadow pb20">
             <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                 <c:if test="${menuDto.menu.type=='FRONT'}">
                     <div class="cb dashed-b p3 pl10 pr10 mr10 f16 fw600 mt10 mb10">
                         <span class="adorn-color fn">${menuDto.menu.iconRemark}</span> ${menuDto.menu.menuName}
                     </div>
                     <c:forEach items="${menuDto.subMenu}" var="subMenu" varStatus="id">
-                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl cursor C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
+                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl ctive-a C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
                     </c:forEach>
                 </c:if>
             </c:forEach>
@@ -170,7 +175,7 @@
                 ©crap.cn&nbsp;版本号 [V8.0.0]
                 <ul class="dis-in-tab">
                     <li class="dis-in-tab mr20">
-                        <a target="_blank" href="http://api.crap.cn/index.do#/webPage/list/ARTICLE/帮助文档">帮助文档</a>
+                        <a target="_blank" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>
                     </li>
                     <li class="dis-in-tab mr20">
                         <a target="_blank" href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a>
@@ -180,7 +185,7 @@
                     </li>
                     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                         <c:if test="${menuDto.menu.type=='BOTTOM'}">
-                            <a target="_blank" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
+                            <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
                         </c:if>
                     </c:forEach>
                 </ul>
@@ -191,7 +196,7 @@
                                 class="bg_line"></span></li>
                         <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                             <c:if test="${menuDto.menu.type=='FRIEND'}">
-                                <a target="_blank" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
+                                <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
                             </c:if>
                         </c:forEach>
                     </ul>
@@ -200,10 +205,9 @@
         </div>
     </div>
 </div>
-<script src="<%=basePath %>resources/framework/jquery-1.9.1.min.js"></script>
-<script src="<%=basePath %>resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
-<script src="<%=basePath %>resources/js/core.js?v=200"></script>
-<script src="<%=basePath %>resources/js/global.js?v=200"></script>
-<script src="<%=basePath %>resources/js/crapApi.js?v=200"></script>
+
+<script src="resources/framework/jquery-1.9.1.min.js"></script>
+<script src="resources/js/core.js?v=200"></script>
+<script src="resources/js/crapApi.js?v=200"></script>
 </body>
 </html>

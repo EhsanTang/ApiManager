@@ -267,10 +267,13 @@ function rebuildIndex(obj){
 	}
 }
 
-
+function loginOut(){
+    callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+    location.reload();
+}
 //刷新缓存
 function flushDB(obj){
-	if (myConfirm("确定刷新缓存？登陆信息等缓存将被删除")) {
+	if (myConfirm("确定刷新缓存？")) {
 		selectButton(obj,'menu-a');
 		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}

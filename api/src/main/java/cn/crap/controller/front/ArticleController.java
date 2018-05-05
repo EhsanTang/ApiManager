@@ -142,10 +142,6 @@ public class ArticleController extends BaseController {
             return new JsonResult().success().data(article).others(returnMap);
         }
 
-        List<String> categories = customModuleService.queryCategoryByModuleId(article.getModuleId());
-        returnMap.put("categories", categories);
-        returnMap.put("category", article.getCategory());
-
         // 初始化前端js评论对象
         Comment comment = new Comment();
         comment.setArticleId(id);
@@ -165,7 +161,7 @@ public class ArticleController extends BaseController {
                 .add("文章:" + module.getName(), "#/" + project.getId() + "/article/list/" + module.getId() + "/ARTICLE/NULL/NULL/NULL")
                 .add(article.getName(), "void")
                 .getList();
-
-        return new JsonResult(1, article, page, returnMap).others(Tools.getMap("crumbs", crumbDtos));
+        returnMap.put("crumbs", crumbDtos);
+        return new JsonResult(1, article, page, returnMap);
     }
 }

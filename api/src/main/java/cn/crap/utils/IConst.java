@@ -66,7 +66,7 @@ public interface IConst {
 	String DOMAIN = "DOMAIN";
 	String ADMIN = "admin";
 	// url
-	String FRONT_PROJECT_URL = "index.do#/%s/module/list";
+	String FRONT_PROJECT_URL = "project.do#/%s/module/list";
 	
 	//系统设置
 	String SETTING_OPEN_REGISTER = "openRegister";

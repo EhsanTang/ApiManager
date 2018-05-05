@@ -360,10 +360,6 @@ webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $sta
 			$rootScope.fontMenus = result.data.menuList;
 		});
     };
-    $scope.loginOut = function(){
-		callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
-		location.reload();
-	}
     $scope.getData();
 });
 

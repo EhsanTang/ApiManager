@@ -142,6 +142,7 @@ public class MainController extends BaseController {
         stringCache.flushDB();
         moduleCache.flushDB();
         settingCache.flushDB();
+        objectCache.flushDB();
         return new JsonResult().success();
     }
 }

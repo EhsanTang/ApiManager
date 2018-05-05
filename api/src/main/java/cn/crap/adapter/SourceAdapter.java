@@ -5,9 +5,11 @@ import cn.crap.dto.SourceDto;
 import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Source;
 import cn.crap.service.tool.ProjectCache;
+import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 
@@ -21,23 +23,30 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class SourceAdapter {
-    public static SourceDto getDto(Source model){
+    public static SourceDto getDto(Source model, Module module){
         if (model == null){
             return null;
         }
 
         SourceDto dto = new SourceDto();
         dto.setId(model.getId());
-		dto.setCreateTime(model.getCreateTime());
 		dto.setSequence(model.getSequence());
 		dto.setStatus(model.getStatus());
 		dto.setName(model.getName());
-		dto.setUpdateTime(model.getUpdateTime());
 		dto.setModuleId(model.getModuleId());
 		dto.setRemark(model.getRemark());
 		dto.setFilePath(model.getFilePath());
 		dto.setProjectId(model.getProjectId());
-		
+        if (model.getCreateTime() != null) {
+            dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+        }
+        if (model.getUpdateTime() != null) {
+            dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
+        }
+		if (module != null) {
+            dto.setModuleName(module.getName());
+            dto.setProjectId(module.getProjectId());
+        }
         return dto;
     }
 
@@ -47,11 +56,9 @@ public class SourceAdapter {
         }
         Source model = new Source();
         model.setId(dto.getId());
-		model.setCreateTime(dto.getCreateTime());
 		model.setSequence(dto.getSequence());
 		model.setStatus(dto.getStatus());
 		model.setName(dto.getName());
-		model.setUpdateTime(dto.getUpdateTime());
 		model.setModuleId(dto.getModuleId());
 		model.setRemark(dto.getRemark());
 		model.setFilePath(dto.getFilePath());
@@ -66,7 +73,7 @@ public class SourceAdapter {
         }
         List<SourceDto> dtos = new ArrayList<>();
         for (Source model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, null));
         }
         return dtos;
     }

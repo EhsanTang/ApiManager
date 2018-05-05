@@ -36,9 +36,9 @@ public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private Config config;
 
-    public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace) {
+    public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace, Module module) {
         InterfacePDFDto interDto = new InterfacePDFDto();
-        interDto.setModel(interFace);
+        interDto.setModel(InterfaceAdapter.getDto(interFace, module));
         if(interFace.getParam().startsWith("form=")){
             interDto.setFormParams(JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
         }else{

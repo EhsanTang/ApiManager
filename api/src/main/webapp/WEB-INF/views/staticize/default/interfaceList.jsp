@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="dashed-t">
 							<a href="${f.id}.html" class="p10 pl0 f16 fb dis w C000 no_unl">${f.interfaceName}</a>
 							<div class ="f14 C555">${f.remarkNoHtml}</div>
-							<div class="tr C999 f12 p10"><span class="C999 pl20">${f.createTime}</span></div>
+							<div class="tr C999 f12 p10"><span class="C999 pl20">${f.createTimeStr}</span></div>
 						</div>
 					</c:forEach>
 					

@@ -41,9 +41,15 @@ body{min-width:800px;}
   background-color: #407aaa;
   opacity: 0.8;
 }
-.active-a:hover{
+.hover-a:hover{
     color: #ffffff;
     background-color: #f82c1d;
+    cursor: pointer;
+    text-underline: none;
+}
+.active-a{
+    color: #f82c1d!important;
+    font-weight: bold;
     cursor: pointer;
     text-underline: none;
 }

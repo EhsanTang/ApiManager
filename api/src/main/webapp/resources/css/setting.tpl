@@ -41,9 +41,15 @@ body{min-width:800px;}
   background-color: {{settings.MAIN_COLOR}};
   opacity: 0.8;
 }
-.active-a:hover{
+.hover-a:hover{
   color: #ffffff;
   background-color: {{settings.ADORN_COLOR}};
+  cursor: pointer;
+  text-underline: none;
+}
+.active-a{
+  color: {{settings.ADORN_COLOR}}!important;
+  font-weight:bold;
   cursor: pointer;
   text-underline: none;
 }

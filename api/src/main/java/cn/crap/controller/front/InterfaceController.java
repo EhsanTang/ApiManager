@@ -91,7 +91,7 @@ public class InterfaceController extends BaseController {
                     return ERROR_VIEW;
                 }
                 Module module = moduleService.getById(interFace.getModuleId());
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace));
+                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
                 return ERROR_VIEW;
@@ -106,7 +106,7 @@ public class InterfaceController extends BaseController {
                 return ERROR_VIEW;
             }
             for (InterfaceWithBLOBs interFace : customInterfaceService.selectByModuleId(moduleId)) {
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace));
+                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module));
             }
 
             request.setAttribute("interfaces", interfacePDFDtos);

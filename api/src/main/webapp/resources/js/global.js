@@ -277,11 +277,14 @@ function selectRadio(className,id,radioId){
 }
 
 /** ********************************** */
-function selectButton(obj,className){
+function selectButton(obj,className, activeCss){
+	if (!activeCss){
+        activeCss = "iactive";
+	}
 	window.editorId = new Date().getTime();
 	var objs = $("."+className);
-	objs.removeClass("iactive");
-	$(obj).addClass("iactive");
+	objs.removeClass(activeCss);
+	$(obj).addClass(activeCss);
 }
 
 function myConfirm(message){

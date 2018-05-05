@@ -45,7 +45,7 @@
                     <i class="iconfont adorn-color f14">&#xe63e;</i></a>
                 </li>
                 <li>
-                    <a href='https://chrome.google.com/webstore/detail/ieoejemkppmjcdfbnfphhpbfmallhfnc?utm_source=chrome-app-launcher-info-dialog'
+                    <a href='https://gitee.com/CrapApi/ApiDebug'
                        target="_blank" class="menu-a">插件下载 <i class="iconfont adorn-color f14">&#xe624;</i></a>
                 </li>
                 <c:if test="${login}">
@@ -100,14 +100,14 @@
 
 <div class="container p0 mt10">
     <div class="row p0 m0">
-        <div class="col-sm-3 col-xs-12 shadow pb20">
+        <div class="col-sm-3 col-xs-12 b1 pb20">
             <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                 <c:if test="${menuDto.menu.type=='FRONT'}">
                     <div class="cb dashed-b p3 pl10 pr10 mr10 f16 fw600 mt10 mb10">
                         <span class="adorn-color fn">${menuDto.menu.iconRemark}</span> ${menuDto.menu.menuName}
                     </div>
                     <c:forEach items="${menuDto.subMenu}" var="subMenu" varStatus="id">
-                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl ctive-a C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
+                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl hover-a C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
                     </c:forEach>
                 </c:if>
             </c:forEach>

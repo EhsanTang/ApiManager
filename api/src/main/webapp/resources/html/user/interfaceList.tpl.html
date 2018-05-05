@@ -75,6 +75,9 @@
 					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'user/interface/detail.do?id='+item.id,'',copyInterface)"> 
 					<i class="iconfont f12">&#xe61d;拷贝</i>
 				</a>
+					<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?id={{item.id}}">
+						<i class="iconfont f12">&#xe61e; 下载接口</i>
+					</a>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>

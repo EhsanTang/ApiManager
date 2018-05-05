@@ -8,7 +8,7 @@ public class InterfacePDFDto implements Serializable{
 	 * 生成pdf
 	 */
 	private static final long serialVersionUID = 1L;
-	private InterfaceWithBLOBs model;
+	private InterfaceDto model;
 	private Object formParams;
 	private String customParams;
 	private Object headers;
@@ -18,10 +18,10 @@ public class InterfacePDFDto implements Serializable{
 	private String falseMockUrl;
 	private Object paramRemarks;
 
-	public InterfaceWithBLOBs getModel() {
+	public InterfaceDto getModel() {
 		return model;
 	}
-	public void setModel(InterfaceWithBLOBs model) {
+	public void setModel(InterfaceDto model) {
 		this.model = model;
 	}
 	public Object getFormParams() {

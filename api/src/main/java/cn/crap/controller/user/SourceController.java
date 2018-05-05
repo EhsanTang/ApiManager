@@ -7,6 +7,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Source;
 import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.service.ISearchService;
@@ -59,7 +60,7 @@ public class SourceController extends BaseController{
 		example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 		page.setAllRow(sourceService.countByExample(example));
 
-		return new JsonResult(1, sourceService.selectByExample(example), page);
+		return new JsonResult(1, SourceAdapter.getDto(sourceService.selectByExample(example)), page);
 	}
 	
 	@RequestMapping("/detail.do")
@@ -67,14 +68,17 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
+        Module module;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
+            module = moduleCache.get(model.getModuleId());
 			checkUserPermissionByModuleId( model.getModuleId(), VIEW);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
+            module = moduleCache.get(source.getModuleId());
 		}
-		return new JsonResult(1,model);
+		return new JsonResult(1, SourceAdapter.getDto(model, module));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

@@ -48,7 +48,7 @@
 				<td class="tc w200">{{item.name}}</td>
 				<td class="tc">{{item.remark|cut:true:50:' ...'}}</td>
 				<td class="tc">{{item.sequence}}</td>
-				<td class="tc">{{getDate(item.updateTime)|date:'yyyy-MM-dd HH:mm'}}</td>
+				<td class="tc">{{item.updateTimeStr}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 				ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')"> 

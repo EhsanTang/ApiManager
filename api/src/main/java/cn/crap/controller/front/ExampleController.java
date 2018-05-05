@@ -38,7 +38,7 @@ public class ExampleController extends BaseController{
 	
 	@RequestMapping("/front/example/post.do")
 	@ResponseBody
-	public JsonResult post(String json) throws MyException{
+	public JsonResult post(@RequestBody String json) throws MyException{
 		System.out.println(json);
 		return new JsonResult(1, json);
 	}

@@ -8,7 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/web/article/detail/web/PAGE/ADMINHELP');
+	$urlRouterProvider.otherwise('user/project/list/true/-1');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',

@@ -1,6 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ErrorAdapter;
+import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.CategoryDto;
 import cn.crap.dto.DictionaryDto;
 import cn.crap.dto.InterfacePDFDto;
@@ -119,7 +120,7 @@ public class StaticizeController extends BaseController{
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId);
 		Page page = new Page(15, currentPage);
 		returnMap.put("page", page);
-		returnMap.put("interfaceList",  customInterfaceService.selectByModuleId(moduleId));
+		returnMap.put("interfaceList", InterfaceAdapter.getDto(customInterfaceService.selectByModuleId(moduleId), module));
 		returnMap.put("activePage",moduleId+"_interface");
 		returnMap.put("url", module.getId() + "-interfaceList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -261,7 +262,7 @@ public class StaticizeController extends BaseController{
 		}
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口详情");
 		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
-		interfaces.add(customInterfaceService.getInterDto(interFace));
+		interfaces.add(customInterfaceService.getInterDto(interFace, module));
 
 		returnMap.put("interfaces", interfaces);
 		returnMap.put("activePage",module.getId()+"_interface");
@@ -307,7 +308,7 @@ public class StaticizeController extends BaseController{
     	
         //获取html，提取url，替换线上资源路径，准本下载文件夹
         String[] childFilePaths = file.list();  
-        List<String> filePaths = new ArrayList<String>();
+        List<String> filePaths = new ArrayList<>();
         for(String childFilePath : childFilePaths){  
            if( !childFilePath.endsWith(".html") ){
         	   continue;

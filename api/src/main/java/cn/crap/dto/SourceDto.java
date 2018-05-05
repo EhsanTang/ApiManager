@@ -8,28 +8,22 @@ import java.util.Date;
  */
 public class SourceDto{
 	private String id;
-	private Date createTime;
 	private Integer sequence;
 	private Byte status;
 	private String name;
-	private Date updateTime;
 	private String moduleId;
 	private String remark;
 	private String filePath;
 	private String projectId;
+	private String moduleName;
+    private String createTimeStr;
+    private String updateTimeStr;
 
 	public void setId(String id){
 		this.id=id;
 	}
 	public String getId(){
 		return id;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setSequence(Integer sequence){
@@ -51,13 +45,6 @@ public class SourceDto{
 	}
 	public String getName(){
 		return name;
-	}
-
-	public void setUpdateTime(Date updateTime){
-		this.updateTime=updateTime;
-	}
-	public Date getUpdateTime(){
-		return updateTime;
 	}
 
 	public void setModuleId(String moduleId){
@@ -87,4 +74,28 @@ public class SourceDto{
 	public String getProjectId(){
 		return projectId;
 	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
+
+    public String getUpdateTimeStr() {
+        return updateTimeStr;
+    }
+
+    public void setUpdateTimeStr(String updateTimeStr) {
+        this.updateTimeStr = updateTimeStr;
+    }
 }

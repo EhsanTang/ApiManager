@@ -1,6 +1,6 @@
 # CrapApi
 
-<iframe height=498 width=100% src='http://player.youku.com/embed/XMzU4NjQwODIzNg==' frameborder=0 'allowfullscreen'></iframe>
+[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](http://youtu.be/vt5fpE0bzSY)
 
 [CrapApi是什么]
 ```

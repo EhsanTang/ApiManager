@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,11 +47,11 @@ public class GitHubController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/github/authorize.do")
-	public void authorize() throws Exception {
+	public void authorize(HttpServletResponse response) throws Exception {
 		String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
 		String state = Tools.getChar(20);
 		stringCache.add( MyCookie.getCookie(IConst.COOKIE_TOKEN) + IConst.CACHE_AUTHORIZE, state);
-		ThreadContext.response().sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
+		response.sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
 	}
 	@RequestMapping("/github/login.do")
 	public String login(@RequestParam String code,@RequestParam String state) throws Exception {

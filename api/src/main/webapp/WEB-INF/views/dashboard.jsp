@@ -86,11 +86,10 @@
                     <div class="mt10">
                         <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
                                 src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
-                        <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
-                                src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
+                        <a href='https://gitee.com/CrapApi/CrapApi/members'><img src='https://gitee.com/CrapApi/CrapApi/badge/fork.svg?theme=dark' alt='fork'></img></a>
                     </div>
-                    <a class="btn btn-main btn-sm w f14 mt20 r20" href="http://v.youku.com/v_show/id_XMjY5NzUzMjM3Ng==?spm=a2h3j.8428770.3416059.1" target="_self">
-                        视频介绍<i class="iconfont f18">&#xe634;</i></a>
+                    <a class="btn btn-main btn-sm w f14 mt20 r20" href="http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html" target="_blank">
+                        视频-用户版<i class="iconfont f18">&#xe634;</i></a>
                 </div>
             </div>
         </div>

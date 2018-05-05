@@ -202,6 +202,8 @@ public class ArticleController extends BaseController{
 		}else{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
+		Module module = moduleCache.get(moduleId);
+		article.setProjectId(module.getProjectId());
 		articleService.insert(article);
 		return new JsonResult(1, new Article());
 	}

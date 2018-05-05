@@ -20,7 +20,7 @@ public class CustomInterfaceDao {
 
 	public void deleteTemplateByModuleId(String moduleId){
 		Assert.notNull(moduleId);
-		jdbcTemplate.update("update Interface set isTemplate=0 where moduleId =?", moduleId);
+		jdbcTemplate.update("update interface set isTemplate=0 where moduleId =?", moduleId);
 	}
 
 

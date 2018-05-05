@@ -45,8 +45,7 @@ public class GitOschinaController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/oschina/authorize.do")
-	public void authorize() throws Exception {
-		HttpServletResponse response = ThreadContext.response();
+	public void authorize(HttpServletResponse response) throws Exception {
 		String authorizeUrl = "https://git.oschina.net/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
 		response.sendRedirect(String.format(authorizeUrl, config.getOschinaClientID(), config.getDomain()+"/oschina/login.do"));
 	}

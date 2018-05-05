@@ -117,6 +117,9 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         if (contentType == null){
             contentType = InterfaceContentType.JSON;
         }
+        if (MyString.isEmpty(message)){
+            message = " ";
+        }
         ThreadContext.response().setHeader("Content-Type", contentType.getType());
         ThreadContext.response().setCharacterEncoding("utf-8");
         try {

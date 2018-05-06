@@ -1,6 +1,6 @@
 # CrapApi
 [CrapApi视频介绍-用户版]
-[![CrapApi视频介绍-用户版](https://github.com/EhsanTang/ApiManager/blob/master/api/src/main/webapp/resources/images/guidev8.0.png)](http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html)
+[![CrapApi视频介绍-用户版](https://github.com/EhsanTang/ApiManager/blob/master/api/src/main/webapp/resources/images/guidev8.0.0.jpg)](http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html)
 
 [CrapApi是什么]
 ```
@@ -51,10 +51,6 @@ Windows系统：2G内存以上，jdk7及以上，Tomcat7及以上，mysql5.6及�
 ApiManager GitHub,apimanager github,Apimanager 码云,ApiManager 开源中国
 API接口管理系统,API接口管理,在线API接口管理,API接口调试工具,RestApi,API调试插件
 ```
-
-
-[效果图]
-![视屏演示](http://api.crap.cn/resources/upload/images/2018-05-05/180938Jf1aif.CAV.3LqtmR.1.png "效果图")
 
 
 最新消息：</br>

@@ -63,6 +63,9 @@ public class ModuleService {
         }
         model.setCreateTime(null);
         model.setProjectId(null);
+        if (model.getUrl() == null){
+            model.setUrl("");
+        }
         return moduleMapper.updateByPrimaryKeySelective(model) > 0 ? true : false;
     }
 

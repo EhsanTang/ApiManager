@@ -24,6 +24,7 @@ public interface IConst {
 	String C_AUTH_ROLE = "ROLE";
 	String C_AUTH_LOG = "LOG";
 	String C_AUTH_PROJECT = "PROJECT_";
+	String C_DELETE_PASSWORD = "delete";
 
 	// 缓存
     String C_CACHE_LEFT_MENU = "cache:leftMenu";

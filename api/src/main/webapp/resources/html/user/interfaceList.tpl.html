@@ -49,21 +49,19 @@
 			<tr class="BGEEE">
 				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
 				<th class="tc w100">名称</th>
-				<th class="tc">版本号</th>
-				<th class="tc w100">模块名</th>
-				<th class="tc">排序</th>
-				<th class="tc w200">最后修改人</th>
-				<th class="tc">最后修改时间</th>
-				<th class="w500 tc">操作</th>
+				<th class="tc w300">URL</th>
+				<th class="tc w60">版本</th>
+				<th class="tc w150">最后修改人</th>
+				<th class="tc w120">最后修改时间</th>
+				<th class="w300 tc">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
 				<td class="tc">{{item.interfaceName}}</td>
+				<td class="tc">{{item.url}}</td>
 				<td class="tc">{{item.version}}</td>
-				<td class="tc">{{item.moduleName}}</td>
-				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">{{item.updateBy}}</td>
 				<td class="tc">{{item.updateTimeStr}}</td>
 				<td class="tc">
@@ -81,6 +79,7 @@
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
 					<i class="iconfont f12">&#xe60a;预览</i>
 				</a>
+					<br/>
 				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
 					<i class="iconfont">&#xe625;&nbsp;</i>调试
 				</a>
@@ -97,14 +96,14 @@
 					ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName)">
 					<i class="iconfont f12">&#xe60e;删除</i>
 				</a>
-				<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
+				<!--<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/interface/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>
 					</a>
 					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/interface/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
 						<i class="iconfont f12">&#xe624;</i>
 					</a>
-				</div>
+				</div>-->
 				</td>
 			</tr>
 

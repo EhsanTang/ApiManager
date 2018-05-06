@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @Service
-public class CustomProjectService implements ILogConst{
+public class CustomProjectService implements ILogConst, IConst{
     @Autowired
     private ProjectDao mapper;
     @Autowired
@@ -87,7 +87,11 @@ public class CustomProjectService implements ILogConst{
         logService.insert(log);
 
         if (MyString.isNotEmpty(project.getPassword())){
-            project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
+            if (project.getPassword().equals(C_DELETE_PASSWORD)){
+                project.setPassword("");
+            }else {
+                project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
+            }
         }
 
         mapper.updateByPrimaryKeySelective(project);

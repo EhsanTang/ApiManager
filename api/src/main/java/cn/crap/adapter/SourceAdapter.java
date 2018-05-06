@@ -12,6 +12,7 @@ import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,11 @@ public class SourceAdapter {
         }
         List<SearchDto> dtos = new ArrayList<>();
         for (Source model : models){
-            dtos.add(getSearchDto(model));
+            try{
+                dtos.add(getSearchDto(model));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return dtos;
     }

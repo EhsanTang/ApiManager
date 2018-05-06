@@ -5,6 +5,7 @@ import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
 import cn.crap.beans.Config;
 import cn.crap.utils.*;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -33,6 +34,7 @@ import java.util.List;
 
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
+	protected Logger log = Logger.getLogger(getClass());
 
 	@Autowired
 	private SettingCache settingCache;
@@ -276,6 +278,7 @@ public class LuceneSearchService implements ISearchService {
 			    }
 
 			    for(ILuceneService service:luceneServices){
+					log.error("正在创建索引：" + service.getLuceneType());
 			    	int i = 0;
 			    	List<SearchDto> dtos= service.getAll();
 			    	for (SearchDto dto : dtos) {
@@ -289,6 +292,7 @@ public class LuceneSearchService implements ISearchService {
 						}
 						add(dto);
 					}
+                    log.error("建索引创建完成：" + service.getLuceneType());
 			    }
 			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
 			}catch(Exception e){

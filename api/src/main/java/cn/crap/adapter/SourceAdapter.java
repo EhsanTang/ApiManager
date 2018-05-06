@@ -73,7 +73,11 @@ public class SourceAdapter {
         }
         List<SourceDto> dtos = new ArrayList<>();
         for (Source model : models){
-            dtos.add(getDto(model, null));
+            try{
+                dtos.add(getDto(model, null));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return dtos;
     }

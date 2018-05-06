@@ -146,7 +146,11 @@ public class InterfaceAdapter {
 		}
 		List<SearchDto> dtos = new ArrayList<>();
 		for (InterfaceDto model : models){
-			dtos.add(getSearchDto(model));
+		    try{
+			    dtos.add(getSearchDto(model));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 		}
 		return dtos;
 	}

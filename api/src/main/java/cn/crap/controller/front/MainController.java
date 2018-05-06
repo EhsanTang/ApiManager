@@ -276,7 +276,14 @@ public class MainController extends BaseController{
                 hotSearch.setUpdateTime(new Date());
                 hotSearch.setTimes(1);
                 hotSearch.setKeyword(keyword);
-                hotSearchService.insert(hotSearch);
+                try {
+					hotSearchService.insert(hotSearch);
+				}catch (Exception e){
+					hotSearch = customHotSearchService.tryGetByKeyWord(keyword);
+                	if (hotSearch == null){
+                		e.printStackTrace();
+					}
+				}
             }else{
                 hotSearch.setTimes(hotSearch.getTimes() + 1);
                 hotSearchService.update(hotSearch);

@@ -126,7 +126,11 @@ public class ArticleAdapter {
 		}
 		List<SearchDto> dtos = new ArrayList<>();
 		for (ArticleWithBLOBs model : models){
-			dtos.add(getSearchDto(model));
+		    try {
+                dtos.add(getSearchDto(model));
+            }catch (Exception e){
+		        e.printStackTrace();
+            }
 		}
 		return dtos;
 	}

@@ -82,7 +82,13 @@ public class ModuleController extends BaseController implements ILogConst{
 		}
 		return new JsonResult(1, ModuleAdapter.getDto(module, project));
 	}
-	
+
+	/**
+	 * 修改模块名等，需要手动重建索引
+	 * @param moduleDto
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
@@ -92,7 +98,6 @@ public class ModuleController extends BaseController implements ILogConst{
 		String id = moduleDto.getId();
 		if(id != null) {
 			moduleDto.setCanDelete(null);
-			moduleDto.setName(null);
 			moduleDto.setProjectId(null);
 			moduleDto.setStatus(null);
 		}

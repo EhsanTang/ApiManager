@@ -121,13 +121,22 @@ public class InterfaceController extends BaseController {
     @RequestMapping("/download/pdf.do")
     @ResponseBody
     public void download(String id, String moduleId, HttpServletRequest req, HttpServletResponse response) throws Exception {
-
         Module module = null;
         if (!MyString.isEmpty(moduleId)) {
             module = moduleCache.get(moduleId);
         } else {
             module = moduleCache.get(interfaceService.getById(id).getModuleId());
         }
+
+        // word下载
+        Map<String, Object> map = new HashMap<>();
+        InterfaceWithBLOBs interFace = interfaceService.getById(id);
+        map.put("interfacePDFDto", (customInterfaceService.getInterDto(interFace, module)));
+        if (true) {
+            WordUtils.dowloadWord(response, map);
+            return;
+        }
+
 
         Project project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码

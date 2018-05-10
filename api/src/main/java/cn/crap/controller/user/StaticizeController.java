@@ -262,7 +262,7 @@ public class StaticizeController extends BaseController{
 		}
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口详情");
 		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
-		interfaces.add(customInterfaceService.getInterDto(interFace, module));
+		interfaces.add(customInterfaceService.getInterDto(interFace, module, false));
 
 		returnMap.put("interfaces", interfaces);
 		returnMap.put("activePage",module.getId()+"_interface");

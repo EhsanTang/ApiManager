@@ -91,7 +91,7 @@ public class InterfaceController extends BaseController {
                     return ERROR_VIEW;
                 }
                 Module module = moduleService.getById(interFace.getModuleId());
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module));
+                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, false));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
                 return ERROR_VIEW;
@@ -106,7 +106,7 @@ public class InterfaceController extends BaseController {
                 return ERROR_VIEW;
             }
             for (InterfaceWithBLOBs interFace : customInterfaceService.selectByModuleId(moduleId)) {
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module));
+                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, false));
             }
 
             request.setAttribute("interfaces", interfacePDFDtos);
@@ -131,7 +131,7 @@ public class InterfaceController extends BaseController {
         // word下载
         Map<String, Object> map = new HashMap<>();
         InterfaceWithBLOBs interFace = interfaceService.getById(id);
-        map.put("interfacePDFDto", (customInterfaceService.getInterDto(interFace, module)));
+        map.put("interfacePDFDto", (customInterfaceService.getInterDto(interFace, module, true)));
         if (true) {
             WordUtils.dowloadWord(response, map);
             return;
@@ -222,7 +222,7 @@ public class InterfaceController extends BaseController {
 
             List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example), module);
 
-            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module), null,
+            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module, false), null,
                     Tools.getMap("versions", versions,
                             "crumbs",
                             Tools.getCrumbs(

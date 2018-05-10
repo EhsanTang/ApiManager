@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -411,15 +412,9 @@ public class Tools {
 		}
 		inputStr=inputStr.replaceAll("<[a-zA-Z|//]+[1-9]?[^><]*>", "");
 		inputStr=inputStr.replaceAll("&nbsp;", "");
-		StringBuffer temp=new StringBuffer();
-		String str="[a-z]*[A-Z]*[0-9]*[\u4E00-\u9FA5]*[Ⅰ|,|。|，|.|：|(|)|（|）|:|/]*";
-		Pattern pattern = Pattern.compile(str,Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(inputStr);
-		while (matcher.find())
-		{
-			temp.append(matcher.group());
-		}
-		return temp.toString();
+		inputStr=inputStr.replaceAll("<", "&lt;");
+        inputStr=inputStr.replaceAll(">", "&gt;");
+		return inputStr;
 	}
 	
 	public static String subString(String str, int length, String suffix){

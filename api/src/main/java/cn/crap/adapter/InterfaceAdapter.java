@@ -28,14 +28,14 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module){
+    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module, boolean handleText){
         if (model == null){
             return null;
         }
 
         InterfaceDto dto = new InterfaceDto();
         dto.setId(model.getId());
-		dto.setUrl(model.getUrl());
+		dto.setUrl(handleText(model.getUrl(), handleText));
 		dto.setMethod(model.getMethod());
 		dto.setParam(model.getParam());
 		dto.setParamRemark(model.getParamRemark());
@@ -47,13 +47,13 @@ public class InterfaceAdapter {
 		dto.setStatus(model.getStatus());
 		dto.setModuleId(model.getModuleId());
 		dto.setInterfaceName(model.getInterfaceName());
-		dto.setRemark(model.getRemark());
+		dto.setRemark(handleText(model.getRemark(), handleText));
 		dto.setErrors(model.getErrors());
 		dto.setUpdateBy(model.getUpdateBy());
 		dto.setVersion(model.getVersion());
 		dto.setSequence(model.getSequence());
 		dto.setHeader(model.getHeader());
-		dto.setFullUrl(model.getFullUrl());
+		dto.setFullUrl(handleText(model.getFullUrl(), handleText));
 		dto.setMonitorType(model.getMonitorType());
 		dto.setMonitorText(model.getMonitorText());
 		dto.setMonitorEmails(model.getMonitorEmails());
@@ -81,6 +81,13 @@ public class InterfaceAdapter {
 		
         return dto;
     }
+
+    private static String handleText(String str, boolean handleText){
+    	if (handleText){
+    		return Tools.removeHtml(str);
+		}
+		return str;
+	}
 
 
     public static InterfaceWithBLOBs getModel(InterfaceDto dto){
@@ -124,7 +131,7 @@ public class InterfaceAdapter {
         }
         List<InterfaceDto> dtos = new ArrayList<>();
         for (InterfaceWithBLOBs model : models){
-            dtos.add(getDto(model, null));
+            dtos.add(getDto(model, null, false));
         }
         return dtos;
     }
@@ -135,7 +142,7 @@ public class InterfaceAdapter {
 		}
 		List<InterfaceDto> dtos = new ArrayList<>();
 		for (InterfaceWithBLOBs model : models){
-			dtos.add(getDto(model, module));
+			dtos.add(getDto(model, module, false));
 		}
 		return dtos;
 	}

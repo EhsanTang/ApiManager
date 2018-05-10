@@ -2,6 +2,8 @@ package unitTest;
 
 import cn.crap.utils.Tools;
 import cn.crap.utils.WordUtils;
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,17 +19,17 @@ import java.util.Set;
  */
 public class WordXmlHander {
     private static Map<String, String> placeHolder = new HashMap<>();
-    private static String templateFileName = "interfaceTemplete";
+    private static String templateFileName = "interfaceTempleteSrc";
     private static final String templateFolder = WordUtils.class.getResource("/").getPath().replaceAll("test-classes", "classes");
 
 
     static {
         placeHolder.put("接口名", "\\$\\{interfacePDFDto.model.interfaceName\\}");
-        // placeHolder.put("接口备注", "\\$\\{interfacePDFDto.model.remark\\}"); TODO html问题
+        placeHolder.put("接口备注", "\\$\\{interfacePDFDto.model.remark\\}");
         placeHolder.put("接口地址", "\\$\\{interfacePDFDto.model.fullUrl\\}");
         placeHolder.put("接口版本", "\\$\\{interfacePDFDto.model.version\\}");
-        //placeHolder.put("接口正确地址", "\\$\\{interfacePDFDto.model.trueMockUrl\\}");
-        //placeHolder.put("接口错误地址", "\\$\\{interfacePDFDto.model.falseMockUrl\\}");
+        placeHolder.put("接口正确地址", "\\$\\{interfacePDFDto.trueMockUrl\\}");
+        placeHolder.put("接口错误地址", "\\$\\{interfacePDFDto.falseMockUrl\\}");
         placeHolder.put("接口请求方式", "\\$\\{interfacePDFDto.model.method\\}");
     }
 

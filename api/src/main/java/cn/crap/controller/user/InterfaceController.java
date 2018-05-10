@@ -111,7 +111,7 @@ public class InterfaceController extends BaseController{
 			}
 			
 		}
-		return new JsonResult(1, InterfaceAdapter.getDto(model, module));
+		return new JsonResult(1, InterfaceAdapter.getDto(model, module, false));
 	}
 	
 	/**

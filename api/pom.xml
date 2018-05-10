@@ -48,7 +48,6 @@
 			<version>${mybatis.version}</version>
 		</dependency>
 
-		<!-- hibernate -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -251,13 +250,6 @@
 			<version>3.10-FINAL</version>
 		</dependency>
 		<!-- End:get text from excel -->
-		<!-- jedis -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.8.0</version>
-		</dependency>
-		<!-- End:jedis -->
 		<!-- 读取xml配置
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -307,18 +299,23 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- mongo -->
+		<!-- mongo
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<!-- spring mongo -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.7.0.RELEASE</version>
-		</dependency>
+		</dependency> -->
+        <!-- freemark -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.28</version>
+        </dependency>
 
 	</dependencies>
 

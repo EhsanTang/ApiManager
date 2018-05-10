@@ -84,7 +84,12 @@ public class InterfaceAdapter {
 
     private static String handleText(String str, boolean handleText){
     	if (handleText){
-    		return Tools.removeHtml(str);
+    		str = str.replaceAll("</div>", "_CARP_BR_");
+            str = str.replaceAll("</span>", "_CARP_BR_");
+            str = str.replaceAll("<br/>", "_CARP_BR_");
+            str = str.replaceAll("<br>", "_CARP_BR_");
+            str = Tools.removeHtml(str);
+            str = str.replaceAll("_CARP_BR_", "<w:br/>");
 		}
 		return str;
 	}

@@ -3,9 +3,7 @@ package unitTest;
 import cn.crap.utils.Tools;
 import cn.crap.utils.WordUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 使用英文占位符导出，xml中会被分割成多个
@@ -17,27 +15,55 @@ import java.util.Set;
  * 注意：html问题
  */
 public class WordXmlHander {
-    private static Map<String, String> placeHolder = new HashMap<>();
+    private static List<String> placeHolder = new ArrayList<>();
     private static String templateFileName = "interfaceTempleteSrc";
     private static final String templateFolder = WordUtils.class.getResource("/").getPath().replaceAll("test-classes", "classes");
 
-
     static {
-        placeHolder.put("接口名", "\\$\\{interfacePDFDto.model.interfaceName\\}");
-        placeHolder.put("接口备注", "\\$\\{interfacePDFDto.model.remark\\}");
-        placeHolder.put("接口地址", "\\$\\{interfacePDFDto.model.fullUrl\\}");
-        placeHolder.put("接口版本", "\\$\\{interfacePDFDto.model.version\\}");
-        placeHolder.put("接口正确地址", "\\$\\{interfacePDFDto.trueMockUrl\\}");
-        placeHolder.put("接口错误地址", "\\$\\{interfacePDFDto.falseMockUrl\\}");
-        placeHolder.put("接口请求方式", "\\$\\{interfacePDFDto.model.method\\}");
+        placeHolder.add("interfacePDFDto.model.interfaceName");
+        placeHolder.add("interfacePDFDto.model.remark");
+        placeHolder.add("interfacePDFDto.model.fullUrl");
+        placeHolder.add("interfacePDFDto.model.version");
+        placeHolder.add("interfacePDFDto.trueMockUrl");
+        placeHolder.add("interfacePDFDto.falseMockUrl");
+        placeHolder.add("interfacePDFDto.model.method");
+        placeHolder.add("interfacePDFDto.model.contentType");
+        placeHolder.add("interfacePDFDto.model.trueExam");
+        placeHolder.add("interfacePDFDto.model.falseExam");
+        placeHolder.add("interfacePDFDto.model.requestExam");
+
+        placeHolder.add("CAH.name");
+        placeHolder.add("CAH.necessary");
+        placeHolder.add("CAH.type");
+        placeHolder.add("CAH.def");
+        placeHolder.add("CAH.remark");
+
+        placeHolder.add("CAE.errorCode");
+        placeHolder.add("CAE.errorMsg");
+
+        placeHolder.add("CAR.deep");
+        placeHolder.add("CAR.name");
+        placeHolder.add("CAR.type");
+        placeHolder.add("CAR.necessary");
+        placeHolder.add("CAR.remark");
+
+        /**
+         * 修改xml，添加循环
+         */
+        // <#list interfacePDFDto.headers as CAH>
+        // <w:tr w:rsidR
+        // </w:tr>
+        // </#list>
+        // interfacePDFDto.errors as CAE
+        // interfacePDFDto.responseParam as CAR
+        // interfacePDFDto.formParams as CAP
     }
 
     public static void main(String[] args) throws Exception{
         String xmlPath = templateFolder + "/" + templateFileName + ".xml";
         String xmlContent = Tools.readFile(xmlPath);
-        Set<Map.Entry<String, String>> entries = placeHolder.entrySet();
-        for (Map.Entry<String, String> entry : entries){
-            xmlContent = xmlContent.replaceAll(entry.getKey(), entry.getValue());
+        for (String str : placeHolder){
+            xmlContent = xmlContent.replaceAll(str, "\\$\\{" + str + "\\}");
         }
         Tools.staticize(xmlContent, "/Users/apple/ijworkspace/ApiManager/api/src/main/resources/interfaceTemplete.xml");
     }

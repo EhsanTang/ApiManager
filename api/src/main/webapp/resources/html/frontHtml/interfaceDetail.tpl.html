@@ -23,6 +23,7 @@
   			<p class="cursor pl20" onclick="scrollToId('1_2')">1.2  版本号</p>
   			<p class="cursor pl20" onclick="scrollToId('1_3')">1.3  接口说明</p>
   			<p class="cursor pl20" onclick="scrollToId('1_4')">1.4  接口状态</p>
+			<p class="cursor pl20" onclick="scrollToId('1_5')">1.5  ContentType类型</p>
   			<p class="cursor" onclick="scrollToId('2')">2  接口调用说明</p>
   			<p class="cursor pl20" onclick="scrollToId('2_1')">2.1 URL</p>
   			<p class="cursor pl20" onclick="scrollToId('2_2')">2.2 Mock地址</p>
@@ -48,7 +49,10 @@
 		<div id="1_4">1.4 接口状态</div>
 		<span ng-if="model.status==1">可用</span>
 		<span ng-if="model.status==0">不可用</span>
-		
+
+		<div id="1_5">1.5 返回contentType类型</div>
+		<span ng-bind="model.contentType"></span>
+
 		<div class="fb f18" id="2">2接口调用说明</div>
 		<div id="2_1">2.1 URL</div>
 		{{model.moduleUrl}}{{model.url}}

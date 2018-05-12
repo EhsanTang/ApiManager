@@ -14,6 +14,7 @@ import cn.crap.model.mybatis.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import org.springframework.util.Assert;
 
@@ -90,11 +91,15 @@ public class InterfaceAdapter {
      * @return
      */
     private static String handleText(String str, boolean handleText){
+        if (MyString.isEmpty(str)){
+            return str;
+        }
     	if (handleText){
     		str = str.replaceAll("</div>", "_CARP_BR_");
             str = str.replaceAll("</span>", "_CARP_BR_");
             str = str.replaceAll("<br/>", "_CARP_BR_");
             str = str.replaceAll("<br>", "_CARP_BR_");
+            str = str.replaceAll("\r\n", "_CARP_BR_");
             str = Tools.removeHtml(str);
             str = str.replaceAll("_CARP_BR_", "<w:br/>");
 		}

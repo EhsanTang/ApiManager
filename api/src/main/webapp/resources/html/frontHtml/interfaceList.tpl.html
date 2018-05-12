@@ -39,16 +39,31 @@
 			class="p10 pl0 f16 dis w C000 no_unl" ng-bind="item.interfaceName"></a>
 		<div class="f14 C555">{{item.remarkNoHtml}}</div>
 		<div class="tr C999 f12 mt5">
-			模块：{{item.moduleName}} &nbsp;&nbsp;版本号:{{item.version}} <a
-				class="ml5 f12 text-primary mr10 cursor"
-				ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"><i
-				class="iconfont f12">&#xe60a;</i>&nbsp;详情</a> <a
-				class="f12 text-primary mr10 cursor"
-				ng-href="#/{{item.projectId}}/front/interface/debug/{{item.id}}"> <i
-				class="iconfont f12">&#xe625;</i>&nbsp;调试
-			</a> <a class="f12 text-primary mr10 cursor"
-				ng-href="front/interface/download/pdf.do?id={{item.id}}"
-				target="_blank"><i class="iconfont">&#xe61e;</i>&nbsp;下载</a>
+			模块：{{item.moduleName}} &nbsp;&nbsp;版本号:{{item.version}}
+			<div class="dropdown dis-in-tab pl10">
+				<button class="btn btn-xs btn-adorn r20 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					更多...
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
+					<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
+					<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+					<li role="separator" class="divider"></li>
+					<li>
+						<a
+								class="f12 text-primary mr10 cursor"
+								ng-href="#/{{item.projectId}}/front/interface/debug/{{item.id}}"> <i
+								class="iconfont f12">&#xe625;</i>&nbsp;调试
+						</a>
+					</li>
+					<li>
+						<a
+								class="ml5 f12 text-primary mr10 cursor"
+								ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"><i
+								class="iconfont f12">&#xe60a;</i>&nbsp;详情</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 	<div ui-view="page" ng-if="list.length>0"></div>

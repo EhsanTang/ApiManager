@@ -7,10 +7,10 @@ public class ResponseParamDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private String type;
-	private String remark;
-	private Integer deep;
+	private String name = "";
+	private String type = "";
+	private String remark = "";
+	private Integer deep = 0;
 	private String necessary;
 	public String getName() {
 		return name;

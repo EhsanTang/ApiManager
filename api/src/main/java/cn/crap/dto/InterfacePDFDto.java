@@ -74,8 +74,10 @@ public class InterfacePDFDto implements Serializable{
 		for (ResponseParamDto responseParamDto : responseParam){
 			Integer deep = responseParamDto.getDeep();
 			if (deep == null){
+                responseParamDto.setDeep(0);
 				deep = 0;
 			}
+			// TODO 空格无效
 			StringBuilder sb = new StringBuilder("");
 			while (deep > 0){
                 sb.append(" ");

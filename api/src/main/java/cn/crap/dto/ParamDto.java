@@ -7,12 +7,12 @@ public class ParamDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private String necessary;
-	private String type;
-	private String remark;
-	private String def;
-	private String inUrl;
+	private String name = "";
+	private String necessary = "";
+	private String type = "";
+	private String remark = "";
+	private String def = "";
+	private String inUrl = "";
 
 	public String getName() {
 		return name;

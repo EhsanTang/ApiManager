@@ -27,6 +27,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class InterfaceController extends BaseController {
                     return ERROR_VIEW;
                 }
                 Module module = moduleService.getById(interFace.getModuleId());
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, false));
+                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, true));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
                 return ERROR_VIEW;
@@ -120,56 +121,33 @@ public class InterfaceController extends BaseController {
 
     @RequestMapping("/download/pdf.do")
     @ResponseBody
-    public void download(String id, String moduleId, HttpServletRequest req, HttpServletResponse response) throws Exception {
+    public void download(String id, String moduleId, @RequestParam(defaultValue = "true") boolean pdf,
+                         HttpServletRequest req, HttpServletResponse response) throws Exception {
         Module module = null;
+        InterfaceWithBLOBs interFace = null;
         if (!MyString.isEmpty(moduleId)) {
             module = moduleCache.get(moduleId);
         } else {
-            module = moduleCache.get(interfaceService.getById(id).getModuleId());
+            interFace = interfaceService.getById(id);
+            module = moduleCache.get(interFace.getModuleId());
         }
-
-        // word下载
-        Map<String, Object> map = new HashMap<>();
-        InterfaceWithBLOBs interFace = interfaceService.getById(id);
-        map.put("interfacePDFDto", (customInterfaceService.getInterDto(interFace, module, true)));
-        if (true) {
-            WordUtils.dowloadWord(response, map);
-            return;
-        }
-
 
         Project project = projectCache.get(module.getProjectId());
-        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
+        String downloadName = (interFace == null) ? module.getName() : interFace.getInterfaceName();
 
-        // 使用缓存的密码，不需要验证码
+        // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码:使用缓存的密码，不需要验证码
         checkFrontPermission("", "", project);
 
-        String displayFilename = "CrapApi" + System.currentTimeMillis() + ".pdf";
-        byte[] buf = new byte[1024 * 1024 * 10];
-        int len = 0;
-        ServletOutputStream ut = null;
-        BufferedInputStream br = null;
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "must-revalidate, no-transform");
-        response.setDateHeader("Expires", 0L);
+        if (pdf) {
+            String secretKey = settingCache.get(S_SECRETKEY).getValue();
+            String fileName = Html2Pdf.createPdf(req, config, id, moduleId, secretKey);
+            DownloadUtils.downloadWord(response, new File(fileName), downloadName, true);
+        }else{
+            Map<String, Object> map = new HashMap<>();
+            map.put("interfacePDFDto", (customInterfaceService.getInterDto(interFace, module, true)));
+            WordUtils.downloadWord(response, map, downloadName);
 
-        String userAgent = req.getHeader("User-Agent");
-        boolean isIE = (userAgent != null) && (userAgent.toLowerCase().indexOf("msie") != -1);
-        response.setContentType("application/x-download");
-        if (isIE) {
-            displayFilename = URLEncoder.encode(displayFilename, "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + displayFilename + "\"");
-        } else {
-            displayFilename = new String(displayFilename.getBytes("UTF-8"), "ISO8859-1");
-            response.setHeader("Content-Disposition", "attachment;filename=" + displayFilename);
         }
-        String secretKey = settingCache.get(S_SECRETKEY).getValue();
-        br = new BufferedInputStream(new FileInputStream(Html2Pdf.createPdf(req, config, id, moduleId, secretKey)));
-        ut = response.getOutputStream();
-        while ((len = br.read(buf)) != -1)
-            ut.write(buf, 0, len);
-        ut.flush();
-        br.close();
     }
 
 

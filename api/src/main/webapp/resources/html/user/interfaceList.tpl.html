@@ -65,37 +65,55 @@
 				<td class="tc">{{item.updateBy}}</td>
 				<td class="tc">{{item.updateTimeStr}}</td>
 				<td class="tc">
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="detail('编辑【'+item.interfaceName+'】',1100,'user/interface/detail.do?id='+item.id,'',initEditInterFace)"> 
-					<i class="iconfont f12">&#xe618;修改</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="detail('拷贝【'+item.interfaceName+'】',600,'user/interface/detail.do?id='+item.id,'',copyInterface)"> 
-					<i class="iconfont f12">&#xe61d;拷贝</i>
-				</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?id={{item.id}}">
-						<i class="iconfont f12">&#xe61e; 下载接口</i>
+					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+						ng-click="detail('编辑【'+item.interfaceName+'】',1100,'user/interface/detail.do?id='+item.id,'',initEditInterFace)">
+						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
-					<i class="iconfont f12">&#xe60a;预览</i>
-				</a>
-					<br/>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
-					<i class="iconfont">&#xe625;&nbsp;</i>调试
-				</a>
-				<a class="f12 text-danger mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="sendRequest('user/module/setTemplate.do?id='+item.id)">
-					<i class="iconfont f12"  ng-if="item.template">&#xe63d;取消模板</i>
-					<i class="iconfont f12 text-success"  ng-if="!item.template">&#xe63d;设置模板</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
-					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
-				</a>
-				
-				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName)">
-					<i class="iconfont f12">&#xe60e;删除</i>
-				</a>
+
+					<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
+						<i class="iconfont">&#xe625;&nbsp;</i>调试
+					</a>
+
+					<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"
+						ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName)">
+						<i class="iconfont f12">&#xe60e;删除</i>
+					</a>
+
+
+					<div class="dropdown dis-in-tab">
+						<button class="btn btn-xs btn-adorn r20 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							更多...
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
+							<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
+							<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+							<li role="separator" class="divider"></li>
+							<li>
+								<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
+									<i class="iconfont f12">&#xe60a;预览</i>
+								</a>
+							</li>
+							<li>
+								<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+									<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
+								</a>
+							</li>
+							<li>
+								<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+								   ng-click="detail('拷贝【'+item.interfaceName+'】',600,'user/interface/detail.do?id='+item.id,'',copyInterface)">
+									<i class="iconfont f12">&#xe61d;拷贝</i>
+								</a>
+							</li>
+							<li>
+								<a class="f12 text-danger mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+								   ng-click="sendRequest('user/module/setTemplate.do?id='+item.id)">
+									<i class="iconfont f12"  ng-if="item.template">&#xe63d;取消模板</i>
+									<i class="iconfont f12 text-success"  ng-if="!item.template">&#xe63d;设置模板</i>
+								</a>
+							</li>
+						</ul>
+					</div>
 				<!--<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
 					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/interface/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
 						<i class="iconfont f12">&#xe623;</i>

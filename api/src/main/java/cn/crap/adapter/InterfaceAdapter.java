@@ -37,25 +37,25 @@ public class InterfaceAdapter {
         dto.setId(model.getId());
 		dto.setUrl(handleText(model.getUrl(), handleText));
 		dto.setMethod(model.getMethod());
-		dto.setParam(model.getParam());
-		dto.setParamRemark(model.getParamRemark());
-		dto.setRequestExam(model.getRequestExam());
-		dto.setResponseParam(model.getResponseParam());
-		dto.setErrorList(model.getErrorList());
-		dto.setTrueExam(model.getTrueExam());
-		dto.setFalseExam(model.getFalseExam());
+		dto.setParam(handleText(model.getParam(), handleText));
+		dto.setParamRemark(handleText(model.getParamRemark(), handleText));
+		dto.setRequestExam(handleText(model.getRequestExam(), handleText));
+		dto.setResponseParam(handleText(model.getResponseParam(), handleText));
+		dto.setErrorList(handleText(model.getErrorList(), handleText));
+		dto.setTrueExam(handleText(model.getTrueExam(), handleText));
+		dto.setFalseExam(handleText(model.getFalseExam(), handleText));
 		dto.setStatus(model.getStatus());
 		dto.setModuleId(model.getModuleId());
-		dto.setInterfaceName(model.getInterfaceName());
+		dto.setInterfaceName(handleText(model.getInterfaceName(), handleText));
 		dto.setRemark(handleText(model.getRemark(), handleText));
-		dto.setErrors(model.getErrors());
-		dto.setUpdateBy(model.getUpdateBy());
-		dto.setVersion(model.getVersion());
+		dto.setErrors(handleText(model.getErrors(), handleText));
+		dto.setUpdateBy(handleText(model.getUpdateBy(), handleText));
+		dto.setVersion(handleText(model.getVersion(), handleText));
 		dto.setSequence(model.getSequence());
-		dto.setHeader(model.getHeader());
+		dto.setHeader(handleText(model.getHeader(), handleText));
 		dto.setFullUrl(handleText(model.getFullUrl(), handleText));
 		dto.setMonitorType(model.getMonitorType());
-		dto.setMonitorText(model.getMonitorText());
+		dto.setMonitorText(handleText(model.getMonitorText(), handleText));
 		dto.setMonitorEmails(model.getMonitorEmails());
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
@@ -75,13 +75,20 @@ public class InterfaceAdapter {
         }
 
 		if (module != null){
-			dto.setModuleName(module.getName());
-			dto.setModuleUrl(module.getUrl());
+			dto.setModuleName(handleText(module.getName(), handleText));
+			dto.setModuleUrl(handleText(module.getUrl(), handleText));
 		}
 		
         return dto;
     }
 
+    /**
+     * html 转word 保留换行
+	 * 转义 < >
+     * @param str
+     * @param handleText
+     * @return
+     */
     private static String handleText(String str, boolean handleText){
     	if (handleText){
     		str = str.replaceAll("</div>", "_CARP_BR_");

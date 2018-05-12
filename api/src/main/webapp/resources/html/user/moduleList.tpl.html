@@ -56,19 +56,10 @@
 						<i class="iconfont f12">&#xe637; 文章</i>
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.projectId}}/{{item.id}}"> 
-						<i class="iconfont f12">&#xe638; 资源</i>
-					</a>
-					
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list/{{item.projectId}}/{{item.id}}/DICTIONARY"> 
 						<i class="iconfont f12">&#xe61c;数据字典</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
-						<i class="iconfont">&#xe62b;&nbsp;</i>日志
-					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="front/interface/download/pdf.do?moduleId={{item.id}}"> 
-						<i class="iconfont f12">&#xe61e; 下载接口</i>
-					</a>
+
 					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id)"> 
 						<i class="iconfont f12">&#xe618;修改</i>
@@ -78,10 +69,34 @@
 						ng-click="del('user/module/delete.do?id='+item.id,item.name)">
 						<i class="iconfont f12">&#xe60e;删除</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor"
-							ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank">
-							<i class="iconfont f12">&#xe63a;静态化地址</i>
-					</a>
+
+					<div class="dropdown dis-in-tab">
+						<button class="btn btn-xs btn-adorn r20 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							更多...
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
+							<li><a ng-href="front/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
+							<li><a ng-href="front/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+							<li role="separator" class="divider"></li>
+							<li>
+								<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list/{{item.projectId}}/{{item.id}}">
+									<i class="iconfont f12">&#xe638; 资源</i>
+								</a>
+							</li>
+							<li>
+								<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+									<i class="iconfont">&#xe62b;&nbsp;</i>日志
+								</a>
+							</li>
+							<li>
+								<a class="f12 text-primary mr10 cursor"
+								   ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank">
+									<i class="iconfont f12">&#xe63a;静态化地址</i>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</td>
 				<td class="tc">
 					<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">

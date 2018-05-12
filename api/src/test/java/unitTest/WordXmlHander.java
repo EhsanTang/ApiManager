@@ -31,32 +31,57 @@ public class WordXmlHander {
         placeHolder.add("interfacePDFDto.model.trueExam");
         placeHolder.add("interfacePDFDto.model.falseExam");
         placeHolder.add("interfacePDFDto.model.requestExam");
-
+        placeHolder.add("interfacePDFDto.customParams");
+        // header
         placeHolder.add("CAH.name");
         placeHolder.add("CAH.necessary");
         placeHolder.add("CAH.type");
         placeHolder.add("CAH.def");
         placeHolder.add("CAH.remark");
 
+        // error
         placeHolder.add("CAE.errorCode");
         placeHolder.add("CAE.errorMsg");
 
+        // response
         placeHolder.add("CAR.deep");
         placeHolder.add("CAR.name");
         placeHolder.add("CAR.type");
+        placeHolder.add("CAR.def");
         placeHolder.add("CAR.necessary");
         placeHolder.add("CAR.remark");
+
+        // param
+        placeHolder.add("CAP.name");
+        placeHolder.add("CAP.necessary");
+        placeHolder.add("CAP.paramPosition");
+        placeHolder.add("CAP.type");
+        placeHolder.add("CAP.def");
+        placeHolder.add("CAP.remark");
+
+        // paramRemark
+        placeHolder.add("CAPR.deep");
+        placeHolder.add("CAPR.name");
+        placeHolder.add("CAPR.type");
+        placeHolder.add("CAPR.necessary");
+        placeHolder.add("CAPR.remark");
 
         /**
          * 修改xml，添加循环
          */
         // <#list interfacePDFDto.headers as CAH>
+        // <#list interfacePDFDto.formParams as CAP>
+        // <#list interfacePDFDto.paramRemarks as CAPR>
+        // <#list interfacePDFDto.responseParam as CAR>
+        // <#list interfacePDFDto.errors as CAE>
+        //
         // <w:tr w:rsidR
         // </w:tr>
         // </#list>
-        // interfacePDFDto.errors as CAE
-        // interfacePDFDto.responseParam as CAR
-        // interfacePDFDto.formParams as CAP
+        //
+//        <#if condition>
+//        <#else>
+//        </#if>
     }
 
     public static void main(String[] args) throws Exception{

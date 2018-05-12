@@ -13,6 +13,7 @@ public class ParamDto implements Serializable{
 	private String remark;
 	private String def;
 	private String inUrl;
+
 	public String getName() {
 		return name;
 	}
@@ -49,6 +50,14 @@ public class ParamDto implements Serializable{
 	}
 	public void setInUrl(String inUrl) {
 		this.inUrl = inUrl;
+	}
+
+	public String getParamPosition(){
+		if ("true".equals(inUrl)){
+			return "请求URL";
+		}else{
+			return "普通参数";
+		}
 	}
 	
 }

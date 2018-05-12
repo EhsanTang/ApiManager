@@ -1,77 +1,129 @@
 package cn.crap.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import com.google.common.base.Strings;
+import org.springframework.util.CollectionUtils;
 
 public class InterfacePDFDto implements Serializable{
 	/**
-	 * 生成pdf
+	 * 该类仅仅用于生成pdf、word
 	 */
 	private static final long serialVersionUID = 1L;
 	private InterfaceDto model;
-	private Object formParams;
+	private List<ParamDto> formParams;
 	private String customParams;
-	private Object headers;
-	private Object responseParam;
-	private Object errors;
+	private List<ParamDto> headers;
+	private List<ResponseParamDto> responseParam;
+	private List<ErrorDto> errors;
 	private String trueMockUrl;
 	private String falseMockUrl;
-	private Object paramRemarks;
+	private List<ResponseParamDto> paramRemarks;
+	// 是否是自定义参数
+	private boolean custom = false;
+
 
 	public InterfaceDto getModel() {
 		return model;
 	}
+
 	public void setModel(InterfaceDto model) {
 		this.model = model;
 	}
-	public Object getFormParams() {
+
+	public List<ParamDto> getFormParams() {
 		return formParams;
 	}
-	public void setFormParams(Object formParams) {
+
+	public void setFormParams(List<ParamDto> formParams) {
 		this.formParams = formParams;
 	}
+
 	public String getCustomParams() {
 		return customParams;
 	}
+
 	public void setCustomParams(String customParams) {
 		this.customParams = customParams;
 	}
-	public Object getHeaders() {
+
+	public List<ParamDto> getHeaders() {
 		return headers;
 	}
-	public void setHeaders(Object headers) {
+
+	public void setHeaders(List<ParamDto> headers) {
 		this.headers = headers;
 	}
-	public Object getResponseParam() {
+
+	public List<ResponseParamDto> getResponseParam() {
 		return responseParam;
 	}
-	public void setResponseParam(Object responseParam) {
+
+	/**
+	 * 名称根据deep缩进
+	 * @param responseParam
+	 */
+	public void setResponseParam(List<ResponseParamDto> responseParam) {
+		if (CollectionUtils.isEmpty(responseParam)){
+			this.responseParam = new ArrayList<>();
+			return;
+		}
+		for (ResponseParamDto responseParamDto : responseParam){
+			Integer deep = responseParamDto.getDeep();
+			if (deep == null){
+				deep = 0;
+			}
+			StringBuilder sb = new StringBuilder("");
+			while (deep > 0){
+                sb.append(" ");
+                deep = deep - 1;
+            }
+			responseParamDto.setName(sb.toString() +
+					(responseParamDto.getName() == null ? "" : responseParamDto.getName()));
+		}
 		this.responseParam = responseParam;
 	}
-	public Object getErrors() {
+
+	public List<ErrorDto> getErrors() {
 		return errors;
 	}
-	public void setErrors(Object errors) {
+
+	public void setErrors(List<ErrorDto> errors) {
 		this.errors = errors;
 	}
+
 	public String getTrueMockUrl() {
 		return trueMockUrl;
 	}
+
 	public void setTrueMockUrl(String trueMockUrl) {
 		this.trueMockUrl = trueMockUrl;
 	}
+
 	public String getFalseMockUrl() {
 		return falseMockUrl;
 	}
+
 	public void setFalseMockUrl(String falseMockUrl) {
 		this.falseMockUrl = falseMockUrl;
 	}
-	public Object getParamRemarks() {
+
+	public List<ResponseParamDto> getParamRemarks() {
 		return paramRemarks;
 	}
-	public void setParamRemarks(Object paramRemarks) {
+
+	public void setParamRemarks(List<ResponseParamDto> paramRemarks) {
 		this.paramRemarks = paramRemarks;
 	}
-	
-	
+
+    public boolean isCustom() {
+        return custom;
+    }
+
+    public void setCustom(boolean custom) {
+        this.custom = custom;
+    }
 }

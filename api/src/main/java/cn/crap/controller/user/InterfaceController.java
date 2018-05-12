@@ -109,7 +109,6 @@ public class InterfaceController extends BaseController{
 					model.setContentType(template.getContentType());
 				}
 			}
-			
 		}
 		return new JsonResult(1, InterfaceAdapter.getDto(model, module, false));
 	}

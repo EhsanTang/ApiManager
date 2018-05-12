@@ -147,7 +147,7 @@
                     <tr>
                         <td style="color:red;">${v.deep}</td>
                         <td style="padding-left:20px;">
-                            <div style="padding-left: ${v.deep*10}px;">${v.name}</div>
+                            <div>${v.name}</div>
                         </td>
                         <td>${v.type}</td>
                         <td>${v.necessary}</td>
@@ -175,7 +175,7 @@
                 <tr>
                     <td style="color:red;">${v.deep}</td>
                     <td style="padding-left:20px;">
-                        <div style="padding-left: ${v.deep*10}px;">${v.name}</div>
+                        <div>${v.name}</div>
                     </td>
                     <td>${v.type}</td>
                     <td>${v.necessary}</td>

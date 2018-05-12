@@ -15,6 +15,8 @@ import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -47,17 +49,18 @@ public class CustomInterfaceService implements ILuceneService {
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDto(interFace, module, handleText));
         if(interFace.getParam().startsWith("form=")){
-            interDto.setFormParams(JSONArray.toArray(JSONArray.fromObject(interFace.getParam().substring(5)),ParamDto.class));
+            interDto.setFormParams(JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig()));
         }else{
+            interDto.setCustom(true);
             interDto.setCustomParams( interFace.getParam());
         }
         interDto.setTrueMockUrl(config.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
         interDto.setFalseMockUrl(config.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
 
-        interDto.setHeaders( JSONArray.toArray(JSONArray.fromObject(interFace.getHeader()),ParamDto.class));
-        interDto.setResponseParam( JSONArray.toArray(JSONArray.fromObject(interFace.getResponseParam()),ResponseParamDto.class) );
-        interDto.setParamRemarks( JSONArray.toArray(JSONArray.fromObject(interFace.getParamRemark()), ResponseParamDto.class) );
-        interDto.setErrors( JSONArray.toArray(JSONArray.fromObject(interFace.getErrors()),ErrorDto.class) );
+        interDto.setHeaders(JSONArray.toList( JSONArray.fromObject(interFace.getHeader()), new ParamDto(), new JsonConfig()));
+        interDto.setResponseParam(JSONArray.toList( JSONArray.fromObject(interFace.getResponseParam()),new ResponseParamDto(), new JsonConfig()));
+        interDto.setParamRemarks(JSONArray.toList( JSONArray.fromObject(interFace.getParamRemark()), new ResponseParamDto(), new JsonConfig()));
+        interDto.setErrors(JSONArray.toList( JSONArray.fromObject(interFace.getErrors()),new ErrorDto(), new JsonConfig()));
         return interDto;
     }
 

@@ -98,7 +98,7 @@ public class AdminPickService implements IPickService{
 
                 projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
                 for (Project project : projectService.selectByExample(projectCriteria)) {
-                    pick = new PickDto(project.getId(), String.format("project.do" + IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
+                    pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }
 

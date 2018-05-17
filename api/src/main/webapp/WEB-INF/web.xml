@@ -18,7 +18,7 @@
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
-		<filter-name>paramFilter</filter-name>
+		<filter-name>encodingFilter</filter-name>
 		<url-pattern>*.json</url-pattern>
 	</filter-mapping>
 

@@ -92,7 +92,7 @@ public class InterfaceAdapter {
      */
     private static String handleText(String str, boolean handleText){
         if (MyString.isEmpty(str)){
-            return str;
+            return "";
         }
     	if (handleText){
     		str = str.replaceAll("</div>", "_CARP_BR_");

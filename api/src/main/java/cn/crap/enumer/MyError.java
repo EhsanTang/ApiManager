@@ -69,7 +69,8 @@ public enum MyError {
 	E000063("数据不存在"),
 	E000064("未登录，请登录后再试"),
 	E000065(""),
-	E000066("key不能为空");
+	E000066("key不能为空"),
+	E000067("apiDebug 浏览器插件项目，不允许添加模块，请通过插件添加模块");
 	
 	private final String message;
 	private final String enMessage;

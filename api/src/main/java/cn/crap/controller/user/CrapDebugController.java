@@ -32,169 +32,239 @@ import cn.crap.utils.Tools;
 
 @Controller
 @RequestMapping("/user/crapDebug")
-public class CrapDebugController extends BaseController{
-	@Autowired
-	private DebugService debugService;
-	@Autowired
-	private CustomDebugService customDebugService;
-	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private ModuleService moduleService;
-	@Autowired
-	private CustomModuleService customModuleService;
+public class CrapDebugController extends BaseController {
+    @Autowired
+    private DebugService debugService;
+    @Autowired
+    private CustomDebugService customDebugService;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private ModuleService moduleService;
+    @Autowired
+    private CustomModuleService customModuleService;
 
-	@RequestMapping("/synch.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult synch(@RequestBody String body) throws MyException{
-		List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
-		LoginInfoDto user = LoginUserHelper.getUser();
-		
-		// 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
-		String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
-		Project project = projectService.getById(projectId);
-		if( project == null){
-			project = new Project();
-			project.setId(projectId);
-			project.setCover("/resources/images/cover.png");
-			project.setLuceneSearch(Byte.valueOf("0"));
-			project.setName("默认调试项目");
-			project.setStatus(Byte.valueOf("-1"));
-			project.setSequence(0);
-			project.setType(Byte.valueOf("1"));
-			project.setUserId(user.getId());
-			project.setCreateTime(new Date());
-			project.setRemark("");
+    @RequestMapping("/synch.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult synch(@RequestBody String body) throws MyException {
+        List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
+        LoginInfoDto user = LoginUserHelper.getUser();
 
-			projectService.insert(project);
-		}
-		int moduleSequence = 0;
-		for(DebugInterfaceParamDto d: list){
-			if(d==null || MyString.isEmpty(d.getModuleId())){
-				continue;
-			}
-			d.setModuleId( Tools.handleId(user,d.getModuleId()) );
-			Module module = moduleService.getById(d.getModuleId());
-			if( module == null && d.getStatus()!=-1){
-				try{
-					module = new Module();
-					module.setId(d.getModuleId());
-					module.setName(d.getModuleName());
-					module.setCreateTime(new Date());
-					module.setSequence(moduleSequence);
-					module.setProjectId(project.getId());
-					module.setUserId(user.getId());
-					module.setRemark("");
-					module.setUrl("");
-					module.setVersion(d.getVersion()==null?0:d.getVersion());
-					moduleService.insert(module);
-				}catch(Exception e){
-					e.printStackTrace();
-					continue;
-				}
-			}else{
-				try{
-					if(d.getStatus() != null && d.getStatus() == -1){
-						Module delete = new Module();
-						delete.setId(d.getModuleId());
-						moduleService.delete(delete.getId());
-						customDebugService.deleteByModelId(d.getModuleId());
-					}
-					else if(d.getVersion() == null || module.getVersion() <= d.getVersion()){
-						module.setVersion(d.getVersion()==null?0:d.getVersion());
-						module.setName(d.getModuleName());
-						module.setSequence(moduleSequence);
-						moduleService.update(module);
-					}
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-			moduleSequence = moduleSequence + 1;
-			// 先删除，在同步
-			for(DebugDto debug : d.getDebugs()){
-				debug.setId(Tools.handleId(user, debug.getId()));
-				debug.setModuleId(Tools.handleId(user, debug.getModuleId()));
-				try{
-					if(MyString.isEmpty( debug.getId())){
-						continue;
-					}
-					Debug old = debugService.getById(debug.getId());
-					if (debug.getStatus() == -1 && old != null && old.getModuleId().equals(debug.getModuleId())){
-						debugService.delete(debug.getId());
-					}
-				}catch(Exception e){
-					e.printStackTrace();
-					continue;
-				}
-			}
+        // 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
+        String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
+        Project project = projectService.getById(projectId);
+        if (project == null) {
+            project = buildProject(user, projectId);
+            projectService.insert(project);
+        }
 
-			DebugCriteria example = new DebugCriteria();
-			example.createCriteria().andUidEqualTo(user.getId());
-			int totalNum = debugService.countByExample(example);
-			if (totalNum > 100){
-				return new JsonResult(MyError.E000058);
-			}
-			int debugSequence = 0;
-			for(DebugDto debug : d.getDebugs()){
-				debug.setSequence(debugSequence);
-				try{
-					if(MyString.isEmpty( debug.getId())){
-						continue;
-					}
-					if (debug.getStatus() == -1){
-						continue;
-					}
-					debug.setUid(user.getId());
-					debug.setCreateTime(new Date());
-					debugService.insert(DebugAdapter.getModel(debug));
-					totalNum = totalNum + 1;
-				}catch(Exception e){
-					Debug old = debugService.getById(debug.getId());
-					if(old.getVersion() <= debug.getVersion()){
-						debug.setCreateTime(old.getCreateTime());
-						if(old.getModuleId().equals(debug.getModuleId())){
-							debug.setStatus(old.getStatus());
-							debug.setUid(user.getId());
-							debugService.update(DebugAdapter.getModel(debug));
-						}	
-					}
-				}
-				debugSequence = debugSequence + 1;
-			}
-		}
-		
-		List<Module> modules = customModuleService.queryByProjectId(projectId);
-		List<String> moduleIds = new ArrayList<String>();
-		for (Module m:modules){
-			moduleIds.add(m.getId());
-		}
-		DebugCriteria example = new DebugCriteria();
-		example.createCriteria().andModuleIdIn(moduleIds);
-		example.setOrderByClause("sequence asc");
-		List<Debug> debugs = debugService.selectByExample(example);
-		Map<String,List<DebugDto>> mapDebugs = new HashMap<>();
-		for(Debug d:debugs){
-			List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
-			if(moduleDebugs == null){
-				moduleDebugs = new ArrayList<>();
-				mapDebugs.put(d.getModuleId(), moduleDebugs);
-			}
-			moduleDebugs.add(DebugAdapter.getDto(d));
-		}
-		
-		List<DebugInterfaceParamDto> returnlist = new ArrayList<DebugInterfaceParamDto>();		
-		for (Module m:modules){
-			DebugInterfaceParamDto debugDto = new DebugInterfaceParamDto();
-			debugDto.setModuleId(Tools.unhandleId(m.getId()));
-			debugDto.setModuleName(m.getName());
-			debugDto.setVersion(m.getVersion());
-			debugDto.setStatus(m.getStatus());
-			debugDto.setDebugs(mapDebugs.get(m.getId()) == null? new ArrayList<DebugDto>(): mapDebugs.get(m.getId()));
-			returnlist.add(debugDto);
-		}
-		return new JsonResult(1,returnlist);
-	}
-	
+        int moduleSequence = 0;
+        for (DebugInterfaceParamDto d : list) {
+            String moduleId = d.getModuleId();
+            if (d == null || MyString.isEmpty(moduleId)) {
+                continue;
+            }
+
+            try {
+                // id = id + 用户ID MD5
+                moduleId = Tools.handleId(user, moduleId);
+                // 处理模块：删除、更新、添加，处理异常
+                handelModule(user, project, moduleSequence, d, moduleId);
+                moduleSequence = moduleSequence + 1;
+
+                // 处理模块ID、用户ID，避免多个用户混乱问题
+                handelModuleIdAndDubugId(user, d, moduleId);
+                // 先删除需要删除的接口
+                deleteDebug(user, d, moduleId);
+
+                // 每个用户的最大接口数量不能超过100
+                DebugCriteria example = new DebugCriteria();
+                example.createCriteria().andUidEqualTo(user.getId());
+                int totalNum = debugService.countByExample(example);
+                if (totalNum > 100) {
+                    return new JsonResult(MyError.E000058);
+                }
+
+                // 更新接口
+                addDebug(user, d, totalNum);
+            }catch (Exception e){
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+
+        // 组装返回数据
+        List<Module> modules = customModuleService.queryByProjectId(projectId);
+        List<String> moduleIds = new ArrayList<>();
+        for (Module m : modules) {
+            moduleIds.add(m.getId());
+        }
+
+        DebugCriteria example = new DebugCriteria();
+        example.createCriteria().andModuleIdIn(moduleIds);
+        example.setOrderByClause("sequence asc");
+        List<Debug> debugs = debugService.selectByExample(example);
+        Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
+        for (Debug d : debugs) {
+            try {
+                List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
+                if (moduleDebugs == null) {
+                    moduleDebugs = new ArrayList<>();
+                    mapDebugs.put(d.getModuleId(), moduleDebugs);
+                }
+                moduleDebugs.add(DebugAdapter.getDto(d));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        List<DebugInterfaceParamDto> returnlist = new ArrayList<DebugInterfaceParamDto>();
+        for (Module m : modules) {
+            try {
+                DebugInterfaceParamDto debugDto = new DebugInterfaceParamDto();
+                debugDto.setModuleId(Tools.unhandleId(m.getId()));
+                debugDto.setModuleName(m.getName());
+                debugDto.setVersion(m.getVersion());
+                debugDto.setStatus(m.getStatus());
+                debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<DebugDto>() : mapDebugs.get(m.getId()));
+                returnlist.add(debugDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new JsonResult(1, returnlist);
+    }
+
+    private void addDebug(LoginInfoDto user, DebugInterfaceParamDto d, int totalNum) {
+        int debugSequence = 0;
+        for (DebugDto debug : d.getDebugs()) {
+            debugSequence = debugSequence + 1;
+            debug.setSequence(debugSequence);
+            try {
+                if (MyString.isEmpty(debug.getId())) {
+                    continue;
+                }
+                if (debug.getStatus() == -1) {
+                    continue;
+                }
+
+                // 更新接口
+                Debug old = debugService.getById(debug.getId());
+                if (old != null){
+                    if (old.getVersion() > debug.getVersion()){
+                        continue;
+                    }
+                    debug.setCreateTime(old.getCreateTime());
+                    if (old.getModuleId().equals(debug.getModuleId())) {
+                        debug.setStatus(old.getStatus());
+                        debug.setUid(user.getId());
+                        debugService.update(DebugAdapter.getModel(debug));
+                    }
+                    continue;
+                }
+                debug.setUid(user.getId());
+                debug.setCreateTime(new Date());
+                debugService.insert(DebugAdapter.getModel(debug));
+                totalNum = totalNum + 1;
+            } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+            }
+        }
+    }
+
+    private void handelModuleIdAndDubugId(LoginInfoDto user, DebugInterfaceParamDto d, String moduleId) {
+        for (DebugDto debug : d.getDebugs()) {
+            try {
+                if (MyString.isEmpty(debug.getId())) {
+                    continue;
+                }
+                debug.setId(Tools.handleId(user, debug.getId()));
+                debug.setModuleId(moduleId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
+
+    private void deleteDebug(LoginInfoDto user, DebugInterfaceParamDto d, String moduleId) {
+        for (DebugDto debug : d.getDebugs()) {
+            try {
+                if (MyString.isEmpty(debug.getId())) {
+                    continue;
+                }
+                Debug old = debugService.getById(debug.getId());
+                if (old == null || !old.getModuleId().equals(moduleId)){
+                    continue;
+                }
+                if (debug.getStatus() == -1) {
+                    debugService.delete(debug.getId());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
+
+    private void handelModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d, String moduleId) {
+        d.setModuleId(moduleId);
+        Module module = moduleService.getById(moduleId);
+
+        // 新增模块
+        if (module == null && d.getStatus() != -1) {
+            module = buildModule(user, project, moduleSequence, d);
+            moduleService.insert(module);
+        }
+
+        // 删除模块
+        else if (d.getStatus() != null && d.getStatus() == -1) {
+            Module delete = new Module();
+            delete.setId(moduleId);
+            moduleService.delete(delete.getId());
+            customDebugService.deleteByModelId(moduleId);
+        }
+
+        // 更新模块
+        else if (d.getVersion() == null || module.getVersion() <= d.getVersion()) {
+            module.setVersion(d.getVersion() == null ? 0 : d.getVersion());
+            module.setName(d.getModuleName());
+            module.setSequence(moduleSequence);
+            moduleService.update(module);
+        }
+    }
+
+    private Module buildModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d) {
+        Module module = new Module();
+        module.setId(d.getModuleId());
+        module.setName(d.getModuleName());
+        module.setCreateTime(new Date());
+        module.setSequence(moduleSequence);
+        module.setProjectId(project.getId());
+        module.setUserId(user.getId());
+        module.setRemark("");
+        module.setUrl("");
+        module.setVersion(d.getVersion() == null ? 0 : d.getVersion());
+        return module;
+    }
+
+    private Project buildProject(LoginInfoDto user, String projectId) {
+        Project project;
+        project = new Project();
+        project.setId(projectId);
+        project.setCover("/resources/images/cover.png");
+        project.setLuceneSearch(Byte.valueOf("0"));
+        project.setName("默认调试项目");
+        project.setStatus(Byte.valueOf("-1"));
+        project.setSequence(0);
+        project.setType(Byte.valueOf("1"));
+        project.setUserId(user.getId());
+        project.setCreateTime(new Date());
+        project.setRemark("该项目是系统自动创建的apiDebug插件接口，请勿删除！！！！");
+        return project;
+    }
+
 }

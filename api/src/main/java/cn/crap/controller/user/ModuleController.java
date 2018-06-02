@@ -4,6 +4,7 @@ import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
+import cn.crap.dto.UserDto;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LogType;
 import cn.crap.enumer.MyError;
@@ -118,6 +119,11 @@ public class ModuleController extends BaseController implements ILogConst{
             // 更新该模块下的所有接口的fullUrl
 			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
+			LoginInfoDto user = LoginUserHelper.getUser();
+			String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
+			if (projectId.equals(moduleDto.getProjectId())){
+				throw new MyException(MyError.E000067);
+			}
 			module.setProjectId(moduleDto.getProjectId());
 			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());

@@ -8,6 +8,7 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.ThreadContext;
 import cn.crap.service.tool.StringCache;
 import cn.crap.service.tool.UserCache;
+import org.springframework.util.Assert;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -479,9 +480,9 @@ public class Tools {
 			return id;
 		}
 		public static String unhandleId(String id){
-			if(MyString.isEmpty(id)){
-				return null;
-			}
+            Assert.notNull(id);
+            Assert.isTrue(id.lastIndexOf("-") > 0);
+
 			id = id.substring(0, id.lastIndexOf("-"));
 			return id;
 		}

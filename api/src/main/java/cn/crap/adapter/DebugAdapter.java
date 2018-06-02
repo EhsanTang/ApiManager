@@ -2,6 +2,8 @@ package cn.crap.adapter;
 
 import cn.crap.dto.DebugDto;
 import cn.crap.model.mybatis.Debug;
+import cn.crap.utils.Tools;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class DebugAdapter {
 		dto.setStatus(model.getStatus());
 		dto.setSequence(model.getSequence());
 		dto.setInterfaceId(model.getInterfaceId());
-		dto.setModuleId(model.getModuleId());
+		dto.setModuleId(Tools.unhandleId(model.getModuleId()));
 		dto.setMethod(model.getMethod());
 		dto.setUrl(model.getUrl());
 		dto.setParams(model.getParams());

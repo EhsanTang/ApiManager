@@ -49,6 +49,10 @@ public class LogController extends BaseController {
             criteria.andModelNameEqualTo(modelName);
         }
 
+        example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
+
         page.setAllRow(logService.countByExample(example));
         List<LogDto> logDtoList = LogAdapter.getDto(logService.selectByExample(example));
         return new JsonResult().success().data(logDtoList).page(page);

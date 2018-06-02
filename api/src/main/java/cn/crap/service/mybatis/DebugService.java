@@ -5,6 +5,7 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.enumer.TableId;
 import cn.crap.model.mybatis.Debug;
 import cn.crap.model.mybatis.DebugCriteria;
+import cn.crap.utils.MyString;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,9 @@ public class DebugService {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.DEBUG));
+        if (MyString.isEmpty(model.getId())) {
+            model.setId(IdGenerator.getId(TableId.DEBUG));
+        }
         if (model.getSequence() == null){
             DebugCriteria example = new DebugCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);

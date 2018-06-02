@@ -21,7 +21,7 @@ public class DebugAdapter {
         }
 
         DebugDto dto = new DebugDto();
-        dto.setId(model.getId());
+        dto.setId(Tools.unhandleId(model.getId()));
 		dto.setName(model.getName());
 		dto.setCreateTime(model.getCreateTime());
 		dto.setStatus(model.getStatus());

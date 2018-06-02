@@ -40,7 +40,10 @@ public class LogController extends BaseController {
     public JsonResult list(String identy, Integer currentPage, String modelName) {
         Page page = new Page(currentPage);
         LogCriteria example = new LogCriteria();
-        LogCriteria.Criteria criteria = example.createCriteria().andIdentyEqualTo(identy);
+        LogCriteria.Criteria criteria = example.createCriteria();
+        if(MyString.isNotEmpty(identy)){
+            criteria.andIdentyEqualTo(identy);
+        }
         example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
         if (MyString.isNotEmpty(modelName)){
             criteria.andModelNameEqualTo(modelName);

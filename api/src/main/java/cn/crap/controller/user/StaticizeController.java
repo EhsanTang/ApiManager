@@ -223,6 +223,11 @@ public class StaticizeController extends BaseController{
 		if(article.getType().equals(ArticleType.ARTICLE.name())){
 			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文章详情");
 			returnMap.put("article", article);
+			// 项目备注将静态化成网站的description
+			returnMap.put("description", article.getBrief());
+			// 模块名称将静态化成网站标题
+			returnMap.put("title", article.getName());
+
 			returnMap.put("activePage",module.getId()+"_article");
 			returnMap.put("needStaticizes", needStaticizes);
 			return new ModelAndView("WEB-INF/views/staticize/default/articleDetail.jsp",returnMap);
@@ -497,7 +502,7 @@ public class StaticizeController extends BaseController{
 	
 	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) {
 		// 静态化
-		Map<String, String> settingMap = new HashMap<String, String>();
+		Map<String, String> settingMap = new HashMap<>();
 		for (SettingDto setting : settingCache.getAll()) {
 			settingMap.put(setting.getKey(), setting.getValue());
 		}

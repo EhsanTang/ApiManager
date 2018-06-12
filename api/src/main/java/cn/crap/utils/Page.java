@@ -17,9 +17,9 @@ public class Page<T> implements Serializable{
 		this(15, currentPage == null ? 1 : currentPage);
 	}
 	public Page(Integer size, Integer currentPage){
-		Assert.notNull(size);
-		Assert.notNull(currentPage);
-		Assert.isTrue(size > 0 && size <= 1000);
+		currentPage = (currentPage == null ? 1 : currentPage);
+        size = (size == null ? 15 : size);
+		Assert.isTrue(size > 0 && size <= 100);
 		Assert.notNull(currentPage > 0);
 
 		this.currentPage = currentPage;

@@ -55,8 +55,9 @@ private CustomProjectUserService customProjectUserService;
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute Project project, Integer currentPage,
+                           Integer pageSize,
 						   @RequestParam(defaultValue="false") boolean myself) throws MyException{
-		Page page= new Page(currentPage);
+		Page page= new Page(pageSize, currentPage);
 		LoginInfoDto user = LoginUserHelper.getUser();
 		String userId = user.getId();
 		List<Project> models = null;
@@ -128,6 +129,10 @@ private CustomProjectUserService customProjectUserService;
 		}
 		// 新增
 		else{
+            int totalProjectNum = customProjectService.countProjectByUserIdName(userId, project.getName());
+            if (totalProjectNum > 50){
+                return new JsonResult(MyError.E000068);
+            }
 			Project model = ProjectAdapter.getModel(project);
 			model.setUserId(userId);
 			model.setPassword(project.getPassword());

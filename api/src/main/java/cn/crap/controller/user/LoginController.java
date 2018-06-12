@@ -59,11 +59,12 @@ public class LoginController extends BaseController{
 	 * 退出登录
 	 */
 	@RequestMapping("/back/loginOut.do")
-	public String loginOut() throws IOException {
+	@ResponseBody
+	public JsonResult loginOut() throws IOException {
 		String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
 		userCache.del(uid);
 		MyCookie.deleteCookie(IConst.COOKIE_TOKEN);
-		return "resources/html/frontHtml/index.html";
+        return new JsonResult().success();
 	}
 	
 	

@@ -23,6 +23,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <!-- 25.1-android 兼容1.7 25.1-jre 1.8及以上-->
             <version>25.1-android</version>
         </dependency>
 

@@ -79,13 +79,16 @@ public class UserController extends BaseController {
     @RequestMapping("/user/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
-    public JsonResult add(@ModelAttribute UserDto userDto) throws MyException {
+    public JsonResult add(@ModelAttribute UserDto userDto, String password) throws MyException {
         // 邮箱错误
         if (MyString.isEmpty(userDto.getEmail()) || !Tools.checkEmail(userDto.getEmail())) {
             throw new MyException(MyError.E000032);
         }
 
         User user = UserAdapter.getModel(userDto);
+        if (MyString.isNotEmpty(password)){
+            user.setPassword(password);
+        }
         if (MyString.isEmpty(userDto.getId())){
             return addUser(user);
         }else{

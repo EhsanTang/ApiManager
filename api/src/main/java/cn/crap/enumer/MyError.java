@@ -71,7 +71,8 @@ public enum MyError {
 	E000065(""),
 	E000066("key不能为空"),
 	E000067("apiDebug 浏览器插件项目，不允许添加模块，请通过插件添加模块"),
-	E000068("项目超过最大允许数量50");
+	E000068("项目超过最大允许数量50"),
+	E000069("登陆超时，请重新登陆");
 	
 	private final String message;
 	private final String enMessage;

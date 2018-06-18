@@ -139,7 +139,7 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
      * @throws MyException
      */
     protected void checkUserPermissionByProject(Project project, int type) throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000069);
         /**
          * 最高管理员修改项目
          * the supper admin can do anything
@@ -157,13 +157,13 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         }
 
         if (type < 0) {
-            throw new MyException(MyError.E000003);
+            throw new MyException(MyError.E000022);
         }
 
         // 项目成员
         ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
         if (puDto == null) {
-            throw new MyException(MyError.E000003);
+            throw new MyException(MyError.E000022);
         }
 
         /**
@@ -176,6 +176,8 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         if (type < puDto.getProjectAuth().length - 1 && puDto.getProjectAuth()[type]) {
             return;
         }
+
+        throw new MyException(MyError.E000022);
     }
 
     protected void checkUserPermissionByProject(Project project) throws MyException {

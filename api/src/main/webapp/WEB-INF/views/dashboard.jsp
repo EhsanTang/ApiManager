@@ -62,7 +62,7 @@
             <div class="row p0 m0">
                 <div class="col-xs-12 col-md-9 mt100">
                     <div class="CFFF f30 mt130">开源API接口管理、协同、调试系统</div>
-                    <div class="CFFF f16 mt20 mb20">历时2年打造的专业开源、免费接口管理系统：PDF一键生成、在线调试、项目协作...</div>
+                    <div class="CFFF f16 mt20 mb20">阿里技术历时2年打造的专业开源、免费接口管理系统：PDF一键生成、在线调试、项目协作...</div>
 
                     <c:if test="${login}">
                         <a class="btn btn-adorn btn-sm r20 w150 f14" href="admin.do" target="_self">进入项目管理</a>
@@ -77,20 +77,19 @@
                     </c:if>
                 </div>
                 <div class="hidden-sm hidden-xs col-md-3  p50 shadow h300 mt100 r10 dashboard f12">
-                    <div class="adorn-bl-3 f14 pl10 mb20">快速入门</div>
-                    <a class="btn btn-adorn btn-sm w f14 r20" href="http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html" target="_blank">
-                        视频-用户版  <i class="iconfont f18">&#xe634;</i></a>
-
-                    <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://gitee.com/CrapApi/ApiDebug" target="_blank">
-                        浏览器接口调试插件  <i class="iconfont f18">&#xe625;</i></a>
-
-                    <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://v.youku.com/v_show/id_XMzYwMzA2MzUyNA==.html" target="_blank">
-                        视频-管理员版  <i class="iconfont f18">&#xe612;</i></a>
-                    <div class="mt20 tc">
+                    <div class="adorn-bl-3 f14 pl10 mb20">数据大盘「Dashboard」</div>
+                    注册用户：<span class="adorn-color">${totalUser}</span><br>
+                    管理项目数：<span class="adorn-color">${totalProject}</span><br>
+                    接口总数：<span class="adorn-color">${totalInterface}</span><br>
+                    发布文章数：<span class="adorn-color">${totalArticle}</span><br>
+                    码云统计：<br>
+                    <div class="mt10">
                         <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
                                 src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
                         <a href='https://gitee.com/CrapApi/CrapApi/members'><img src='https://gitee.com/CrapApi/CrapApi/badge/fork.svg?theme=dark' alt='fork'></img></a>
                     </div>
+                    <a class="btn btn-main btn-sm w f14 mt20 r20" href="http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html" target="_blank">
+                        视频-用户版<i class="iconfont f18">&#xe634;</i></a>
                 </div>
             </div>
         </div>

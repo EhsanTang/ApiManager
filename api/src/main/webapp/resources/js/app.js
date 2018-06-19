@@ -296,22 +296,24 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 	 */
 	$rootScope.getFields = function() {
     		// 切换为默认编辑器
-    		changeDisplay('defEditor','kindEditor');
 	    	var content = "";
-	    	if($rootScope.model.content!=''){
-	    		// 如果是文章，eval会报错
-	    		try{
-	    			content = eval("("+$rootScope.model.content+")");
-	    		}catch(e){}
-	    	}
-	    	$("#content").find("tbody").find("tr").remove();
-	    	if(content!=null&&content!=""){
-		    	var i=0;
-		    	$.each(content, function (n, value) {
-		    		i++;
-		    		addOneField(value.name, value.type, value.notNull,value.flag, value.def, value.remark, value.rowNum);
-		        });  
-	    	}
+	    	if($rootScope.model.type=='ARTICLE'){
+                createWangEditor("wangEditor","content");
+	    	}else{
+                // 如果是文章，eval会报错
+                try{
+                    content = eval("("+$rootScope.model.content+")");
+                }catch(e){}
+                $("#content").find("tbody").find("tr").remove();
+                if(content!=null&&content!=""){
+                    var i=0;
+                    $.each(content, function (n, value) {
+                        i++;
+                        addOneField(value.name, value.type, value.notNull,value.flag, value.def, value.remark, value.rowNum);
+                    });
+                }
+			}
+
 	};
 	$rootScope.jsonformat = function(id,tiperror){
 		var result = format($rootScope.model[id],tiperror);

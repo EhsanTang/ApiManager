@@ -230,25 +230,34 @@ function needHiddenModule() {
 		iShow("roleModuleId");
 	}
 }
-// 创建kindEditory
+
+var editor;
 // 子页面加载一次，需要初始化编辑器（点击左边菜单是更新editorId）
-function createKindEditor(id,modelField){
-	var root = getRootScope();
-	if(window.oldEditorId != window.editorId || window.editor == null){
-		if(window.editorId)
-			window.oldEditorId = window.editorId;
-		window.editor =  KindEditor.create('#'+id,{
-	        uploadJson : 'file/upload.do',
-	        filePostName: 'img',
-	        allowFileManager : true,
-	        afterBlur: function () { 
-	        	editor.sync();
-	        	root.model[modelField] = $('#'+id).val();
-	        }
-		});
+function createWangEditor(id,modelField) {
+    var root = getRootScope();
+    if (editor == null) {
+        var E = window.wangEditor;
+        editor = new E(document.getElementById(id));
+        editor.customConfig.uploadImgMaxLength = 1;
+        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
+        editor.customConfig.uploadImgServer = 'file/upload.do';
+        editor.customConfig.uploadFileName = 'img';
+        editor.customConfig.uploadImgHooks = {
+            fail: function (xhr, editor, result) {
+                $("#lookUpContent").html(err1 + "&nbsp; " + result.errorMessage + "" + err2);
+                showMessage('lookUp', 'false', false, 3);
+            }
+        }
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            root.model[modelField] = html;
+        }
+        editor.create();
+    }
+    if (root.model[modelField] == null){
+        root.model[modelField] = "";
 	}
-	window.editor.html(root.model[modelField]);
-	changeDisplay('kindEditor','defEditor')
+    editor.txt.html(root.model[modelField]);
 }
 // 保存markdown
 function saveMarkdown(markdown,content){
@@ -256,6 +265,7 @@ function saveMarkdown(markdown,content){
 	rootScope.$apply(function () {    
 	    rootScope.model[markdown] = getMarkdownText( $(window.frames["markdownFrame"].document).find('.ace_text-layer').html() );
 	    rootScope.model[content] = $(window.frames["markdownFrame"].document).find('#preview').html();
+        editor.txt.html(rootScope.model[content]);
 	});
 	closeMyDialog('markdownDialog');
 }

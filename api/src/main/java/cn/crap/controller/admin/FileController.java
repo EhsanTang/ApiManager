@@ -87,8 +87,12 @@ public class FileController extends BaseController{
 	    	   printMsg("<script>parent.uploadImgCallBack('[ERROR]上传失败','"+result+"')</script>");
 	       }
        }else{
-    	   obj.put("message", result);
-           printMsg(obj.toString());
+			if(result.indexOf("[ERROR]")<0){
+				printMsg("{\"errno\": 0,\"data\": [\"" + result + "\"]}");
+			}else {
+				printMsg("{\"errno\": 1,\"errorMessage\": \"" + result + "\"}");
+
+			}
        }
 	}
 	

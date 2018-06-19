@@ -126,9 +126,6 @@ mainModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 	$scope.loginOut = function(){
 		callAjaxByName("iUrl=back/loginOut.do|iLoading=false|ishowMethod=doNothing");
 	}
-	$scope.createEditor = function(id,field){
-		createKindEditor(id,field);
-	}
     $scope.getData();
 });
 /**************************后端接口列表****************************/

@@ -159,6 +159,26 @@ function uploadFileCallBack(msg, url) {
 		showMessage('lookUp', 'false', false, 3);
 	}
 }
+//文章页面上传图片回调方法
+function acticleUploadImgCallBack(msg, url) {
+	if (msg.indexOf("[OK]") >= 0) {
+		showMessage('lookUp', 'false', false, 0);
+		if (url!= undefined) {
+			//修改setting中的value
+			var rootScope = getRootScope();
+			rootScope.$apply(function () {  
+				if(rootScope.model.content)
+					rootScope.model.content =  rootScope.model.content + "<div class='tc'><img src='"+url+"' /></div>";
+				else
+					rootScope.model.content =  "<div class='tc'><img src='"+url+"' /></div>";
+					
+			});
+		}
+	}else {
+		$("#lookUpContent").html(err1 + "&nbsp; " + url + "" + err2);
+		showMessage('lookUp', 'false', false, 3);
+	}
+}
 
 /**
  * 图片id 验证码输入框id

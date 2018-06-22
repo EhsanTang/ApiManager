@@ -17,14 +17,14 @@
 			<tr>
 				<td class="tc">类型</td>
 				<td class="tc">
-					<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" readonly required>
+					<input  class="form-control cursor-not"  id="typeName" type="text" ng-model="model.typeName" readonly required>
 				</td>
 			</tr>
 			<tr>
 				<td class="tc">模块</td>
 				<td class="tl">
 					* 点击选择模块
-					<input class="form-control cursor" type="text"  id="moduleName" required ng-model="model.moduleName"
+					<input class="form-control cursor" type="text" readonly id="moduleName" required ng-model="model.moduleName"
 							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				</td>
 			</tr>

@@ -4,6 +4,10 @@ body{
 	word-wrap:break-word;
 	background-color:#DDDDDD;
 }
+.form-control[readonly]{
+    cursor: pointer;
+    background: #ffffff;
+}
 /***project-user样式***/
 .true-class{
 	color:green;

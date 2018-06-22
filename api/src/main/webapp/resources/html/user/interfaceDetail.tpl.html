@@ -13,7 +13,7 @@
 					* 点击选择模块
 					</td>
 					<td>
-						<input class="form-control cursor" type="text"  id="moduleName" required ng-model="model.moduleName"
+						<input class="form-control cursor" type="text"  id="moduleName" readonly required ng-model="model.moduleName"
 							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 				
 					</td>
@@ -31,12 +31,12 @@
 				<tr>
 					<td class="tc w80">请求方式</td>
 					<td class="tc">
-						<input class="form-control cursor" type="text"  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
+						<input class="form-control cursor" type="text" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
 							ng-focus="loadPickByName('iwidth=220|radio=false|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
 					</td>
 					<td class="tc">状态</td>
 					<td>
-						<input class="form-control" type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
+						<input class="form-control" readonly type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
 							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
 					</td>
 				</tr>
@@ -115,7 +115,7 @@
 				<tr>
 					<td class="tc w80">返回类型</td>
 					<td colspan="3">
-						<input class="form-control" type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
+						<input class="form-control" readonly type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
 							   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">
 					</td>
 				</tr>

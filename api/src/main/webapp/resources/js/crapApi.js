@@ -231,33 +231,58 @@ function needHiddenModule() {
 	}
 }
 
-var editor;
-// 子页面加载一次，需要初始化编辑器（点击左边菜单是更新editorId）
-function createWangEditor(id,modelField) {
+// 所有编辑器
+var editors = {};
+function createWangEditor(id, modelField, init) {
     var root = getRootScope();
+    var editor = editors[id];
     if (editor == null) {
         var E = window.wangEditor;
         editor = new E(document.getElementById(id));
-        editor.customConfig.uploadImgMaxLength = 1;
-        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
-        editor.customConfig.uploadImgServer = 'file/upload.do';
-        editor.customConfig.uploadFileName = 'img';
-        editor.customConfig.uploadImgHooks = {
-            fail: function (xhr, editor, result) {
-                $("#lookUpContent").html(err1 + "&nbsp; " + result.errorMessage + "" + err2);
-                showMessage('lookUp', 'false', false, 3);
-            }
-        }
-        editor.customConfig.onchange = function (html) {
-            // 监控变化，同步更新到 textarea
-            root.model[modelField] = html;
-        }
+        init(editor, modelField);
         editor.create();
     }
     if (root.model[modelField] == null){
         root.model[modelField] = "";
 	}
     editor.txt.html(root.model[modelField]);
+}
+function initArticleEditor(editor, modelField) {
+    var root = getRootScope();
+    editor.customConfig.uploadImgMaxLength = 1;
+    editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
+    editor.customConfig.uploadImgServer = 'file/upload.do';
+    editor.customConfig.uploadFileName = 'img';
+    editor.customConfig.uploadImgHooks = {
+        fail: function (xhr, editor, result) {
+            $("#lookUpContent").html(err1 + "&nbsp; " + result.errorMessage + "" + err2);
+            showMessage('lookUp', 'false', false, 3);
+        }
+    }
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        root.model[modelField] = html;
+    }
+}
+function initInterfaceEditor(editor, modelField) {
+    var root = getRootScope();
+	// 配置菜单
+    editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'justify',  // 对齐方式
+        'undo',  // 撤销
+        'redo'  // 重复
+    ];
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        root.model[modelField] = html;
+    }
 }
 // 保存markdown
 function saveMarkdown(markdown,content){

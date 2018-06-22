@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'mainModule','webModule','interfaceMethods','textAngular']);
+var app = angular.module('app', [ 'ui.router', 'mainModule','webModule','interfaceMethods']);
 var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 
@@ -98,6 +98,9 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 
 			});;
 	};
+    $rootScope.createInterfaceEditor = function () {
+        createWangEditor("interface-editor","remark", initInterfaceEditor);
+    }
 	//点击详情回调，清除编辑缓存页面的table
 	$rootScope.initEditInterFace = function (){
 		changeDisplay('interFaceDetail','copyInterFace');
@@ -107,6 +110,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 		$("#header").removeClass('none');
 		$("#responseEparam").addClass('none');
 		$("#responseParam").removeClass('none');
+        $rootScope.createInterfaceEditor();
 	}
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
@@ -298,7 +302,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
     		// 切换为默认编辑器
 	    	var content = "";
 	    	if($rootScope.model.type=='ARTICLE'){
-                createWangEditor("wangEditor","content");
+                createWangEditor("article-editor","content", initArticleEditor);
 	    	}else{
                 // 如果是文章，eval会报错
                 try{
@@ -313,7 +317,6 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
                     });
                 }
 			}
-
 	};
 	$rootScope.jsonformat = function(id,tiperror){
 		var result = format($rootScope.model[id],tiperror);

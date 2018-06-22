@@ -4,6 +4,10 @@ body{
     word-wrap:break-word;
     background-color:#e5e5e5;
 }
+input{
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+}
 .form-control[readonly]{
     cursor: pointer;
     background: #ffffff;
@@ -14,6 +18,9 @@ body{
 .btn-group > .btn{
     border:0px!important;
     border-radius: 0px!important;
+}
+.btn-group > .btn-default:hover {
+    color: #ffffff;
 }
 /***project-user样式***/
 .true-class{

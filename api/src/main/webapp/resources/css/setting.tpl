@@ -40,10 +40,16 @@ body{min-width:800px;}
 .btn-group{
     border: 1px {{settings.MAIN_COLOR}} solid;
 }
+.btn-group > .btn-default:hover{
+    background-color:{{settings.MAIN_COLOR}}!important;
+}
 .btn-main:hover{
   color: #ffffff;
   background-color: {{settings.MAIN_COLOR}};
   opacity: 0.8;
+}
+input:focus{
+  border-color: {{settings.MAIN_COLOR}}!important;!important;
 }
 .hover-a:hover{
   color: #ffffff;

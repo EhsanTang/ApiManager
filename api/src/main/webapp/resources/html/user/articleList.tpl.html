@@ -1,16 +1,24 @@
 <div class="r0 p10 pt10 col-xs-12 BGFFF" ng-controller="userArticleCtrl">
 	<div class="col-xs-12 bb1 mb5 p0 f12">
-		<button class="btn btn-adorn btn-sm fl mr10">当前页面：{{others.type}}管理</button>
 		<div class="btn-group btn-group-sm r3 fl mr10">
-			<a type="button" class="btn btn-main" id="refresh" ng-click="getData(list.page.currentPage)">刷新</a>
-			<a type="button" class="btn btn-default" onclick="history.back(-1);">后退</a>
+			<button class="btn btn-main btn-sm">当前页面：{{others.type}}管理</button>
+			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+			<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+			<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+			   ng-click="detail('新增'+$stateParams.type,1000,'user/article/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type, getFields);">
+				<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增文章
+			</a>
+			<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+			   ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文章？')">
+				<i class="iconfont mt-3">&#xe60e;</i>&nbsp;批量删除
+			</a>
 		</div>
 
 		<div class="form-group w200 fl mr10" ng-if="$stateParams.type=='ARTICLE'">
 			<label class="sr-only">类目</label>
 			<div class="input-group btn-group-xs">
-				<div class="input-group-addon">类目</div>
-				<input type="text" class="form-control input-sm dis-in-blo w120" readonly placeholder="点击输入框选择类目" id="searchCategory"
+				<div class="input-group-addon main-bg CFFF b0">类目</div>
+				<input type="text" class="form-control input-sm dis-in-blo w120 bl0" readonly placeholder="点击输入框选择类目" id="searchCategory"
 					   ng-focus="loadPickByName('iwidth=150|iheight=170|tag=searchCategory|code=CATEGORY|params=&key='+$stateParams.moduleId,$event);">
 			</div>
 		</div>
@@ -18,24 +26,14 @@
 		<div class="form-group w200 fl mr10">
 			<label class="sr-only">名称</label>
 			<div class="input-group btn-group-xs">
-				<div class="input-group-addon">名称</div>
-				<input type="text" class="form-control input-sm dis-in-blo w120" placeholder="名称" ng-model="$stateParams.name">
+				<div class="input-group-addon main-bg b0 CFFF">名称</div>
+				<input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" ng-model="$stateParams.name">
 			</div>
 		</div>
 
-		<button type="button" class="btn btn-main btn-sm fl mr10" ng-click="getData(1);">
+		<button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="getData(1);">
 			<i class="iconfont mt-3">&#xe60d;</i>&nbsp;查询
 		</button>
-
-		<a type="button" class="btn btn-default btn-sm mr10 fl" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		   ng-click="detail('新增'+$stateParams.type,1000,'user/article/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type, getFields);">
-			<i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增
-		</a>
-
-		<a type="button" class="btn btn-default btn-sm mr10 fl" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		   ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选？')">
-			<i class="iconfont fb mt-5">&#xe60e;</i>&nbsp;批量删除
-		</a>
 	</div>
 
 	<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">{{others.type}}列表</div>

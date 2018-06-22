@@ -41,6 +41,12 @@ body{min-width:800px;}
 .btn-group{
     border: 1px #407aaa solid;
 }
+.btn-group > .btn-default:hover{
+    background-color: #407aaa!important;
+}
+input:focus{
+    border-color: #407aaa!important;
+}
 .btn-main:hover{
   color: #ffffff;
   background-color: #407aaa;

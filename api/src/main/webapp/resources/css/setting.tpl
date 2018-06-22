@@ -35,6 +35,10 @@ body{min-width:800px;}
 .btn-main {
   color: #ffffff;
   background-color:{{settings.MAIN_COLOR}};
+  border:0px;
+}
+.btn-group{
+    border: 1px {{settings.MAIN_COLOR}} solid;
 }
 .btn-main:hover{
   color: #ffffff;

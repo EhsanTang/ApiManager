@@ -35,6 +35,11 @@ body{min-width:800px;}
 .btn-main {
   color: #ffffff;
   background-color:#407aaa;
+    border:0px;
+}
+
+.btn-group{
+    border: 1px #407aaa solid;
 }
 .btn-main:hover{
   color: #ffffff;

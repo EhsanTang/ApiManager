@@ -1,56 +1,63 @@
 body{
-	font-size:12px;
-	word-break:break-all; 
-	word-wrap:break-word;
-	background-color:#DDDDDD;
+    font-size:12px;
+    word-break:break-all;
+    word-wrap:break-word;
+    background-color:#e5e5e5;
 }
 .form-control[readonly]{
     cursor: pointer;
     background: #ffffff;
 }
+.btn{
+    border-radius: 3px!important;
+}
+.btn-group > .btn{
+    border:0px!important;
+    border-radius: 0px!important;
+}
 /***project-user样式***/
 .true-class{
-	color:green;
-	font-weight:bold;
+    color:green;
+    font-weight:bold;
 }
 .false-class{
-	color:red;
-	font-weight:bold;
+    color:red;
+    font-weight:bold;
 }
 /**火狐红色边框**/
 input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}
 table{
-	font-size:12px;
-	font-weight:normal;
-	color:#666;
+    font-size:12px;
+    font-weight:normal;
+    color:#666;
 }
 html,body{
     height: 100%;
     width: 100%;
 }
 blockquote{
-	padding-left:10px;
+    padding-left:10px;
 }
-                                   
+
 .pager-sm li > a, .pager-sm li > span {
     padding: 1px 8px;
     background-color: #ffffff;
     border: 1px solid #dddddd;
     font-size:12px;
     border-radius: 10px;
-}                    
+}
 /***默认颜色**/
 .def-bg{
-	background:#DDDDDD;
+    background:#DDDDDD;
 }
 .light-bg{
-	background:#f9fafc;
+    background:#f9fafc;
 }
 .search-input:focus{
-	opacity:1!important;
-}  
+    opacity:1!important;
+}
 .search-section:hover .search-button{
-	opacity:0.8!important;
+    opacity:0.8!important;
 }
 /*****新版首页******/
 .dashboard{
@@ -60,57 +67,57 @@ blockquote{
 }
 /*****登陆框*******/
 .login{
-	position: relative;
-	width: 400px;
+    position: relative;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
-}    
+}
 /*** 头像**/
 .avatar{
-	width:40px;
-	height:40px;
-	border-radius: 50%;
-	margin-left:-50px;
-	display: block;
-	float:left;
+    width:40px;
+    height:40px;
+    border-radius: 50%;
+    margin-left:-50px;
+    display: block;
+    float:left;
 }
 /*****左边菜单*****/
- .left-menu-border-top{
- 	border-top: 1px solid #888!important;
- }
+.left-menu-border-top{
+    border-top: 1px solid #888!important;
+}
 /********前端显示最小宽度*************/
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
-.container{min-width: 770px;}               
+.container{min-width: 770px;}
 /********文章页面，图片居中显示********/
 #fade{
-	opacity: 0.5;
-	position: fixed; 
-	top: 0;
-	bottom:0px;
-	right: 0;
-	left: 0;
-	background-color: #000000;
-	z-index:999;
-	 display: none;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    bottom:0px;
+    right: 0;
+    left: 0;
+    background-color: #000000;
+    z-index:999;
+    display: none;
 }
 #passwordDiv{
-	z-index:10001;
-	position:fixed!important;
+    z-index:10001;
+    position:fixed!important;
 }
 /************登录********************/
 #remberPwd .lab{
-	padding-top:3px;
-	margin-right:10px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top:3px;
+    margin-right:10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #remberPwd .active{
-	color:#fff;
-	background-color:#6f5499;
-  	border-color: #563d7c;
+    color:#fff;
+    background-color:#6f5499;
+    border-color: #563d7c;
 }
 .input-wrapper{
-	position: relative;
+    position: relative;
     border-bottom: 1px solid #eee;
     margin-left:-15px;
     margin-right:-15px;
@@ -131,7 +138,7 @@ blockquote{
     box-sizing: border-box;
 }
 .input-wrapper .imgCode{
-	position: absolute;
+    position: absolute;
     top: 0;
     right: 10px;
     bottom: 0;
@@ -151,21 +158,21 @@ blockquote{
 }
 #editResponseParamTable input,#editResponseParamTable select,
 #eparamRemarkTable input,#eparamRemarkTable select{
-	padding:5px 5px;
-	height:25px!important;
-	font-size:12px!important;
+    padding:5px 5px;
+    height:25px!important;
+    font-size:12px!important;
 }
 
 /***************接口详情页面*************/
 .interface-detail{
-	color:#555;
+    color:#555;
 }
 .interface-detail div{
-	color:#000;
-	margin-bottom:10px;
-	margin-top:30px;
-	font-size:14px;
-	font-weight: bolder;
+    color:#000;
+    margin-bottom:10px;
+    margin-top:30px;
+    font-size:14px;
+    font-weight: bolder;
 }
 .interface-detail .code {
     font-size: 12px;
@@ -177,33 +184,33 @@ blockquote{
     margin-bottom: 10px;
 }
 .interface-detail blockquote{
-	line-height:10px;
-	padding-left:10px;
-	font-size:12px;
+    line-height:10px;
+    padding-left:10px;
+    font-size:12px;
 }
 .code pre{
-	border:0px;
-	color: #595959;
+    border:0px;
+    color: #595959;
     font-family: Tahoma,"SimSun"!important;
     font-weight:100;
     line-height: 24px;
     font-size: 12px;
     white-space: pre-wrap;
-	word-wrap: break-word;
+    word-wrap: break-word;
 }
 /***************************/
 #go_top{
-	position: fixed;
-	bottom:30px;
-	right:30px;
-	height:46px;
-	width:46px;
-	background: #000000;
-  	background: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    bottom:30px;
+    right:30px;
+    height:46px;
+    width:46px;
+    background: #000000;
+    background: rgba(0, 0, 0, 0.8);
 }
 .notice{
     background-color: rgba(253, 245, 154, 0.3);
-    color:rgba(239, 118, 65, 0.73);	
+    color:rgba(239, 118, 65, 0.73);
 }
 .text-error {
     position: relative;
@@ -223,33 +230,33 @@ blockquote{
 }
 
 #editForm table td{
-	padding:6px 8px;
+    padding:6px 8px;
 }
 #editForm table .form-control{
-  	padding: 8px 12px;
+    padding: 8px 12px;
 }
 .modal-body .container{
-	max-width:100%;
+    max-width:100%;
 }
 .btn-purple {
-  color: #ffffff;
-  background-color:#6f5499;
-  border-color: #563d7c;
+    color: #ffffff;
+    background-color:#6f5499;
+    border-color: #563d7c;
 }
 .btn-purple:hover{
-  color: #ffffff;
-  background-color: #563d7c;
-  border-color: #4F307E;
+    color: #ffffff;
+    background-color: #563d7c;
+    border-color: #4F307E;
 }
 .btn-blue {
-  color: #ffffff;
-  background-color:#1b809e;
-  border-color: #137491;
+    color: #ffffff;
+    background-color:#1b809e;
+    border-color: #137491;
 }
 .btn-blue:hover{
-  color: #ffffff;
-  background-color: #137491;
-  border-color: #0C6984;
+    color: #ffffff;
+    background-color: #137491;
+    border-color: #0C6984;
 }
 
 .navbar-fixed-top {
@@ -258,162 +265,162 @@ blockquote{
 
 /*******************left**********************/
 .nav-face{
-	height:40px;
+    height:40px;
 }
 .panel-info{
-	color:#939da8;
-  	margin:0px -20px;
-  	background-color:transparent!important;
+    color:#939da8;
+    margin:0px -20px;
+    background-color:transparent!important;
 }
 .panel-heading{
-  	color:#DDD!important;
-  	padding:0px!important;
-  	background:#999999!important;
+    color:#DDD!important;
+    padding:0px!important;
+    background:#999999!important;
 }
 .panel-heading .badge{
-	background-color: #B768A5!important;
+    background-color: #B768A5!important;
 }
 .panel-heading a,.panel-heading .a{
-	padding:10px 15px;
-	width:100%;
-	display:inline-block;
-	color:#FFF!important;	
-	text-decoration: none;
+    padding:10px 15px;
+    width:100%;
+    display:inline-block;
+    color:#FFF!important;
+    text-decoration: none;
 }
 
 
 .panel-body a{
-	width:100%;
-	display:inline-block;
-	padding-top:10px;
-	padding-bottom:10px;
-	padding-left:30px;
-	color: #555;
+    width:100%;
+    display:inline-block;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:30px;
+    color: #555;
 }
- .searchInput {
- 	display:inline-block!important;
- 	height:23px!important;
- }
- /******************searchView
- #searchView{
-	 display:none;
-	 position:fixed;
-	 top:100px;
-	 width:400px;
-	 height:100px;
-	 margin:0 auto;
-	 z-index:1051;
-	 background: rgba(255, 255, 255, 0.4); 
- }****************/
- /*****************pick***************************/
- .iactive{
- 	font-weight:bold;
- }
- .pickActive{
- 	font-weight:bold;
- }
- .pickSelect{
- 	background:#DDD;
- 	font-weight:bold;
- }
- #pickContent div:hover{
- 	background:#DDD;
- }
- .separator{
- 	border:0px;
- 	margin-top:10px;
- 	font-size:12px;
- 	margin-bottom:10px;
- 	text-align: left;
- }
- /*****************加载浮层***************************/
+.searchInput {
+    display:inline-block!important;
+    height:23px!important;
+}
+/******************searchView
+#searchView{
+    display:none;
+    position:fixed;
+    top:100px;
+    width:400px;
+    height:100px;
+    margin:0 auto;
+    z-index:1051;
+    background: rgba(255, 255, 255, 0.4);
+}****************/
+/*****************pick***************************/
+.iactive{
+    font-weight:bold;
+}
+.pickActive{
+    font-weight:bold;
+}
+.pickSelect{
+    background:#DDD;
+    font-weight:bold;
+}
+#pickContent div:hover{
+    background:#DDD;
+}
+.separator{
+    border:0px;
+    margin-top:10px;
+    font-size:12px;
+    margin-bottom:10px;
+    text-align: left;
+}
+/*****************加载浮层***************************/
 .folat{
-	display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
-	z-index:1060;
-	background: rgba(0, 0, 0, 0.1); 
-	padding-top:20%; text-align:center;
+    display:none;position:fixed;top:0px;left:0px;right:0px;bottom:0px;
+    z-index:1060;
+    background: rgba(0, 0, 0, 0.1);
+    padding-top:20%; text-align:center;
 }
 .float-close{
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 30px;
-  cursor: pointer;
-  color:red;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color:red;
 }
 .look-up {
-  position: absolute;
-  top: 40%;
-  left: 35%;
-  background: #000000;
-  background: rgba(0, 0, 0, 0.2);
-  display: none;
-  height: 100px;
-  width: 500px;
-  padding: 1px;
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    background: #000000;
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
+    height: 100px;
+    width: 500px;
+    padding: 1px;
 }
 #lookUp{
- 	z-index: 1061;
+    z-index: 1061;
 }
 .look-up-content {
-  position: relative;
-  background: #FDFDFD;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  padding-top: 15px;
-  overflow: auto;
+    position: relative;
+    background: #FDFDFD;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    padding-top: 15px;
+    overflow: auto;
 }
 .look-up .i-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 14px;
-  cursor: pointer;
-  color:#999;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    color:#999;
 }
 
 .look-up .i-full {
-  position: absolute;
-  top: 12px;
-  right: 42px;
-  font-size: 14px;
-  cursor: pointer;
-  color:#999;
+    position: absolute;
+    top: 12px;
+    right: 42px;
+    font-size: 14px;
+    cursor: pointer;
+    color:#999;
 }
 #myDialog{
-	color: #fff;
-	 z-index: 1051;
+    color: #fff;
+    z-index: 1051;
     background-color: #888;
 }
 #pickTip {
-  position: absolute;
-  top: 4px;
-  right: 0px;
-  left: 0px;
-  background: rgba(0, 0, 0, 0.5); 
-  height:36px;
-  line-height:36px;
-  padding-left:30px;
-  color:#fff;
-  font-weight:bold;
-  font-size: 18px;
-  cursor: pointer;
-  display:none;
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    height:36px;
+    line-height:36px;
+    padding-left:30px;
+    color:#fff;
+    font-weight:bold;
+    font-size: 18px;
+    cursor: pointer;
+    display:none;
 }
 .look-up .text-success {
-  font-weight: bold;
-  font-size: 14px;
+    font-weight: bold;
+    font-size: 14px;
 }
 .look-up .i-close:hover {
-  color: #B20000;
+    color: #B20000;
 }
 .look-up .i-full:hover {
-  color: #B20000;
+    color: #B20000;
 }
 /*******************End:left**********************/
 /*@media (min-width: 768px) {*/
-  
+
 /*}
 @media (max-width: 767px) {
   .sidebar {
@@ -434,58 +441,58 @@ blockquote{
  */
 
 #context {
-	height:100%;
-	min-width:100%;
+    height:100%;
+    min-width:100%;
 }
 /***************妯℃�佹*****************/
 .modal-header {
-  color: #fff;
-  background-color: #888;
+    color: #fff;
+    background-color: #888;
 }
 @media (max-width: 767px) {
 }
 /*************loading************/
 .sk-wave {
-  margin: 40px auto;
-  width: 50px;
-  height: 40px;
-  text-align: center;
-  font-size: 10px; }
-  .sk-wave .sk-rect {
+    margin: 40px auto;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 10px; }
+.sk-wave .sk-rect {
     height: 100%;
     width: 6px;
     display: inline-block;
     -webkit-animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
-            animation: sk-waveStretchDelay 1.2s infinite ease-in-out; }
-  .sk-wave .sk-rect1 {
+    animation: sk-waveStretchDelay 1.2s infinite ease-in-out; }
+.sk-wave .sk-rect1 {
     -webkit-animation-delay: -1.2s;
-            animation-delay: -1.2s; }
-  .sk-wave .sk-rect2 {
+    animation-delay: -1.2s; }
+.sk-wave .sk-rect2 {
     -webkit-animation-delay: -1.1s;
-            animation-delay: -1.1s; }
-  .sk-wave .sk-rect3 {
+    animation-delay: -1.1s; }
+.sk-wave .sk-rect3 {
     -webkit-animation-delay: -1s;
-            animation-delay: -1s; }
-  .sk-wave .sk-rect4 {
+    animation-delay: -1s; }
+.sk-wave .sk-rect4 {
     -webkit-animation-delay: -0.9s;
-            animation-delay: -0.9s; }
-  .sk-wave .sk-rect5 {
+    animation-delay: -0.9s; }
+.sk-wave .sk-rect5 {
     -webkit-animation-delay: -0.8s;
-            animation-delay: -0.8s; }
+    animation-delay: -0.8s; }
 
 @-webkit-keyframes sk-waveStretchDelay {
-  0%, 40%, 100% {
-    -webkit-transform: scaleY(0.4);
-            transform: scaleY(0.4); }
-  20% {
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1); } }
+    0%, 40%, 100% {
+        -webkit-transform: scaleY(0.4);
+        transform: scaleY(0.4); }
+    20% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1); } }
 
 @keyframes sk-waveStretchDelay {
-  0%, 40%, 100% {
-    -webkit-transform: scaleY(0.4);
-            transform: scaleY(0.4); }
-  20% {
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1); } }
+    0%, 40%, 100% {
+        -webkit-transform: scaleY(0.4);
+        transform: scaleY(0.4); }
+    20% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1); } }
 

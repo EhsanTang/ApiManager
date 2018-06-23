@@ -20,7 +20,7 @@ public class HotSearchController extends BaseController {
     @Autowired
     private HotSearchService hotSearchService;
 
-    @RequestMapping("/hotSearch/list.do")
+    @RequestMapping("/admin/hotSearch/list.do")
     @ResponseBody
     @AuthPassport(authority = C_HOT_SEARCH)
     public JsonResult list(Integer currentPage) {

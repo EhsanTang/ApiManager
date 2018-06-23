@@ -1,4 +1,4 @@
-<div class="col-xs-12 r0 p20 pt0" ng-controller="frontSourceCtrl">
+<div class="col-xs-12 r0 p20 pt0" ng-controller="visitorSourceCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <div class="col-xs-12 p3 pl10 pr10 mr10 f14 fb  mt20 mb20 adorn-bl-3">目录列表</div>
 
@@ -11,7 +11,7 @@
 
 	<div ng-repeat="item in list" class="dashed-t">
 	
-		<a ng-href="#/{{item.projectId}}/source/detail/{{item.id}}" class="p10 pl0 f16 fb dis w C000 no_unl">{{item.name}}</a>
+		<a ng-href="#/source/detail?projectId={{item.projectId}}&id={{item.id}}" class="p10 pl0 f16 fb dis w C000 no_unl">{{item.name}}</a>
 		<div class ="f14 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
 		<div class="tr C999 f12 p10">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</div>
 	</div>

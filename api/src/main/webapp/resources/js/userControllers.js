@@ -277,7 +277,7 @@ mainModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state,
 /************************hotSearchCtrl********/
 mainModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function(page) {
-        var params = "iUrl=hotSearch/list.do|iLoading=FLOAT";
+        var params = "iUrl=admin/hotSearch/list.do|iLoading=FLOAT";
         $rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -285,14 +285,14 @@ mainModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state
 /**************************系统设置列表****************************/
 mainModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
+		var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });
 mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function() {
-		var params = "iLoading=FLOAT|iUrl=setting/detail.do?id="+$stateParams.id+"&key="+$stateParams.key+"&type="+$stateParams.type;
+		var params = "iLoading=FLOAT|iUrl=admin/setting/detail.do?id="+$stateParams.id+"&key="+$stateParams.key+"&type="+$stateParams.type;
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -309,7 +309,7 @@ mainModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 /**************************角色列表****************************/
 mainModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=role/list.do|iLoading=FLOAT|iPost=true|iParams=&roleName=" + $("#roleName").val();;
+		var params = "iUrl=admin/role/list.do|iLoading=FLOAT|iPost=true|iParams=&roleName=" + $("#roleName").val();;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
@@ -475,7 +475,7 @@ mainModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $ht
 /**************************日志列表****************************/
 mainModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
+		var params = "iUrl=user/log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

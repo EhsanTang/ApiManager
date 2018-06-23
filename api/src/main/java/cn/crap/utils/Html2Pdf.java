@@ -32,7 +32,7 @@ public class Html2Pdf {
 			
 			InputStream pdfText = null;
 			try{
-				pdfText = HttpPostGet.getInputStream(config.getDomain()+ "/front/interface/detail/pdf.do?id=" + interFaceId + "&moduleId="+moduleId+"&secretKey="+secretKey);
+				pdfText = HttpPostGet.getInputStream(config.getDomain()+ "/visitor/interface/detail/pdf.do?id=" + interFaceId + "&moduleId="+moduleId+"&secretKey="+secretKey);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

@@ -66,7 +66,7 @@
 
                     <c:if test="${login}">
                         <a class="btn btn-adorn btn-sm r20 w150 f14" href="admin.do" target="_self">进入项目管理</a>
-                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="index.do#/project/list/true/NULL"
+                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="index.do#/project/list?myself=true"
                            target="_self">查看项目</a>
                     </c:if>
                     <c:if test="${login == false}">
@@ -116,11 +116,11 @@
         <div class="col-sm-9 col-xs-12">
             <div class="cb dashed-b p3 pl10 pr10 mr10 f16 fw600 mt10 mb10 adorn-bl-3">
                 推荐文章
-                <div class="fr f12"><a class="adorn-color fn" href="index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/2">More...</a></div>
+                <div class="fr f12"><a class="adorn-color fn" href="index.do#/article/list?type=ARTICLE&status=2">More...</a></div>
             </div>
             <c:forEach items="${articleList}" var="article" varStatus="id">
                 <div class="dashed-b">
-                    <a href="index.do#/${article.projectId}/article/detail/${article.moduleId}/${article.type}/${article.id}"
+                    <a href="index.do#/article/detail?projectId=${article.projectId}&moduleId=${article.moduleId}&type=${article.type}&id=${article.id}"
                        class="p10 pl0 f14 fw600 dis w C000 no_unl">${article.name}</a>
                     <div class="f12 C999">${article.brief}</div>
                     <div class="tr C999 f12 p10">点击量:${article.click}次 <span
@@ -131,22 +131,22 @@
 
 
         <div class="cb f30 w tc dashed-b fw600 pt20">推荐项目
-            <a class="adorn-color f12 fn" href="index.do#/project/list/false/NULL">More...</a>
+            <a class="adorn-color f12 fn" href="index.do#/project/list?myself=false">More...</a>
         </div>
         <c:forEach items="${projectList}" var="item" varStatus="id">
             <div class="col-sm-6 col-md-4 col-lg-3 m0 p0">
                 <div class="b1 tl r3 h220 m15 p15">
                     <div>
-                        <a class="fl" href="project.do#/${item.id}/module/list" target="_blank">
+                        <a class="fl" href="project.do#/module/list?projectId=${item.id}" target="_blank">
                             <img class="h70 w70 r50P" src="${item.cover}"/>
                         </a>
                         <div class="lh26 fl mt20 ml10">
-                            <a class="f12 text-primary mr5 cursor" href="project.do#/${item.id}/error/list"
+                            <a class="f12 text-primary mr5 cursor" href="project.do#/error/list?projectId=${item.id}"
                                target="_blank">
                                 <i class="iconfont f12">&#xe608; 错误码</i>
                             </a>
                             <br/>
-                            <a class="f12 text-primary mr5 cursor mt10" href="project.do#/${item.id}/module/list"
+                            <a class="f12 text-primary mr5 cursor mt10" href="project.do#/module/list?projectId=${item.id}"
                                target="_blank">
                                 <i class="iconfont f12">&#xe613; 模块列表</i>
                             </a>
@@ -154,7 +154,7 @@
                     </div>
                     <div class="cb"></div>
                     <div class="h30 of-h f14 C000 pt10">
-                        <a href="project.do#/${item.id}/module/list" target="_blank"
+                        <a href="project.do#/module/list?projectId=${item.id}" target="_blank"
                            class="adorn-color">${item.name}</a>
                     </div>
                     <div class="h80 of-h C555 pt10 pb5">

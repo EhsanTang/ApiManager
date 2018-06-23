@@ -1,4 +1,4 @@
-<div class="col-xs-12 r0 p20 pt0" ng-controller="frontSearchCtrl">
+<div class="col-xs-12 r0 p20 pt0" ng-controller="visitorSearchCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1);"></button>
 	<div class="col-xs-6 f16 fb pl0 mb10 pb5 mt20">
 		<a type="button" class="btn btn-default btn-sm"> <i
@@ -21,7 +21,7 @@
 				<a class="f12 text-primary mr10 cursor" ng-href="{{item.url}}">
 					<i class="iconfont f12">&#xe60a;</i>&nbsp;详情
 				</a>
-				<a class="f12 text-primary mr10 cursor" ng-if="item.type=='Interface'" ng-href="#/{{item.projectId}}/front/interface/debug/{{item.id}}">
+				<a class="f12 text-primary mr10 cursor" ng-if="item.type=='Interface'" ng-href="#/interface/debug?projectId={{item.projectId}}&id={{item.id}}">
 					<i class="iconfont f12">&#xe625;</i>&nbsp;调试
 				</a>
 			</div>

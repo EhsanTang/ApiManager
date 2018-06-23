@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12" ng-controller="frontModuleCtrl">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="visitorModuleCtrl">
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 	<div class="col-xs-12 p3 pl10 pr10 mr10 f16 mt10 mb20 adorn-bl-3">
 		全部模块
@@ -9,25 +9,25 @@
 	</div>
 	
 	<div ng-repeat="item in moduleList" class="dashed-t col-xs-12 pl0"  ng-if="moduleList.length>0">
-		<a class="p10 pl0 f14 dis w C000 no_unl cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">{{item.name}}</a>
+		<a class="p10 pl0 f14 dis w C000 no_unl cursor" ng-href="#/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}">{{item.name}}</a>
 		<div class ="f12 C555" ng-bind="item.remark|cut:true:100:' ...'"></div>
 		<div class="tr C999 f12 p10">
-			<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}"> 
+			<a class="f12 text-primary mr5 cursor" ng-href="#/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}">
 						<i class="iconfont f12">&#xe614; 接口</i>
 					</a>
 					
-					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL/NULL">
+					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE">
 						<i class="iconfont f12">&#xe637; 文章</i>
 					</a>
 					
-					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/source/list/{{item.id}}"> 
+					<a class="f12 text-primary mr5 cursor" ng-href="#/source/list?projectId={{item.projectId}}&id={{item.id}}">
 						<i class="iconfont f12">&#xe638; 资源</i>
 					</a>
-					<a class="f12 text-primary mr5 cursor" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL/NULL">
+					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY">
 						<i class="iconfont f12">&#xe61c; 数据字典</i>
 					</a>
 					
-					<a class="f12 text-primary mr5 cursor" ng-href="front/interface/download/pdf.do?moduleId={{item.id}}"> 
+					<a class="f12 text-primary mr5 cursor" ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}">
 						<i class="iconfont f12">&#xe61e; 下载</i>
 					</a>
 		</div>

@@ -31,13 +31,13 @@ public class SettingController extends BaseController {
     private CustomSettingService customSettingService;
     @Autowired
     private Config config;
-    private final static String[] indexUrls = new String[]{"index.do", "front/", "project.do", "dashboard.htm"};
+    private final static String[] indexUrls = new String[]{"index.do", "visitor/", "project.do", "dashboard.htm"};
 
     /**
      * @param currentPage 当前页
      * @return
      */
-    @RequestMapping("/setting/list.do")
+    @RequestMapping("/admin/setting/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult list(String key, String remark, Integer currentPage) {
@@ -59,7 +59,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(SettingAdapter.getDto(settingService.selectByExample(example))).page(page);
     }
 
-    @RequestMapping("/setting/detail.do")
+    @RequestMapping("/admin/setting/detail.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult detail(String id, String key, String type) {
@@ -77,7 +77,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(SettingAdapter.getDto(setting));
     }
 
-    @RequestMapping("/setting/addOrUpdate.do")
+    @RequestMapping("/admin/setting/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto) throws Exception {
@@ -122,7 +122,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(settingDto);
     }
 
-    @RequestMapping("/setting/delete.do")
+    @RequestMapping("/admin/setting/delete.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult delete(@RequestParam String id) throws MyException {
@@ -135,7 +135,7 @@ public class SettingController extends BaseController {
         return SUCCESS;
     }
 
-    @RequestMapping("/back/setting/changeSequence.do")
+    @RequestMapping("/admin/setting/changeSequence.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {

@@ -104,7 +104,7 @@ public class SourceAdapter {
         dto.setCreateTime(source.getCreateTime());
         dto.setTitle(source.getName());
         dto.setType(Source.class.getSimpleName());
-        dto.setUrl("#/"+source.getProjectId()+"/source/detail/"+source.getId());
+        dto.setUrl("#/source/detail?projectId=" +source.getProjectId()+ "&id=" + source.getId());
         dto.setVersion("");
         dto.setProjectId(source.getProjectId());
         //索引内容 = 备注内容 + 文档内容

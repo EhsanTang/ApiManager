@@ -70,7 +70,7 @@
 						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
 
-					<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interface/debug/{{item.id}}" target="_blank">
+					<a class="f12 text-primary mr10 cursor" ng-href="index.do#/interface/debug?projectId={{item.projectId}}&id={{item.id}}" target="_blank">
 						<i class="iconfont">&#xe625;&nbsp;</i>调试
 					</a>
 
@@ -86,16 +86,16 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
-							<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
-							<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+							<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
+							<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
 							<li role="separator" class="divider"></li>
 							<li>
-								<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/front/interfaceDetail/{{item.id}}" target="_blank">
+								<a class="f12 text-primary mr10 cursor" ng-href="index.do#/interface/detail?projectId={{item.projectId}}&id={{item.id}}" target="_blank">
 									<i class="iconfont f12">&#xe60a;预览</i>
 								</a>
 							</li>
 							<li>
-								<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
+								<a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
 									<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 								</a>
 							</li>

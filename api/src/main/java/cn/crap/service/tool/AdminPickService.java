@@ -105,7 +105,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
@@ -118,9 +118,9 @@ public class AdminPickService implements IPickService{
             case MENU_URL:
                 pick = new PickDto(IConst.SEPARATOR, "项目列表");
                 picks.add(pick);
-                pick = new PickDto("m_myproject", "index.do#/project/list/true/NULL", "我的项目列表");
+                pick = new PickDto("m_myproject", "index.do#/project/list?myself=true", "我的项目列表");
                 picks.add(pick);
-                pick = new PickDto("recommend_project", "index.do#/project/list/false/NULL", "推荐项目列表");
+                pick = new PickDto("recommend_project", "index.do#/project/list?myself=false", "推荐项目列表");
                 picks.add(pick);
 
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
@@ -135,7 +135,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#NULL/article/list/NULL/ARTICLE/NULL/NULL/" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";

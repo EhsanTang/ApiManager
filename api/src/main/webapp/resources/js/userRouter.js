@@ -32,7 +32,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('menuList', {
-		url : '/menu/list/:parentId/:type/:menuName',
+		url : '/admin/menu/list?parentId&type&menuName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/menuList.tpl.html?v=v8.0.2'
@@ -77,7 +77,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('interfaceList', {
-		url : '/user/interface/list/:projectId/:moduleId/:moduleName',
+		url : '/user/interface/list?projectId&moduleId&moduleName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.2'
@@ -119,25 +119,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('articleListOld', {// 兼容外链
-		url : '/user/article/list/:projectId/:moduleId/:type',
-		views : {
-			'main' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/user/articleList.tpl.html?v=v8.0.2';
-				}
-			},
-			'page@articleListOld' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.2';
-				}
-			}
-		}
 	}).state('articleList', {
-        url : '/user/article/list?projectId&moduleId&type',
+        url : '/user/article/list?projectId&moduleId&type&moduleName',
         views : {
             'main' : {
                 templateUrl : function($stateParems){
@@ -154,7 +137,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('sourceList', {
-		url : '/user/source/list/:projectId/:moduleId',
+		url : '/user/source/list?projectId&moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/sourceList.tpl.html?v=v8.0.2'
@@ -169,7 +152,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingList', {
-		url : '/setting/list/:key',
+		url : '/admin/setting/list?key',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/settingList.tpl.html?v=v8.0.2'
@@ -179,7 +162,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingDetail', {
-		url : '/setting/detail/:type/:id',
+		url : '/admin/setting/detail?type&id',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -188,7 +171,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('hotSearchList', {
-        url : '/hotSearch/list',
+        url : '/admin/hotSearch/list',
         views : {
             'main' : {
                 templateUrl : 'resources/html/admin/hotSearchList.tpl.html?v=v8.0.2'
@@ -198,7 +181,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('configProperties', {
-		url : '/config/properties',
+		url : '/admin/config/properties',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -207,7 +190,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('dictionaryImoprtFromSql', {
-		url : '/article/dictionary/importFromSql',
+		url : '/user/article/dictionary/importFromSql',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -216,7 +199,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('userList', {
-		url : '/user/list',
+		url : '/user/user/list',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/userList.tpl.html?v=v8.0.2'
@@ -246,7 +229,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('commentList', {
-		url : '/:projectId/comment/list/:articleId',
+		url : '/user/comment/list?projectId&articleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/commentList.tpl.html?v=v8.0.2'
@@ -261,7 +244,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('roleList', {
-		url : '/role/list',
+		url : '/admin/role/list',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/roleList.tpl.html?v=v8.0.2'
@@ -283,7 +266,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('logList', {
-		url : '/log/list/:identy',
+		url : '/user/log/list?identy',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.2'

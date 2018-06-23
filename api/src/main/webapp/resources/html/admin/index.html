@@ -37,7 +37,7 @@
 
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right mr20">
-						<li><a href="#/config/properties" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
+						<li><a href="#/admin/config/properties" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
 						<li><a href="#/profile" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
 						<li><a href="home.do" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
 						<li><a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank"><img src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a></li>
@@ -69,7 +69,7 @@
 								<a class="menu-a" target="_self" ng-href="#/user/project/list?myself=true&type=-1" onclick="selectButton(this,'menu-a')">我的项目列表</a>
 							</div>
 							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_self" ng-href="#/article/dictionary/importFromSql" onclick="selectButton(this,'menu-a')">导入数据字典：SQL</a>
+								<a class="menu-a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'menu-a')">导入数据字典：SQL</a>
 							</div>
 						</div>
 					</div>
@@ -86,16 +86,16 @@
 							</div>
 							<div id="panel2" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/FRONT/前端左侧菜单" onclick="selectButton(this,'menu-a')">前端左侧菜单</a>
+									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=FRONT&menuName=前端左侧菜单" onclick="selectButton(this,'menu-a')">前端左侧菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/BOTTOM/前端底部菜单" onclick="selectButton(this,'menu-a')">前端底部菜单</a>
+									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=BOTTOM&menuName=前端底部菜单" onclick="selectButton(this,'menu-a')">前端底部菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/TOP/前端顶部菜单" onclick="selectButton(this,'menu-a')">前端顶部菜单</a>
+									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=TOP&menuName=前端顶部菜单" onclick="selectButton(this,'menu-a')">前端顶部菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/menu/list/0/FRIEND/底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
+									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=FRIEND&menuName=底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
 								</div>
 							</div>
 						</div>
@@ -111,25 +111,25 @@
 							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu-a" target="_self" href="#/config/properties" onclick="selectButton(this,'menu-a')">系统属性</a>
+									<a class="menu-a" target="_self" href="#/admin/config/properties" onclick="selectButton(this,'menu-a')">系统属性</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/user/project/list/false/-1" onclick="selectButton(this,'menu-a')">所有项目列表</a>
+									<a class="menu-a" target="_self" href="#/user/project/list?myself=false&type-1" onclick="selectButton(this,'menu-a')">所有项目列表</a>
 								</div>
 								<!--  <div class="panel-body b0 p0">
 									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
 								</div>-->
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'USER')">
-									<a class="menu-a" target="_self" href="#/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
+									<a class="menu-a" target="_self" href="#/user/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ROLE')">
-									<a class="menu-a" target="_self" href="#/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
+									<a class="menu-a" target="_self" href="#/admin/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'HOT_SEARCH')">
-									<a class="menu-a" target="_self" href="#/hotSearch/list" onclick="selectButton(this,'menu-a')">搜索热词管理</a>
+									<a class="menu-a" target="_self" href="#/admin/hotSearch/list" onclick="selectButton(this,'menu-a')">搜索热词管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'SETTING')">
-									<a class="menu-a" target="_self" href="#/setting/list/null" onclick="selectButton(this,'menu-a')">系统设置管理</a>
+									<a class="menu-a" target="_self" href="#/admin/setting/list" onclick="selectButton(this,'menu-a')">系统设置管理</a>
 								</div>
 
 								<!--<div class="panel-body b0 p0" ng-if="isAdmin(false,'ARTICLE')">
@@ -156,7 +156,7 @@
 									onclick="flushDB(this)">刷新缓存</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu-a" target="_self" href="#/log/list/NULL" onclick="selectButton(this,'menu-a')">操作日志</a>
+									<a class="menu-a" target="_self" href="#/user/log/list?identy=NULL" onclick="selectButton(this,'menu-a')">操作日志</a>
 								</div>
 							</div>
 						</div>

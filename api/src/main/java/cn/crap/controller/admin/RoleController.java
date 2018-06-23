@@ -20,7 +20,7 @@ import cn.crap.utils.Page;
 import java.util.List;
 
 @Controller
-@RequestMapping("/role")
+@RequestMapping("/admin/role")
 public class RoleController extends BaseController {
 
     @Autowired

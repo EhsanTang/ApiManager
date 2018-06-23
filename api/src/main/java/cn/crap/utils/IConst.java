@@ -22,7 +22,6 @@ public interface IConst {
 	String AUTH_COMMENT = "COMMENT";
 	String C_AUTH_ADMIN = "ADMIN";// 管理员
 	String C_AUTH_ROLE = "ROLE";
-	String C_AUTH_LOG = "LOG";
 	String C_AUTH_PROJECT = "PROJECT_";
 	String C_DELETE_PASSWORD = "delete";
 
@@ -67,7 +66,7 @@ public interface IConst {
 	String DOMAIN = "DOMAIN";
 	String ADMIN = "admin";
 	// url
-	String FRONT_PROJECT_URL = "project.do#/%s/module/list";
+	String FRONT_PROJECT_URL = "project.do#/module/list?projectId=%s";
 	
 	//系统设置
 	String SETTING_OPEN_REGISTER = "openRegister";

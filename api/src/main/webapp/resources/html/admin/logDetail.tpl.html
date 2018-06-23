@@ -14,7 +14,7 @@
 				<td>
 					【<sapn class="adorn-color">{{model.type}}</sapn>】<span class="C999">* 恢复数据后原有数据将被覆盖，请谨慎使用</span>
 					<a  type="button" class="btn btn-danger btn-sm fr" title="恢复" ng-if="showOperation('LOG','');"
-						ng-click="del('log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
+						ng-click="del('user/log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
 					<i class="iconfont f12">&#xe627;&nbsp;恢复</i>
 				</a>
 				</td>
@@ -35,7 +35,7 @@
 			</tr>
 	</table>
 		<a  type="button" class="btn btn-danger btn-sm fr" title="恢复" ng-if="showOperation('LOG','');"
-			ng-click="del('log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
+			ng-click="del('user/log/recover.do?id='+model.id,model.remark,'确认恢复【'+model.remark+'】?原有数据将被覆盖')">
 			<i class="iconfont f12">&#xe627;&nbsp;恢复</i>
 		</a>
 </div>

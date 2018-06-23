@@ -198,7 +198,7 @@ public class InterfaceAdapter {
 		dto.setModuleName(module.getName());
 		dto.setTitle(model.getInterfaceName());
 		dto.setType(Interface.class.getSimpleName());
-		dto.setUrl("#/"+model.getProjectId()+"/front/interfaceDetail/" + model.getId());
+		dto.setUrl("#/visitor/interface/detail?projectId=" + model.getProjectId() + "&id=" + model.getId());
 		dto.setVersion(model.getVersion());
 		dto.setHref(model.getFullUrl());
 		dto.setProjectId(model.getProjectId());

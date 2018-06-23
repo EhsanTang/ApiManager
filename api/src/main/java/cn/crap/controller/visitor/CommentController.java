@@ -1,4 +1,4 @@
-package cn.crap.controller.front;
+package cn.crap.controller.visitor;
 
 import java.util.Date;
 
@@ -21,8 +21,8 @@ import cn.crap.model.mybatis.Comment;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 
-@Controller("frontCommentController")
-@RequestMapping("/front/comment")
+@Controller("visitorCommentController")
+@RequestMapping("/visitor/comment")
 public class CommentController extends BaseController {
 	@Autowired
 	private CommentService commentService;

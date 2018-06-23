@@ -1,4 +1,4 @@
-package cn.crap.controller.front;
+package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.beans.Config;
@@ -178,7 +178,7 @@ public class MainController extends BaseController{
 					showText = showText + "...";
 				}
 				searchWord = LuceneSearchService.handleHref(searchWord);
-				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='#/frontSearch/"+searchWord+"'>"+showText+"</a>");
+				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='#/visitorSearch?keyword"+searchWord+"'>"+showText+"</a>");
 			}
 			
 		}
@@ -192,9 +192,9 @@ public class MainController extends BaseController{
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping("/front/init.do")
+	@RequestMapping("/visitor/init.do")
 	@ResponseBody
-	public JsonResult frontInit(HttpServletRequest request) throws Exception {
+	public JsonResult visitorInit(HttpServletRequest request) throws Exception {
 		Map<String, String> settingMap = new HashMap<String, String>();
 		for (SettingDto setting : settingCache.getAll()) {
 			if(S_SECRETKEY.equals(setting.getKey())){
@@ -224,9 +224,9 @@ public class MainController extends BaseController{
 	}
 	
 
-	@RequestMapping("/frontSearch.do")
+	@RequestMapping("/visitorSearch.do")
 	@ResponseBody
-	public JsonResult frontSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
+	public JsonResult visitorSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
 		if(config.isLuceneSearchNeedLogin()){
 			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
 		}

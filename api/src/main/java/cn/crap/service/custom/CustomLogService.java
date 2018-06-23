@@ -90,6 +90,38 @@ public class CustomLogService{
         }
     }
 
+    public String getProjectByLog(Log log){
+            log = logService.getById(log.getId());
+            switch (log.getModelClass().toUpperCase()) {
+                case "INTERFACEWITHBLOBS"://恢复接口
+                case "INTERFACE"://恢复接口
+                    JSONObject json = JSONObject.fromObject(log.getContent());
+                    InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, InterfaceWithBLOBs.class);
+                    return inter.getProjectId();
+                case "ARTICLEWITHBLOBS":// 恢复文章
+                case "ARTICLE":// 恢复文章
+                    json = JSONObject.fromObject(log.getContent());
+                    ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
+                    return article.getProjectId();
+                case "MODULEWITHBLOBS"://恢复模块
+                case "MODULE"://恢复模块
+                    json = JSONObject.fromObject(log.getContent());
+                    Module module = (Module) JSONObject.toBean(json, Module.class);
+                    return module.getProjectId();
+                case "PROJECTWITHBLOBS":
+                case "PROJECT"://恢复项目
+                    json = JSONObject.fromObject(log.getContent());
+                    Project project = (Project) JSONObject.toBean(json, Project.class);
+                    return project.getId();
+                case "SOURCEWITHBLOBS":
+                case "SOURCE"://恢复资源
+                    json = JSONObject.fromObject(log.getContent());
+                    Source source = (Source) JSONObject.toBean(json, Source.class);
+                    return source.getProjectId();
+            }
+            return null;
+    }
+
     private void checkModule(String moduleId) throws MyException {
         Assert.notNull(moduleId);
         Module module = moduleService.getById(moduleId);

@@ -16,57 +16,57 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/visitor/notFound.tpl.html?v=v8.0.2'
             }
         }
-    }).state('frontSearchCtrl', {
-		url : '/frontSearch/:keyword',
+    }).state('visitorSearchCtrl', {
+		url : '/visitorSearch?keyword',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/visitor/searchResult.tpl.html?v=v8.0.2';
 				}
 			},
-			'page@frontSearchCtrl' : {
+			'page@visitorSearchCtrl' : {
 				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('frontError', {
-		url : '/:projectId/error/list',
+	}).state('visitorError', {
+		url : '/error/list?projectId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/errorList.tpl.html?v=v8.0.2'
 			},
-			'page@frontError' : {
+			'page@visitorError' : {
 				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('frontModuleCtrl', {
+	}).state('visitorModuleCtrl', {
 		url : '/module/list?projectId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/moduleList.tpl.html?v=v8.0.2'
             },
-            'page@frontModuleCtrl' : {
+            'page@visitorModuleCtrl' : {
                 templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
             }
 		}
-	}).state('frontInterfaceCtrl', {
-		url : '/:projectId/interface/list/:moduleId',
+	}).state('visitorInterfaceCtrl', {
+		url : '/interface/list?projectId&moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/interfaceList.tpl.html?v=v8.0.2'
 			},
-			'page@frontInterfaceCtrl' : {
+			'page@visitorInterfaceCtrl' : {
 				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('frontInterfaceDetailCtrl', {
-		url : '/:projectId/front/interfaceDetail/:id',
+	}).state('visitorInterfaceDetailCtrl', {
+		url : '/interface/detail?projectId&id',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/interfaceDetail.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('frontInterfaceDebugCtrl', {
-		url : '/:projectId/front/interface/debug/:id',
+	}).state('visitorInterfaceDebugCtrl', {
+		url : '/interface/debug?projectId&id',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -74,23 +74,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('frontSourceList', {
-		url : '/:projectId/source/list/:moduleId',
+	}).state('visitorSourceList', {
+		url : '/source/list?projectId&moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/sourceList.tpl.html?v=v8.0.2'
 			},
-			'page@frontSourceList' : {
+			'page@visitorSourceList' : {
 				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('frontProjectList', {
-		url : '/project/list/:myself/NULL',
+	}).state('visitorProjectList', {
+		url : '/project/list?myself&type',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/projectList.tpl.html?v=v8.0.2'
 			},
-			'page@frontProjectList' : {
+			'page@visitorProjectList' : {
 				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}

@@ -1,7 +1,7 @@
 package cn.crap.enumer;
 
 public enum DataType {
-	SETTING("系统设置"),USER("用户管理"),MENU("菜单管理"),ROLE("权限管理"),LOG("日志管理")
+	SETTING("系统设置"),USER("用户管理"),MENU("菜单管理"),ROLE("权限管理")
 	,HOT_SEARCH("搜索热词管理"),ARTICLE("站点页面&文章推荐");
 	private final String name;
 	

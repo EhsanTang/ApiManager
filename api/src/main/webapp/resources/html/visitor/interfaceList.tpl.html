@@ -1,4 +1,4 @@
-<div class="r0 p20 pt10 col-xs-12" ng-controller="frontInterfaceCtrl">
+<div class="r0 p20 pt10 col-xs-12" ng-controller="visitorInterfaceCtrl">
 	<button type="button" class="ndis" id="refresh"
 		ng-click="getData(1,true);"></button>
 		
@@ -35,7 +35,7 @@
 	</div>
 	
 	<div ng-repeat="item in list" ng-if="list.length>0" class="col-xs-12 mb20 p0 dashed-t">
-		<a ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"
+		<a ng-href="#/interface/detail?projectId={{item.projectId}}&id={{item.id}}"
 			class="p10 pl0 f16 dis w C000 no_unl" ng-bind="item.interfaceName"></a>
 		<div class="f14 C555">{{item.remarkNoHtml}}</div>
 		<div class="tr C999 f12 mt5">
@@ -46,21 +46,19 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
-					<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
-					<li><a ng-href="front/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
+					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
 					<li role="separator" class="divider"></li>
 					<li>
 						<a
 								class="f12 text-primary mr10 cursor"
-								ng-href="#/{{item.projectId}}/front/interface/debug/{{item.id}}"> <i
+								ng-href="#/interface/debug?projectId={{item.projectId}}&id={{item.id}}"> <i
 								class="iconfont f12">&#xe625;</i>&nbsp;调试
 						</a>
 					</li>
 					<li>
-						<a
-								class="ml5 f12 text-primary mr10 cursor"
-								ng-href="#/{{item.projectId}}/front/interfaceDetail/{{item.id}}"><i
-								class="iconfont f12">&#xe60a;</i>&nbsp;详情</a>
+						<a class="ml5 f12 text-primary mr10 cursor" ng-href="#/interface/detail?projectId={{item.projectId}}&id={{item.id}}">
+							<i class="iconfont f12">&#xe60a;</i>&nbsp;详情</a>
 					</li>
 				</ul>
 			</div>

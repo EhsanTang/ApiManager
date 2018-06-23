@@ -2,8 +2,8 @@ package cn.crap.enumer;
 
 public enum IndexPageUrl {
 	INDEX_HTML("dashboard.htm", "数据大盘"),
-	RECOMMEND_PROJECT("index.do#/project/list/false/NULL","推荐项目"),
-	MY_PROJECT("index.do#/project/list/true/NULL","我的项目");
+	RECOMMEND_PROJECT("index.do#/project/list?myself=false","推荐项目"),
+	MY_PROJECT("index.do#/project/list?myself=true","我的项目");
 	private String name;
 	private String value;
 	

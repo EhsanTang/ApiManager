@@ -18,7 +18,7 @@
 </head>
 <body class="BG_COLOR">
 	<!-- Top Nav -->
-	<div ng-include="'resources/html/subTpl/frontTopNav.tpl.html?v=v8.0.2'"></div>
+	<div ng-include="'resources/html/subTpl/visitorTopNav.tpl.html?v=v8.0.2'"></div>
 	<!-- Top Nav End -->
 	<!-- Top Search-->
 	<div ng-include="'resources/html/subTpl/topSearch.tpl.html?v=v8.0.2'"></div>
@@ -28,7 +28,7 @@
 		<div class="row min-h p0 m0">
 		
 			<!-- leftMenu -->
-			<div class="col-xs-3 p0 m0" ng-controller="frontModuleMenuCtrl">
+			<div class="col-xs-3 p0 m0" ng-controller="visitorModuleMenuCtrl">
 				<div class="r2 BGFFF p20 C555 mr15">
 					<table>
 						<tr>
@@ -36,7 +36,7 @@
 								<img class="w50 h50 r50P" ng-src="{{project.cover}}"/>
 							</td>
 							<td class="pl10">
-								<a class="C000 f16 mt2" ng-href="#/{{project.id}}/module/list" ng-bind="project.name"></a>
+								<a class="C000 f16 mt2" ng-href="#/module/list?projectId={{project.id}}" ng-bind="project.name"></a>
 							</td>
 						</tr>
 					</table>
@@ -45,13 +45,13 @@
 
 				<div class="r2 BGFFF p10 C555 mr15 mt10">
 					<div class="adorn-bl-3 pl10">
-						<a class="C555 cursor" ng-href="#/{{project.id}}/module/list">全部模块</a>
+						<a class="C555 cursor" ng-href="#/module/list?projectId={{project.id}}">全部模块</a>
 					</div>
 				</div>
 
 				<div class="r2 BGFFF p10 C555 mr15 mt10">
 					<div class="adorn-bl-3 pl10">
-						<a class="C555 cursor" ng-href="#{{project.id}}/error/list">错误码</a>
+						<a class="C555 cursor" ng-href="#/error/list?projectId={{project.id}}">错误码</a>
 					</div>
 				</div>
 
@@ -68,10 +68,10 @@
 						<div id="panel{{item.id}}" class="panel-collapse BGFFF collapse"
 							ng-class="{true: 'panel-collapse BGFFF collapse in', false: 'panel-collapse BGFFF collapse'}[$index == 0]">
 							<div class="panel-body b0 p0">
-								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/interface/list/{{item.id}}">接口列表</a>
-								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/DICTIONARY/NULL/NULL/NULL">数据字典</a>
-								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/article/list/{{item.id}}/ARTICLE/NULL/NULL/NULL">文章</a>
-								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/{{item.projectId}}/source/list/{{item.id}}">资源</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}">接口列表</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY">数据字典</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE">文章</a>
+								<a class="p5 pl30 hover-a" onclick="selectButton(this,'hover-a', 'active-a')" ng-href="#/source/list?projectId={{item.projectId}}&moduleId={{item.id}}">资源</a>
 							</div>
 						</div>
 					</div>

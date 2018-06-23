@@ -39,7 +39,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('frontModuleCtrl', {
-		url : '/:projectId/module/list',
+		url : '/module/list?projectId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/moduleList.tpl.html?v=v8.0.2'

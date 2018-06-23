@@ -183,7 +183,7 @@ webModule.controller('frontModuleCtrl', function($rootScope,$scope, $http, $stat
 		if(setPwd) setPassword();
 		
 		var url = $location.absUrl();
-		var projectId = url.substr(url.indexOf("#")+2,url.length).split("/")[0];
+		var projectId = getParamFromUrl(url, 'projectId');
 		var params = "&projectId=" + projectId + "&currentPage="+page;
 		params +="&password="+unescapeAndDecode('password');
 		params +="&visitCode="+unescapeAndDecode('visitCode');

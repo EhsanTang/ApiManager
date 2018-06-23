@@ -8,7 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('user/project/list/true/-1');
+	$urlRouterProvider.otherwise('user/project/list?myself=true&type=-1');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
@@ -47,7 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('projectList', {
-		url : '/user/project/list/:myself/:type',
+		url : '/user/project/list?myself&type',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('moduleList', {
-		url : '/user/module/list/:projectId/:name',
+		url : '/user/module/list?projectId&name',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html?v=v8.0.2'
@@ -105,7 +105,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			
 		}
 	}).state('errorList', {
-		url : '/user/error/list/:projectId',
+		url : '/user/error/list?projectId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/errorList.tpl.html?v=v8.0.2'
@@ -119,7 +119,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('articleList', {
+	}).state('articleListOld', {// 兼容外链
 		url : '/user/article/list/:projectId/:moduleId/:type',
 		views : {
 			'main' : {
@@ -127,7 +127,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 					return 'resources/html/user/articleList.tpl.html?v=v8.0.2';
 				}
 			},
-			'page@articleList' : {
+			'page@articleListOld' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
 			},
 			'detail' : {
@@ -136,7 +136,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('sourceList', {
+	}).state('articleList', {
+        url : '/user/article/list?projectId&moduleId&type',
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleList.tpl.html?v=v8.0.2';
+                }
+            },
+            'page@articleList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
+            },
+            'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.2';
+                }
+            }
+        }
+    }).state('sourceList', {
 		url : '/user/source/list/:projectId/:moduleId',
 		views : {
 			'main' : {
@@ -214,7 +231,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('projectUserList', {
-		url : '/user/projectUser/list/:projectId',
+		url : '/user/projectUser/list?projectId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/projectUserList.tpl.html?v=v8.0.2'

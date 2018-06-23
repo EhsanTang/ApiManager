@@ -50,20 +50,20 @@
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list/{{item.id}}/NULL">
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list?projectId={{item.id}}">
 						<i class="iconfont f12">&#xe613;模块</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list/{{item.id}}"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list?projectId={{item.id}}">
 						<i class="iconfont f12">&#xe60c;错误码</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list/{{item.id}}"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list?projectId={{item.id}}">
 						<i class="iconfont f12">&#xe603;成员</i>
 					</a>
 					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('LOG','');"  ng-href="admin.do#/log/list/{{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>日志
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-href="project.do#/{{item.id}}/module/list" target="_blank"> 
+					<a class="f12 text-primary mr10 cursor" ng-href="project.do#/module/list?projectId={{item.id}}" target="_blank">
 						<i class="iconfont f12 adorn-color">&#xe616;主页</i>
 					</a>
 					

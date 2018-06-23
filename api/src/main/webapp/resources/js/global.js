@@ -20,6 +20,20 @@ function tooltip(id){
 	 $("[data-toggle='tooltip']").tooltip(); 
 	 $("#"+id).tooltip('show');
 }
+// 获取url中的指定参数
+function getParamFromUrl(url, name) {
+	if (url.indexOf('?') <=0 ){
+		return null;
+	}
+    url = url.substring(url.indexOf('?') + 1);
+    var parameters = url.split('&');
+    for (var i = 0; i < parameters.length; i++) {
+    	if(parameters[i].split('=').length == 2 && parameters[i].split('=')[0] == name){
+    		return parameters[i].split('=')[1];
+		}
+    }
+    return null;
+}
 
 /**
  * 替换字符串中自定的字符

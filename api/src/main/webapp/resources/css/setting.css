@@ -9,6 +9,8 @@ body{min-width:800px;}
 .main-bg {background-color: #407aaa!important;}
 .main-color {color: #407aaa}
 .main-bb-1{ border-bottom:1px solid #407aaa}
+.main-br-1{ border-right:1px solid #407aaa}
+
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
 .adorn-bb-1{ border-bottom:1px solid #f82c1d}
@@ -17,7 +19,7 @@ body{min-width:800px;}
 .interface-detail blockquote {color: #407aaa}
 .bt-5 {border-top: 5px solid#407aaa}
 .bl-5 {border-left: 5px solid#407aaa}
-.menu-a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:1;}
+.menu_a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:1;}
 .iactive {background-color: #407aaa!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: #407aaa}
 .pickSelect {color: #407aaa}
@@ -53,30 +55,19 @@ input:focus{
   background-color: #407aaa;
   opacity: 0.8;
 }
-.hover-adorn:hover{
+.hover-adorn:hover,.active-adorn{
     color: #ffffff;
     background-color: #f82c1d!important;
     cursor: pointer;
     text-underline: none;
 }
-.hover-main:hover{
+.hover-main:hover,.active-main{
     color: #ffffff;
     background-color: #407aaa!important;
     cursor: pointer;
     text-underline: none;
 }
-.active-adorn{
-    color: #f82c1d!important;
-    font-weight: bold;
-    cursor: pointer;
-    text-underline: none;
-}
-.active-main{
-    color: #407aaa!important;
-    font-weight: bold;
-    cursor: pointer;
-    text-underline: none;
-}
+
 .login-bg{background: url('https://dn-coding-net-production-static.qbox.me/d58141c9-9a0c-40b0-a408-5935fd70670f.jpg') 50% 50% / cover no-repeat fixed;}
 .title-bg-img{
 	background-image:url('http://img0.imgtn.bdimg.com/it/u=3868857301,2026493913&fm=21&gp=0.jpg')!important; background-position:center;

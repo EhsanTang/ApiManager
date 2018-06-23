@@ -1,0 +1,21 @@
+/**
+后端css样式
+ */
+.menu_a{
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    display: block;
+    border-bottom: 1px solid #eaeaea;
+    width: 100%;
+}
+.menu_b{
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    padding-left:10px;
+    padding-right:10px;
+    overflow:hidden;
+    border-bottom: 1px solid #eaeaea;
+    width: 100%;
+}

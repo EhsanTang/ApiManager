@@ -1,53 +1,49 @@
 <div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="userProjectListCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">项目管理：{{$stateParams.name}}</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
+<div class="col-xs-12 f16 p0 mb5">
+	<div class="btn-group btn-group-sm r3 fl mr10">
+		<button class="btn btn-main btn-sm">项目列表</button>
+		<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+		<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+		<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+		   ng-click="detail('新增项目',700,'user/project/detail.do?id=NULL');changeDisplay('editer-project','staticize-project');">
+			<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增项目
+		</a>
+	</div>
+
+    <div class="form-group w200 fl">
+        <label class="sr-only">名称</label>
+        <div class="input-group btn-group-xs">
+            <div class="input-group-addon main-bg CFFF b0 f12">项目名称</div>
+            <input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="项目名称" ng-model="$stateParams.name">
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+        <i class="iconfont mt-3">&#xe610;</i>&nbsp;查询
+    </button>
 </div>
-<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
-		<button type="button" class="ml5 btn mt1 btn-success btn-sm cursor fr"
-			ng-click="detail('新增项目',700,'user/project/detail.do?id=NULL');changeDisplay('editer-project','staticize-project');"> 
-			<i class="iconfont fb">&#xe604;</i>&nbsp;
-			<span>新增项目</span>
-		</button>
-		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
-			<i class="iconfont">&#xe610;</i>&nbsp;查询
-		</button>
-		<div class="form-group w200 fr">
-			<label class="sr-only">名称</label>
-			<div class="input-group">
-				<div class="input-group-addon">项目名称</div>
-				<input type="text" class="form-control input-xs dis-in-blo w120" placeholder="项目名称" ng-model="$stateParams.name">
-			</div>
-			<!-- 根据type查看项目 -->
-		</div>
-		<div class="cb"></div>
-</div>
+
 <div class="col-xs-12 mt20 p0 mb10 f12 tr C999">
 	静态化项目：暂时只支持文章静态化，公开项目可以静态化成html，静态化后的文件目录：【项目根目录】/static/项目ID
 </div>
 
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">
-	<span>项目列表</span>
-</div>
 <div class="col-xs-12 p0">
-	<table class="table table-bordered table-hover">
-		<thead>
+    <table class="table table-hover table-striped">
+        <thead>
 			<tr class="BGEEE">
 				<th class="tc w200">名称</th>
 				<td class="tc w100">类型</td>
+                <td class="tc w100">状态</td>
 				<td class="tc w100">用户</td>
-				<td class="tc w100">排序</td>
 				<th class="tc">操作</th>
-				<th class="w50 tc">排序</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
 				<td class="tc">{{item.name}}</td>
 				<td class="tc">{{item.typeName}}</td>
+                <td class="tc">{{item.statusName}}</td>
 				<td class="tc">{{item.userName}}</td>
-				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list?projectId={{item.id}}">
@@ -85,16 +81,6 @@
 						ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + item.id, 'PROPUPFLOAT重建索引中...')"> 
 						<i class="iconfont f12">&#xe611;重建索引</i>
 					</a>
-				</td>
-				<td>
-					<div class="w50 fr tl">
-						<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
-							<i class="iconfont f12">&#xe623;</i>
-						</a>
-						<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/project/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
-							<i class="iconfont f12">&#xe624;</i>
-						</a>
-					</div>
 				</td>
 			</tr>
 		</tbody>

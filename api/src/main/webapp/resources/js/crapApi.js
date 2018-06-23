@@ -297,7 +297,7 @@ function saveMarkdown(markdown,content){
 // 重建索引
 function rebuildIndex(obj){
 	if (myConfirm("确定重建索引？")) {
-		selectButton(obj,'menu-a');
+		selectButton(obj,'menu_a');
 		callAjaxByName('iUrl=back/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
 	}
 }
@@ -309,7 +309,7 @@ function loginOut(){
 //刷新缓存
 function flushDB(obj){
 	if (myConfirm("确定刷新缓存？")) {
-		selectButton(obj,'menu-a');
+		selectButton(obj,'menu_a');
 		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}
 }

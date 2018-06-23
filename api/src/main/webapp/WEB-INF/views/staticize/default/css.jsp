@@ -42,7 +42,7 @@ pre { white-space: normal;}
 .interface-detail blockquote {color: ${settings.MAIN_COLOR}}
 .bt-5 {border-top: 5px solid${settings.MAIN_COLOR}}
 .bl-5 {border-left: 5px solid${settings.MAIN_COLOR}}
-.menu-a:hover {background-color: ${settings.MAIN_COLOR}!important;color:#ffffff!important;opacity:1;}
+.menu_a:hover {background-color: ${settings.MAIN_COLOR}!important;color:#ffffff!important;opacity:1;}
 .iactive {background-color: ${settings.MAIN_COLOR}!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: ${settings.MAIN_COLOR}}
 .pickSelect {color: ${settings.MAIN_COLOR}}

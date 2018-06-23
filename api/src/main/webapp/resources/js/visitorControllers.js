@@ -1,12 +1,12 @@
 /**
  * 前端controller
  */
-var webModule = angular.module("webModule", []);
+var visitorModule = angular.module("visitorModule", []);
 //以html形式输出
-webModule.filter("trustHtml",function($sce){
+visitorModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
 });
-webModule.filter("encodeURL",function($sce){
+visitorModule.filter("encodeURL",function($sce){
 	 return function (input){ 
 		 if(input){
 		 input = replaceAll(input,"\\/", "CA_FXG");
@@ -25,7 +25,7 @@ webModule.filter("encodeURL",function($sce){
 		 return input;
 	} ;
 });
-webModule.filter("decodeURL",function($sce){
+visitorModule.filter("decodeURL",function($sce){
 		 return function (input){
 			 if(input){
 			 input = replaceAll(input, "CA_FXG","\/");
@@ -44,7 +44,7 @@ webModule.filter("decodeURL",function($sce){
 		 return input;
 	 } ;
 });
-webModule.filter("removeLast",function(){
+visitorModule.filter("removeLast",function(){
 	return function (value) {
 		if(!value)
 			return "";
@@ -54,7 +54,7 @@ webModule.filter("removeLast",function(){
 	}
 });
 // 数据字典flag转中文
-webModule.filter("directoryFlagName",function(){
+visitorModule.filter("directoryFlagName",function(){
 	return function (value) {
 		if(value=='primary')
 			return "主键";
@@ -67,7 +67,7 @@ webModule.filter("directoryFlagName",function(){
 	}
 });
 // 背景色
-webModule.filter("directoryBG",function(){
+visitorModule.filter("directoryBG",function(){
 	return function (value) {
 		if(value=='primary')
 			return "bg-danger";
@@ -83,9 +83,9 @@ webModule.filter("directoryBG",function(){
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据
  */
-webModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,httpService) {
 });
-webModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
 		if(!$stateParams.keyword)
 			$stateParams.keyword ="";
@@ -95,7 +95,7 @@ webModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http, $st
     $scope.getData();
 });
 /**************************错误码列表****************************/
-mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+userModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -108,7 +108,7 @@ mainModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
     $scope.getData();
 });
 /*************************数据字典列表******************************/
-mainModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+userModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/article/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.moduleId+"&name="+$stateParams.search;
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
@@ -120,7 +120,7 @@ mainModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $sta
     $scope.getData();
 });
 /**************************article列表****************************/
-mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+userModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type
 		+"&moduleId="+$stateParams.moduleId+"&name="+$stateParams.name+"&category="+$stateParams.category+"&status=" + $stateParams.status;
@@ -134,7 +134,7 @@ mainModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $sta
 /**
  * article详情（数据字典，网站页面，文章）
  */
-webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -167,7 +167,7 @@ webModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $st
 /**
  * 资源列表
  */
-webModule.controller('visitorProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/project/list.do|iLoading=FLOAT|iPost=true|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
@@ -177,7 +177,7 @@ webModule.controller('visitorProjectCtrl', function($rootScope,$scope, $http, $s
 /**
  * 模块列表
  */
-webModule.controller('visitorModuleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {
+visitorModule.controller('visitorModuleCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -206,7 +206,7 @@ webModule.controller('visitorModuleCtrl', function($rootScope,$scope, $http, $st
 /**
  * 模块列表
  */
-webModule.controller('visitorModuleMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {
+visitorModule.controller('visitorModuleMenuCtrl', function($rootScope,$scope, $http, $state, $stateParams,$location,$http ,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -233,7 +233,7 @@ webModule.controller('visitorModuleMenuCtrl', function($rootScope,$scope, $http,
 /**
  * 接口列表
  */
-webModule.controller('visitorInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorInterfaceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "&interfaceName=" + $stateParams.interfaceName + "&url="+ $stateParams.url + "&moduleId="+ $stateParams.moduleId;
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
@@ -251,7 +251,7 @@ webModule.controller('visitorInterfaceCtrl', function($rootScope,$scope, $http, 
  * 接口详情
  * 不需要打开模态框，所以不能调用$rootScope中的getBaseData()
  */
-webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -308,7 +308,7 @@ webModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $http, $
 });
 
 
-webModule.controller('visitorSourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorSourceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -330,7 +330,7 @@ webModule.controller('visitorSourceDetailCtrl', function($rootScope,$scope, $htt
 /**
  * 资源列表
  */
-webModule.controller('visitorSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -347,7 +347,7 @@ webModule.controller('visitorSourceCtrl', function($rootScope,$scope, $http, $st
 /***
  * 前端页面初始化，加载系统设置，菜单等
  */
-webModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('fontInit', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/init.do|iLoading=FLOAT"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {

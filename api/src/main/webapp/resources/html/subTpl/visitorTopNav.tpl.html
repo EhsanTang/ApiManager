@@ -15,18 +15,18 @@
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
 	               	<li>
-	                	<a ng-href="index.do#/project/list?myself=false" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">推荐项目</a>
+	                	<a ng-href="index.do#/project/list?myself=false" class="menu_a ng-binding" onclick="selectButton(this,'menu_a')">推荐项目</a>
 	                </li>
 	                <li ng-if="sessionAdminName!=''">
-	                	<a ng-href="index.do#/project/list/myself=true" class="menu-a ng-binding" onclick="selectButton(this,'menu-a')">我的项目</a>
+	                	<a ng-href="index.do#/project/list/myself=true" class="menu_a ng-binding" onclick="selectButton(this,'menu_a')">我的项目</a>
 	                </li>
 	                
 					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
-	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="menu-a" onclick="selectButton(this,'menu-a')"></a>
+	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="menu_a" onclick="selectButton(this,'menu_a')"></a>
 	                </li>
 	                
 	                <li class="dropdown" ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
-	                	 <a href="javascript:void(0)" class="dropdown-toggle menu-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'menu-a')">
+	                	 <a href="javascript:void(0)" class="dropdown-toggle menu_a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'menu_a')">
 	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>
 	                 	 <ul class="dropdown-menu">
 	                    	<li ng-repeat="subItem in item.subMenu">

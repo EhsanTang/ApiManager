@@ -8,7 +8,7 @@
  * @return {[type]}
  */
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('user/project/list?myself=true&type=-1');
+	$urlRouterProvider.otherwise('user/project/list?myself=true&type=-1&menu_a=menu-project');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
@@ -32,7 +32,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('menuList', {
-		url : '/admin/menu/list?parentId&type&menuName',
+		url : '/admin/menu/list?parentId&type&menuName&menu',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/menuList.tpl.html?v=v8.0.2'
@@ -47,7 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('projectList', {
-		url : '/user/project/list?myself&type',
+		url : '/user/project/list?myself&type&menu_a&projectId&projectName',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('moduleList', {
-		url : '/user/module/list?projectId&name',
+		url : '/user/module/list?projectId&name&projectName&menu_a',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html?v=v8.0.2'

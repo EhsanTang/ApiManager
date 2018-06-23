@@ -43,7 +43,7 @@ public class CustomProjectDao {
 		params.add(userId);
 		params.add(userId);
 
-		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence from project where" +
+		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where" +
                 " (userId= ? or id in (select projectId from project_user where userId=?))");
 		if (name != null){
 			sb.append(" and name like ? ");
@@ -65,6 +65,7 @@ public class CustomProjectDao {
 				project.setCreateTime(rs.getTime(6));
 				project.setCover(rs.getString(7));
 				project.setSequence(rs.getInt(8));
+				project.setStatus(rs.getByte(9));
 				return project;
 			}
 		});

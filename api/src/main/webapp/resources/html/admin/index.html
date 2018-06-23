@@ -21,9 +21,11 @@
 	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
 	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
 	<nav class="h50 fixed w t0 BGFFF z1000 main-bb-1">
-				<a class="navbar-brand pt10 br1" href="home.do" target="_blank">
+				<a class="navbar-brand pt10 br1 fl" href="home.do" target="_blank">
 					<img class="h30" ng-src="{{settings.MINI_LOGO}}" />
 				</a>
+
+                <div class="fl lh50 f14 pl10 pr10 main-color br1" ng-bind="$stateParams.projectName" ng-if="$stateParams.projectName"></div>
 
 				<ul class="nav navbar-nav navbar-right m0 f14">
 						<li><a href="#/admin/config/properties" class="hover-main C555" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
@@ -33,136 +35,131 @@
 	</nav>
 <!-- End:Top -->
 	
-	<div class="container-fluid h p0 m0 mt50">
-		<div class="row h p0 m0">
+		<div class="row h p0 m0 mt50">
 				<!-- left -->
-				<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h">
-				<div class="panel-group" id="accordion" role="tablist"
-					aria-multiselectable="true">
-					
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel-myproject">
-								<div class="f14 mt-3 fl mr10"><i class="iconfont">&#xe61f;</i></div> 
-								<span class="hidden-xs">我的项目</span> 
-							</div>
-						</div>
-						<div id="panel-myproject" class="panel-collapse BGEEE collapse in">
-							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_self" ng-href="#/user/project/list?myself=true&type=-1" onclick="selectButton(this,'menu-a')">我的项目列表</a>
-							</div>
-							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'menu-a')">导入数据字典：SQL</a>
-							</div>
-						</div>
-					</div>
-					
-					
+				<div class="w250 sidebar BGBBB pt0 pb0 h mah ofy-a ofx-h fixed">
+                    <div class="w50 fl h BGFFF main-color main-br-1">
+                        <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
+                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-project']"
+                           onmouseover="tooltip('menu-project')" data-placement="right" data-toggle="tooltip" id="menu-project" data-original-title="项目列表">
+                            <i class="iconfont f18">&#xe61f;</i>
+                        </a>
+                        <a href="#/admin/menu/list?parentId=0&menu=menu-menu"
+                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu == 'menu-menu']"
+                           ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('my-menu')" data-placement="right" data-toggle="tooltip" id="menu-menu" data-original-title="菜单管理">
+                            <i class="iconfont f18">&#xe60f;</i>
+                        </a>
+                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-setting')" data-placement="right" data-toggle="tooltip" id="my-setting" data-original-title="系统管理">
+                            <i class="iconfont f18">&#xe61a;</i>
+                        </div>
+                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-recover')" data-placement="right" data-toggle="tooltip" id="my-recover" data-original-title="故障恢复">
+                            <i class="iconfont f18">&#xe611;</i>
+                        </div>
+                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')" data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
+                            <i class="iconfont f18">&#xe639;</i>
+                        </div>
+
+                    </div>
+                    <div class="w200 fl h BGFFF f14 ofy-s pb50" ng-controller="userTop50ProjectListCtrl">
+                        <a ng-repeat="item in top50Project" ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.projectId == item.id]"
+                           ng-href="#/user/module/list?myself=true&type=-1&menu_a=menu-project&projectId={{item.id}}&projectName={{item.name}}"
+                           ng-bind="item.name"></a>
+                    </div>
+
+
+                    <div >
+
+                        <div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+
+                            <div id="panel-myproject" class="panel-collapse BGEEE collapse in">
+                                <div class="panel-body b0 p0">
+                                    <a class="menu_a" target="_self" ng-href="#/user/project/list?myself=true&type=-1" onclick="selectButton(this,'active-main')">我的项目列表</a>
+                                </div>
+                                <div class="panel-body b0 p0">
+                                    <a class="menu_a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'active-main')">导入数据字典：SQL</a>
+                                </div>
+                                <div class="panel-body b0 p0">
+                                    <a class="menu_a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'active-main')">导入数据字典：SQL</a>
+                                </div>
+                            </div>
+                        </div>
 						<!-- 该菜单只有超级管理员或拥有菜单权限的管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isAdmin('adminMenu0','MENU')">
-							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel2">
-									<div class="f14 mt-3 fl mr10">
-										<i class="iconfont">&#xe60f;</i>
-									</div> <span class="hidden-xs">菜单管理</span>
-								</div>
-							</div>
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0">
 							<div id="panel2" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=FRONT&menuName=前端左侧菜单" onclick="selectButton(this,'menu-a')">前端左侧菜单</a>
+									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=FRONT&menuName=前端左侧菜单" onclick="selectButton(this,'menu_a')">前端左侧菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=BOTTOM&menuName=前端底部菜单" onclick="selectButton(this,'menu-a')">前端底部菜单</a>
+									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=BOTTOM&menuName=前端底部菜单" onclick="selectButton(this,'menu_a')">前端底部菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=TOP&menuName=前端顶部菜单" onclick="selectButton(this,'menu-a')">前端顶部菜单</a>
+									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=TOP&menuName=前端顶部菜单" onclick="selectButton(this,'menu_a')">前端顶部菜单</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/admin/menu/list?parentId=0&type=FRIEND&menuName=底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
+									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=FRIEND&menuName=底部友情链接菜单" onclick="selectButton(this,'menu_a')">底部友情链接菜单</a>
 								</div>
 							</div>
 						</div>
 						
 						<!-- 该菜单只有超级管理员才能查看 -->
 						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isAdmin('adminMenu1')">
-							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
-									<div class="f14 mt-3 fl mr10">
-										<i class="iconfont">&#xe61a;</i>
-									</div> <span class="hidden-xs">系统管理</span>
-								</div>
-							</div>
 							<div id="panel1" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu-a" target="_self" href="#/admin/config/properties" onclick="selectButton(this,'menu-a')">系统属性</a>
+									<a class="menu_a" target="_self" href="#/admin/config/properties" onclick="selectButton(this,'menu_a')">系统属性</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/user/project/list?myself=false&type-1" onclick="selectButton(this,'menu-a')">所有项目列表</a>
+									<a class="menu_a" target="_self" href="#/user/project/list?myself=false&type-1" onclick="selectButton(this,'menu_a')">所有项目列表</a>
 								</div>
 								<!--  <div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
+									<a class="menu_a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu_a')">DOC、PDF 等文档管理</a>
 								</div>-->
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'USER')">
-									<a class="menu-a" target="_self" href="#/user/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
+									<a class="menu_a" target="_self" href="#/user/user/list" onclick="selectButton(this,'menu_a')">用户管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ROLE')">
-									<a class="menu-a" target="_self" href="#/admin/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
+									<a class="menu_a" target="_self" href="#/admin/role/list" onclick="selectButton(this,'menu_a')">角色管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'HOT_SEARCH')">
-									<a class="menu-a" target="_self" href="#/admin/hotSearch/list" onclick="selectButton(this,'menu-a')">搜索热词管理</a>
+									<a class="menu_a" target="_self" href="#/admin/hotSearch/list" onclick="selectButton(this,'menu_a')">搜索热词管理</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isAdmin(false,'SETTING')">
-									<a class="menu-a" target="_self" href="#/admin/setting/list" onclick="selectButton(this,'menu-a')">系统设置管理</a>
+									<a class="menu_a" target="_self" href="#/admin/setting/list" onclick="selectButton(this,'menu_a')">系统设置管理</a>
 								</div>
 
 								<!--<div class="panel-body b0 p0" ng-if="isAdmin(false,'ARTICLE')">
-									<a class="menu-a" target="_self" href="#/user/article/list/web/web/ARTICLE" onclick="selectButton(this,'menu-a')">推荐文章管理</a>
+									<a class="menu_a" target="_self" href="#/user/article/list/web/web/ARTICLE" onclick="selectButton(this,'menu_a')">推荐文章管理</a>
 								</div>-->
 							</div>
 						</div>
 						<!-- 该菜单只有超级管理员才能查看 -->
 						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu2" ng-if="isSupperAdmin('adminMenu2')">
-							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel3">
-									<div class="f14 mt-3 fl mr10">
-										<i class="iconfont">&#xe611;</i>
-									</div> <span class="hidden-xs">故障恢复</span>
-								</div>
-							</div>
 							<div id="panel3" class="panel-collapse BGEEE collapse">
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="javascript:void(0);"
+									<a class="menu_a" target="_self" href="javascript:void(0);"
 									onclick="rebuildIndex(this)">重建Lucene索引</a>
 								</div>
 								<div class="panel-body b0 p0">
-									<a class="menu-a" target="_self" href="javascript:void(0);"
+									<a class="menu_a" target="_self" href="javascript:void(0);"
 									onclick="flushDB(this)">刷新缓存</a>
 								</div>
 								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu-a" target="_self" href="#/user/log/list?identy=NULL" onclick="selectButton(this,'menu-a')">操作日志</a>
+									<a class="menu_a" target="_self" href="#/user/log/list?identy=NULL" onclick="selectButton(this,'menu_a')">操作日志</a>
 								</div>
 							</div>
 						</div>
 
 					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel4">
-								<div class="f14 mt-3 fl mr10">
-									<i class="iconfont">&#xe639;</i>
-								</div> <span class="hidden-xs">建议、反馈...</span>
-							</div>
-						</div>
 						<div id="panel4" class="panel-collapse BGEEE collapse">
 							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25">
+								<a class="menu_a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25">
 									Bug反馈
 								</a>
-								<a class="menu-a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/ffff-1522587078634-1017019456-0002">
+								<a class="menu_a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/ffff-1522587078634-1017019456-0002">
 									建议&留言
 								</a>
 							</div>
 							<div class="panel-body b0 p0">
-								<a class="menu-a" target="_blank" href="https://gitee.com/CrapApi/CrapApi">
+								<a class="menu_a" target="_blank" href="https://gitee.com/CrapApi/CrapApi">
 									捐赠
 								</a>
 							</div>
@@ -183,7 +180,7 @@
 
 				<!-- End:left -->
 				
-				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
+				<div class="p0 h mah ofy-a l250 fixed">
 					<div class="m10">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
 						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
@@ -211,7 +208,6 @@
 					</div>
 				</div>
 		</div>
-	</div>
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>
 	<script src="resources/framework/jquery.base64.js"></script>

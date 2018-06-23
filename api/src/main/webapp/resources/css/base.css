@@ -67,7 +67,9 @@ fieldset,img{border:0}
 table{border-collapse:collapse;border-spacing:0}
 .fixed{position:fixed;}.rel{position:relative;}
 .abs{position:absolute;}.static{position:static;}
-.r0{right:0px;}.l0{left:0px;}.t0{top:0px;}
+.r0{right:0px;}
+.l0{left:0px;}.l200{left:200px;}.l250{left:250px;}.l300{left:300px;}
+.t0{top:0px;}
 .pos-r10{right:10px;}.pos-l10{left:10px;}.pos-b10{bottom:10px;}
 
 .no-radius{-moz-border-radius: 0px!important;-webkit-border-radius:  0px!important; border-radius:  0px!important; -khtml-border-radius:  0px!important;}
@@ -192,7 +194,7 @@ table{border-collapse:collapse;border-spacing:0}
 .ml0{margin-left:0px!important}
 .ml5{margin-left:5px}.ml10{margin-left:10px}.ml15{margin-left:15px}
 .ml20{margin-left:20px}.ml30{margin-left:30px}.ml50{margin-left:50px}
-.ml75{margin-left:75px}.ml100{margin-left:100px}
+.ml75{margin-left:75px}.ml100{margin-left:100px}.ml200{margin-left:200px}
 
 /***********padding*******************/
 .p0{padding:0px!important}.p3{padding:3px!important}

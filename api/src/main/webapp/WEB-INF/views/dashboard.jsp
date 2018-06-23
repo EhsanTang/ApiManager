@@ -41,12 +41,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse p0">
             <ul class="nav navbar-nav navbar-right ml20">
-                <li><a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="menu-a">帮助文档
+                <li><a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="menu_a">帮助文档
                     <i class="iconfont adorn-color f14">&#xe63e;</i></a>
                 </li>
                 <li>
                     <a href='https://gitee.com/CrapApi/ApiDebug'
-                       target="_blank" class="menu-a">插件下载 <i class="iconfont adorn-color f14">&#xe624;</i></a>
+                       target="_blank" class="menu_a">插件下载 <i class="iconfont adorn-color f14">&#xe624;</i></a>
                 </li>
                 <c:if test="${login}">
                     <li><a class="cursor" onclick="loginOut()"><i class="iconfont f16 mt-5 adorn-color">&#xe609;</i>&nbsp;&nbsp;注销</a></li>

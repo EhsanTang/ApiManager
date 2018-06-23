@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'mainModule','webModule','interfaceMethods']);
+var app = angular.module('app', [ 'ui.router', 'userModule','visitorModule','interfaceMethods']);
 var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 
@@ -51,7 +51,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			lookUp('lookUp', event, iheight, iwidth ,showType,tag);
 		showMessage('lookUp','false',false,-1);
 	}
-	$rootScope.getBaseData = function($scope,$http,params,page) {
+	$rootScope.getBaseData = function($scope,$http,params,page,dataKey) {
 		if(page) $scope.currentPage = page;
 		if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
 		httpService.callHttpMethod($http,params).success(function(result) {
@@ -61,7 +61,11 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 				 $rootScope.list = null;
 			 }else{
 				 $rootScope.error = null;
-				 $rootScope.list = result.data;
+				 if (dataKey){
+                     $rootScope[dataKey] = result.data;
+                 }else {
+                     $rootScope.list = result.data;
+                 }
 				 $rootScope.page = result.page;
 				 $rootScope.others=result.others;
 				 $rootScope.deleteIds = ",";
@@ -70,7 +74,7 @@ app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) 
 			lookUp('lookUp','',100,300,3);
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
 			$rootScope.error = result;
-			 
+
 		});;
     };
 	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {

@@ -9,6 +9,7 @@ body{min-width:800px;}
 .main-bg {background-color: {{settings.MAIN_COLOR}}!important;}
 .main-color {color: {{settings.MAIN_COLOR}}}
 .main-bb-1{ border-bottom:1px solid {{settings.MAIN_COLOR}}}
+.main-br-1{ border-right:1px solid  {{settings.MAIN_COLOR}}}
 .adorn-color {color: {{settings.ADORN_COLOR}}}
 .adorn-bl-3{ border-left:3px solid {{settings.ADORN_COLOR}}}
 .adorn-bb-1{ border-bottom:1px solid {{settings.ADORN_COLOR}}}
@@ -17,7 +18,7 @@ body{min-width:800px;}
 .interface-detail blockquote {color: {{settings.MAIN_COLOR}}}
 .bt-5 {border-top: 5px solid{{settings.MAIN_COLOR}}}
 .bl-5 {border-left: 5px solid{{settings.MAIN_COLOR}}}
-.menu-a:hover {background-color: {{settings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:1;}
+.menu_a:hover {background-color: {{settings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:1;}
 .iactive {background-color: {{settings.MAIN_COLOR}}!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: {{settings.MAIN_COLOR}}}
 .pickSelect {color: {{settings.MAIN_COLOR}}}
@@ -52,27 +53,16 @@ body{min-width:800px;}
 input:focus{
   border-color: {{settings.MAIN_COLOR}}!important;!important;
 }
-.hover-adorn:hover{
+.hover-adorn:hover,.active-adorn{
   color: #ffffff;
   background-color: {{settings.ADORN_COLOR}}!important;
   cursor: pointer;
   text-underline: none;
 }
-.active-adorn{
-  color: {{settings.ADORN_COLOR}}!important;
-  font-weight:bold;
-  cursor: pointer;
-  text-underline: none;
-}
-.hover-main:hover{
+
+.hover-main:hover,.active-main{
     color: #ffffff;
     background-color: {{settings.MAIN_COLOR}}!important;
-    cursor: pointer;
-    text-underline: none;
-}
-.active-main{
-    color: {{settings.MAIN_COLOR}}!important;
-    font-weight: bold;
     cursor: pointer;
     text-underline: none;
 }

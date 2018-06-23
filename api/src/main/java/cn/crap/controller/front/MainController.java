@@ -90,7 +90,7 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping({"/index.do","/web.do"})
 	public String index() throws Exception {
-		return "resources/html/frontHtml/indexNew.html";
+		return "resources/html/visitor/indexNew.html";
 	}
 
 	@RequestMapping(value = "dashboard.htm")
@@ -153,7 +153,7 @@ public class MainController extends BaseController{
 	 */
 	@RequestMapping("/project.do")
 	public String project() throws Exception {
-		return "resources/html/frontHtml/projectIndex.html";
+		return "resources/html/visitor/projectIndex.html";
 	}
 	
 	@RequestMapping("/searchList.do")

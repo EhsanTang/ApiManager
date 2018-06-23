@@ -17,9 +17,9 @@
     <link href="${icon}" rel="shortcut" type="image/x-icon"/>
     <link href="<%=basePath %>resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-    <link href="<%=basePath %>resources/css/base.css" rel="stylesheet" type="text/css"/>
-    <link href="<%=basePath %>resources/css/crapApi.css" rel="stylesheet" type="text/css"/>
-    <link href="<%=basePath %>resources/css/setting.css" rel="stylesheet" type="text/css"/>
+    <link href="<%=basePath %>resources/css/base.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
+    <link href="<%=basePath %>resources/css/crapApi.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
+    <link href="<%=basePath %>resources/css/setting.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
     <title>${title}</title>
 </head>
 <body class="BGFFF">
@@ -207,7 +207,7 @@
 </div>
 
 <script src="resources/framework/jquery-1.9.1.min.js"></script>
-<script src="resources/js/core.js?v=200"></script>
-<script src="resources/js/crapApi.js?v=200"></script>
+<script src="resources/js/core.js?v=v8.0.2"></script>
+<script src="resources/js/crapApi.js?v=v8.0.2"></script>
 </body>
 </html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="backInit">
+<head>
+	<meta charset="UTF-8">
+	<title ng-bind="settings.TITLE">CrapApi|应用接口管理系统</title>
+	<meta name="keywords" content="CrapApi,api,crap,接口管理,应用接口管理,开源接口管理,开源api接口管理" />
+	<meta name="description" content="CrapApi|一个由anjularjs+bootstrap+springMVC搭建的免费开源的API接口管理系统（应用接口管理系统），api.crap.cn" />
+	<link href="{{settings.ICON}}" rel="shortcut icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="icon" type="image/x-icon" />
+	<link href="{{settings.ICON}}" rel="shortcut" type="image/x-icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
+	<link href="resources/css/base.css?v=v8.0.2" rel="stylesheet" type="text/css" />
+	<link href="resources/css/crapApi.css?v=v8.0.2" rel="stylesheet" type="text/css" />
+	<link href="resources/css/setting.css?v=v8.0.2" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<!-- Top -->
+	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
+	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand pt10" href="home.do" target="_blank">
+					<img class="h30" ng-src="{{settings.LOGO}}" />
+				</a>
+			</div>
+
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right mr20">
+						<li><a href="#/config/properties" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
+						<li><a href="#/profile" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
+						<li><a href="home.do" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+						<li><a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank"><img src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+<!-- End:Top -->
+	
+	<div class="container-fluid h p0 m0">
+		<div class="row h p0 m0 pt50">
+		
+		
+		
+				<!-- left -->
+				<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h">
+				<div class="panel-group" id="accordion" role="tablist"
+					aria-multiselectable="true">
+					
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel-myproject">
+								<div class="f14 mt-3 fl mr10"><i class="iconfont">&#xe61f;</i></div> 
+								<span class="hidden-xs">我的项目</span> 
+							</div>
+						</div>
+						<div id="panel-myproject" class="panel-collapse BGEEE collapse in">
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_self" ng-href="#/user/project/list/true/-1" onclick="selectButton(this,'menu-a')">我的项目列表</a>
+							</div>
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_self" ng-href="#/article/dictionary/importFromSql" onclick="selectButton(this,'menu-a')">导入数据字典：SQL</a>
+							</div>
+						</div>
+					</div>
+					
+					
+						<!-- 该菜单只有超级管理员或拥有菜单权限的管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0" ng-if="isAdmin('adminMenu0','MENU')">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel2">
+									<div class="f14 mt-3 fl mr10">
+										<i class="iconfont">&#xe60f;</i>
+									</div> <span class="hidden-xs">菜单管理</span>
+								</div>
+							</div>
+							<div id="panel2" class="panel-collapse BGEEE collapse">
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/FRONT/前端左侧菜单" onclick="selectButton(this,'menu-a')">前端左侧菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/BOTTOM/前端底部菜单" onclick="selectButton(this,'menu-a')">前端底部菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/TOP/前端顶部菜单" onclick="selectButton(this,'menu-a')">前端顶部菜单</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/menu/list/0/FRIEND/底部友情链接菜单" onclick="selectButton(this,'menu-a')">底部友情链接菜单</a>
+								</div>
+							</div>
+						</div>
+						
+						<!-- 该菜单只有超级管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isAdmin('adminMenu1')">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel1">
+									<div class="f14 mt-3 fl mr10">
+										<i class="iconfont">&#xe61a;</i>
+									</div> <span class="hidden-xs">系统管理</span>
+								</div>
+							</div>
+							<div id="panel1" class="panel-collapse BGEEE collapse">
+								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
+									<a class="menu-a" target="_self" href="#/config/properties" onclick="selectButton(this,'menu-a')">系统属性</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/user/project/list/false/-1" onclick="selectButton(this,'menu-a')">所有项目列表</a>
+								</div>
+								<!--  <div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu-a')">DOC、PDF 等文档管理</a>
+								</div>-->
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'USER')">
+									<a class="menu-a" target="_self" href="#/user/list" onclick="selectButton(this,'menu-a')">用户管理</a>
+								</div>
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ROLE')">
+									<a class="menu-a" target="_self" href="#/role/list" onclick="selectButton(this,'menu-a')">角色管理</a>
+								</div>
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'HOT_SEARCH')">
+									<a class="menu-a" target="_self" href="#/hotSearch/list" onclick="selectButton(this,'menu-a')">搜索热词管理</a>
+								</div>
+								<div class="panel-body b0 p0" ng-if="isAdmin(false,'SETTING')">
+									<a class="menu-a" target="_self" href="#/setting/list/null" onclick="selectButton(this,'menu-a')">系统设置管理</a>
+								</div>
+
+								<!--<div class="panel-body b0 p0" ng-if="isAdmin(false,'ARTICLE')">
+									<a class="menu-a" target="_self" href="#/user/article/list/web/web/ARTICLE" onclick="selectButton(this,'menu-a')">推荐文章管理</a>
+								</div>-->
+							</div>
+						</div>
+						<!-- 该菜单只有超级管理员才能查看 -->
+						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu2" ng-if="isSupperAdmin('adminMenu2')">
+							<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+								<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel3">
+									<div class="f14 mt-3 fl mr10">
+										<i class="iconfont">&#xe611;</i>
+									</div> <span class="hidden-xs">故障恢复</span>
+								</div>
+							</div>
+							<div id="panel3" class="panel-collapse BGEEE collapse">
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="javascript:void(0);"
+									onclick="rebuildIndex(this)">重建Lucene索引</a>
+								</div>
+								<div class="panel-body b0 p0">
+									<a class="menu-a" target="_self" href="javascript:void(0);"
+									onclick="flushDB(this)">刷新缓存</a>
+								</div>
+								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
+									<a class="menu-a" target="_self" href="#/log/list/NULL" onclick="selectButton(this,'menu-a')">操作日志</a>
+								</div>
+							</div>
+						</div>
+
+					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#accordion" href="#panel4">
+								<div class="f14 mt-3 fl mr10">
+									<i class="iconfont">&#xe639;</i>
+								</div> <span class="hidden-xs">建议、反馈...</span>
+							</div>
+						</div>
+						<div id="panel4" class="panel-collapse BGEEE collapse">
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25">
+									Bug反馈
+								</a>
+								<a class="menu-a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/ffff-1522587078634-1017019456-0002">
+									建议&留言
+								</a>
+							</div>
+							<div class="panel-body b0 p0">
+								<a class="menu-a" target="_blank" href="https://gitee.com/CrapApi/CrapApi">
+									捐赠
+								</a>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
+						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
+							<div class="a cursor" data-toggle="collapse" data-parent="#panel3"></div>
+							<span class="hidden-xs">&nbsp;
+							</span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+				<!-- End:left -->
+				
+				<div class="col-xs-9 col-sm-10 p0 h mah ofy-a">
+					<div class="m10">
+						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
+						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
+						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
+							<button type="button" class="btn btn-danger btn-xs break-word">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span ng-if="error.indexOf('CrapApi-400')>0">
+									404-抱歉，地址有误，网页找不到了
+								</span>
+								<span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
+							</button>
+						</div>
+						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+							<button type="button" class="btn btn-danger btn-xs break-word">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span ng-bind="errorTips"></span>
+							</button>
+							<button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span> 删除提示</span>
+							</button>
+							
+						</div>
+						<div ui-view="main"></div>
+					</div>
+				</div>
+		</div>
+	</div>
+	<script src="resources/framework/jquery-1.9.1.min.js"></script>
+	<script src="resources/framework/jquery.cookie.js"></script>
+	<script src="resources/framework/jquery.base64.js"></script>
+	<script charset="utf-8" src="resources/framework/wang-editor-3.1.1/wangEditor.min.js"></script>
+
+	<script src="resources/framework/angular-1.3.0.14/angular.js"></script>
+	<script src="resources/framework/angular-1.3.0.14/angular-animate.min.js"></script>
+	<script src="resources/framework/angular-ui-router-0.2.15.js"></script>
+	
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+	<script src="resources/js/app.js?v=v8.0.2"></script>
+	<script src="resources/js/services.js?v=v8.0.2"></script>
+	<script src="resources/js/userRouter.js?v=v8.0.2"></script>
+	<script src="resources/js/router.js?v=v8.0.2"></script>
+    <script src="resources/js/userControllers.js?v=v8.0.2"></script>
+    <script src="resources/js/visitorControllers.js?v=v8.0.2"></script>
+    <script src="resources/js/interfaceMethods.js?v=v8.0.2"></script>
+
+    <script src="resources/js/validateAndRefresh.js?v=v8.0.2"></script>
+    <script src="resources/js/core.js?v=v8.0.2"></script>
+	<script src="resources/js/global.js?v=v8.0.2"></script>
+	<script src="resources/js/crapApi.js?v=v8.0.2"></script>
+	<script src="resources/js/json.js?v=v8.0.2"></script>
+
+	<!-- 提示窗口 -->
+<div id="lookUp" class="look-up shadow">
+	<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
+	<div id="pickTip"></div>
+	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
+</div>
+
+<div id="fade"></div>
+<div id="myDialog" class="look-up shadow r2 bottom-radius pt50">
+		<div id="myDialog-title" class="CFFF f20 fb shadow" style="margin-top:-50px;line-height:50px;padding-left:20px;height:50px;">
+		</div>
+		<div id="myDialogContent" class="look-up-content b0 f12 tl p30 BGFFF bottom-radius">
+			<button type="button" class="btn btn-danger btn-xs break-word ml10 mb10 ndis" id="dialog-error" ng-if="hasError(error,'dialog-error')">
+					<span class="glyphicon glyphicon-remove"></span>
+					<span ng-bind="error"></span>
+			</button>
+			<div ui-view="detail"></div>
+		</div>
+		<i class="iconfont i-close CFFF fb f20" onclick="closeMyDialog('myDialog')">&#xe615;</i>
+		<i class="iconfont i-full CFFF fb f20" onclick="fullMyDialog('myDialog')">&#xe62e;</i>
+</div>   
+<div class="tip-div" id="tip-div"></div>
+<div id="float" class="folat">
+		<div class="sk-wave">
+        <div class="sk-rect sk-rect1"></div>
+        <div class="sk-rect sk-rect2"></div>
+        <div class="sk-rect sk-rect3"></div>
+        <div class="sk-rect sk-rect4"></div>
+        <div class="sk-rect sk-rect5"></div>
+      </div>
+</div>
+<div  id="markdownDialog" class="shadow r2 bottom-radius pt0 w h none" style="position:absolute;top:0px; left:0px;z-index:1052;width:100%!important; background:#fff;">
+	<iframe name="markdownFrame" id="markdownFrame" src="" frameborder="false" scrolling="auto" style="border:none;" width="100%" height="100%" allowtransparency="true">
+	</iframe>
+	<button class="btn btn-danger btn-xs f14" style="position: absolute;top: 5px;right: 12px;"onclick="closeMyDialog('markdownDialog')"><i class="iconfont i-close CFFF fb"> &#xe615;</i></button>
+    <button class="btn btn-success btn-xs f14" style="position: absolute;top: 5px;right: 50px;" onclick="saveMarkdown('markdown','content')"><i class="iconfont i-close CFFF fb"> &#xe60b;</i></button>
+</div>
+<img style="display:none;" src="http://api-access-tatistics.oss-cn-qingdao.aliyuncs.com/ca.gif">	
+</body>
+</html>

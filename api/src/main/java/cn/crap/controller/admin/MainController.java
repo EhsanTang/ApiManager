@@ -34,7 +34,7 @@ public class MainController extends BaseController {
     @RequestMapping("/admin.do")
     @AuthPassport
     public String showHomePage() throws Exception {
-        return "resources/html/backHtml/index.html";
+        return "resources/html/admin/index.html";
     }
 
     /**
@@ -79,7 +79,7 @@ public class MainController extends BaseController {
      */
     @RequestMapping("/loginOrRegister.do")
     public String loginOrRegister() throws Exception {
-        return "resources/html/backHtml/loginOrRegister.html";
+        return "resources/html/admin/loginOrRegister.html";
     }
 
 

@@ -9,14 +9,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					if($stateParems.type != 'DICTIONARY')
-						return 'resources/html/frontHtml/articleDetail_ARTICLE.tpl.html';
+						return 'resources/html/visitor/articleDetail_ARTICLE.tpl.html?v=v8.0.2';
 					else
-						return 'resources/html/frontHtml/articleDetail_'+$stateParems.type+'.tpl.html';
+						return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.2';
 				}
 			},'addComment@frontArticleDetail' : {
-				templateUrl : 'resources/html/frontHtml/addComment.tpl.html'
+				templateUrl : 'resources/html/visitor/addComment.tpl.html?v=v8.0.2'
 			},'page@frontArticleDetail' : {
-				templateUrl : 'resources/html/frontHtml/page_xs.tpl.html'
+				templateUrl : 'resources/html/visitor/page_xs.tpl.html?v=v8.0.2'
 			}
 		}
 	}).state('frontArticleList', {
@@ -25,12 +25,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					if($stateParems.type != "DICTIONARY")
-						return 'resources/html/frontHtml/articleList_ARTICLE.tpl.html';
+						return 'resources/html/visitor/articleList_ARTICLE.tpl.html?v=v8.0.2';
 					else
-						return 'resources/html/frontHtml/articleList_'+$stateParems.type+'.tpl.html';
+						return 'resources/html/visitor/articleList_'+$stateParems.type+'.tpl.html?v=v8.0.2';
 				}
 			},'page@frontArticleList' : {
-				templateUrl : 'resources/html/frontHtml/page.tpl.html'
+				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.2'
 			}
 		}
 	}).state('frontSourceDetail', {
@@ -38,7 +38,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
-					return 'resources/html/frontHtml/sourceDetail.tpl.html';
+					return 'resources/html/visitor/sourceDetail.tpl.html?v=v8.0.2';
 				}
 			}
 		}

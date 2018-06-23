@@ -13,7 +13,7 @@ input{
     background: #ffffff;
 }
 .btn{
-    border-radius: 3px!important;
+    border-radius: 3px;
 }
 .btn-group > .btn{
     border:0px!important;

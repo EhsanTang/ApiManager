@@ -24,7 +24,7 @@
 </head>
 <body class="BGFFF">
 <!-- top navbar -->
-<nav class="navbar navbar-inverse no-radius FOOTER_COLOR mb0 z10">
+<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR mb0 z10">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed"
@@ -107,7 +107,7 @@
                         <span class="adorn-color fn">${menuDto.menu.iconRemark}</span> ${menuDto.menu.menuName}
                     </div>
                     <c:forEach items="${menuDto.subMenu}" var="subMenu" varStatus="id">
-                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl hover-a C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
+                        <a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl hover-adorn C999 mb5" href="${subMenu.menuUrl}">${subMenu.menuName}</a>
                     </c:forEach>
                 </c:if>
             </c:forEach>

@@ -1,11 +1,14 @@
 package cn.crap.controller.admin;
 
+import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
+import cn.crap.service.mybatis.SettingService;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Tools;
@@ -23,6 +26,8 @@ import java.util.Map;
 public class MainController extends BaseController {
     @Autowired
     private ISearchService luceneService;
+    @Autowired
+    private SettingService settingService;
 
     /**
      * admin dashboard
@@ -101,7 +106,7 @@ public class MainController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult init(HttpServletRequest request) throws Exception {
-        Map<String, String> settingMap = new HashMap<String, String>();
+        Map<String, String> settingMap = new HashMap<>();
         for (SettingDto setting : settingCache.getAll()) {
             if (S_SECRETKEY.equals(setting.getKey())) {
                 continue;
@@ -116,6 +121,19 @@ public class MainController extends BaseController {
         returnMap.put("sessionAdminRoleIds", user.getRoleId());
         returnMap.put("sessionAdminId", user.getId());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
+
+        // 新增加且没有写入数据库的配置，并储存至数据库
+        for (SettingEnum settingEnum : SettingEnum.values()){
+            try {
+                if (!settingMap.containsKey(settingEnum.getKey())) {
+                    settingMap.put(settingEnum.getKey(), settingEnum.getValue());
+                    settingService.insert(settingEnum.getSetting());
+                    settingCache.del(settingEnum.getKey());
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         return new JsonResult(1, returnMap);
     }
 

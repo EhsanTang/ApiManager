@@ -2,12 +2,13 @@
 body{min-width:800px;}
 @media ( min-width : 1210px) {.container {width: 1100px!important}}
 .BG_COLOR {background-color: #f7f7f7}
-.FOOTER_BG_COLOR {background-color: #000000}
+.FOOTER_BG_COLOR {background-color: #ffffff}
 .FOOTER_COLOR {color: #a9a9a9}
 .FOOTER_COLOR a {color: #a9a9a9}
 /* 默认主色:#B768A5*/
 .main-bg {background-color: #407aaa!important;}
 .main-color {color: #407aaa}
+.main-bb-1{ border-bottom:1px solid #407aaa}
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
 .adorn-bb-1{ border-bottom:1px solid #f82c1d}
@@ -52,14 +53,26 @@ input:focus{
   background-color: #407aaa;
   opacity: 0.8;
 }
-.hover-a:hover{
+.hover-adorn:hover{
     color: #ffffff;
-    background-color: #f82c1d;
+    background-color: #f82c1d!important;
     cursor: pointer;
     text-underline: none;
 }
-.active-a{
+.hover-main:hover{
+    color: #ffffff;
+    background-color: #407aaa!important;
+    cursor: pointer;
+    text-underline: none;
+}
+.active-adorn{
     color: #f82c1d!important;
+    font-weight: bold;
+    cursor: pointer;
+    text-underline: none;
+}
+.active-main{
+    color: #407aaa!important;
     font-weight: bold;
     cursor: pointer;
     text-underline: none;

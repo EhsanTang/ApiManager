@@ -44,7 +44,8 @@ body,h1,h2,h3,h4,h5,h6,hr,blockquote,dl,dt,dd,form,fieldset,legend,button,input,
 .bl0{border-left:0px;}
 .br0{border-right:0px;}
 .BCEEE{border-color:#EEE;}
-.z10{z-index:10}
+.z10{z-index:10}.z1000{z-index:1000}
+
 img {
 	width: auto\9;
 	height: auto;

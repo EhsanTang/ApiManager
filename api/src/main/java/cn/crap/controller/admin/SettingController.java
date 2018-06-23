@@ -49,7 +49,7 @@ public class SettingController extends BaseController {
             criteria.andMkeyLike(key);
         }
         if (remark != null) {
-            criteria.andRemarkLike(remark);
+            criteria.andRemarkLike("%" + remark + "%");
         }
         example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
         example.setLimitStart(page.getStart());

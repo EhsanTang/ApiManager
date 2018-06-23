@@ -36,24 +36,19 @@
 		</button>
 	</div>
 
-	<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">{{others.type}}列表</div>
-	<div class="col-xs-9 mt20 p0 mb10 f14 tr">
-
-	</div>
-
 	<div class="col-xs-12 p0">
-		<table class="table table-bordered table-hover">
+		<table class="table table-hover table-striped">
 			<thead>
-			<tr class="BGEEE">
-				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
-				<th class="tc w300">名称</th>
-				<th class="tc" ng-if="$stateParams.type=='PAGE'">key</th>
-				<th class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</th>
-				<th class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</th>
-				<th class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</th>
-				<th class="tc">点击量</th>
-				<td class="tc">排序</td>
-				<th class="tc w400">操作</th>
+			<tr>
+				<td class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</td>
+				<td class="tc w300">名称</td>
+				<td class="tc" ng-if="$stateParams.type=='PAGE'">key</td>
+				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</td>
+				<td class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</td>
+				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</td>
+				<td class="tc">点击量</td>
+				<td class="tc">创建时间</td>
+				<td class="tc w400">操作</td>
 			</tr>
 			</thead>
 			<tbody>
@@ -65,34 +60,26 @@
 				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
 				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
 				<td class="tc">{{item.click}}</td>
-				<td class="tc">{{item.sequence}}</td>
+				<td class="tc">{{item.createTimeStr}}</td>
 				<td class="tc">
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					<a class="f12 main-color mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					   ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)">
 						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank">
+					<a class="f12 main-color mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank">
 						<i class="iconfont f12">&#xe60a;预览</i>
 					</a>
-					<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					   ng-click="del('user/article/delete.do?id='+item.id,item.name)">
-						<i class="iconfont f12">&#xe60e;删除</i>
-					</a>
-					<a class="f12 text-primary mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/user/comment/list?projectId={{item.projectId}}&articleId={{item.id}}">
+					<a class="f12 main-color mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/user/comment/list?projectId={{item.projectId}}&articleId={{item.id}}">
 						<i class="iconfont f12">&#xe60f;评论列表</i>
 					</a>
 
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
+					<a class="f12 main-color mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 					</a>
-					<div class="w50 fr tl" ng-if="showOperation('PROJECT',$stateParams.projectId)">
-						<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/article/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
-							<i class="iconfont f12">&#xe623;</i>
-						</a>
-						<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/article/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
-							<i class="iconfont f12">&#xe624;</i>
-						</a>
-					</div>
+					<a class="f12 adorn-color mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+					   ng-click="del('user/article/delete.do?id='+item.id,item.name)">
+						<i class="iconfont f12">&#xe60e;删除</i>
+					</a>
 
 				</td>
 			</tr>

@@ -79,7 +79,7 @@ public class SettingDto{
 
     public String getTypeName(){
         if(!MyString.isEmpty(type)){
-            return SettingType.getValue(type);
+            return SettingType.getName(type);
         }
         return "";
 

@@ -4,9 +4,9 @@ public enum SettingType {
 	IMAGE("图片"),TEXT("文本"),COLOR("颜色"),FONTFAMILY("字体"),INDEXPAGE("首页地址"),ICONFONT("图标库");
 	private final String name;
 	
-	public static String getValue(String name){
+	public static String getName(String value){
 		try{
-			return SettingType.valueOf(name).getName();
+			return SettingType.valueOf(value).getName();
 		}catch(Exception e){
 			return "";
 		}
@@ -17,5 +17,9 @@ public enum SettingType {
 
 	public String getName(){
 		return name;
+	}
+
+	public String getValue(){
+		return this.name();
 	}
 }

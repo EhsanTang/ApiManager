@@ -125,9 +125,6 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Setting" >
-    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,

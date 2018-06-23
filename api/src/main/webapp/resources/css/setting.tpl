@@ -8,6 +8,7 @@ body{min-width:800px;}
 /* 默认主色:#B768A5*/
 .main-bg {background-color: {{settings.MAIN_COLOR}}!important;}
 .main-color {color: {{settings.MAIN_COLOR}}}
+.main-bb-1{ border-bottom:1px solid {{settings.MAIN_COLOR}}}
 .adorn-color {color: {{settings.ADORN_COLOR}}}
 .adorn-bl-3{ border-left:3px solid {{settings.ADORN_COLOR}}}
 .adorn-bb-1{ border-bottom:1px solid {{settings.ADORN_COLOR}}}
@@ -51,18 +52,31 @@ body{min-width:800px;}
 input:focus{
   border-color: {{settings.MAIN_COLOR}}!important;!important;
 }
-.hover-a:hover{
+.hover-adorn:hover{
   color: #ffffff;
-  background-color: {{settings.ADORN_COLOR}};
+  background-color: {{settings.ADORN_COLOR}}!important;
   cursor: pointer;
   text-underline: none;
 }
-.active-a{
+.active-adorn{
   color: {{settings.ADORN_COLOR}}!important;
   font-weight:bold;
   cursor: pointer;
   text-underline: none;
 }
+.hover-main:hover{
+    color: #ffffff;
+    background-color: {{settings.MAIN_COLOR}}!important;
+    cursor: pointer;
+    text-underline: none;
+}
+.active-main{
+    color: {{settings.MAIN_COLOR}}!important;
+    font-weight: bold;
+    cursor: pointer;
+    text-underline: none;
+}
+
 .login-bg{background: url('{{settings.LOGINBG}}') 50% 50% / cover no-repeat fixed;}
 .title-bg-img{
 	background-image:url('{{settings.TITLEBG}}')!important; background-position:center;

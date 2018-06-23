@@ -11,47 +11,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css" />
 	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
 	<link href="resources/css/base.css?v=v8.0.2" rel="stylesheet" type="text/css" />
 	<link href="resources/css/crapApi.css?v=v8.0.2" rel="stylesheet" type="text/css" />
 	<link href="resources/css/setting.css?v=v8.0.2" rel="stylesheet" type="text/css" />
+	<link href="resources/css/admin.css?v=v8.0.2" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<!-- Top -->
 	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
 	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand pt10" href="home.do" target="_blank">
-					<img class="h30" ng-src="{{settings.LOGO}}" />
+	<nav class="h50 fixed w t0 BGFFF z1000 main-bb-1">
+				<a class="navbar-brand pt10 br1" href="home.do" target="_blank">
+					<img class="h30" ng-src="{{settings.MINI_LOGO}}" />
 				</a>
-			</div>
 
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right mr20">
-						<li><a href="#/admin/config/properties" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
-						<li><a href="#/profile" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
-						<li><a href="home.do" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
-						<li><a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank"><img src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a></li>
+				<ul class="nav navbar-nav navbar-right m0 f14">
+						<li><a href="#/admin/config/properties" class="hover-main C555" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a></li>
+						<li><a href="home.do" class="hover-main C555" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
+						<li><a href="#/profile" class="hover-main bl1 C555" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a></li>
 				</ul>
-			</div>
-		</div>
 	</nav>
 <!-- End:Top -->
 	
-	<div class="container-fluid h p0 m0">
-		<div class="row h p0 m0 pt50">
-		
-		
-		
+	<div class="container-fluid h p0 m0 mt50">
+		<div class="row h p0 m0">
 				<!-- left -->
 				<div class="col-xs-3 col-sm-2 sidebar BGBBB p20 pt0 pb0 h mah ofy-a ofx-h">
 				<div class="panel-group" id="accordion" role="tablist"

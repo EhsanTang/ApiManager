@@ -3,10 +3,7 @@ package cn.crap.controller.visitor;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.*;
-import cn.crap.enumer.ArticleStatus;
-import cn.crap.enumer.ArticleType;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.ProjectStatus;
+import cn.crap.enumer.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
@@ -205,7 +202,13 @@ public class MainController extends BaseController{
 		settingMap.put(IConst.DOMAIN, config.getDomain());
 		settingMap.put(IConst.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
 		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
-		
+
+		// 新增加且没有写入数据库的配置
+		for (SettingEnum settingEnum : SettingEnum.values()){
+			if (!settingMap.containsKey(settingEnum.getKey())){
+				settingMap.put(settingEnum.getKey(), settingEnum.getValue());
+			}
+		}
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settingMap", settingMap);
 

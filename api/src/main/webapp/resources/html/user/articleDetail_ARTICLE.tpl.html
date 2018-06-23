@@ -23,7 +23,7 @@
 					<a ng-href="#/user/module/list?projectId={{model.projectId}}" target="_blank">修改模块【{{model.moduleName}}】的文章类目</a>
 					]
 					<input class="form-control" type="text" id="category" ng-model="model.category"  placeholder="点击选择类目" readonly
-								   ng-click="loadPick($event,220,250,'true','category','CATEGORY', '', model.category, '&key='+model.moduleId,0);">
+								   ng-click="loadPick($event,220,250,'true','category','CATEGORY', '', model.category, '&key='+model.moduleId, 5);">
 				</td>
 			</tr>
 			<tr ng-if="showOperation('ARTICLE','');">

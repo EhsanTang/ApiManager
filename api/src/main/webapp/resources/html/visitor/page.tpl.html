@@ -1,4 +1,4 @@
-<nav>
+<nav ng-if="page.totalPage > 1">
   <ul class="pager mt0 fr">
     <li ng-if="page.currentPage>1" class="cursor">
     	<a ng-click="getData(page.currentPage-1)"><span aria-hidden="true">&larr;</span> 上一页</a>
@@ -16,5 +16,5 @@
 </nav>
 	<input type="hidden" id="PageTotalPage" value="{{page.totalPage}}"/>
 	<input type="hidden" id="PageAllRow" value="{{page.allRow}}"/>
-	<div class="fr C999 mt5 mr10">Total:{{page.allRow}}&nbsp; {{page.currentPage}}/{{page.totalPage}}</div>
-	<div class="cb"></div>
+	<div class="fr C999 mt5 mr10" ng-if="page.totalPage > 1">Total:{{page.allRow}}&nbsp; {{page.currentPage}}/{{page.totalPage}}</div>
+	<div class="cb" ng-if="page.totalPage > 1"></div>

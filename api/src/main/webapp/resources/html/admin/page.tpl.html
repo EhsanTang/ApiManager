@@ -1,4 +1,4 @@
-﻿<nav>
+﻿<nav ng-if="page.totalPage > 1">
 		<ul class="pagination fr mt0 pagination-sm">
 			<li class="cursor"><a ng-click="getData(1)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>
 			<li class="cursor"><a ng-click="getData(page.currentPage-1)" ng-if="page.currentPage>1">上一页</a></li> <!-- 当前页为第一页则不显示上一页 -->
@@ -13,5 +13,5 @@
 	</nav>
 	<input type="hidden" id="PageTotalPage" value="{{page.totalPage}}"/>
 	<input type="hidden" id="PageAllRow" value="{{page.allRow}}"/>
-	<div class="fr C999 mt5 mr10">Total:{{page.allRow}}&nbsp; {{page.currentPage}}/{{page.totalPage}}</div>
+	<div class="fr C999 mt5 mr10" ng-if="page.totalPage > 1">Total:{{page.allRow}}&nbsp; {{page.currentPage}}/{{page.totalPage}}</div>
 	<div class="cb"></div>

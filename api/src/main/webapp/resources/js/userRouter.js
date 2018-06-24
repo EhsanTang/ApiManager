@@ -59,7 +59,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/projectDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuProject.tpl.html?v=v8.0.2';
+                }
+            }
+
 		}
 	}).state('moduleList', {
 		url : '/user/module/list?projectId&name&projectName&menu_a',
@@ -74,7 +79,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/moduleDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('interfaceList', {
 		url : '/user/interface/list?projectId&moduleId&moduleName',

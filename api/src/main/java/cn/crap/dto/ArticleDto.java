@@ -23,6 +23,7 @@ public class ArticleDto implements Serializable {
 	private Byte canDelete;
 	private String category;
 	private Byte canComment;
+	private String canCommentName;
 	private Integer commentCount;
 	private Integer sequence;
 	private String markdown;
@@ -171,5 +172,13 @@ public class ArticleDto implements Serializable {
 
 	public void setCreateTimeStr(String createTimeStr) {
 		this.createTimeStr = createTimeStr;
+	}
+
+	public String getCanCommentName() {
+		return canCommentName;
+	}
+
+	public void setCanCommentName(String canCommentName) {
+		this.canCommentName = canCommentName;
 	}
 }

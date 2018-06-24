@@ -1,0 +1,6 @@
+<div ng-controller="userTop50ModuleListCtrl">
+	<div class="w h50 fw500 lh50 f16 pl10 BGEEE main-color">模块列表(Top50)</div>
+	<a ng-repeat="item in top50Module" ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.projectId == item.id]"
+	   ng-href="#/user/module/list?menu_a=menu-project&projectId={{item.id}}&projectName={{item.name}}"
+	   ng-bind="item.name"></a>
+</div>

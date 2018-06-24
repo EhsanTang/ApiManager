@@ -494,7 +494,7 @@ userModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, 
 userModule.controller('userTop50ProjectListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function() {
         var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&myself="+$stateParams.myself;
-        $rootScope.getBaseData($scope,$http,params,1,"top50Project");
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Project");
     };
     $scope.getData();
 });
@@ -503,6 +503,13 @@ userModule.controller('userModuleListCtrl', function($rootScope,$scope, $http, $
 	$scope.getData = function(page) {
 		var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
+    };
+    $scope.getData();
+});
+userModule.controller('userTop50ModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+    $scope.getData = function() {
+        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module");
     };
     $scope.getData();
 });

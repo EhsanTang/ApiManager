@@ -57,8 +57,8 @@ public class ModuleController extends BaseController implements ILogConst{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage, String name) throws MyException{
-			Page<Module> page= new Page(currentPage);
+	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage, Integer pageSize, String name) throws MyException{
+			Page<Module> page= new Page(pageSize, currentPage);
 			checkUserPermissionByProject(projectId, VIEW);
 
 			page = customModuleService.queryByProjectId(projectId, name, page);

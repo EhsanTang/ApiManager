@@ -43,9 +43,11 @@ public class ArticleAdapter {
 		dto.setCanDelete(model.getCanDelete());
 		dto.setCategory(model.getCategory());
 		dto.setCanComment(model.getCanComment());
+		dto.setCanCommentName(model.getCanComment().equals(new Byte("1")) ? "是" : "否");
 		dto.setCommentCount(model.getCommentCount());
 		dto.setSequence(model.getSequence());
 		dto.setProjectId(model.getProjectId());
+		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
 		dto.setTypeName(ArticleType.getByEnumName(model.getType()));
 		if (model.getCreateTime() != null) {
 			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));

@@ -1,5 +1,5 @@
-<div class="r0 p10 pt10 col-xs-12 BGFFF" ng-controller="userArticleCtrl">
-	<div class="col-xs-12 bb1 mb5 p0 f12">
+<div class="col-xs-12 p0" ng-controller="userArticleCtrl">
+	<div class="col-xs-12 p0 f12">
 		<div class="btn-group btn-group-sm r3 fl mr10">
 			<button class="btn btn-main btn-sm">{{$stateParams.moduleName}} > {{others.type}}管理</button>
 			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
@@ -14,7 +14,7 @@
 			</a>
 		</div>
 
-		<div class="form-group w200 fl mr10" ng-if="$stateParams.type=='ARTICLE'">
+		<div class="form-group w200 fl mr10 mb0" ng-if="$stateParams.type=='ARTICLE'">
 			<label class="sr-only">类目</label>
 			<div class="input-group btn-group-xs">
 				<div class="input-group-addon main-bg CFFF b0 f12">类目</div>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 
-		<div class="form-group w200 fl mr10">
+		<div class="form-group w200 fl mr10 mb0">
 			<label class="sr-only">名称</label>
 			<div class="input-group btn-group-xs">
 				<div class="input-group-addon main-bg b0 CFFF f12">名称</div>
@@ -36,32 +36,34 @@
 		</button>
 	</div>
 
-	<div class="col-xs-12 p0">
+	<div class="col-xs-12 r0 p10 pt5 BGFFF mt10">
 		<table class="table table-hover table-striped">
 			<thead>
-			<tr>
+			<tr class="f14 C000 fw500">
 				<td class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</td>
-				<td class="tc w300">名称</td>
-				<td class="tc" ng-if="$stateParams.type=='PAGE'">key</td>
-				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">项目</td>
-				<td class="tc" ng-if="$stateParams.type=='PAGE'">是否可删除</td>
-				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">类目</td>
-				<td class="tc">点击量</td>
-				<td class="tc">创建时间</td>
-				<td class="tc w400">操作</td>
+				<td class="w300">项目名称</td>
+				<td ng-if="$stateParams.type=='PAGE'">key</td>
+				<td ng-if="$stateParams.type=='DICTIONARY'">项目</td>
+				<td ng-if="$stateParams.type=='PAGE'">是否可删除</td>
+				<td ng-if="$stateParams.type=='ARTICLE'">类目</td>
+				<td>状态</td>
+				<td>可评论</td>
+				<td>创建时间</td>
+				<td class="w400">操作</td>
 			</tr>
 			</thead>
 			<tbody>
 			<tr ng-repeat="item in list">
 				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
-				<td class="tc">{{item.name| cut:true:15:' ...'}}</td>
-				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
-				<td class="tc" ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
-				<td class="tc" ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
-				<td class="tc" ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
-				<td class="tc">{{item.click}}</td>
-				<td class="tc">{{item.createTimeStr}}</td>
-				<td class="tc">
+				<td>{{item.name| cut:true:15:' ...'}}</td>
+				<td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
+				<td ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
+				<td ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
+				<td ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
+				<td>{{item.statusName}}</td>
+				<td>{{item.canCommentName}}</td>
+				<td>{{item.createTimeStr}}</td>
+				<td>
 					<a class="f12 main-color mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 					   ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)">
 						<i class="iconfont f12">&#xe618;修改</i>

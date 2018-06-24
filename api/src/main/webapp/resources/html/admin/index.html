@@ -37,7 +37,7 @@
 	
 		<div class="row h p0 m0 mt50">
 				<!-- left -->
-				<div class="w250 sidebar BGBBB pt0 pb0 h mah ofy-a ofx-h fixed">
+				<div class="w250 sidebar BGBBB pt0 pb0 h mah ofy-a ofx-h fixed shadow">
                     <div class="w50 fl h BGFFF main-color main-br-1">
                         <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
                            ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-project']"
@@ -58,17 +58,11 @@
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')" data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
                             <i class="iconfont f18">&#xe639;</i>
                         </div>
-
-                    </div>
-                    <div class="w200 fl h BGFFF f14 ofy-s pb50" ng-controller="userTop50ProjectListCtrl">
-                        <a ng-repeat="item in top50Project" ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.projectId == item.id]"
-                           ng-href="#/user/module/list?myself=true&type=-1&menu_a=menu-project&projectId={{item.id}}&projectName={{item.name}}"
-                           ng-bind="item.name"></a>
                     </div>
 
+                    <div class="w200 fl h BGFFF f14 ofy-s pb100" ui-view="subMenu"></div>
 
-                    <div >
-
+                    <div>
                         <div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
 
                             <div id="panel-myproject" class="panel-collapse BGEEE collapse in">
@@ -179,9 +173,8 @@
 			</div>
 
 				<!-- End:left -->
-				
 				<div class="p0 h mah ofy-a l250 fixed">
-					<div class="m10">
+					<div class="m10 pb50">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
 						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
 						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">

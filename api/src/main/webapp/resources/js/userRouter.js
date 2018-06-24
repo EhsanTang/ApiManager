@@ -86,7 +86,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('interfaceList', {
-		url : '/user/interface/list?projectId&moduleId&moduleName',
+		url : '/user/interface/list?projectId&moduleId&moduleName&projectName',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.2'
@@ -98,7 +98,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/interfaceDetail.tpl.html?v=v8.0.2';
 				}
-			},
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            },
 			'interResEditorDiv@interfaceList' : {
 				templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html?v=v8.0.2'
 			},

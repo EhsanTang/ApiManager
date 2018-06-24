@@ -20,6 +20,7 @@ public class ModuleDto {
 	private Integer version;
 	private String category;
 	private String projectName;
+	private String createTimeStr;
 
 	public void setId(String id){
 		this.id=id;
@@ -112,5 +113,13 @@ public class ModuleDto {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
 	}
 }

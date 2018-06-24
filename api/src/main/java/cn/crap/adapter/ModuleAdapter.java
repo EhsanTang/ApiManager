@@ -3,6 +3,7 @@ package cn.crap.adapter;
 import cn.crap.dto.ModuleDto;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
+import cn.crap.utils.DateFormartUtil;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -33,6 +34,9 @@ public class ModuleAdapter {
 		dto.setTemplateId(model.getTemplateId());
 		dto.setVersion(model.getVersion());
 		dto.setCategory(model.getCategory());
+        if (model.getCreateTime() != null) {
+            dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+        }
 		if (project != null) {
             dto.setProjectName(project.getName());
         }

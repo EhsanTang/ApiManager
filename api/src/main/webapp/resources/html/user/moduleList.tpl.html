@@ -1,53 +1,51 @@
-<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="userModuleListCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">模块列表：{{$stateParams.projectName}}</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
-</div>
+<div class="r0 p0 col-xs-12" ng-controller="userModuleListCtrl">
+	<div class="col-xs-12 f16 p0">
+		<div class="btn-group btn-group-sm r3 fl mr10">
+			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+            <button class="btn btn-sm cursor-not btn-main">模块列表</button>
+            <a type="button" class="btn btn-default"><i class="iconfont mt-3">&#xe60c;&nbsp;</i>错误码</a>
+            <a type="button" class="btn btn-default"><i class="iconfont mt-3">&#xe603;&nbsp;</i>项目成员</a>
+            <a type="button" class="btn btn-default"><i class="iconfont mt-3">&#xe62b;&nbsp;</i>项目日志</a>
+            <a type="button" class="btn btn-default"><i class="iconfont mt-3">&#xe616;&nbsp;</i>项目主页</a>
 
-<div class="col-xs-12 mt20 p0 mb10 f14 tr">
-	<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
-		<a type="button" class="btn btn-success btn-sm cursor fr ml5"
-		   ng-click="detail('新增模块',700,'user/module/detail.do?id=NULL&projectId='+$stateParams.projectId)">
-			<i class="iconfont fb">&#xe604;</i>&nbsp;
-			<span>新增模块</span>
-		</a>
+			<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm"
+			   ng-click="detail('新增模块',700,'user/module/detail.do?id=NULL&projectId='+$stateParams.projectId)">
+				<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增模块
+			</a>
+		</div>
 
-		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
-			<i class="iconfont">&#xe610;</i>&nbsp;查询
-		</button>
-		<div class="form-group w200 fr">
+		<div class="form-group w200 fl mb0">
 			<label class="sr-only">名称</label>
-			<div class="input-group">
-				<div class="input-group-addon">名称</div>
-				<input type="text" class="form-control input-xs dis-in-blo w120" placeholder="名称" ng-model="$stateParams.name">
+			<div class="input-group btn-group-xs">
+				<div class="input-group-addon main-bg CFFF b0 f12">名称</div>
+				<input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="模块名称" ng-model="$stateParams.name">
 			</div>
 		</div>
 
-		<div class="cb"></div>
+		<button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+			<i class="iconfont mt-3">&#xe610;</i>&nbsp;查询
+		</button>
 	</div>
-</div>
 
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">
-	<span>模块列表</span>
-</div>
-<div class="col-xs-12 p0">
-	<table class="table table-bordered table-hover">
+	<div class="col-xs-12 p10 mt10 pt5 BGFFF">
+		<table class="table table-hover table-striped">
 		<thead>
-			<tr class="BGEEE">
-				<th class="tc w200">名称</th>
-				<th class="tc w200">Url前缀</th>
-				<td class="tc w100">排序</td>
-				<th class="tc">操作</th>
-				<th class="tc w50">排序</th>
+			<tr class="f14 C000 fw500">
+				<td class="w200">名称</td>
+				<td class="w200">Url前缀</td>
+                <td class="w200">创建时间</td>
+				<td class="w100">排序</td>
+				<td>操作</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
-				<td class="tc">{{item.name}}</td>
-				<td class="tc">{{item.url}}</td>
-				<td class="tc">{{item.sequence}}</td>
-				<td class="tc">
+				<td>{{item.name}}</td>
+				<td>{{item.url}}</td>
+                <td>{{item.createTimeStr}}</td>
+                <td>{{item.sequence}}</td>
+				<td>
 					<a class="f12 text-primary mr10 cursor" ng-href="#/user/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}&moduleName={{item.name}}">
 						<i class="iconfont f12">&#xe614; 接口</i>
 					</a>
@@ -97,16 +95,6 @@
 							</li>
 						</ul>
 					</div>
-				</td>
-				<td class="tc">
-					<div class="w50 fr tl" ng-if="showOperation('PROJECT',item.projectId)">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/module/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
-						<i class="iconfont f12">&#xe623;</i>
-					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/module/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
-						<i class="iconfont f12">&#xe624;</i>
-					</a>
-				</div>
 				</td>
 			</tr>
 		</tbody>

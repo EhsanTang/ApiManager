@@ -65,6 +65,7 @@ public class InterfaceController extends BaseController{
 		}
 
 		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExampleWithBLOBs(example), null);
+        page.setAllRow(mybatisInterfaceService.countByExample(example));
 		JsonResult result = new JsonResult(1, interfaces, page);
 		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
 				.putOthers("module", moduleCache.get(moduleId));

@@ -1,6 +1,6 @@
 <div ng-controller="userTop50ProjectListCtrl">
-	<div class="w h50 fw500 lh50 f16 pl10 BGEEE main-color">项目列表(Top50)</div>
+	<div class="w h50 fw500 lh50 f14 pl10 BGEEE main-color">项目列表(Top50)</div>
 	<a ng-repeat="item in top50Project" class="menu_b hover-main"
-	   ng-href="#/user/module/list?menu_a=menu-project&projectId={{item.id}}&projectName={{item.name}}"
+	   ng-href="#/user/module/list?menu_a=menu-project&menu_b=menu_module&projectId={{item.id}}&projectName={{item.name}}"
 	   ng-bind="item.name"></a>
 </div>

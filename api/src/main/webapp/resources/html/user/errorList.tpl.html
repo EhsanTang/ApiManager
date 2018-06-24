@@ -1,56 +1,53 @@
-<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="userErrorCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">错误码管理</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
-</div>
-<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
-		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
-			<i class="iconfont">&#xe60d;</i>&nbsp;查询
-		</button>
-		<div class="form-group w200 fr">
-			<label class="sr-only" for="">Msg</label>
-			<div class="input-group">
-				<div class="input-group-addon">Msg</div>
-				<input type="text" class="form-control input-xs dis-in-blo w120" ng-model="$stateParams.errorMsg">
-			</div>
-		</div>
-		<div class="form-group w200 fr mr10">
-			<label class="sr-only" for="">Code</label>
-			<div class="input-group">
-				<div class="input-group-addon">Code</div>
-				<input type="text" class="form-control input-xs dis-in-blo" placeholder="Code" ng-model="$stateParams.errorCode">
-			</div>
-		</div>
-		<div class="cb"></div>
-</div>
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20">错误码列表</div>
-<div class="col-xs-9 mt20 p0 mb10 f14 tr">
-	<a type="button" class="btn btn-success btn-sm cursor" ng-if="$stateParams.projectId!='-1'"
-		ng-click="detail('新增错误码',700,'user/error/detail.do?id=NULL','&projectId='+$stateParams.projectId);"> 
-		<i class="iconfont fb">&#xe604;</i>&nbsp;新增
-	</a>
-	<a type="button" class="btn btn-default btn-sm cursor" ng-if="$stateParams.projectId==-1">
-		<i class="iconfont fb">&#xe604;</i>&nbsp;选择项目后方可添加错误码
-	</a>
-</div>
+<div class="r0 p0 col-xs-12" ng-controller="userErrorCtrl">
+	<div class="col-xs-12 f16 p0">
+		<div class="btn-group btn-group-sm r3 fl mr10">
+			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+			<button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe60c;&nbsp;</i>错误码</button>
 
-<div class="col-xs-12 p0">
-	<table class="table table-bordered table-hover">
+
+			<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+			<a type="button" class="btn btn-default btn-sm"
+			   ng-click="detail('新增错误码',700,'user/error/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
+				<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增错误码
+			</a>
+		</div>
+
+		<div class="form-group w200 fl mb0">
+			<label class="sr-only">Code</label>
+			<div class="input-group btn-group-xs">
+				<div class="input-group-addon main-bg CFFF b0 f12">Msg</div>
+				<input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="msg" ng-model="$stateParams.errorMsg">
+			</div>
+		</div>
+		<div class="form-group w200 fl mb0 ml10">
+			<label class="sr-only">Code</label>
+			<div class="input-group btn-group-xs">
+				<div class="input-group-addon main-bg CFFF b0 f12">Code</div>
+				<input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="code" ng-model="$stateParams.errorCode">
+			</div>
+		</div>
+
+		<button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+			<i class="iconfont mt-3">&#xe610;</i>&nbsp;查询
+		</button>
+	</div>
+
+	<div class="col-xs-12 p10 mt10 pt5 BGFFF">
+		<table class="table table-hover table-striped">
 		<thead>
-			<tr class="BGEEE">
-				<th class="tc">Code</th>
-				<th class="tc">Msg</th>
-				<th class="tc">项目</th>
-				<th class="w300 tc">操作</th>
+        <tr class="f14 C000 fw500">
+				<td>Code</td>
+				<td>Msg</td>
+				<td>项目</td>
+				<td class="w300">操作</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in list">
-				<td class="tc">{{item.errorCode}}</td>
-				<td class="tc">{{item.errorMsg}}</td>
-				<td class="tc">{{item.projectName}}</td>
-				<td class="tc">
+				<td>{{item.errorCode}}</td>
+				<td>{{item.errorMsg}}</td>
+				<td>{{item.projectName}}</td>
+				<td>
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
 					ng-click="detail('编辑【'+item.errorCode+'】',700,'user/error/detail.do?id='+item.id)"
 					data-toggle="tooltip" data-placement="top"

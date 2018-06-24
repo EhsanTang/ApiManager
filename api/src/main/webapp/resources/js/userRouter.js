@@ -67,7 +67,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 		}
 	}).state('moduleList', {
-		url : '/user/module/list?projectId&name&projectName&menu_a',
+		url : '/user/module/list?projectId&name&projectName&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html?v=v8.0.2'
@@ -86,7 +86,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('interfaceList', {
-		url : '/user/interface/list?projectId&moduleId&moduleName&projectName',
+		url : '/user/interface/list?projectId&moduleId&moduleName&projectName&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.2'
@@ -118,11 +118,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			
 		}
 	}).state('errorList', {
-		url : '/user/error/list?projectId',
+		url : '/user/error/list?projectId&moduleName&projectName&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/errorList.tpl.html?v=v8.0.2'
-			},
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            },
 			'page@errorList' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
 			},

@@ -1,6 +1,14 @@
 /**
 后端css样式
  */
+.navbar-brand{
+    width: 50px;
+    padding: 10px;
+}
+.navbar-brand img{
+    height: 30px;
+    width: 30px;
+}
 .menu_a{
     text-align: center;
     height: 50px;
@@ -24,4 +32,10 @@
     overflow:hidden;
     border-bottom: 1px solid #eaeaea;
     width: 100%;
+}
+.menu_b:hover{
+    margin-top:-1px;
+    margin-bottom:-1px;
+    height:42px;
+    line-height: 42px;
 }

@@ -41,20 +41,20 @@
 				<td>{{item.url}}</td>
                 <td>{{item.createTimeStr}}</td>
                 <td>{{item.sequence}}</td>
-				<td>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}&moduleName={{item.name}}">
+				<td class="f12">
+					<a class="mr10 cursor" ng-href="#/user/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}&moduleName={{item.name}}">
 						<i class="iconfont f12">&#xe614; 接口</i>
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE&moduleName={{item.name}}">
+					<a class="mr10 cursor" ng-href="#/user/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE&moduleName={{item.name}}">
 						<i class="iconfont f12">&#xe637; 文章</i>
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY&moduleName={{item.name}}">
+					<a class="mr10 cursor" ng-href="#/user/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY&moduleName={{item.name}}">
 						<i class="iconfont f12">&#xe61c;数据字典</i>
 					</a>
 
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
+					<a class="mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id)"> 
 						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
@@ -74,17 +74,17 @@
 							<li><a ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
 							<li role="separator" class="divider"></li>
 							<li>
-								<a class="f12 text-primary mr10 cursor" ng-href="#/user/source/list?project={{item.projectId}}&id={{item.id}}">
+								<a class="mr10 cursor" ng-href="#/user/source/list?project={{item.projectId}}&id={{item.id}}">
 									<i class="iconfont f12">&#xe638; 资源</i>
 								</a>
 							</li>
 							<li>
-								<a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
+								<a class="mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
 									<i class="iconfont">&#xe62b;&nbsp;</i>日志
 								</a>
 							</li>
 							<li>
-								<a class="f12 text-primary mr10 cursor"
+								<a class="mr10 cursor"
 								   ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank">
 									<i class="iconfont f12">&#xe63a;静态化地址</i>
 								</a>

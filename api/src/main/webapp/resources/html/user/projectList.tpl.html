@@ -40,40 +40,40 @@
 				<td>{{item.typeName}}</td>
                 <td>{{item.statusName}}</td>
 				<td>{{item.userName}}</td>
-				<td>
+				<td class="f12">
 				
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/module/list?menu_a=menu-project&projectName={{item.name}}&projectId={{item.id}}">
+					<a class="mr10 cursor" ng-href="#/user/module/list?menu_a=menu-project&projectName={{item.name}}&projectId={{item.id}}">
 						<i class="iconfont f12">&#xe613;模块</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/error/list?projectId={{item.id}}">
+					<a class="mr10 cursor" ng-href="#/user/error/list?projectId={{item.id}}">
 						<i class="iconfont f12">&#xe60c;错误码</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/projectUser/list?projectId={{item.id}}">
+					<a class="mr10 cursor" ng-href="#/user/projectUser/list?projectId={{item.id}}">
 						<i class="iconfont f12">&#xe603;成员</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy?identy={{item.id}}">
+					<a class="mr10 cursor" ng-href="#/user/log/list?identy?identy={{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>日志
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-href="project.do#/module/list?projectId={{item.id}}" target="_blank">
+					<a class="mr10 cursor" ng-href="project.do#/module/list?projectId={{item.id}}" target="_blank">
 						<i class="iconfont f12 adorn-color">&#xe616;主页</i>
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+					<a class="mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('editer-project','staticize-project');"> 
 						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
 				
-					<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.id)"
+					<a class="text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.id)"
 						ng-click="del('user/project/delete.do?id='+item.id,item.name)">
 						<i class="iconfont f12">&#xe60e;删除</i>
 					</a>
 					
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+					<a class="mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();"> 
 						<i class="iconfont f12">&#xe640;静态化</i>
 					</a>
-					<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
+					<a class="mr10 cursor" ng-if="showOperation('PROJECT',item.id)"
 						ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + item.id, 'PROPUPFLOAT重建索引中...')"> 
 						<i class="iconfont f12">&#xe611;重建索引</i>
 					</a>

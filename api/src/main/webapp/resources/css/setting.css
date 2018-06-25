@@ -10,6 +10,7 @@ body{min-width:800px;}
 .main-color {color: #407aaa}
 .main-bb-1{ border-bottom:1px solid #407aaa}
 .main-br-1{ border-right:1px solid #407aaa}
+.main-bl-3{ border-left:3px solid #407aaa}
 
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
@@ -19,7 +20,8 @@ body{min-width:800px;}
 .interface-detail blockquote {color: #407aaa}
 .bt-5 {border-top: 5px solid#407aaa}
 .bl-5 {border-left: 5px solid#407aaa}
-.menu_a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:1;}
+a{color: #407aaa;text-decoration: none;}a:hover{color: #f82c1d;text-decoration: none;}
+.menu_a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:0.8;}
 .iactive {background-color: #407aaa!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: #407aaa}
 .pickSelect {color: #407aaa}
@@ -59,13 +61,15 @@ input:focus{
     color: #ffffff;
     background-color: #f82c1d!important;
     cursor: pointer;
-    text-underline: none;
+    opacity: 0.3;
+    text-decoration: none;
 }
 .hover-main:hover,.active-main{
     color: #ffffff;
     background-color: #407aaa!important;
     cursor: pointer;
-    text-underline: none;
+    opacity: 0.3;
+    text-decoration: none;
 }
 
 .login-bg{background: url('https://dn-coding-net-production-static.qbox.me/d58141c9-9a0c-40b0-a408-5935fd70670f.jpg') 50% 50% / cover no-repeat fixed;}

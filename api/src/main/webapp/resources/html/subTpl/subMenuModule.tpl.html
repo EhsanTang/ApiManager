@@ -1,5 +1,5 @@
 <div ng-controller="userTop50ModuleListCtrl">
-	<div class="w h50 fw500 f14 pt13 pl10 BGEEE main-color">
+	<div class="w h50 fw500 f14 pt13 pl10 BGF5 C555 main-bl-3">
 		<span ng-bind="$stateParams.projectName"></span>
 		<button class="btn btn-xs btn-adorn r20 mt-3">
 			<i class="iconfont f12">&#xe618;&nbsp;修改</i>
@@ -19,11 +19,11 @@
 		ng-href="#/user/projectUser/list?menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
         <i class="iconfont mt-3">&#xe603;&nbsp;</i>项目成员
     </a>
-    <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_main']">
+    <a ng-class="{true: 'menu_b hover-main active-main b0', false:'menu_b hover-main b0'}[$stateParams.menu_b == 'menu_main']">
         <i class="iconfont mt-3">&#xe616;&nbsp;</i>项目详情
     </a>
 
-	<div class="w h50 fw500 lh50 f14 pl10 BGEEE main-color">模块列表(Top50)</div>
+	<div class="w h50 fw500 lh50 f14 pl10 BGF5 C555 main-bl-3">模块列表(Top50)</div>
 
 	<a ng-repeat="item in top50Module" ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.moduleId == item.id]"
 	   ng-href="#/user/interface/list?menu_a=menu-project&moduleId={{item.id}}&projectId={{item.projectId}}&projectName={{$stateParams.projectName}}"

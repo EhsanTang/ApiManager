@@ -24,12 +24,12 @@ input{
 }
 /***project-user样式***/
 .true-class{
-    color:green;
-    font-weight:bold;
+    color:#000000;
+    background-color: #dff0d8;
 }
 .false-class{
-    color:red;
-    font-weight:bold;
+    color:#999999;
+    background: #dddddd;
 }
 /**火狐红色边框**/
 input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid{box-shadow: none;}

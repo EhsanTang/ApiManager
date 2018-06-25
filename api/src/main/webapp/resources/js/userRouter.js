@@ -136,7 +136,26 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		}
-	}).state('articleList', {
+	}).state('projectUserList', {
+        url : '/user/projectUser/list?projectId&name&projectName&menu_a&menu_b',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/user/projectUserList.tpl.html?v=v8.0.2'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            },
+            'page@projectUserList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
+            },
+            'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/projectUserDetail.tpl.html?v=v8.0.2';
+                }
+            }
+        }
+    }).state('articleList', {
         url : '/user/article/list?projectId&moduleId&type&moduleName',
         views : {
             'main' : {
@@ -227,21 +246,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'detail' : {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/userDetail.tpl.html?v=v8.0.2';
-				}
-			}
-		}
-	}).state('projectUserList', {
-		url : '/user/projectUser/list?projectId',
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/user/projectUserList.tpl.html?v=v8.0.2'
-			},
-			'page@projectUserList' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/user/projectUserDetail.tpl.html?v=v8.0.2';
 				}
 			}
 		}

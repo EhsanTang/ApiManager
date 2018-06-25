@@ -20,7 +20,7 @@
 	<!-- Top -->
 	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
 	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
-	<nav class="h50 fixed w t0 BGFFF z1000 main-bb-1">
+	<nav class="h50 fixed w t0 BGFFF z100 main-bb-1">
 				<a class="navbar-brand pt10 br1 fl" href="home.do" target="_blank">
 					<img class="h30" ng-src="{{settings.MINI_LOGO}}" />
 				</a>
@@ -238,18 +238,18 @@
 </div>
 
 <div id="fade"></div>
-<div id="myDialog" class="look-up shadow r2 bottom-radius pt50">
-		<div id="myDialog-title" class="CFFF f20 fb shadow" style="margin-top:-50px;line-height:50px;padding-left:20px;height:50px;">
+<div id="myDialog" class="look-up pt50">
+		<div id="myDialog-title" class="CFFF f20 fw500 main-bg" style="margin-top:-50px;line-height:40px;padding-left:20px;height:40px;">
 		</div>
-		<div id="myDialogContent" class="look-up-content b0 f12 tl p30 BGFFF bottom-radius">
+		<div id="myDialogContent" class="look-up-content b0 f12 tl p10 BGFFF">
 			<button type="button" class="btn btn-danger btn-xs break-word ml10 mb10 ndis" id="dialog-error" ng-if="hasError(error,'dialog-error')">
 					<span class="glyphicon glyphicon-remove"></span>
 					<span ng-bind="error"></span>
 			</button>
 			<div ui-view="detail"></div>
 		</div>
-		<i class="iconfont i-close CFFF fb f20" onclick="closeMyDialog('myDialog')">&#xe615;</i>
-		<i class="iconfont i-full CFFF fb f20" onclick="fullMyDialog('myDialog')">&#xe62e;</i>
+		<i class="iconfont i-close CFFF f16" onclick="closeMyDialog('myDialog')">&#xe615;</i>
+		<i class="iconfont i-full CFFF f16" onclick="fullMyDialog('myDialog')">&#xe62e;</i>
 </div>   
 <div class="tip-div" id="tip-div"></div>
 <div id="float" class="folat">

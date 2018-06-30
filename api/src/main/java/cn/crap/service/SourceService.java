@@ -1,0 +1,143 @@
+package cn.crap.service;
+
+import cn.crap.adapter.Adapter;
+import cn.crap.adapter.SourceAdapter;
+import cn.crap.dao.mybatis.SourceDao;
+import cn.crap.dto.SearchDto;
+import cn.crap.enumer.LogType;
+import cn.crap.enumer.TableId;
+import cn.crap.framework.MyException;
+import cn.crap.model.mybatis.Log;
+import cn.crap.model.mybatis.Source;
+import cn.crap.model.mybatis.SourceCriteria;
+import cn.crap.query.SourceQuery;
+import cn.crap.service.mybatis.BaseService;
+import cn.crap.service.mybatis.LogService;
+import cn.crap.utils.ILogConst;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+public class SourceService extends BaseService<Source, SourceDao> implements ILogConst, ILuceneService {
+    private SourceDao sourceDao;
+    @Autowired
+    private LogService logService;
+
+    @Resource
+    public void SourceDao(SourceDao sourceDao) {
+        this.sourceDao = sourceDao;
+        super.setBaseDao(sourceDao, TableId.SOURCE);
+    }
+
+    public boolean insert(Source model) throws MyException {
+        if (model == null) {
+            return false;
+        }
+        if (model.getSequence() == null) {
+            SourceCriteria example = new SourceCriteria();
+            example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
+            example.setMaxResults(1);
+            List<Source> models = sourceDao.selectByExample(example);
+            if (models.size() > 0) {
+                model.setSequence(models.get(0).getSequence() + 1);
+            } else {
+                model.setSequence(0);
+            }
+        }
+        return super.insert(model);
+    }
+
+    public void update(Source model, boolean needAddLog) {
+        if (needAddLog) {
+            Source dbModel = sourceDao.selectByPrimaryKey(model.getId());
+            Log log = Adapter.getLog(dbModel.getId(), L_SOURCE_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
+            logService.insert(log);
+        }
+        sourceDao.updateByPrimaryKey(model);
+    }
+
+    @Override
+    public boolean delete(String id) {
+        Assert.notNull(id);
+        Source dbModel = sourceDao.selectByPrimaryKey(id);
+        Log log = Adapter.getLog(dbModel.getId(), L_SOURCE_CHINESE, dbModel.getName(), LogType.DELTET, dbModel.getClass(), dbModel);
+        logService.insert(log);
+
+        return super.delete(id);
+    }
+
+    /**
+     * 查询资源
+     *
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public List<Source> query(SourceQuery query) throws MyException {
+        Assert.notNull(query);
+
+        Page page = new Page(query);
+        SourceCriteria example = getSourceCriteria(query);
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
+        example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
+
+        return sourceDao.selectByExample(example);
+    }
+
+    /**
+     * 查询资源数量
+     *
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public int count(SourceQuery query) throws MyException {
+        Assert.notNull(query);
+
+        SourceCriteria example = getSourceCriteria(query);
+        return sourceDao.countByExample(example);
+    }
+
+    private SourceCriteria getSourceCriteria(SourceQuery query) throws MyException {
+        SourceCriteria example = new SourceCriteria();
+        SourceCriteria.Criteria criteria = example.createCriteria();
+        if (query.getName() != null) {
+            criteria.andNameLike("%" + query.getName() + "%");
+        }
+        if (query.getStatus() != null) {
+            criteria.andStatusEqualTo(query.getStatus());
+        }
+
+        if (query.getProjectId() != null) {
+            criteria.andProjectIdEqualTo(query.getProjectId());
+        }
+
+        if (query.getModuleId() != null) {
+            criteria.andModuleIdEqualTo(query.getModuleId());
+        }
+        return example;
+    }
+
+    public List<SearchDto> getAll() {
+        SourceCriteria example = new SourceCriteria();
+        return SourceAdapter.getSearchDto(sourceDao.selectByExample(example));
+    }
+
+    public List<SearchDto> getAllByProjectId(String projectId) {
+        SourceCriteria example = new SourceCriteria();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return SourceAdapter.getSearchDto(sourceDao.selectByExample(example));
+    }
+
+    public String getLuceneType() {
+        return "资源";
+    }
+
+}

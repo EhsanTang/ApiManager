@@ -1,12 +1,13 @@
 package cn.crap.dao.mybatis;
 
+import cn.crap.model.mybatis.Debug;
 import cn.crap.model.mybatis.Error;
 import cn.crap.model.mybatis.ErrorCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface ErrorDao {
+public interface ErrorDao extends BaseDao<Error>{
     int countByExample(ErrorCriteria example);
 
     int deleteByExample(ErrorCriteria example);

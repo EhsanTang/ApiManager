@@ -2,10 +2,11 @@ package cn.crap.dao.mybatis;
 
 import cn.crap.model.mybatis.ProjectUser;
 import cn.crap.model.mybatis.ProjectUserCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface ProjectUserDao {
+import java.util.List;
+
+public interface ProjectUserDao extends BaseDao<ProjectUser>{
     int countByExample(ProjectUserCriteria example);
 
     int deleteByExample(ProjectUserCriteria example);

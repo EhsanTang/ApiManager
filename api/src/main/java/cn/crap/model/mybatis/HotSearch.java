@@ -3,7 +3,7 @@ package cn.crap.model.mybatis;
 import java.io.Serializable;
 import java.util.Date;
 
-public class HotSearch implements Serializable {
+public class HotSearch extends BasePo{
     private String id;
 
     private Integer times;

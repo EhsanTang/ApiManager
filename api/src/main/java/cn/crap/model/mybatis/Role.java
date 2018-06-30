@@ -3,7 +3,7 @@ package cn.crap.model.mybatis;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Role implements Serializable {
+public class Role extends BasePo{
     private String id;
 
     private String roleName;

@@ -3,11 +3,12 @@ package cn.crap.dao.mybatis;
 import cn.crap.model.mybatis.Article;
 import cn.crap.model.mybatis.ArticleCriteria;
 import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.mybatis.Module;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface ArticleDao {
+public interface ArticleDao extends BaseDao<ArticleWithBLOBs>{
     int countByExample(ArticleCriteria example);
 
     int deleteByExample(ArticleCriteria example);

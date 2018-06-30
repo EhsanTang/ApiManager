@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface LogDao {
+public interface LogDao extends BaseDao<Log>{
     int countByExample(LogCriteria example);
 
     int deleteByExample(LogCriteria example);

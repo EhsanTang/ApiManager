@@ -17,11 +17,13 @@ import cn.crap.model.mybatis.Log;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
 import cn.crap.query.ModuleQuery;
+import cn.crap.query.SourceQuery;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
-import cn.crap.service.custom.*;
+import cn.crap.service.SourceService;
+import cn.crap.service.custom.CustomArticleService;
+import cn.crap.service.custom.CustomInterfaceService;
 import cn.crap.service.mybatis.*;
-import cn.crap.service.tool.SettingCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +50,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@Autowired
 	private ProjectUserService projectUserService;
 	@Autowired
-	private CustomSourceService customSourceService;
+	private SourceService sourceService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -193,7 +195,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			throw new MyException(MyError.E000034);
 		}
 		
-		if(customSourceService.countByModuleId(dbModule.getId()) >0 ){
+		if(sourceService.count(new SourceQuery().setModuleId(dbModule.getId())) >0 ){
 			throw new MyException(MyError.E000035);
 		}
 		

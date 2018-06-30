@@ -3,7 +3,7 @@ package cn.crap.model.mybatis;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Error implements Serializable {
+public class Error extends BasePo{
     private String id;
 
     private String errorCode;

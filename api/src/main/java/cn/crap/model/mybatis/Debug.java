@@ -3,7 +3,7 @@ package cn.crap.model.mybatis;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Debug implements Serializable {
+public class Debug extends BasePo{
     private String id;
 
     private String name;

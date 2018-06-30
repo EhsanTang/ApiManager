@@ -3,7 +3,7 @@ package cn.crap.model.mybatis;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Menu implements Serializable {
+public class Menu extends BasePo{
     private String id;
 
     private String menuName;

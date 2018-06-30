@@ -110,14 +110,16 @@ public class PickService implements IPickService{
                 return picks;
 
             case FONT_FAMILY:// 字体
-                for (FontFamilyType font : FontFamilyType.values()) {
-                    pick = new PickDto(font.name(), font.getValue(), font.getName());
+                for (String iconfont : SettingEnum.FONT_FAMILY.getOptions()) {
+                    String[] split = iconfont.split("\\|");
+                    pick = new PickDto(split[0], split[1], split[0]);
                     picks.add(pick);
                 }
                 return picks;
             case ICONFONT:// 图标库
-                for (Iconfont iconfont : Iconfont.values()) {
-                    pick = new PickDto(iconfont.name(), iconfont.getValue(), iconfont.getName());
+                for (String iconfont : SettingEnum.ICONFONT.getOptions()) {
+                    String[] split = iconfont.split("\\|");
+                    pick = new PickDto(split[0], split[1], split[0]);
                     picks.add(pick);
                 }
                 return picks;

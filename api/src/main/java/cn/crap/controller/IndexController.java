@@ -1,13 +1,12 @@
 package cn.crap.controller;
 
-import cn.crap.dto.PickDto;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.custom.CustomMenuService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
-import cn.crap.utils.ValidateCodeService;
+import cn.crap.utils.ImageCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 前后台共用的Controller
@@ -78,7 +75,7 @@ public class IndexController extends BaseController {
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
-		ValidateCodeService vservice = new ValidateCodeService();
+		ImageCode vservice = new ImageCode();
 		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
 		stringCache.add(IConst.CACHE_IMGCODE + uuid, vservice.getCode());
 		stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");

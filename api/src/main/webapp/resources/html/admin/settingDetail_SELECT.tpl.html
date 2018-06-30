@@ -1,5 +1,5 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">系统设置【字体】</div>
+<div class="col-xs-6 f16 fb p0 mb5">系统设置【图标地址】</div>
 <div class="col-xs-6 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
@@ -10,26 +10,20 @@
 					<td class="tc w80">key</td>
 					<td class="tc w200">
 						<input class="form-control" type="text" ng-model="model.key" required ng-if="model.id==null">
-						<input class="form-control" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
+						<input class="form-control cursor-not" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">字体</td>
+					<td class="tc">图标地址</td>
 					<td class="tc">
-					 <div class="input-group">
-							<input class="form-control" type="text" id="value" required
-								ng-model="model.value"  placeholder="点击“选择”按钮选择，或输入字体">
-							<div class="input-group-addon cursor btn-adorn"
-								ng-click="loadPick($event,220,250,'true','value','FONT_FAMILY', '', model.value);">
-								选择字体</div>
-					</div>
-
+						<input class="form-control" type="text" id="value" readonly required ng-model="model.value"  placeholder="点击选择"
+							   ng-click="loadPick($event,220,250,'true','value', model.key, '', model.value);">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc">
-						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
+						<input  class="form-control cursor-not"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
 					</td>
 				</tr>
 				<tr>

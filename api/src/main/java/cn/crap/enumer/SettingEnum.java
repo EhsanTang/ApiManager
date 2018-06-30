@@ -6,18 +6,39 @@ import cn.crap.utils.MyString;
 import java.util.Date;
 
 public enum SettingEnum {
-	FOOTER_BG_COLOR("FOOTER_BG_COLOR", "#233050", 1, SettingType.COLOR.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 100, "网站顶部、顶部被叫颜色"),
-    MINI_LOGO("MINI_LOGO", "resources/images/logo.png", 1, SettingType.IMAGE.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "网站小logo"),
-    MAX_MODULE("MAX_MODULE", "50", 1, SettingType.TEXT.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "夏目下允许创建的最大模块数"),
-	MAX_PROJECT("MAX_PROJECT", "15", 1, SettingType.TEXT.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "最大允许创建的项目数");
+    // 前端
+	FOOTER_BG_COLOR("FOOTER_BG_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#233050", "网站顶部、顶部被叫颜色", null),
+    MINI_LOGO("MINI_LOGO", SettingStatus.COMMON, SettingType.IMAGE, false, 101, "resources/images/logo.png", "网站小logo", null),
 
+    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_afbmuhv5zc15rk9", "系统图标",
+            new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_afbmuhv5zc15rk9"}),
+    MAX_WIDTH("MAX_WIDTH", SettingStatus.COMMON, SettingType.TEXT, true, 101, "1200", "前端显示最大宽度（数字，建议：900-1200）", null),
 
-	private String key;
+    FONT_FAMILY("FONT_FAMILY", SettingStatus.COMMON, SettingType.SEL_IN, false, 101,
+            "Georgia, \"Times New Roman\", Times,\"Microsoft Yahei\",\"Hiragino Sans GB\",sans-serif;", "系统字体",
+            new String[]{
+                    "默认|Georgia, \"Times New Roman\", Times,\"Microsoft Yahei\",\"Hiragino Sans GB\",sans-serif;",
+                    "36氪网字体|\"Lantinghei SC\", \"Open Sans\", Arial, \"Hiragino Sans GB\", \"Microsoft YaHei\", \"STHeiti\", \"WenQuanYi Micro Hei\", SimSun, sans-serif;",
+                    "果壳字体|Arial,Helvetica,sans-serif;",
+                    "知乎字体|\"Helvetica Neue\",Helvetica,Arial,sans-serif;"
+
+            }),
+
+    // 后端
+    MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "夏目下允许创建的最大模块数", null),
+	MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
+    SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "crapApiKey", "秘钥，用于cookie加密等", null);
+
+    private String key;
 	private String value;
 	private String remark;
 	private Byte status;
 	private String type;
 	private Byte canDelete;
+	// 是否必须为数字
+	private Boolean mustBeInt;
+	// 只有当type 为SELECT，SEL_IN 是才有效，option: name|value
+	private String[] options;
 
 	private Integer sequence;
 	public static SettingEnum getByKey(String key){
@@ -32,14 +53,17 @@ public enum SettingEnum {
 		return null;
 	}
 
-	SettingEnum(String key, String value, Integer status, String type, Byte canDelete, Integer sequence, String remark){
+	SettingEnum(String key, SettingStatus status, SettingType type, Boolean mustBeInt,
+                Integer sequence, String value, String remark, String[] options){
 		this.key = key;
 		this.value = value;
-		this.status = Byte.parseByte(status+"");
-		this.type = type;
-		this.canDelete = canDelete;
+		this.status = Byte.parseByte(status.getStatus()+"");
+		this.type = type.getValue();
+		this.canDelete = CanDeleteEnum.CAN_NOT.getCanDelete();
 		this.remark = remark;
 		this.sequence = sequence;
+		this.mustBeInt = mustBeInt;
+		this.options = options;
 	}
 
 	public Setting getSetting(){
@@ -110,4 +134,20 @@ public enum SettingEnum {
 	public void setSequence(Integer sequence) {
 		this.sequence = sequence;
 	}
+
+	public Boolean getMustBeInt() {
+		return mustBeInt;
+	}
+
+	public void setMustBeInt(Boolean mustBeInt) {
+		this.mustBeInt = mustBeInt;
+	}
+
+    public String[] getOptions() {
+        return options;
+    }
+
+    public void setOptions(String[] options) {
+        this.options = options;
+    }
 }

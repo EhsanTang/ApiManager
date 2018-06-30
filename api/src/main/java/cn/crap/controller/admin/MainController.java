@@ -4,6 +4,7 @@ import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingEnum;
+import cn.crap.enumer.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
@@ -108,10 +109,9 @@ public class MainController extends BaseController {
     public JsonResult init(HttpServletRequest request) throws Exception {
         Map<String, String> settingMap = new HashMap<>();
         for (SettingDto setting : settingCache.getAll()) {
-            if (S_SECRETKEY.equals(setting.getKey())) {
-                continue;
+            if (SettingStatus.COMMON.getStatus().equals(setting.getStatus())) {
+                settingMap.put(setting.getKey(), setting.getValue());
             }
-            settingMap.put(setting.getKey(), setting.getValue());
         }
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);
@@ -122,18 +122,6 @@ public class MainController extends BaseController {
         returnMap.put("sessionAdminId", user.getId());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
 
-        // 新增加且没有写入数据库的配置，并储存至数据库
-        for (SettingEnum settingEnum : SettingEnum.values()){
-            try {
-                if (!settingMap.containsKey(settingEnum.getKey())) {
-                    settingMap.put(settingEnum.getKey(), settingEnum.getValue());
-                    settingService.insert(settingEnum.getSetting());
-                    settingCache.del(settingEnum.getKey());
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
         return new JsonResult(1, returnMap);
     }
 

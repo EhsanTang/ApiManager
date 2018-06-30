@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  * 
  * 
  */
-public class ValidateCodeService {
+public class ImageCode {
 
 	// 图片的宽度。
 	private int width = 80;
@@ -33,7 +33,7 @@ public class ValidateCodeService {
 
 	private char[] codeSequence = { '0','1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-	public ValidateCodeService() {
+	public ImageCode() {
 		this.createCode();
 	}
 
@@ -44,7 +44,7 @@ public class ValidateCodeService {
 	 * @param height
 	 *            图片高
 	 */
-	public ValidateCodeService(int width, int height) {
+	public ImageCode(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.createCode();
@@ -61,8 +61,8 @@ public class ValidateCodeService {
 	 * @param lineCount
 	 *            干扰线条数
 	 */
-	public ValidateCodeService(int width, int height, int codeCount,
-			int lineCount) {
+	public ImageCode(int width, int height, int codeCount,
+					 int lineCount) {
 		this.width = width;
 		this.height = height;
 		this.codeCount = codeCount;

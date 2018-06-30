@@ -1,8 +1,8 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.CommentDao;
-import cn.crap.model.mybatis.Comment;
-import cn.crap.model.mybatis.CommentCriteria;
+import cn.crap.model.Comment;
+import cn.crap.model.CommentCriteria;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;

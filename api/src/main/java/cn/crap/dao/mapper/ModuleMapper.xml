@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.ModuleDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.Module" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.Module" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
@@ -78,7 +78,7 @@
     id, name, createTime, status, sequence, url, canDelete, remark, userId, projectId, 
     templateId, version, category
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.ModuleCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.ModuleCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -110,13 +110,13 @@
     delete from module
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.ModuleCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.ModuleCriteria" >
     delete from module
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.Module" >
+  <insert id="insert" parameterType="cn.crap.model.Module" >
     
       
     
@@ -131,7 +131,7 @@
       #{projectId,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
       #{category,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Module" >
+  <insert id="insertSelective" parameterType="cn.crap.model.Module" >
     
       
     
@@ -215,7 +215,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.ModuleCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.ModuleCriteria" resultType="java.lang.Integer" >
     select count(*) from module
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -287,7 +287,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.Module" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.Module" >
     update module
     <set >
       <if test="name != null" >
@@ -329,7 +329,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Module" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.Module" >
     update module
     set name = #{name,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},

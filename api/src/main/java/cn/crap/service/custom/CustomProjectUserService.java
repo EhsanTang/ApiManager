@@ -1,7 +1,8 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.ProjectUserDao;
-import cn.crap.model.mybatis.*;
+import cn.crap.model.ProjectUser;
+import cn.crap.model.ProjectUserCriteria;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;

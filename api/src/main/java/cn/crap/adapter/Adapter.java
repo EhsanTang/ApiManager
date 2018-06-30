@@ -1,10 +1,9 @@
 package cn.crap.adapter;
 
 import cn.crap.enumer.LogType;
-import cn.crap.model.mybatis.Log;
+import cn.crap.model.Log;
 import cn.crap.utils.LoginUserHelper;
 import net.sf.json.JSONObject;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.util.Assert;
 
 /**

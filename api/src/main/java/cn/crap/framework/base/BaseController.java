@@ -14,7 +14,7 @@ import cn.crap.dto.ProjectUserDto;
 import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.MyError;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.model.ProjectUser;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
@@ -27,7 +27,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Project;
 
 public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";

@@ -3,7 +3,7 @@ package cn.crap.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.crap.model.mybatis.Menu;
+import cn.crap.model.Menu;
 
 public class MenuWithSubMenuDto implements Serializable{
 

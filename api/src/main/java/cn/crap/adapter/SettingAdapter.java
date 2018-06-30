@@ -1,9 +1,7 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.MenuDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.model.mybatis.Menu;
-import cn.crap.model.mybatis.Setting;
+import cn.crap.model.Setting;
 
 import java.util.ArrayList;
 import java.util.List;

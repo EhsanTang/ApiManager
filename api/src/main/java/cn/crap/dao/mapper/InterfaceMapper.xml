@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.InterfaceDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.Interface" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.Interface" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
@@ -21,7 +21,7 @@
     <result column="projectId" property="projectId" jdbcType="VARCHAR" />
     <result column="contentType" property="contentType" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.mybatis.InterfaceWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.InterfaceWithBLOBs" extends="BaseResultMap" >
     <result column="param" property="param" jdbcType="LONGVARCHAR" />
     <result column="paramRemark" property="paramRemark" jdbcType="LONGVARCHAR" />
     <result column="requestExam" property="requestExam" jdbcType="LONGVARCHAR" />
@@ -100,7 +100,7 @@
     param, paramRemark, requestExam, responseParam, errorList, trueExam, falseExam, remark,
     errors, header
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.crap.model.InterfaceCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -116,7 +116,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.InterfaceCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -150,13 +150,13 @@
     delete from interface
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.InterfaceCriteria" >
     delete from interface
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+  <insert id="insert" parameterType="cn.crap.model.InterfaceWithBLOBs" >
 
 
 
@@ -181,7 +181,7 @@
     #{falseExam,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{errors,jdbcType=LONGVARCHAR},
     #{header,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+  <insert id="insertSelective" parameterType="cn.crap.model.InterfaceWithBLOBs" >
 
 
 
@@ -355,7 +355,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.InterfaceCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.InterfaceCriteria" resultType="java.lang.Integer" >
     select count(*) from interface
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -511,7 +511,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.InterfaceWithBLOBs" >
     update interface
     <set >
       <if test="url != null" >
@@ -598,7 +598,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.crap.model.mybatis.InterfaceWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.crap.model.InterfaceWithBLOBs" >
     update interface
     set url = #{url,jdbcType=VARCHAR},
     method = #{method,jdbcType=VARCHAR},
@@ -629,7 +629,7 @@
     header = #{header,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Interface" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.Interface" >
     update interface
     set url = #{url,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},

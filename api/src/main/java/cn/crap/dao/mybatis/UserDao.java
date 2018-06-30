@@ -1,7 +1,7 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.User;
-import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.model.User;
+import cn.crap.model.UserCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

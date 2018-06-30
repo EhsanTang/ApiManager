@@ -1,6 +1,6 @@
 package cn.crap.dao.custom;
 
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Project;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

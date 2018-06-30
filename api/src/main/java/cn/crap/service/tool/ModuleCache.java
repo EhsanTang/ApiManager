@@ -1,6 +1,6 @@
 package cn.crap.service.tool;
 
-import cn.crap.model.mybatis.Module;
+import cn.crap.model.Module;
 import cn.crap.beans.Config;
 import cn.crap.service.ModuleService;
 import cn.crap.utils.MyString;

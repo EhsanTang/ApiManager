@@ -4,7 +4,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Project;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
 

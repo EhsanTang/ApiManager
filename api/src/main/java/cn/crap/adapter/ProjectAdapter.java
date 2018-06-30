@@ -4,8 +4,8 @@ import cn.crap.dto.ProjectDto;
 import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectStatus;
 import cn.crap.enumer.ProjectType;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.User;
+import cn.crap.model.Project;
+import cn.crap.model.User;
 import cn.crap.service.mybatis.UserService;
 
 import java.util.ArrayList;

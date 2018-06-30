@@ -1,8 +1,7 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.ArticleWithBLOBs;
-import cn.crap.model.mybatis.Comment;
-import cn.crap.model.mybatis.CommentCriteria;
+import cn.crap.model.Comment;
+import cn.crap.model.CommentCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,8 +1,8 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.Role;
-import cn.crap.model.mybatis.RoleCriteria;
-import cn.crap.model.mybatis.RoleWithBLOBs;
+import cn.crap.model.Role;
+import cn.crap.model.RoleCriteria;
+import cn.crap.model.RoleWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.LogDto;
-import cn.crap.model.mybatis.Log;
+import cn.crap.model.Log;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;

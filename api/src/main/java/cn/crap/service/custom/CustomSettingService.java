@@ -1,8 +1,8 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.SettingDao;
-import cn.crap.model.mybatis.Setting;
-import cn.crap.model.mybatis.SettingCriteria;
+import cn.crap.model.Setting;
+import cn.crap.model.SettingCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

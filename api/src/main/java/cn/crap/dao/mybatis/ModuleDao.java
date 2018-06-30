@@ -1,7 +1,7 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.ModuleCriteria;
+import cn.crap.model.Module;
+import cn.crap.model.ModuleCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

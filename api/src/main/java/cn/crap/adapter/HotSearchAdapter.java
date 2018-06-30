@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.HotSearchDto;
-import cn.crap.model.mybatis.HotSearch;
+import cn.crap.model.HotSearch;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;

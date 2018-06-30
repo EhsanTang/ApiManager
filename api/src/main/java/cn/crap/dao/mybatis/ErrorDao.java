@@ -1,8 +1,7 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.Debug;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.ErrorCriteria;
+import cn.crap.model.Error;
+import cn.crap.model.ErrorCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

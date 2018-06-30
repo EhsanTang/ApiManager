@@ -4,7 +4,10 @@ import java.util.*;
 
 import cn.crap.adapter.DebugAdapter;
 import cn.crap.enumer.MyError;
-import cn.crap.model.mybatis.*;
+import cn.crap.model.Debug;
+import cn.crap.model.DebugCriteria;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.custom.CustomDebugService;
 import cn.crap.service.ModuleService;

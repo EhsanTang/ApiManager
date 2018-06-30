@@ -1,7 +1,7 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.enumer.InterfaceContentType;
-import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.service.mybatis.InterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

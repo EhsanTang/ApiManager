@@ -1,8 +1,8 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ModuleDto;
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.utils.DateFormartUtil;
 import org.springframework.util.CollectionUtils;
 

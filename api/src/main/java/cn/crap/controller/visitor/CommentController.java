@@ -17,7 +17,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.Comment;
+import cn.crap.model.Comment;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 

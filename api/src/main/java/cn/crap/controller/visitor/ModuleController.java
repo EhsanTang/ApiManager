@@ -9,7 +9,7 @@ import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Project;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.ModuleService;
 import cn.crap.utils.IConst;

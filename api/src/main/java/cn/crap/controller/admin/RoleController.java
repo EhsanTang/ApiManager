@@ -2,8 +2,8 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.RoleAdapter;
 import cn.crap.dto.RoleDto;
-import cn.crap.model.mybatis.RoleCriteria;
-import cn.crap.model.mybatis.RoleWithBLOBs;
+import cn.crap.model.RoleCriteria;
+import cn.crap.model.RoleWithBLOBs;
 import cn.crap.service.mybatis.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

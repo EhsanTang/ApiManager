@@ -3,7 +3,7 @@ package cn.crap.service.tool;
 import cn.crap.dto.PickDto;
 import cn.crap.enumer.*;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.Menu;
+import cn.crap.model.Menu;
 import cn.crap.service.IPickService;
 import cn.crap.service.custom.CustomMenuService;
 import cn.crap.utils.IConst;

@@ -2,8 +2,8 @@ package cn.crap.service.custom;
 
 import cn.crap.dao.custom.CustomHotSearchDao;
 import cn.crap.dao.mybatis.HotSearchDao;
-import cn.crap.model.mybatis.HotSearch;
-import cn.crap.model.mybatis.HotSearchCriteria;
+import cn.crap.model.HotSearch;
+import cn.crap.model.HotSearchCriteria;
 import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.HotSearchDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.HotSearch" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.HotSearch" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="times" property="times" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
@@ -69,7 +69,7 @@
   <sql id="Base_Column_List" >
     id, times, createTime, updateTime, keyword
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.HotSearchCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.HotSearchCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -101,13 +101,13 @@
     delete from hot_search
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.HotSearchCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.HotSearchCriteria" >
     delete from hot_search
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.HotSearch" >
+  <insert id="insert" parameterType="cn.crap.model.HotSearch" >
     
       
     
@@ -116,7 +116,7 @@
     values (#{id,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{keyword,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.HotSearch" >
+  <insert id="insertSelective" parameterType="cn.crap.model.HotSearch" >
     
       
     
@@ -152,7 +152,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.HotSearchCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.HotSearchCriteria" resultType="java.lang.Integer" >
     select count(*) from hot_search
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -192,7 +192,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.HotSearch" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.HotSearch" >
     update hot_search
     <set >
       <if test="times != null" >
@@ -210,7 +210,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.HotSearch" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.HotSearch" >
     update hot_search
     set times = #{times,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP},

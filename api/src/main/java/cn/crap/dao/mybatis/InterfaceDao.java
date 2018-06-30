@@ -1,8 +1,8 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.mybatis.Interface;
-import cn.crap.model.mybatis.InterfaceCriteria;
-import cn.crap.model.mybatis.InterfaceWithBLOBs;
+import cn.crap.model.Interface;
+import cn.crap.model.InterfaceCriteria;
+import cn.crap.model.InterfaceWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.CommentDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.Comment" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.Comment" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="articleId" property="articleId" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
@@ -77,7 +77,7 @@
     id, articleId, content, userId, parentId, status, createTime, sequence, reply, updateTime, 
     userName, avatarUrl
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.CommentCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.CommentCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -109,13 +109,13 @@
     delete from comment
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.CommentCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.CommentCriteria" >
     delete from comment
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.Comment" >
+  <insert id="insert" parameterType="cn.crap.model.Comment" >
     insert into comment (id, articleId, content,
       userId, parentId, status, 
       createTime, sequence, reply, 
@@ -127,7 +127,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Comment" >
+  <insert id="insertSelective" parameterType="cn.crap.model.Comment" >
     insert into comment
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,
@@ -202,7 +202,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.CommentCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.CommentCriteria" resultType="java.lang.Integer" >
     select count(*) from comment
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -270,7 +270,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.Comment" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.Comment" >
     update comment
     <set >
       <if test="articleId != null" >
@@ -309,7 +309,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Comment" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.Comment" >
     update comment
     set articleId = #{articleId,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},

@@ -5,7 +5,7 @@ import java.util.List;
 import cn.crap.enumer.UserStatus;
 import cn.crap.enumer.UserType;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.model.UserCriteria;
 import cn.crap.service.custom.CustomUserService;
 import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.*;
@@ -18,11 +18,10 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumer.LoginType;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.User;
+import cn.crap.model.User;
 import cn.crap.service.thirdly.OschinaService;
 import cn.crap.beans.Config;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**

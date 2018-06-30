@@ -10,8 +10,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.*;
+import cn.crap.model.*;
+import cn.crap.model.Error;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.custom.CustomInterfaceService;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @Controller

@@ -2,8 +2,8 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.model.Project;
+import cn.crap.model.ProjectUser;
 import java.util.ArrayList;
 import java.util.List;
 

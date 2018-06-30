@@ -8,7 +8,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.mybatis.Project;
+import cn.crap.model.Project;
 import cn.crap.query.ModuleQuery;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ISearchService;

@@ -1,8 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.UserDto;
-import cn.crap.model.mybatis.User;
-import net.sf.json.JSONObject;
+import cn.crap.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

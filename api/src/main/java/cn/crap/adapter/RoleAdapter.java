@@ -1,8 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.RoleDto;
-import cn.crap.model.mybatis.Role;
-import cn.crap.model.mybatis.RoleWithBLOBs;
+import cn.crap.model.RoleWithBLOBs;
 
 import java.util.ArrayList;
 import java.util.List;

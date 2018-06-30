@@ -1,13 +1,11 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.LogAdapter;
-import cn.crap.dto.LogDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.mybatis.Log;
-import cn.crap.model.mybatis.LogCriteria;
+import cn.crap.model.Log;
+import cn.crap.model.LogCriteria;
 import cn.crap.service.custom.CustomLogService;
 import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.IConst;

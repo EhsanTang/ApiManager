@@ -1,6 +1,6 @@
 package cn.crap.controller.visitor;
 
-import cn.crap.model.mybatis.Article;
+import cn.crap.model.Article;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

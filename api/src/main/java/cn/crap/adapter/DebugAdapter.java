@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.DebugDto;
-import cn.crap.model.mybatis.Debug;
+import cn.crap.model.Debug;
 import cn.crap.utils.Tools;
 
 import java.util.ArrayList;

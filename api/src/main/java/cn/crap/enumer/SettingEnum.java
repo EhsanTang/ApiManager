@@ -1,6 +1,6 @@
 package cn.crap.enumer;
 
-import cn.crap.model.mybatis.Setting;
+import cn.crap.model.Setting;
 import cn.crap.utils.MyString;
 
 import java.util.Date;

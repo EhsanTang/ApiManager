@@ -7,8 +7,7 @@ import java.util.Map;
 
 import cn.crap.enumer.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.*;
-import cn.crap.model.mybatis.ProjectUser;
+import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.mybatis.RoleService;

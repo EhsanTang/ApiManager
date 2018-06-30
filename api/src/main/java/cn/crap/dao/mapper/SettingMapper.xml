@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.SettingDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.Setting" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.Setting" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="mkey" property="mkey" jdbcType="VARCHAR" />
     <result column="value" property="value" jdbcType="VARCHAR" />
@@ -73,7 +73,7 @@
   <sql id="Base_Column_List" >
     id, mkey, value, remark, createTime, status, type, canDelete, sequence
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.SettingCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.SettingCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -105,13 +105,13 @@
     delete from setting
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.SettingCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.SettingCriteria" >
     delete from setting
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.Setting" >
+  <insert id="insert" parameterType="cn.crap.model.Setting" >
     <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -124,7 +124,7 @@
       #{type,jdbcType=VARCHAR}, #{canDelete,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.Setting" >
+  <insert id="insertSelective" parameterType="cn.crap.model.Setting" >
     insert into setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,
@@ -181,7 +181,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.SettingCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.SettingCriteria" resultType="java.lang.Integer" >
     select count(*) from setting
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -237,7 +237,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.Setting" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.Setting" >
     update setting
     <set >
       <if test="mkey != null" >
@@ -267,7 +267,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.Setting" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.Setting" >
     update setting
     set mkey = #{mkey,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},

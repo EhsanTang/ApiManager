@@ -5,14 +5,13 @@ import cn.crap.dto.SourceDto;
 import cn.crap.enumer.LuceneSearchType;
 import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.Source;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
+import cn.crap.model.Source;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;

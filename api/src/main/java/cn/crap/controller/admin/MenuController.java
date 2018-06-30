@@ -2,14 +2,13 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.MenuAdapter;
 import cn.crap.dto.MenuDto;
-import cn.crap.enumer.MenuType;
 import cn.crap.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.mybatis.Menu;
-import cn.crap.model.mybatis.MenuCriteria;
+import cn.crap.model.Menu;
+import cn.crap.model.MenuCriteria;
 import cn.crap.service.mybatis.MenuService;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;

@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.CommentDto;
-import cn.crap.model.mybatis.Comment;
+import cn.crap.model.Comment;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;

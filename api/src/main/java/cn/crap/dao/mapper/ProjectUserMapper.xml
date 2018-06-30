@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.ProjectUserDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.mybatis.ProjectUser" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.ProjectUser" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
@@ -92,7 +92,7 @@
     addInter, delInter, modInter, addArticle, delArticle, modArticle, addSource, delSource, 
     modSource, addDict, delDict, modDict, userEmail, userName, addError, delError, modError
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.ProjectUserCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.ProjectUserCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -124,13 +124,13 @@
     delete from project_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.crap.model.mybatis.ProjectUserCriteria" >
+  <delete id="deleteByExample" parameterType="cn.crap.model.ProjectUserCriteria" >
     delete from project_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.mybatis.ProjectUser" >
+  <insert id="insert" parameterType="cn.crap.model.ProjectUser" >
     
       
     
@@ -153,7 +153,7 @@
       #{userName,jdbcType=VARCHAR}, #{addError,jdbcType=BIT}, #{delError,jdbcType=BIT}, 
       #{modError,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.mybatis.ProjectUser" >
+  <insert id="insertSelective" parameterType="cn.crap.model.ProjectUser" >
     
       
     
@@ -315,7 +315,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.crap.model.mybatis.ProjectUserCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="cn.crap.model.ProjectUserCriteria" resultType="java.lang.Integer" >
     select count(*) from project_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -439,7 +439,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.mybatis.ProjectUser" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.ProjectUser" >
     update project_user
     <set >
       <if test="status != null" >
@@ -520,7 +520,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.mybatis.ProjectUser" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.ProjectUser" >
     update project_user
     set status = #{status,jdbcType=TINYINT},
       sequence = #{sequence,jdbcType=INTEGER},

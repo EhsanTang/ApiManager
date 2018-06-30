@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.crap.model.mybatis.InterfaceWithBLOBs;
-import com.google.common.base.Strings;
 import org.springframework.util.CollectionUtils;
 
 public class InterfacePDFDto implements Serializable{

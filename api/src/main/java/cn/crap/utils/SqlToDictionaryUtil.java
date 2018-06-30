@@ -10,7 +10,7 @@ import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.DictionaryPropertyType;
 import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.ArticleWithBLOBs;
+import cn.crap.model.ArticleWithBLOBs;
 import net.sf.json.JSONArray;
 
 public class SqlToDictionaryUtil {

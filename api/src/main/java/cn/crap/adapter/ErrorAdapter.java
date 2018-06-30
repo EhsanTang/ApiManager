@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ErrorDto;
-import cn.crap.model.mybatis.Error;
+import cn.crap.model.Error;
 
 import java.util.ArrayList;
 import java.util.List;

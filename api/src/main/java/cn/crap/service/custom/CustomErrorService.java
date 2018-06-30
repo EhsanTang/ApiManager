@@ -1,8 +1,8 @@
 package cn.crap.service.custom;
 
 import cn.crap.dao.mybatis.ErrorDao;
-import cn.crap.model.mybatis.Error;
-import cn.crap.model.mybatis.ErrorCriteria;
+import cn.crap.model.Error;
+import cn.crap.model.ErrorCriteria;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.mybatis.Error;
+import cn.crap.model.Error;
 import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.mybatis.ErrorService;
 import cn.crap.utils.MyString;

@@ -2,8 +2,8 @@ package cn.crap.service.tool;
 
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.model.mybatis.Setting;
-import cn.crap.service.ICacheService;
 import cn.crap.service.custom.CustomSettingService;
 import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service("settingCache")
-public class SettingCache implements ICacheService<SettingDto> {
+public class SettingCache{
 	private static List<SettingDto> settingDtos = null;
 	private static Cache<String, SettingDto> cache;
 	public static final String CACHE_PREFIX = "setting";
@@ -37,7 +37,15 @@ public class SettingCache implements ICacheService<SettingDto> {
         return cache;
 	}
 	
-	@Override
+	public Integer getInteger(SettingEnum settingEnum){
+		try {
+			return Integer.parseInt(get(settingEnum.getKey()).getValue());
+		}catch (Exception e){
+			return Integer.parseInt(settingEnum.getValue());
+		}
+	}
+
+	
 	public SettingDto get(String key){
 		Assert.notNull(key);
 		Object obj = getCache().getIfPresent(assembleKey(key));
@@ -54,14 +62,14 @@ public class SettingCache implements ICacheService<SettingDto> {
 		return settingDto;
 	}
 
-    @Override
+    
     public boolean del(String key){
 		getCache().invalidate(CACHE_PREFIX + key);
 		settingDtos = null;
         return true;
     }
 
-	@Override
+	
     public boolean flushDB(){
 		getCache().invalidateAll();
 		settingDtos = null;

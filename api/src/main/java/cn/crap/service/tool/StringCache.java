@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import cn.crap.service.ICacheService;
 import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * stringCache 缓存设置为10分钟
  */
 @Service("stringCache")
-public class StringCache implements ICacheService<String> {
+public class StringCache{
 	private static Cache<String, String> cache;
 	public static final String CACHE_PREFIX = "str:";
 
@@ -37,7 +36,7 @@ public class StringCache implements ICacheService<String> {
 		return true;
 	}
 	
-	@Override
+	
 	public String get(String key){
 		if(MyString.isEmpty(key)){
 			return new String();
@@ -45,14 +44,14 @@ public class StringCache implements ICacheService<String> {
 		return getCache().getIfPresent(assembleKey(key));
 	}
 
-    @Override
+    
     public boolean del(String key){
 		getCache().invalidate(assembleKey(key));
         return true;
     }
 
 
-	@Override
+	
     public boolean flushDB(){
 		getCache().invalidateAll();
 	    return true;

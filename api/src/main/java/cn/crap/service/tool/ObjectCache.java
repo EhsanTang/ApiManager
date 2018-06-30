@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import cn.crap.service.ICacheService;
 import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -11,7 +10,7 @@ import org.springframework.util.Assert;
 import java.util.concurrent.TimeUnit;
 
 @Service("objectCache")
-public class ObjectCache implements ICacheService<Object> {
+public class ObjectCache{
 	private static Cache<String, Object> cache;
 	public static final String CACHE_PREFIX = "object";
 
@@ -29,7 +28,7 @@ public class ObjectCache implements ICacheService<Object> {
 		return cache;
 	}
 	
-	@Override
+	
 	public Object get(String key){
 		Assert.notNull(key);
 		return getCache().getIfPresent(assembleKey(key));
@@ -40,13 +39,13 @@ public class ObjectCache implements ICacheService<Object> {
 		getCache().put(assembleKey(key), object);
 	}
 
-    @Override
+    
     public boolean del(String key){
 		getCache().invalidate(CACHE_PREFIX + key);
         return true;
     }
 
-	@Override
+	
     public boolean flushDB(){
 		cache.invalidateAll();
 	    return true;

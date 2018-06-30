@@ -4,10 +4,10 @@ import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
-import cn.crap.dto.UserDto;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LogType;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -16,8 +16,12 @@ import cn.crap.model.mybatis.InterfaceWithBLOBs;
 import cn.crap.model.mybatis.Log;
 import cn.crap.model.mybatis.Module;
 import cn.crap.model.mybatis.Project;
+import cn.crap.query.ModuleQuery;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.custom.*;
 import cn.crap.service.mybatis.*;
+import cn.crap.service.tool.SettingCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,12 +31,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/user/module")
 public class ModuleController extends BaseController implements ILogConst{
 
-	@Autowired
-	private ModuleService moduleService;
 	@Autowired
 	private RoleService roleService;
 	@Autowired
@@ -40,7 +44,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@Autowired
 	private InterfaceService interfaceService;
 	@Autowired
-	private CustomProjectService customProjectService;
+	private ProjectService projectService;
 	@Autowired
 	private ProjectUserService projectUserService;
 	@Autowired
@@ -48,7 +52,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private CustomModuleService customModuleService;
+	private ModuleService moduleService;
 	@Autowired
 	private LogService logService;
 	@Autowired
@@ -57,12 +61,14 @@ public class ModuleController extends BaseController implements ILogConst{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage, Integer pageSize, String name) throws MyException{
-			Page<Module> page= new Page(pageSize, currentPage);
-			checkUserPermissionByProject(projectId, VIEW);
+	public JsonResult list(@ModelAttribute ModuleQuery query) throws MyException{
+			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
+			Page page= new Page(query);
+			checkUserPermissionByProject(query.getProjectId(), VIEW);
 
-			page = customModuleService.queryByProjectId(projectId, name, page);
-			return new JsonResult(1, ModuleAdapter.getDto(page.getList()), page);
+            List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query));
+            page.setAllRow(moduleService.count(query));
+            return new JsonResult().data(moduleDtos).page(page);
 		}
 
 	@RequestMapping("/detail.do")
@@ -111,11 +117,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		if(id != null){
 			checkUserPermissionByModuleId(id, MOD_MODULE);
 
-            Module dbModule = moduleService.getById(module.getId());
-            Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.UPDATE, dbModule.getClass(), dbModule);
-            logService.insert(log);
-
-            moduleService.update(module);
+            moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
 			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
@@ -124,6 +126,9 @@ public class ModuleController extends BaseController implements ILogConst{
 			if (projectId.equals(moduleDto.getProjectId())){
 				throw new MyException(MyError.E000067);
 			}
+			if (moduleService.count(new ModuleQuery().setUserId(user.getId())) > settingCache.getInteger(SettingEnum.MAX_MODULE)){
+                throw new MyException(MyError.E000071);
+            }
 			module.setProjectId(moduleDto.getProjectId());
 			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
@@ -137,7 +142,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		 */
 		LoginInfoDto user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, customProjectService, projectUserService));
+		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, projectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	

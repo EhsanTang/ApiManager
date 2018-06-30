@@ -44,7 +44,6 @@ public class ParamFilter extends OncePerRequestFilter {
 	}
 
 	public String filterInvalidString(String value) {
-		// TODO 非法攻击字符过滤
 		if (value == null) {
 			return null;
 		}

@@ -4,17 +4,15 @@ import cn.crap.dao.mybatis.MenuDao;
 import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumer.MenuType;
-import cn.crap.enumer.ProjectStatus;
 import cn.crap.framework.MyException;
-import cn.crap.model.mybatis.Project;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.model.mybatis.MenuCriteria;
 import cn.crap.beans.Config;
 import cn.crap.service.IPickService;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +28,13 @@ public class CustomMenuService {
     @Autowired
     private MenuDao dao;
     @Autowired
-    private CustomProjectService customProjectService;
+    private ProjectService projectService;
     @Autowired
     private Config config;
     @Autowired
     private CustomArticleDao customArticleMapper;
     @Autowired
-    private CustomModuleService customModuleService;
+    private ModuleService moduleService;
     @Resource(name="pickService")
     private IPickService pickService;
 

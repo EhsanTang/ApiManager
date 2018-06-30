@@ -13,7 +13,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
-import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.custom.CustomUserService;
 import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
@@ -34,7 +34,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
     @Autowired
-    private CustomProjectService customProjectService;
+    private ProjectService projectService;
     @Autowired
     private ProjectUserService projectUserService;
     @Autowired
@@ -182,7 +182,7 @@ public class UserController extends BaseController {
         if (MyString.isEmpty(dbUser.getEmail()) || !user.getEmail().equals(dbUser.getEmail())) {
             user.setStatus(UserStatus.INVALID.getType());
             user.setEmail(user.getEmail());
-            userCache.add(user.getId(), new LoginInfoDto(user, roleService, customProjectService, projectUserService));
+            userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登陆类型设置为允许普通登陆

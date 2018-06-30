@@ -9,25 +9,23 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.Project;
-import cn.crap.model.mybatis.ProjectCriteria;
+import cn.crap.query.ModuleQuery;
+import cn.crap.query.ProjectQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.custom.CustomModuleService;
-import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.custom.CustomProjectUserService;
 import cn.crap.service.mybatis.*;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/user/project")
@@ -41,11 +39,9 @@ private CustomErrorService customErrorService;
 @Autowired
 private UserService userService;
 @Autowired
-private CustomModuleService customModuleService;
+private ModuleService moduleService;
 @Autowired
 private CustomProjectUserService customProjectUserService;
-	@Autowired
-	private CustomProjectService customProjectService;
 	@Autowired
 	private ProjectUserService projectUserService;
 	@Autowired
@@ -54,34 +50,23 @@ private CustomProjectUserService customProjectUserService;
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute Project project, Integer currentPage,
-                           Integer pageSize,
-						   @RequestParam(defaultValue="false") boolean myself) throws MyException{
-		Page page= new Page(pageSize, currentPage);
+	public JsonResult list(@ModelAttribute ProjectQuery query,
+                           @RequestParam(defaultValue="false") boolean myself) throws MyException{
+		Page page= new Page(query);
 		LoginInfoDto user = LoginUserHelper.getUser();
 		String userId = user.getId();
-		List<Project> models = null;
-		List<ProjectDto> dtos = null;
+		List<Project> models;
 
         // 普通用户，管理员我的项目菜单只能查看自己的项目
 		if( user.getType() == UserType.USER.getType() || myself){
-			page.setAllRow(customProjectService.countProjectByUserIdName(userId, project.getName()));
-			models = customProjectService.pageProjectByUserIdName(userId, project.getName(), page);
+			page.setAllRow(projectService.count(userId, query.getName()));
+			models = projectService.query(userId, query.getName(), page);
 		}else{
-			ProjectCriteria example = new ProjectCriteria();
-			ProjectCriteria.Criteria criteria = example.createCriteria();
-			if (project.getName() != null){
-				criteria.andNameLike("%" + project.getName() +"%");
-			}
-			example.setLimitStart(page.getStart());
-			example.setMaxResults(page.getSize());
-			example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
-			page.setAllRow(projectService.countByExample(example));
-			models = projectService.selectByExample(example);
+			page.setAllRow(projectService.count(query));
+			models = projectService.query(query);
 		}
 
-		dtos = ProjectAdapter.getDto(models, userService);
-		return new JsonResult(1,dtos, page);
+		return new JsonResult().page(page).data(ProjectAdapter.getDto(models, userService));
 	}
 
 	@RequestMapping("/detail.do")
@@ -119,7 +104,7 @@ private CustomProjectUserService customProjectUserService;
 			if( LoginUserHelper.getUser().getType() == UserType.USER.getType()){
 				project.setStatus(null);
 			}
-			customProjectService.update(ProjectAdapter.getModel(project));
+			projectService.update(ProjectAdapter.getModel(project), true);
 
             // 需要重建索引
             projectCache.del(projectId);
@@ -129,10 +114,12 @@ private CustomProjectUserService customProjectUserService;
 		}
 		// 新增
 		else{
-            int totalProjectNum = customProjectService.countProjectByUserIdName(userId, project.getName());
-            if (totalProjectNum > 50){
-                return new JsonResult(MyError.E000068);
+            int totalProjectNum = projectService.count(new ProjectQuery().setUserId(userId));
+            Integer maxProject = settingCache.getInteger(SettingEnum.MAX_PROJECT);
+            if (totalProjectNum > maxProject){
+                throw new MyException(MyError.E000068, maxProject + "");
             }
+
 			Project model = ProjectAdapter.getModel(project);
 			model.setUserId(userId);
 			model.setPassword(project.getPassword());
@@ -147,7 +134,7 @@ private CustomProjectUserService customProjectUserService;
 		projectCache.del(projectId);
 
 		// 刷新用户权限 将用户信息存入缓存
-		userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, customProjectService, projectUserService));
+		userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, projectService, projectUserService));
 		return new JsonResult(1,project);
 	}
 
@@ -165,7 +152,7 @@ private CustomProjectUserService customProjectUserService;
 
 
 		// 只有子模块数量为0，才允许删除项目
-		if(customModuleService.countByProjectId(model.getId()) > 0){
+		if(moduleService.count(new ModuleQuery().setProjectId(model.getId())) > 0){
 			throw new MyException(MyError.E000023);
 		}
 
@@ -180,7 +167,7 @@ private CustomProjectUserService customProjectUserService;
 		}
 
 		projectCache.del(project.getId());
-		customProjectService.delete(project.getId());
+		projectService.delete(project.getId());
 		return new JsonResult(1,null);
 	}
 

@@ -5,11 +5,11 @@ import java.util.*;
 import cn.crap.adapter.DebugAdapter;
 import cn.crap.enumer.MyError;
 import cn.crap.model.mybatis.*;
+import cn.crap.query.ModuleQuery;
 import cn.crap.service.custom.CustomDebugService;
-import cn.crap.service.custom.CustomModuleService;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.mybatis.DebugService;
-import cn.crap.service.mybatis.ModuleService;
-import cn.crap.service.mybatis.ProjectService;
 import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,8 +41,6 @@ public class CrapDebugController extends BaseController {
     private ProjectService projectService;
     @Autowired
     private ModuleService moduleService;
-    @Autowired
-    private CustomModuleService customModuleService;
 
     @RequestMapping("/synch.do")
     @ResponseBody
@@ -96,7 +94,7 @@ public class CrapDebugController extends BaseController {
 
 
         // 组装返回数据
-        List<Module> modules = customModuleService.queryByProjectId(projectId);
+        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId));
         List<String> moduleIds = new ArrayList<>();
         for (Module m : modules) {
             moduleIds.add(m.getId());
@@ -210,7 +208,7 @@ public class CrapDebugController extends BaseController {
         }
     }
 
-    private void handelModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d, String moduleId) {
+    private void handelModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d, String moduleId) throws Exception{
         d.setModuleId(moduleId);
         Module module = moduleService.getById(moduleId);
 

@@ -12,7 +12,7 @@ import cn.crap.enumer.MyError;
 import cn.crap.model.mybatis.*;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomCommentService;
-import cn.crap.service.custom.CustomModuleService;
+import cn.crap.service.ModuleService;
 import cn.crap.service.mybatis.ArticleService;
 import cn.crap.utils.MyCrumbDtoList;
 import cn.crap.utils.MyHashMap;
@@ -36,7 +36,7 @@ import cn.crap.utils.Tools;
 @Controller("visitorArticleController")
 public class ArticleController extends BaseController {
     @Autowired
-    private CustomModuleService customModuleService;
+    private ModuleService moduleService;
     @Autowired
     private CustomArticleService customArticleService;
     @Autowired
@@ -85,7 +85,7 @@ public class ArticleController extends BaseController {
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             checkFrontPermission(password, visitCode, project);
 
-            List<String> categories = customModuleService.queryCategoryByModuleId(module.getId());
+            List<String> categories = moduleService.queryCategoryByModuleId(module.getId());
 
             List<Article> articles = customArticleService.queryArticle(moduleId, null,  type, category, status, page);
             page.setAllRow(customArticleService.countByModuleId(moduleId, null,  type, category, status));

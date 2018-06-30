@@ -6,28 +6,28 @@ body{min-width:800px;}
 .FOOTER_COLOR {color: #a9a9a9}
 .FOOTER_COLOR a {color: #a9a9a9}
 /* 默认主色:#B768A5*/
-.main-bg {background-color: #407aaa!important;}
-.main-color {color: #407aaa}
-.main-bb-1{ border-bottom:1px solid #407aaa}
-.main-br-1{ border-right:1px solid #407aaa}
-.main-bl-3{ border-left:3px solid #407aaa}
+.main-bg {background-color: #006f1f!important;}
+.main-color {color: #006f1f}
+.main-bb-1{ border-bottom:1px solid #006f1f}
+.main-br-1{ border-right:1px solid #006f1f}
+.main-bl-3{ border-left:3px solid #006f1f}
 
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
 .adorn-bb-1{ border-bottom:1px solid #f82c1d}
 .adorn-color:hover {color: #f82c1d}
 .adorn-bg {background-color: #f82c1d}
-.interface-detail blockquote {color: #407aaa}
-.bt-5 {border-top: 5px solid#407aaa}
-.bl-5 {border-left: 5px solid#407aaa}
-a{color: #407aaa;text-decoration: none;}a:hover{color: #f82c1d;text-decoration: none;}
-.menu_a:hover {background-color: #407aaa!important;color:#ffffff!important;opacity:0.8;}
-.iactive {background-color: #407aaa!important;color:#ffffff!important;opacity: 0.8;}
-.pickActive {color: #407aaa}
-.pickSelect {color: #407aaa}
-.separator {border-bottom: 1px dotted#407aaa;color: #407aaa}
-.look-up-content {border-top: 3px solid#407aaa;}
-.sk-wave .sk-rect {background-color: #407aaa;}
+.interface-detail blockquote {color: #006f1f}
+.bt-5 {border-top: 5px solid#006f1f}
+.bl-5 {border-left: 5px solid#006f1f}
+a{color: #006f1f;text-decoration: none;}a:hover{color: #f82c1d;text-decoration: none;}
+.menu_a:hover {background-color: #006f1f!important;color:#ffffff!important;opacity:0.8;}
+.iactive {background-color: #006f1f!important;color:#ffffff!important;opacity: 0.8;}
+.pickActive {color: #006f1f}
+.pickSelect {color: #006f1f}
+.separator {border-bottom: 1px dotted#006f1f;color: #006f1f}
+.look-up-content {border-top: 3px solid#006f1f;}
+.sk-wave .sk-rect {background-color: #006f1f;}
 .btn-adorn {
   color: #ffffff;
   background-color:#f82c1d;
@@ -39,22 +39,22 @@ a{color: #407aaa;text-decoration: none;}a:hover{color: #f82c1d;text-decoration: 
 }
 .btn-main {
   color: #ffffff;
-  background-color:#407aaa;
+  background-color:#006f1f;
     border:0px;
 }
 
 .btn-group{
-    border: 1px #407aaa solid;
+    border: 1px #006f1f solid;
 }
 .btn-group > .btn-default:hover{
-    background-color: #407aaa!important;
+    background-color: #006f1f!important;
 }
 input:focus{
-    border-color: #407aaa!important;
+    border-color: #006f1f!important;
 }
 .btn-main:hover{
   color: #ffffff;
-  background-color: #407aaa;
+  background-color: #006f1f;
   opacity: 0.8;
 }
 .hover-adorn:hover,.active-adorn{
@@ -66,7 +66,7 @@ input:focus{
 }
 .hover-main:hover,.active-main{
     color: #ffffff;
-    background-color: #407aaa!important;
+    background-color: #006f1f!important;
     cursor: pointer;
     opacity: 0.3;
     text-decoration: none;

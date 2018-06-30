@@ -49,10 +49,10 @@ public class SourceController extends BaseController{
 		// 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
 		checkFrontPermission(password, visitCode, project);
 
-		Page<Source> page= new Page(currentPage);
-		page = customSourceService.queryByModuleId(source.getModuleId(), source.getName(), page);
-		List<SourceDto> sourceDtoList = SourceAdapter.getDto(page.getList());
-		page.setList(null);
+		Page page= new Page(currentPage);
+		List<Source> sources = customSourceService.queryByModuleId(source.getModuleId(), source.getName(), page);
+		// TODO
+		List<SourceDto> sourceDtoList = SourceAdapter.getDto(sources);
 		return new JsonResult(1, sourceDtoList, page, Tools.getMap("crumbs", Tools.getCrumbs("模块:"+module.getName(),"void")));
 	}
 }

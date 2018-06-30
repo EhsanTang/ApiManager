@@ -3,8 +3,10 @@ package cn.crap.service.custom;
 import cn.crap.dao.mybatis.UserDao;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
+import cn.crap.service.ProjectService;
 import cn.crap.service.tool.UserCache;
 import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
@@ -21,7 +23,7 @@ public class CustomUserService {
     @Autowired
     private UserCache userCache;
     @Autowired
-    private CustomProjectService customProjectService;
+    private ProjectService projectService;
     @Autowired
     private ProjectUserService projectUserService;
     @Autowired
@@ -29,11 +31,11 @@ public class CustomUserService {
     @Autowired
     private UserDao dao;
 
-    public void login(LoginDto model, User user) {
+    public void login(LoginDto model, User user) throws MyException{
         String token  = Aes.encrypt(user.getId());
         MyCookie.addCookie(IConst.COOKIE_TOKEN, token);
         // 将用户信息存入缓存
-        userCache.add(user.getId(), new LoginInfoDto(user, roleService, customProjectService, projectUserService));
+        userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
         MyCookie.addCookie(IConst.C_COOKIE_USERID, user.getId());
         MyCookie.addCookie(IConst.COOKIE_USERNAME, model.getUserName());
         MyCookie.addCookie(IConst.COOKIE_REMBER_PWD, model.getRemberPwd());

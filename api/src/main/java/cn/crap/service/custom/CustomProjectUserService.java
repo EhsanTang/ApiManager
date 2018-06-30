@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 @Service
 public class CustomProjectUserService {
     @Autowired
@@ -21,7 +23,7 @@ public class CustomProjectUserService {
         return mapper.countByExample(example);
     }
 
-    public Page<ProjectUser> queryByProjectId(String projectId, Page<ProjectUser> page){
+    public List<ProjectUser> queryByProjectId(String projectId, Page page){
         Assert.notNull(projectId, "projectId can't be null");
         Assert.notNull(page, "page can't be null");
         ProjectUserCriteria example = new ProjectUserCriteria();
@@ -31,9 +33,7 @@ public class CustomProjectUserService {
         example.setMaxResults(page.getSize());
         example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
-        page.setAllRow(mapper.countByExample(example));
-        page.setList(mapper.selectByExample(example));
-        return page;
+        return (mapper.selectByExample(example));
     }
 
 }

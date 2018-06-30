@@ -7,9 +7,12 @@ import java.util.Date;
 
 public enum SettingEnum {
 	FOOTER_BG_COLOR("FOOTER_BG_COLOR", "#233050", 1, SettingType.COLOR.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 100, "网站顶部、顶部被叫颜色"),
-    MINI_LOGO("MINI_LOGO", "resources/images/logo.png", 1, SettingType.IMAGE.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "网站小logo");
+    MINI_LOGO("MINI_LOGO", "resources/images/logo.png", 1, SettingType.IMAGE.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "网站小logo"),
+    MAX_MODULE("MAX_MODULE", "50", 1, SettingType.TEXT.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "夏目下允许创建的最大模块数"),
+	MAX_PROJECT("MAX_PROJECT", "15", 1, SettingType.TEXT.getValue(), CanDeleteEnum.CAN_NOT.getCanDelete(), 101, "最大允许创建的项目数");
 
-    private String key;
+
+	private String key;
 	private String value;
 	private String remark;
 	private Byte status;

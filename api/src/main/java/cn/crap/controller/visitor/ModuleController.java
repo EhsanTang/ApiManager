@@ -9,14 +9,16 @@ import cn.crap.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.mybatis.Module;
-import cn.crap.model.mybatis.ModuleCriteria;
 import cn.crap.model.mybatis.Project;
-import cn.crap.service.custom.CustomModuleService;
-import cn.crap.service.mybatis.ModuleService;
-import cn.crap.utils.*;
+import cn.crap.query.ModuleQuery;
+import cn.crap.service.ModuleService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,28 +29,24 @@ import java.util.List;
 @RequestMapping("/visitor/module")
 public class ModuleController extends BaseController{
 
-	@Autowired
-	private ModuleService moduleService;
     @Autowired
-    private CustomModuleService customModuleService;
+    private ModuleService moduleService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(String projectId, String password, String visitCode,
-                           @RequestParam(defaultValue="1") int currentPage) throws MyException{
-        throwExceptionWhenIsNull(projectId, "projectId");
+	public JsonResult list(@ModelAttribute ModuleQuery query, String password, String visitCode) throws MyException{
+        throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
-		Project project = projectCache.get(projectId);
+		Project project = projectCache.get(query.getProjectId());
 		checkFrontPermission(password, visitCode, project);
 
-        Page<Module> page= new Page(currentPage);
-        page = customModuleService.queryByProjectId(projectId, null, page);
+        Page page= new Page(query);
+		page.setAllRow(moduleService.count(query));
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(page.getList());
-		page.setList(null);
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto( moduleService.query(query));
 
-		return new JsonResult(1, moduleDtoList, page,
+		return new JsonResult().data(moduleDtoList).page(page).others(
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),
 						"project", ProjectAdapter.getDto(project, null)) );
 	}
@@ -70,14 +68,8 @@ public class ModuleController extends BaseController{
 				throw new MyException(MyError.E000042);
 			}
 		}
-		
-		ModuleCriteria example = new ModuleCriteria();
-		example.createCriteria().andProjectIdEqualTo(projectId);
-        example.setLimitStart(0);
-        example.setMaxResults(10);
-        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.selectByExample(example));
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.query(new ModuleQuery().setPageSize(10)));
 		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
 	}	
 }

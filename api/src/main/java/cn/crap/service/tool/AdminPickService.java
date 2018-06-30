@@ -5,14 +5,14 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumer.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.*;
+import cn.crap.query.ProjectQuery;
 import cn.crap.service.IPickService;
-import cn.crap.service.custom.CustomModuleService;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.ProjectService;
 import cn.crap.service.mybatis.RoleService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class AdminPickService implements IPickService{
     @Autowired
     private ArticleService articleService;
     @Autowired
-    private CustomModuleService customModuleService;
+    private ModuleService moduleService;
     @Autowired
     private RoleService roleService;
 
@@ -51,7 +51,7 @@ public class AdminPickService implements IPickService{
         List<PickDto> picks = new ArrayList<>();
         PickDto pick = null;
         String preUrl = "";
-        ProjectCriteria projectCriteria = new ProjectCriteria();
+        ProjectQuery recommendProjectQuery = new ProjectQuery().setStatus(ProjectStatus.RECOMMEND.getStatus()).setCurrentPage(1).setPageSize(50);
         ArticleCriteria articleCriteria = new ArticleCriteria();
         switch (pickCode) {
 
@@ -96,8 +96,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
-                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
-                for (Project project : projectService.selectByExample(projectCriteria)) {
+                for (Project project : projectService.query(recommendProjectQuery)) {
                     pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }
@@ -126,8 +125,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
-                projectCriteria.createCriteria().andStatusEqualTo(ProjectStatus.RECOMMEND.getStatus());
-                for (Project project : projectService.selectByExample(projectCriteria)) {
+                for (Project project : projectService.query(recommendProjectQuery)) {
                     pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }

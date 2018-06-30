@@ -44,10 +44,11 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
 		Assert.isTrue(currentPage > 0);
-        Page<ProjectUser> page= new Page(SIZE, currentPage);
+        Page page= new Page(SIZE, currentPage);
 			checkUserPermissionByProject( projectCache.get(projectId) );
-			page = customProjectUserService.queryByProjectId(projectId, page);
-			return new JsonResult(1, ProjectUserAdapter.getDto(page.getList()), page);
+		List<ProjectUser> projectUsers = customProjectUserService.queryByProjectId(projectId, page);
+		// TODO
+			return new JsonResult(1, ProjectUserAdapter.getDto(projectUsers), page);
 	}	
 	
 	@RequestMapping("/detail.do")

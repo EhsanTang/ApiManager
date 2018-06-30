@@ -14,7 +14,7 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.mybatis.User;
 import cn.crap.model.mybatis.UserCriteria;
 import cn.crap.service.IEmailService;
-import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.custom.CustomUserService;
 import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
@@ -49,7 +49,7 @@ public class LoginController extends BaseController{
 	@Autowired
 	private Config config;
 	@Autowired
-	private CustomProjectService customProjectService;
+	private ProjectService projectService;
 	@Autowired
 	private ProjectUserService projectUserService;
 	@Autowired
@@ -112,7 +112,7 @@ public class LoginController extends BaseController{
 	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/back/validateEmail.do")
-	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException {
+	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException, MyException {
 		HttpServletRequest request = ThreadContext.request();
 		String id =  Aes.desEncrypt(i);
 		String code = stringCache.get(i);
@@ -124,7 +124,7 @@ public class LoginController extends BaseController{
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
-				userCache.add(user.getId(), new LoginInfoDto(user, roleService, customProjectService, projectUserService));
+				userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
 				request.setAttribute("title", "恭喜，操作成功！");
 				request.setAttribute("result", "验证通过！");
 			}else{

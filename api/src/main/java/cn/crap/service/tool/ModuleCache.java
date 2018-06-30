@@ -1,9 +1,8 @@
 package cn.crap.service.tool;
 
 import cn.crap.model.mybatis.Module;
-import cn.crap.service.ICacheService;
-import cn.crap.service.mybatis.ModuleService;
 import cn.crap.beans.Config;
+import cn.crap.service.ModuleService;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 @Service("moduleCache")
-public class ModuleCache implements ICacheService<Module> {
+public class ModuleCache{
 	private static Cache<String, Module> cache;
 	public static final String CACHE_PREFIX = "module:";
 
@@ -34,7 +33,6 @@ public class ModuleCache implements ICacheService<Module> {
 		return cache;
 	}
 	
-	@Override
 	public Module get(String moduleId){
 		if(MyString.isEmpty(moduleId)){
 			return new Module();
@@ -54,14 +52,12 @@ public class ModuleCache implements ICacheService<Module> {
 		return p;
 	}
 
-    @Override
     public boolean del(String moduleId){
 		getCache().invalidate(assembleKey(moduleId));
         return true;
     }
 	
 
-	@Override
     public boolean flushDB(){
 		getCache().invalidateAll();
 	    return true;

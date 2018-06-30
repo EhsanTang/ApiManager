@@ -5,14 +5,16 @@ import cn.crap.beans.Config;
 import cn.crap.dto.*;
 import cn.crap.enumer.*;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.*;
+import cn.crap.query.ProjectQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomHotSearchService;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.service.custom.CustomProjectService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.mybatis.*;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.utils.*;
@@ -48,11 +50,9 @@ public class MainController extends BaseController{
 	@Autowired
     private ArticleService articleService;
 	@Autowired
-    private ProjectService projectService;
-	@Autowired
     private InterfaceService interfaceService;
 	@Autowired
-    private CustomProjectService customProjectService;
+    private ProjectService projectService;
 	@Autowired
     private CustomArticleService customArticleService;
 	@Autowired
@@ -91,7 +91,7 @@ public class MainController extends BaseController{
 	}
 
 	@RequestMapping(value = "dashboard.htm")
-	public String dashboard(ModelMap modelMap) {
+	public String dashboard(ModelMap modelMap) throws MyException{
 
 		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
 		modelMap.addAttribute("login", loginInfoDto != null);
@@ -102,17 +102,18 @@ public class MainController extends BaseController{
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
 
         List<Project> projectList =(List<Project>) objectCache.get(PROJECT_LIST);
-        Page page = new Page(12, 1);
         if (CollectionUtils.isEmpty(projectList)) {
-            projectList = customProjectService.pageProjectByStatusName(ProjectStatus.RECOMMEND.getStatus(), null, page);
+			ProjectQuery projectQuery = new ProjectQuery().setStatus(ProjectStatus.RECOMMEND.getStatus()).setPageSize(12);
+			projectList = projectService.query(projectQuery);
             objectCache.add(PROJECT_LIST, projectList);
         }
         modelMap.addAttribute("projectList", projectList);
 
 
-        page = new Page(5, 1);
+
         List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
+        	Page page = new Page(5, 1);
             articleList = ArticleAdapter.getDto(customArticleService.queryArticle(null, null, ArticleType.ARTICLE.name(),
                     null, ArticleStatus.RECOMMEND.getStatus(), page), null);
             objectCache.add(ARTICLE_LIST, articleList);

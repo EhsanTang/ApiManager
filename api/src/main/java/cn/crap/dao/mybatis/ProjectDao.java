@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface ProjectDao {
+public interface ProjectDao extends BaseDao<Project>{
     int countByExample(ProjectCriteria example);
 
     int deleteByExample(ProjectCriteria example);

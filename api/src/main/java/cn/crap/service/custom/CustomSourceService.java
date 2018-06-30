@@ -9,13 +9,12 @@ import cn.crap.model.mybatis.Log;
 import cn.crap.model.mybatis.Source;
 import cn.crap.model.mybatis.SourceCriteria;
 import cn.crap.service.ILuceneService;
+import cn.crap.service.ProjectService;
 import cn.crap.service.mybatis.LogService;
-import cn.crap.service.mybatis.ProjectService;
 import cn.crap.beans.Config;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -32,11 +31,9 @@ public class CustomSourceService implements ILuceneService{
     @Autowired
     private ProjectService projectService;
     @Autowired
-    private CustomProjectService customProjectService;
-    @Autowired
     private LogService logService;
 
-    public Page<Source> queryByModuleId(String moduleId, String name, Page<Source> page){
+    public List<Source> queryByModuleId(String moduleId, String name, Page page){
         Assert.notNull(moduleId, "moduleId can't be null");
         Assert.notNull(page, "page can't be null");
         SourceCriteria example = new SourceCriteria();
@@ -52,8 +49,7 @@ public class CustomSourceService implements ILuceneService{
 
         page.setAllRow(sourceMapper.countByExample(example));
 
-        page.setList(sourceMapper.selectByExample(example));
-        return page;
+        return sourceMapper.selectByExample(example);
     }
 
     public Source get(String id){

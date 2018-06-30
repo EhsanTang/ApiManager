@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.CategoryDto;
 import cn.crap.dto.DictionaryDto;
 import cn.crap.dto.InterfacePDFDto;
@@ -14,14 +15,13 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.mybatis.*;
 import cn.crap.model.mybatis.Error;
+import cn.crap.query.ModuleQuery;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomErrorService;
 import cn.crap.service.custom.CustomInterfaceService;
-import cn.crap.service.custom.CustomModuleService;
+import cn.crap.service.ModuleService;
 import cn.crap.service.mybatis.ArticleService;
 import cn.crap.service.mybatis.InterfaceService;
-import cn.crap.service.mybatis.ModuleService;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +56,7 @@ public class StaticizeController extends BaseController{
 	private ArticleService articleService;
 	@Autowired
 	private CustomArticleService customArticleService;
-	@Autowired
-	private CustomModuleService customModuleService;
-	
+
 	/**
 	 * 静态化错误码列表
 	 */
@@ -165,7 +163,7 @@ public class StaticizeController extends BaseController{
 		if(type.equals("ARTICLE")){
 			// 获取所有类目
 			// 静态化模块文章
-			List<String> categorys = customModuleService.queryCategoryByModuleId(module.getId());
+			List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
 			List<CategoryDto> categoryDtos = new ArrayList<CategoryDto>();
 			// 文章分类，按类目静态化
 			for(String c: categorys){
@@ -392,12 +390,10 @@ public class StaticizeController extends BaseController{
 		
 		Map<String, Object> map = new HashMap<>();
 
-		ModuleCriteria example = new ModuleCriteria();
-		example.createCriteria().andProjectIdEqualTo(projectId);
-		for(Module module : moduleService.selectByExample(example)){
+		for(Module module : moduleService.query(new ModuleQuery().setProjectId(projectId))){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文章，分类
-				List<String> categorys = customModuleService.queryCategoryByModuleId(module.getId());
+				List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
 				// 文章分类，按类目静态化
 				for(String category: categorys){
 					if( MyString.isEmpty( category )){
@@ -500,7 +496,7 @@ public class StaticizeController extends BaseController{
 	}
 	
 	
-	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) {
+	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) throws MyException{
 		// 静态化
 		Map<String, String> settingMap = new HashMap<>();
 		for (SettingDto setting : settingCache.getAll()) {
@@ -518,7 +514,8 @@ public class StaticizeController extends BaseController{
 		returnMap.put("project", project);
 		returnMap.put("module", module);
 		// 将选中的模块放到第一位
-		List<Module> moduleList = customModuleService.queryByProjectId(project.getId());
+		List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(project.getId()));
+
 		if(module != null){
 			for(Module m:moduleList){
 				if(m.getId().equals(module.getId())){

@@ -1,6 +1,5 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">系统设置【字体】</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
+<div class="col-xs-12 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 p0 pt10 bt1">
@@ -14,13 +13,13 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">字体</td>
+					<td class="tc">值：点击按钮选择或手动输入</td>
 					<td class="tc">
 					 <div class="input-group">
 							<input class="form-control" type="text" id="value" required
 								ng-model="model.value"  placeholder="点击“选择”按钮选择，或输入字体">
 							<div class="input-group-addon cursor btn-adorn"
-								ng-click="loadPick($event,220,250,'true','value', model.key, '', model.value);">
+								ng-click="loadPick($event,250,300,'true','value', model.key, '', model.value);">
 								选择字体</div>
 					</div>
 

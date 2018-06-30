@@ -25,8 +25,10 @@ public enum SettingEnum {
             }),
 
     // 后端
+    IMAGE_CODE("IMAGE_CODE", SettingStatus.HIDDEN, SettingType.SELECT, false, 101, "Times New Roman", "图形验字体（部分系统显示有问题，可切换字体）",
+            new String[]{"TimesNewRoman|Times New Roman"}),
     MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "夏目下允许创建的最大模块数", null),
-	MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
+    MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
     SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "crapApiKey", "秘钥，用于cookie加密等", null);
 
     private String key;

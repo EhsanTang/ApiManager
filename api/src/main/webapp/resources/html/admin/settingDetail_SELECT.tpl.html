@@ -1,6 +1,5 @@
 ﻿<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="settingDetailCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">系统设置【图标地址】</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
+<div class="col-xs-12 f14 p0 mb5 tr">
 	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
 </div>
 <div class="col-xs-12 p0 pt10 bt1">
@@ -14,10 +13,10 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tc">图标地址</td>
+					<td class="tc">值：点击左侧输入框选择</td>
 					<td class="tc">
 						<input class="form-control" type="text" id="value" readonly required ng-model="model.value"  placeholder="点击选择"
-							   ng-click="loadPick($event,220,250,'true','value', model.key, '', model.value);">
+							   ng-click="loadPick($event,250, 300,'true','value', model.key, '', model.value);">
 					</td>
 				</tr>
 				<tr>

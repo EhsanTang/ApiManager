@@ -6,10 +6,13 @@ import cn.crap.framework.MyException;
 import cn.crap.model.mybatis.Menu;
 import cn.crap.service.IPickService;
 import cn.crap.service.custom.CustomMenuService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +123,23 @@ public class PickService implements IPickService{
                 for (String iconfont : SettingEnum.ICONFONT.getOptions()) {
                     String[] split = iconfont.split("\\|");
                     pick = new PickDto(split[0], split[1], split[0]);
+                    picks.add(pick);
+                }
+                return picks;
+            case IMAGE_CODE:
+                pick = new PickDto(IConst.SEPARATOR, "默认字体");
+                picks.add(pick);
+                for (String iconfont : SettingEnum.IMAGE_CODE.getOptions()) {
+                    String[] split = iconfont.split("\\|");
+                    pick = new PickDto(split[0], split[1], split[0]);
+                    picks.add(pick);
+                }
+                pick = new PickDto(IConst.SEPARATOR, "服务器支持的字体");
+                picks.add(pick);
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                String[] fontFamilies = ge.getAvailableFontFamilyNames();
+                for (String s : fontFamilies) {
+                    pick = new PickDto("FONT_" + MD5.encrytMD5(s, ""), s, s);
                     picks.add(pick);
                 }
                 return picks;

@@ -18,6 +18,9 @@ public enum PickCode {
 	ICONFONT("ICONFONT", "图标库地址"),
     MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文章）"),
     INTERFACE_CONTENT_TYPE("INTERFACE_CONTENT_TYPE", "返回类型"),
+	IMAGE_CODE("IMAGE_CODE", "图形验证码风格"),
+
+
 
     // 暂时不用
     MONITOR_TYPE("MONITOR_TYPE", "监控类型"),

@@ -1,12 +1,10 @@
 package cn.crap.controller;
 
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.custom.CustomMenuService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyCookie;
-import cn.crap.utils.MyString;
-import cn.crap.utils.ImageCode;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,17 +73,19 @@ public class IndexController extends BaseController {
 		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
 		response.setContentType("image/jpeg");
 		ServletOutputStream out = response.getOutputStream();
-		ImageCode vservice = new ImageCode();
+
 		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
-		stringCache.add(IConst.CACHE_IMGCODE + uuid, vservice.getCode());
-		stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");
-		try {
-			vservice.write(out);
-			out.flush();
-		} finally {
-			out.close();
+			ImageCode imageCode1 = new ImageCode(settingCache.get(SettingEnum.IMAGE_CODE.getKey()).getValue());
+			stringCache.add(IConst.CACHE_IMGCODE + uuid, imageCode1.getCode());
+			stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");
+			try {
+				imageCode1.write(out);
+				out.flush();
+			} finally {
+				out.close();
+			}
 		}
-	}
+
 
 	/**
 	 * 

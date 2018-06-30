@@ -33,8 +33,8 @@ public class ImageCode {
 
 	private char[] codeSequence = { '0','1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-	public ImageCode() {
-		this.createCode();
+	public ImageCode(String font) {
+		this.createCode(font);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class ImageCode {
 	public ImageCode(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.createCode();
+		this.createCode("Times New Roman");
 	}
 
 	/**
@@ -67,10 +67,10 @@ public class ImageCode {
 		this.height = height;
 		this.codeCount = codeCount;
 		this.lineCount = lineCount;
-		this.createCode();
+		this.createCode("Times New Roman");
 	}
 
-	public void createCode() {
+	public void createCode(String fontStr) {
 		int x = 0, codeY = 0;
 		int red = 0, green = 0, blue = 0;
 
@@ -87,7 +87,7 @@ public class ImageCode {
 		g.setColor(color);
 		g.fillRect(0, 0, width, height);
 		// 创建字体
-		Font font = new Font("",Font.BOLD,26);
+		Font font = new Font(fontStr, Font.PLAIN, 26);
 		g.setFont(font);
 
 		for (int i = 0; i < lineCount; i++) {

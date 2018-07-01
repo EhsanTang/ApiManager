@@ -1,5 +1,6 @@
 package cn.crap.controller.thirdly;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enumer.LoginType;
@@ -8,11 +9,9 @@ import cn.crap.enumer.UserType;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
-import cn.crap.model.UserCriteria;
+import cn.crap.query.UserQuery;
+import cn.crap.service.UserService;
 import cn.crap.service.thirdly.GitHubService;
-import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.mybatis.UserService;
-import cn.crap.beans.Config;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyCookie;
 import cn.crap.utils.MyString;
@@ -39,7 +38,7 @@ public class GitHubController extends BaseController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private CustomUserService customUserService;
+	private UserService customUserService;
 
 	
 	/**
@@ -63,9 +62,7 @@ public class GitHubController extends BaseController {
 			User user = null;
 			GitHubUser gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
 
-			UserCriteria example = new UserCriteria();
-			example.createCriteria().andThirdlyIdEqualTo(getThirdlyId(gitHubUser));
-			List<User> users = userService.selectByExample(example);
+			List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));
 
 			if(users.size() == 0){
 				user = new User();
@@ -75,10 +72,7 @@ public class GitHubController extends BaseController {
 				// 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
 				if(!MyString.isEmpty(gitHubUser.getEmail())){
 					String email = gitHubUser.getEmail();
-
-					example = new UserCriteria();
-					example.createCriteria().andEmailEqualTo(email).andLoginTypeEqualTo(LoginType.GITHUB.getValue());
-					List<User> existUser = userService.selectByExample(example);
+					List<User> existUser = userService.query(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
 
 					if (existUser == null || existUser.size() == 0){
 						user.setEmail(gitHubUser.getEmail());

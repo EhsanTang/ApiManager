@@ -9,16 +9,14 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Project;
+import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.query.ProjectQuery;
 import cn.crap.query.ProjectUserQuery;
-import cn.crap.service.ISearchService;
-import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.ModuleService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.ProjectUserService;
-import cn.crap.service.mybatis.*;
-import cn.crap.utils.*;
+import cn.crap.service.*;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +34,7 @@ public class ProjectController extends BaseController {
     @Autowired
     private ISearchService luceneService;
     @Autowired
-    private CustomErrorService customErrorService;
+    private ErrorService errorService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -156,7 +154,7 @@ public class ProjectController extends BaseController {
         }
 
         // 只有错误码数量为0，才允许删除项目
-        if (customErrorService.countByProjectId(model.getId()) > 0) {
+        if (errorService.count(new ErrorQuery().setProjectId(model.getId())) > 0) {
             throw new MyException(MyError.E000033);
         }
 

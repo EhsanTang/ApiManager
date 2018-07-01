@@ -9,11 +9,9 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Setting;
-import cn.crap.model.SettingCriteria;
-import cn.crap.service.custom.CustomSettingService;
-import cn.crap.service.mybatis.SettingService;
+import cn.crap.query.SettingQuery;
+import cn.crap.service.SettingService;
 import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,35 +26,22 @@ public class SettingController extends BaseController {
     @Autowired
     private SettingService settingService;
     @Autowired
-    private CustomSettingService customSettingService;
+    private SettingService customSettingService;
     @Autowired
     private Config config;
     private final static String[] indexUrls = new String[]{"index.do", "visitor/", "project.do", "dashboard.htm"};
 
     /**
-     * @param currentPage 当前页
      * @return
      */
     @RequestMapping("/admin/setting/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
-    public JsonResult list(String key, String remark, Integer currentPage) {
-        Page page = new Page(currentPage);
+    public JsonResult list(@ModelAttribute SettingQuery query) throws MyException{
+        Page page = new Page(query);
 
-        SettingCriteria example = new SettingCriteria();
-        SettingCriteria.Criteria criteria = example.createCriteria();
-        if (key != null) {
-            criteria.andMkeyLike(key);
-        }
-        if (remark != null) {
-            criteria.andRemarkLike("%" + remark + "%");
-        }
-        example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-
-        page.setAllRow(settingService.countByExample(example));
-        return new JsonResult().data(SettingAdapter.getDto(settingService.selectByExample(example))).page(page);
+        page.setAllRow(settingService.count(query));
+        return new JsonResult().data(SettingAdapter.getDto(settingService.query(query))).page(page);
     }
 
     @RequestMapping("/admin/setting/detail.do")

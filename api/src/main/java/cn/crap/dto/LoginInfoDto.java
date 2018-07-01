@@ -7,7 +7,7 @@ import cn.crap.query.ProjectQuery;
 import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
-import cn.crap.service.mybatis.RoleService;
+import cn.crap.service.RoleService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.Tools;
 

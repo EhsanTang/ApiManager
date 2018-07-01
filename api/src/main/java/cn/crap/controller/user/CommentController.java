@@ -8,15 +8,14 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Comment;
-import cn.crap.model.CommentCriteria;
 import cn.crap.model.User;
-import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.CommentService;
-import cn.crap.service.mybatis.UserService;
+import cn.crap.query.CommentQuery;
+import cn.crap.service.ArticleService;
+import cn.crap.service.CommentService;
+import cn.crap.service.UserService;
 import cn.crap.service.tool.EmailService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,20 +42,14 @@ public class CommentController extends BaseController {
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String articleId,  Integer currentPage) throws MyException {
+	public JsonResult list(@ModelAttribute CommentQuery query) throws MyException {
 		
-		checkUserPermissionByProject( articleService.getById(articleId).getProjectId(), VIEW);
-		Page page= new Page(currentPage);
+		checkUserPermissionByProject( articleService.getById(query.getArticelId()).getProjectId(), VIEW);
+		Page page= new Page(query);
 
-		CommentCriteria example = new CommentCriteria();
-		example.createCriteria().andArticleIdEqualTo(articleId);
-		example.setOrderByClause(TableField.SORT.CREATE_TIME_DES);
-		example.setLimitStart(page.getStart());
-		example.setMaxResults(page.getSize());
+		page.setAllRow(commentService.count(query));
 
-		page.setAllRow(commentService.countByExample(example));
-
-		List<Comment> commentList = commentService.selectByExample(example);
+		List<Comment> commentList = commentService.query(query);
 		return new JsonResult(1, CommentAdapter.getDto(commentList), page);
 	}
 

@@ -12,10 +12,11 @@ import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.query.ArticleQuery;
+import cn.crap.query.CommentQuery;
+import cn.crap.service.ArticleService;
+import cn.crap.service.CommentService;
 import cn.crap.service.ISearchService;
-import cn.crap.service.custom.CustomArticleService;
-import cn.crap.service.custom.CustomCommentService;
-import cn.crap.service.mybatis.ArticleService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,27 +39,25 @@ public class ArticleController extends BaseController{
 	@Autowired
 	private ArticleService articleService;
 	@Autowired
-	private CustomArticleService customArticleService;
-	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private CustomCommentService customCommentService;
+	private CommentService commentService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String moduleId, String name, String type, String category, Integer currentPage) throws MyException{
-		Assert.notNull(moduleId);
-		checkUserPermissionByModuleId(moduleId, VIEW);
+	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
+		Assert.notNull(query.getModuleId());
+		checkUserPermissionByModuleId(query.getModuleId(), VIEW);
 		
-		Page page= new Page(currentPage);
+		Page page= new Page(query);
 
-		page.setAllRow(customArticleService.countByModuleId(moduleId, name, type, category, null));
-		List<Article> models = customArticleService.queryArticle(moduleId, name, type, category, null, page);
+		page.setAllRow(articleService.count(query));
+		List<Article> models = articleService.query(query);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
 
 		return new JsonResult().success().data(dtos).page(page)
-                .others(Tools.getMap("type", ArticleType.valueOf(type).getName(), "category", category));
+                .others(Tools.getMap("type", ArticleType.valueOf(query.getType()).getName(), "category", query.getCategory()));
 	}
 	
 	@RequestMapping("/detail.do")
@@ -111,7 +110,7 @@ public class ArticleController extends BaseController{
                 article.setCanDelete(null);
             }
 
-			customArticleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
+			articleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
 
 			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
 			luceneService.update(ArticleAdapter.getSearchDto(dbArticle));
@@ -156,7 +155,7 @@ public class ArticleController extends BaseController{
 				throw new MyException(MyError.E000009);
 			}
 
-			if (customCommentService.countByArticleId(model.getId()) > 0){
+			if (commentService.count(new CommentQuery().setArticelId(model.getId())) > 0){
 				throw new MyException(MyError.E000037);
 			}
 
@@ -165,7 +164,7 @@ public class ArticleController extends BaseController{
                 throw new MyException(MyError.E000009);
             }
 
-			customArticleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
+			articleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
 
 			luceneService.delete(new SearchDto(model.getId()));
 		}

@@ -10,13 +10,9 @@ import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.HotSearch;
 import cn.crap.model.Project;
+import cn.crap.query.ArticleQuery;
 import cn.crap.query.ProjectQuery;
-import cn.crap.service.ISearchService;
-import cn.crap.service.custom.CustomArticleService;
-import cn.crap.service.custom.CustomHotSearchService;
-import cn.crap.service.custom.CustomMenuService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.mybatis.*;
+import cn.crap.service.*;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +37,15 @@ public class MainController extends BaseController{
 	@Autowired
 	private ISearchService luceneService;
 	@Autowired
-	private CustomMenuService customMenuService;
+	private MenuService customMenuService;
 	@Autowired
 	private HotSearchService hotSearchService;
 	@Autowired
-    private CustomHotSearchService customHotSearchService;
-	@Autowired
-    private UserService userService;
-	@Autowired
-    private ArticleService articleService;
-	@Autowired
-    private InterfaceService interfaceService;
+    private HotSearchService customHotSearchService;
 	@Autowired
     private ProjectService projectService;
 	@Autowired
-    private CustomArticleService customArticleService;
+    private ArticleService articleService;
 	@Autowired
 	private Config config;
 
@@ -114,9 +104,10 @@ public class MainController extends BaseController{
 
         List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
-        	Page page = new Page(5, 1);
-            articleList = ArticleAdapter.getDto(customArticleService.queryArticle(null, null, ArticleType.ARTICLE.name(),
-                    null, ArticleStatus.RECOMMEND.getStatus(), page), null);
+        	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
+					.setPageSize(5);
+
+            articleList = ArticleAdapter.getDto(articleService.query(query), null);
             objectCache.add(ARTICLE_LIST, articleList);
         }
         modelMap.addAttribute("articleList", articleList);

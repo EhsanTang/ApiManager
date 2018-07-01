@@ -8,10 +8,9 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Menu;
-import cn.crap.model.MenuCriteria;
-import cn.crap.service.mybatis.MenuService;
+import cn.crap.query.MenuQuery;
+import cn.crap.service.MenuService;
 import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,27 +32,11 @@ public class MenuController extends BaseController {
     @RequestMapping("/menu/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_MENU)
-    public JsonResult list(String type, String menuName, String parentId, Integer currentPage) {
-        Page page = new Page(currentPage);
+    public JsonResult list(@ModelAttribute MenuQuery query) throws MyException{
+        Page page = new Page(query);
 
-        MenuCriteria menuCriteria = new MenuCriteria();
-        MenuCriteria.Criteria criteria = menuCriteria.createCriteria();
-
-        if (menuName != null) {
-            criteria.andMenuNameLike("%" + menuName + "%");
-        }
-        if (type != null) {
-            criteria.andTypeEqualTo(type);
-        }
-        if (parentId != null) {
-            criteria.andParentIdEqualTo(parentId);
-        }
-        menuCriteria.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
-        menuCriteria.setLimitStart(page.getStart());
-        menuCriteria.setMaxResults(page.getSize());
-
-        page.setAllRow(menuService.countByExample(menuCriteria));
-        return new JsonResult(1, MenuAdapter.getDto(menuService.selectByExample(menuCriteria)), page);
+        page.setAllRow(menuService.count(query));
+        return new JsonResult(1, MenuAdapter.getDto(menuService.query(query)), page);
     }
 
     /**
@@ -86,7 +69,7 @@ public class MenuController extends BaseController {
     @RequestMapping("/menu/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_MENU)
-    public JsonResult addOrUpdate(@ModelAttribute MenuDto menuDto) {
+    public JsonResult addOrUpdate(@ModelAttribute MenuDto menuDto) throws MyException{
         // 子菜单类型和父菜单类型一致
         Menu parentMenu = menuService.getById(menuDto.getParentId());
         if (parentMenu != null && parentMenu.getId() != null) {
@@ -107,11 +90,7 @@ public class MenuController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_MENU)
     public JsonResult delete(@RequestParam String id) throws MyException {
-        MenuCriteria menuCriteria = new MenuCriteria();
-        MenuCriteria.Criteria criteria = menuCriteria.createCriteria();
-        criteria.andParentIdEqualTo(id);
-
-        if (menuService.countByExample(menuCriteria) > 0) {
+        if (menuService.count(new MenuQuery().setParentId(id)) > 0) {
             throw new MyException(MyError.E000025);
         }
         menuService.delete(id);

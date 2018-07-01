@@ -1,28 +1,27 @@
 package cn.crap.controller.thirdly;
 
-import java.util.List;
-
+import cn.crap.beans.Config;
+import cn.crap.dto.LoginDto;
+import cn.crap.dto.thirdly.GitHubUser;
+import cn.crap.enumer.LoginType;
 import cn.crap.enumer.UserStatus;
 import cn.crap.enumer.UserType;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.UserCriteria;
-import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.mybatis.UserService;
-import cn.crap.utils.*;
+import cn.crap.framework.base.BaseController;
+import cn.crap.model.User;
+import cn.crap.query.UserQuery;
+import cn.crap.service.UserService;
+import cn.crap.service.thirdly.OschinaService;
+import cn.crap.utils.IConst;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cn.crap.dto.LoginDto;
-import cn.crap.dto.thirdly.GitHubUser;
-import cn.crap.enumer.LoginType;
-import cn.crap.framework.base.BaseController;
-import cn.crap.model.User;
-import cn.crap.service.thirdly.OschinaService;
-import cn.crap.beans.Config;
-
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 前后台共用的Controller
@@ -38,7 +37,7 @@ public class GitOschinaController extends BaseController{
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private CustomUserService customUserService;
+	private UserService customUserService;
 	/**
 	 * gitHub授权
 	 * @throws Exception
@@ -51,12 +50,10 @@ public class GitOschinaController extends BaseController{
 	@RequestMapping("/oschina/login.do")
 	public String login(@RequestParam String code) throws Exception {
 			User user = null;
-			GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, config.getDomain()).getAccess_token());
+		GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, config.getDomain()).getAccess_token());
 		HttpServletResponse response = ThreadContext.response();
-		UserCriteria example = new UserCriteria();
-		example.createCriteria().andThirdlyIdEqualTo(getThirdlyId(oschinaUser));
 
-		List<User> users = userService.selectByExample(example);
+		List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
 			if(users.size() == 0){
 				user = new User();
 				user.setUserName( Tools.handleUserName(oschinaUser.getLogin()) );
@@ -64,11 +61,7 @@ public class GitOschinaController extends BaseController{
 
 				// 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
 				if(!MyString.isEmpty(oschinaUser.getEmail())){
-					String email = oschinaUser.getEmail();
-
-					example = new UserCriteria();
-					example.createCriteria().andEmailEqualTo(email).andLoginTypeEqualTo(LoginType.GITHUB.getValue());
-					List<User> existUser = userService.selectByExample(example);
+					List<User> existUser = userService.query(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
 					if (existUser == null || existUser.size() == 0){
 						user.setEmail(oschinaUser.getEmail());
 					}

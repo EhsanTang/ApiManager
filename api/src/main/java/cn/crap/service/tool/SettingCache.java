@@ -4,7 +4,7 @@ import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingEnum;
 import cn.crap.model.Setting;
-import cn.crap.service.custom.CustomSettingService;
+import cn.crap.service.SettingService;
 import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -24,7 +24,7 @@ public class SettingCache{
 	@Autowired
 	private Config config;
 	@Autowired
-	private CustomSettingService customSettingService;
+	private SettingService customSettingService;
 
 	public Cache<String, SettingDto> getCache(){
 	    if (cache == null) {

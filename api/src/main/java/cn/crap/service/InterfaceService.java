@@ -1,21 +1,24 @@
-package cn.crap.service.custom;
+package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.dao.mybatis.InterfaceDao;
+import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomInterfaceDao;
+import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enumer.LogType;
+import cn.crap.enumer.TableId;
+import cn.crap.framework.MyException;
 import cn.crap.model.InterfaceCriteria;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
-import cn.crap.service.ILuceneService;
-import cn.crap.service.ModuleService;
+import cn.crap.query.InterfaceQuery;
 import cn.crap.service.tool.ModuleCache;
-import cn.crap.service.mybatis.LogService;
-import cn.crap.beans.Config;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -23,12 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class CustomInterfaceService implements ILuceneService {
-    @Autowired
-    private InterfaceDao dao;
+public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceDao> implements ILuceneService, IConst {
+    private InterfaceDao interfaceDao;
     @Autowired
     private ModuleCache moduleCache;
     @Autowired
@@ -40,6 +44,95 @@ public class CustomInterfaceService implements ILuceneService {
     @Autowired
     private Config config;
 
+    @Resource
+    public void InterfaceDao(InterfaceDao interfaceDao) {
+        this.interfaceDao = interfaceDao;
+        super.setBaseDao(interfaceDao, TableId.INTERFACE);
+    }
+
+    @Override
+    public boolean insert(InterfaceWithBLOBs model) throws MyException{
+        if (model == null) {
+            return false;
+        }
+        if (model.getSequence() == null){
+            List<InterfaceWithBLOBs>  models = this.query(new InterfaceQuery().setProjectId(model.getProjectId()).setPageSize(1));
+            if (models.size() > 0){
+                model.setSequence(models.get(0).getSequence() + 1);
+            }else{
+                model.setSequence(0);
+            }
+        }
+        model.setUpdateTime(new Date());
+        return super.insert(model);
+    }
+
+
+    /**
+     * 查询项目
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public List<InterfaceWithBLOBs> query(InterfaceQuery query) throws MyException {
+        Assert.notNull(query);
+
+        Page page = new Page(query);
+        InterfaceCriteria example = getInterfaceCriteria(query);
+        if (page.getSize() != ALL_PAGE_SIZE) {
+            example.setLimitStart(page.getStart());
+            example.setMaxResults(page.getSize());
+        }
+        example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
+
+        return interfaceDao.selectByExampleWithBLOBs(example);
+    }
+
+    /**
+     * 查询项目数量
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public int count(InterfaceQuery query) throws MyException {
+        Assert.notNull(query);
+
+        InterfaceCriteria example = getInterfaceCriteria(query);
+        return interfaceDao.countByExample(example);
+    }
+
+    private InterfaceCriteria getInterfaceCriteria(InterfaceQuery query) throws MyException {
+        InterfaceCriteria example = new InterfaceCriteria();
+        InterfaceCriteria.Criteria criteria = example.createCriteria();
+        if (query.getStatus() != null) {
+            criteria.andStatusEqualTo(query.getStatus());
+        }
+        if (query.getInterfaceName() != null) {
+            criteria.andInterfaceNameLike("%" + query.getInterfaceName() + "%");
+        }
+        if (query.getEqualInterfaceName() != null) {
+            criteria.andInterfaceNameEqualTo(query.getEqualInterfaceName());
+        }
+        if (query.getModuleId() != null) {
+            criteria.andModuleIdEqualTo(query.getModuleId());
+        }
+        if (query.getProjectId() != null) {
+            criteria.andProjectIdEqualTo(query.getProjectId());
+        }
+        if (query.getEqualFullUrl() != null) {
+            criteria.andFullUrlEqualTo(query.getEqualFullUrl());
+        }
+        if (query.getFullUrl() != null) {
+            criteria.andFullUrlLike("%" + query.getFullUrl() + "%");
+        }
+        if (query.getExceptId() != null) {
+            criteria.andIdNotEqualTo(query.getExceptId());
+        }
+        if (query.getExceptVersion() != null) {
+            criteria.andVersionNotEqualTo(query.getExceptVersion());
+        }
+        return example;
+    }
     /**
      *
      * @param interFace
@@ -66,42 +159,6 @@ public class CustomInterfaceService implements ILuceneService {
         return interDto;
     }
 
-
-//	@Override
-//	@Transactional
-//	public JsonResult getInterfaceList(Page page,List<String> moduleIds, Interface interFace, Integer currentPage) {
-//		Map<String, Object> params = Tools.getMap("moduleId", interFace.getModuleId(),
-//				"interfaceName|like", interFace.getInterfaceName(),"fullUrl|like", interFace.getUrl()==null?"":interFace.getUrl().trim());
-//		if(moduleIds != null){
-//			moduleIds.add("NULL");// 防止长度为0，导致in查询报错
-//			params.put("moduleId|in", moduleIds);
-//		}
-//
-//		List<Interface> interfaces = findByMap(
-//				params, " new Interface(id,moduleId,interfaceName,version,createTime,updateBy,updateTime,remark,sequence)", page, null);
-//
-//		List<Module> modules = new ArrayList<Module>();
-//		// 搜索接口时，modules为空
-//		if (interFace.getModuleId() != null && MyString.isEmpty(interFace.getInterfaceName()) && MyString.isEmpty(interFace.getUrl()) ) {
-//			ModuleCriteria example = new ModuleCriteria();
-//			example.createCriteria().andPa
-//
-//			params = Tools.getMap("parentId", interFace.getModuleId(), "type", "MODULE");
-//			if(moduleIds != null){
-//				moduleIds.add("NULL");// 防止长度为0，导致in查询报错
-//				params.put("id|in", moduleIds);
-//			}
-//			params.put("id|!=", "top");// 顶级目录不显示
-//
-//			modules = moduleService.findByMap(params, null, null);
-//		}
-//		params.clear();
-//		params.put("interfaces", interfaces);
-//		params.put("modules", modules);
-//		return new JsonResult(1, params, page,
-//				Tools.getMap("crumbs", Tools.getCrumbs("接口列表:"+cacheService.getModuleName(interFace.getModuleId()),"void"),
-//						"module",cacheService.getModule(interFace.getModuleId())));
-//	}
 
     public void getInterFaceRequestExam(InterfaceDto interFace) {
         Module module = moduleCache.get(interFace.getModuleId());
@@ -142,32 +199,14 @@ public class CustomInterfaceService implements ILuceneService {
         return "接口";
     }
 
-    public List<InterfaceWithBLOBs> getByProjectId(String projectId) {
-        InterfaceCriteria example = new InterfaceCriteria();
-        InterfaceCriteria.Criteria criteria = example.createCriteria().andProjectIdEqualTo(projectId);
-        return dao.selectByExampleWithBLOBs(example);
-    }
-
-    public int countByFullUrl(String moduleId, String fullUrl, String expectId){
-        Assert.notNull(moduleId, "moduleId can't be null");
-        Assert.notNull(fullUrl);
-
-        InterfaceCriteria example = new InterfaceCriteria();
-        InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId).andFullUrlEqualTo(fullUrl);
-        if (expectId != null){
-            criteria.andIdNotEqualTo(expectId);
-        }
-        return dao.countByExample(example);
-    }
-
     /**
      * update article and add update log
      * @param model
      * @param modelName
      * @param remark
      */
-    public void update(InterfaceWithBLOBs model, String modelName, String remark) {
-        InterfaceWithBLOBs dbModel = dao.selectByPrimaryKey(model.getId());
+    public void update(InterfaceWithBLOBs model, String modelName, String remark) throws MyException{
+        InterfaceWithBLOBs dbModel = interfaceDao.selectByPrimaryKey(model.getId());
         if(MyString.isEmpty(remark)) {
             remark = model.getInterfaceName();
         }
@@ -175,12 +214,12 @@ public class CustomInterfaceService implements ILuceneService {
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        dao.updateByPrimaryKeySelective(model);
+        super.insert(model);
     }
 
-    public void delete(String id, String modelName, String remark){
+    public void delete(String id, String modelName, String remark) throws MyException{
         Assert.notNull(id);
-        InterfaceWithBLOBs dbModel = dao.selectByPrimaryKey(id);
+        InterfaceWithBLOBs dbModel = interfaceDao.selectByPrimaryKey(id);
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getInterfaceName();
         }
@@ -188,24 +227,9 @@ public class CustomInterfaceService implements ILuceneService {
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        dao.deleteByPrimaryKey(dbModel.getId());
+        super.delete(id);
     }
 
-    public List<InterfaceWithBLOBs> selectByModuleId(String moduleId){
-        Assert.notNull(moduleId);
-        InterfaceCriteria example = new InterfaceCriteria();
-        example.createCriteria().andModuleIdEqualTo(moduleId);
-
-        return dao.selectByExampleWithBLOBs(example);
-    }
-
-    public int countByModuleId(String moduleId){
-        Assert.notNull(moduleId);
-        InterfaceCriteria example = new InterfaceCriteria();
-        example.createCriteria().andModuleIdEqualTo(moduleId);
-
-        return dao.countByExample(example);
-    }
 
     /**
      * 根据模块下的所有fullUrl
@@ -228,13 +252,13 @@ public class CustomInterfaceService implements ILuceneService {
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(new InterfaceCriteria()), null));
+        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(dao.selectByExampleWithBLOBs(example), null));
+        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(example), null));
     }
 }

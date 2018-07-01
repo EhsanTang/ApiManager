@@ -9,11 +9,10 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.User;
-import cn.crap.model.UserCriteria;
 import cn.crap.query.ProjectUserQuery;
+import cn.crap.query.UserQuery;
 import cn.crap.service.ProjectUserService;
-import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.mybatis.UserService;
+import cn.crap.service.UserService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ import java.util.List;
 public class ProjectUserController extends BaseController{
 
 	@Autowired
-	private CustomUserService customUserService;
+	private UserService customUserService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -78,9 +77,8 @@ public class ProjectUserController extends BaseController{
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
 			search = userService.getById( projectUser.getUserId() );
 		}else if( !MyString.isEmpty( projectUser.getUserEmail()) ){
-			UserCriteria example = new UserCriteria();
-			example.createCriteria().andEmailEqualTo(projectUser.getUserEmail());
-			List<User> users = userService.selectByExample(example);
+            UserQuery query = new UserQuery().setEqualEmail(projectUser.getUserEmail());
+			List<User> users = userService.query(query);
 			if( users.size() == 1){
 				search = users.get(0);
 			}

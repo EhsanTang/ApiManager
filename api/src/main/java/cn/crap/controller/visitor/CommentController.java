@@ -1,11 +1,16 @@
 package cn.crap.controller.visitor;
 
-import java.util.Date;
-
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.MyError;
-import cn.crap.service.mybatis.CommentService;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
+import cn.crap.framework.base.BaseController;
+import cn.crap.model.Comment;
+import cn.crap.service.CommentService;
 import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -13,13 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.framework.base.BaseController;
-import cn.crap.model.Comment;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import java.util.Date;
 
 @Controller("visitorCommentController")
 @RequestMapping("/visitor/comment")

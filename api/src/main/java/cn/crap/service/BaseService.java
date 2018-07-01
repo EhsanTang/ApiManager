@@ -1,4 +1,4 @@
-package cn.crap.service.mybatis;
+package cn.crap.service;
 
 import cn.crap.dao.mybatis.BaseDao;
 import cn.crap.enumer.TableId;
@@ -48,7 +48,7 @@ public class BaseService<PO extends BasePo, DAO> {
         return baseDao.updateByPrimaryKeySelective(po) > 0 ? true : false;
     }
 
-    public boolean delete(String id) {
+    public boolean delete(String id) throws MyException{
         Assert.notNull(id, "id can't be null");
         return baseDao.deleteByPrimaryKey(id) > 0 ? true : false;
     }

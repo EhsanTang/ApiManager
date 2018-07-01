@@ -15,13 +15,14 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.*;
 import cn.crap.model.Error;
+import cn.crap.query.ArticleQuery;
+import cn.crap.query.ErrorQuery;
+import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.service.custom.CustomArticleService;
-import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.custom.CustomInterfaceService;
+import cn.crap.service.ArticleService;
+import cn.crap.service.ErrorService;
+import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
-import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.InterfaceService;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,19 +44,15 @@ import java.util.Map;
 @RequestMapping("/user/staticize")
 public class StaticizeController extends BaseController{
 	@Autowired
-	private CustomInterfaceService customInterfaceService;
-	@Autowired
 	private ModuleService moduleService;
 	@Autowired
 	private Config config;
 	@Autowired
 	private InterfaceService interfaceService;
 	@Autowired
-	private CustomErrorService customErrorService;
+	private ErrorService errorService;
 	@Autowired
 	private ArticleService articleService;
-	@Autowired
-	private CustomArticleService customArticleService;
 
 	/**
 	 * 静态化错误码列表
@@ -77,8 +74,12 @@ public class StaticizeController extends BaseController{
 		
 		Map<String, Object> returnMap = getProjectModuleInfor(null, project, "-错误码");
 		
-		Page page = new Page(15, currentPage);
-		List<Error> errorModels = customErrorService.queryByProjectId(projectId, null, null, page);
+
+		ErrorQuery errorQuery = new ErrorQuery().setProjectId(projectId);
+		errorQuery.setCurrentPage(currentPage);
+		Page page = new Page(errorQuery);
+		List<Error> errorModels = errorService.query(errorQuery);
+		page.setAllRow(errorService.count(errorQuery));
 
 		returnMap.put("page", page);
 		returnMap.put("errorList", ErrorAdapter.getDto(errorModels));
@@ -116,9 +117,12 @@ public class StaticizeController extends BaseController{
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口");
 		
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId);
-		Page page = new Page(15, currentPage);
+
+        InterfaceQuery interfaceQuery = new InterfaceQuery().setCurrentPage(currentPage).setModuleId(moduleId);
+        Page page = new Page(interfaceQuery);
+        page.setAllRow(interfaceService.count(interfaceQuery));
 		returnMap.put("page", page);
-		returnMap.put("interfaceList", InterfaceAdapter.getDto(customInterfaceService.selectByModuleId(moduleId), module));
+		returnMap.put("interfaceList", InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module));
 		returnMap.put("activePage",moduleId+"_interface");
 		returnMap.put("url", module.getId() + "-interfaceList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -184,8 +188,11 @@ public class StaticizeController extends BaseController{
 		}
 		
 		Map<String, Object> map = Tools.getMap("moduleId", moduleId, "type", type, "category", category);
-		Page page = new Page(15, currentPage);
-		List<Article> articleList = customArticleService.queryArticle(moduleId, null, type, category, null, page);
+
+        ArticleQuery articleQuery = new ArticleQuery().setCurrentPage(currentPage).setModuleId(moduleId).setType(type).setCategory(category);
+        Page page = new Page(articleQuery);
+        page.setAllRow(articleService.count(articleQuery));
+		List<Article> articleList = articleService.query(articleQuery);
 		returnMap.put("page", page);
 		returnMap.put("articleList", articleList);
 		returnMap.put("needStaticizes", needStaticizes);
@@ -265,7 +272,7 @@ public class StaticizeController extends BaseController{
 		}
 		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-接口详情");
 		List<InterfacePDFDto> interfaces = new ArrayList<InterfacePDFDto>();
-		interfaces.add(customInterfaceService.getInterDto(interFace, module, false));
+		interfaces.add(interfaceService.getInterDto(interFace, module, false));
 
 		returnMap.put("interfaces", interfaces);
 		returnMap.put("activePage",module.getId()+"_interface");
@@ -374,7 +381,7 @@ public class StaticizeController extends BaseController{
 		int pageSize = 15;
 		int totalPage = 0;
 		if(needStaticizes.indexOf(",error,") >= 0){
-			int errorSize = customErrorService.countByProjectId(projectId);
+			int errorSize = errorService.count(new ErrorQuery().setProjectId(projectId));
 			// 计算总页数
 			totalPage = (errorSize+pageSize-1)/pageSize;
 			if(totalPage == 0){
@@ -400,7 +407,9 @@ public class StaticizeController extends BaseController{
 						continue; // 空类目不静态化
 					}
 					// 查询页码
-					int articleSize = customArticleService.countByModuleId(module.getId(), null, "ARTICLE", category, null);
+                    ArticleQuery articleQuery = new ArticleQuery();
+					articleQuery.setModuleId(module.getId()).setType(ArticleType.ARTICLE.name()).setCategory(category);
+					int articleSize = articleService.count(articleQuery);
 					// 计算总页数
 					totalPage = (articleSize+pageSize-1)/pageSize;
 					if(totalPage == 0){
@@ -415,7 +424,9 @@ public class StaticizeController extends BaseController{
 				}
 				
 				// 文章分类，不分类
-				int articleSize = customArticleService.countByModuleId(module.getId(), null, "ARTICLE", null, null);
+                ArticleQuery articleQuery = new ArticleQuery();
+                articleQuery.setModuleId(module.getId()).setType(ArticleType.ARTICLE.name());
+				int articleSize = articleService.count(articleQuery);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){
@@ -430,7 +441,8 @@ public class StaticizeController extends BaseController{
 				
 				
 				// 静态化文章
-				for(Article article: customArticleService.queryByModuleIdAndType(module.getId(), "ARTICLE")){
+                articleQuery.setPageSize(ALL_PAGE_SIZE);
+                for(Article article: articleService.query(articleQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleDetail.do?articleId="+ article.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");
@@ -441,7 +453,8 @@ public class StaticizeController extends BaseController{
 			
 			if(needStaticizes.indexOf(",dictionary,") >= 0){
 				// 数据字典列表
-				int articleSize = customArticleService.countByModuleId(module.getId(), null, "DICTIONARY", null, null);
+                ArticleQuery articleQuery = new ArticleQuery().setModuleId(module.getId()).setType(ArticleType.DICTIONARY.name());
+                int articleSize = articleService.count(articleQuery);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
 				if(totalPage == 0){
@@ -455,7 +468,8 @@ public class StaticizeController extends BaseController{
 				}
 				
 				// 静态化数据字典详情
-				for(Article article: customArticleService.queryByModuleIdAndType(module.getId(),  "DICTIONARY")){
+                articleQuery.setPageSize(ALL_PAGE_SIZE);
+				for(Article article: articleService.query(articleQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");
@@ -465,7 +479,8 @@ public class StaticizeController extends BaseController{
 			if(needStaticizes.indexOf("interface") >= 0){
 				// 接口列表
 				// 计算总页数
-				totalPage = (customInterfaceService.countByModuleId(module.getId())+pageSize-1)/pageSize;
+                InterfaceQuery interfaceQuery = new InterfaceQuery().setModuleId(module.getId());
+                totalPage = (interfaceService.count(interfaceQuery)+pageSize-1)/pageSize;
 				if(totalPage == 0){
 					totalPage = 1;
 				}
@@ -478,7 +493,8 @@ public class StaticizeController extends BaseController{
 				
 				
 				// 静态化接口详情
-				for(Interface inter: customInterfaceService.selectByModuleId(module.getId())){
+                interfaceQuery.setPageSize(ALL_PAGE_SIZE);
+				for(Interface inter: interfaceService.query(interfaceQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + inter.getId()+".html");

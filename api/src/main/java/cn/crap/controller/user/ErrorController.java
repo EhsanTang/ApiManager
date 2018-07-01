@@ -3,13 +3,14 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Error;
-import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.mybatis.ErrorService;
+import cn.crap.query.ErrorQuery;
+import cn.crap.service.ErrorService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -22,36 +23,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-// TODO jsonResult 优化，html页面国际化
 @Controller
 @RequestMapping("/user/error")
 public class ErrorController extends BaseController{
     @Autowired
     private ErrorService errorService;
-    @Autowired
-    private CustomErrorService customErrorService;
 
     /**
      * 错误码列表
-     * @param projectId
-     * @param errorCode
-     * @param errorMsg
-     * @param currentPage
      * @return
      * @throws MyException
      */
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult list(String projectId, String errorCode, String errorMsg,  Integer currentPage) throws MyException {
-        throwExceptionWhenIsNull(projectId, "projectId");
-        checkUserPermissionByProject(projectId, VIEW);
+    public JsonResult list(@ModelAttribute ErrorQuery query) throws MyException {
+        throwExceptionWhenIsNull(query.getProjectId(), "projectId");
+        checkUserPermissionByProject(query.getProjectId(), VIEW);
 
-        Page page = new Page(currentPage);
-        List<Error> models = customErrorService.queryByProjectId(projectId, errorCode, errorMsg, page);
+        Page page = new Page(query);
+        List<Error> models = errorService.query(query);
+        page.setAllRow(errorService.count(query));
         List<ErrorDto> dtoList = ErrorAdapter.getDto(models);
 
-        return new JsonResult(1, dtoList, page).others(Tools.getMap("crumbs", Tools.getCrumbs("错误码:" + projectCache.get(projectId).getName(), "void")));
+        return new JsonResult().data(dtoList).page(page)
+                .others(Tools.getMap("crumbs", Tools.getCrumbs("错误码:" + projectCache.get(query.getProjectId()).getName(), "void")));
     }
 
     @RequestMapping("/detail.do")
@@ -82,7 +78,7 @@ public class ErrorController extends BaseController{
             // 错误码重复及权限检查
             Error dbError = errorService.getById(dto.getId());
             if (!dbError.getErrorCode().equals(dto.getErrorCode())){
-                boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
+                boolean existSameErrorCode = errorService.count(new ErrorQuery().setProjectId(projectId).setEqualErrorCode(errorCode)) > 0;
                 if (existSameErrorCode) {
                     return new JsonResult(MyError.E000002);
                 }
@@ -95,9 +91,12 @@ public class ErrorController extends BaseController{
             return new JsonResult(1, dto);
         }
 
-        boolean existSameErrorCode = customErrorService.countByProjectIdAndErrorCode(projectId, errorCode) > 0;
+        boolean existSameErrorCode = errorService.count(new ErrorQuery().setProjectId(projectId).setEqualErrorCode(errorCode)) > 0;
         if (existSameErrorCode) {
             return new JsonResult(MyError.E000002);
+        }
+        if (errorService.count(new ErrorQuery().setProjectId(projectId)) > settingCache.getInteger(SettingEnum.MAX_ERROR)){
+            return new JsonResult(MyError.E000072);
         }
 
         checkUserPermissionByProject(projectId, ADD_ERROR);

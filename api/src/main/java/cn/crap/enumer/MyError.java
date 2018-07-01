@@ -74,7 +74,8 @@ public enum MyError {
 	E000068("项目超过最大允许数量"),
 	E000069("登陆超时，请重新登陆"),
 	E000070("安全校验未通过"),
-    E000071("超过项目允许的最大模块数");
+    E000071("超过项目允许的最大模块数"),
+	E000072("超过项目允许的最大错误码数量");
 	
 	private final String message;
 	private final String enMessage;

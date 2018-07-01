@@ -6,11 +6,7 @@ import cn.crap.enumer.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;
-import cn.crap.service.IPickService;
-import cn.crap.service.ModuleService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.mybatis.ArticleService;
-import cn.crap.service.mybatis.RoleService;
+import cn.crap.service.*;
 import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,8 +104,7 @@ public class AdminPickService implements IPickService{
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
-                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
-                for (Article w : articleService.selectByExample(articleCriteria)) {
+                for (Article w : articleService.queryTop100Page()) {
                     pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
                     picks.add(pick);
                 }
@@ -137,8 +132,8 @@ public class AdminPickService implements IPickService{
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
-                articleCriteria.createCriteria().andStatusEqualTo(ArticleStatus.PAGE.getStatus()).andMkeyIsNotNull();
-                for (Article w : articleService.selectByExample(articleCriteria)) {
+
+                for (Article w : articleService.queryTop100Page()) {
                     pick = new PickDto("wp_" + w.getMkey(), preUrl + w.getMkey(), w.getName()+" [页面]");
                     picks.add(pick);
                 }

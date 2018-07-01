@@ -10,8 +10,6 @@ import cn.crap.model.Log;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectCriteria;
 import cn.crap.query.ProjectQuery;
-import cn.crap.service.mybatis.BaseService;
-import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +63,7 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
      * 记录日志，再更新
      * @param project
      */
-    public boolean update(Project project, boolean needAddLog) {
+    public boolean update(Project project, boolean needAddLog) throws MyException{
         if (needAddLog) {
             Project dbModel = super.getById(project.getId());
             Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
@@ -88,7 +86,7 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
      * @param id
      */
     @Override
-    public boolean delete(String id) {
+    public boolean delete(String id) throws MyException{
         Assert.notNull(id);
         Project dbModel = super.getById(id);
 

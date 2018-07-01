@@ -1,15 +1,14 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.enumer.InterfaceContentType;
+import cn.crap.framework.base.BaseController;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.service.mybatis.InterfaceService;
+import cn.crap.service.InterfaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cn.crap.framework.base.BaseController;
 
 @Controller
 @RequestMapping("/mock")

@@ -9,8 +9,6 @@ import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.ModuleCriteria;
 import cn.crap.query.ModuleQuery;
-import cn.crap.service.mybatis.BaseService;
-import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.ILogConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -62,7 +60,7 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
      * @param needAddLog 是否需要添加日志
      * @return
      */
-    public boolean update(Module model, boolean needAddLog) {
+    public boolean update(Module model, boolean needAddLog) throws MyException{
         if (model == null) {
             return false;
         }
@@ -79,7 +77,7 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
         return super.update(model);
     }
 
-    public boolean delete(String id) {
+    public boolean delete(String id) throws MyException{
         // TODO 日志
         Assert.notNull(id, "id can't be null");
         return super.delete(id);

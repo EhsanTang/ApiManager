@@ -4,8 +4,9 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumer.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Menu;
+import cn.crap.query.MenuQuery;
 import cn.crap.service.IPickService;
-import cn.crap.service.custom.CustomMenuService;
+import cn.crap.service.MenuService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PickService implements IPickService{
     private IPickService userPickService;
 
     @Autowired
-    private CustomMenuService customMenuService;
+    private MenuService customMenuService;
 
     @Override
     public List<PickDto> getPickList(String code, String key) throws MyException {
@@ -92,7 +93,7 @@ public class PickService implements IPickService{
 
             // 一级菜单
             case MENU:
-                for (Menu m : customMenuService.queryByParentId("0")) {
+                for (Menu m : customMenuService.query(new MenuQuery().setParentId("0"))) {
                     pick = new PickDto(m.getId(), m.getMenuName());
                     picks.add(pick);
                 }

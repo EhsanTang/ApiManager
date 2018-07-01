@@ -6,11 +6,12 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.HotSearch;
-import cn.crap.model.HotSearchCriteria;
-import cn.crap.service.mybatis.HotSearchService;
-import cn.crap.utils.*;
+import cn.crap.query.HotSearchQuery;
+import cn.crap.service.HotSearchService;
+import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,16 +25,11 @@ public class HotSearchController extends BaseController {
     @RequestMapping("/admin/hotSearch/list.do")
     @ResponseBody
     @AuthPassport(authority = C_HOT_SEARCH)
-    public JsonResult list(Integer currentPage) {
-        Page page = new Page(currentPage);
-        HotSearchCriteria example = new HotSearchCriteria();
+    public JsonResult list(@ModelAttribute HotSearchQuery query) throws MyException{
+        Page page = new Page(query);
 
-        example.setOrderByClause(TableField.SORT.TIMES_DESC);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-
-        page.setAllRow(hotSearchService.countByExample(example));
-        return new JsonResult(1, HotSearchAdapter.getDto(hotSearchService.selectByExample(example)), page);
+        page.setAllRow(hotSearchService.count(query));
+        return new JsonResult(1, HotSearchAdapter.getDto(hotSearchService.query(query)), page);
     }
 
     @RequestMapping("/hotSearch/detail.do")

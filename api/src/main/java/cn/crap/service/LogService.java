@@ -1,29 +1,31 @@
-package cn.crap.service.custom;
+package cn.crap.service;
 
+import cn.crap.dao.mybatis.LogDao;
 import cn.crap.enumer.LogType;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
-import cn.crap.service.ModuleService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.SourceService;
-import cn.crap.service.mybatis.*;
+import cn.crap.query.LogQuery;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * @author Ehsan
  */
 @Service
-public class CustomLogService{
+public class LogService extends BaseService<Log, LogDao> {
 
     @Autowired
     private ArticleService articleService;
-    @Autowired
-    private ProjectService projectService;
     @Autowired
     private ModuleService moduleService;
     @Autowired
@@ -31,7 +33,57 @@ public class CustomLogService{
     @Autowired
     private SourceService sourceService;
     @Autowired
-    private LogService logService;
+    private ProjectService projectService;
+    private LogDao logDao;
+
+    @Resource
+    public void LogDao(LogDao logDao) {
+        this.logDao = logDao;
+        super.setBaseDao(logDao, TableId.LOG);
+    }
+    
+    /**
+     * 查询日志
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public List<Log> query(LogQuery query) throws MyException {
+        Assert.notNull(query);
+
+        Page page = new Page(query);
+        LogCriteria example = getLogCriteria(query);
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
+        example.setOrderByClause(query.getSort() == null ? TableField.SORT.CREATE_TIME_DES : query.getSort());
+
+        return logDao.selectByExample(example);
+    }
+
+    /**
+     * 查询日志数量
+     * @param query
+     * @return
+     * @throws MyException
+     */
+    public int count(LogQuery query) throws MyException {
+        Assert.notNull(query);
+
+        LogCriteria example = getLogCriteria(query);
+        return logDao.countByExample(example);
+    }
+
+    private LogCriteria getLogCriteria(LogQuery query) throws MyException {
+        LogCriteria example = new LogCriteria();
+        LogCriteria.Criteria criteria = example.createCriteria();
+        if (query.getIdenty() != null){
+            criteria.andIdentyEqualTo(query.getIdenty());
+        }
+        if (query.getModelName() != null){
+            criteria.andModelNameEqualTo(query.getModelName());
+        }
+        return example;
+    }
 
     /**
      * recover by log
@@ -41,14 +93,14 @@ public class CustomLogService{
      * @throws MyException
      */
     public void recover(Log log) throws MyException {
-        log = logService.getById(log.getId());
+        log = getById(log.getId());
         switch (log.getModelClass().toUpperCase()) {
             case "INTERFACEWITHBLOBS"://恢复接口
             case "INTERFACE"://恢复接口
                 JSONObject json = JSONObject.fromObject(log.getContent());
                 InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, InterfaceWithBLOBs.class);
                 checkModule(inter.getModuleId());
-                checkProject(inter.getProjectId());
+                checkLog(inter.getProjectId());
                 interfaceService.update(inter);
                 break;
             case "ARTICLEWITHBLOBS":// 恢复文章
@@ -56,7 +108,7 @@ public class CustomLogService{
                 json = JSONObject.fromObject(log.getContent());
                 ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
                 checkModule(article.getModuleId());
-                checkProject(article.getProjectId());
+                checkLog(article.getProjectId());
 
                 // key有唯一约束，不置为null会报错
                 if (MyString.isEmpty(article.getMkey())) {
@@ -68,7 +120,7 @@ public class CustomLogService{
             case "MODULE"://恢复模块
                 json = JSONObject.fromObject(log.getContent());
                 Module module = (Module) JSONObject.toBean(json, Module.class);
-                checkProject(module.getProjectId());
+                checkLog(module.getProjectId());
 
                 // 模块不允许恢复修改操作，需要关联修改接口数据
                 if (!log.getType().equals(LogType.DELTET.name())) {
@@ -77,9 +129,9 @@ public class CustomLogService{
                 moduleService.update(module);
                 break;
             case "PROJECTWITHBLOBS":
-            case "PROJECT"://恢复项目
+            case "PROJECT"://恢复日志
                 json = JSONObject.fromObject(log.getContent());
-                Project project = (Project) JSONObject.toBean(json, Project.class);
+                Project project = (Project) JSONObject.toBean(json, Log.class);
                 projectService.update(project);
                 break;
             case "SOURCEWITHBLOBS":
@@ -87,14 +139,14 @@ public class CustomLogService{
                 json = JSONObject.fromObject(log.getContent());
                 Source source = (Source) JSONObject.toBean(json, Source.class);
                 checkModule(source.getModuleId());
-                checkProject(source.getProjectId());
+                checkLog(source.getProjectId());
                 sourceService.update(source);
                 break;         
         }
     }
 
-    public String getProjectByLog(Log log){
-            log = logService.getById(log.getId());
+    public String getProjectIdByLog(Log log){
+            log = getById(log.getId());
             switch (log.getModelClass().toUpperCase()) {
                 case "INTERFACEWITHBLOBS"://恢复接口
                 case "INTERFACE"://恢复接口
@@ -112,9 +164,9 @@ public class CustomLogService{
                     Module module = (Module) JSONObject.toBean(json, Module.class);
                     return module.getProjectId();
                 case "PROJECTWITHBLOBS":
-                case "PROJECT"://恢复项目
+                case "PROJECT"://恢复日志
                     json = JSONObject.fromObject(log.getContent());
-                    Project project = (Project) JSONObject.toBean(json, Project.class);
+                    Log project = (Log) JSONObject.toBean(json, Log.class);
                     return project.getId();
                 case "SOURCEWITHBLOBS":
                 case "SOURCE"://恢复资源
@@ -133,7 +185,7 @@ public class CustomLogService{
         }
     }
 
-    private void checkProject(String projectId) throws MyException {
+    private void checkLog(String projectId) throws MyException {
         Assert.notNull(projectId);
         Project project = projectService.getById(projectId);
         if (project == null) {

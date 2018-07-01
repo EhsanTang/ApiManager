@@ -6,7 +6,7 @@ import cn.crap.enumer.ProjectStatus;
 import cn.crap.enumer.ProjectType;
 import cn.crap.model.Project;
 import cn.crap.model.User;
-import cn.crap.service.mybatis.UserService;
+import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
 
 import java.util.ArrayList;

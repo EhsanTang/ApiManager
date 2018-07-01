@@ -5,16 +5,14 @@ import cn.crap.dto.PickDto;
 import cn.crap.enumer.IconfontCode;
 import cn.crap.enumer.MyError;
 import cn.crap.enumer.PickCode;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.MyException;
-import cn.crap.model.*;
 import cn.crap.model.Error;
+import cn.crap.model.*;
+import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.query.ProjectQuery;
-import cn.crap.service.IPickService;
-import cn.crap.service.custom.CustomErrorService;
-import cn.crap.service.ModuleService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.mybatis.UserService;
+import cn.crap.service.*;
 import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
@@ -36,11 +34,13 @@ import java.util.TreeSet;
 @Service("userPickService")
 public class UserPickService implements IPickService{
     @Autowired
-    private CustomErrorService customErrorService;
+    private ErrorService errorService;
     @Autowired
     private ProjectService projectService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SettingCache settingCache;
     @Autowired
     private ModuleService moduleService;
     @Resource(name = "adminPickService")
@@ -63,7 +63,7 @@ public class UserPickService implements IPickService{
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
 
-                for (Error error : customErrorService.queryByProjectId(key, null, null, null)) {
+                for (Error error : errorService.query(new ErrorQuery().setProjectId(key).setPageSize(settingCache.getInteger(SettingEnum.MAX_ERROR)))) {
                     pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
                     picks.add(pick);
                 }

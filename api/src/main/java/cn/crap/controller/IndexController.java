@@ -3,7 +3,7 @@ package cn.crap.controller;
 import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
-import cn.crap.service.custom.CustomMenuService;
+import cn.crap.service.MenuService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @Controller
 public class IndexController extends BaseController {
 	@Autowired
-	CustomMenuService customMenuService;
+	MenuService customMenuService;
 	
 	/**
 	 * 

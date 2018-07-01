@@ -14,7 +14,7 @@
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="TINYINT" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="equalEmail" property="equalEmail" jdbcType="VARCHAR" />
     <result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
     <result column="loginType" property="loginType" jdbcType="INTEGER" />
     <result column="thirdlyId" property="thirdlyId" jdbcType="VARCHAR" />
@@ -80,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, userName, password, trueName, roleId, roleName, auth, authName, createTime, status, 
-    sequence, type, email, avatarUrl, loginType, thirdlyId, passwordSalt
+    sequence, type, equalEmail, avatarUrl, loginType, thirdlyId, passwordSalt
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.UserCriteria" >
     select
@@ -125,13 +125,13 @@
       trueName, roleId, roleName, 
       auth, authName, createTime, 
       status, sequence, type, 
-      email, avatarUrl, loginType, 
+      equalEmail, avatarUrl, loginType,
       thirdlyId, passwordSalt)
     values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{trueName,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
       #{auth,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
-      #{email,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{loginType,jdbcType=INTEGER}, 
+      #{equalEmail,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{loginType,jdbcType=INTEGER},
       #{thirdlyId,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.User" >
@@ -171,8 +171,8 @@
       <if test="type != null" >
         type,
       </if>
-      <if test="email != null" >
-        email,
+      <if test="equalEmail != null" >
+        equalEmail,
       </if>
       <if test="avatarUrl != null" >
         avatarUrl,
@@ -222,8 +222,8 @@
       <if test="type != null" >
         #{type,jdbcType=TINYINT},
       </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
+      <if test="equalEmail != null" >
+        #{equalEmail,jdbcType=VARCHAR},
       </if>
       <if test="avatarUrl != null" >
         #{avatarUrl,jdbcType=VARCHAR},
@@ -284,8 +284,8 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=TINYINT},
       </if>
-      <if test="record.email != null" >
-        email = #{record.email,jdbcType=VARCHAR},
+      <if test="record.equalEmail != null" >
+        equalEmail = #{record.equalEmail,jdbcType=VARCHAR},
       </if>
       <if test="record.avatarUrl != null" >
         avatarUrl = #{record.avatarUrl,jdbcType=VARCHAR},
@@ -318,7 +318,7 @@
       status = #{record.status,jdbcType=TINYINT},
       sequence = #{record.sequence,jdbcType=INTEGER},
       type = #{record.type,jdbcType=TINYINT},
-      email = #{record.email,jdbcType=VARCHAR},
+      equalEmail = #{record.equalEmail,jdbcType=VARCHAR},
       avatarUrl = #{record.avatarUrl,jdbcType=VARCHAR},
       loginType = #{record.loginType,jdbcType=INTEGER},
       thirdlyId = #{record.thirdlyId,jdbcType=VARCHAR},
@@ -363,8 +363,8 @@
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
       </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
+      <if test="equalEmail != null" >
+        equalEmail = #{equalEmail,jdbcType=VARCHAR},
       </if>
       <if test="avatarUrl != null" >
         avatarUrl = #{avatarUrl,jdbcType=VARCHAR},
@@ -394,7 +394,7 @@
       status = #{status,jdbcType=TINYINT},
       sequence = #{sequence,jdbcType=INTEGER},
       type = #{type,jdbcType=TINYINT},
-      email = #{email,jdbcType=VARCHAR},
+      equalEmail = #{equalEmail,jdbcType=VARCHAR},
       avatarUrl = #{avatarUrl,jdbcType=VARCHAR},
       loginType = #{loginType,jdbcType=INTEGER},
       thirdlyId = #{thirdlyId,jdbcType=VARCHAR},

@@ -4,7 +4,7 @@ import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingEnum;
 import cn.crap.model.Setting;
-import cn.crap.service.mybatis.SettingService;
+import cn.crap.service.SettingService;
 import cn.crap.service.tool.SettingCache;
 import org.springframework.stereotype.Service;
 

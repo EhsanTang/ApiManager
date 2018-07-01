@@ -6,7 +6,6 @@ import cn.crap.framework.MyException;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.ProjectUserCriteria;
 import cn.crap.query.ProjectUserQuery;
-import cn.crap.service.mybatis.BaseService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.ILogConst;
 import cn.crap.utils.Page;

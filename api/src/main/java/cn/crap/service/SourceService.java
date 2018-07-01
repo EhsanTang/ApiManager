@@ -11,8 +11,6 @@ import cn.crap.model.Log;
 import cn.crap.model.Source;
 import cn.crap.model.SourceCriteria;
 import cn.crap.query.SourceQuery;
-import cn.crap.service.mybatis.BaseService;
-import cn.crap.service.mybatis.LogService;
 import cn.crap.utils.ILogConst;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
@@ -50,7 +48,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
         return super.insert(model);
     }
 
-    public void update(Source model, boolean needAddLog) {
+    public void update(Source model, boolean needAddLog) throws MyException{
         if (needAddLog) {
             Source dbModel = sourceDao.selectByPrimaryKey(model.getId());
             Log log = Adapter.getLog(dbModel.getId(), L_SOURCE_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
@@ -60,7 +58,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(String id) throws MyException{
         Assert.notNull(id);
         Source dbModel = sourceDao.selectByPrimaryKey(id);
         Log log = Adapter.getLog(dbModel.getId(), L_SOURCE_CHINESE, dbModel.getName(), LogType.DELTET, dbModel.getClass(), dbModel);

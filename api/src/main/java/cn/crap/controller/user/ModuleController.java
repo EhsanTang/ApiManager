@@ -16,15 +16,11 @@ import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.query.ArticleQuery;
+import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.query.SourceQuery;
-import cn.crap.service.ModuleService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.ProjectUserService;
-import cn.crap.service.SourceService;
-import cn.crap.service.custom.CustomArticleService;
-import cn.crap.service.custom.CustomInterfaceService;
-import cn.crap.service.mybatis.*;
+import cn.crap.service.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,9 +39,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@Autowired
 	private RoleService roleService;
 	@Autowired
-	private CustomArticleService articleService;
-	@Autowired
-	private InterfaceService interfaceService;
+	private ArticleService articleService;
 	@Autowired
 	private ProjectService projectService;
 	@Autowired
@@ -59,7 +53,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@Autowired
 	private LogService logService;
 	@Autowired
-	private CustomInterfaceService customInterfaceService;
+	private InterfaceService interfaceService;
 	
 	
 	@RequestMapping("/list.do")
@@ -122,7 +116,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
-			customInterfaceService.updateFullUrlByModuleId(module.getUrl(), id);
+			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
 			LoginInfoDto user = LoginUserHelper.getUser();
 			String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
@@ -167,7 +161,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		module.setTemplateId( inter.getIsTemplate() ? "-1" : inter.getId() );
 		moduleService.update(module);
 		
-		customInterfaceService.deleteTemplateByModuleId(module.getId());
+		interfaceService.deleteTemplateByModuleId(module.getId());
 		if(!inter.getIsTemplate()){
 			inter.setIsTemplate(true);;
 			interfaceService.update(inter);
@@ -189,11 +183,11 @@ public class ModuleController extends BaseController implements ILogConst{
 		Module dbModule = moduleCache.get(module.getId());
 		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
-		if(customInterfaceService.countByModuleId(dbModule.getId()) >0 ){
+		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){
 			throw new MyException(MyError.E000024);
 		}
 		
-		if(articleService.countByModuleIdAndType(dbModule.getId(), ArticleType.ARTICLE.name()) >0 ){
+		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.ARTICLE.name())) >0 ){
 			throw new MyException(MyError.E000034);
 		}
 		
@@ -201,7 +195,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			throw new MyException(MyError.E000035);
 		}
 		
-		if(articleService.countByModuleIdAndType(dbModule.getId(),  ArticleType.DICTIONARY.name()) >0 ){
+		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.DICTIONARY.name())) >0 ){
 			throw new MyException(MyError.E000036);
 		}
 

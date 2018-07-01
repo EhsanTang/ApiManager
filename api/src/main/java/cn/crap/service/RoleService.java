@@ -1,17 +1,14 @@
-package cn.crap.service.mybatis;
+package cn.crap.service;
 
 import cn.crap.dao.mybatis.RoleDao;
-import cn.crap.framework.IdGenerator;
 import cn.crap.enumer.TableId;
 import cn.crap.model.Role;
 import cn.crap.model.RoleCriteria;
 import cn.crap.model.RoleWithBLOBs;
 import cn.crap.utils.TableField;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,35 +16,33 @@ import java.util.List;
  * service
  */
 @Service
-public class RoleService {
-    @Autowired
-    private RoleDao dao;
+public class RoleService extends BaseService<RoleWithBLOBs, RoleDao> {
+    private RoleDao roleDao;
+
+    @Resource
+    public void RoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+        super.setBaseDao(roleDao, TableId.ROLE);
+    }
 
     public List<Role> selectByExample(RoleCriteria example) {
-        return dao.selectByExample(example);
+        return roleDao.selectByExample(example);
     }
 
     public List<RoleWithBLOBs> selectByExampleWithBLOBs(RoleCriteria example) {
-        return dao.selectByExampleWithBLOBs(example);
+        return roleDao.selectByExampleWithBLOBs(example);
     }
 
 
     public int countByExample(RoleCriteria example) {
-        return dao.countByExample(example);
+        return roleDao.countByExample(example);
     }
 
-    public RoleWithBLOBs getById(String id) {
-        if (id == null){
-            return null;
-        }
-        return dao.selectByPrimaryKey(id);
-    }
-
+    @Override
     public boolean insert(RoleWithBLOBs model) {
         if (model == null) {
             return false;
         }
-        model.setId(IdGenerator.getId(TableId.ROLE));
         if (model.getSequence() == null){
             RoleCriteria example = new RoleCriteria();
             example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
@@ -59,20 +54,7 @@ public class RoleService {
                 model.setSequence(0);
             }
         }
-        model.setCreateTime(new Date());
-        return dao.insertSelective(model) > 0;
-    }
-
-    public boolean update(RoleWithBLOBs model) {
-        if (model == null) {
-            return false;
-        }
-        return dao.updateByPrimaryKeySelective(model) > 0 ? true : false;
-    }
-
-    public boolean delete(String id) {
-        Assert.notNull(id, "id can't be null");
-        return dao.deleteByPrimaryKey(id) > 0 ? true : false;
+        return roleDao.insertSelective(model) > 0;
     }
 
 }

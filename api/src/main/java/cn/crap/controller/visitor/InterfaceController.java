@@ -1,6 +1,7 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.enumer.MyError;
@@ -8,14 +9,12 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.InterfaceCriteria;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.service.custom.CustomInterfaceService;
+import cn.crap.query.InterfaceQuery;
+import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
-import cn.crap.service.mybatis.InterfaceService;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -40,8 +39,6 @@ public class InterfaceController extends BaseController {
 
     @Autowired
     private InterfaceService interfaceService;
-    @Autowired
-    private CustomInterfaceService customInterfaceService;
     @Autowired
     private ModuleService moduleService;
     @Autowired
@@ -91,7 +88,7 @@ public class InterfaceController extends BaseController {
                     return ERROR_VIEW;
                 }
                 Module module = moduleService.getById(interFace.getModuleId());
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, true));
+                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
                 return ERROR_VIEW;
@@ -105,8 +102,8 @@ public class InterfaceController extends BaseController {
                 request.setAttribute("result", ERROR_MODULE_ID);
                 return ERROR_VIEW;
             }
-            for (InterfaceWithBLOBs interFace : customInterfaceService.selectByModuleId(moduleId)) {
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, false));
+            for (InterfaceWithBLOBs interFace : interfaceService.query(new InterfaceQuery().setModuleId(moduleId))) {
+                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, false));
             }
 
             request.setAttribute("interfaces", interfacePDFDtos);
@@ -148,11 +145,11 @@ public class InterfaceController extends BaseController {
             Map<String, Object> map = new HashMap<>();
             List<InterfacePDFDto> interfacePDFDtos = new ArrayList<>();
             if (interFace == null){
-                for (InterfaceWithBLOBs interfaceWithBLOBs : customInterfaceService.selectByModuleId(moduleId)) {
-                    interfacePDFDtos.add(customInterfaceService.getInterDto(interfaceWithBLOBs, module, true));
+                for (InterfaceWithBLOBs interfaceWithBLOBs : interfaceService.query(new InterfaceQuery().setModuleId(moduleId))) {
+                    interfacePDFDtos.add(interfaceService.getInterDto(interfaceWithBLOBs, module, true));
                 }
             }else {
-                interfacePDFDtos.add(customInterfaceService.getInterDto(interFace, module, true));
+                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
             }
 
             map.put("interfacePDFDtos", interfacePDFDtos);
@@ -175,20 +172,13 @@ public class InterfaceController extends BaseController {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
 
-        Page page = new Page(currentPage);
+        InterfaceQuery query = new InterfaceQuery().setModuleId(moduleId).setInterfaceName(interfaceName).setFullUrl(url).setCurrentPage(currentPage);
+        Page page = new Page(query);
+        page.setAllRow(interfaceService.count(query));
 
-        InterfaceCriteria example = new InterfaceCriteria();
-        InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(moduleId);
-        if (!MyString.isEmpty(interfaceName)) {
-            criteria.andInterfaceNameLike("%" + interfaceName + "%");
-        }
-        if (!MyString.isEmpty(url)) {
-            criteria.andFullUrlLike("%" + url + "%");
-        }
+        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(query), module);
 
-        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example), module);
-
-        return new JsonResult(1, interfaces, page,
+        return new JsonResult().data(interfaces).page(page).others(
                 Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(),
                         "# /module/list?projectId=" + module.getProjectId(), module.getName(), "void")));
     }
@@ -206,11 +196,9 @@ public class InterfaceController extends BaseController {
             /**
              * 查询相同模块下，相同接口名的其它版本号
              */
-            InterfaceCriteria example = new InterfaceCriteria();
-            InterfaceCriteria.Criteria criteria = example.createCriteria().andModuleIdEqualTo(interFace.getModuleId())
-                    .andInterfaceNameEqualTo(interFace.getInterfaceName()).andVersionNotEqualTo(interFace.getVersion());
-
-            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.selectByExampleWithBLOBs(example), module);
+            InterfaceQuery query = new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualInterfaceName(interFace.getInterfaceName())
+                    .setExceptVersion(interFace.getVersion());
+            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module);
 
             return new JsonResult(1, InterfaceAdapter.getDto(interFace, module, false), null,
                     Tools.getMap("versions", versions,

@@ -56,17 +56,17 @@ input:focus{
   border-color: {{settings.MAIN_COLOR}}!important;!important;
 }
 .hover-adorn:hover,.active-adorn{
-  color: #ffffff;
-  opacity: 0.3;
+  color: #ffffff!important;
+  opacity: 0.5;
   background-color: {{settings.ADORN_COLOR}}!important;
   cursor: pointer;
   text-decoration: none;
 }
 
 .hover-main:hover,.active-main{
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: {{settings.MAIN_COLOR}}!important;
-    opacity: 0.3;
+    opacity: 0.5;
     cursor: pointer;
     text-decoration: none;
 }

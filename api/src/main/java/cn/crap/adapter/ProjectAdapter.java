@@ -8,6 +8,7 @@ import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
+import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class ProjectAdapter {
         ProjectDto dto = new ProjectDto();
         BeanUtil.copyProperties(model, dto);
 
+        if (model.getCreateTime() != null) {
+            dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+        }
 		dto.setUserName(user == null ? "" : user.getUserName());
 		dto.setTypeName(ProjectType.getNameByValue(model.getType()));
 		dto.setStatusName(ProjectStatus.getNameByValue(model.getStatus()));

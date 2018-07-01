@@ -58,17 +58,17 @@ input:focus{
   opacity: 0.8;
 }
 .hover-adorn:hover,.active-adorn{
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #f82c1d!important;
     cursor: pointer;
-    opacity: 0.3;
+    opacity: 0.5;
     text-decoration: none;
 }
 .hover-main:hover,.active-main{
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #006f1f!important;
     cursor: pointer;
-    opacity: 0.3;
+    opacity: 0.5;
     text-decoration: none;
 }
 

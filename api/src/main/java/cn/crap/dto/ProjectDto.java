@@ -21,6 +21,7 @@ public class ProjectDto {
 	private Byte luceneSearch;
 	private String luceneSearchName;
 	private String statusName;
+	private String createTimeStr;
 
 	public void setId(String id){
 		this.id=id;
@@ -123,4 +124,12 @@ public class ProjectDto {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
 }

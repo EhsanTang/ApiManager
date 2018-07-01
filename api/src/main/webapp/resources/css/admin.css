@@ -27,15 +27,16 @@
     height: 40px;
     line-height: 40px;
     display: block;
-    padding-left:10px;
-    padding-right:10px;
+    padding-left:15px;
+    padding-right:15px;
     overflow:hidden;
     border-bottom: 1px solid #eaeaea;
     width: 100%;
+    color: #555555;
 }
 .menu_b:hover{
     margin-top:-1px;
     margin-bottom:-1px;
     height:42px;
-    line-height: 42px;
+    line-height: 38px;
 }

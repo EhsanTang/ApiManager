@@ -24,33 +24,26 @@
 </div>
 
 <div class="col-xs-12 p10 mt10 pt5 BGFFF">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped f13">
         <thead>
 			<tr class="f14 C000 fw500">
-				<td class="w300">名称</td>
+				<td>名称</td>
 				<td class="w100">类型</td>
                 <td class="w100">状态</td>
 				<td class="w100">用户</td>
-				<td>操作</td>
+				<td class="w200">创建时间</td>
+				<td class="w200">操作</td>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in list">
+			<tr class="cursor" ng-repeat="item in list" ng-click="go('/user/module/list?menu_a=menu-project&projectName=' + item.name + '&projectId=' + item.id)">
 				<td >{{item.name}}</td>
 				<td>{{item.typeName}}</td>
                 <td>{{item.statusName}}</td>
 				<td>{{item.userName}}</td>
+				<td>{{item.createTimeStr}}</td>
 				<td class="f12">
-				
-					<a class="mr10 cursor" ng-href="#/user/module/list?menu_a=menu-project&projectName={{item.name}}&projectId={{item.id}}">
-						<i class="iconfont f12">&#xe613;模块</i>
-					</a>
-					<a class="mr10 cursor" ng-href="#/user/error/list?projectId={{item.id}}">
-						<i class="iconfont f12">&#xe60c;错误码</i>
-					</a>
-					<a class="mr10 cursor" ng-href="#/user/projectUser/list?projectId={{item.id}}">
-						<i class="iconfont f12">&#xe603;成员</i>
-					</a>
+
 					<a class="mr10 cursor" ng-href="#/user/log/list?identy?identy={{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>日志
 					</a>

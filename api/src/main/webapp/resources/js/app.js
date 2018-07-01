@@ -10,11 +10,13 @@ var INVALID_PASSWORD_CODE = "E000011";
  * @param  {[type]} $stateParams
  * @return {[type]}
  */
-app.run(function($rootScope, $state, $stateParams, $http, $timeout,httpService) {
+app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,httpService) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	$rootScope.pick = [];
-	
+    $rootScope.go = function (href) {
+        $location.url(href);
+    }
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
 		var iwidth = getValue(params,'iwidth');
 		var iheight = getValue(params,'iheight');

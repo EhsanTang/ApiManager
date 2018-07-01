@@ -1,5 +1,6 @@
 package cn.crap.controller.user;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
@@ -15,11 +16,10 @@ import cn.crap.model.User;
 import cn.crap.model.UserCriteria;
 import cn.crap.service.IEmailService;
 import cn.crap.service.ProjectService;
+import cn.crap.service.ProjectUserService;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
 import cn.crap.service.mybatis.UserService;
-import cn.crap.beans.Config;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

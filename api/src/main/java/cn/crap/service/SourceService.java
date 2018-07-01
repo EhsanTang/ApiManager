@@ -40,10 +40,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
             return false;
         }
         if (model.getSequence() == null) {
-            SourceCriteria example = new SourceCriteria();
-            example.setOrderByClause(TableField.SORT.SEQUENCE_DESC);
-            example.setMaxResults(1);
-            List<Source> models = sourceDao.selectByExample(example);
+            List<Source> models = this.query(new SourceQuery().setModuleId(model.getModuleId()));
             if (models.size() > 0) {
                 model.setSequence(models.get(0).getSequence() + 1);
             } else {

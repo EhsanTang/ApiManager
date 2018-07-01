@@ -20,6 +20,7 @@ import cn.crap.query.ModuleQuery;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
+import cn.crap.service.ProjectUserService;
 import cn.crap.service.SourceService;
 import cn.crap.service.custom.CustomArticleService;
 import cn.crap.service.custom.CustomInterfaceService;

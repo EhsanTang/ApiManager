@@ -46,7 +46,7 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
             return false;
         }
         if (model.getSequence() == null){
-            List<Module> models = this.query(new ModuleQuery().setPageSize(1));
+            List<Module> models = this.query(new ModuleQuery().setPageSize(1).setProjectId(model.getProjectId()));
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{

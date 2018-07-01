@@ -1,19 +1,20 @@
 package cn.crap.dto;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import cn.crap.enumer.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;
+import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
+import cn.crap.service.ProjectUserService;
 import cn.crap.service.mybatis.RoleService;
-import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.Tools;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LoginInfoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -64,10 +65,7 @@ public class LoginInfoDto implements Serializable{
 		}
 		
 		// 项目成员
-		ProjectUserCriteria example = new ProjectUserCriteria();
-		ProjectUserCriteria.Criteria criteria = example.createCriteria().andUserIdEqualTo(id);
-
-		for(ProjectUser p: projectUserService.selectByExample(example)){
+		for(ProjectUser p: projectUserService.query(new ProjectUserQuery().setUserId(id))){
 			projects.put(p.getProjectId(), p);
 			sb.append(IConst.C_AUTH_PROJECT + p.getProjectId()+",");
 		}

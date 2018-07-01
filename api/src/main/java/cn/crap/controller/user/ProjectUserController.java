@@ -10,9 +10,9 @@ import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.User;
 import cn.crap.model.UserCriteria;
-import cn.crap.service.custom.CustomProjectUserService;
+import cn.crap.query.ProjectUserQuery;
+import cn.crap.service.ProjectUserService;
 import cn.crap.service.custom.CustomUserService;
-import cn.crap.service.mybatis.ProjectUserService;
 import cn.crap.service.mybatis.UserService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -31,23 +31,24 @@ import java.util.List;
 public class ProjectUserController extends BaseController{
 
 	@Autowired
-	private ProjectUserService projectUserService;
-	@Autowired
 	private CustomUserService customUserService;
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private CustomProjectUserService customProjectUserService;
+	private ProjectUserService projectUserService;
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@RequestParam String projectId, @RequestParam(defaultValue="1") int currentPage) throws MyException{
-		Assert.isTrue(currentPage > 0);
-        Page page= new Page(SIZE, currentPage);
-			checkUserPermissionByProject( projectCache.get(projectId) );
-		List<ProjectUser> projectUsers = customProjectUserService.queryByProjectId(projectId, page);
-		// TODO
-			return new JsonResult(1, ProjectUserAdapter.getDto(projectUsers), page);
+	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
+		Assert.notNull(query.getProjectId());
+        Page page= new Page(query);
+
+        checkUserPermissionByProject( projectCache.get(query.getProjectId()));
+
+		List<ProjectUser> projectUsers = projectUserService.query(query);
+        page.setAllRow(projectUserService.count(query));
+
+        return new JsonResult(1, ProjectUserAdapter.getDto(projectUsers), page);
 	}	
 	
 	@RequestMapping("/detail.do")

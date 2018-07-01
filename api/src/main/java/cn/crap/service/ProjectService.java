@@ -51,7 +51,7 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
         }
 
         if (project.getSequence() == null) {
-            List<Project> models = this.query(new ProjectQuery().setPageSize(1));
+            List<Project> models = this.query(new ProjectQuery().setPageSize(1).setUserId(project.getUserId()));
             if (models.size() > 0) {
                 project.setSequence(models.get(0).getSequence() + 1);
             } else {

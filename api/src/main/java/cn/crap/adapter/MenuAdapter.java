@@ -3,6 +3,8 @@ package cn.crap.adapter;
 import cn.crap.dto.MenuDto;
 import cn.crap.enumer.MenuType;
 import cn.crap.model.Menu;
+import cn.crap.utils.BeanUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +20,7 @@ public class MenuAdapter {
         }
 
         MenuDto menuDto = new MenuDto();
-        menuDto.setIconRemark(menu.getIconRemark());
-        menuDto.setId(menu.getId());
-        menuDto.setMenuName(menu.getMenuName());
-        menuDto.setMenuUrl(menu.getMenuUrl());
-        menuDto.setParentId(menu.getParentId());
-        menuDto.setRoleIds(menu.getRoleIds());
-        menuDto.setSequence(menu.getSequence());
-        menuDto.setStatus(menu.getStatus());
-        menuDto.setType(menu.getType());
+        BeanUtil.copyProperties(menu, menuDto);
         menuDto.setTypeName(menu.getType() == null ? "" : MenuType.getChineseNameByValue(menu.getType()));
 
         return menuDto;

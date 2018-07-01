@@ -7,6 +7,7 @@ import cn.crap.enumer.ProjectType;
 import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.service.mybatis.UserService;
+import cn.crap.utils.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +25,9 @@ public class ProjectAdapter {
         }
 
         ProjectDto dto = new ProjectDto();
-        dto.setId(model.getId());
-		dto.setName(model.getName());
-		dto.setStatus(model.getStatus());
-		dto.setSequence(model.getSequence());
-		dto.setRemark(model.getRemark());
-		dto.setUserId(model.getUserId());
+        BeanUtil.copyProperties(model, dto);
+
 		dto.setUserName(user == null ? "" : user.getUserName());
-		dto.setType(model.getType());
-		dto.setCover(model.getCover());
-		dto.setLuceneSearch(model.getLuceneSearch());
 		dto.setTypeName(ProjectType.getNameByValue(model.getType()));
 		dto.setStatusName(ProjectStatus.getNameByValue(model.getStatus()));
 		dto.setLuceneSearchName(LuceneSearchType.getName(model.getLuceneSearch()));

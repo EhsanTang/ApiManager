@@ -13,6 +13,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
@@ -30,24 +31,13 @@ public class ArticleAdapter {
             return null;
         }
 
-        ArticleDto dto = new ArticleDto();
-        dto.setId(model.getId());
-		dto.setName(model.getName());
-		dto.setBrief(model.getBrief());
-		dto.setClick(model.getClick());
-		dto.setType(model.getType());
-		dto.setStatus(model.getStatus());
-		dto.setModuleId(model.getModuleId());
-		dto.setMkey(model.getMkey());
-		dto.setCanDelete(model.getCanDelete());
-		dto.setCategory(model.getCategory());
-		dto.setCanComment(model.getCanComment());
+		ArticleDto dto = new ArticleDto();
+		BeanUtil.copyProperties(model, dto);
+
 		dto.setCanCommentName(model.getCanComment().equals(new Byte("1")) ? "是" : "否");
-		dto.setCommentCount(model.getCommentCount());
-		dto.setSequence(model.getSequence());
-		dto.setProjectId(model.getProjectId());
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
 		dto.setTypeName(ArticleType.getByEnumName(model.getType()));
+
 		if (model.getCreateTime() != null) {
 			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
 		}

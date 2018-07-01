@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.HotSearchDto;
 import cn.crap.model.HotSearch;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
@@ -21,11 +22,9 @@ public class HotSearchAdapter {
         }
 
         HotSearchDto dto = new HotSearchDto();
-        dto.setId(model.getId());
-		dto.setTimes(model.getTimes());
-		dto.setKeyword(model.getKeyword());
+        BeanUtil.copyProperties(model, dto);
+
 		dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
-		
         return dto;
     }
 

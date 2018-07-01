@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.SettingDto;
 import cn.crap.model.Setting;
+import cn.crap.utils.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,9 @@ public class SettingAdapter {
         }
 
         SettingDto dto = new SettingDto();
-        dto.setCanDelete(model.getCanDelete());
-        dto.setId(model.getId());
+        BeanUtil.copyProperties(model, dto);
         dto.setKey(model.getMkey());
-        dto.setRemark(model.getRemark());
-        dto.setValue(model.getValue());
-        dto.setSequence(model.getSequence());
-        dto.setStatus(model.getStatus());
-        dto.setType(model.getType());
+
         return dto;
     }
 

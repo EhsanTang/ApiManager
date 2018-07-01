@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ErrorDto;
 import cn.crap.model.Error;
+import cn.crap.utils.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,7 @@ public class ErrorAdapter {
         }
 
         ErrorDto dto = new ErrorDto();
-        dto.setId(model.getId());
-		dto.setErrorCode(model.getErrorCode());
-		dto.setErrorMsg(model.getErrorMsg());
-		dto.setProjectId(model.getProjectId());
-//		dto.setCreateTimeStr(model.getCreateTimeStr());
-//		dto.setStatus(model.getCanDelete());
-//		dto.setSequence(model.getSequence());
-		
+        BeanUtil.copyProperties(model, dto);
 
         return dto;
     }
@@ -39,10 +33,6 @@ public class ErrorAdapter {
 		model.setErrorCode(dto.getErrorCode());
 		model.setErrorMsg(dto.getErrorMsg());
 		model.setProjectId(dto.getProjectId());
-//		model.setCreateTimeStr(dto.getCreateTimeStr());
-//		model.setStatus(dto.getCanDelete());
-//		model.setSequence(dto.getSequence());
-
 
         return model;
     }

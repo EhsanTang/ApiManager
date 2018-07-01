@@ -4,6 +4,8 @@ import cn.crap.dto.ProjectUserDto;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
+import cn.crap.utils.BeanUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,32 +23,9 @@ public class ProjectUserAdapter {
         }
 
         ProjectUserDto dto = new ProjectUserDto();
-        dto.setId(model.getId());
-		dto.setStatus(model.getStatus());
-		dto.setSequence(model.getSequence());
-		dto.setProjectId(model.getProjectId());
+		BeanUtil.copyProperties(model, dto);
+
 		dto.setProjectName(project == null ? "" : project.getName());
-		dto.setUserId(model.getUserId());
-		dto.setAddModule(model.getAddModule());
-		dto.setDelModule(model.getDelModule());
-		dto.setModModule(model.getModModule());
-		dto.setAddInter(model.getAddInter());
-		dto.setDelInter(model.getDelInter());
-		dto.setModInter(model.getModInter());
-		dto.setAddArticle(model.getAddArticle());
-		dto.setDelArticle(model.getDelArticle());
-		dto.setModArticle(model.getModArticle());
-		dto.setAddSource(model.getAddSource());
-		dto.setDelSource(model.getDelSource());
-		dto.setModSource(model.getModSource());
-		dto.setAddDict(model.getAddDict());
-		dto.setDelDict(model.getDelDict());
-		dto.setModDict(model.getModDict());
-		dto.setUserEmail(model.getUserEmail());
-		dto.setUserName(model.getUserName());
-		dto.setAddError(model.getAddError());
-		dto.setDelError(model.getDelError());
-		dto.setModError(model.getModError());
 
 		Boolean[] projectAuth = new Boolean[19];
 		projectAuth[BaseController.ADD_MODULE] = model.getAddModule();

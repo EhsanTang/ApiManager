@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.DebugDto;
 import cn.crap.model.Debug;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.Tools;
 
 import java.util.ArrayList;
@@ -21,21 +22,11 @@ public class DebugAdapter {
         }
 
         DebugDto dto = new DebugDto();
+        BeanUtil.copyProperties(model, dto);
+
         dto.setId(Tools.unhandleId(model.getId()));
-		dto.setName(model.getName());
-		dto.setCreateTime(model.getCreateTime());
-		dto.setStatus(model.getStatus());
-		dto.setSequence(model.getSequence());
-		dto.setInterfaceId(model.getInterfaceId());
 		dto.setModuleId(Tools.unhandleId(model.getModuleId()));
-		dto.setMethod(model.getMethod());
-		dto.setUrl(model.getUrl());
-		dto.setParams(model.getParams());
-		dto.setHeaders(model.getHeaders());
-		dto.setParamType(model.getParamType());
-		dto.setVersion(model.getVersion());
-		dto.setUid(model.getUid());
-		
+
         return dto;
     }
 

@@ -3,6 +3,7 @@ package cn.crap.adapter;
 import cn.crap.dto.ModuleDto;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import org.springframework.util.CollectionUtils;
 
@@ -22,18 +23,8 @@ public class ModuleAdapter {
         }
 
         ModuleDto dto = new ModuleDto();
-        dto.setId(model.getId());
-		dto.setName(model.getName());
-		dto.setStatus(model.getStatus());
-		dto.setSequence(model.getSequence());
-		dto.setUrl(model.getUrl());
-		dto.setCanDelete(model.getCanDelete());
-		dto.setRemark(model.getRemark());
-		dto.setUserId(model.getUserId());
-		dto.setProjectId(model.getProjectId());
-		dto.setTemplateId(model.getTemplateId());
-		dto.setVersion(model.getVersion());
-		dto.setCategory(model.getCategory());
+        BeanUtil.copyProperties(model, dto);
+
         if (model.getCreateTime() != null) {
             dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
         }

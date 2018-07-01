@@ -10,6 +10,7 @@ import com.itextpdf.text.pdf.BaseFont;
 
 public class ChinaFont implements FontProvider {
 
+	// TODO 字体可配置，和图形验证码字体保持一致即可
 	@Override
 	public boolean isRegistered(String fontname) {
 		return false;

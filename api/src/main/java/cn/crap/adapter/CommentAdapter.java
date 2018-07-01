@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.CommentDto;
 import cn.crap.model.Comment;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
@@ -20,18 +21,9 @@ public class CommentAdapter {
         }
 
         CommentDto dto = new CommentDto();
-        dto.setId(model.getId());
-		dto.setArticleId(model.getArticleId());
-		dto.setContent(model.getContent());
-		dto.setUserId(model.getUserId());
-		dto.setParentId(model.getParentId());
-		dto.setStatus(model.getStatus());
+        BeanUtil.copyProperties(model, dto);
+
 		dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
-		dto.setSequence(model.getSequence());
-		dto.setReply(model.getReply());
-		dto.setUserName(model.getUserName());
-		dto.setAvatarUrl(model.getAvatarUrl());
-		
         return dto;
     }
 

@@ -9,6 +9,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.Source;
 import cn.crap.service.tool.ProjectCache;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
@@ -29,14 +30,7 @@ public class SourceAdapter {
         }
 
         SourceDto dto = new SourceDto();
-        dto.setId(model.getId());
-		dto.setSequence(model.getSequence());
-		dto.setStatus(model.getStatus());
-		dto.setName(model.getName());
-		dto.setModuleId(model.getModuleId());
-		dto.setRemark(model.getRemark());
-		dto.setFilePath(model.getFilePath());
-		dto.setProjectId(model.getProjectId());
+        BeanUtil.copyProperties(model, dto);
         if (model.getCreateTime() != null) {
             dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
         }

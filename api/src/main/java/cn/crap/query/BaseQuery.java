@@ -2,6 +2,8 @@ package cn.crap.query;
 
 import cn.crap.framework.MyException;
 import cn.crap.utils.SafetyUtil;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * @author Ehsan
@@ -15,6 +17,11 @@ public abstract class BaseQuery<T> {
     private Byte status;
 
     abstract T getQuery();
+
+    @Override
+    public String toString(){
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
     public String getId() {
         return id;

@@ -128,8 +128,9 @@ public class ModuleController extends BaseController implements ILogConst{
 			if (projectId.equals(moduleDto.getProjectId())){
 				throw new MyException(MyError.E000067);
 			}
-			if (moduleService.count(new ModuleQuery().setUserId(user.getId())) > settingCache.getInteger(SettingEnum.MAX_MODULE)){
-                throw new MyException(MyError.E000071);
+			Integer maxModule = settingCache.getInteger(SettingEnum.MAX_MODULE);
+			if (moduleService.count(new ModuleQuery().setUserId(user.getId())) > maxModule){
+                throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());
 			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);

@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.UserDto;
 import cn.crap.model.User;
+import cn.crap.utils.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +19,9 @@ public class UserAdapter {
         }
 
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setAuth(user.getAuth());
+        BeanUtil.copyProperties(user, userDto);
         userDto.setAuthName(user.getAuthName());
-        userDto.setAvatarUrl(user.getAvatarUrl());
-        userDto.setEmail(user.getEmail());
-        userDto.setLoginType(user.getLoginType());
-        userDto.setRoleId(user.getRoleId());
         userDto.setRoleName(user.getRoleName());
-        userDto.setThirdlyId(user.getThirdlyId());
-        userDto.setTrueName(user.getTrueName());
-        userDto.setType(user.getType());
-        userDto.setUserName(user.getUserName());
-        userDto.setStatus(user.getStatus());
-        userDto.setLoginType(user.getLoginType());
         return userDto;
     }
 

@@ -2,6 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.LogDto;
 import cn.crap.model.Log;
+import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
@@ -20,18 +21,9 @@ public class LogAdapter {
         }
 
         LogDto dto = new LogDto();
-        dto.setId(model.getId());
-		dto.setStatus(model.getStatus());
+        BeanUtil.copyProperties(model, dto);
         dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
-		dto.setSequence(model.getSequence());
-		dto.setModelClass(model.getModelClass());
-		dto.setModelName(model.getModelName());
-		dto.setType(model.getType());
-		dto.setUpdateBy(model.getUpdateBy());
-		dto.setRemark(model.getRemark());
-		dto.setContent(model.getContent());
-		dto.setIdenty(model.getIdenty());
-		
+
         return dto;
     }
 

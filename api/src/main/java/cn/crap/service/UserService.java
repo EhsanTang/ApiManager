@@ -89,6 +89,9 @@ public class UserService extends BaseService<User, UserDao> {
         if (query.getEqualEmail() != null){
             criteria.andEmailEqualTo(query.getEqualEmail());
         }
+        if (query.getEqualUserName() != null){
+            criteria.andUserNameEqualTo(query.getEqualUserName());
+        }
         if (query.getEmail() != null){
             criteria.andEmailLike("%" + query.getEmail() + "%");
         }

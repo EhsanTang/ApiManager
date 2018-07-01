@@ -49,7 +49,6 @@ public class ProjectUserService extends BaseService<ProjectUser, ProjectUserDao>
     }
 
     public List<ProjectUser> query(ProjectUserQuery query) throws MyException{
-        Assert.notNull(query.getProjectId(), "projectId can't be null");
         Page page = new Page(query);
 
         ProjectUserCriteria example = getProjectUserCriteria(query);
@@ -68,6 +67,9 @@ public class ProjectUserService extends BaseService<ProjectUser, ProjectUserDao>
         }
         if (query.getUserId() != null) {
             criteria.andUserIdEqualTo(query.getUserId());
+        }
+        if (query.getProjectId() != null){
+            criteria.andProjectIdEqualTo(query.getProjectId());
         }
         return example;
     }

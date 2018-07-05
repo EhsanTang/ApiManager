@@ -1,0 +1,88 @@
+﻿<div class="r0 p0 col-xs-12" ng-controller="userProjectDetailCtrl">
+	<div class="col-xs-9 BGFFF p0">
+		<!-- 版本 -->
+		<div class="fb p10 pl20 pr20 main-color fw500 f20" ng-bind="projectDetail.name"></div>
+		<div class="C999 lh26 p10 pt0 pl20 pr20">
+			<div class="light-bg p15">
+				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
+					title="「普通项目/推荐项目：系统管理员可以将项目修改为推荐项目，推荐项目将出现在首页列表中，私有项目即使被设置为推荐项目，其他用户也无法查看项目内容」">
+					<i class="iconfont adorn-color">&#xe63e;</i>
+				</span>
+
+				是否公开：<span class="C000" ng-bind="projectDetail.typeName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
+					  title="「私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
+					<i class="iconfont adorn-color">&#xe63e;</i>
+				</span>
+
+				是否建立索引：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
+				<span class="p0 f14 cursor mr20" onclick="tooltip('lucene-tip')" id="lucene-tip" data-toggle="tooltip" data-placement="right"
+					  title="「私有项目不会创建索引，公开项目且设置为创建索引才会创建索引」">
+					<i class="iconfont adorn-color">&#xe63e;</i>
+				</span>
+				<br/>
+				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span>
+
+				<a target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">预览项目主页 →</a>
+			</div>
+		</div>
+
+		<div class="p10 pl20 pr20 fw500 cb f14">菜单</div>
+		<div class="C999 lh26 p10 pt0 pl20 pr20">
+			<div class="light-bg p15 fl ">项目主页</div>
+			<div class="light-bg p15 fl bl1">日志</div>
+			<div class="light-bg p15 fl bl1">重建索引</div>
+		</div>
+        <div class="cb"></div>
+
+		<div class="p10 pl20 pr20 fw500 f14 mt10">项目简介</div>
+		<div class="BGFFF C999 lh26 p10 pt0 pl20 pr20">
+			<div class="light-bg p15" ng-bind="projectDetail.remark"></div>
+		</div>
+		
+	</div>
+	
+	<div class="col-xs-3 p0 pl15">
+		<!-- 欢迎 -->
+		<div class="BGFFF p10 pl20 pr20 bb1 f14">
+			Hi,  &nbsp;<a class="adorn-color" ng-href="#/profile" ng-bind="sessionAdminName"></a>
+		</div>
+		<div class="BGFFF p10 pl20 pr20 C999 lh26">
+			感谢使用CrapApi接口管理系统！<br/>
+			<a target="_blank" ng-href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=02c16933-2823-458d-83a0-6d5b8b752a25">
+				Bug、建议都在这~
+			</a>
+			<a target="_blank" class="pl20" ng-href="http://git.oschina.net/CrapApi/CrapApi">
+				捐赠
+			</a>
+		</div>
+		
+		
+		<!-- 通知 -->
+		<div class="BGFFF mt20 p10 pl20 pr20 bb1 f14" ng-if="list.crapApiInfo.notice!=null">
+			<i class="iconfont adorn-color">&#xe632;</i>&nbsp;&nbsp;系统公告
+		</div>
+		<div class="BGFFF p10 pl20 pr20 C999 lh26" ng-if="list.crapApiInfo.notice!=null">
+			<span ng-bind="list.crapApiInfo.notice"></span>
+			<span ng-if="list.crapApiInfo.noticeUrl!=null">
+				[<a target="_blank" ng-href="{{list.crapApiInfo.noticeUrl}}">详情 →</a>]
+			</span>
+		</div>
+		
+		<!-- 帮助信息 -->
+		<div class="BGFFF mt20 p10 pl20 pr20 bb1 f14">
+			<i class="iconfont adorn-color">&#xe63e;</i>&nbsp;&nbsp;帮助信息
+		</div>
+		<div class="BGFFF p10 pl20 pr20 C999 lh26">
+			用户交流群：254450938<br/>
+			专业答疑群：263949884（捐助后方可入群）<br/>
+			帮助文档：<a target="_blank" href="http://api.crap.cn/index.do#/article/list?projectId=web&moduleId=web&type=PAGE&name=帮助文档">http://api.crap.cn</a><br/>
+			系统图标地址：<a target="_blank" href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=66d4eacf-164a-4829-998b-61cf67e0c4de">系统图标库</a>
+		</div>
+		
+		
+	</div>
+</div>
+<div class="cb"></div>
+

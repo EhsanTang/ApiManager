@@ -498,6 +498,13 @@ userModule.controller('userTop50ProjectListCtrl', function($rootScope,$scope, $h
     };
     $scope.getData();
 });
+userModule.controller('userProjectDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+    $scope.getData = function() {
+        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail");
+    };
+    $scope.getData();
+});
 /*************************模块列表**********************/
 userModule.controller('userModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
 	$scope.getData = function(page) {

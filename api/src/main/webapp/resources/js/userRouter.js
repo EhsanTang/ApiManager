@@ -66,7 +66,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 
 		}
-	}).state('moduleList', {
+	}).state('project', {
+        url : '/user/project?type&menu_a&projectId&projectName&menu_b',
+        views : {
+            'main' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/project.tpl.html?v=v8.0.2';
+                }
+            },'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/projectDetail.tpl.html?v=v8.0.2';
+                }
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            }
+
+        }
+    }).state('moduleList', {
 		url : '/user/module/list?projectId&name&projectName&menu_a&menu_b',
 		views : {
 			'main' : {

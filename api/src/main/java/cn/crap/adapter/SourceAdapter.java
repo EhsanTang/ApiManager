@@ -114,12 +114,12 @@ public class SourceAdapter {
         }
         ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
         Project project = projectCache.get(source.getProjectId());
+
+        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+            dto.setNeedCreateIndex(true);
+        }
         // 私有项目不能建立索引
         if(project.getType() == ProjectType.PRIVATE.getType()){
-            dto.setNeedCreateIndex(false);
-        }
-
-        if(LuceneSearchType.No.getByteValue().equals(project.getLuceneSearch())){
             dto.setNeedCreateIndex(false);
         }
         return dto;

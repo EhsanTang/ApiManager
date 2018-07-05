@@ -14,6 +14,10 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 	$rootScope.pick = [];
+    $rootScope.stopPropagation = function (e) {
+        e.stopPropagation();
+       return false;
+    }
     $rootScope.go = function (href) {
         $location.url(href);
     }

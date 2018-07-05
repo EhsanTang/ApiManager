@@ -154,7 +154,7 @@ table{border-collapse:collapse;border-spacing:0}
 .min-h700{min-height:700px}
 .min-h800{min-height:800px}
 .min-w100{min-width:100px}
-.min-w200{min-width:200px}.min-w300{min-width:300px}
+.min-w200{min-width:200px}.min-w300{min-width:300px}.min-w500{min-width:500px}.min-w700{min-width: 700px;}
 .m0{margin:0px!important}
 .m5{margin:5px!important}.m7{margin:7px}.m10{margin:10px!important}.m20{margin:20px!important}.m15{margin:15px}
 .m30{margin:30px}

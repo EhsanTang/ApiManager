@@ -1,6 +1,9 @@
 /**
 后端css样式
  */
+body{
+    min-width: 700px;
+}
 .navbar-brand{
     width: 50px;
     padding: 10px;
@@ -38,5 +41,5 @@
     margin-top:-1px;
     margin-bottom:-1px;
     height:42px;
-    line-height: 38px;
+    line-height: 42px;
 }

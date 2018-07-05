@@ -5,7 +5,6 @@ import cn.crap.dto.SearchDto;
 import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LuceneSearchType;
-import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
@@ -142,13 +141,10 @@ public class ArticleAdapter {
 		dto.setVersion("");
 		dto.setProjectId(model.getProjectId());
 
-		if(project.getType() == ProjectType.PRIVATE.getType()){
-			dto.setNeedCreateIndex(false);
-		}
-
-		if(project.getLuceneSearch().intValue() == LuceneSearchType.No.getValue()){
-			dto.setNeedCreateIndex(false);
-		}
+		dto.setNeedCreateIndex(false);
+        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+            dto.setNeedCreateIndex(true);
+        }
 
 		return dto;
 	}

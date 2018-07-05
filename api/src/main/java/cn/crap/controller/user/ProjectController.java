@@ -105,7 +105,8 @@ public class ProjectController extends BaseController {
 
             // 需要重建索引
             projectCache.del(projectId);
-            if (!project.getType().equals(dbProject.getType()) || !project.getLuceneSearch().equals(dbProject.getLuceneSearch())) {
+            if (!project.getType().equals(dbProject.getType())
+                    || !project.getLuceneSearch().equals(dbProject.getLuceneSearch())) {
                 luceneService.rebuildByProjectId(projectId);
             }
         }

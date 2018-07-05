@@ -202,15 +202,14 @@ public class InterfaceAdapter {
 		dto.setVersion(model.getVersion());
 		dto.setHref(model.getFullUrl());
 		dto.setProjectId(model.getProjectId());
-		// 私有项目不能建立索引
 
-		if(project.getType() == ProjectType.PRIVATE.getType()){
-			dto.setNeedCreateIndex(false);
-		}
-
-		if(LuceneSearchType.No.getByteValue().equals(project.getLuceneSearch())){
-			dto.setNeedCreateIndex(false);
-		}
+        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+            dto.setNeedCreateIndex(true);
+        }
+        // 私有项目不能建立索引
+        if(project.getType() == ProjectType.PRIVATE.getType()){
+            dto.setNeedCreateIndex(false);
+        }
 		return dto;
 
 	}

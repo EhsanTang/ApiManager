@@ -41,31 +41,30 @@
 		<div class="row h p0 m0 mt50">
 				<!-- left -->
 				<div class="w250 sidebar BGBBB pt0 pb0 h mah ofy-a ofx-h fixed shadow">
-                    <div class="w50 fl h BGFFF main-color main-br-1">
+                    <div class="w250 fl h BGFFF main-color main-br-1">
                         <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
                            ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-project']"
                            onmouseover="tooltip('menu-project')" data-placement="right" data-toggle="tooltip" id="menu-project" data-original-title="项目列表">
-                            <i class="iconfont f18">&#xe61f;</i>
+                            <i class="iconfont f18 mr20">&#xe61f;</i> 项目列表
                         </a>
                         <a href="#/admin/menu/list?parentId=0&menu=menu-menu"
                            ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu == 'menu-menu']"
                            ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('my-menu')" data-placement="right" data-toggle="tooltip" id="menu-menu" data-original-title="菜单管理">
-                            <i class="iconfont f18">&#xe60f;</i>
+                            <i class="iconfont f18 mr20">&#xe60f;</i> 菜单管理
                         </a>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-setting')" data-placement="right" data-toggle="tooltip" id="my-setting" data-original-title="系统管理">
-                            <i class="iconfont f18">&#xe61a;</i>
+                            <i class="iconfont f18 mr20">&#xe61a;</i> 系统设置
                         </div>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-recover')" data-placement="right" data-toggle="tooltip" id="my-recover" data-original-title="故障恢复">
-                            <i class="iconfont f18">&#xe611;</i>
+                            <i class="iconfont f18 mr20">&#xe611;</i> 故障恢复
                         </div>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')" data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
-                            <i class="iconfont f18">&#xe639;</i>
+                            <i class="iconfont f18 mr20">&#xe639;</i> 建议、反馈
                         </div>
                     </div>
 
-                    <div class="w200 fl h BGFFF f14 ofy-s pb100" ui-view="subMenu"></div>
 
-                    <div>
+                    <div class="ndis">
                         <div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
 
                             <div id="panel-myproject" class="panel-collapse BGEEE collapse in">
@@ -174,9 +173,12 @@
 
 				</div>
 			</div>
+			<div ui-view="subMenu" class="h fixed">
+
+			</div>
 
 				<!-- End:left -->
-				<div class="p0 h mah ofy-a l250 fixed r0">
+				<div class="p0 h mah ofy-a l250 fixed">
 					<div class="m10 pb50">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
 						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>

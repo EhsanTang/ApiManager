@@ -11,6 +11,8 @@ body{min-width:800px;}
 .main-bb-1{ border-bottom:1px solid {{settings.MAIN_COLOR}}}
 .main-br-1{ border-right:1px solid  {{settings.MAIN_COLOR}}}
 .main-bl-3{ border-left:3px solid {{settings.MAIN_COLOR}}}
+.main-bl-1{ border-left:1px solid {{settings.MAIN_COLOR}}}
+
 .adorn-color {color: {{settings.ADORN_COLOR}}}
 .adorn-bl-3{ border-left:3px solid {{settings.ADORN_COLOR}}}
 .adorn-bb-1{ border-bottom:1px solid {{settings.ADORN_COLOR}}}

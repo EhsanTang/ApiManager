@@ -1,8 +1,14 @@
 ﻿<div class="r0 p0 col-xs-12" ng-controller="userProjectDetailCtrl">
 	<div class="col-xs-9 BGFFF p0">
 		<!-- 版本 -->
-		<div class="fb p10 pl20 pr20 main-color fw500 f20" ng-bind="projectDetail.name"></div>
-		<div class="C999 lh26 p10 pt0 pl20 pr20">
+		<div class="fb p10 pl20 pr20 main-color fw500 f20" >
+            <span ng-bind="projectDetail.name"></span>
+            <a  class="cursor btn btn-adorn btn-xs r20" ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
+                <i class="iconfont f12">&#xe618;编辑</i>
+            </a>
+        </div>
+
+        <div class="C999 lh26 p10 pt0 pl20 pr20">
 			<div class="light-bg p15">
 				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
@@ -23,18 +29,36 @@
 				</span>
 				<br/>
 				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span>
-
-				<a target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">预览项目主页 →</a>
 			</div>
 		</div>
 
 		<div class="p10 pl20 pr20 fw500 cb f14">菜单</div>
-		<div class="C999 lh26 p10 pt0 pl20 pr20">
-			<div class="light-bg p15 fl ">项目主页</div>
-			<div class="light-bg p15 fl bl1">日志</div>
-			<div class="light-bg p15 fl bl1">重建索引</div>
+		<div class="C999 lh26 p0 ml20 mr20 b1">
+			<a class="light-bg p15 w100 tc dis fl cursor" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
+                <i class="iconfont f12 adorn-main mt-3">&#xe616;&nbsp;</i>项目主页</a>
+			<a class="light-bg p15 w100 bl1 tc dis fl cursor"
+               ng-href="#/user/log/list?identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}&menu_a=menu-projec">
+                <i class="iconfont">&#xe62b;&nbsp;</i>日志
+            </a>
+			<a class="light-bg p15 w100 bl1 tc dis fl cursor"
+               ng-if="showOperation('PROJECT',projectDetail.id) && projectDetail.type == 2 && projectDetail.luceneSearch == 1"
+                 ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+                <i class="iconfont f12 mt-1">&#xe611;&nbsp;</i>重建索引
+            </a>
+            <a class="light-bg p15 w100 bl1 tc dis fl cursor"
+               ng-if="showOperation('PROJECT',projectDetail.id)"
+               ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+                <i class="iconfont f12 mt-1">&#xe611;&nbsp;</i>重建索引
+            </a>
+
+            <a class="light-bg p15 w100 bl1 tc dis fl cursor"
+               ng-if="showOperation('PROJECT',projectDetail.id)"
+               ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
+                <i class="iconfont f12">&#xe640;静态化</i>
+            </a>
+            <div class="cb"></div>
 		</div>
-        <div class="cb"></div>
+
 
 		<div class="p10 pl20 pr20 fw500 f14 mt10">项目简介</div>
 		<div class="BGFFF C999 lh26 p10 pt0 pl20 pr20">

@@ -13,10 +13,11 @@ body{
     width: 30px;
 }
 .menu_a{
-    text-align: center;
+    text-align: left;
     height: 50px;
     line-height: 50px;
     display: block;
+    padding-left:15px;
     border-bottom: 1px solid #eaeaea;
     width: 100%;
 }

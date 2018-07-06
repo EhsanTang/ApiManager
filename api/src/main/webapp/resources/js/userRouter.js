@@ -173,6 +173,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
+    }).state('projectLogList', {
+        url : '/user/log/list?identy&projectId&name&projectName&menu_a&menu_b',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.2'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            },
+            'page@projectLogList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
+            },
+            'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/admin/logDetail.tpl.html?v=v8.0.2';
+                }
+            }
+        }
     }).state('articleList', {
         url : '/user/article/list?projectId&moduleId&type&moduleName',
         views : {

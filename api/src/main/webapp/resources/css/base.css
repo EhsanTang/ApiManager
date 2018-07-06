@@ -68,7 +68,7 @@ table{border-collapse:collapse;border-spacing:0}
 .fixed{position:fixed;}.rel{position:relative;}
 .abs{position:absolute;}.static{position:static;}
 .r0{right:0px;}
-.l0{left:0px;}.l200{left:200px;}.l250{left:250px;}.l300{left:300px;}
+.l0{left:0px;}.l50{left:50px;}.l200{left:200px;}.l250{left:250px;}.l300{left:300px;}
 .t0{top:0px;}
 .pos-r10{right:10px;}.pos-l10{left:10px;}.pos-b10{bottom:10px;}
 

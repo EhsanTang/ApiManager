@@ -1,15 +1,13 @@
-﻿<div class="r0 p0 col-xs-12" ng-controller="userProjectDetailCtrl">
-	<div class="col-xs-9 BGFFF p0">
+﻿<div class="r0 p20 BGFFF" ng-controller="userProjectDetailCtrl">
 		<!-- 版本 -->
-		<div class="fb p10 pl20 pr20 main-color fw500 f20" >
+		<div class="fb main-color fw500 f20" >
             <span ng-bind="projectDetail.name"></span>
-            <a  class="cursor btn btn-adorn btn-xs r20" ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
+            <a class="cursor btn btn-adorn btn-xs r20" ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
                 <i class="iconfont f12">&#xe618;编辑</i>
             </a>
         </div>
 
-        <div class="C999 lh26 p10 pt0 pl20 pr20">
-			<div class="light-bg p15">
+        <div class="C999 lh26 p20 light-bg mt10">
 				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
 					title="「普通项目/推荐项目：系统管理员可以将项目修改为推荐项目，推荐项目将出现在首页列表中，私有项目即使被设置为推荐项目，其他用户也无法查看项目内容」">
@@ -28,85 +26,67 @@
 					<i class="iconfont adorn-color">&#xe63e;</i>
 				</span>
 				<br/>
-				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span>
-			</div>
+				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span><br>
+                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
 		</div>
 
-		<div class="p10 pl20 pr20 fw500 cb f14">菜单</div>
-		<div class="C999 lh26 p0 ml20 mr20 b1">
-			<a class="light-bg p15 w100 tc dis fl cursor" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
-                <i class="iconfont f12 adorn-main mt-3">&#xe616;&nbsp;</i>项目主页</a>
-			<a class="light-bg p15 w100 bl1 tc dis fl cursor"
+		<div class="fw500 cb f14 mt20">项目管理</div>
+		<div class="C999 p0 b1 mt10">
+            <a class="project-menu b0 lh20 p10"
+               ng-href="#/user/module/list?menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe613;&nbsp;</i>模块列表<br>
+                <span class="f12 C999">模块总数：{{projectMoreInfo.moduleNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/error/list?menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe60c;&nbsp;</i>错误码<br>
+                <span class="f12 C999">错误码总数：{{projectMoreInfo.errorNum}}</span>
+            </a>
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/projectUser/list?menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+            <i class="iconfont mt-3">&#xe603;&nbsp;</i>项目成员<br>
+                <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
+            </a>
+
+			<a class="project-menu" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
+                <i class="iconfont adorn-main mt-3">&#xe616;&nbsp;</i>项目主页
+            </a>
+			<a class="project-menu"
                ng-href="#/user/log/list?identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}&menu_a=menu-projec">
                 <i class="iconfont">&#xe62b;&nbsp;</i>日志
             </a>
-			<a class="light-bg p15 w100 bl1 tc dis fl cursor"
-               ng-if="showOperation('PROJECT',projectDetail.id) && projectDetail.type == 2 && projectDetail.luceneSearch == 1"
-                 ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
-                <i class="iconfont f12 mt-1">&#xe611;&nbsp;</i>重建索引
-            </a>
-            <a class="light-bg p15 w100 bl1 tc dis fl cursor"
+			<a class="project-menu"
                ng-if="showOperation('PROJECT',projectDetail.id)"
-               ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
-                <i class="iconfont f12 mt-1">&#xe611;&nbsp;</i>重建索引
+                 ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
+					<i class="iconfont">&#xe611;&nbsp;重建索引</i>
+				</span>
+				<span ng-if="projectDetail.type != 2 || projectDetail.luceneSearch != 1">
+					<i class="iconfont text-danger">&#xe60e;&nbsp;删除索引</i>
+				</span>
             </a>
 
-            <a class="light-bg p15 w100 bl1 tc dis fl cursor"
+            <a class="project-menu"
                ng-if="showOperation('PROJECT',projectDetail.id)"
                ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
-                <i class="iconfont f12">&#xe640;静态化</i>
+                <i class="iconfont">&#xe640;静态化</i>
             </a>
+
+			<a class="project-menu"
+			   ng-if="showOperation('PROJECT',projectDetail.id)"
+			   ng-click="del('user/project/delete.do?id='+projectDetail.id,projectDetail.name);">
+				<i class="iconfont text-danger">&#xe60e;&nbsp;删除项目</i>
+			</a>
+
             <div class="cb"></div>
 		</div>
 
 
-		<div class="p10 pl20 pr20 fw500 f14 mt10">项目简介</div>
-		<div class="BGFFF C999 lh26 p10 pt0 pl20 pr20">
+		<div class="fw500 f14 mt20">项目简介</div>
+		<div class="BGFFF C999 lh26 mt10">
 			<div class="light-bg p15" ng-bind="projectDetail.remark"></div>
 		</div>
 		
-	</div>
-	
-	<div class="col-xs-3 p0 pl15">
-		<!-- 欢迎 -->
-		<div class="BGFFF p10 pl20 pr20 bb1 f14">
-			Hi,  &nbsp;<a class="adorn-color" ng-href="#/profile" ng-bind="sessionAdminName"></a>
-		</div>
-		<div class="BGFFF p10 pl20 pr20 C999 lh26">
-			感谢使用CrapApi接口管理系统！<br/>
-			<a target="_blank" ng-href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=02c16933-2823-458d-83a0-6d5b8b752a25">
-				Bug、建议都在这~
-			</a>
-			<a target="_blank" class="pl20" ng-href="http://git.oschina.net/CrapApi/CrapApi">
-				捐赠
-			</a>
-		</div>
-		
-		
-		<!-- 通知 -->
-		<div class="BGFFF mt20 p10 pl20 pr20 bb1 f14" ng-if="list.crapApiInfo.notice!=null">
-			<i class="iconfont adorn-color">&#xe632;</i>&nbsp;&nbsp;系统公告
-		</div>
-		<div class="BGFFF p10 pl20 pr20 C999 lh26" ng-if="list.crapApiInfo.notice!=null">
-			<span ng-bind="list.crapApiInfo.notice"></span>
-			<span ng-if="list.crapApiInfo.noticeUrl!=null">
-				[<a target="_blank" ng-href="{{list.crapApiInfo.noticeUrl}}">详情 →</a>]
-			</span>
-		</div>
-		
-		<!-- 帮助信息 -->
-		<div class="BGFFF mt20 p10 pl20 pr20 bb1 f14">
-			<i class="iconfont adorn-color">&#xe63e;</i>&nbsp;&nbsp;帮助信息
-		</div>
-		<div class="BGFFF p10 pl20 pr20 C999 lh26">
-			用户交流群：254450938<br/>
-			专业答疑群：263949884（捐助后方可入群）<br/>
-			帮助文档：<a target="_blank" href="http://api.crap.cn/index.do#/article/list?projectId=web&moduleId=web&type=PAGE&name=帮助文档">http://api.crap.cn</a><br/>
-			系统图标地址：<a target="_blank" href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=66d4eacf-164a-4829-998b-61cf67e0c4de">系统图标库</a>
-		</div>
-		
-		
-	</div>
 </div>
 <div class="cb"></div>
 

@@ -31,7 +31,6 @@
 				<td class="w200">名称</td>
 				<td class="w200">Url前缀</td>
                 <td class="w200">创建时间</td>
-				<td class="w100">排序</td>
 				<td>操作</td>
 			</tr>
 		</thead>
@@ -40,7 +39,6 @@
 				<td>{{item.name}}</td>
 				<td>{{item.url}}</td>
                 <td>{{item.createTimeStr}}</td>
-                <td>{{item.sequence}}</td>
 				<td class="f12">
 					<a class="mr10 cursor" ng-href="#/user/interface/list?projectId={{item.projectId}}&moduleId={{item.id}}&moduleName={{item.name}}">
 						<i class="iconfont f12">&#xe614; 接口</i>

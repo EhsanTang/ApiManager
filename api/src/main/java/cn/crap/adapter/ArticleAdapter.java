@@ -5,6 +5,7 @@ import cn.crap.dto.SearchDto;
 import cn.crap.enumer.ArticleStatus;
 import cn.crap.enumer.ArticleType;
 import cn.crap.enumer.LuceneSearchType;
+import cn.crap.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
@@ -146,6 +147,10 @@ public class ArticleAdapter {
             dto.setNeedCreateIndex(true);
         }
 
+		// 私有项目不能建立索引
+		if(project.getType() == ProjectType.PRIVATE.getType()){
+			dto.setNeedCreateIndex(false);
+		}
 		return dto;
 	}
 }

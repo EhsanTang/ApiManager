@@ -9,10 +9,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Project;
-import cn.crap.query.ErrorQuery;
-import cn.crap.query.ModuleQuery;
-import cn.crap.query.ProjectQuery;
-import cn.crap.query.ProjectUserQuery;
+import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
@@ -24,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/project")
@@ -43,6 +42,8 @@ public class ProjectController extends BaseController {
     private ProjectUserService projectUserService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private InterfaceService interfaceService;
 
     @RequestMapping("/list.do")
     @ResponseBody
@@ -78,6 +79,19 @@ public class ProjectController extends BaseController {
             model = new Project();
         }
         return new JsonResult(1, ProjectAdapter.getDto(model, null));
+    }
+
+    @RequestMapping("/moreInfo.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult moreInfo(String id) throws MyException {
+        throwExceptionWhenIsNull(id, "项目ID不能为空");
+        Map<String, Integer> projectInfo = new HashMap<>();
+        projectInfo.put("moduleNum", moduleService.count(new ModuleQuery().setProjectId(id)));
+        projectInfo.put("projectUserNum", projectUserService.count(new ProjectUserQuery().setProjectId(id)));
+        projectInfo.put("errorNum", errorService.count(new ErrorQuery().setProjectId(id)));
+
+        return new JsonResult().data(projectInfo);
     }
 
 

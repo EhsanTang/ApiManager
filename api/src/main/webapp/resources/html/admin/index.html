@@ -178,11 +178,11 @@
 			</div>
 
 				<!-- End:left -->
-				<div class="p0 h mah ofy-a l250 fixed">
+				<div class="p0 h mah ofy-a l250 fixed r0">
 					<div class="m10 pb50">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
 						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
-						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
+						<div class="f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-if="error.indexOf('CrapApi-400')>0">
@@ -191,7 +191,7 @@
 								<span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
 							</button>
 						</div>
-						<div class="col-xs-12 f16 fb p0 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+						<div class="f16 fb p0 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-bind="errorTips"></span>

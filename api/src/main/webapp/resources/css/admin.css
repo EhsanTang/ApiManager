@@ -2,7 +2,7 @@
 后端css样式
  */
 body{
-    min-width: 700px;
+    min-width: 1000px;
 }
 .navbar-brand{
     width: 50px;
@@ -43,4 +43,18 @@ body{
     margin-bottom:-1px;
     height:42px;
     line-height: 42px;
+}
+.project-menu{
+    text-align: left;
+    display: block;
+    float: left;
+    cursor: pointer;
+    width: 12.5%;
+    background-color: #f9fafc;
+    border-left: 1px solid #eeeeee;
+    height: 60px;
+    line-height: 60px;
+    font-size: 14px;
+    padding-left: 10px;
+    overflow: hidden;
 }

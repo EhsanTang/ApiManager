@@ -117,7 +117,7 @@ table{border-collapse:collapse;border-spacing:0}
 .lh20{line-height:20px!important}
 .lh25{line-height:25px}
 .lh26{line-height:26px}
-.lh30{line-height:30px}
+.lh30{line-height:30px!important;}
 .lh40{line-height:40px}
 .lh50{line-height:50px}
 .lh70{line-height:70px}
@@ -138,7 +138,7 @@ table{border-collapse:collapse;border-spacing:0}
 .w60{width:60px}.w70{width:70px}.w80{width:80px}.w90{width:90px}.w100{width:100px}.w120{width:120px}.w130{width:130px}
 .w150{width:150px}.w200{width:200px}.w250{width:250px}.w300{width:300px}.w400{width:400px}
 .w500{width:500px}.w600{width:600px}.w700{width:700px}.w800{width:800px}
-.w{width:100%}.w-50{width:50%;}
+.w{width:100%}.w-p-12_5{width:12.5%;}.w-p-50{width:50%;}
 .h-auto{height:auto;}
 .h30{height:30px!important}.h20{height:20px}
 .h40{height:40px}.h50{height:50px}.h60{height:60px}.h70{height:70px}.h80{height:80px}.h90{height:90px}

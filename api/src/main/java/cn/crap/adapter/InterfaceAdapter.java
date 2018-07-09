@@ -203,6 +203,7 @@ public class InterfaceAdapter {
 		dto.setHref(model.getFullUrl());
 		dto.setProjectId(model.getProjectId());
 
+		dto.setNeedCreateIndex(false);
         if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
             dto.setNeedCreateIndex(true);
         }

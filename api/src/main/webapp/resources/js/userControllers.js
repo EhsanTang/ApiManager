@@ -502,6 +502,9 @@ userModule.controller('userProjectDetailCtrl', function($rootScope,$scope, $http
     $scope.getData = function() {
         var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail");
+
+		params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
     };
     $scope.getData();
 });

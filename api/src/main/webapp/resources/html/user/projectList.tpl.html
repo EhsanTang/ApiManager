@@ -36,7 +36,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="cursor" ng-repeat="item in list" ng-click="go('user/project?menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
+			<tr class="cursor" ng-repeat="item in list"
+				ng-click="go('user/project?menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
 				<td >{{item.name}}</td>
 				<td>{{item.typeName}}</td>
                 <td>{{item.statusName}}</td>

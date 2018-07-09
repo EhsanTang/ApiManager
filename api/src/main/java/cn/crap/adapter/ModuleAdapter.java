@@ -50,13 +50,13 @@ public class ModuleAdapter {
         return model;
     }
 
-    public static List<ModuleDto> getDto(List<Module> models){
+    public static List<ModuleDto> getDto(List<Module> models, Project project){
         if (CollectionUtils.isEmpty(models)){
             return new ArrayList<>();
         }
         List<ModuleDto> dtos = new ArrayList<>();
         for (Module model : models){
-            dtos.add(getDto(model, null));
+            dtos.add(getDto(model, project));
         }
         return dtos;
     }

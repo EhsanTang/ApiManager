@@ -80,7 +80,7 @@ public class AdminPickService implements IPickService{
                 picks.add(pick);
                 pick = new PickDto("modelName_4", "接口", "接口");
                 picks.add(pick);
-                pick = new PickDto("modelName_5", "数据字典", "数据字典");
+                pick = new PickDto("modelName_5", "数据库表", "数据库表");
                 picks.add(pick);
                 return picks;
             case INDEX_PAGE:// 首页

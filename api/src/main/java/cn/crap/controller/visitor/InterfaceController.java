@@ -176,7 +176,7 @@ public class InterfaceController extends BaseController {
         Page page = new Page(query);
         page.setAllRow(interfaceService.count(query));
 
-        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(query), module);
+        List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(query), module, null);
 
         return new JsonResult().data(interfaces).page(page).others(
                 Tools.getMap("crumbs", Tools.getCrumbs(projectCache.get(module.getProjectId()).getName(),
@@ -198,9 +198,9 @@ public class InterfaceController extends BaseController {
              */
             InterfaceQuery query = new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualInterfaceName(interFace.getInterfaceName())
                     .setExceptVersion(interFace.getVersion());
-            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module);
+            List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module, null);
 
-            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module, false), null,
+            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module, null, false), null,
                     Tools.getMap("versions", versions,
                             "crumbs",
                             Tools.getCrumbs(

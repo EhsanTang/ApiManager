@@ -58,10 +58,12 @@ public class InterfaceController extends BaseController{
 		InterfaceQuery interfaceQuery = new InterfaceQuery();
 		interfaceQuery.setModuleId(moduleId).setInterfaceName(interfaceName).setFullUrl(url).setCurrentPage(currentPage);
 		Page page= new Page(interfaceQuery);
-		checkUserPermissionByModuleId(moduleId, VIEW);
 
+		Module module = moduleCache.get(moduleId);
+		Project project = projectCache.get(module.getProjectId());
+		checkUserPermissionByProject(project.getId(), VIEW);
 
-		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), null);
+		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module, project);
 		page.setAllRow(interfaceService.count(interfaceQuery));
 		JsonResult result = new JsonResult(1, interfaces, page);
 		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
@@ -108,7 +110,7 @@ public class InterfaceController extends BaseController{
 				}
 			}
 		}
-		return new JsonResult(1, InterfaceAdapter.getDto(model, module, false));
+		return new JsonResult(1, InterfaceAdapter.getDto(model, module, null, false));
 	}
 	
 	/**

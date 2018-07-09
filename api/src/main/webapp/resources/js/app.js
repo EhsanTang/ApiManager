@@ -308,7 +308,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         changeimg('imgCode2','verificationCode');
     }
 	/**
-	 * 提交数据字典时回调将表格数据转换为json
+	 * 提交数据库表时回调将表格数据转换为json
 	 */
 	$rootScope.preAddDictionary = function(){
 		var content = getParamFromTable("content");
@@ -321,7 +321,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		$rootScope.model.content  = format($rootScope.model.content);
 	}
 	/**
-	 * 数据字典、文章编辑回调
+	 * 数据库表、文章编辑回调
 	 */
 	$rootScope.getFields = function() {
     		// 切换为默认编辑器

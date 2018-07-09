@@ -41,7 +41,7 @@ public class SourceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@RequestParam SourceQuery query) throws MyException{
+	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
 		checkUserPermissionByModuleId((query.getModuleId()), VIEW);
 
 		Page page= new Page(query);

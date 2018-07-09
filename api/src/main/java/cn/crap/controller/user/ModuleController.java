@@ -61,9 +61,10 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult list(@ModelAttribute ModuleQuery query) throws MyException{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
-			checkUserPermissionByProject(query.getProjectId(), VIEW);
+			Project project = projectCache.get(query.getProjectId());
+			checkUserPermissionByProject(project, VIEW);
 
-            List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query));
+            List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
             page.setAllRow(moduleService.count(query));
             return new JsonResult().data(moduleDtos).page(page);
 		}

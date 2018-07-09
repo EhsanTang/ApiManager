@@ -34,7 +34,7 @@ public class ArticleAdapter {
 		ArticleDto dto = new ArticleDto();
 		BeanUtil.copyProperties(model, dto);
 
-		dto.setCanCommentName(model.getCanComment().equals(new Byte("1")) ? "是" : "否");
+		dto.setCanCommentName(new Byte("1").equals(model.getCanComment()) ? "是" : "否");
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
 		dto.setTypeName(ArticleType.getByEnumName(model.getType()));
 

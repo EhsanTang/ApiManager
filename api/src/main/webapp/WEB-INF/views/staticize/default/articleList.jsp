@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</c:if>
 					<c:if test="${categoryDtos==null}">
 						<div class="col-xs-12 f16 pl10 fb mb10 adorn-bl-3" id="article-content">
-							数据字典列表
+							数据库表列表
 						</div>
 						<div class="cb"></div>
 					</c:if>

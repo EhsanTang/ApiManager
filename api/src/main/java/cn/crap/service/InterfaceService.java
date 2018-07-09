@@ -142,7 +142,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      */
     public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace, Module module, boolean handleText) {
         InterfacePDFDto interDto = new InterfacePDFDto();
-        interDto.setModel(InterfaceAdapter.getDto(interFace, module, handleText));
+        interDto.setModel(InterfaceAdapter.getDto(interFace, module, null, handleText));
         if(interFace.getParam().startsWith("form=")){
             interDto.setFormParams(JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig()));
         }else{
@@ -252,13 +252,13 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null));
+        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null, null));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(example), null));
+        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(example), null, null));
     }
 }

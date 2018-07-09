@@ -53,7 +53,7 @@ visitorModule.filter("removeLast",function(){
 		}
 	}
 });
-// 数据字典flag转中文
+// 数据库表flag转中文
 visitorModule.filter("directoryFlagName",function(){
 	return function (value) {
 		if(value=='primary')
@@ -107,7 +107,7 @@ userModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
     };
     $scope.getData();
 });
-/*************************数据字典列表******************************/
+/*************************数据库表列表******************************/
 userModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/article/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.moduleId+"&name="+$stateParams.search;
@@ -132,7 +132,7 @@ userModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $sta
     $scope.getData();
 });
 /**
- * article详情（数据字典，网站页面，文章）
+ * article详情（数据库表，网站页面，文章）
  */
 visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
@@ -155,7 +155,7 @@ visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http,
 				 $rootScope.comments = result.others.comments;//评论列表
 				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
 				 $rootScope.others = result.others;//导航路径
-				 //如果是数据字典，则将内容转为json
+				 //如果是数据库表，则将内容转为json
 				 if($rootScope.webpage.content!=''&&$rootScope.webpage.type=="DICTIONARY"){
 					 $rootScope.dictionary = eval("("+$rootScope.webpage.content+")");
 			     }

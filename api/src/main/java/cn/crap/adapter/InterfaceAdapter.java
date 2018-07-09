@@ -29,7 +29,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module, boolean handleText){
+    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module, Project project, boolean handleText){
         if (model == null){
             return null;
         }
@@ -79,6 +79,9 @@ public class InterfaceAdapter {
 			dto.setModuleName(handleText(module.getName(), handleText));
 			dto.setModuleUrl(handleText(module.getUrl(), handleText));
 		}
+		if (project != null){
+		    dto.setProjectName(project.getName());
+        }
 		
         return dto;
     }
@@ -149,18 +152,18 @@ public class InterfaceAdapter {
         }
         List<InterfaceDto> dtos = new ArrayList<>();
         for (InterfaceWithBLOBs model : models){
-            dtos.add(getDto(model, null, false));
+            dtos.add(getDto(model, null, null, false));
         }
         return dtos;
     }
 
-	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models, Module module){
+	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models, Module module, Project project){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<InterfaceDto> dtos = new ArrayList<>();
 		for (InterfaceWithBLOBs model : models){
-			dtos.add(getDto(model, module, false));
+			dtos.add(getDto(model, module, project, false));
 		}
 		return dtos;
 	}

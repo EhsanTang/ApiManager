@@ -44,7 +44,7 @@ public class ModuleController extends BaseController{
         Page page= new Page(query);
 		page.setAllRow(moduleService.count(query));
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto( moduleService.query(query));
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto( moduleService.query(query), null);
 
 		return new JsonResult().data(moduleDtoList).page(page).others(
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),
@@ -69,7 +69,7 @@ public class ModuleController extends BaseController{
 			}
 		}
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.query(new ModuleQuery().setPageSize(10)));
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.query(new ModuleQuery().setPageSize(10)), null);
 		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
 	}	
 }

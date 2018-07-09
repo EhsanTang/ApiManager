@@ -1,12 +1,30 @@
 <div class="col-xs-12 p0" ng-controller="userArticleCtrl">
 	<div class="col-xs-12 p0 f12">
 		<div class="btn-group btn-group-sm r3 fl mr10">
-			<button class="btn btn-main btn-sm">{{$stateParams.moduleName}} > {{others.type}}管理</button>
 			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+
+            <a type="button" class="btn btn-default btn-sm"
+               ng-href="#/user/interface/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont f12 mt-3">&#xe614; 接口</i>
+            </a>
+
+			<button class="btn btn-main cursor-not btn-sm" ng-if="$stateParams.type=='ARTICLE'"><i class="iconfont f12 mt-3">&#xe637; 文章</i></button>
+            <button class="btn btn-main cursor-not btn-sm" ng-if="$stateParams.type=='DICTIONARY'"><i class="iconfont f12 mt-3">&#xe61c; 数据库表</i></button>
+
+            <a type="button" class="btn btn-default" ng-if="$stateParams.type=='DICTIONARY'"
+               ng-href="#/user/article/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&type=ARTICLE">
+                <i class="iconfont f12 mt-3">&#xe637; 文章</i>
+            </a>
+            <a type="button" class="btn btn-default" ng-if="$stateParams.type=='ARTICLE'"
+               ng-href="#/user/article/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&type=DICTIONARY">
+                <i class="iconfont f12 mt-3">&#xe61c; 数据库表</i>
+            </a>
+
 			<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
 			<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 			   ng-click="detail('新增'+$stateParams.type,1000,'user/article/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&type='+$stateParams.type, getFields);">
-				<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增文章
+				<i class="iconfont mt-3" ng-if="$stateParams.type=='ARTICLE'">&#xe604;&nbsp;新增文章</i>
+                <i class="iconfont mt-3" ng-if="$stateParams.type=='DICTIONARY'">&#xe604;&nbsp;新增数据库表</i>
 			</a>
 			<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
 			   ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文章？')">
@@ -68,14 +86,15 @@
 					   ng-click="detail('编辑【'+item.name+'】',1000,'user/article/detail.do?id='+item.id,'',getFields)">
 						<i class="iconfont f12">&#xe618;修改</i>
 					</a>
-					<a class="f12 main-color mr10 cursor" ng-href="index.do#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" target="_blank">
+					<a class="f12 main-color mr10 cursor" target="_blank"
+                       ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
 						<i class="iconfont f12">&#xe60a;预览</i>
 					</a>
 					<a class="f12 main-color mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'" ng-href="#/user/comment/list?projectId={{item.projectId}}&articleId={{item.id}}">
 						<i class="iconfont f12">&#xe60f;评论列表</i>
 					</a>
 
-					<a class="f12 main-color mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
+					<a class="f12 main-color mr10 cursor" ng-href="#/user/log/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{item.id}}">
 						<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
 					</a>
 					<a class="f12 adorn-color mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"

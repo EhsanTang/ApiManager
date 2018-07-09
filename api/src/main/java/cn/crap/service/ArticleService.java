@@ -186,7 +186,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
 
     @Override
     public String getLuceneType() {
-        return "文章&数据字典";
+        return "文章&数据库表";
     }
 
     @Override

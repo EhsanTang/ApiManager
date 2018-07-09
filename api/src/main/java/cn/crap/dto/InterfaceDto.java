@@ -37,6 +37,7 @@ public class InterfaceDto{
 	private String monitorEmails;
 	private Boolean isTemplate;
 	private String projectId;
+	private String projectName;
 	private String remarkNoHtml;
 	private String contentType;
     private String contentTypeName;
@@ -287,4 +288,12 @@ public class InterfaceDto{
     public void setContentTypeName(String contentTypeName) {
         this.contentTypeName = contentTypeName;
     }
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

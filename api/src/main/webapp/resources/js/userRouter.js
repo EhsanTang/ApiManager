@@ -174,7 +174,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('projectLogList', {
-        url : '/user/log/list?identy&projectId&name&projectName&menu_a&menu_b',
+        url : '/user/log/list?identy&projectId&name&projectName&menu_a&menu_b&moduleId',
         views : {
             'main' : {
                 templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.2'
@@ -193,7 +193,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('articleList', {
-        url : '/user/article/list?projectId&moduleId&type&moduleName',
+        url : '/user/article/list?projectId&moduleId&type&moduleName&projectName&menu_a&menu_b',
         views : {
             'main' : {
                 templateUrl : function($stateParems){
@@ -202,23 +202,29 @@ app.config(function($stateProvider, $urlRouterProvider) {
             },
             'page@articleList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
-            },
-            'detail' : {
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            }, 'detail' : {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.2';
                 }
             }
         }
     }).state('sourceList', {
-		url : '/user/source/list?projectId&moduleId',
+		url : '/user/source/list?projectId&moduleId&moduleName&projectName&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/sourceList.tpl.html?v=v8.0.2'
 			},
 			'page@sourceList' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
-			},
-			'detail' : {
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            },'detail' : {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/sourceDetail.tpl.html?v=v8.0.2';
 				}

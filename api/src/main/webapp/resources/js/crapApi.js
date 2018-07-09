@@ -11,7 +11,7 @@ function propUpPsswordDiv(obj){
 	}
 }
 
-/****************数据字典****************/
+/****************数据库表****************/
 function addOneField(name, type, notNull,flag, def, remark, rowNum) {
 	if (!rowNum || rowNum == '') {
 		var mydate = new Date();

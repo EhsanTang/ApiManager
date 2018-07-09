@@ -122,7 +122,7 @@ public class StaticizeController extends BaseController{
         Page page = new Page(interfaceQuery);
         page.setAllRow(interfaceService.count(interfaceQuery));
 		returnMap.put("page", page);
-		returnMap.put("interfaceList", InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module));
+		returnMap.put("interfaceList", InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module, null));
 		returnMap.put("activePage",moduleId+"_interface");
 		returnMap.put("url", module.getId() + "-interfaceList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -237,7 +237,7 @@ public class StaticizeController extends BaseController{
 			returnMap.put("needStaticizes", needStaticizes);
 			return new ModelAndView("WEB-INF/views/staticize/default/articleDetail.jsp",returnMap);
 		}else{
-			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-数据字典详情");
+			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-数据库表详情");
 			returnMap.put("article", article);
 			returnMap.put("activePage",module.getId()+"_dictionary");
 			returnMap.put("dictionaryFields", JSONArray.toArray(JSONArray.fromObject(article.getContent()), DictionaryDto.class));
@@ -452,7 +452,7 @@ public class StaticizeController extends BaseController{
 			}
 			
 			if(needStaticizes.indexOf(",dictionary,") >= 0){
-				// 数据字典列表
+				// 数据库表列表
                 ArticleQuery articleQuery = new ArticleQuery().setModuleId(module.getId()).setType(ArticleType.DICTIONARY.name());
                 int articleSize = articleService.count(articleQuery);
 				// 计算总页数
@@ -467,7 +467,7 @@ public class StaticizeController extends BaseController{
 					Tools.staticize(html, path + "/" +  module.getId() +"-dictionaryList-" + i + ".html");
 				}
 				
-				// 静态化数据字典详情
+				// 静态化数据库表详情
                 articleQuery.setPageSize(ALL_PAGE_SIZE);
 				for(Article article: articleService.query(articleQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +

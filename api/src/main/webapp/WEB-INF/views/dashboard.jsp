@@ -1,9 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +11,11 @@
     <link href="${icon}" rel="shortcut icon" type="image/x-icon"/>
     <link href="${icon}" rel="icon" type="image/x-icon"/>
     <link href="${icon}" rel="shortcut" type="image/x-icon"/>
-    <link href="<%=basePath %>resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-    <link href="<%=basePath %>resources/css/base.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
-    <link href="<%=basePath %>resources/css/crapApi.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
-    <link href="<%=basePath %>resources/css/setting.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/base.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/crapApi.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
+    <link href="resources/css/setting.css?v=v8.0.2" rel="stylesheet" type="text/css"/>
     <title>${title}</title>
 </head>
 <body class="BGFFF">

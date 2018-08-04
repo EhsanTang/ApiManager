@@ -47,14 +47,24 @@
                            onmouseover="tooltip('menu-project')" data-placement="right" data-toggle="tooltip" id="menu-project" data-original-title="项目列表">
                             <i class="iconfont f18 mr20">&#xe61f;</i> 项目列表
                         </a>
+
+                        <a href="#/profile?menu_a=menu-profile"
+                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-profile']"
+                           ng-click="profile(sessionAdminId)"
+                           onmouseover="tooltip('menu-profile')" data-placement="right" data-toggle="tooltip" id="menu-profile" data-original-title="个人资料">
+                            <i class="iconfont f18 mr20">&#xe603;</i> 个人资料
+                        </a>
+
                         <a href="#/admin/menu/list?parentId=0&menu=menu-menu"
                            ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu == 'menu-menu']"
                            ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('my-menu')" data-placement="right" data-toggle="tooltip" id="menu-menu" data-original-title="菜单管理">
                             <i class="iconfont f18 mr20">&#xe60f;</i> 菜单管理
                         </a>
-                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-setting')" data-placement="right" data-toggle="tooltip" id="my-setting" data-original-title="系统管理">
+                        <a href="#/admin/setting/list?menu_a=menu-setting"
+						    ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-setting']"
+							ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-setting')" data-placement="right" data-toggle="tooltip" id="menu-setting" data-original-title="系统管理">
                             <i class="iconfont f18 mr20">&#xe61a;</i> 系统设置
-                        </div>
+                        </a>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-recover')" data-placement="right" data-toggle="tooltip" id="my-recover" data-original-title="故障恢复">
                             <i class="iconfont f18 mr20">&#xe611;</i> 故障恢复
                         </div>

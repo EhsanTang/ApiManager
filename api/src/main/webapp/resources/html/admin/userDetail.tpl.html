@@ -6,7 +6,7 @@
 	</div>
 	<div class="notice h30 pl20 pt5 mt20" ng-if="model.status==1 && sessionAdminId==model.id">
 			<i class="iconfont f16 pr20">&#xe632;</i>邮箱尚未验证，请登陆邮箱验证！ 
-			<a class="cursor" "_self" href="javascrpit:void(0);"
+			<a class="cursor" target="_self" href="javascrpit:void(0);"
 				onclick="callAjaxByName('iUrl=back/sendValidateEmail.do|iLoading=PROPUPFLOAT发送中，请稍后...|ishowMethod=updateDivWithImg');">
 				重新发送验证码
 			</a>
@@ -16,40 +16,40 @@
 			<tr>
 				<td class="tc w100">用户名</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control b0 no-b-s"  type="text" ng-model="model.userName" required placeholder="请输入用户登录名">
+					<input  class="form-control"  type="text" ng-model="model.userName" required placeholder="请输入用户登录名">
 				</td>
 			</tr>
 			<tr>
 				<td class="tc">真实姓名/昵称</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control b0 no-b-s" type="text" ng-model="model.trueName" required placeholder="点击修改昵称/真实姓名">
+					<input  class="form-control" type="text" ng-model="model.trueName" required placeholder="点击修改昵称/真实姓名">
 				</td>
 			</tr>
 			<tr ng-if="isSupperAdmin()">
 				<td class="tc">类型</td>
 				<td class="tl" colspan="3">
 						<div class="C999 pl10">*普通用户只能查看自己创建的项目，管理员能查看所有项目</div>
-						<input  class="form-control b0 no-b-s"  id="typeName" type="text" ng-model="model.typeName" required placeholder="点击选择"
+						<input  class="form-control"  id="typeName" type="text" ng-model="model.typeName" readonly required placeholder="点击选择"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=typeName|tag=type|code=USER_TYPE|def='+model.type,$event)">
 				</td>
 			</tr>
 			<tr>
 				<td class="tc">邮箱</td>
 				<td class="tc w200" colspan="3">
-					<input  class="form-control b0 no-b-s" type="text" ng-model="model.equalEmail" placeholder="请输入用户邮箱">
+					<input  class="form-control" type="text" ng-model="model.equalEmail" placeholder="请输入用户邮箱">
 				</td>
 			</tr>
 			
 			<tr>
 				<td class="tc">密码</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control b0 no-b-s" type="text" ng-model="model.password" placeholder="点击修改密码">
+					<input  class="form-control" type="text" ng-model="model.password" placeholder="点击修改密码">
 				</td>
 			</tr>
 			<tr ng-if="isSupperAdmin() && model.type==100">
 				<td class="tc">权限</td>
 				<td class="tc w200" colspan="3">
-					<input  class="form-control b0 no-b-s" readonly id="authName" type="text" ng-model="model.authName" placeholder="请点击选择权限"
+					<input  class="form-control" readonly id="authName" type="text" ng-model="model.authName" placeholder="请点击选择权限"
 					ng-click="loadPickByName('iwidth=300|iheight=460|radio=false|tagName=authName|tag=auth|code=AUTH|def='+model.auth,$event)">
 				</td>
 				
@@ -57,7 +57,7 @@
 			<tr ng-if="isSupperAdmin() && model.type==100">
 				<td class="tc">角色</td>
 				<td class="tc w200" colspan="3">
-						<input  class="form-control b0 no-b-s" readonly id="roleName" type="text" ng-model="model.roleName" placeholder="请点击选择角色"
+						<input  class="form-control" readonly id="roleName" type="text" ng-model="model.roleName" placeholder="请点击选择角色"
 						ng-click="loadPickByName('iwidth=300|iheight=460|radio=false|tagName=roleName|tag=roleId|code=ROLE|def='+model.roleId,$event)">
 				</td>
 			</tr>

@@ -70,8 +70,9 @@ userModule.controller('backInit', function($rootScope,$scope, $http, $state, $st
 			}
 		}
 		if(hasAuth){
-			if(id)
-				$("#"+id).removeClass("ndis");
+			if(id) {
+                $("#" + id).removeClass("ndis");
+            }
 			return true;
 		}else{
 			if(id){

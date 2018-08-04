@@ -231,7 +231,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingList', {
-		url : '/admin/setting/list?key',
+		url : '/admin/setting/list?key&menu_a',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/settingList.tpl.html?v=v8.0.2'
@@ -323,7 +323,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('profile', {
-		url : '/profile',
+		url : '/profile?menu_a',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/userDetail.tpl.html?v=v8.0.2'

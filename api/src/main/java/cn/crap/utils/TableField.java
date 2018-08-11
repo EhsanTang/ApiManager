@@ -6,7 +6,7 @@ public class TableField {
     public final static String CREATE_TIME = "createTime";
     public final static String SEQUENCE = "sequence";
 
-    public static class SORT{
+    public static class SORT {
         public final static String SEQUENCE_DESC = "sequence desc";
         public final static String ERROR_CODE_ASC = "errorCode asc";
         public final static String CREATE_TIME_DES = "createTime desc";
@@ -22,5 +22,4 @@ public class TableField {
         public final static String THIRDLY_ID = "thirdlyId"; // 第三方账号ID = 第三方前缀 + 唯一标识
         public final static String PASSWORD = "password"; // MD5 加密（旧数据），MD5+盐（新数据）
     }
-
 }

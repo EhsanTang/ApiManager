@@ -12,6 +12,9 @@ body{
     height: 30px;
     width: 30px;
 }
+.nav{
+    border-bottom: 1px solid #cccccc;
+}
 .menu_a,.left-menu a{
     text-align: left;
     height: 50px;
@@ -19,6 +22,7 @@ body{
     display: block;
     padding-left:15px;
     border-bottom: 1px solid #eaeaea;
+    color: #555555;
     width: 100%;
 }
 .menu_a:hover,.left-menu a:hover{
@@ -34,15 +38,17 @@ body{
     padding-left:15px;
     padding-right:15px;
     overflow:hidden;
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px dashed #eaeaea;
     width: 100%;
     color: #555555;
+    font-size: 14px;
 }
 .menu_b:hover{
     margin-top:-1px;
     margin-bottom:-1px;
     height:42px;
     line-height: 42px;
+    border-bottom: 0px;
 }
 .project-menu{
     text-align: left;

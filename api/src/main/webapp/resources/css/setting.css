@@ -23,7 +23,6 @@ body{min-width:800px;}
 .bt-5 {border-top: 5px solid#006f1f}
 .bl-5 {border-left: 5px solid#006f1f}
 a{color: #006f1f;text-decoration: none;}a:hover{color: #f82c1d;text-decoration: none;}
-.menu_a:hover {background-color: #006f1f!important;color:#ffffff!important;opacity:0.8;}
 .iactive {background-color: #006f1f!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: #006f1f}
 .pickSelect {color: #006f1f}
@@ -67,10 +66,9 @@ input:focus{
     text-decoration: none;
 }
 .hover-main:hover,.active-main{
-    color: #ffffff!important;
     background-color: #006f1f!important;
     cursor: pointer;
-    opacity: 0.5;
+    border:0px!important;
     text-decoration: none;
 }
 

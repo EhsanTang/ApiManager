@@ -22,7 +22,6 @@ body{min-width:800px;}
 .bt-5 {border-top: 5px solid{{settings.MAIN_COLOR}}}
 .bl-5 {border-left: 5px solid{{settings.MAIN_COLOR}}}
 a{color: {{settings.MAIN_COLOR}};text-decoration: none;}a:hover{color: {{settings.ADORN_COLOR}};text-decoration: none;}
-.menu_a:hover {background-color: {{settings.MAIN_COLOR}}!important;color:#ffffff!important;opacity:0.8;}
 .iactive {background-color: {{settings.MAIN_COLOR}}!important;color:#ffffff!important;opacity: 0.8;}
 .pickActive {color: {{settings.MAIN_COLOR}}}
 .pickSelect {color: {{settings.MAIN_COLOR}}}
@@ -66,10 +65,10 @@ input:focus{
 }
 
 .hover-main:hover,.active-main{
-    color: #ffffff!important;
-    background-color: {{settings.MAIN_COLOR}}!important;
-    opacity: 0.5;
+    background-color: {{settings.MAIN_COLOR_HOVER}}!important;
     cursor: pointer;
+    border:0px!important;
+    color:{{settings.MAIN_COLOR}}!important;
     text-decoration: none;
 }
 

@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ModuleDto;
+import cn.crap.model.Interface;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
@@ -17,7 +18,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ModuleAdapter {
-    public static ModuleDto getDto(Module model, Project project){
+    public static ModuleDto getDto(Module model, Project project, Interface templeteInterface){
         if (model == null){
             return null;
         }
@@ -31,7 +32,9 @@ public class ModuleAdapter {
 		if (project != null) {
             dto.setProjectName(project.getName());
         }
-		
+		if (templeteInterface != null){
+            dto.setTemplateName(templeteInterface.getInterfaceName());
+        }
         return dto;
     }
 
@@ -56,7 +59,7 @@ public class ModuleAdapter {
         }
         List<ModuleDto> dtos = new ArrayList<>();
         for (Module model : models){
-            dtos.add(getDto(model, project));
+            dtos.add(getDto(model, project, null));
         }
         return dtos;
     }

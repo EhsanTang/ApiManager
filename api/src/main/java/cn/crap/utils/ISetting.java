@@ -18,4 +18,5 @@ public interface ISetting {
 	String S_ICON = "ICON";
 	String S_LOGO = "LOGO";
 	String S_DOMAIN = "DOMAIN";
+	String S_MAIN_COLOR = "MAIN_COLOR";
 }

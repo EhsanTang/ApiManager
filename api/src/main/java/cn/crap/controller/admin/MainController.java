@@ -111,6 +111,7 @@ public class MainController extends BaseController {
                 settingMap.put(setting.getKey(), setting.getValue());
             }
         }
+
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);
         LoginInfoDto user = LoginUserHelper.getUser();

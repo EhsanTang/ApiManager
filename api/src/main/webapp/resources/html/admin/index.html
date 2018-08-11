@@ -20,13 +20,16 @@
 	<!-- Top -->
 	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
 	<input type="hidden" id="sessionRoleIds" value="{{sessionAdminRoleIds}}">
-	<nav class="h50 fixed w t0 BGFFF z100 main-bb-1">
+	<nav class="h50 fixed w t0 BGFFF z100 nav">
 				<a class="navbar-brand fl main-bg" href="home.do" target="_blank">
 					<img ng-src="{{settings.MINI_LOGO}}" />
 				</a>
 
-                <div class="fl h50 lh50 pl10 pr10 main-color br1" ng-if="$stateParams.projectName">
-					<span class="f16 fw500" ng-bind="$stateParams.projectName"></span>
+                <div class="fl h50 lh50 pl10 pr10 C000 f16 fw500" ng-if="$stateParams.projectName">
+                    项目【<span ng-bind="$stateParams.projectName"></span> 】
+				</div>
+				<div class="fl h50 lh50 pl10 pr10 C000 f16 fw500" ng-if="!$stateParams.projectName">
+					<span ng-bind="settings.TITLE"></span>
 				</div>
 
 				<div class="m0 f14 fr">
@@ -41,34 +44,40 @@
 		<div class="row h p0 m0 mt50">
 				<!-- left -->
 				<div class="left-menu shadow">
-                    <div class="w250 fl h BGFFF main-color main-br-1">
+                    <div class="w250 fl h BGFFF main-color">
                         <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
-                            <i class="iconfont f18 mr20">&#xe61f;</i> 项目列表
+                            <i class="iconfont f18 mr20">&#xe61f;</i>
+                            <span class="f14"> 项目列表</span>
                         </a>
 
                         <a href="#/profile?menu_a=menu-profile"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
                            ng-click="profile(sessionAdminId)">
-                            <i class="iconfont f18 mr20">&#xe603;</i> 个人资料
+                            <i class="iconfont f18 mr20">&#xe603;</i>
+                            <span class="f14"> 个人资料</span>
                         </a>
 
                         <a href="#/admin/menu/list?parentId=0&menu=menu-menu"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu == 'menu-menu']"
                            ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe60f;</i> 菜单管理
+                            <i class="iconfont f18 mr20">&#xe60f;</i>
+                            <span class="f14"> 菜单管理</span>
                         </a>
                         <a href="#/admin/setting/list?menu_a=menu-setting"
 						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
 							ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe61a;</i> 系统设置
+                            <i class="iconfont f18 mr20">&#xe61a;</i>
+                            <span class="f14"> 系统设置</span>
                         </a>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe611;</i> 故障恢复
+                            <i class="iconfont f18 mr20">&#xe611;</i>
+                            <span class="f14"> 故障恢复</span>
                         </div>
                         <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')"
                              data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
-                            <i class="iconfont f18 mr20">&#xe639;</i> 建议、反馈
+                            <i class="iconfont f18 mr20">&#xe639;</i>
+                            <span class="f14"> 建议、反馈</span>
                         </div>
                     </div>
 

@@ -17,6 +17,7 @@ public class ModuleDto {
 	private String userId;
 	private String projectId;
 	private String templateId;
+	private String templateName;
 	private Integer version;
 	private String category;
 	private String projectName;
@@ -121,5 +122,13 @@ public class ModuleDto {
 
 	public void setCreateTimeStr(String createTimeStr) {
 		this.createTimeStr = createTimeStr;
+	}
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 }

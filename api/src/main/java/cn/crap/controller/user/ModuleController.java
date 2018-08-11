@@ -12,10 +12,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Log;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.*;
 import cn.crap.query.ArticleQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
@@ -74,10 +71,15 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult detail(String id, String projectId) throws MyException{
 		Module module;
         Project project;
+		Interface templeteInterface = null;
 		if(id != null){
 			module= moduleService.getById(id);
 			project = projectCache.get(module.getProjectId());
 			checkUserPermissionByProject(project, VIEW);
+
+            if (module.getTemplateId() != null) {
+                templeteInterface = interfaceService.getById(module.getTemplateId());
+            }
 		}else{
 		    project = projectCache.get(projectId);
 			checkUserPermissionByProject(project, VIEW);
@@ -85,7 +87,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
 		}
-		return new JsonResult(1, ModuleAdapter.getDto(module, project));
+		return new JsonResult(1, ModuleAdapter.getDto(module, project, templeteInterface));
 	}
 
 	/**

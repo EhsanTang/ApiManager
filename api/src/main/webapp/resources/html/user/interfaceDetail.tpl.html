@@ -46,7 +46,7 @@
 						ng-model="model.version" required></td>
 					<td class="tc">排序</td>
 					<td class="tc">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
+					<input class="form-control" min="0" max="10000" placeholder="接口排序" type="number" ng-model="model.sequence"></td>
 				</tr>
 				<!--
 				<tr>
@@ -202,7 +202,7 @@
 退格键可删除输入"
 								ng-model="model.errorList" rows="5" readonly></textarea>
 							<div class="input-group-addon cursor btn-main"
-								ng-click="loadPick($event,300,400,'false','errorList','ERROR_CODE',model.errorList,'&key='+model.projectId,0);">
+								ng-click="loadPick($event,300,400,'false','errorList','ERROR_CODE',null, model.errorList,'&key='+model.projectId,0);">
 								选择</div>
 						</div>
 					</td>

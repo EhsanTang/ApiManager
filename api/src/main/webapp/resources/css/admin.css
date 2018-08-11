@@ -12,7 +12,7 @@ body{
     height: 30px;
     width: 30px;
 }
-.menu_a{
+.menu_a,.left-menu a{
     text-align: left;
     height: 50px;
     line-height: 50px;
@@ -21,7 +21,7 @@ body{
     border-bottom: 1px solid #eaeaea;
     width: 100%;
 }
-.menu_a:hover{
+.menu_a:hover,.left-menu a:hover{
     margin-top:-1px;
     margin-bottom:-1px;
     height:52px;
@@ -57,4 +57,21 @@ body{
     font-size: 14px;
     padding-left: 10px;
     overflow: hidden;
+}
+
+.left-menu {
+    width: 250px;
+    height: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    background-color: #bbbbbb;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+}
+.left-menu .tooltip{
+    z-index: 1000;
+    position: fixed!important;
 }

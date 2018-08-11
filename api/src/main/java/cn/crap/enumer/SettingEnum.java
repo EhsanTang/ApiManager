@@ -29,7 +29,7 @@ public enum SettingEnum {
             new String[]{"TimesNewRoman|Times New Roman"}),
     MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "项目下允许创建的最大模块数", null),
     MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
-	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "200", "项目下最大允许的错误码数量", null),
+	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "200", "项目下最大允许的错误码数量，最大不能超过1000", null),
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "crapApiKey", "秘钥，用于cookie加密等", null);
 
     private String key;

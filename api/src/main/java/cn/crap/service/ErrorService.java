@@ -86,8 +86,8 @@ public class ErrorService extends BaseService<Error, ErrorDao> {
         if (query.getErrorMsg() != null) {
             criteria.andErrorMsgLike("%" + query.getErrorMsg() + "%");
         }
-        if (!CollectionUtils.isEmpty(query.getErrorId())){
-            criteria.andIdIn(query.getErrorId());
+        if (!CollectionUtils.isEmpty(query.getErrorCodeList())){
+            criteria.andErrorCodeIn(query.getErrorCodeList());
         }
         return example;
     }

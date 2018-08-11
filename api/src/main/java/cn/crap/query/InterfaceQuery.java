@@ -64,7 +64,7 @@ public class InterfaceQuery extends BaseQuery<InterfaceQuery>{
     }
 
     public InterfaceQuery setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
+        this.interfaceName = (interfaceName == null ? null : interfaceName.trim());
         return this;
     }
 

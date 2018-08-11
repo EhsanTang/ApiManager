@@ -35,7 +35,7 @@ public class ProjectAdapter {
 		dto.setUserName(user == null ? "" : user.getUserName());
 		dto.setTypeName(ProjectType.getNameByValue(model.getType()));
 		dto.setStatusName(ProjectStatus.getNameByValue(model.getStatus()));
-		if (ProjectType.PRIVATE.getType() == dto.getType()){
+		if (dto.getType() != null && ProjectType.PRIVATE.getType() == dto.getType()){
             dto.setLuceneSearchName("私有项目，不创建索引");
         } else {
             dto.setLuceneSearchName(LuceneSearchType.getName(model.getLuceneSearch()));

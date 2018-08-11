@@ -14,7 +14,7 @@ public class ErrorQuery extends BaseQuery<ErrorQuery>{
     private String errorCode;
     private String equalErrorCode;
     private String errorMsg;
-    private List<String> errorId;
+    private List<String> errorCodeList;
 
     @Override
     public ErrorQuery getQuery(){
@@ -60,12 +60,12 @@ public class ErrorQuery extends BaseQuery<ErrorQuery>{
         return this;
     }
 
-    public List<String> getErrorId() {
-        return errorId;
+    public List<String> getErrorCodeList() {
+        return errorCodeList;
     }
 
-    public ErrorQuery setErrorId(List<String> errorId) {
-        this.errorId = errorId;
+    public ErrorQuery setErrorCodeList(List<String> errorCodeList) {
+        this.errorCodeList = errorCodeList;
         return this;
     }
 }

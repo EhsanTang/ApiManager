@@ -1,15 +1,12 @@
 package cn.crap.utils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 /**
  * 验证码生成器
@@ -44,7 +41,7 @@ public class ImageCode {
 	 * @param height
 	 *            图片高
 	 */
-	public ImageCode(int width, int height) {
+	private ImageCode(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.createCode("Times New Roman");
@@ -61,7 +58,7 @@ public class ImageCode {
 	 * @param lineCount
 	 *            干扰线条数
 	 */
-	public ImageCode(int width, int height, int codeCount,
+	private ImageCode(int width, int height, int codeCount,
 					 int lineCount) {
 		this.width = width;
 		this.height = height;
@@ -71,6 +68,24 @@ public class ImageCode {
 	}
 
 	public void createCode(String fontStr) {
+		// 检查系统是否支持指定的字体
+        try {
+            boolean supportFont = false;
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            String[] fontFamilies = ge.getAvailableFontFamilyNames();
+            for (String s : fontFamilies) {
+                if (s.equals(fontStr)) {
+                    supportFont = false;
+                    break;
+                }
+            }
+            if (!supportFont){
+                fontStr = fontFamilies[0];
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 		int x = 0, codeY = 0;
 		int red = 0, green = 0, blue = 0;
 

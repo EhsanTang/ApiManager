@@ -135,6 +135,7 @@ public class PickService implements IPickService{
                     pick = new PickDto(split[0], split[1], split[0]);
                     picks.add(pick);
                 }
+
                 pick = new PickDto(IConst.SEPARATOR, "服务器支持的字体");
                 picks.add(pick);
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

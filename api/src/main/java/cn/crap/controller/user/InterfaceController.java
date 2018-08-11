@@ -167,7 +167,7 @@ public class InterfaceController extends BaseController{
 		 * 根据选着的错误码id，组装json字符串
 		 */
         ErrorQuery query = new ErrorQuery().setProjectId(interFace.getProjectId())
-                .setErrorId(Tools.getIdsFromField(interFace.getErrorList())).setPageSize(100);
+                .setErrorCodeList(Tools.getIdsFromField(interFace.getErrorList())).setPageSize(100);
         List<Error> errors  = errorService.query(query);
 		interFace.setErrors(JSONArray.fromObject(errors).toString());
 

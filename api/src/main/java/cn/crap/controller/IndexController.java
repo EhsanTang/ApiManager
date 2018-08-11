@@ -75,11 +75,11 @@ public class IndexController extends BaseController {
 		ServletOutputStream out = response.getOutputStream();
 
 		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
-			ImageCode imageCode1 = new ImageCode(settingCache.get(SettingEnum.IMAGE_CODE.getKey()).getValue());
-			stringCache.add(IConst.CACHE_IMGCODE + uuid, imageCode1.getCode());
+			ImageCode imageCode = new ImageCode(settingCache.get(SettingEnum.IMAGE_CODE.getKey()).getValue());
+			stringCache.add(IConst.CACHE_IMGCODE + uuid, imageCode.getCode());
 			stringCache.add(IConst.CACHE_IMGCODE_TIMES + uuid, "0");
 			try {
-				imageCode1.write(out);
+				imageCode.write(out);
 				out.flush();
 			} finally {
 				out.close();

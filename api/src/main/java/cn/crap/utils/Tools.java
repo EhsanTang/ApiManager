@@ -347,8 +347,10 @@ public class Tools {
 //		}
 //	}
 	public static String getServicePath(){
-		return ThreadContext.request().getSession().getServletContext().getRealPath("/")+"/";
+		String path = ThreadContext.request().getSession().getServletContext().getRealPath("/");
+		return  path.endsWith("/") ? path : path +"/";
 	}
+
 	public static String getChar(int num){
 		String md="123456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ789abcd";
 		Random random = new Random();

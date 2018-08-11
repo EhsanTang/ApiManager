@@ -36,44 +36,44 @@
 
 				</div>
 	</nav>
-<!-- End:Top -->
+	<!-- End:Top -->
 	
 		<div class="row h p0 m0 mt50">
 				<!-- left -->
-				<div class="w250 sidebar BGBBB pt0 pb0 h mah ofy-a ofx-h fixed shadow">
+				<div class="left-menu shadow">
                     <div class="w250 fl h BGFFF main-color main-br-1">
                         <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
-                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-project']"
-                           onmouseover="tooltip('menu-project')" data-placement="right" data-toggle="tooltip" id="menu-project" data-original-title="项目列表">
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
                             <i class="iconfont f18 mr20">&#xe61f;</i> 项目列表
                         </a>
 
                         <a href="#/profile?menu_a=menu-profile"
-                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-profile']"
-                           ng-click="profile(sessionAdminId)"
-                           onmouseover="tooltip('menu-profile')" data-placement="right" data-toggle="tooltip" id="menu-profile" data-original-title="个人资料">
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
+                           ng-click="profile(sessionAdminId)">
                             <i class="iconfont f18 mr20">&#xe603;</i> 个人资料
                         </a>
 
                         <a href="#/admin/menu/list?parentId=0&menu=menu-menu"
-                           ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu == 'menu-menu']"
-                           ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('my-menu')" data-placement="right" data-toggle="tooltip" id="menu-menu" data-original-title="菜单管理">
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu == 'menu-menu']"
+                           ng-if="isAdmin('adminMenu0','MENU')">
                             <i class="iconfont f18 mr20">&#xe60f;</i> 菜单管理
                         </a>
                         <a href="#/admin/setting/list?menu_a=menu-setting"
-						    ng-class="{true: 'menu_a hover-main active-main', false:'menu_a hover-main'}[$stateParams.menu_a == 'menu-setting']"
-							ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-setting')" data-placement="right" data-toggle="tooltip" id="menu-setting" data-original-title="系统管理">
+						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
+							ng-if="isAdmin('adminMenu0','MENU')">
                             <i class="iconfont f18 mr20">&#xe61a;</i> 系统设置
                         </a>
-                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')" onmouseover="tooltip('menu-recover')" data-placement="right" data-toggle="tooltip" id="my-recover" data-original-title="故障恢复">
+                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')">
                             <i class="iconfont f18 mr20">&#xe611;</i> 故障恢复
                         </div>
-                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')" data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
+                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')"
+                             data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
                             <i class="iconfont f18 mr20">&#xe639;</i> 建议、反馈
                         </div>
                     </div>
 
 
+					<!-- 待删除的菜单 -->
                     <div class="ndis">
                         <div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
 
@@ -183,12 +183,11 @@
 
 				</div>
 			</div>
-			<div ui-view="subMenu" class="h fixed">
+			<div ui-view="subMenu" class="h fixed"></div>
+			<!-- End:left -->
 
-			</div>
-
-				<!-- End:left -->
-				<div class="p0 h mah ofy-a l250 fixed r0">
+			<!-- main -->
+			<div class="p0 h mah ofy-a l250 fixed r0">
 					<div class="m10 pb50">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
 						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
@@ -214,7 +213,8 @@
 						</div>
 						<div ui-view="main" class="min-w700"></div>
 					</div>
-				</div>
+			</div>
+			<!-- end:main -->
 		</div>
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
 	<script src="resources/framework/jquery.cookie.js"></script>

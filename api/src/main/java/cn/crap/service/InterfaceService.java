@@ -214,7 +214,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
 
-        super.insert(model);
+        super.update(model);
     }
 
     public void delete(String id, String modelName, String remark) throws MyException{

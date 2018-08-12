@@ -36,14 +36,14 @@
 			<tr>
 				<td class="tc">邮箱</td>
 				<td class="tc w200" colspan="3">
-					<input  class="form-control" type="text" ng-model="model.equalEmail" placeholder="请输入用户邮箱">
+					<input  class="form-control" type="text" ng-model="model.email" placeholder="请输入用户邮箱">
 				</td>
 			</tr>
 			
 			<tr>
 				<td class="tc">密码</td>
 				<td class="tc" colspan="3">
-					<input  class="form-control" type="text" ng-model="model.password" placeholder="点击修改密码">
+					<input  class="form-control" type="password" ng-model="model.password" placeholder="点击修改密码">
 				</td>
 			</tr>
 			<tr ng-if="isSupperAdmin() && model.type==100">

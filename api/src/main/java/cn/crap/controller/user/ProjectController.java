@@ -74,7 +74,7 @@ public class ProjectController extends BaseController {
         Project model;
         if (project.getId() != null) {
             model = projectCache.get(project.getId());
-            checkUserPermissionByProject(model);
+            checkUserPermissionByProject(model,VIEW);
         } else {
             model = new Project();
         }

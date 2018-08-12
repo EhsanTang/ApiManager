@@ -165,8 +165,9 @@ public class UserController extends BaseController {
         // 修改了用户邮箱，状态修改改为为验证
         if (MyString.isEmpty(dbUser.getEmail()) || !user.getEmail().equals(dbUser.getEmail())) {
             user.setStatus(UserStatus.INVALID.getType());
-            user.setEmail(user.getEmail());
-            userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
+            dbUser.setEmail(user.getEmail());
+            dbUser.setStatus(UserStatus.INVALID.getType());
+            userCache.add(user.getId(), new LoginInfoDto(dbUser, roleService, projectService, projectUserService));
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登陆类型设置为允许普通登陆

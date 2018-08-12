@@ -168,7 +168,7 @@ public class MainController extends BaseController{
 					showText = showText + "...";
 				}
 				searchWord = LuceneSearchService.handleHref(searchWord);
-				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='#/visitorSearch?keyword"+searchWord+"'>"+showText+"</a>");
+				sb.append( "<a onclick=\"iClose('lookUp');\" class='p3 pl10 dis "+ itemClass +"' href='#/visitorSearch?keyword="+searchWord+"'>"+showText+"</a>");
 			}
 			
 		}

@@ -131,14 +131,15 @@ public class ArticleAdapter {
         ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
         Project project = projectCache.get(model.getProjectId());
         SearchDto dto = new SearchDto();
-		String moduleId = model.getId();
-		dto.setId(moduleId);
+		String modelId = model.getId();
+		dto.setId(modelId);
 		dto.setCreateTime(model.getCreateTime());
 		dto.setContent(model.getBrief() + model.getContent());
-		dto.setModuleName(moduleCache.get(moduleId).getName());
+		dto.setModuleName(moduleCache.get(modelId).getName());
 		dto.setTitle(model.getName());
 		dto.setType("Article");
-		dto.setUrl("#/"+model.getProjectId()+"/article/detail/"+model.getModuleId()+"/"+model.getType()+"/"+moduleId);
+		String articleUrl = "#/article/detail?projectId=%s&modelId=%s&type=%s&id=%s";
+		dto.setUrl(String.format(articleUrl, model.getProjectId(), model.getModuleId(), model.getType(), modelId));
 		dto.setVersion("");
 		dto.setProjectId(model.getProjectId());
 

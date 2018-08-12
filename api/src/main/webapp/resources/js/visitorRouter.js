@@ -69,7 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url : '/:projectId/front/interfaceDetail/:id',
         views : {
             'main' : {
-                templateUrl : 'resources/html/frontHtml/interfaceDetail.tpl.html'
+                templateUrl : 'resources/html/visitor/interfaceDetail.tpl.html'
             }
         }
     }).state('visitorInterfaceDebugCtrl', {

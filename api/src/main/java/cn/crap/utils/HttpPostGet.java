@@ -152,7 +152,11 @@ public class HttpPostGet {
         if (url.startsWith("https")){
             SSLContext sslcontext = createIgnoreVerifySSL();
             //创建自定义的httpclient对象
-            CloseableHttpClient client = HttpClients.custom().setSslcontext(sslcontext).build();
+            SSLConnectionSocketFactory fac = new SSLConnectionSocketFactory(sslcontext,
+                    new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"}, null,
+                    SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+
+            CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(fac).build();
             return client;
         }
         return HttpClients.createDefault();

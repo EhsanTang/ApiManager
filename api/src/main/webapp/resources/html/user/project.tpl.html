@@ -56,7 +56,6 @@
                 <i class="iconfont">&#xe62b;&nbsp;</i>日志
             </a>
 			<a class="project-menu"
-               ng-if="showOperation('PROJECT',projectDetail.id)"
                  ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
 				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
 					<i class="iconfont">&#xe611;&nbsp;重建索引</i>
@@ -67,13 +66,11 @@
             </a>
 
             <a class="project-menu"
-               ng-if="showOperation('PROJECT',projectDetail.id)"
                ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
                 <i class="iconfont">&#xe640;静态化</i>
             </a>
 
 			<a class="project-menu"
-			   ng-if="showOperation('PROJECT',projectDetail.id)"
 			   ng-click="del('user/project/delete.do?id='+projectDetail.id,projectDetail.name);">
 				<i class="iconfont text-danger">&#xe60e;&nbsp;删除项目</i>
 			</a>

@@ -71,8 +71,8 @@ public class CommentService extends BaseService<Comment, CommentDao> {
     private CommentCriteria getCommentCriteria(CommentQuery query) throws MyException {
         CommentCriteria example = new CommentCriteria();
         CommentCriteria.Criteria criteria = example.createCriteria();
-        if (query.getArticelId() != null) {
-            criteria.andArticleIdEqualTo(query.getArticelId());
+        if (query.getArticleId() != null) {
+            criteria.andArticleIdEqualTo(query.getArticleId());
         }
         return example;
     }

@@ -156,7 +156,7 @@ public class ArticleController extends BaseController{
 				throw new MyException(MyError.E000009);
 			}
 
-			if (commentService.count(new CommentQuery().setArticelId(model.getId())) > 0){
+			if (commentService.count(new CommentQuery().setArticleId(model.getId())) > 0){
 				throw new MyException(MyError.E000037);
 			}
 

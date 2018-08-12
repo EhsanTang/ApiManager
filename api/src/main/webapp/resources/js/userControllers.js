@@ -262,7 +262,7 @@ userModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $sta
 });
 userModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId;
+		var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

@@ -317,7 +317,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('commentList', {
-		url : '/user/comment/list?projectId&articleId',
+		url : '/user/comment/list?projectId&articleId&menu_a&menu_b&moduleId',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/commentList.tpl.html?v=v8.0.2'
@@ -329,7 +329,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/commentDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('roleList', {
 		url : '/admin/role/list?menu_a&menu_b',

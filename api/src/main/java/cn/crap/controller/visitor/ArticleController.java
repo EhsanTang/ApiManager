@@ -149,7 +149,7 @@ public class ArticleController extends BaseController {
         returnMap.put("comment", comment);
 
         // 评论
-        CommentQuery commentQuery = new CommentQuery().setArticelId(id).setPageSize(10).setCurrentPage(currentPage);
+        CommentQuery commentQuery = new CommentQuery().setArticleId(id).setPageSize(10).setCurrentPage(currentPage);
         Page page = new Page(commentQuery);
         List<Comment> comments = commentService.query(commentQuery);
         page.setAllRow(commentService.count(commentQuery));

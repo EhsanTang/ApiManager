@@ -44,7 +44,7 @@ public class CommentController extends BaseController {
 	@AuthPassport
 	public JsonResult list(@ModelAttribute CommentQuery query) throws MyException {
 		
-		checkUserPermissionByProject( articleService.getById(query.getArticelId()).getProjectId(), VIEW);
+		checkUserPermissionByProject( articleService.getById(query.getArticleId()).getProjectId(), VIEW);
 		Page page= new Page(query);
 
 		page.setAllRow(commentService.count(query));

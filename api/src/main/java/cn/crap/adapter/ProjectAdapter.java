@@ -41,9 +41,9 @@ public class ProjectAdapter {
             dto.setLuceneSearchName(LuceneSearchType.getName(model.getLuceneSearch()));
         }
 
-		if (ProjectType.PRIVATE.getType() == model.getType()){
+		if (model.getType() != null && ProjectType.PRIVATE.getType() == model.getType()){
             dto.setVisitWay("授权访问（项目成员或创建者登陆后才能访问）-- 安全度：高");
-        }else if (ProjectType.PUBLIC.getType() == model.getType() && MyString.isNotEmpty(model.getPassword())){
+        }else if (model.getType() != null && ProjectType.PUBLIC.getType() == model.getType() && MyString.isNotEmpty(model.getPassword())){
             dto.setVisitWay("通过访问密码访问 -- 安全度：中");
         }else{
             dto.setVisitWay("通过项目地址访问 -- 安全度：低");

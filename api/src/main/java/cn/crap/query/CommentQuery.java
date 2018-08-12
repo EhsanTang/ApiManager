@@ -5,18 +5,18 @@ package cn.crap.query;
  * @date 2018/6/30 14:17
  */
 public class CommentQuery extends BaseQuery<CommentQuery>{
-    private String articelId;
+    private String articleId;
     @Override
     public CommentQuery getQuery(){
         return this;
     }
 
-    public String getArticelId() {
-        return articelId;
+    public String getArticleId() {
+        return articleId;
     }
 
-    public CommentQuery setArticelId(String articelId) {
-        this.articelId = articelId;
+    public CommentQuery setArticleId(String articleId) {
+        this.articleId = articleId;
         return this;
     }
 }

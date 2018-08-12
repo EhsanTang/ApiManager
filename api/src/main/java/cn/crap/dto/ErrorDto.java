@@ -10,7 +10,6 @@ public class ErrorDto {
 	private String errorCode;
 	private String errorMsg;
 	private String projectId;
-	private Date createTime;
 	private Byte status;
 	private Integer sequence;
 
@@ -40,13 +39,6 @@ public class ErrorDto {
 	}
 	public String getProjectId(){
 		return projectId;
-	}
-
-	public void setCreateTime(Date createTime){
-		this.createTime=createTime;
-	}
-	public Date getCreateTime(){
-		return createTime;
 	}
 
 	public void setStatus(Byte status){

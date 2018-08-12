@@ -69,7 +69,7 @@ public class ModuleController extends BaseController{
 			}
 		}
 
-		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.query(new ModuleQuery().setPageSize(10)), null);
+		List<ModuleDto> moduleDtoList = ModuleAdapter.getDto(moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(10)), null);
 		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
 	}	
 }

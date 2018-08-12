@@ -2,6 +2,7 @@ package cn.crap.service;
 
 import cn.crap.dao.mybatis.RoleDao;
 import cn.crap.enumer.TableId;
+import cn.crap.framework.MyException;
 import cn.crap.model.Role;
 import cn.crap.model.RoleCriteria;
 import cn.crap.model.RoleWithBLOBs;
@@ -39,7 +40,7 @@ public class RoleService extends BaseService<RoleWithBLOBs, RoleDao> {
     }
 
     @Override
-    public boolean insert(RoleWithBLOBs model) {
+    public boolean insert(RoleWithBLOBs model) throws MyException{
         if (model == null) {
             return false;
         }
@@ -54,7 +55,7 @@ public class RoleService extends BaseService<RoleWithBLOBs, RoleDao> {
                 model.setSequence(0);
             }
         }
-        return roleDao.insertSelective(model) > 0;
+        return super.insert(model);
     }
 
 }

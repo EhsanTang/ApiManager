@@ -32,7 +32,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('menuList', {
-		url : '/admin/menu/list?parentId&type&menuName&menu',
+		url : '/admin/menu/list?parentId&type&menuName&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/menuList.tpl.html?v=v8.0.2'
@@ -44,7 +44,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/menuDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuMenu.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('projectList', {
 		url : '/user/project/list?myself&type&menu_a&projectId&projectName',
@@ -231,45 +235,61 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingList', {
-		url : '/admin/setting/list?key&menu_a',
+		url : '/admin/setting/list?key&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/settingList.tpl.html?v=v8.0.2'
 			},
 			'page@settingList' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('settingDetail', {
-		url : '/admin/setting/detail?type&id',
+		url : '/admin/setting/detail?type&id&menu_a&menu_b',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/settingDetail_'+$stateParems.type+'.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('hotSearchList', {
-        url : '/admin/hotSearch/list',
+        url : '/admin/hotSearch/list?menu_a&menu_b',
         views : {
             'main' : {
                 templateUrl : 'resources/html/admin/hotSearchList.tpl.html?v=v8.0.2'
             },
             'page@hotSearchList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.2'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
             }
         }
     }).state('configProperties', {
-		url : '/admin/config/properties',
+		url : '/admin/config/properties?menu_a&menu_b',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/config.properties.html';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('dictionaryImoprtFromSql', {
-		url : '/user/article/dictionary/importFromSql',
+		url : '/user/article/dictionary/importFromSql?menu_a',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -278,7 +298,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('userList', {
-		url : '/user/user/list',
+		url : '/admin/user/list?menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/userList.tpl.html?v=v8.0.2'
@@ -290,7 +310,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/userDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('commentList', {
 		url : '/user/comment/list?projectId&articleId',
@@ -308,7 +332,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('roleList', {
-		url : '/admin/role/list',
+		url : '/admin/role/list?menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/roleList.tpl.html?v=v8.0.2'
@@ -320,7 +344,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/roleDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('profile', {
 		url : '/profile?menu_a',
@@ -329,8 +357,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/admin/userDetail.tpl.html?v=v8.0.2'
 			}
 		}
-	}).state('logList', {
-		url : '/user/log/list?identy',
+	}).state('adminLogList', {
+		url : '/admin/log/list?identy&menu_a&menu_b',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.2'
@@ -342,7 +370,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/logDetail.tpl.html?v=v8.0.2';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.2';
+                }
+            }
 		}
 	}).state('markdown', {
 		url : '/markdown',

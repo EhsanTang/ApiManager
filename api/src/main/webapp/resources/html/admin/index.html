@@ -47,150 +47,53 @@
                     <div class="w250 fl h BGFFF main-color">
                         <a href="#/user/project/list?myself=true&type=-1&menu_a=menu-project"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
-                            <i class="iconfont f18 mr20">&#xe61f;</i>
-                            <span class="f14"> 项目列表</span>
+                            <i class="iconfont f18 mr20 mt-3">&#xe61f;</i>
+                            <span class="f14"> 我的项目</span>
                         </a>
 
                         <a href="#/profile?menu_a=menu-profile"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
                            ng-click="profile(sessionAdminId)">
-                            <i class="iconfont f18 mr20">&#xe603;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe603;</i>
                             <span class="f14"> 个人资料</span>
                         </a>
 
-                        <a href="#/admin/menu/list?parentId=0&menu=menu-menu&menuName=无"
-                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu == 'menu-menu']"
-                           ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe60f;</i>
+						<a href="#/user/article/dictionary/importFromSql?menu_a=menu-import"
+						   ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-import']">
+                            <i class="iconfont f18 mr20 mt-3 fb">&#xe61c;</i>
+							<span class="f14"> 导入数据库表</span>
+						</a>
+
+                        <!-- 管理员菜单 -->
+                        <a href="#/admin/menu/list?parentId=0&menu_a=menu-menu&menuName=无"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-menu']"
+                           ng-if="isAdmin('','MENU')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe60f;</i>
                             <span class="f14"> 菜单管理</span>
                         </a>
-                        <a href="#/admin/setting/list?menu_a=menu-setting"
+                        <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting"
 						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
-							ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe61a;</i>
-                            <span class="f14"> 系统设置</span>
+							ng-if="isSupperAdmin()">
+                            <i class="iconfont f18 mr20 mt-3">&#xe61a;</i>
+                            <span class="f14"> 系统管理</span>
                         </a>
-                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" ng-if="isAdmin('adminMenu0','MENU')">
-                            <i class="iconfont f18 mr20">&#xe611;</i>
-                            <span class="f14"> 故障恢复</span>
-                        </div>
-                        <div class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" onmouseover="tooltip('menu-suggest')"
-                             data-placement="right" data-toggle="tooltip" id="my-suggest" data-original-title="建议、反馈">
-                            <i class="iconfont f18 mr20">&#xe639;</i>
-                            <span class="f14"> 建议、反馈</span>
-                        </div>
+                        <a class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" target="_blank"
+                            href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=153406311429601002715">
+                            <i class="iconfont f16 mr20 mt-3">&#xe647;</i>
+                            <span class="f14"> 捐赠作者</span>
+                        </a>
+                        <a class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" target="_blank"
+                           href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=02c16933-2823-458d-83a0-6d5b8b752a25">
+                            <i class="iconfont f18 mr20 mt-3">&#xe748;</i>
+                            <span class="f14"> bug反馈</span>
+                        </a>
+                        <a class="menu_a fl mr10 w tc cursor lh50 hover-main bb1" target="_blank"
+                           href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=ffff-1522587078634-1017019456-0002">
+                            <i class="iconfont f18 mr20 mt-3">&#xe650;</i>
+                            <span class="f14"> 建议&留言</span>
+                        </a>
+
                     </div>
-
-
-					<!-- 待删除的菜单 -->
-                    <div class="ndis">
-                        <div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-
-                            <div id="panel-myproject" class="panel-collapse BGEEE collapse in">
-                                <div class="panel-body b0 p0">
-                                    <a class="menu_a" target="_self" ng-href="#/user/project/list?myself=true&type=-1" onclick="selectButton(this,'active-main')">我的项目列表</a>
-                                </div>
-                                <div class="panel-body b0 p0">
-                                    <a class="menu_a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'active-main')">导入数据库表：SQL</a>
-                                </div>
-                                <div class="panel-body b0 p0">
-                                    <a class="menu_a" target="_self" ng-href="#/user/article/dictionary/importFromSql" onclick="selectButton(this,'active-main')">导入数据库表：SQL</a>
-                                </div>
-                            </div>
-                        </div>
-						<!-- 该菜单只有超级管理员或拥有菜单权限的管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu0">
-							<div id="panel2" class="panel-collapse BGEEE collapse">
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=FRONT&menuName=前端左侧菜单" onclick="selectButton(this,'menu_a')">前端左侧菜单</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=BOTTOM&menuName=前端底部菜单" onclick="selectButton(this,'menu_a')">前端底部菜单</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=TOP&menuName=前端顶部菜单" onclick="selectButton(this,'menu_a')">前端顶部菜单</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/admin/menu/list?parentId=0&type=FRIEND&menuName=底部友情链接菜单" onclick="selectButton(this,'menu_a')">底部友情链接菜单</a>
-								</div>
-							</div>
-						</div>
-						
-						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu1" ng-if="isAdmin('adminMenu1')">
-							<div id="panel1" class="panel-collapse BGEEE collapse">
-								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu_a" target="_self" href="#/admin/config/properties" onclick="selectButton(this,'menu_a')">系统属性</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/user/project/list?myself=false&type-1" onclick="selectButton(this,'menu_a')">所有项目列表</a>
-								</div>
-								<!--  <div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="#/back/source/list/0/无" onclick="selectButton(this,'menu_a')">DOC、PDF 等文档管理</a>
-								</div>-->
-								<div class="panel-body b0 p0" ng-if="isAdmin(false,'USER')">
-									<a class="menu_a" target="_self" href="#/user/user/list" onclick="selectButton(this,'menu_a')">用户管理</a>
-								</div>
-								<div class="panel-body b0 p0" ng-if="isAdmin(false,'ROLE')">
-									<a class="menu_a" target="_self" href="#/admin/role/list" onclick="selectButton(this,'menu_a')">角色管理</a>
-								</div>
-								<div class="panel-body b0 p0" ng-if="isAdmin(false,'HOT_SEARCH')">
-									<a class="menu_a" target="_self" href="#/admin/hotSearch/list" onclick="selectButton(this,'menu_a')">搜索热词管理</a>
-								</div>
-								<div class="panel-body b0 p0" ng-if="isAdmin(false,'SETTING')">
-									<a class="menu_a" target="_self" href="#/admin/setting/list" onclick="selectButton(this,'menu_a')">系统设置管理</a>
-								</div>
-
-								<!--<div class="panel-body b0 p0" ng-if="isAdmin(false,'ARTICLE')">
-									<a class="menu_a" target="_self" href="#/user/article/list/web/web/ARTICLE" onclick="selectButton(this,'menu_a')">推荐文章管理</a>
-								</div>-->
-							</div>
-						</div>
-						<!-- 该菜单只有超级管理员才能查看 -->
-						<div class="panel panel-info no-radius b0 mt0 left-menu-border-top ndis" id="adminMenu2" ng-if="isSupperAdmin('adminMenu2')">
-							<div id="panel3" class="panel-collapse BGEEE collapse">
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="javascript:void(0);"
-									onclick="rebuildIndex(this)">重建Lucene索引</a>
-								</div>
-								<div class="panel-body b0 p0">
-									<a class="menu_a" target="_self" href="javascript:void(0);"
-									onclick="flushDB(this)">刷新缓存</a>
-								</div>
-								<div class="panel-body b0 p0" ng-if="isSupperAdmin()">
-									<a class="menu_a" target="_self" href="#/user/log/list?identy=NULL" onclick="selectButton(this,'menu_a')">操作日志</a>
-								</div>
-							</div>
-						</div>
-
-					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-						<div id="panel4" class="panel-collapse BGEEE collapse">
-							<div class="panel-body b0 p0">
-								<a class="menu_a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/02c16933-2823-458d-83a0-6d5b8b752a25">
-									Bug反馈
-								</a>
-								<a class="menu_a" target="_blank" href="http://api.crap.cn/index.do#/web/article/detail/web/ARTICLE/ffff-1522587078634-1017019456-0002">
-									建议&留言
-								</a>
-							</div>
-							<div class="panel-body b0 p0">
-								<a class="menu_a" target="_blank" href="https://gitee.com/CrapApi/CrapApi">
-									捐赠
-								</a>
-							</div>
-						</div>
-					</div>
-
-
-					<div class="panel panel-info no-radius b0 mt0 left-menu-border-top">
-						<div class="panel-heading left-menu-bg no-radius" data-parent="#accordion">
-							<div class="a cursor" data-toggle="collapse" data-parent="#panel3"></div>
-							<span class="hidden-xs">&nbsp;
-							</span>
-						</div>
-					</div>
-
-				</div>
 			</div>
 			<div ui-view="subMenu" class="h fixed"></div>
 			<!-- End:left -->

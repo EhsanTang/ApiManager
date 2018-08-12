@@ -55,7 +55,7 @@ public class RoleController extends BaseController {
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_ROLE)
-    public JsonResult addOrUpdate(@ModelAttribute RoleDto roleDto) {
+    public JsonResult addOrUpdate(@ModelAttribute RoleDto roleDto) throws Exception{
         if (roleDto.getId() != null) {
             roleService.update(RoleAdapter.getModel(roleDto));
         } else {

@@ -54,7 +54,7 @@
 				<td class="tc">{{item.sequence}}</td>
 				<td class="tc">
 				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('SETTING','');"
-					ng-href="#/admin/setting/detail?type={{item.type}}&id={{item.id}}">
+					ng-href="#/admin/setting/detail?type={{item.type}}&id={{item.id}}&menu_a=menu-setting&menu_b=menu-setting">
 					<i class="iconfont f12">&#xe618;修改</i>
 				</a>
 				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('SETTING','') && item.canDelete=='1'" 

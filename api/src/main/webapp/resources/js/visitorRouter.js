@@ -65,7 +65,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/visitor/interfaceDetail.tpl.html?v=v8.0.4'
 			}
 		}
-	}).state('visitorInterfaceDebugCtrl', {
+	}).state('frontInterfaceDetailCtrlOld', {
+        url : '/:projectId/front/interfaceDetail/:id',
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/frontHtml/interfaceDetail.tpl.html'
+            }
+        }
+    }).state('visitorInterfaceDebugCtrl', {
 		url : '/interface/debug?projectId&id',
 		views : {
 			'main' :{

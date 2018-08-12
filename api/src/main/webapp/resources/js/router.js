@@ -13,9 +13,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 					else
 						return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.4';
 				}
-			},'addComment@visitorArticleDetail' : {
+			},'addComment@visitorArticleDetailOld' : {
 				templateUrl : 'resources/html/visitor/addComment.tpl.html?v=v8.0.4'
-			},'page@visitorArticleDetail' : {
+			},'page@visitorArticleDetailOld' : {
 				templateUrl : 'resources/html/visitor/page_xs.tpl.html?v=v8.0.4'
 			}
 		}

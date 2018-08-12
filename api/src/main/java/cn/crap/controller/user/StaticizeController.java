@@ -65,7 +65,7 @@ public class StaticizeController extends BaseController{
 			throw new MyException(MyError.E000056);
 		}
 		Project project = projectCache.get(projectId);
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
 			// 删除旧的静态化文件
@@ -89,9 +89,7 @@ public class StaticizeController extends BaseController{
 		return new ModelAndView("WEB-INF/views/staticize/default/errorList.jsp",returnMap);
 	}
 
-	private String getStaticPath(Project project) {
-		return Tools.getServicePath() + "static/"+project.getId();
-	}
+	
 
 	/**
 	 * 静态化接口列表
@@ -106,7 +104,7 @@ public class StaticizeController extends BaseController{
 		
 		Module module = moduleCache.get(moduleId);
 		Project project = projectCache.get(module.getProjectId());
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -142,7 +140,7 @@ public class StaticizeController extends BaseController{
 		}
 		Module module = moduleCache.get(moduleId);
 		Project project = projectCache.get(module.getProjectId());
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -218,7 +216,7 @@ public class StaticizeController extends BaseController{
 		ArticleWithBLOBs article = articleService.getById(articleId);
 		Module module = moduleCache.get(article.getModuleId());
 		Project project = projectCache.get(module.getProjectId());
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -263,7 +261,7 @@ public class StaticizeController extends BaseController{
 		InterfaceWithBLOBs interFace = interfaceService.getById(interfaceId);
 		Module module = moduleCache.get(interFace.getModuleId());
 		Project project = projectCache.get(module.getProjectId());
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -291,7 +289,7 @@ public class StaticizeController extends BaseController{
 	public JsonResult delStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
 		Project project = projectCache.get(projectId);
 		checkUserPermissionByProject(project);
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 		Tools.deleteFile(path);
 		return new JsonResult(1, null );
 	}
@@ -306,7 +304,7 @@ public class StaticizeController extends BaseController{
 	public JsonResult downloadStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
 		Project project = projectCache.get(projectId);
 		checkUserPermissionByProject(project);
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 		File file = new File(path);
     	if( !file.exists()){
     		throw new MyException(MyError.E000057);
@@ -316,7 +314,7 @@ public class StaticizeController extends BaseController{
     	Tools.createFile(path + "/downLoad/");
     	
     	
-        //获取html，提取url，替换线上资源路径，准本下载文件夹
+        //获取html，提取url，替换线上文件路径，准本下载文件夹
         String[] childFilePaths = file.list();  
         List<String> filePaths = new ArrayList<>();
         for(String childFilePath : childFilePaths){  
@@ -329,7 +327,7 @@ public class StaticizeController extends BaseController{
            Tools.staticize(html, path + "/downLoad/" + new File(childFilePath).getName());
         }  
         
-        // 拷贝资源文件
+        // 拷贝文件文件
         for(String sourcePath:filePaths){
         	if(sourcePath.startsWith(webBasePath) && !sourcePath.endsWith(".do")){
         		sourcePath = sourcePath.replace(webBasePath, "").split("\"")[0].split("\\?")[0].trim();
@@ -370,7 +368,7 @@ public class StaticizeController extends BaseController{
 		
 		checkUserPermissionByProject(project);
 		
-		String path = getStaticPath(project);
+		String path = Tools.getStaticPath(project);
 		Tools.createFile(path);
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);

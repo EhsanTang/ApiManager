@@ -165,7 +165,7 @@ visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http,
     $scope.getData(1);
 });
 /**
- * 资源列表
+ * 文件列表
  */
 visitorModule.controller('visitorProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
@@ -328,7 +328,7 @@ visitorModule.controller('visitorSourceDetailCtrl', function($rootScope,$scope, 
     $scope.getData();
 });
 /**
- * 资源列表
+ * 文件列表
  */
 visitorModule.controller('visitorSourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {

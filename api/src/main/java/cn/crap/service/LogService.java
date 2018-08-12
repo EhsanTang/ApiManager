@@ -135,7 +135,7 @@ public class LogService extends BaseService<Log, LogDao> {
                 projectService.update(project);
                 break;
             case "SOURCEWITHBLOBS":
-            case "SOURCE"://恢复资源
+            case "SOURCE"://恢复文件
                 json = JSONObject.fromObject(log.getContent());
                 Source source = (Source) JSONObject.toBean(json, Source.class);
                 checkModule(source.getModuleId());
@@ -169,7 +169,7 @@ public class LogService extends BaseService<Log, LogDao> {
                     Log project = (Log) JSONObject.toBean(json, Log.class);
                     return project.getId();
                 case "SOURCEWITHBLOBS":
-                case "SOURCE"://恢复资源
+                case "SOURCE"://恢复文件
                     json = JSONObject.fromObject(log.getContent());
                     Source source = (Source) JSONObject.toBean(json, Source.class);
                     return source.getProjectId();

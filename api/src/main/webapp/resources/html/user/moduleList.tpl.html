@@ -31,7 +31,7 @@
 				<td>名称</td>
 				<td class="w200">Url前缀</td>
                 <td class="w200">创建时间</td>
-				<td class="w400">操作</td>
+				<td class="w450">操作</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,34 +41,9 @@
 				<td>{{item.url}}</td>
                 <td>{{item.createTimeStr}}</td>
 				<td class="f12">
-					<a class="mr10 cursor text-primary" ng-href="#/user/interface/list?menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.id}}"
-                       ng-click="stopPropagation($event);">
-						<i class="iconfont f12">&#xe614; 接口</i>
-					</a>
-					
-					<a class="mr10 cursor text-primary" ng-href="#/user/article/list?menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE"
-                       ng-click="stopPropagation($event);">
-						<i class="iconfont f12">&#xe637; 文章</i>
-					</a>
-					
-					<a class="mr10 cursor text-primary" ng-href="#/user/article/list?menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY"
-                       ng-click="stopPropagation($event);">
-						<i class="iconfont f12">&#xe61c;数据库表</i>
-					</a>
-
-                    <a class="mr10 cursor text-primary" ng-href="#/user/source/list?menu_a=menu-project&projectName={{item.projectName}}&project={{item.projectId}}&moduleId={{item.id}}"
-                       ng-click="stopPropagation($event);">
-                        <i class="iconfont f12">&#xe638; 资源</i>
-                    </a>
-
 					<a class="mr10 cursor text-primary" ng-if="showOperation('PROJECT',item.projectId)"
 						ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id);stopPropagation($event);">
 						<i class="iconfont f12">&#xe618;修改</i>
-					</a>
-				
-					<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.projectId)"
-						ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
-						<i class="iconfont f12">&#xe60e;删除</i>
 					</a>
 
                     <a class="mr10 cursor text-primary" ng-href="#visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
@@ -79,12 +54,16 @@
                        ng-click="stopPropagation($event);">
                         <i class="iconfont f12">&#xe637; 下载WORD</i>
                     </a>
+					<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',item.projectId)"
+					   ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
+						<i class="iconfont f12">&#xe60e;删除</i>
+					</a>
 
-                    <a class="mr10 cursor text-primary" ng-href="#/user/log/list?identy={{item.id}}"
+                    <a class="mr10 cursor text-primary" ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}"
                        ng-click="stopPropagation($event);">
                         <i class="iconfont">&#xe62b;&nbsp;</i>日志
                     </a>
-                    <a class="mr10 cursor text-primary"
+                    <a class="mr10 cursor text-primary" ng-if="item.hasStaticize"
                        ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"
                        ng-click="stopPropagation($event);">
                         <i class="iconfont f12">&#xe63a;静态化地址</i>

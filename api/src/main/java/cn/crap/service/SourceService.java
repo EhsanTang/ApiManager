@@ -68,7 +68,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
     }
 
     /**
-     * 查询资源
+     * 查询文件
      *
      * @param query
      * @return
@@ -87,7 +87,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
     }
 
     /**
-     * 查询资源数量
+     * 查询文件数量
      *
      * @param query
      * @return

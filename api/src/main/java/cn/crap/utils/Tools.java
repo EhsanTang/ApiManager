@@ -6,6 +6,7 @@ import cn.crap.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.ThreadContext;
+import cn.crap.model.Project;
 import cn.crap.service.tool.StringCache;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
@@ -349,6 +350,13 @@ public class Tools {
 //			}
 //		}
 //	}
+    public static String getStaticPath(Project project) {
+        if (project == null){
+            return null;
+        }
+        return Tools.getServicePath() + "static/"+project.getId();
+    }
+
     public static String getServicePath() {
         String path = ThreadContext.request().getSession().getServletContext().getRealPath("/");
         return path.endsWith("/") ? path : path + "/";

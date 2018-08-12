@@ -22,6 +22,7 @@ public class ModuleDto {
 	private String category;
 	private String projectName;
 	private String createTimeStr;
+	private Boolean hasStaticize;
 
 	public void setId(String id){
 		this.id=id;
@@ -130,5 +131,13 @@ public class ModuleDto {
 
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
+	}
+
+	public Boolean getHasStaticize() {
+		return hasStaticize;
+	}
+
+	public void setHasStaticize(Boolean hasStaticize) {
+		this.hasStaticize = hasStaticize;
 	}
 }

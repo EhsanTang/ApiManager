@@ -34,23 +34,32 @@
 					</td>
 				</tr>
 				<tr class="fb">
+					<td class="tc"></td>
+					<td class="tc">
+						修改
+					</td>
+					<td class="tc">
+						添加
+					</td>
+					<td class="tc">
+						删除
+					</td>
+				</tr>
+				<tr class="fb">
 					<td class="tc">模块权限</td>
 					<td class="tc">
-						修改：&nbsp;
 								<input type="radio" value="true" ng-checked="model.modModule==true" ng-model="model.modModule"/>
 									&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.modModule==false" ng-model="model.modModule"/>
 									&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 					</td>	
 					<td class="tc">
-						添加：&nbsp;
 								<input type="radio" value="true" ng-checked="model.addModule==true" ng-model="model.addModule"/>
 								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.addModule==false" ng-model="model.addModule"/>
 								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 					</td>	
 					<td class="tc">
-						删除：&nbsp;
 								<input type="radio" value="true" ng-checked="model.delModule==true" ng-model="model.delModule"/>
 								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.delModule==false" ng-model="model.delModule"/>
@@ -60,21 +69,18 @@
 				<tr class="fb">
 					<td class="tc">接口权限</td>
 					<td class="tc">
-						修改：&nbsp;
 								<input type="radio" value="true" ng-checked="model.modInter==true" ng-model="model.modInter"/>
 									&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.modInter==false" ng-model="model.modInter"/>
 									&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 					</td>	
 					<td class="tc">
-					添加：&nbsp;
 								<input type="radio" value="true" ng-checked="model.addInter==true" ng-model="model.addInter"/>
 								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.addInter==false" ng-model="model.addInter"/>
 								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 					</td>	
 					<td class="tc">
-					删除：&nbsp;
 								<input type="radio" value="true" ng-checked="model.delInter==true" ng-model="model.delInter"/>
 								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 								<input type="radio" value="false" ng-checked="model.delInter==false" ng-model="model.delInter"/>
@@ -85,21 +91,18 @@
 				<tr class="fb">
 					<td class="tc">文章权限</td>
 					<td class="tc">
-						修改：&nbsp;
 						<input type="radio" value="true" ng-checked="model.modArticle==true" ng-model="model.modArticle"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.modArticle==false" ng-model="model.modArticle"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						添加：&nbsp;
 						<input type="radio" value="true" ng-checked="model.addArticle==true" ng-model="model.addArticle"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.addArticle==false" ng-model="model.addArticle"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						删除：&nbsp;
 						<input type="radio" value="true" ng-checked="model.delArticle==true" ng-model="model.delArticle"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.delArticle==false" ng-model="model.delArticle"/>
@@ -110,21 +113,18 @@
 				<tr class="fb">
 					<td class="tc">数据库表权限</td>
 					<td class="tc">
-						修改：&nbsp;
 						<input type="radio" value="true" ng-checked="model.modDict==true" ng-model="model.modDict"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.modDict==false" ng-model="model.modDict"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						添加：&nbsp;
 						<input type="radio" value="true" ng-checked="model.addDict==true" ng-model="model.addDict"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.addDict==false" ng-model="model.addDict"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						删除：&nbsp;
 						<input type="radio" value="true" ng-checked="model.delDict==true" ng-model="model.delDict"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.delDict==false" ng-model="model.delDict"/>
@@ -134,23 +134,20 @@
 				
 				
 				<tr class="fb">
-					<td class="tc">资源权限</td>
+					<td class="tc">文件权限</td>
 					<td class="tc">
-						修改：&nbsp;
 						<input type="radio" value="true" ng-checked="model.modSource==true" ng-model="model.modSource"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.modSource==false" ng-model="model.modSource"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						添加：&nbsp;
 						<input type="radio" value="true" ng-checked="model.addSource==true" ng-model="model.addSource"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.addSource==false" ng-model="model.addSource"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						删除：&nbsp;
 						<input type="radio" value="true" ng-checked="model.delSource==true" ng-model="model.delSource"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.delSource==false" ng-model="model.delSource"/>
@@ -161,21 +158,18 @@
 				<tr class="fb">
 					<td class="tc">错误码权限</td>
 					<td class="tc">
-						修改：&nbsp;
 						<input type="radio" value="true" ng-checked="model.modError==true" ng-model="model.modError"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.modError==false" ng-model="model.modError"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						添加：&nbsp;
 						<input type="radio" value="true" ng-checked="model.addError==true" ng-model="model.addError"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.addError==false" ng-model="model.addError"/>
 						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
 						</td>
 						<td class="tc">
-						删除：&nbsp;
 						<input type="radio" value="true" ng-checked="model.delError==true" ng-model="model.delError"/>
 						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
 						<input type="radio" value="false" ng-checked="model.delError==false" ng-model="model.delError"/>

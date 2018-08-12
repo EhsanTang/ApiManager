@@ -64,17 +64,17 @@ public class ArticleController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, String type, String moduleId) throws MyException{
-		if(id != null){
-            ArticleWithBLOBs article =  articleService.getById(id);
-            checkUserPermissionByProject(article.getProjectId(), VIEW);
-            Module module = moduleCache.get(article.getModuleId());
-			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
-		}
-
 		Module module = new Module();
 		if (moduleId != null) {
 			module = moduleCache.get(moduleId);
 			checkUserPermissionByProject(module.getProjectId(), VIEW);
+		}
+
+		if(id != null){
+            ArticleWithBLOBs article =  articleService.getById(id);
+            checkUserPermissionByProject(article.getProjectId(), VIEW);
+			module = moduleCache.get(article.getModuleId());
+			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
 		}
 
         ArticleWithBLOBs model = new ArticleWithBLOBs();
@@ -82,6 +82,7 @@ public class ArticleController extends BaseController{
 		model.setModuleId(moduleId);
 		model.setProjectId(module.getProjectId());
         model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+		model.setCanComment(CommonEnum.TRUE.getByteValue());
 		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module));
 	}
 	

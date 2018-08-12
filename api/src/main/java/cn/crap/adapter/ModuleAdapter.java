@@ -6,8 +6,10 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.Tools;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,12 @@ public class ModuleAdapter {
         }
 		if (templeteInterface != null){
             dto.setTemplateName(templeteInterface.getInterfaceName());
+        }
+        dto.setHasStaticize(false);
+        String path = Tools.getStaticPath(project) + "/" + model.getId() + "-articleList--1.html";
+        File file = new File(path);
+        if (file.exists()){
+            dto.setHasStaticize(true);
         }
         return dto;
     }

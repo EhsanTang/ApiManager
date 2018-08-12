@@ -1,84 +1,98 @@
-<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="sourceCtrl">
-<div class="col-xs-6 f16 fb p0 mb5">资源管理</div>
-<div class="col-xs-6 f14 p0 mb5 tr">
-	<a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
-	<a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
-</div>
-<div class="col-xs-12 bb1 bt1 pt15 p0 pb10">
-		<button type="button" class="ml5 mt1 btn btn-success btn-sm fr" ng-click="getData(1);">
-			<i class="iconfont">&#xe60d;</i>&nbsp;查询
-		</button>
-		<div class="form-group w200 fr">
-			<label class="sr-only" for="">名称</label>
-			<div class="input-group">
-				<div class="input-group-addon">名称</div>
-				<input type="text" class="form-control input-xs dis-in-blo w120"
-					placeholder="名称" ng-model="$stateParams.name">
-			</div>
-		</div>
-		<div class="cb"></div>
-</div>
-<div class="col-xs-12 mt20 p0 mb10 f14 tr">
-	<a type="button" class="btn btn-success btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)"> 
-		<i class="iconfont fb">&#xe604;</i>&nbsp;新增文件
-	</a>
-	<a type="button" class="btn btn-danger btn-sm cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-		ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的资源？')"> 
-		<i class="iconfont fb">&#xe60e;</i>&nbsp;批量删除
-	</a>
-</div>
+<div class="r0 p0 col-xs-12" ng-controller="sourceCtrl">
+    <div class="col-xs-12 p0 f12">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
 
-<div class="col-xs-3 f16 fb pl0 mb10 pb5 mt20" ng-if="list.length>0">文档列表</div>
-<div class="col-xs-12 p0" ng-if="list.length>0">
-	<table class="table table-bordered table-hover">
-		<thead>
-			<tr class="BGEEE">
-				<th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
-				<th class="tc">名称</th>
-				<th class="tc">摘要</th>
-				<th class="tc">排序</th>
-				<th class="tc">最后修改时间</th>
-				<th class="w300 tc">操作</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in list">
-				<td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
-				<td class="tc w200">{{item.name}}</td>
-				<td class="tc">{{item.remark|cut:true:50:' ...'}}</td>
-				<td class="tc">{{item.sequence}}</td>
-				<td class="tc">{{item.updateTimeStr}}</td>
-				<td class="tc">
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-				ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')"> 
-					<i class="iconfont f12">&#xe618;修改</i>
-				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="del('user/source/delete.do?id='+item.id,item.name)">
-					<i class="iconfont f12">&#xe60e;删除</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="index.do#/source/detail?id={{item.id}}" target="_blank">
-					<i class="iconfont f12">&#xe60a;预览</i>
-				</a>
-				<a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}">
-					<i class="iconfont">&#xe62b;&nbsp;</i>操作日志
-				</a>
-				<div class="w50 fr tl"  ng-if="showOperation('PROJECT',$stateParams.projectId)">
-					<a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
-						<i class="iconfont f12">&#xe623;</i>
-					</a>
-					<a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
-						<i class="iconfont f12">&#xe624;</i>
-					</a>
-				</div>
-				</td>
-			</tr>
+            <a type="button" class="btn btn-default btn-sm"
+               ng-href="#/user/interface/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont f12 mt-3">&#xe614; 接口</i>
+            </a>
 
-		</tbody>
-	</table>
-	<div ui-view="page"></div>
-</div>
+            <a type="button" class="btn btn-default"
+               ng-href="#/user/article/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&type=ARTICLE">
+                <i class="iconfont f12 mt-3">&#xe637; 文章</i>
+            </a>
+            <a type="button" class="btn btn-default"
+               ng-href="#/user/article/list?menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&type=DICTIONARY">
+                <i class="iconfont f12 mt-3">&#xe61c; 数据库表</i>
+            </a>
+            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont f12 mt-3">&#xe638; 文件</i></button>
+
+
+            <a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+               ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)">
+                <i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增文件
+            </a>
+            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+               ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的文件？')">
+                <i class="iconfont fb mt-3">&#xe60e;</i>&nbsp;批量删除
+            </a>
+        </div>
+
+        <div class="form-group w200 fl mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">名称</div>
+                <input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" ng-model="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+            <i class="iconfont mt-3">&#xe610;</i>&nbsp;查询
+        </button>
+        <div class="cb"></div>
+    </div>
+
+    <div class="col-xs-12 p10 mt10 pt5 BGFFF">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr class="f14 C000 fw500">
+                    <th class="w60"><input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选</th>
+                    <th class="tc">名称</th>
+                    <th class="tc">摘要</th>
+                    <th class="tc">排序</th>
+                    <th class="tc">最后修改时间</th>
+                    <th class="w300 tc">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list">
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
+                    <td class="tc w200">{{item.name}}</td>
+                    <td class="tc">{{item.remark|cut:true:50:' ...'}}</td>
+                    <td class="tc">{{item.sequence}}</td>
+                    <td class="tc">{{item.updateTimeStr}}</td>
+                    <td class="tc">
+                    <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                    ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')">
+                        <i class="iconfont f12">&#xe618;修改</i>
+                    </a>
+                    <a class="f12 text-danger mr10 cursor" title="删除"  ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                        ng-click="del('user/source/delete.do?id='+item.id,item.name)">
+                        <i class="iconfont f12">&#xe60e;删除</i>
+                    </a>
+                    <a class="f12 text-primary mr10 cursor" ng-href="index.do#/source/detail?id={{item.id}}" target="_blank">
+                        <i class="iconfont f12">&#xe60a;预览</i>
+                    </a>
+                    <a class="f12 text-primary mr10 cursor" ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                        <i class="iconfont">&#xe62b;&nbsp;</i>操作日志
+                    </a>
+                    <div class="w50 fr tl"  ng-if="showOperation('PROJECT',$stateParams.projectId)">
+                        <a class="f12 text-danger mr10 cursor" title="向上移" ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index-1].id)" ng-if="$index>0">
+                            <i class="iconfont f12">&#xe623;</i>
+                        </a>
+                        <a class="f12 text-danger mr10 cursor" title="向下移" ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index+1].id)" ng-if="$index<list.length-1">
+                            <i class="iconfont f12">&#xe624;</i>
+                        </a>
+                    </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+	    <div ui-view="page"></div>
+    </div>
 </div>
 <div class="cb"></div>
 

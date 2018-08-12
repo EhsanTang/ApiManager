@@ -7,7 +7,10 @@ import java.util.Date;
 
 public enum SettingEnum {
     // 前端
-	FOOTER_BG_COLOR("FOOTER_BG_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#233050", "网站顶部、顶部被叫颜色", null),
+	FOOTER_BG_COLOR("FOOTER_BG_COLOR", SettingStatus.DELETE, SettingType.COLOR, false, 100, "#233050", "网站顶部、底部部背景颜色", null),
+    FOOTER_COLOR("FOOTER_COLOR", SettingStatus.DELETE, SettingType.COLOR, false, 100, "#a9a9a9", "前端顶部、底部字体颜色 #a9a9a9", null),
+    NAV_BG_COLOR("NAV_BG_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#233050", "网站顶部、底部导航背景颜色", null),
+    NAV_COLOR("NAV_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#a9a9a9", "前端顶部、导航字体颜色 #a9a9a9", null),
     MINI_LOGO("MINI_LOGO", SettingStatus.COMMON, SettingType.IMAGE, false, 101, "resources/images/logo.png", "网站小logo", null),
 
     ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_afbmuhv5zc15rk9", "系统图标",

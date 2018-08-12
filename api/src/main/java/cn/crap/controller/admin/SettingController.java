@@ -101,9 +101,9 @@ public class SettingController extends BaseController {
                     value = config.getDomain() + "/" + value;
                 }
             }
-            cssContent = cssContent.replace("{{settings." + s.getKey() + "}}", value);
+            cssContent = cssContent.replace("[" + s.getKey() + "]", value);
         }
-        cssContent = cssContent.replace("{{settings.MAIN_COLOR_HOVER}}",
+        cssContent = cssContent.replace("[MAIN_COLOR_HOVER]",
                 Tools.getRgba(0.1f, settingCache.get(S_MAIN_COLOR).getValue()));
 
         Tools.staticize(cssContent, cssPath + "/setting.css");

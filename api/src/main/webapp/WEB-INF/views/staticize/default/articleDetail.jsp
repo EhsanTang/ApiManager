@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<%@ include  file="css.jsp"%>
 </head>
-<body class="BG_COLOR">
+<body class="s-bg-color">
 	<!-- top navbar -->
 	<%@ include  file="topNav.jsp"%>
 	
@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="row min-h p0 m0">
 			<!-- leftMenu -->
 			<%@ include  file="left.jsp"%>
-			<div  id="article-content" class="col-xs-12 col-md-9 p0 BG_COLOR m0 pt0">
+			<div  id="article-content" class="col-xs-12 col-md-9 p0 s-bg-color m0 pt0">
 				<div class="BGFFF min-h500 p20">
 					<div class="p3 pl10 pr10 mr10 f16 fb  mt10 mb10 adorn-bl-3">${article.name}</div>
 					<div class="f14 mb10 pl20 C999 f12">

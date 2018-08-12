@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-	<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR mb0 z10">
+	<nav class="navbar navbar-inverse no-radius s-nav-bg-color s-nav-color mb0 z10">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed"

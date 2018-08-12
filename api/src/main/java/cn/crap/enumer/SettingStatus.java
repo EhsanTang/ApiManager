@@ -4,7 +4,7 @@ public enum SettingStatus {
 	/**
 	 * 前端配置会返回至浏览器，后端配资只在服务端使用
 	 */
-	COMMON("前端配置", 1), HIDDEN("后端设置", 100);
+	DELETE("删除", -1), COMMON("前端配置", 1), HIDDEN("后端设置", 100);
 	private final int status;
 	private final String name;
 

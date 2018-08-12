@@ -1,6 +1,7 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.SettingDao;
+import cn.crap.enumer.SettingStatus;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Setting;
@@ -81,6 +82,7 @@ public class SettingService extends BaseService<Setting, SettingDao> {
         if (query.getRemark() != null) {
             criteria.andRemarkLike("%" + query.getRemark() + "%");
         }
+        criteria.andStatusGreaterThan(SettingStatus.DELETE.getStatus());
         return example;
     }
 

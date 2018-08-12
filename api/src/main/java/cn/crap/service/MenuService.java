@@ -159,13 +159,13 @@ public class MenuService extends BaseService<Menu, MenuDao> {
                 } else {
                     if (radio.equals("true")) {
                         boolean isCheck = (def != null && def.equals(p.getValue()));
-                        pickContent.append(String.format(radioDiv, isCheck ? " pickActive" : "",
+                        pickContent.append(String.format(radioDiv, isCheck ? " pickActive main-color" : "",
                                 p.getId(), p.getId(), p.getId(), isCheck ? "checked" : "",
                                 p.getValue(), p.getName()));
                     } else {
                         boolean isCheck = (def != null && ("," + def).indexOf("," + p.getValue() + ",") >= 0);
                         pickContent.append(String.format(checkBoxDiv,
-                                isCheck ? " pickActive" : "", p.getId(),
+                                isCheck ? " pickActive main-color" : "", p.getId(),
                                 p.getId(), p.getId(),
                                 isCheck ? "checked" : "", p.getValue(),
                                 p.getName()));

@@ -20,7 +20,7 @@
 </head>
 <body class="BGFFF">
 <!-- top navbar -->
-<nav class="navbar navbar-inverse no-radius FOOTER_BG_COLOR FOOTER_COLOR mb0 z10">
+<nav class="navbar navbar-inverse no-radius s-nav-bg-color s-nav-color mb0 z10">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed"
@@ -164,7 +164,7 @@
 
 
 <!-- footer navbar -->
-<div class="p0 m0 mt30 def-bg w FOOTER_BG_COLOR FOOTER_COLOR">
+<div class="p0 m0 mt30 def-bg w s-nav-bg-color s-nav-color">
     <div class="container p0">
         <div class="row p0 m0">
             <div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">

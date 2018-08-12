@@ -161,7 +161,9 @@ function checkText(obj, oldNavigateText, span, checkBox, length) {
 			container.scrollTop(scrollTo.offset().top - container.offset().top
 					+ container.scrollTop() - 100);
 			$("#pickContent div").removeClass("pickSelect");
+            $("#pickContent div").removeClass("main-color");
 			$(obj).addClass("pickSelect");
+            $(obj).addClass("main-color");
 			select = 1;
 		}
 	}

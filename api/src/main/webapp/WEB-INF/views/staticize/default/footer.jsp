@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-		<div class="p0 m0 mt30 def-bg w FOOTER_BG_COLOR FOOTER_COLOR">
+		<div class="p0 m0 mt30 def-bg w s-nav-bg-color s-nav-color">
 			<div class="container p0">
 				<div class="row p0 m0">
 					<div class="col-xs-12 f12 p0 mb5 tl mt30 mb50 pl20">

@@ -10,11 +10,14 @@
 			if ($("#"+id).is(':checked')) {
 				$("#"+id).prop("checked", false);
 				$("#d_"+id).removeClass("pickActive");
+                $("#d_"+id).removeClass("main-color");
 			} else {
 				$("#"+id).prop("checked", true);
 				$("#d_"+id).addClass("pickActive");
+                $("#d_"+id).addClass("main-color");
 				if(isRadio=='true'){
-					$("#pickContent div").removeClass("pickActive")
+					$("#pickContent div").removeClass("pickActive");
+                    $("#pickContent div").removeClass("main-color")
 					setPick();
 				}
 			}

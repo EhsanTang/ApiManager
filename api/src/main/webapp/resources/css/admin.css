@@ -81,3 +81,13 @@ body{
     z-index: 1000;
     position: fixed!important;
 }
+.hover-adorn:hover,.active-adorn{
+    color: #ffffff!important;
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: none;
+}
+.hover-main:hover,.active-main{
+    cursor: pointer;border:0px!important;
+    text-decoration: none;
+}

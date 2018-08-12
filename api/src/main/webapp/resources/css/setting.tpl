@@ -30,7 +30,7 @@ input:focus{border-color: [MAIN_COLOR]!important;!important;}
 .bt-5 {border-top: 5px solid[MAIN_COLOR]}
 .bl-5 {border-left: 5px solid[MAIN_COLOR]}
 
-.hover-adorn:hover,.active-adorn{background-color: [ADORN_COLOR]!important;}
+.hover-adorn:hover,.active-adorn{background-color: [ADORN_COLOR]!important;color:#ffffff;}
 .hover-main:hover,.active-main{background-color: [MAIN_COLOR_HOVER]!important;color:[MAIN_COLOR]!important;}
 
 .adorn-color {color: [ADORN_COLOR]}

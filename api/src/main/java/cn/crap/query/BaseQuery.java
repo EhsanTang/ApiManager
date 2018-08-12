@@ -65,7 +65,7 @@ public abstract class BaseQuery<T> {
     }
 
     public T setStatus(Byte status) {
-        status = status;
+        this.status = status;
         return getQuery();
     }
 }

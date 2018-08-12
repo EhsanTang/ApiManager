@@ -92,32 +92,6 @@ public class MainController extends BaseController{
         modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
 
-        String totalUser = stringCache.get(TOTAL_USER);
-        if (MyString.isEmpty(totalUser)){
-            totalUser = userService.countByExample(new UserCriteria()) + "";
-            stringCache.add(TOTAL_USER, totalUser);
-        }
-        String totalProject = stringCache.get(TOTAL_PROJECT);
-        if (MyString.isEmpty(totalProject)){
-            totalProject = projectService.countByExample(new ProjectCriteria()) + "";
-            stringCache.add(TOTAL_PROJECT, totalProject);
-        }
-        String totalInterface = stringCache.get(TOTAL_INTERFACE);
-        if (MyString.isEmpty(totalInterface)){
-            totalInterface = interfaceService.countByExample(new InterfaceCriteria()) + "";
-            stringCache.add(TOTAL_INTERFACE, totalInterface);
-        }
-        String totalArticle = stringCache.get(TOTAL_ARTICLE);
-        if (MyString.isEmpty(totalArticle)){
-            totalArticle = articleService.countByExample(new ArticleCriteria()) + "";
-            stringCache.add(TOTAL_ARTICLE, totalArticle);
-        }
-
-        modelMap.addAttribute("totalUser", totalUser);
-        modelMap.addAttribute("totalProject", totalProject);
-        modelMap.addAttribute("totalInterface", totalInterface);
-        modelMap.addAttribute("totalArticle", totalArticle);
-
         List<Project> projectList =(List<Project>) objectCache.get(PROJECT_LIST);
         if (CollectionUtils.isEmpty(projectList)) {
 			ProjectQuery projectQuery = new ProjectQuery().setStatus(ProjectStatus.RECOMMEND.getStatus()).setPageSize(12);

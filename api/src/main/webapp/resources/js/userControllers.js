@@ -278,7 +278,7 @@ userModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state,
 /************************hotSearchCtrl********/
 userModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function(page) {
-        var params = "iUrl=admin/hotSearch/list.do|iLoading=FLOAT";
+        var params = "iUrl=admin/hotSearch/list.do|iLoading=FLOAT|iParams=";
         $rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

@@ -133,8 +133,10 @@ public class InterfaceController extends BaseController{
 		}
 		interFace.setId(null);
 		interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-		interfaceService.insert(InterfaceAdapter.getModel(interFace));
+        InterfaceWithBLOBs model = InterfaceAdapter.getModel(interFace);
+        interfaceService.insert(model);
 
+        interFace.setId(model.getId());
 		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		return new JsonResult(1, interFace);
 	}
@@ -227,7 +229,10 @@ public class InterfaceController extends BaseController{
 				return new JsonResult(MyError.E000004);
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-			interfaceService.insert(InterfaceAdapter.getModel(interFace));
+			InterfaceWithBLOBs model = InterfaceAdapter.getModel(interFace);
+			interfaceService.insert(model);
+
+			interFace.setId(model.getId());
 			luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		}
 		return new JsonResult(1, interFace);

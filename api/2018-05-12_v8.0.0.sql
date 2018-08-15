@@ -538,14 +538,14 @@ CREATE TABLE `user` (
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `sequence` int(11) NOT NULL DEFAULT '0' COMMENT '排序，越大越靠前',
   `type` tinyint(4) NOT NULL DEFAULT '100' COMMENT '用户类型：1普通用户，100：管理员',
-  `equalEmail` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   `avatarUrl` varchar(500) NOT NULL DEFAULT '' COMMENT '用户头像',
   `loginType` int(11) NOT NULL DEFAULT '0' COMMENT '0：账号登陆，1：github登陆，2：码云',
   `thirdlyId` varchar(100) DEFAULT NULL COMMENT '第三方唯一ID',
   `passwordSalt` varchar(20) DEFAULT NULL COMMENT '密码MD5盐',
   PRIMARY KEY (`id`),
   UNIQUE KEY `loginType_userName` (`userName`,`loginType`),
-  UNIQUE KEY `loginType_Email` (`equalEmail`,`loginType`),
+  UNIQUE KEY `loginType_Email` (`email`,`loginType`),
   KEY `index_thirdlyId` (`thirdlyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

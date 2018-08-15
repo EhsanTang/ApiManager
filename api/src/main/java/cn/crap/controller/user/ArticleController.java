@@ -57,7 +57,7 @@ public class ArticleController extends BaseController{
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
 
 		return new JsonResult().success().data(dtos).page(page)
-                .others(Tools.getMap("type", ArticleType.valueOf(query.getType()).getName(), "category", query.getCategory()));
+                .others(Tools.getMap("type", ArticleType.getByEnumName(query.getType()), "category", query.getCategory()));
 	}
 	
 	@RequestMapping("/detail.do")

@@ -41,7 +41,7 @@ Windows系统：2G内存以上，jdk7及以上，Tomcat7及以上，mysql5.6及�
 ```
 帮助文档地址：http://api.crap.cn
 
-付费QQ群：263949884   前往http://git.oschina.net/CrapApi/CrapApi 捐赠(50元以上，用于服务器租赁)即可入群，提供部署、升级、问题解答等服务...
+付费QQ群：263949884   前往http://git.oschina.net/CrapApi/CrapApi 捐赠入群，提供协助部署、升级帮助、问题解答等服务...
 用户交流群：254450938[1群] 535449678[2群]
 ```
 

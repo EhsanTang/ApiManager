@@ -123,3 +123,8 @@ body{
 .editormd-toolbar-container {
     min-height: 30px!important;
 }
+/** 行号显示不完全 **/
+.CodeMirror-linenumber {
+    word-break: keep-all!important;
+    word-wrap: normal!important;
+}

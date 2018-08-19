@@ -53,7 +53,7 @@ public class ArticleController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
-		Assert.notNull(query.getModuleId());
+		Assert.isTrue(MyString.isNotEmpty(query.getModuleId()) || MyString.isNotEmpty(query.getProjectId()), "项目ID & 模块ID不能同时为空");
 
         Module module = moduleCache.get(query.getModuleId());
         Project project = projectCache.get(module.getProjectId());
@@ -72,27 +72,33 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(String id, String type, String moduleId) throws MyException{
+	public JsonResult detail(String id, String type, String moduleId, String projectId) throws MyException{
 		Module module = new Module();
+		Project project = new Project();
 		if (moduleId != null) {
 			module = moduleCache.get(moduleId);
-			checkUserPermissionByProject(module.getProjectId(), VIEW);
-		}
+			project = projectCache.get(module.getProjectId());
+			checkUserPermissionByProject(project, VIEW);
+		}else {
+            project = projectCache.get(projectId);
+        }
 
 		if(id != null){
             ArticleWithBLOBs article =  articleService.getById(id);
             checkUserPermissionByProject(article.getProjectId(), VIEW);
 			module = moduleCache.get(article.getModuleId());
-			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module));
+			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
 		}
 
         ArticleWithBLOBs model = new ArticleWithBLOBs();
 		model.setType(type);
 		model.setModuleId(moduleId);
 		model.setProjectId(module.getProjectId());
+        model.setStatus(ArticleStatus.COMMON.getStatus());
         model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
 		model.setCanComment(CommonEnum.TRUE.getByteValue());
-		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module));
+        model.setProjectId(projectId);
+		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module, project));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

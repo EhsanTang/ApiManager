@@ -30,6 +30,16 @@ function getParamFromUrl(url, name) {
     }
     return null;
 }
+// 替换url中的指定参数
+function replaceParamFromUrl(url, name, value) {
+    var oldValue = getParamFromUrl(url, name);
+    if (oldValue){
+    	url = replaceAll(url, name + "=" + oldValue, name + "=" + value);
+	}else {
+        url = url + "&" + name + "=" + value;
+    }
+    return url;
+}
 
 /**
  * 替换字符串中自定的字符

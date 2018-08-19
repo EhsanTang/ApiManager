@@ -61,8 +61,10 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		showMessage('lookUp','false',false,-1);
 	}
 	$rootScope.getBaseData = function($scope,$http,params,page) {
-		if(page) $scope.currentPage = page;
-		if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
+		if(page) {
+            params += "&currentPage=" + page;
+        }
+
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -83,8 +85,9 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		});;
     };
     $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey,callBack) {
-        if(page) $scope.currentPage = page;
-        if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
+        if(page) {
+            params += "&currentPage=" + page;
+        }
         httpService.callHttpMethod($http,params).success(function(result) {
             var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

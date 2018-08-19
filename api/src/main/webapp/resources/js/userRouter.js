@@ -197,7 +197,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('articleList', {
-        url : '/user/article/list?projectId&moduleId&type&moduleName&projectName&menu_a&menu_b',
+        url : '/user/article/list?projectId&moduleId&type&moduleName&projectName&menu_a&menu_b&currentPage&name&category',
         views : {
             'main' : {
                 templateUrl : function($stateParems){
@@ -376,7 +376,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' : {
 				templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.4'
 			},
-			'page@logList' : {
+			'page@adminLogList' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.4'
 			},
 			'detail' : {

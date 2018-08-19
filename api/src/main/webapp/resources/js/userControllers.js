@@ -251,12 +251,25 @@ userModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, 
     $scope.getData();
 });
 /**************************article列表****************************/
-userModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-	$scope.articleList = function(page) {
-		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" 
-			+ $stateParams.type+"&moduleId="+$stateParams.moduleId+
-			"&category="+$("#searchCategory").val()+"&name="+$stateParams.name;
-		$rootScope.getBaseData($scope,$http,params,page);
+userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
+	$scope.getData = function(page) {
+		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type="
+			+ $stateParams.type
+            + "&moduleId="+$stateParams.moduleId
+            + "&projectId=" + $stateParams.projectId
+            + "&category="+ $stateParams.category
+            + "&name="+$stateParams.name
+            + "&currentPage=" + $stateParams.currentPage;
+		if (page){
+            params += "&currentPage=" + page;
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
+            url = replaceParamFromUrl(url, 'category', $("#searchCategory").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
+        }
+        $rootScope.getBaseData($scope,$http,params, null);
     };
     // 保存markdown
     $rootScope.saveArticelCallBack = function () {
@@ -267,7 +280,8 @@ userModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $sta
         $rootScope.model.content = markdownEditor.getHTML()
     }
     $scope.articleDetail = function () {
-        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=" + $stateParams.type +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if ($rootScope.model.type == 'ARTICLE') {
                 markdownEditor = null;

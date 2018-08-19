@@ -95,6 +95,18 @@ body{
     cursor: pointer;border:0px!important;
     text-decoration: none;
 }
+.main-nav{
+    padding: 0px;
+    font-size: 16px;
+    background-color: #ffffff;
+    height: 50px;
+    padding-top: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    position: fixed;
+    z-index: 100;
+    padding-left: 10px;
+}
 /******* markdown ******/
 .editormd-menu > li > a > .fa {
     padding: 2px!important;

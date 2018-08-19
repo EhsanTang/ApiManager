@@ -50,11 +50,11 @@ public class ArticleAdapter {
 		return dto;
     }
 
-	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model, Module module) {
+	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model, Module module, Project project) {
 		if (model == null) {
 			return null;
 		}
-		ArticleDto dto = getDto(model, module, null);
+		ArticleDto dto = getDto(model, module, project);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
@@ -98,7 +98,7 @@ public class ArticleAdapter {
         }
         List<ArticleDto> dtos = new ArrayList<>();
         for (ArticleWithBLOBs model : models){
-            dtos.add(getDtoWithBLOBs(model, module));
+            dtos.add(getDtoWithBLOBs(model, module, null));
         }
         return dtos;
     }

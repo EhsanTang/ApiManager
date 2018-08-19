@@ -1,64 +1,87 @@
-<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
-<div class="col-xs-12 p0 mt10">
-	<form ng-submit="submitForm('user/article/addOrUpdate.do',preAddDictionary)">
-		<table class="table table-bordered">
-			<tr>
-				<td class="tc w50">标题</td>
-				<td class="tc">
-						<input  class="form-control" type="text" ng-model="model.name" required>
-				</td>
-				
-			</tr>
-			<tr>
-				<td class="tc">简介</td>
-				<td class="tc">
-					<textarea  class="form-control no-resize" rows="5" ng-model="model.brief"></textarea></td>
-			</tr>
-			<tr>
-				<td class="tc">类型</td>
-				<td class="tc">
-					<input  class="form-control cursor-not BGF5"  id="typeName" type="text" ng-model="model.typeName" readonly required>
-				</td>
-			</tr>
-			<tr>
-				<td class="tc">模块</td>
-				<td class="tl">
-					* 点击选择模块
-					<input class="form-control cursor" type="text" readonly id="moduleName" required ng-model="model.moduleName"
-							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
-				</td>
-			</tr>
-			<tr>
-					<td class="tc">排序</td>
-					<td class="tc">
-					<input class="form-control" min="0" max="10000" required type="number" ng-model="model.sequence"></td>
-			</tr>
-			<tr>
-				<td class="tc">内容</td>
-				<td class="tc">
-					<table class="table table-hover mb5" id="content">
-								<thead>
-									<tr class="main-bg CFFF">
-										<th>字段</th>
-										<th>类型</th>
-										<th class="w100">空</th>
-										<th>默认</th>
-										<th class="w100">标识</th>
-										<th>注释</th>
-										<th class="w100">操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-					</table>
-					<div onclick="addOneField('', '','', '','', '','')" class="main-color fr cursor pr15" title="添加一行"><i class="iconfont f22">&#xe619;</i></div>
-				</td>
-			</tr>
-	</table>
-	<button type="submit" class="btn btn-success fr">提交</button>
-	</form>
-	
-</div>
+<div class="col-xs-12 p0" ng-controller="userArticleCtrl" ng-init="articleDetail()">
+    <form ng-submit="submitForm('user/article/addOrUpdate.do',preAddDictionary, null, goBack)">
+        <div class="col-xs-12 main-nav">
+            <div class="btn-group btn-group-sm r3 fl mr10">
+                <button class="btn btn-default" ng-click="goBack()" type="button">
+                    <i class="iconfont mt-3">&#xe605;&nbsp;</i>返回列表
+                </button>
+
+                <button class="btn btn-main cursor-not btn-sm" type="button">
+                    <i class="iconfont f12 mt-3">&#xe618; 编辑文章</i>
+                </button>
+            </div>
+
+            <button type="submit" class="btn btn-adorn btn-sm">
+                <i class="iconfont f12 mt-3">&#xe602; 快速保存</i>
+            </button>
+        </div>
+
+
+        <div class="col-xs-12 p10 mt50">
+            <div class="r5 BGFFF p10">
+
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="tc w50">标题</td>
+                        <td class="tc">
+                            <input class="form-control" type="text" ng-model="model.name" required>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="tc">简介</td>
+                        <td class="tc">
+                            <textarea class="form-control no-resize" rows="5" ng-model="model.brief"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="tc">类型</td>
+                        <td class="tc">
+                            <input class="form-control cursor-not BGF5" id="typeName" type="text"
+                                   ng-model="model.typeName" readonly required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc">模块</td>
+                        <td class="tl">
+                            * 点击选择模块
+                            <input class="form-control cursor" type="text" readonly id="moduleName" required
+                                   ng-model="model.moduleName"
+                                   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc">排序</td>
+                        <td class="tc">
+                            <input class="form-control" min="0" max="10000" type="number"
+                                   ng-model="model.sequence"></td>
+                    </tr>
+                    <tr>
+                        <td class="tc">内容</td>
+                        <td class="tc">
+                            <table class="table table-hover mb5" id="content">
+                                <thead>
+                                <tr class="main-bg CFFF">
+                                    <th>字段</th>
+                                    <th>类型</th>
+                                    <th class="w100">空</th>
+                                    <th>默认</th>
+                                    <th class="w100">标识</th>
+                                    <th>注释</th>
+                                    <th class="w100">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div onclick="addOneField('', '','', '','', '','')" class="main-color fr cursor pr15"
+                                 title="添加一行"><i class="iconfont f22">&#xe619;</i></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+
 </div>
 <div class="cb"></div>
 

@@ -17,6 +17,8 @@ import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
 import cn.crap.service.CommentService;
 import cn.crap.service.ISearchService;
+import cn.crap.service.tool.ModuleCache;
+import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,19 +44,26 @@ public class ArticleController extends BaseController{
 	private ISearchService luceneService;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private ProjectCache projectCache;
+	@Autowired
+	private ModuleCache moduleCache;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
 		Assert.notNull(query.getModuleId());
-		checkUserPermissionByModuleId(query.getModuleId(), VIEW);
-		
+
+        Module module = moduleCache.get(query.getModuleId());
+        Project project = projectCache.get(module.getProjectId());
+        checkUserPermissionByProject(project, VIEW);
+
 		Page page= new Page(query);
 
 		page.setAllRow(articleService.count(query));
 		List<Article> models = articleService.query(query);
-		List<ArticleDto> dtos = ArticleAdapter.getDto(models, null);
+		List<ArticleDto> dtos = ArticleAdapter.getDto(models, module, project);
 
 		return new JsonResult().success().data(dtos).page(page)
                 .others(Tools.getMap("type", ArticleType.getByEnumName(query.getType()), "category", query.getCategory()));

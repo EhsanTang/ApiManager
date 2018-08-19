@@ -4,6 +4,17 @@
 body{
     min-width: 1000px;
 }
+.table-no-border td{
+    border-top: 0px!important;
+    text-align: left;
+}
+.table-no-border td input, .table-no-border td select, .table-no-border td textarea{
+    border: 1px solid #e0e0e0;
+}
+.text {
+    border: 1px solid #ccc;
+    height: 1000px;
+}
 .navbar-brand{
     width: 51px;
     padding: 10px;
@@ -42,13 +53,6 @@ body{
     width: 100%;
     color: #555555;
     font-size: 14px;
-}
-.menu_b:hover{
-    margin-top:-1px;
-    margin-bottom:-1px;
-    height:42px;
-    line-height: 42px;
-    border-bottom: 0px;
 }
 .project-menu{
     text-align: left;
@@ -90,4 +94,20 @@ body{
 .hover-main:hover,.active-main{
     cursor: pointer;border:0px!important;
     text-decoration: none;
+}
+/******* markdown ******/
+.editormd-menu > li > a > .fa {
+    padding: 2px!important;
+}
+.editormd-menu .fa {
+    font: normal normal normal 12px/1 FontAwesome;
+}
+.editormd-menu > li > a {
+    min-width: 20px!important;
+}
+.editormd-menu > li {
+    padding: 2px 1px!important;
+}
+.editormd-toolbar-container {
+    min-height: 30px!important;
 }

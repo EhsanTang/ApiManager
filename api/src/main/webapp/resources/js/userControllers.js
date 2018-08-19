@@ -252,14 +252,45 @@ userModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, 
 });
 /**************************article列表****************************/
 userModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-	$scope.getData = function(page) {
+	$scope.articleList = function(page) {
 		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" 
 			+ $stateParams.type+"&moduleId="+$stateParams.moduleId+
 			"&category="+$("#searchCategory").val()+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
-    $scope.getData();
+    // 保存markdown
+    $rootScope.saveArticelCallBack = function () {
+        if (!userMarkdown){
+            return;
+        }
+        $rootScope.model.markdown = markdownEditor.getMarkdown();
+        $rootScope.model.content = markdownEditor.getHTML()
+    }
+    $scope.articleDetail = function () {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            if ($rootScope.model.type == 'ARTICLE') {
+                markdownEditor = null;
+                createWangEditor("article-editor", "content", initArticleEditor, "500px");
+            } else {
+                // 如果是文章，eval会报错
+                if (!$rootScope.model.content) {
+                    return;
+                }
+                var content = eval("(" + $rootScope.model.content + ")");
+                $("#content").find("tbody").find("tr").remove();
+                if (content != null && content != "") {
+                    var i = 0;
+                    $.each(content, function (n, value) {
+                        i++;
+                        addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                    });
+                }
+            }
+        });
+    }
 });
+
 userModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
 		var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;

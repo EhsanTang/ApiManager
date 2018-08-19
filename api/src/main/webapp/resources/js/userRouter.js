@@ -210,7 +210,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : function($stateParems){
                     return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.4';
                 }
-            }, 'detail' : {
+            }
+        }
+    }).state('editArticle', {
+        url : '/user/article/edit?projectId&moduleId&id&type&moduleName&projectName&menu_a&menu_b',
+        views : {
+           'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.4';
+                }
+            }, 'main' : {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.4';
                 }
@@ -379,15 +388,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                     return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.4';
                 }
             }
-		}
-	}).state('markdown', {
-		url : '/markdown',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/markdown/markdown.html';
-				}
-			}
 		}
 	})
 	

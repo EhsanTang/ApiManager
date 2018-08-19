@@ -26,7 +26,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ArticleAdapter {
-    public static ArticleDto getDto(Article model, Module module){
+    public static ArticleDto getDto(Article model, Module module, Project project){
         if (model == null){
             return null;
         }
@@ -44,6 +44,9 @@ public class ArticleAdapter {
 		if (module != null){
 			dto.setModuleName(module.getName());
 		}
+		if (project != null){
+			dto.setProjectName(project.getName());
+		}
 		return dto;
     }
 
@@ -51,7 +54,7 @@ public class ArticleAdapter {
 		if (model == null) {
 			return null;
 		}
-		ArticleDto dto = getDto(model, module);
+		ArticleDto dto = getDto(model, module, null);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
@@ -100,13 +103,13 @@ public class ArticleAdapter {
         return dtos;
     }
 
-	public static List<ArticleDto> getDto(List<Article> models, Module module){
+	public static List<ArticleDto> getDto(List<Article> models, Module module, Project project){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<ArticleDto> dtos = new ArrayList<>();
 		for (Article model : models){
-			dtos.add(getDto(model, module));
+			dtos.add(getDto(model, module, project));
 		}
 		return dtos;
 	}

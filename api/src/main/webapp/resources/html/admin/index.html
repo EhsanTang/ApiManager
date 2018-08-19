@@ -100,10 +100,10 @@
 
 			<!-- main -->
 			<div class="p0 h mah ofy-a l250 fixed r0">
-					<div class="m10 pb50">
+					<div class="pb50">
 						<!-- 全局性不消失错误提示：如禁用了弹窗 -->
-						<button type="button" class="mb5 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
-						<div class="f16 fb p0 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
+						<button type="button" class="mb5 p10 btn btn-danger btn-xs break-word ndis" id="global-error"></button>
+						<div class="f16 fb p10 mb5 ndis" id="mian-error" ng-if="hasError(error,'mian-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-if="error.indexOf('CrapApi-400')>0">
@@ -112,7 +112,7 @@
 								<span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
 							</button>
 						</div>
-						<div class="f16 fb p0 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+						<div class="f16 fb p10 mb5 ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
 							<button type="button" class="btn btn-danger btn-xs break-word">
 								<span class="glyphicon glyphicon-remove"></span>
 								<span ng-bind="errorTips"></span>
@@ -121,7 +121,6 @@
 								<span class="glyphicon glyphicon-remove"></span>
 								<span> 删除提示</span>
 							</button>
-							
 						</div>
 						<div ui-view="main" class="min-w700"></div>
 					</div>
@@ -154,6 +153,8 @@
 	<script src="resources/js/global.js?v=v8.0.4"></script>
 	<script src="resources/js/crapApi.js?v=v8.0.4"></script>
 	<script src="resources/js/json.js?v=v8.0.4"></script>
+	<script src="resources/js/editor.js"></script>
+
 
 	<!-- 提示窗口 -->
 <div id="lookUp" class="look-up shadow">
@@ -173,8 +174,8 @@
 			</button>
 			<div ui-view="detail"></div>
 		</div>
-		<i class="iconfont i-close CFFF f16" onclick="closeMyDialog('myDialog')">&#xe615;</i>
-		<i class="iconfont i-full CFFF f16" onclick="fullMyDialog('myDialog')">&#xe62e;</i>
+		<i class="iconfont i-close CFFF f16" onclick="closeMyDialog('myDialog', 'myDialogContent')">&#xe615;</i>
+		<i class="iconfont i-full CFFF f16" onclick="fullMyDialog('myDialog', 'myDialogContent')">&#xe62e;</i>
 </div>   
 <div class="tip-div" id="tip-div"></div>
 <div id="float" class="folat">
@@ -185,12 +186,6 @@
         <div class="sk-rect sk-rect4"></div>
         <div class="sk-rect sk-rect5"></div>
       </div>
-</div>
-<div  id="markdownDialog" class="shadow r2 bottom-radius pt0 w h none" style="position:absolute;top:0px; left:0px;z-index:1052;width:100%!important; background:#fff;">
-	<iframe name="markdownFrame" id="markdownFrame" src="" frameborder="false" scrolling="auto" style="border:none;" width="100%" height="100%" allowtransparency="true">
-	</iframe>
-	<button class="btn btn-danger btn-xs f14" style="position: absolute;top: 5px;right: 12px;"onclick="closeMyDialog('markdownDialog')"><i class="iconfont i-close CFFF fb"> &#xe615;</i></button>
-    <button class="btn btn-success btn-xs f14" style="position: absolute;top: 5px;right: 50px;" onclick="saveMarkdown('markdown','content')"><i class="iconfont i-close CFFF fb"> &#xe60b;</i></button>
 </div>
 <img style="display:none;" src="http://api-access-tatistics.oss-cn-qingdao.aliyuncs.com/ca.gif">	
 </body>

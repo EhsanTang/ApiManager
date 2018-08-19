@@ -8,10 +8,6 @@ function openPage(link){
 }
 function voidFunction(){}
 function goBack(){
-	var Top = $(window).height()/2 - 90;
-    var Left = $(window).width()/2 - 60;
-    $("#lookUp").css({left:Left+"px",top:Top+"px"});
-	$("#lookUp").fadeIn();
 	history.back(-1);
 }
 /*******************************************************************************

@@ -251,15 +251,60 @@ userModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, 
     $scope.getData();
 });
 /**************************article列表****************************/
-userModule.controller('userArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" 
-			+ $stateParams.type+"&moduleId="+$stateParams.moduleId+
-			"&category="+$("#searchCategory").val()+"&name="+$stateParams.name;
-		$rootScope.getBaseData($scope,$http,params,page);
+		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type="
+			+ $stateParams.type
+            + "&moduleId="+$stateParams.moduleId
+            + "&projectId=" + $stateParams.projectId
+            + "&category="+ $stateParams.category
+            + "&name="+$stateParams.name
+            + "&currentPage=" + $stateParams.currentPage;
+		if (page){
+            params += "&currentPage=" + page;
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
+            url = replaceParamFromUrl(url, 'category', $("#searchCategory").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
+        }
+        $rootScope.getBaseData($scope,$http,params, null);
     };
-    $scope.getData();
+    // 保存markdown
+    $rootScope.saveArticelCallBack = function () {
+        if (!userMarkdown){
+            return;
+        }
+        $rootScope.model.markdown = markdownEditor.getMarkdown();
+        $rootScope.model.content = markdownEditor.getHTML()
+    }
+    $scope.articleDetail = function () {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=" + $stateParams.type +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            if ($rootScope.model.type == 'ARTICLE') {
+                markdownEditor = null;
+                createWangEditor("article-editor", "content", initArticleEditor, "500px");
+            } else {
+                // 如果是文章，eval会报错
+                if (!$rootScope.model.content) {
+                    return;
+                }
+                var content = eval("(" + $rootScope.model.content + ")");
+                $("#content").find("tbody").find("tr").remove();
+                if (content != null && content != "") {
+                    var i = 0;
+                    $.each(content, function (n, value) {
+                        i++;
+                        addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                    });
+                }
+            }
+        });
+    }
 });
+
 userModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
 		var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;

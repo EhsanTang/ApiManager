@@ -9,12 +9,8 @@ function goTop(){
 }
 
 //将指定id的控件滚动到浏览器顶部，如：接口详情页目录
-function scrollToId(id){
-	$("html, body").animate({ scrollTop: $("#"+id).offset().top }, 400);
-}
-function getMarkdownText(html){
-	// 从markdown编辑器中提取文本
-	return replaceAll(html,"ace_line_group","\">\n<\"").replace(/<[^>]+>/g,"") ;
+function scrollToId(id) {
+    $("html, body").animate({scrollTop: $("#" + id).offset().top}, 400);
 }
 function tooltip(id){
 	 $("[data-toggle='tooltip']").tooltip(); 
@@ -33,6 +29,16 @@ function getParamFromUrl(url, name) {
 		}
     }
     return null;
+}
+// 替换url中的指定参数
+function replaceParamFromUrl(url, name, value) {
+    var oldValue = getParamFromUrl(url, name);
+    if (oldValue){
+    	url = replaceAll(url, name + "=" + oldValue, name + "=" + value);
+	}else {
+        url = url + "&" + name + "=" + value;
+    }
+    return url;
 }
 
 /**
@@ -80,7 +86,7 @@ var dialogOldTop;
 var dialogOldLeft;
 var dialogOldHeight;
 var dialogOldWidth;
-function fullMyDialog(tagDiv){
+function fullMyDialog(tagDiv,tagDivContent){
 	var target = $("#"+tagDiv);
 	if( target.css('top') != '0px'){
 		dialogOldTop = target.css('top');
@@ -91,15 +97,19 @@ function fullMyDialog(tagDiv){
 		$("#"+tagDiv).css("left","0px");
 		$("#"+tagDiv).css("height","100%");
 		$("#"+tagDiv).css("width","100%");
-		$("#myDialogContent").css("max-height","100%");
+        $("#"+tagDiv).css("width","100%");
+        if (tagDivContent) {
+            $("#" + tagDivContent).css("max-height", "100%");
+        }
 	}else{
 		$("#"+tagDiv).css("top",dialogOldTop);
 		$("#"+tagDiv).css("left",dialogOldLeft);
 		$("#"+tagDiv).css("height",dialogOldHeight);
 		$("#"+tagDiv).css("width",dialogOldWidth);
-		$("#myDialogContent").removecss("max-height");
+        if (tagDivContent) {
+            $("#" + tagDivContent).removecss("max-height");
+        }
 	}
-	
 }
 function loadPick(event,iwidth,iheight,radio,tag,code,def,params,showType,iCallBack,iCallBackParam) {
 	/***********加载选择对话框********************/

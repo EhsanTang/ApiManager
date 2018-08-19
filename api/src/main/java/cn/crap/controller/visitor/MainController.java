@@ -107,7 +107,7 @@ public class MainController extends BaseController{
         	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
 					.setPageSize(5);
 
-            articleList = ArticleAdapter.getDto(articleService.query(query), null);
+            articleList = ArticleAdapter.getDto(articleService.query(query), null, null);
             objectCache.add(ARTICLE_LIST, articleList);
         }
         modelMap.addAttribute("articleList", articleList);

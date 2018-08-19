@@ -1,90 +1,95 @@
 <div class="r0 p0 col-xs-12" ng-controller="userProjectUserCtrl">
-	<div class="col-xs-12 f16 p0">
-		<div class="btn-group btn-group-sm r3 fl mr10">
-			<a type="button" class="btn btn-default" onclick="history.back(-1);"><i class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
-			<button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe603;&nbsp;</i>项目成员</button>
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe605;&nbsp;</i>后退</a>
+            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe603;&nbsp;</i>项目成员</button>
 
-			<a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
-			<a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-			   ng-click="detail('新增成员',800,'user/projectUser/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
-				<i class="iconfont mt-3">&#xe604;</i>&nbsp;新增成员
-			</a>
-		</div>
-	</div>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="getData(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+               ng-click="detail('新增成员',800,'user/projectUser/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增成员
+            </a>
+        </div>
+    </div>
 
-	<div class="col-xs-12 p10 mt10 pt5 BGFFF">
-		<table class="table table-hover table-striped">
-			<thead>
-			<tr class="f14 C000 fw500">
-				<td>用户名</td>
-				<td>用户邮箱</td>
-				<td>模块权限</td>
-				<td>接口权限</td>
-				<td>文章权限</td>
-				<td>数据库表权限</td>
-				<td>文件权限</td>
-				<td>错误码</td>
-				<td class="w200">操作</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in list">
-				<td>{{item.userName}}</td>
-				<td>{{item.userEmail}}</td>
-				
-				<td>
-					<span class="{{item.modModule}}-class r20 mt5 btn btn-xs">修改：{{item.modModule}}</span><br/>
-					<span class="{{item.addModule}}-class r20 mt5 btn btn-xs">添加：{{item.addModule}}</span><br/>
-					<span class="{{item.delModule}}-class r20 mt5 btn btn-xs">删除：{{item.delModule}}</span><br/>
-				</td>
-				
-				<td>
-					<span class="{{item.modInter}}-class r20 mt5 btn btn-xs">修改：{{item.modInter}}</span><br/>
-					<span class="{{item.addInter}}-class r20 mt5 btn btn-xs">添加：{{item.addInter}}</span><br/>
-					<span class="{{item.delInter}}-class r20 mt5 btn btn-xs">删除：{{item.delInter}}</span><br/>
-				</td>
-				
-				<td>
-					<span class="{{item.modArticle}}-class r20 mt5 btn btn-xs">修改：{{item.modArticle}}</span><br/>
-					<span class="{{item.addArticle}}-class r20 mt5 btn btn-xs">添加：{{item.addArticle}}</span><br/>
-					<span class="{{item.delArticle}}-class r20 mt5 btn btn-xs">删除：{{item.delArticle}}</span><br/>
-				</td>
-				
-				<td>
-					<span class="{{item.modDict}}-class r20 mt5 btn btn-xs">修改：{{item.modDict}}</span><br/>
-					<span class="{{item.addDict}}-class r20 mt5 btn btn-xs">添加：{{item.addDict}}</span><br/>
-					<span class="{{item.delDict}}-class r20 mt5 btn btn-xs">删除：{{item.delDict}}</span><br/>
-				</td>
-				
-				<td>
-					<span class="{{item.modSource}}-class r20 mt5 btn btn-xs">修改：{{item.modSource}}</span><br/>
-					<span class="{{item.addSource}}-class r20 mt5 btn btn-xs">添加：{{item.addSource}}</span><br/>
-					<span class="{{item.delSource}}-class r20 mt5 btn btn-xs">删除：{{item.delSource}}</span><br/>
-				</td>
-				
-				<td>
-					<span class="{{item.modError}}-class r20 mt5 btn btn-xs">修改：{{item.modError}}</span><br/>
-					<span class="{{item.addError}}-class r20 mt5 btn btn-xs">添加：{{item.addError}}</span><br/>
-					<span class="{{item.delError}}-class r20 mt5 btn btn-xs">删除：{{item.delError}}</span><br/>
-				</td>
-				
-				
-				<td>
-				<a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')"> 
-					<i class="iconfont f12">&#xe618;修改</i>
-				</a>
-				<a class="f12 text-danger mr10 cursor" title="删除" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-					ng-click="del('user/projectUser/delete.do?id='+item.id,item.name)">
-					<i class="iconfont f12">&#xe60e;删除</i>
-				</a>
-				</td>
-			</tr>
+    <div class="col-xs-12 p10 mt50">
+        <div class="r5 BGFFF p10">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td>用户名</td>
+                    <td>用户邮箱</td>
+                    <td>模块权限</td>
+                    <td>接口权限</td>
+                    <td>文章权限</td>
+                    <td>数据库表权限</td>
+                    <td>文件权限</td>
+                    <td>错误码</td>
+                    <td class="w200">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in list">
+                    <td>{{item.userName}}</td>
+                    <td>{{item.userEmail}}</td>
 
-		</tbody>
-	</table>
-	<div ui-view="page"></div>
-</div>
+                    <td>
+                        <span class="{{item.modModule}}-class r20 mt5 btn btn-xs">修改：{{item.modModule}}</span><br/>
+                        <span class="{{item.addModule}}-class r20 mt5 btn btn-xs">添加：{{item.addModule}}</span><br/>
+                        <span class="{{item.delModule}}-class r20 mt5 btn btn-xs">删除：{{item.delModule}}</span><br/>
+                    </td>
+
+                    <td>
+                        <span class="{{item.modInter}}-class r20 mt5 btn btn-xs">修改：{{item.modInter}}</span><br/>
+                        <span class="{{item.addInter}}-class r20 mt5 btn btn-xs">添加：{{item.addInter}}</span><br/>
+                        <span class="{{item.delInter}}-class r20 mt5 btn btn-xs">删除：{{item.delInter}}</span><br/>
+                    </td>
+
+                    <td>
+                        <span class="{{item.modArticle}}-class r20 mt5 btn btn-xs">修改：{{item.modArticle}}</span><br/>
+                        <span class="{{item.addArticle}}-class r20 mt5 btn btn-xs">添加：{{item.addArticle}}</span><br/>
+                        <span class="{{item.delArticle}}-class r20 mt5 btn btn-xs">删除：{{item.delArticle}}</span><br/>
+                    </td>
+
+                    <td>
+                        <span class="{{item.modDict}}-class r20 mt5 btn btn-xs">修改：{{item.modDict}}</span><br/>
+                        <span class="{{item.addDict}}-class r20 mt5 btn btn-xs">添加：{{item.addDict}}</span><br/>
+                        <span class="{{item.delDict}}-class r20 mt5 btn btn-xs">删除：{{item.delDict}}</span><br/>
+                    </td>
+
+                    <td>
+                        <span class="{{item.modSource}}-class r20 mt5 btn btn-xs">修改：{{item.modSource}}</span><br/>
+                        <span class="{{item.addSource}}-class r20 mt5 btn btn-xs">添加：{{item.addSource}}</span><br/>
+                        <span class="{{item.delSource}}-class r20 mt5 btn btn-xs">删除：{{item.delSource}}</span><br/>
+                    </td>
+
+                    <td>
+                        <span class="{{item.modError}}-class r20 mt5 btn btn-xs">修改：{{item.modError}}</span><br/>
+                        <span class="{{item.addError}}-class r20 mt5 btn btn-xs">添加：{{item.addError}}</span><br/>
+                        <span class="{{item.delError}}-class r20 mt5 btn btn-xs">删除：{{item.delError}}</span><br/>
+                    </td>
+
+
+                    <td>
+                        <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                           ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')">
+                            <i class="iconfont f12">&#xe618;修改</i>
+                        </a>
+                        <a class="f12 text-danger mr10 cursor" title="删除"
+                           ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                           ng-click="del('user/projectUser/delete.do?id='+item.id,item.name)">
+                            <i class="iconfont f12">&#xe60e;删除</i>
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div ui-view="page"></div>
+        </div>
+    </div>
 </div>
 <div class="cb"></div>
 

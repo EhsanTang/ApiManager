@@ -18,6 +18,9 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         e.stopPropagation();
        return false;
     }
+    $rootScope.goBack = function goBack(){
+        history.back(-1);
+    }
     $rootScope.go = function (href) {
         $location.url(href);
     }
@@ -58,8 +61,10 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		showMessage('lookUp','false',false,-1);
 	}
 	$rootScope.getBaseData = function($scope,$http,params,page) {
-		if(page) $scope.currentPage = page;
-		if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
+		if(page) {
+            params += "&currentPage=" + page;
+        }
+
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -79,9 +84,10 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 
 		});;
     };
-    $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey) {
-        if(page) $scope.currentPage = page;
-        if($scope.currentPage) params += "&currentPage="+$scope.currentPage;
+    $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey,callBack) {
+        if(page) {
+            params += "&currentPage=" + page;
+        }
         httpService.callHttpMethod($http,params).success(function(result) {
             var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -89,13 +95,16 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
             }else{
                 $rootScope.error = null;
                 $rootScope[dataKey] = result.data;
+                if (callBack){
+                    callBack();
+                }
             }
         }).error(function(result) {
             lookUp('lookUp','',100,300,3);
             closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
             $rootScope.error = result;
 
-        });;
+        });
     };
 
 	$rootScope.detail = function(title,iwidth,iurl,iParams,callBack) {
@@ -320,29 +329,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	$rootScope.logDetailFormat = function(){
 		$rootScope.model.content  = format($rootScope.model.content);
 	}
-	/**
-	 * 数据库表、文章编辑回调
-	 */
-	$rootScope.getFields = function() {
-    		// 切换为默认编辑器
-	    	var content = "";
-	    	if($rootScope.model.type=='ARTICLE'){
-                createWangEditor("article-editor","content", initArticleEditor);
-	    	}else{
-                // 如果是文章，eval会报错
-                try{
-                    content = eval("("+$rootScope.model.content+")");
-                }catch(e){}
-                $("#content").find("tbody").find("tr").remove();
-                if(content!=null&&content!=""){
-                    var i=0;
-                    $.each(content, function (n, value) {
-                        i++;
-                        addOneField(value.name, value.type, value.notNull,value.flag, value.def, value.remark, value.rowNum);
-                    });
-                }
-			}
-	};
+
 	$rootScope.jsonformat = function(id,tiperror){
 		var result = format($rootScope.model[id],tiperror);
 		if(result){
@@ -352,11 +339,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	$rootScope.callAjaxByName = function(iurl){
 		callAjaxByName(iurl);
 	}
-	/**************markdown*************/
-	$rootScope.markdownEtitor = function(href){
-		$("#markdownDialog").css('display','block'); 
-		document.getElementById("markdownFrame").src=href;
-	}
+
 	 $rootScope.iClose = function(id) {
 	    	iClose(id);
 	 };

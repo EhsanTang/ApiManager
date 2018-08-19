@@ -30,7 +30,7 @@ input:focus{border-color: #3275e4!important;!important;}
 .bt-5 {border-top: 5px solid#3275e4}
 .bl-5 {border-left: 5px solid#3275e4}
 
-.hover-adorn:hover,.active-adorn{background-color: #f82c1d!important;}
+.hover-adorn:hover,.active-adorn{background-color: #f82c1d!important;color:#ffffff!important;}
 .hover-main:hover,.active-main{background-color: rgba(50,117,228,0.1)!important;color:#3275e4!important;}
 
 .adorn-color {color: #f82c1d}

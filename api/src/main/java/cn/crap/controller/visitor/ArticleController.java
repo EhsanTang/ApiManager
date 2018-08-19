@@ -64,7 +64,7 @@ public class ArticleController extends BaseController {
 
         Map<String, Object> others = Tools.getMap("crumbs", Tools.getCrumbs(query.getType() + "-" + module.getName(), "void"));
 
-        return new JsonResult().success().data(ArticleAdapter.getDto(articles, module)).page(page).others(others);
+        return new JsonResult().success().data(ArticleAdapter.getDto(articles, module, null)).page(page).others(others);
     }
 
 
@@ -85,7 +85,7 @@ public class ArticleController extends BaseController {
 
             List<Article> articles = articleService.query(query);
             page.setAllRow(articleService.count(query));
-            List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module);
+            List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module, null);
 
             Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                     .put("category", query.getCategory())
@@ -99,7 +99,7 @@ public class ArticleController extends BaseController {
         List<String> categories = articleService.queryTop10RecommendCategory();
         query.setModuleId(null).setName(null).setProjectId(null);
         List<Article> articles = articleService.query(query);
-        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null);
+        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null, null);
 
         page.setAllRow(articleService.count(query));
         Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())

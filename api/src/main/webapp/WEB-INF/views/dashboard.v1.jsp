@@ -57,8 +57,8 @@
         <div class="container">
             <div class="row p0 m0">
                 <div class="col-xs-12 col-md-9 mt100">
-                    <div class="CFFF f30 mt130">完全开源、免费的API协作管理系统</div>
-                    <div class="CFFF f14 mt20 mb20">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
+                    <div class="CFFF f30 mt130">开源API接口管理、协同、调试系统</div>
+                    <div class="CFFF f16 mt20 mb20">历时2年打造的专业开源、免费接口管理系统：PDF一键生成、在线调试、项目协作...</div>
 
                     <c:if test="${login}">
                         <a class="btn btn-adorn btn-sm r20 w150 f14" href="admin.do" target="_self">进入项目管理</a>
@@ -159,28 +159,6 @@
                 </div>
             </div>
         </c:forEach>
-
-        <!-- 求赞赏 -->
-        <div class="cb"></div>
-        <div class="tc lh26 mt50 f12 shadow mb30 p50 C555">
-            <div>
-
-                <img class="w100 mr100" src="resources/images/alipay.jpg">
-
-                <img class="w100" src="resources/images/wepay.jpg">
-            </div>
-            <div class="dashed-b mt10 mb30"></div>
-            各位好，我是Nico，一名年纪轻轻就秃了头的程序猿，<br/>
-            好人有好报，求各位打赏，帮我集资买瓶生发水吧!<br/>
-            打赏10元，你的程序从此告别bug；打赏50元，你的头发茂盛的想亚马逊丛林；打赏100元，穿着特步相亲也能俘获女神<br/>
-            或者<br/>
-            如果你宁愿情人节独自在办公室加班修bug，也不给我买生发水<br/>
-            至少帮我在 <a href='https://gitee.com/CrapApi/CrapApi' target="_blank">Gitee</a>
-            或
-            <a target="_blank" href="https://github.com/EhsanTang/ApiManager">GitHub</a> 上点个赞好不好？<br/>
-            :)
-        </div>
-
     </div>
 </div>
 

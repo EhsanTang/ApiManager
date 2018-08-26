@@ -250,6 +250,46 @@ userModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, 
     };
     $scope.getData();
 });
+/**************************数据库表列表****************************/
+userModule.controller('userDictionaryCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
+    $scope.getData = function(page) {
+        var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=DICTIONARY"
+            + "&moduleId="+$stateParams.moduleId
+            + "&projectId=" + $stateParams.projectId
+            + "&name="+$stateParams.name
+            + "&currentPage=" + $stateParams.currentPage;
+        if (page){
+            params += "&currentPage=" + page;
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
+        }
+        $rootScope.getBaseData($scope,$http,params, null);
+    };
+
+    $scope.dictionaryDetail = function () {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            // 如果是文章，eval会报错
+            if (!$rootScope.model.content) {
+                return;
+            }
+            var content = eval("(" + $rootScope.model.content + ")");
+            $("#content").find("tbody").find("tr").remove();
+            if (content != null && content != "") {
+                var i = 0;
+                $.each(content, function (n, value) {
+                    i++;
+                    addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                });
+            }
+        });
+    }
+});
+
 /**************************article列表****************************/
 userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
 	$scope.getData = function(page) {
@@ -271,7 +311,7 @@ userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $st
         $rootScope.getBaseData($scope,$http,params, null);
     };
     // 保存markdown
-    $rootScope.saveArticelCallBack = function () {
+    $rootScope.saveArticleCallBack = function () {
         if (!userMarkdown){
             return;
         }
@@ -285,25 +325,6 @@ userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $st
             markdownEditor = null;
             createWangEditor("article-editor", "content", initArticleEditor, "500px");
 
-        });
-    }
-    $scope.dictionaryDetail = function () {
-        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
-            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            // 如果是文章，eval会报错
-            if (!$rootScope.model.content) {
-                return;
-            }
-            var content = eval("(" + $rootScope.model.content + ")");
-            $("#content").find("tbody").find("tr").remove();
-            if (content != null && content != "") {
-                var i = 0;
-                $.each(content, function (n, value) {
-                    i++;
-                    addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
-                });
-            }
         });
     }
 });

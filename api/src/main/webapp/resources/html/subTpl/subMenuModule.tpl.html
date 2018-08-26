@@ -17,6 +17,12 @@
         <span class="f12">文章列表</span>
     </a>
 
+    <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_dictionary']"
+       ng-href="#/user/dictionary/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}">
+        <i class="iconfont mt-3">&#xe61c;&nbsp;</i>
+        <span class="f12">数据库表</span>
+    </a>
+
     <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_module']"
        ng-href="#/user/module/list?dataType=interface&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
         <i class="iconfont mt-3">&#xe722;&nbsp;</i>
@@ -37,7 +43,7 @@
     </a>
 
 
-    <div ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article'">
+    <div ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary'">
         <div class="w h30 fw500 lh30 f14 pl10 BGF5 C555 main-bl-3 mt-1">模块列表</div>
         <!-- 选中的排最前 -->
         <a ng-repeat="item in top50Module"

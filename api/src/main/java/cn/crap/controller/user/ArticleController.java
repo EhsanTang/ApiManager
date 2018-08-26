@@ -57,6 +57,10 @@ public class ArticleController extends BaseController{
 
         Module module = moduleCache.get(query.getModuleId());
         Project project = projectCache.get(module.getProjectId());
+        if (project.getId() == null){
+            project = projectCache.get(query.getProjectId());
+        }
+
         checkUserPermissionByProject(project, VIEW);
 
 		Page page= new Page(query);

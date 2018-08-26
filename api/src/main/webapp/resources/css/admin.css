@@ -36,6 +36,9 @@ body{
     color: #555555;
     width: 100%;
 }
+.left-menu:hover{
+    z-index: 100;
+}
 .menu_a:hover,.left-menu a:hover{
     margin-top:-1px;
     margin-bottom:-1px;

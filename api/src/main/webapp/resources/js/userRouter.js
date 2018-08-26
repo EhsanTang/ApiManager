@@ -223,6 +223,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
+    }).state('dictionaryList', {
+        url : '/user/dictionary/list?currentPage&name&category&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryList.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@dictionaryList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
     }).state('editArticle', {
         url : '/user/article/edit?id&' + commonUrlParam,
         views : {
@@ -233,6 +249,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }, 'main' : {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/articleDetail.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('editDictionary', {
+        url : '/user/dictionary/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryDetail.tpl.html?v=v8.0.5';
                 }
             }
         }

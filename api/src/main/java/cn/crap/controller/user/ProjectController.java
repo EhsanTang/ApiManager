@@ -51,17 +51,33 @@ public class ProjectController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute ProjectQuery query,
-                           @RequestParam(defaultValue = "false") boolean myself) throws MyException {
+                           @RequestParam(defaultValue = "3") Integer projectShowType) throws MyException {
         Page page = new Page(query);
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
         List<Project> models;
 
-        // 普通用户，管理员我的项目菜单只能查看自己的项目
-        if (user.getType() == UserType.USER.getType() || myself) {
-            page.setAllRow(projectService.count(userId, query.getName()));
-            models = projectService.query(userId, query.getName(), page);
-        } else {
+        // 我创建 & 加入的项目
+        if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
+            page.setAllRow(projectService.count(userId, false, query.getName()));
+            models = projectService.query(userId, false, query.getName(), page);
+        }
+
+        // 我加入的项目
+        else if (ProjectShowType.JOIN.getType() == projectShowType) {
+            page.setAllRow(projectService.count(userId, true, query.getName()));
+            models = projectService.query(userId, true, query.getName(), page);
+        }
+
+        // 管理员查看所有项目
+        else if(ProjectShowType.ALL.getType() == projectShowType && user.getType() == UserType.ADMIN.getType()){
+            page.setAllRow(projectService.count(query));
+            models = projectService.query(query);
+        }
+
+        // 我创建的项目
+        else {
+            query.setUserId(userId);
             page.setAllRow(projectService.count(query));
             models = projectService.query(query);
         }

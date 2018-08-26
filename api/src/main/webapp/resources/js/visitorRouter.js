@@ -92,7 +92,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('visitorProjectList', {
-		url : '/project/list?myself&type',
+		url : '/project/list?projectShowType&type',
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/visitor/projectList.tpl.html?v=v8.0.5'

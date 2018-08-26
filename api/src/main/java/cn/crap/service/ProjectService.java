@@ -149,13 +149,13 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
 //        Assert.notNull(userId, "userId can't be null");
 //        return customMapper.queryProjectIdByUserId(userId);
 //    }
-    public List<Project> query(String userId, String name, Page page) {
+    public List<Project> query(String userId, boolean onlyJoin, String name, Page page) {
         Assert.notNull(userId, "userId can't be null");
-        return customMapper.queryProjectByUserId(userId, name, page);
+        return customMapper.queryProjectByUserId(userId, onlyJoin, name, page);
     }
 
-    public int count(String userId, String name) {
+    public int count(String userId, boolean onlyJoin, String name) {
         Assert.notNull(userId, "userId can't be null");
-        return customMapper.countProjectByUserId(userId, name);
+        return customMapper.countProjectByUserId(userId, onlyJoin, name);
     }
 }

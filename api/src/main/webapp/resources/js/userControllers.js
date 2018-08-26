@@ -528,7 +528,7 @@ userModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $sta
 /*************************项目列表************************/
 userModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&myself="+$stateParams.myself;
+		var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&projectShowType="+$stateParams.projectShowType;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.clearDonwloadUrl = function(){
@@ -536,13 +536,16 @@ userModule.controller('userProjectListCtrl', function($rootScope,$scope, $http, 
     }
     $scope.getData();
 });
+
+/**
 userModule.controller('userTop50ProjectListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function() {
-        var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&myself="+$stateParams.myself;
+        var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&projectShowType="+$stateParams.projectShowType;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Project");
     };
     $scope.getData();
-});
+});**/
+
 userModule.controller('userProjectDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function() {
         var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;

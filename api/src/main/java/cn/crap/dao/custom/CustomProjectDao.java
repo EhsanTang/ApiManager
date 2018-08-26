@@ -35,16 +35,20 @@ public class CustomProjectDao {
 	}
 
 
-	public List<Project> queryProjectByUserId(String userId, String name, final Page page){
+	public List<Project> queryProjectByUserId(String userId, boolean onlyJoin, String name, final Page page){
 		Assert.notNull(userId);
 		Assert.notNull(page);
 
-		List <Object> params = new ArrayList<Object>();
-		params.add(userId);
-		params.add(userId);
+		List <Object> params = new ArrayList<>();
+        params.add(userId);
+        params.add(userId);
+		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where");
+		if (onlyJoin){
+			sb.append(" userId !=? and id in (select projectId from project_user where userId=?)");
+		}else {
+			sb.append(" (userId= ? or id in (select projectId from project_user where userId=?))");
+		}
 
-		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where" +
-                " (userId= ? or id in (select projectId from project_user where userId=?))");
 		if (name != null){
 			sb.append(" and name like ? ");
 			params.add("%" + name + "%");
@@ -71,13 +75,19 @@ public class CustomProjectDao {
 		});
 	}
 
-	public int countProjectByUserId(String userId, String name){
+	public int countProjectByUserId(String userId, boolean onlyJoin, String name){
 		Assert.notNull(userId);
 
 		List <Object> params = new ArrayList<>();
-		params.add(userId);
-		params.add(userId);
-		StringBuilder sb = new StringBuilder("select count(0) from project where (userId=? or id in (select projectId from project_user where userId=?))");
+        params.add(userId);
+        params.add(userId);
+        StringBuilder sb = new StringBuilder("select count(0) from project where ");
+        if (onlyJoin){
+            sb.append(" userId != ? and id in (select projectId from project_user where userId=?)");
+        }else {
+            sb.append(" (userId= ? or id in (select projectId from project_user where userId=?))");
+        }
+
         if (name != null){
             sb.append(" and name like ?");
             params.add("%" + name + "%");

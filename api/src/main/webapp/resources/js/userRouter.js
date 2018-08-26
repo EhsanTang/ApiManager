@@ -19,7 +19,7 @@
  */
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType';
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('user/project/list?myself=true&type=-1&menu_a=menu-project');
+	$urlRouterProvider.otherwise('user/project/list?projectShowType=3&menu_b=menu_create_join&type=-1&menu_a=menu-project');
 	/*********************后台*******************/
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('projectList', {
-		url : '/user/project/list?myself&type&menu_a&projectId&projectName',
+		url : '/user/project/list?projectShowType&type&menu_a&menu_b&projectId&projectName',
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){

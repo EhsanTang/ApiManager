@@ -169,7 +169,7 @@ visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http,
  */
 visitorModule.controller('visitorProjectCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
-		var params = "iUrl=visitor/project/list.do|iLoading=FLOAT|iPost=true|iParams=&myself="+$stateParams.myself+"&name="+$stateParams.name;
+		var params = "iUrl=visitor/project/list.do|iLoading=FLOAT|iPost=true|iParams=&projectShowType="+$stateParams.projectShowType+"&name="+$stateParams.name;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

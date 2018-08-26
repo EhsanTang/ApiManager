@@ -2,6 +2,7 @@ package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.ProjectDto;
+import cn.crap.enumer.ProjectShowType;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
@@ -28,12 +29,12 @@ public class ProjectController extends BaseController{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
-	public JsonResult list(@ModelAttribute ProjectQuery query, @RequestParam(defaultValue="false") boolean myself) throws MyException{
+	public JsonResult list(@ModelAttribute ProjectQuery query, @RequestParam(defaultValue="3") Integer projectShowType) throws MyException{
 		
 		Page page= new Page(query);
 		LoginInfoDto user =  LoginUserHelper.tryGetUser();
 
-		if(user != null && myself){
+		if(user != null && ProjectShowType.CREATE_JOIN.getType() == projectShowType){
             query.setUserId(user.getId());
 		}else{
             // 未登陆用户，查看推荐的项目

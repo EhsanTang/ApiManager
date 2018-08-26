@@ -62,7 +62,7 @@
 
                     <c:if test="${login}">
                         <a class="btn btn-adorn btn-sm r20 w150 f14" href="admin.do" target="_self">进入项目管理</a>
-                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="index.do#/project/list?myself=true"
+                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="index.do#/project/list?projectShowType=3"
                            target="_self">查看项目</a>
                     </c:if>
                     <c:if test="${login == false}">
@@ -127,7 +127,7 @@
 
 
         <div class="cb f30 w tc dashed-b fw600 pt20">推荐项目
-            <a class="adorn-color f12 fn" href="index.do#/project/list?myself=false">More...</a>
+            <a class="adorn-color f12 fn" href="index.do#/project/list?projectShowType=4">More...</a>
         </div>
         <c:forEach items="${projectList}" var="item" varStatus="id">
             <div class="col-sm-6 col-md-4 col-lg-3 m0 p0">

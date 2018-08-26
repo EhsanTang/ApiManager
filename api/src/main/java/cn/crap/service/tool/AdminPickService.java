@@ -112,9 +112,9 @@ public class AdminPickService implements IPickService{
             case MENU_URL:
                 pick = new PickDto(IConst.SEPARATOR, "项目列表");
                 picks.add(pick);
-                pick = new PickDto("m_myproject", "index.do#/project/list?myself=true", "我的项目列表");
+                pick = new PickDto("m_myproject", "index.do#/project/list?projectShowType=3", "我的项目列表");
                 picks.add(pick);
-                pick = new PickDto("recommend_project", "index.do#/project/list?myself=false", "推荐项目列表");
+                pick = new PickDto("recommend_project", "index.do#/project/list?projectShowType=4", "推荐项目列表");
                 picks.add(pick);
 
                 pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");

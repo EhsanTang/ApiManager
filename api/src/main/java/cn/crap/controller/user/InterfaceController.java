@@ -53,21 +53,31 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@RequestParam String moduleId, String interfaceName, String url,
+	public JsonResult list(String moduleId, String projectId, String interfaceName, String url,
 			 Integer currentPage) throws MyException{
-		InterfaceQuery interfaceQuery = new InterfaceQuery();
-		interfaceQuery.setModuleId(moduleId).setInterfaceName(interfaceName).setFullUrl(url).setCurrentPage(currentPage);
+		Assert.isTrue(MyString.isNotEmpty(projectId) || MyString.isNotEmpty(moduleId), "projectId & moduleId 不能同时为空");
+
+        Module module = null;
+        Project project;
+        if (MyString.isNotEmpty(moduleId)){
+            module = moduleCache.get(moduleId);
+            project = projectCache.get(module.getProjectId());
+        }else {
+            project = projectCache.get(projectId);
+        }
+
+
+		InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(projectId).setModuleId(moduleId)
+                .setInterfaceName(interfaceName).setFullUrl(url).setCurrentPage(currentPage);
 		Page page= new Page(interfaceQuery);
 
-		Module module = moduleCache.get(moduleId);
-		Project project = projectCache.get(module.getProjectId());
+
 		checkUserPermissionByProject(project.getId(), VIEW);
 
 		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module, project);
 		page.setAllRow(interfaceService.count(interfaceQuery));
 		JsonResult result = new JsonResult(1, interfaces, page);
-		result.putOthers("crumbs", Tools.getCrumbs("接口列表:"+ moduleCache.get(moduleId).getName(),"void"))
-				.putOthers("module", moduleCache.get(moduleId));
+		result.putOthers("module", module);
 
 		return result;
 		

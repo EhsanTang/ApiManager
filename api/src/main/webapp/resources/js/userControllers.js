@@ -253,8 +253,7 @@ userModule.controller('userProjectUserCtrl', function($rootScope,$scope, $http, 
 /**************************article列表****************************/
 userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
 	$scope.getData = function(page) {
-		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type="
-			+ $stateParams.type
+		var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
             + "&moduleId="+$stateParams.moduleId
             + "&projectId=" + $stateParams.projectId
             + "&category="+ $stateParams.category
@@ -580,6 +579,7 @@ userModule.controller('userInterfaceCtrl', function($rootScope,$scope, $http, $s
 			params += "&url=" + $("#url").val();
 		}
 		params +="&moduleId="+ $stateParams.moduleId;
+        params +="&projectId="+ $stateParams.projectId;
 		params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
 		$rootScope.getBaseData($scope,$http,params,page);
     };

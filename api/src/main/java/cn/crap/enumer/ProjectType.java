@@ -25,7 +25,10 @@ public enum ProjectType {
 	public int getType(){
 		return type;
 	}
-	
+
+	public byte getByteType(){
+		return new Byte(type + "");
+	}
 	public String getName(){
 		return name;
 	}

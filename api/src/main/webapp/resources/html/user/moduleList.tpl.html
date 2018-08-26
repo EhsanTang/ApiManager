@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in list" class="cursor"
-                    ng-click="go('user/interface/list?menu_a=menu-project&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + item.id + '&moduleName=' + item.name)">
+                    ng-click="go('user/interface/list?dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + item.id + '&moduleName=' + item.name)">
                     <td>{{item.name}}</td>
                     <td>{{item.url}}</td>
                     <td>{{item.createTimeStr}}</td>

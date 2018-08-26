@@ -7,6 +7,17 @@
  * @param  {[type]} $urlRouterProvider
  * @return {[type]}
  */
+/**
+ * projectId : 项目ID
+ * projectName : 项目名称
+ * moduleId : 模块ID
+ * moduleName : 模块名称
+ * menu_a : 一级导航菜单
+ * menu_b : 二级导航菜单
+ * dataType : interface、module、article 等数据类型，用于模块接口跳转
+ *
+ */
+var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType';
 app.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('user/project/list?myself=true&type=-1&menu_a=menu-project');
 	/*********************后台*******************/
@@ -71,7 +82,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 		}
 	}).state('project', {
-        url : '/user/project?type&menu_a&projectId&projectName&menu_b',
+        url : '/user/project?' + commonUrlParam,
         views : {
             'main' :{
                 templateUrl : function($stateParems){
@@ -89,7 +100,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
         }
     }).state('moduleList', {
-		url : '/user/module/list?projectId&name&projectName&menu_a&menu_b',
+		url : '/user/module/list?name&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/moduleList.tpl.html?v=v8.0.5'
@@ -108,7 +119,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('interfaceList', {
-		url : '/user/interface/list?projectId&moduleId&moduleName&projectName&menu_a&menu_b',
+		url : '/user/interface/list?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.5'
@@ -140,7 +151,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			
 		}
 	}).state('errorList', {
-		url : '/user/error/list?projectId&moduleName&projectName&menu_a&menu_b',
+		url : '/user/error/list?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/errorList.tpl.html?v=v8.0.5'
@@ -197,7 +208,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('articleList', {
-        url : '/user/article/list?projectId&moduleId&type&moduleName&projectName&menu_a&menu_b&currentPage&name&category',
+        url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
         views : {
             'main' : {
                 templateUrl : function($stateParems){
@@ -213,7 +224,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('editArticle', {
-        url : '/user/article/edit?projectId&moduleId&id&type&moduleName&projectName&menu_a&menu_b',
+        url : '/user/article/edit?' + commonUrlParam,
         views : {
            'subMenu' :{
                 templateUrl : function($stateParems){
@@ -221,7 +232,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }, 'main' : {
                 templateUrl : function($stateParems){
-                    return 'resources/html/user/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.5';
+                    return 'resources/html/user/articleDetail.tpl.html?v=v8.0.5';
                 }
             }
         }

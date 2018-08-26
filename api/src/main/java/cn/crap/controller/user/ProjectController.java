@@ -8,6 +8,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.Comment;
+import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.query.*;
 import cn.crap.service.*;
@@ -77,6 +79,9 @@ public class ProjectController extends BaseController {
             checkUserPermissionByProject(model,VIEW);
         } else {
             model = new Project();
+            model.setType(ProjectType.PRIVATE.getByteType());
+            model.setStatus(ProjectStatus.COMMON.getStatus());
+            model.setLuceneSearch(CommonEnum.FALSE.getByteValue());
         }
         return new JsonResult(1, ProjectAdapter.getDto(model, null));
     }
@@ -128,7 +133,7 @@ public class ProjectController extends BaseController {
         else {
             int totalProjectNum = projectService.count(new ProjectQuery().setUserId(userId));
             Integer maxProject = settingCache.getInteger(SettingEnum.MAX_PROJECT);
-            if (totalProjectNum > maxProject) {
+            if (totalProjectNum > maxProject || totalProjectNum > MAX_PROJECT_NUM) {
                 throw new MyException(MyError.E000068, maxProject + "");
             }
 

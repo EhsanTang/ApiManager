@@ -104,7 +104,7 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
-	    Assert.notNull(dto.getModuleId());
+	    Assert.notNull(dto.getModuleId(), "模块不能为空");
 	    if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
             throw new MyException(MyError.E000066);
         }

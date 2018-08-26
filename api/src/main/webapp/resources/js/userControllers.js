@@ -279,26 +279,30 @@ userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $st
         $rootScope.model.content = markdownEditor.getHTML()
     }
     $scope.articleDetail = function () {
-        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=" + $stateParams.type +
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            if ($rootScope.model.type == 'ARTICLE') {
-                markdownEditor = null;
-                createWangEditor("article-editor", "content", initArticleEditor, "500px");
-            } else {
-                // 如果是文章，eval会报错
-                if (!$rootScope.model.content) {
-                    return;
-                }
-                var content = eval("(" + $rootScope.model.content + ")");
-                $("#content").find("tbody").find("tr").remove();
-                if (content != null && content != "") {
-                    var i = 0;
-                    $.each(content, function (n, value) {
-                        i++;
-                        addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
-                    });
-                }
+            markdownEditor = null;
+            createWangEditor("article-editor", "content", initArticleEditor, "500px");
+
+        });
+    }
+    $scope.dictionaryDetail = function () {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            // 如果是文章，eval会报错
+            if (!$rootScope.model.content) {
+                return;
+            }
+            var content = eval("(" + $rootScope.model.content + ")");
+            $("#content").find("tbody").find("tr").remove();
+            if (content != null && content != "") {
+                var i = 0;
+                $.each(content, function (n, value) {
+                    i++;
+                    addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                });
             }
         });
     }

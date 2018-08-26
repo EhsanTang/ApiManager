@@ -189,7 +189,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('projectLogList', {
-        url : '/user/log/list?identy&projectId&name&projectName&menu_a&menu_b&moduleId',
+        url : '/user/log/list?identy&' + commonUrlParam,
         views : {
             'main' : {
                 templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.5'
@@ -224,7 +224,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('editArticle', {
-        url : '/user/article/edit?' + commonUrlParam,
+        url : '/user/article/edit?id&' + commonUrlParam,
         views : {
            'subMenu' :{
                 templateUrl : function($stateParems){
@@ -337,7 +337,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('commentList', {
-		url : '/user/comment/list?projectId&articleId&menu_a&menu_b&moduleId',
+		url : '/user/comment/list?articleId&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/commentList.tpl.html?v=v8.0.5'

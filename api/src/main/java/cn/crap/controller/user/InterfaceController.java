@@ -85,7 +85,7 @@ public class InterfaceController extends BaseController{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(String id, String moduleId) throws MyException {
+	public JsonResult detail(String id, String moduleId, String projectId) throws MyException {
 		InterfaceWithBLOBs model;
 		Module module = null;
 		if(id != null){
@@ -96,7 +96,7 @@ public class InterfaceController extends BaseController{
 			model = new InterfaceWithBLOBs();
 			module = moduleCache.get(moduleId);
 			model.setModuleId( moduleId);
-			model.setProjectId(module.getProjectId());
+			model.setProjectId(module.getProjectId() == null ? projectId : module.getProjectId());
 			model.setParam("form=[]");
 			model.setResponseParam("[]");
 			model.setHeader("[]");

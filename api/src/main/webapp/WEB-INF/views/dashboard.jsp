@@ -19,39 +19,21 @@
     <title>${title}</title>
 </head>
 <body class="BGFFF">
-<!-- top navbar -->
-<nav class="navbar navbar-inverse no-radius s-nav-bg-color s-nav-color mb0 z10">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-
-            <a class="navbar-brand p0 pt10 ml10" href="${domain}">
-                <img class="h30" src="${logo}"/>
-            </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse p0">
-            <ul class="nav navbar-nav navbar-right ml20">
-                <li><a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="menu_a">帮助文档
-                    <i class="iconfont adorn-color f14">&#xe63e;</i></a>
-                </li>
-                <li>
-                    <a href='https://gitee.com/CrapApi/ApiDebug'
-                       target="_blank" class="menu_a">插件下载 <i class="iconfont adorn-color f14">&#xe624;</i></a>
-                </li>
-                <c:if test="${login}">
-                    <li><a class="cursor" onclick="loginOut()"><i class="iconfont f16 mt-5 adorn-color">&#xe609;</i>&nbsp;&nbsp;注销</a></li>
-                </c:if>
-            </ul>
-        </div>
+<div style="background-color: #f5f5f5; height: 36px; line-height: 36px; color: #aaaaaa;" class="shadow">
+    <div class="col-xs-3 col-md-3">
+        <a class="navbar-brand p0 ml50" style="margin-top: 3px;" href="${domain}">
+            <img class="h30" src="${logo}"/>
+        </a>
+        <span class="adorn-color f12 pl5 fb">CRAP</span>
     </div>
-</nav>
-
+    <div class="col-xs-9 col-md-9 tr f12">
+        <a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="dis-in-tab mr50 ml50 C555" style="">帮助文档</a>|
+        <a href='https://gitee.com/CrapApi/ApiDebug' target="_blank" class="dis-in-tab mr50 ml50 C555">插件下载</a>
+        <c:if test="${login}">
+            |<a class="cursor dis-in-tab mr50 ml50 C555" onclick="loginOut()">注销</a></li>
+        </c:if>
+    </div>
+</div>
 <div class="login-bg mb20 w p0" style="height: 560px">
     <div class="trans">
         <div class="container">
@@ -167,9 +149,10 @@
                 <img class="w100" src="resources/images/wepay.jpg">
             </div>
             <div class="dashed-b mt10 mb30"></div>
-            各位好，我是Nico，一名年纪轻轻就秃了头的程序猿，<br/>
+            各位好，我是Nico，一名年纪轻轻就秃了头的程序猿<br/>
             好人有好报，求各位打赏，帮我集资买瓶生发水吧!<br/>
-            打赏10元，你的程序从此告别bug；打赏50元，你的头发茂盛的想亚马逊丛林；打赏100元，穿着特步相亲也能俘获女神<br/>
+            打赏10元，你的程序从此告别bug；打赏50元，你的头发茂盛得像亚马逊丛林；<br/>
+            打赏100元，加入"穿着特步相亲也能轻松俘获女神的VIP QQ群（263949884），Nico将竭诚为你提供协助部署、升级帮助、问题解答等各种羞羞的服务...<br/>
             或者<br/>
             如果你宁愿情人节独自在办公室加班修bug，也不给我买生发水<br/>
             至少帮我在 <a href='https://gitee.com/CrapApi/CrapApi' target="_blank">Gitee</a>

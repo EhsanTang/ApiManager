@@ -5,6 +5,7 @@ CrapApi视频介绍-用户版</br>
 CrapApi视频介绍-管理员&部署</br>
 [CrapApi视频介绍-管理员&部署](https://v.youku.com/v_show/id_XMzYwMzA2MzUyNA==.html)
 
+[ApiDebug接口调试插件](https://gitee.com/CrapApi/ApiDebug)
 
 [CrapApi是什么]
 ```

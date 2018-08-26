@@ -52,42 +52,39 @@
     </div>
 </nav>
 
-<div class="login-bg h500 mb20 w p0">
+<div class="login-bg mb20 w p0" style="height: 560px">
     <div class="trans">
         <div class="container">
             <div class="row p0 m0">
-                <div class="col-xs-12 col-md-9 mt100">
-                    <div class="CFFF f30 mt130">完全开源、免费的API协作管理系统</div>
-                    <div class="CFFF f14 mt20 mb20">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
+                <div class="col-xs-12 col-md-12 mt50">
+                    <div class="CFFF f50 mt100">CRAP-Api</div>
+                    <div class="CFFF f40 mt20">完全开源、免费的API协作管理系统</div>
+                    <div class="CFFF f18 mt20 mb20">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
-                    <c:if test="${login}">
-                        <a class="btn btn-adorn btn-sm r20 w150 f14" href="admin.do" target="_self">进入项目管理</a>
-                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="index.do#/project/list?myself=true"
-                           target="_self">查看项目</a>
-                    </c:if>
-                    <c:if test="${login == false}">
-                        <a class="btn btn-adorn btn-sm r20 w150 f14" href="loginOrRegister.do#/register" target="_self">快速注册<i
-                                class="iconfont f18 pl10">&#xe604;</i></a>
-                        <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="loginOrRegister.do#/login"
-                           target="_self">登陆<i class="iconfont f18 pl10">&#xe601;</i></a>
-                    </c:if>
-                </div>
-                <div class="hidden-sm hidden-xs col-md-3  p50 shadow h300 mt100 r10 dashboard f12">
-                    <div class="adorn-bl-3 f14 pl10 mb20">快速入门</div>
-                    <a class="btn btn-adorn btn-sm w f14 r20" href="http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html" target="_blank">
-                        视频-用户版  <i class="iconfont f18">&#xe634;</i></a>
-
-                    <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://gitee.com/CrapApi/ApiDebug" target="_blank">
-                        浏览器接口调试插件  <i class="iconfont f18">&#xe625;</i></a>
-
-                    <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://v.youku.com/v_show/id_XMzYwMzA2MzUyNA==.html" target="_blank">
-                        视频-管理员版  <i class="iconfont f18">&#xe612;</i></a>
-                    <div class="mt20 tc">
-                        <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
-                                src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
-                        <a href='https://gitee.com/CrapApi/CrapApi/members'><img src='https://gitee.com/CrapApi/CrapApi/badge/fork.svg?theme=dark' alt='fork'></img></a>
+                    <div class="tr mt50 CFFF">
+                        <c:if test="${login}">
+                            <a class="btn btn-main btn-sm r10 w150 f12" href="admin.do" target="_self">进入项目管理</a>
+                            <a class="btn btn-adorn btn-sm r10 w150 f12 ml10" href="index.do#/project/list?myself=true"
+                               target="_self">查看项目</a>
+                        </c:if>
+                        <c:if test="${login == false}">
+                            <a class="btn btn-main btn-sm r10 w150 f12" href="loginOrRegister.do#/register" target="_self">注册</a>
+                            <a class="btn btn-adorn btn-sm r10 w150 f12 ml10" href="loginOrRegister.do#/login"
+                               target="_self">登陆</a>
+                        </c:if>
+                        <br/>
+                        <br/>
+                        <div class="fr ml20">
+                            <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
+                                    src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
+                        </div>
+                        <div class="fr ml20">
+                            <a href='https://gitee.com/CrapApi/CrapApi/members'><img src='https://gitee.com/CrapApi/CrapApi/badge/fork.svg?theme=dark' alt='fork'></img></a>
+                        </div>
+                        <div class="fr ml20">10k+ Users</div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

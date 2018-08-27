@@ -2,8 +2,12 @@
 @media ( min-width : 1210px) {.container {width: 1200px!important}}
 
 body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,pre, form, fieldset, legend, button, input, textarea, th, td {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;;}
-a{color: #3275e4;text-decoration: none;}
+a{text-decoration: none;}
 a:hover{color: #f82c1d;text-decoration: none;}
+.a-main{color:#ffffff;}
+.a-main:hover{color:#3275e4!important}
+.a-adorn{color:#ffffff;}
+.a-adorn:hover{color:#f82c1d!important}
 input:focus{border-color: #3275e4!important;!important;}
 
 .s-bg-color {background-color: #f7f7f7}
@@ -36,7 +40,6 @@ input:focus{border-color: #3275e4!important;!important;}
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
 .adorn-bb-1{ border-bottom:1px solid #f82c1d}
-.adorn-color:hover {color: #f82c1d}
 .adorn-bg {background-color: #f82c1d}
 
 .interface-detail blockquote {color: #3275e4}

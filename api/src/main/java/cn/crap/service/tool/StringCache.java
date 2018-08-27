@@ -39,7 +39,7 @@ public class StringCache{
 	
 	public String get(String key){
 		if(MyString.isEmpty(key)){
-			return new String();
+			return null;
 		}
 		return getCache().getIfPresent(assembleKey(key));
 	}

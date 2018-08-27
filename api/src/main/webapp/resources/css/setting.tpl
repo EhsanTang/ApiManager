@@ -2,9 +2,13 @@
 @media ( min-width : 1210px) {.container {width: [MAX_WIDTH]px!important}}
 
 body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,pre, form, fieldset, legend, button, input, textarea, th, td {font-family: [FONT_FAMILY];}
-a{color: [MAIN_COLOR];text-decoration: none;}
+a{text-decoration: none;}
 a:hover{color: [ADORN_COLOR];text-decoration: none;}
-input:focus{border-color: [MAIN_COLOR]!important;!important;}
+.a-main{color:#ffffff;}
+.a-main:hover{color:[MAIN_COLOR]!important}
+.a-adorn{color:#ffffff;}
+.a-adorn:hover{color:[ADORN_COLOR]!important}
+input:focus{border-color: [MAIN_COLOR]!important;}
 
 .s-bg-color {background-color: [BG_COLOR]}
 .s-nav-bg-color {background-color: [NAV_BG_COLOR]}
@@ -36,7 +40,6 @@ input:focus{border-color: [MAIN_COLOR]!important;!important;}
 .adorn-color {color: [ADORN_COLOR]}
 .adorn-bl-3{ border-left:3px solid [ADORN_COLOR]}
 .adorn-bb-1{ border-bottom:1px solid [ADORN_COLOR]}
-.adorn-color:hover {color: [ADORN_COLOR]}
 .adorn-bg {background-color: [ADORN_COLOR]}
 
 .interface-detail blockquote {color: [MAIN_COLOR]}

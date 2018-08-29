@@ -23,34 +23,41 @@
 <div class="login-bg mb20 w p0" style="height: 600px">
     <div class="trans">
         <div class="container p0">
-            <div class="row p0 m0 CFFF">
-                <div class="mt100 tc">
+            <div class="row p0 m0 pt30">
+                <div class="col-xs-3 col-md-3 h50 lh50 p0 m0">
+                    <div class="p0 fl">
                         <a href="/">
-                            <img class="h100" src="${logo}"/>
+                            <img class="h50" src="${logo}"/>
                         </a>
-
+                    </div>
+                    <div class="CFFF f20 pl5 dis-in-tab fl">CRAP-Api</div>
                 </div>
-                <div class="f60 tc mt30">CRAP-Api</div>
+                <div class="col-xs-9 col-md-9 tr f14 h50 lh50">
+                    <a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="dis-in-tab ml30 a-adorn">帮助文档</a>
+                    <a href='https://gitee.com/CrapApi/ApiDebug' target="_blank" class="dis-in-tab ml30 a-adorn">插件下载</a>
 
-                <div class="f18 mt30 tc">完全开源、免费的API协作管理系统</div>
-
-                <div class="f16 mt10 mb20 tc">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
-
-                <div class="tc mt50">
-                    <c:if test="${login}">
-                        <a class="btn btn-adorn r5 w150 f14" href="admin.do" target="_self">创建项目</a>
-                        <a class="btn btn-main r5 w150 f14 ml10" href="index.do#/project/list?myself=true"
-                           target="_self">浏览项目</a>
-                    </c:if>
                     <c:if test="${login == false}">
-                        <a class="btn btn-adorn r5 w150 f14 ml10" href="loginOrRegister.do#/login"
-                           target="_self">登陆
-                        </a>
+                        <a class="dis-in-tab ml30 a-adorn" href="loginOrRegister.do#/register" target="_self">注 册</a>
+                        <a class="dis-in-tab ml30 btn btn-adorn btn-sm" href="loginOrRegister.do#/login"
+                           target="_self">登 陆</a>
+                    </c:if>
+
+                    <c:if test="${login}">
+                        <a class="dis-in-tab ml30 a-adorn cursor" onclick="loginOut()">注 销</a></li>
+                    </c:if>
+
+                    <c:if test="${login}">
+                        <a class="dis-in-tab ml30 a-adorn" href="index.do#/project/list?myself=true" target="_self">查看项目</a>
+                        <a class="dis-in-tab ml30 btn btn-adorn btn-sm" href="admin.do" target="_self">进入项目管理</a>
                     </c:if>
                 </div>
 
+                <div class="col-xs-12 col-md-12 mt100">
+                    <!--<div class="CFFF f50 mt100">CRAP-Api</div>-->
+                    <div class="CFFF f40 mt20 mt100">完全开源、免费的API协作管理系统</div>
+                    <div class="CFFF f18 mt20 mb20">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
-                    <div class="tr mt50">
+                    <div class="tr mt100 CFFF">
                         <div class="fr ml20">
                             <a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank" class="CFFF">
                                 ${starNum} Stars (GitHub & Gitee)
@@ -63,6 +70,7 @@
                         </div>
                         <div class="fr ml20">10k+ Users</div>
                     </div>
+                </div>
 
             </div>
         </div>

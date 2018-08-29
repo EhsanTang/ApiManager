@@ -239,10 +239,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    }).state('editArticle', {
+    }).state('userEditArticle', {
         url : '/user/article/edit?id&' + commonUrlParam,
         views : {
            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userViewArticle', {
+        url : '/user/article/view?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
                 templateUrl : function($stateParems){
                     return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
                 }

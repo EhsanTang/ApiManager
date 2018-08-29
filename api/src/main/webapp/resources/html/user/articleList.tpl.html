@@ -82,7 +82,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list">
+                <tr ng-repeat="item in list" class="cursor"
+                    ng-click="go('user/article/view?id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
@@ -94,25 +95,29 @@
                     <td>{{item.createTimeStr}}</td>
                     <td>
                         <a class="f12 main-color mr10 cursor"
-                           ng-href="#/user/article/edit?dataType=article&id={{item.id}}&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}&menu_a=menu-project&menu_b=menu_article">
+                           ng-click="stopPropagation($event);"
+                           ng-href="#/user/article/edit?dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe618;修改</i>
                         </a>
                         <a class="f12 main-color mr10 cursor" target="_blank"
+                           ng-click="stopPropagation($event);"
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
                             <i class="iconfont f12">&#xe60a;预览</i>
                         </a>
-                        <a class="f12 main-color mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'"
+                        <a class="f12 main-color mr10 cursor"
+                           ng-click="stopPropagation($event);"
                            ng-href="#/user/comment/list?dataType=article&menu_b=menu_article&projectId={{item.projectId}}&articleId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
                             <i class="iconfont f12">&#xe60f;评论列表</i>
                         </a>
 
                         <a class="f12 main-color mr10 cursor"
+                           ng-click="stopPropagation($event);"
                            ng-href="#/user/log/list?dataType=article&menu_b=menu_article&menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}&identy={{item.id}}">
                             <i class="iconfont">&#xe62b;&nbsp;</i>操作日志
                         </a>
                         <a class="f12 adorn-color mr10 cursor" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"
-                           ng-click="del('user/article/delete.do?id='+item.id,item.name)">
+                           ng-click="del('user/article/delete.do?id='+item.id,item.name);stopPropagation($event);">
                             <i class="iconfont f12">&#xe60e;删除</i>
                         </a>
 

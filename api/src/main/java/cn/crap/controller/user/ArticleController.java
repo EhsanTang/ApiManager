@@ -63,8 +63,7 @@ public class ArticleController extends BaseController{
 
         checkUserPermissionByProject(project, VIEW);
 
-		Page page= new Page(query);
-
+		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
 		List<Article> models = articleService.query(query);
 		List<ArticleDto> dtos = ArticleAdapter.getDto(models, module, project);

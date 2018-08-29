@@ -22,7 +22,7 @@
 
                 <table class="table table-bordered">
                     <tr>
-                        <td class="tc w50">标题</td>
+                        <td class="tc w50">标题 *</td>
                         <td class="tc">
                             <input class="form-control" type="text" ng-model="model.name" required>
                         </td>
@@ -34,16 +34,8 @@
                             <textarea class="form-control no-resize" rows="5" ng-model="model.brief"></textarea></td>
                     </tr>
                     <tr>
-                        <td class="tc">类型</td>
-                        <td class="tc">
-                            <input class="form-control cursor-not BGF5" id="typeName" type="text"
-                                   ng-model="model.typeName" readonly required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tc">模块</td>
+                        <td class="tc">模块 *</td>
                         <td class="tl">
-                            * 点击选择模块
                             <input class="form-control cursor" type="text" id="moduleName" required
                                    ng-model="model.moduleName"
                                    autocomplete="off"

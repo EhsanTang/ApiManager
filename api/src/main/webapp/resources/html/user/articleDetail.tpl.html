@@ -1,118 +1,32 @@
-<link href="resources/framework/editormd-1.5.0/css/editormd.css" rel="stylesheet" type="text/css" />
 <div class="col-xs-12 p0 r0" ng-controller="userArticleCtrl" ng-init="articleDetail()">
-    <form method="post" ng-submit="submitForm('user/article/addOrUpdate.do',saveArticleCallBack, null, goBack);">
-        <div class="col-xs-12 main-nav">
-            <div class="btn-group btn-group-sm r3 fl mr10">
-                <button class="btn btn-default" ng-click="goBack()" type="button">
-                    <i class="iconfont mt-3">&#xe605;&nbsp;</i>返回列表
-                </button>
-
-                <button class="btn btn-main cursor-not btn-sm" type="button">
-                    <i class="iconfont f12 mt-3">&#xe618; 编辑文章</i>
-                </button>
-            </div>
-
-            <button type="submit" class="btn btn-adorn btn-sm">
-                <i class="iconfont f12 mt-3">&#xe602; 快速保存</i>
+    <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <button class="btn btn-default" ng-click="goBack()" type="button">
+                <i class="iconfont mt-3">&#xe605;&nbsp;</i>返回
             </button>
+            <button class="btn btn-main cursor-not btn-sm" type="button">
+                <i class="iconfont f12 mt-3">文章详情</i>
+            </button>
+            <a class="btn btn-default btn-sm" type="button"
+               ng-href="#/user/article/edit?dataType=article&id={{model.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont f12 mt-3">&#xe618; 编辑文章</i>
+            </a>
         </div>
 
-        <div class="col-xs-12 p10 mt50">
-            <div class="r5 BGFFF p10">
-                <table class="table table-no-border">
-                    <tr>
-                        <td class="w70 f14 fb C000">标题 *</td>
-                        <td colspan="3">
-                            <input class="form-control" type="text" ng-model="model.name" required>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="f14 fb C000">类目
-                            <span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
-                                  title="「没有找到合适的类目？进入文章所在模块，点击编辑模块即可新增类目」">
-					        <i class="iconfont adorn-color mt-3">&#xe63e;</i>
-				            </span>
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" id="category" ng-model="model.category"
-                                   placeholder="点击选择类目" readonly
-                                   ng-click="loadPick($event,220,250,'true','category','CATEGORY', '', model.category, '&key='+model.moduleId, 5);">
-                        </td>
-
-                        <td class="w70 fb C000">模块 *</td>
-                        <td class="tl">
-                            <input class="form-control" type="text" id="moduleName" ng-model="model.moduleName"
-                                   required autocomplete="off"
-                                   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
-                        </td>
-                    </tr>
-                    <tr ng-if="showOperation('ARTICLE','');">
-                        <td class="f14 fb C000">状态
-                            <span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
-                                  title="「推荐：将出现在首页推荐文章菜单下，站点页面：需要添加key，后端菜单将支持选着跳转至该站点页面（如果首页、联系页面等）」">
-					        <i class="iconfont adorn-color mt-3">&#xe63e;</i>
-				            </span>
-                        </td>
-                        <td colspan="3">
-                            <input class="form-control" type="text" id="statusName" placeholder="点击选择状态"
-                                   ng-model="model.statusName" readonly
-                                   ng-click="loadPickByName('iwidth=200|iheight=220|tagName=statusName|tag=status|code=ARTICLE_STATUS|def='+model.status,$event)">
-                        </td>
-                    </tr>
-
-                    <tr ng-if="model.status == 100">
-                        <td class="f14 fb C000">Key *</td>
-                        <td class="tc" colspan="3">
-                            <input class="form-control" type="text" ng-model="model.mkey"
-                                   placeholder="页面唯一标识，不可重复，英文，如：HELP">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="f14 fb C000">评论</td>
-                        <td>
-                            <select name="type" class="form-control" ng-model="model.canComment">
-                                <option value="1" ng-selected="item.canComment==1">可评论</option>
-                                <option value="0" ng-selected="item.canComment==0">不可评论</option>
-                            </select>
-                        </td>
-                        <td class="f14 fb C000">排序</td>
-                        <td class="tc">
-                            <input class="form-control" min="0" type="number" ng-model="model.sequence">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="tc f14 fb C000">简介</td>
-                        <td class="tc" colspan="3">
-                            <textarea class="form-control no-resize" rows="5" ng-model="model.brief"></textarea></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="r5 BGFFF p10 mt10" id="editor-div">
-                <div class="col-xs-12 p0 mb10">
-                    <div class="btn-group btn-group-sm r3 fl mr10">
-                        <button class="btn btn-main btn-sm article-editor" type="button"
-                                onclick="changeEditor(this, false)">
-                            <i class="iconfont f12 mt-3">&#xe618; 富文本编辑器</i>
-                        </button>
-                        <button class="btn btn-default btn-sm article-editor" type="button"
-                                onclick="changeEditor(this, true)">
-                            <i class="iconfont mt-3">&#xe8e6;&nbsp;</i>MarkDown编辑器
-                        </button>
-                    </div>
-                </div>
-
-                <div id="article-editor" class="mt50"></div>
-                <div id="markdown-editor" class="mt50 none">
-                    <textarea style="display:none;"></textarea>
-                </div>
-            </div>
+        <button type="submit" class="btn btn-adorn btn-sm">
+            <i class="iconfont f12 mt-3">&#xe602; 快速保存</i>
+        </button>
+    </div>
+    <div class="col-xs-12 p10 mt50 mb50">
+        <div class="r5 BGFFF p10 min-h500 lh26 code">
+        <div class="pl10 pr10 mr10 f16 fb mb10 adorn-bl-3">{{model.name}}</div>
+        <div class="mb10 pl20 C999 f12 dashed-b pb10" ng-if="model.brief!=''">
+            {{model.brief}}
         </div>
-    </form>
 
+        <div class="f14 mt-3 imgCenter" ng-bind-html="model.content|trustHtml"></div>
+    </div>
 </div>
+    </div>
 <div class="cb"></div>
-<script src="resources/framework/editormd-1.5.0/editormd.min.js"></script>

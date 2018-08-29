@@ -39,7 +39,7 @@
                 <div class="tc mt50">
                     <c:if test="${login}">
                         <a class="btn btn-adorn r5 w150 f14" href="admin.do" target="_self">创建项目</a>
-                        <a class="btn btn-main r5 w150 f14 ml10" href="index.do#/project/list?myself=true"
+                        <a class="btn btn-main r5 w150 f14 ml10" href="index.do#/project/list?projectShowType=3"
                            target="_self">浏览项目</a>
                     </c:if>
                     <c:if test="${login == false}">

@@ -54,24 +54,22 @@
             <table class="table table-hover table-striped">
                 <thead>
                 <tr class="f14 C000 fw500">
-                    <td class="w60"><input type="checkbox" id="select-all"
-                                           ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选
+                    <td>
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">
                     </td>
-                    <td class="w300">项目名称</td>
-                    <td>项目</td>
+                    <td>名称</td>
+                    <td>简介</td>
                     <td>状态</td>
-                    <td>可评论</td>
                     <td>创建时间</td>
-                    <td class="w400">操作</td>
+                    <td class="w250">操作</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in list">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
-                    <td>{{item.moduleName| cut:true:15:' ...'}}</td>
+                    <td>{{item.brief| cut:true:15:' ...'}}</td>
                     <td>{{item.statusName}}</td>
-                    <td>{{item.canCommentName}}</td>
                     <td>{{item.createTimeStr}}</td>
                     <td>
                         <a class="f12 main-color mr10 cursor"
@@ -82,14 +80,10 @@
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
                             <i class="iconfont f12">&#xe60a;预览</i>
                         </a>
-                        <a class="f12 main-color mr10 cursor" ng-if="$stateParams.type!='DICTIONARY'"
-                           ng-href="#/user/comment/list?projectId={{item.projectId}}&articleId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
-                            <i class="iconfont f12">&#xe60f;评论列表</i>
-                        </a>
 
                         <a class="f12 main-color mr10 cursor"
-                           ng-href="#/user/log/list?menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}&identy={{item.id}}">
-                            <i class="iconfont">&#xe62b;&nbsp;</i>操作日志
+                           ng-href="#/user/log/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{item.id}}">
+                            <i class="iconfont">&#xe62b;&nbsp;</i>日志
                         </a>
                         <a class="f12 adorn-color mr10 cursor" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"

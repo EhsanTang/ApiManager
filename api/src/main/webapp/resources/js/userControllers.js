@@ -308,7 +308,19 @@ userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $st
             $rootScope.go(url);
             return;
         }
-        $rootScope.getBaseData($scope,$http,params, null);
+        httpService.callHttpMethod($http,params).success(function(result) {
+            var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+            if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+                $rootScope.error = isSuccess.replace('[ERROR]', '');
+                $rootScope.model = null;//初始化评论对象
+            }else{
+                $rootScope.model = result.data;
+                //如果是数据库表，则将内容转为json
+                if($rootScope.model.content!=''&&$rootScope.model.type=="DICTIONARY"){
+                    $rootScope.dictionary = eval("("+$rootScope.webpage.content+")");
+                }
+            }
+        });
     };
     // 保存markdown
     $rootScope.saveArticleCallBack = function () {

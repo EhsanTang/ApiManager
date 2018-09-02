@@ -1,4 +1,4 @@
-<div class="r0 p0 col-xs-12" ng-controller="userInterfaceCtrl">
+<div class="r0 p0 col-xs-12" ng-controller="userInterfaceCtrl" ng-init="getData()">
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
@@ -73,7 +73,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list">
+                <tr ng-repeat="item in interfaces">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td class="tc">{{item.interfaceName}}</td>
                     <td class="tc">{{item.fullUrl}}</td>

@@ -1,4 +1,4 @@
-<div class="p10 col-xs-12" ng-controller="userCtrl">
+<div class="p10 col-xs-12" ng-controller="userCtrl" ng-init="getData()">
     <div class="col-xs-12 BGFFF p20 r5">
 
         <div class="col-xs-6 f16 fb p0 mb5">用户管理</div>
@@ -68,7 +68,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list">
+                <tr ng-repeat="item in users">
                     <td class="tc w100">{{item.userName}}</td>
                     <td class="tc w100">{{item.trueName}}</td>
                     <td class="tc w100" ng-bind="item.type==100?'管理员':'普通用户'"></td>

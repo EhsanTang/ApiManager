@@ -82,7 +82,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list" class="cursor"
+                <tr ng-repeat="item in articles" class="cursor"
                     ng-click="go('user/article/view?id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>

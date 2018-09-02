@@ -65,7 +65,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list">
+                <tr ng-repeat="item in dictionaries">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
                     <td>{{item.brief| cut:true:15:' ...'}}</td>

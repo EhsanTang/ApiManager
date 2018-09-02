@@ -1,4 +1,4 @@
-<div class="r0 p0 col-xs-12" ng-controller="userModuleListCtrl">
+<div class="r0 p0 col-xs-12" ng-controller="userModuleListCtrl" ng-init="getData()">
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
@@ -39,7 +39,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list" class="cursor"
+                <tr ng-repeat="item in modules" class="cursor"
                     ng-click="go('user/interface/list?dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + item.id + '&moduleName=' + item.name)">
                     <td>{{item.name}}</td>
                     <td>{{item.url}}</td>

@@ -1,4 +1,4 @@
-<div class="p0 col-xs-12" ng-controller="userCtrl" ng-init="queryProjectList()">
+<div class="p0 col-xs-12"  ng-init="queryProjectList()">
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="queryProjectList(1);">
             <i class="iconfont mt-3">&#xe610;</i>&nbsp;查询
         </button>
     </div>
@@ -61,7 +61,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div ui-view="page"></div>
+            <div ui-view="page" ng-init="callBackMethod = 'queryProjectList'; modelKey='projects'; "></div>
         </div>
     </div>
 </div>

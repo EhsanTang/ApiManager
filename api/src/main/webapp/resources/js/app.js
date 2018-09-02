@@ -96,6 +96,11 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
             }else{
                 $rootScope.error = null;
                 $rootScope[dataKey] = result.data;
+                if (!$rootScope.page){
+                    $rootScope.page = {};
+                }
+                $rootScope.page[dataKey] = result.page;
+
                 if (callBack){
                     callBack();
                 }

@@ -35,7 +35,129 @@ userModule.controller('detailCtrl', function($scope, $http, $state, $stateParams
 /***
  * 后台初始化，加载系统设置，菜单等
  */
-userModule.controller('backInit', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    // 公用分页方法
+    $scope.pageMethod = function(callBackMethod, page, updateUrl) {
+        $scope[callBackMethod](page, updateUrl);
+    };
+    /*********************************** 列表 *********************************/
+    // 项目列表
+    $scope.queryProjectList = function(page) {
+        var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&projectShowType="+$stateParams.projectShowType;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "projects");
+    };
+
+    // 错误码
+    $scope.queryErrorList = function(page) {
+        var params = "iUrl=user/error/list.do|iLoading=FLOAT|iPost=true|iParams=";
+        params += "&projectId=" + $stateParams.projectId;
+        params += "&errorMsg=" + $stateParams.errorMsg;
+        params += "&errorCode=" + $stateParams.errorCode;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "errors");
+    };
+
+    // 项目成员
+    $scope.queryProjectUserList = function(page) {
+        var params = "iUrl=user/projectUser/list.do|iLoading=FLOAT|iParams=&projectId=" +$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "projectUsers");
+    };
+
+    // 模块列表
+    $scope.queryModuleList = function(page) {
+        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId+"&name="+$stateParams.name;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "modules");
+    };
+
+    // 查询用户列表
+    $scope.queryUserList = function(page) {
+        var params = "iUrl=user/list.do|iLoading=FLOAT|iPost=true|iParams=&trueName="
+            + $stateParams.trueName + "&userName=" + $stateParams.userName + "&email=" + $stateParams.email;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "users");
+    };
+
+    // 接口列表
+    $scope.queryInterfaceList = function(page) {
+        var params = "";
+        if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
+            params += "&interfaceName=" + $("#interfaceName").val();
+        }
+        if($("#url").val()!=null&&$("#url").val()!=''){
+            params += "&url=" + $("#url").val();
+        }
+        params +="&moduleId="+ $stateParams.moduleId;
+        params +="&projectId="+ $stateParams.projectId;
+        params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
+    };
+
+    $scope.queryArticleList = function(page, updateUrl) {
+        var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
+            + "&moduleId="+$stateParams.moduleId
+            + "&projectId=" + $stateParams.projectId
+            + "&category="+ $stateParams.category
+            + "&name="+$stateParams.name
+            + "&currentPage=" + $stateParams.currentPage;
+        if (updateUrl){
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
+            url = replaceParamFromUrl(url, 'category', $("#searchCategory").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
+        }
+        $rootScope.getBaseDataToDataKey($scope, $http,params, page, "articles");
+    };
+
+    // 评论列表
+    $scope.queryCommentList = function(page) {
+        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
+    };
+
+    // 操作日志
+    $scope.queryLogList = function(page) {
+        var params = "iUrl=user/log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "logs");
+    };
+
+    $scope.querySourceList = function(page) {
+        var params = "iUrl=user/source/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "sources");
+    };
+
+    /*********************************** 详情 *********************************/
+    // 项目详情
+    $scope.getProjectDetail = function() {
+        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail");
+
+        params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
+    };
+
+    $scope.articleDetail = function () {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            markdownEditor = null;
+            createWangEditor("article-editor", "content", initArticleEditor, "500px");
+        });
+    };
+
+    /*********************************** 回调方法 *********************************/
+    // 保存markdown
+    $rootScope.saveArticleCallBack = function () {
+        if (!userMarkdown){
+            return;
+        }
+        $rootScope.model.markdown = markdownEditor.getMarkdown();
+        $rootScope.model.content = markdownEditor.getHTML()
+    }
+
+
+    $scope.clearDonwloadUrl = function(){
+        $("#downloadUrl").html("");
+    }
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=back/init.do|iLoading=fase"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {
@@ -262,11 +384,6 @@ adminModule.controller('adminCtrl', function($rootScope,$scope, $http, $state, $
 
 });
 
-/*************************系统属性************/
-userModule.controller('propertyCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-
-    $scope.getData();
-});
 /************************hotSearchCtrl********/
 userModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function(page) {
@@ -468,104 +585,12 @@ userModule.controller('userTop50ProjectListCtrl', function($rootScope,$scope, $h
     $scope.getData();
 });**/
 
-/******************* 项目详情 *********************/
-userModule.controller('userProjectDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    $scope.getData = function() {
-        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail");
-
-		params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
-    };
-    $scope.getData();
-});
-
 userModule.controller('userTop50ModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $scope.getData = function() {
         var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+$stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module");
     };
 });
-
-/**************************日志列表****************************/
-userModule.controller('logCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    $scope.getData = function(page) {
-        var params = "iUrl=user/log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
-        $rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-
-userModule.controller('sourceCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    $scope.getData = function(page) {
-        var params = "iUrl=user/source/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
-        $rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-
-/**************************后端用户请求****************************/
-userModule.controller('userCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    // 项目列表
-    $scope.queryProjectList = function(page) {
-        var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&projectShowType="+$stateParams.projectShowType;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "projects");
-    };
-
-    // 错误码
-    $scope.queryErrorList = function(page) {
-        var params = "iUrl=user/error/list.do|iLoading=FLOAT|iPost=true|iParams=";
-        params += "&projectId=" + $stateParams.projectId;
-        params += "&errorMsg=" + $stateParams.errorMsg;
-        params += "&errorCode=" + $stateParams.errorCode;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "errors");
-    };
-
-    // 项目成员
-    $scope.queryProjectUserList = function(page) {
-        var params = "iUrl=user/projectUser/list.do|iLoading=FLOAT|iParams=&projectId=" +$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "projects");
-    };
-
-    // 模块列表
-    $scope.queryModuleList = function(page) {
-        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iParams=&projectId="+$stateParams.projectId+"&name="+$stateParams.name;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "modules");
-    };
-
-    // 查询用户列表
-    $scope.queryUserList = function(page) {
-        var params = "iUrl=user/list.do|iLoading=FLOAT|iPost=true|iParams=&trueName="
-            + $stateParams.trueName + "&userName=" + $stateParams.userName + "&email=" + $stateParams.email;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "users");
-    };
-
-    // 接口列表
-    $scope.queryInterfaceList = function(page) {
-        var params = "";
-        if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
-            params += "&interfaceName=" + $("#interfaceName").val();
-        }
-        if($("#url").val()!=null&&$("#url").val()!=''){
-            params += "&url=" + $("#url").val();
-        }
-        params +="&moduleId="+ $stateParams.moduleId;
-        params +="&projectId="+ $stateParams.projectId;
-        params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
-    };
-
-    // 评论列表
-    $scope.queryCommentList = function(page) {
-        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
-    };
-
-    $scope.clearDonwloadUrl = function(){
-        $("#downloadUrl").html("");
-    }
-});
-
 
 /**************************数据库表列表****************************/
 userModule.controller('userDictionaryCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
@@ -607,44 +632,6 @@ userModule.controller('userDictionaryCtrl', function($rootScope, $scope, $http, 
     }
 });
 
-/**************************article列表****************************/
-userModule.controller('userArticleCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
-    $scope.getData = function(page) {
-        var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
-            + "&moduleId="+$stateParams.moduleId
-            + "&projectId=" + $stateParams.projectId
-            + "&category="+ $stateParams.category
-            + "&name="+$stateParams.name
-            + "&currentPage=" + $stateParams.currentPage;
-        if (page){
-            params += "&currentPage=" + page;
-            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
-            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
-            url = replaceParamFromUrl(url, 'category', $("#searchCategory").val());
-            url = url.substr(1,url.length-1);
-            $rootScope.go(url);
-            return;
-        }
-        $rootScope.getBaseDataToDataKey($scope,$http,params, null, "articles");
-    };
-    // 保存markdown
-    $rootScope.saveArticleCallBack = function () {
-        if (!userMarkdown){
-            return;
-        }
-        $rootScope.model.markdown = markdownEditor.getMarkdown();
-        $rootScope.model.content = markdownEditor.getHTML()
-    }
-    $scope.articleDetail = function () {
-        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
-            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            markdownEditor = null;
-            createWangEditor("article-editor", "content", initArticleEditor, "500px");
-
-        });
-    }
-});
 
 
 

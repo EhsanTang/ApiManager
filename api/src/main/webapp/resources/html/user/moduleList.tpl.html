@@ -1,4 +1,4 @@
-<div class="r0 p0 col-xs-12" ng-controller="userCtrl" ng-init="queryModuleList()">
+<div class="r0 p0 col-xs-12"  ng-init="queryModuleList()">
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
@@ -80,7 +80,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div ui-view="page"></div>
+            <div ui-view="page" ng-init="callBackMethod = 'queryModuleList';  modelKey='modules';"></div>
         </div>
     </div>
 </div>

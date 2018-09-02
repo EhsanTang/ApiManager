@@ -188,22 +188,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    }).state('projectLogList', {
+    }).state('logList', {
         url : '/user/log/list?identy&' + commonUrlParam,
         views : {
             'main' : {
-                templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.5'
+                templateUrl : 'resources/html/user/logList.tpl.html?v=v8.0.5'
             },'subMenu' :{
                 templateUrl : function($stateParems){
                     return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
                 }
             },
-            'page@projectLogList' : {
+            'page@logList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
             },
             'detail' : {
                 templateUrl : function($stateParems){
-                    return 'resources/html/admin/logDetail.tpl.html?v=v8.0.5';
+                    return 'resources/html/user/logDetail.tpl.html?v=v8.0.5';
                 }
             }
         }
@@ -423,25 +423,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : 'resources/html/admin/userDetail.tpl.html?v=v8.0.5'
 			}
 		}
-	}).state('adminLogList', {
-		url : '/admin/log/list?identy&menu_a&menu_b',
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/admin/logList.tpl.html?v=v8.0.5'
-			},
-			'page@adminLogList' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/admin/logDetail.tpl.html?v=v8.0.5';
-				}
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
-                }
-            }
-		}
 	})
-	
 });

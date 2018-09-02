@@ -1,4 +1,4 @@
-<div class="p10 col-xs-12" ng-controller="userCtrl" ng-init="queryUserList()">
+<div class="p10 col-xs-12"  ng-init="queryUserList()">
     <div class="col-xs-12 BGFFF p20 r5">
 
         <div class="col-xs-6 f16 fb p0 mb5">用户管理</div>
@@ -89,7 +89,7 @@
 
                 </tbody>
             </table>
-            <div ui-view="page"></div>
+            <div ui-view="page" ng-init="callBackMethod = 'queryUserList';modelKey='users'"></div>
         </div>
     </div>
 </div>

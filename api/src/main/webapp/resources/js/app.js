@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'userModule','visitorModule','interfaceMethods']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule','interfaceMethods']);
 var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 
@@ -85,9 +85,10 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		});;
     };
     $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey,callBack) {
-        if(page) {
-            params += "&currentPage=" + page;
+        if(!page) {
+            page = 1;
         }
+        params += "&currentPage=" + page;
         httpService.callHttpMethod($http,params).success(function(result) {
             var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){

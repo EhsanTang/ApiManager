@@ -41,6 +41,10 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $scope[callBackMethod](page, updateUrl);
     };
     /*********************************** 列表 *********************************/
+    $scope.querySettingList = function(page) {
+        var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
+        $rootScope.getBaseDataToDataKey($scope, $http, params, page, "settings");
+    };
     // 项目列表
     $scope.queryProjectList = function(page) {
         var params = "iUrl=user/project/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&type="+$stateParams.type+"&projectShowType="+$stateParams.projectShowType;
@@ -139,8 +143,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            markdownEditor = null;
-            createWangEditor("article-editor", "content", initArticleEditor, "500px");
+        	// 存在 article-editor 则初始化
+			if (document.getElementById("article-editor")) {
+                markdownEditor = null;
+                createWangEditor("article-editor", "content", initArticleEditor, "500px");
+            }
         });
     };
 
@@ -389,14 +396,6 @@ userModule.controller('hotSearchCtrl', function($rootScope,$scope, $http, $state
     $scope.getData = function(page) {
         var params = "iUrl=admin/hotSearch/list.do|iLoading=FLOAT|iParams=";
         $rootScope.getBaseData($scope,$http,params,page);
-    };
-    $scope.getData();
-});
-/**************************系统设置列表****************************/
-userModule.controller('settingCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
-		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });

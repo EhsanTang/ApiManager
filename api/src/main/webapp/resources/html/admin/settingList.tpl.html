@@ -1,8 +1,8 @@
-﻿<div class="p10 col-xs-12" ng-controller="settingCtrl">
-    <div class="col-xs-12 BGFFF p20 r5">
+﻿<div class="p15 col-xs-12" ng-init="querySettingList()">
+    <div class="col-xs-12 BGFFF p20">
         <div class="col-xs-6 f16 fb p0 mb5">系统设置管理</div>
         <div class="col-xs-6 f14 p0 mb5 tr">
-            <a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="getData(list.page.currentPage)"> <i
+            <a type="button" class="btn btn-primary btn-sm" id="refresh" ng-click="querySettingList(list.page.currentPage)"> <i
                     class="iconfont fb">&#xe611;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-adorn btn-sm" onclick="history.back(-1);"> <i class="iconfont fb">&#xe605;&nbsp;</i>后退</a>
         </div>
@@ -46,7 +46,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in list">
+                <tr ng-repeat="item in settings">
                     <td class="tc">{{item.key}}</td>
                     <td class="tc" title="{{item.value}}">{{item.value|cut:true:20:' ...'}}</td>
                     <th class="tc">{{item.typeName}}</th>
@@ -81,7 +81,7 @@
 
                 </tbody>
             </table>
-            <div ui-view="page"></div>
+            <div ui-view="page" ng-init="callBackMethod = 'querySettingList'; modelKey='settings'; "></div>
         </div>
     </div>
 </div>

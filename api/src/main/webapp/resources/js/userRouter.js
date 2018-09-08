@@ -223,22 +223,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    }).state('dictionaryList', {
-        url : '/user/dictionary/list?currentPage&name&category&' + commonUrlParam,
-        views : {
-            'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/dictionaryList.tpl.html?v=v8.0.5';
-                }
-            },
-            'page@dictionaryList' : {
-                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-            },'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }
-        }
     }).state('userEditArticle', {
         url : '/user/article/edit?id&' + commonUrlParam,
         views : {
@@ -252,8 +236,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    }).state('userViewArticle', {
-        url : '/user/article/view?id&' + commonUrlParam,
+    }).state('userArticleDetail', {
+        url : '/user/article/detail?id&' + commonUrlParam,
         views : {
             'subMenu' :{
                 templateUrl : function($stateParems){
@@ -265,8 +249,37 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    }).state('editDictionary', {
+    }).state('userDictionaryList', {
+        url : '/user/dictionary/list?currentPage&name&category&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryList.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@userDictionaryList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userEditDictionary', {
         url : '/user/dictionary/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userDictionaryDetail', {
+        url : '/user/dictionary/detail?id&' + commonUrlParam,
         views : {
             'subMenu' :{
                 templateUrl : function($stateParems){

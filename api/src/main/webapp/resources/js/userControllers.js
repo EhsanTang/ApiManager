@@ -41,6 +41,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $scope[callBackMethod](page, updateUrl);
     };
     /*********************************** 列表 *********************************/
+    // 系统设置列表
     $scope.querySettingList = function(page) {
         var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
         $rootScope.getBaseDataToDataKey($scope, $http, params, page, "settings");
@@ -94,6 +95,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
     };
 
+    // 文章列表
     $scope.queryArticleList = function(page, updateUrl) {
         var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
             + "&moduleId="+$stateParams.moduleId
@@ -110,6 +112,24 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             return;
         }
         $rootScope.getBaseDataToDataKey($scope, $http,params, page, "articles");
+    };
+
+    // 数据库表列表
+    $scope.queryDictionaryList = function(page, updateUrl) {
+        var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=DICTIONARY"
+            + "&moduleId="+$stateParams.moduleId
+            + "&projectId=" + $stateParams.projectId
+            + "&name="+$stateParams.name
+            + "&currentPage=" + $stateParams.currentPage;
+        if (updateUrl){
+            params += "&currentPage=" + page;
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
+        }
+        $rootScope.getBaseDataToDataKey($scope,$http,params, null, "dictionaries");
     };
 
     // 评论列表
@@ -139,17 +159,40 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
     };
 
-    $scope.articleDetail = function () {
+    $scope.articleDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
         	// 存在 article-editor 则初始化
-			if (document.getElementById("article-editor")) {
+			if (isEdit) {
                 markdownEditor = null;
                 createWangEditor("article-editor", "content", initArticleEditor, "500px");
             }
         });
     };
+    $scope.dictionaryDetail = function (isEdit) {
+        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
+            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            if (!$rootScope.model.content) {
+                return;
+            }
+            // 编辑
+            if (isEdit){
+                var content = eval("(" + $rootScope.model.content + ")");
+                $("#content").find("tbody").find("tr").remove();
+                if (content != null && content != "") {
+                    var i = 0;
+                    $.each(content, function (n, value) {
+                        i++;
+                        addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                    });
+                }
+            }else if($rootScope.model.content!=''){
+                $rootScope.model.dictionaries = eval("("+$rootScope.model.content+")");
+            }
+        });
+    }
 
     /*********************************** 回调方法 *********************************/
     // 保存markdown
@@ -591,45 +634,6 @@ userModule.controller('userTop50ModuleListCtrl', function($rootScope,$scope, $ht
     };
 });
 
-/**************************数据库表列表****************************/
-userModule.controller('userDictionaryCtrl', function($rootScope, $scope, $http, $state, $stateParams,$location,httpService) {
-    $scope.getData = function(page) {
-        var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=DICTIONARY"
-            + "&moduleId="+$stateParams.moduleId
-            + "&projectId=" + $stateParams.projectId
-            + "&name="+$stateParams.name
-            + "&currentPage=" + $stateParams.currentPage;
-        if (page){
-            params += "&currentPage=" + page;
-            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
-            url = replaceParamFromUrl(url, 'name', $("#searchName").val());
-            url = url.substr(1,url.length-1);
-            $rootScope.go(url);
-            return;
-        }
-        $rootScope.getBaseDataToDataKey($scope,$http,params, null, "dictionaries");
-    };
-
-    $scope.dictionaryDetail = function () {
-        var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
-            "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            // 如果是文章，eval会报错
-            if (!$rootScope.model.content) {
-                return;
-            }
-            var content = eval("(" + $rootScope.model.content + ")");
-            $("#content").find("tbody").find("tr").remove();
-            if (content != null && content != "") {
-                var i = 0;
-                $.each(content, function (n, value) {
-                    i++;
-                    addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
-                });
-            }
-        });
-    }
-});
 
 
 

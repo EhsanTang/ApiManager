@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="getData(1);">
+        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryArticleList(1, true);">
             <i class="iconfont mt-3">&#xe60d;</i>&nbsp;查询
         </button>
     </div>
@@ -83,7 +83,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in articles" class="cursor"
-                    ng-click="go('user/article/view?id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' + item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
+                    ng-click="go('user/article/detail?id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
+                        item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>

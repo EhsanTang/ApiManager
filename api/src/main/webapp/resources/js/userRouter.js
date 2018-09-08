@@ -105,8 +105,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         views : {
             'main' : {
                 templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.5'
-            },
-            'page@userInterList' : {
+            },'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/interfaceCopy.tpl.html?v=v8.0.5';
+                }
+            }, 'page@userInterList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
             },'subMenu' :{
                 templateUrl : function($stateParems){
@@ -309,7 +312,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('sourceList', {
-		url : '/user/source/list?projectId&moduleId&moduleName&projectName&menu_a&menu_b',
+		url : '/user/source/list?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/sourceList.tpl.html?v=v8.0.5'

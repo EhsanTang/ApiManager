@@ -29,6 +29,13 @@
             <span class="f12">数据库表</span>
         </a>
 
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_source']"
+           ng-href="#/user/source/list?dataType=source&menu_a=menu-project&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3">&#xe638;&nbsp;</i>
+            <span class="f12">文件</span>
+        </a>
+
+
         <!-- TODO user/article/list?menu_a=menu-project&projectName=测试项目233&projectId=152845935636107000002&type=ARTICLE-->
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_error']"
            ng-href="#/user/error/list?dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
@@ -45,7 +52,7 @@
 
 
     <div class="shadow" ng-init="queryTop50Module()"
-         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary'">
+         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
         <a class="menu_b lh40 fw500 h40 f14 pl10 BGF5 C555 mt-1 main-bb-1 C000 fw500" ng-if="top50Module.length>0"
            ng-href="#/user/{{$stateParams.dataType}}/list?dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3 main-color f16">&#xe722;&nbsp;&nbsp;</i>所有模块</a>

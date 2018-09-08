@@ -175,7 +175,25 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
                 createWangEditor("interface-editor", "remark", initInterfaceEditor);
-            }
+            } else {
+                $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
+                $rootScope.model.errors = eval("("+$rootScope.model.errors+")");
+
+                // 如果param以form=开头，表示为form表单参数
+                if($rootScope.model.param.length>5 && $rootScope.model.param.substring(0,5)=="form="){
+                    $rootScope.model.formParams = eval("("+$rootScope.model.param.substring(5)+")");
+                }else{
+                    $rootScope.model.customParams = $rootScope.model.param;
+                    $rootScope.model.formParams = null;
+                }
+
+                $rootScope.modelheaders = eval("("+$rootScope.model.header+")");
+                $rootScope.model.responseParams = eval("("+$rootScope.model.responseParam+")");
+                $rootScope.model.paramRemarks = eval("("+$rootScope.model.paramRemark+")");
+                if($rootScope.model.method) {// 调试页面默认显示method中第一个
+                    $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
+                }
+			}
         });
     };
 

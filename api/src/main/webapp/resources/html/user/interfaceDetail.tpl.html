@@ -32,17 +32,7 @@
 	<div class="col-xs-12 p15">
         <div class="col-xs-12 BGFFF p15 lh26 interface-detail mt50">
             <div class="bb1 fb f20 pb10 C555 mt0">
-                <div class="fl m0">Url：<button class="btn btn-xs btn-adorn r20">{{model.moduleUrl}}{{model.url}}</button></div>
-                <div class="fr m0">
-                    版本号：
-                    <a href="javascript:void(0)" class="f12 btn btn-adorn btn-xs" ><i class="iconfont">&#xe620;&nbsp;</i>{{model.version}}</a>
-                    <a ng-href="#/interface/detail?projectId={{model.projectId}}&id={{version.id}}"
-                       class="f12 btn btn-default btn-xs" ng-repeat="version in versions" >
-                        <i class="iconfont">&#xe620;&nbsp;</i>{{version.version}}
-                    </a>
-
-                </div>
-                <div class="cb"></div>
+                <div class="m0">Url：<button class="btn btn-xs btn-adorn r5">{{model.moduleUrl}}{{model.url}}</button></div>
             </div>
             <div class="fb f18" id="1">1 功能说明</div>
             <div id="1_1">1.1 接口名</div>
@@ -85,10 +75,10 @@
             {{model.method|removeLast}}
 
             <div id="2_4">2.4 请求头说明</div>
-            <span ng-if="headers!=null&&headers.length==0" >
-			无
-		</span>
-            <table class="table table-bordered" ng-if="headers!=null && headers.length>0" >
+            <span ng-if="model.headers!=null && model.headers.length==0" >
+			    无
+		    </span>
+            <table class="table table-bordered" ng-if="model.headers!=null && model.headers.length>0" >
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="tc w100">名称</th>
@@ -99,7 +89,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in headers">
+                <tr ng-repeat="item in model.headers">
                     <td class="tc fb C000">{{item.name}}</td>
                     <td class="tc C000">{{item.necessary}}</td>
                     <td class="tc C000">{{item.type}}</td>
@@ -115,7 +105,7 @@
                 <pre>{{model.customParams}}</pre>
                 <!-- 自定义参数备注 -->
                 <div class="bb1 mt0 pt0">自定义参数备注（Custom）</div>
-                <table class="table table-bordered" ng-if="paramRemarks.length>0">
+                <table class="table table-bordered" ng-if="model.paramRemarks.length>0">
                     <thead>
                     <tr class="BGEEE C000">
                         <th class="w50"></th>
@@ -126,7 +116,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in paramRemarks">
+                    <tr ng-repeat="item in model.paramRemarks">
                         <td class="tc" style="color:red;">{{item.deep}}</td>
                         <td class="C000 pl20">
                             <span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
@@ -141,11 +131,11 @@
 
 
             <!-- 如果不判断formParams!=null,当formParams还没加载成功,hasRequestHeader就会被调用导致报错 -->
-            <span ng-if="formParams!=null && formParams.length==0" >
-			无
-		</span>
+            <span ng-if="model.formParams!=null && model.formParams.length==0" >
+			    无
+		    </span>
 
-            <table class="table table-bordered" ng-if="formParams!=null && formParams.length>0" >
+            <table class="table table-bordered" ng-if="model.formParams!=null && model.formParams.length>0" >
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="tc">名称</th>
@@ -157,7 +147,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in formParams" class="tc C000">
+                <tr ng-repeat="item in model.formParams" class="tc C000">
                     <td class="fb">{{item.name}}</td>
                     <td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
                     <td ng-if="item.inUrl && item.inUrl=='true'">请求URL</td>
@@ -175,8 +165,8 @@
             </div>
 
             <div id="2_7">2.7 返回参数说明</div>
-            <span ng-if="responseParams.length==0">无</span>
-            <table class="table table-bordered" ng-if="responseParams.length>0">
+            <span ng-if="model.responseParams.length==0">无</span>
+            <table class="table table-bordered" ng-if="model.responseParams.length>0">
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="w50"></th>
@@ -187,7 +177,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in responseParams" class="tc C000">
+                <tr ng-repeat="item in model.responseParams" class="tc C000">
                     <td class="tc" style="color:red;">{{item.deep}}</td>
                     <td class="pl20 tl">
                         <span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
@@ -212,8 +202,8 @@
             </div>
 
             <div id="2_10">2.10 错误码</div>
-            <span ng-if="errors.length==0">无</span>
-            <table class="table table-bordered" ng-if="errors.length>0">
+            <span ng-if="model.errors.length==0">无</span>
+            <table class="table table-bordered" ng-if="model.errors.length>0">
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="tc w200">Code</th>
@@ -221,7 +211,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in errors">
+                <tr ng-repeat="item in model.errors">
                     <td class="tc fb C000">{{item.errorCode}}</td>
                     <td class="tc C000">{{item.errorMsg}}</td>
                 </tr>

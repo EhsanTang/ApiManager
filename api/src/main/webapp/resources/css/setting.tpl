@@ -26,7 +26,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 
 .main-bg {background-color: [MAIN_COLOR]!important;}
 .main-color {color: [MAIN_COLOR]}
-.main-bb-1{ border-bottom:1px solid [MAIN_COLOR]}
+.main-bb-1{ border-bottom:1px solid [MAIN_COLOR]!important}
 .main-br-1{ border-right:1px solid  [MAIN_COLOR]}
 .main-bl-3{ border-left:3px solid [MAIN_COLOR]}
 .main-bl-1{ border-left:1px solid [MAIN_COLOR]}

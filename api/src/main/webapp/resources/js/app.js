@@ -5,6 +5,19 @@ var visitorModule = angular.module("visitorModule", []);
 var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 
+app.filter("removeLast",function(){
+    return function (value) {
+        if(!value)
+            return "";
+        else{
+            return value.substring(0,value.length-1);
+        }
+    }
+});
+//以html形式输出
+app.filter("trustHtml",function($sce){
+    return function (input){ return $sce.trustAsHtml(input); } ;
+});
 /**
  * 由于整个应用都会和路由打交道，所以这里把$state和$stateParams这两个对象放到$rootScope上，方便其它地方引用和注入。
  * 这里的run方法只会在angular启动的时候运行一次。
@@ -141,20 +154,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 				 
 			});;
 	};
-    $rootScope.createInterfaceEditor = function () {
-        createWangEditor("interface-editor","remark", initInterfaceEditor);
-    }
-	//点击详情回调，清除编辑缓存页面的table
-	$rootScope.initEditInterFace = function (){
-		changeDisplay('interFaceDetail','copyInterFace');
-		$("#eparam").addClass('none');
-		$("#param").removeClass('none');
-		$("#eheader").addClass('none');
-		$("#header").removeClass('none');
-		$("#responseEparam").addClass('none');
-		$("#responseParam").removeClass('none');
-        $rootScope.createInterfaceEditor();
-	}
+
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
 		changeDisplay('copyInterFace','interFaceDetail');

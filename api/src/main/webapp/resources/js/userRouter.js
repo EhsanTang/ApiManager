@@ -138,6 +138,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/subTpl/interParamRemakDiv.tpl.html?v=v8.0.5'
             }
         }
+    }).state('userInterfaceDetail', {
+        url : '/user/interface/detail?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/interfaceDetail.tpl.html?v=v8.0.5';
+                }
+            }
+        }
     });
 
 

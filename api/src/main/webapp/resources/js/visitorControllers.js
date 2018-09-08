@@ -1,10 +1,6 @@
 /**
  * 前端controller
  */
-//以html形式输出
-visitorModule.filter("trustHtml",function($sce){
-	 return function (input){ return $sce.trustAsHtml(input); } ;
-});
 visitorModule.filter("encodeURL",function($sce){
 	 return function (input){ 
 		 if(input){
@@ -43,15 +39,7 @@ visitorModule.filter("decodeURL",function($sce){
 		 return input;
 	 } ;
 });
-visitorModule.filter("removeLast",function(){
-	return function (value) {
-		if(!value)
-			return "";
-		else{
-			return value.substring(0,value.length-1);
-		}
-	}
-});
+
 // 数据库表flag转中文
 visitorModule.filter("directoryFlagName",function(){
 	return function (value) {

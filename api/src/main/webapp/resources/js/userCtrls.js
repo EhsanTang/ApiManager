@@ -4,11 +4,6 @@
 var userModule = angular.module("userModule", []);
 var adminModule = angular.module("adminModule", []);
 
-//以html形式输出
-userModule.filter("trustHtml",function($sce){
-	 return function (input){ return $sce.trustAsHtml(input); } ;
-});
-
 // 显示长度 wordwise：切字方式- 如果是 true，只切單字
 userModule.filter('cut', function () {
 	  return function (value, wordwise, max, tail) {
@@ -41,6 +36,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $scope[callBackMethod](page, updateUrl);
     };
     /*********************************** 列表 *********************************/
+	// 左侧菜单，前50个模块
+    $scope.queryTop50Module = function() {
+        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module");
+    };
     // 系统设置列表
     $scope.querySettingList = function(page) {
         var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
@@ -170,9 +170,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     };
 
     // 接口详情
-    $scope.getInterfaceDetail = function () {
+    $scope.getInterfaceDetail = function (isEdit) {
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model');
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
+            if (isEdit) {
+                createWangEditor("interface-editor", "remark", initInterfaceEditor);
+            }
+        });
     };
 
     $scope.getArticleDetail = function (isEdit) {
@@ -643,12 +647,6 @@ userModule.controller('userTop50ProjectListCtrl', function($rootScope,$scope, $h
     $scope.getData();
 });**/
 
-userModule.controller('userTop50ModuleListCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    $scope.getData = function() {
-        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module");
-    };
-});
 
 
 

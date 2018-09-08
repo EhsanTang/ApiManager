@@ -26,7 +26,7 @@ input:focus{border-color: #3275e4!important;!important;}
 
 .main-bg {background-color: #3275e4!important;}
 .main-color {color: #3275e4}
-.main-bb-1{ border-bottom:1px solid #3275e4}
+.main-bb-1{ border-bottom:1px solid #3275e4!important}
 .main-br-1{ border-right:1px solid  #3275e4}
 .main-bl-3{ border-left:3px solid #3275e4}
 .main-bl-1{ border-left:1px solid #3275e4}

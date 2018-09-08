@@ -1,4 +1,7 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule','interfaceMethods']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule','interfaceMethods', 'userInterModule']);
+var userInterModule = angular.module("userInterModule", []);
+var visitorModule = angular.module("visitorModule", []);
+
 var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 

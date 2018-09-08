@@ -72,13 +72,12 @@
                     </td>
                     <td class="w300">项目名称</td>
                     <td ng-if="$stateParams.type=='PAGE'">key</td>
-                    <td ng-if="$stateParams.type=='DICTIONARY'">项目</td>
                     <td ng-if="$stateParams.type=='PAGE'">是否可删除</td>
                     <td ng-if="$stateParams.type=='ARTICLE'">类目</td>
                     <td>状态</td>
                     <td>可评论</td>
                     <td>创建时间</td>
-                    <td class="w400">操作</td>
+                    <td class="w400 tc">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,13 +87,12 @@
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
-                    <td ng-if="$stateParams.type=='DICTIONARY'">{{item.moduleName| cut:true:15:' ...'}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
                     <td ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
                     <td>{{item.statusName}}</td>
                     <td>{{item.canCommentName}}</td>
                     <td>{{item.createTimeStr}}</td>
-                    <td>
+                    <td class="tc">
                         <a class="f12 main-color mr10 cursor"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/article/edit?dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">

@@ -29,15 +29,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDto(InterfaceWithBLOBs model, Module module, Project project, boolean handleText){
+    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean handleText){
         if (model == null){
             return null;
         }
 
-        InterfaceDto dto = new InterfaceDto();
-        dto.setId(model.getId());
-		dto.setUrl(handleText(model.getUrl(), handleText));
-		dto.setMethod(model.getMethod());
+		InterfaceDto dto = getDto(model, module, project, handleText);
 		dto.setParam(handleText(model.getParam(), handleText));
 		dto.setParamRemark(handleText(model.getParamRemark(), handleText));
 		dto.setRequestExam(handleText(model.getRequestExam(), handleText));
@@ -45,46 +42,60 @@ public class InterfaceAdapter {
 		dto.setErrorList(handleText(model.getErrorList(), handleText));
 		dto.setTrueExam(handleText(model.getTrueExam(), handleText));
 		dto.setFalseExam(handleText(model.getFalseExam(), handleText));
+		dto.setRemark(handleText(model.getRemark(), handleText));
+		dto.setErrors(handleText(model.getErrors(), handleText));
+		dto.setHeader(handleText(model.getHeader(), handleText));
+		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
+
+        return dto;
+    }
+
+	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean handleText){
+		if (model == null){
+			return null;
+		}
+
+		InterfaceDto dto = new InterfaceDto();
+		dto.setId(model.getId());
+		dto.setUrl(handleText(model.getUrl(), handleText));
+		dto.setMethod(model.getMethod());
+
 		dto.setStatus(model.getStatus());
 		dto.setModuleId(model.getModuleId());
 		dto.setInterfaceName(handleText(model.getInterfaceName(), handleText));
-		dto.setRemark(handleText(model.getRemark(), handleText));
-		dto.setErrors(handleText(model.getErrors(), handleText));
 		dto.setUpdateBy(handleText(model.getUpdateBy(), handleText));
 		dto.setVersion(handleText(model.getVersion(), handleText));
 		dto.setSequence(model.getSequence());
-		dto.setHeader(handleText(model.getHeader(), handleText));
 		dto.setFullUrl(handleText(model.getFullUrl(), handleText));
 		dto.setMonitorType(model.getMonitorType());
 		dto.setMonitorText(handleText(model.getMonitorText(), handleText));
 		dto.setMonitorEmails(model.getMonitorEmails());
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
-		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
 		dto.setContentType(model.getContentType());
 		dto.setContentTypeName(InterfaceContentType.getNameByType(model.getContentType()));
 
 		if (model.getCreateTime() != null) {
-            dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
-        }
-        if (model.getUpdateTime() != null) {
-            dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
-        }
+			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+		}
+		if (model.getUpdateTime() != null) {
+			dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
+		}
 
-        if (model.getStatus() != null){
-		    dto.setStatusName(InterfaceStatus.getNameByValue(model.getStatus()));
-        }
+		if (model.getStatus() != null){
+			dto.setStatusName(InterfaceStatus.getNameByValue(model.getStatus()));
+		}
 
 		if (module != null){
 			dto.setModuleName(handleText(module.getName(), handleText));
 			dto.setModuleUrl(handleText(module.getUrl(), handleText));
 		}
 		if (project != null){
-		    dto.setProjectName(project.getName());
-        }
-		
-        return dto;
-    }
+			dto.setProjectName(project.getName());
+		}
+
+		return dto;
+	}
 
     /**
      * html 转word 保留换行
@@ -152,17 +163,27 @@ public class InterfaceAdapter {
         }
         List<InterfaceDto> dtos = new ArrayList<>();
         for (InterfaceWithBLOBs model : models){
-            dtos.add(getDto(model, null, null, false));
+            dtos.add(getDtoWithBLOBs(model, null, null, false));
         }
         return dtos;
     }
 
-	public static List<InterfaceDto> getDto(List<InterfaceWithBLOBs> models, Module module, Project project){
+	public static List<InterfaceDto> getDtoWithBLOBs(List<InterfaceWithBLOBs> models, Module module, Project project){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<InterfaceDto> dtos = new ArrayList<>();
 		for (InterfaceWithBLOBs model : models){
+			dtos.add(getDtoWithBLOBs(model, module, project, false));
+		}
+		return dtos;
+	}
+	public static List<InterfaceDto> getDto(List<Interface> models, Module module, Project project){
+		if (models == null){
+			return new ArrayList<>();
+		}
+		List<InterfaceDto> dtos = new ArrayList<>();
+		for (Interface model : models){
 			dtos.add(getDto(model, module, project, false));
 		}
 		return dtos;

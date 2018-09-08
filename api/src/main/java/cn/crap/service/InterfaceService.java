@@ -9,10 +9,7 @@ import cn.crap.dto.*;
 import cn.crap.enumer.LogType;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.MyException;
-import cn.crap.model.InterfaceCriteria;
-import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Log;
-import cn.crap.model.Module;
+import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.utils.IConst;
@@ -56,7 +53,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             return false;
         }
         if (model.getSequence() == null){
-            List<InterfaceWithBLOBs>  models = this.query(new InterfaceQuery().setProjectId(model.getProjectId()).setPageSize(1));
+            List<InterfaceWithBLOBs>  models = this.queryAll(new InterfaceQuery().setProjectId(model.getProjectId()).setPageSize(1));
             if (models.size() > 0){
                 model.setSequence(models.get(0).getSequence() + 1);
             }else{
@@ -74,7 +71,16 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      * @return
      * @throws MyException
      */
-    public List<InterfaceWithBLOBs> query(InterfaceQuery query) throws MyException {
+    public List<InterfaceWithBLOBs> queryAll(InterfaceQuery query) throws MyException {
+        Assert.notNull(query);
+        Assert.isNull(query.getCurrentPage(), "WithBLOBs 不支持分页查询");
+        InterfaceCriteria example = getInterfaceCriteria(query);
+        example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
+
+        return interfaceDao.selectByExampleWithBLOBs(example);
+    }
+
+    public List<Interface> query(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
 
         Page page = new Page(query);
@@ -85,7 +91,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         }
         example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
 
-        return interfaceDao.selectByExampleWithBLOBs(example);
+        return interfaceDao.selectByExample(example);
     }
 
     /**
@@ -142,7 +148,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      */
     public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace, Module module, boolean handleText) {
         InterfacePDFDto interDto = new InterfacePDFDto();
-        interDto.setModel(InterfaceAdapter.getDto(interFace, module, null, handleText));
+        interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, handleText));
         if(interFace.getParam().startsWith("form=")){
             interDto.setFormParams(JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig()));
         }else{
@@ -252,13 +258,13 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null, null));
+        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null, null));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDto(interfaceDao.selectByExampleWithBLOBs(example), null, null));
+        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interfaceDao.selectByExampleWithBLOBs(example), null, null));
     }
 }

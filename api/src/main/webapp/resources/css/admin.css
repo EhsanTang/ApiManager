@@ -15,6 +15,10 @@ body{
 .table-no-border td input, .table-no-border td select, .table-no-border td textarea{
     border: 1px solid #e0e0e0;
 }
+.table-bordered td input, .table-bordered td select, .table-bordered td textarea{
+    border: 1px solid #e0e0e0;
+}
+
 .text {
     border: 1px solid #ccc;
     height: 1000px;

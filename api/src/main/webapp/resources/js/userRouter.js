@@ -1,4 +1,3 @@
-
 /**
  * 配置路由。
  * 注意这里采用的是ui-router这个路由，而不是ng原生的路由。
@@ -7,20 +6,141 @@
  * @param  {[type]} $urlRouterProvider
  * @return {[type]}
  */
-/**
- * projectId : 项目ID
- * projectName : 项目名称
- * moduleId : 模块ID
- * moduleName : 模块名称
- * menu_a : 一级导航菜单
- * menu_b : 二级导航菜单
- * dataType : interface、module、article 等数据类型，用于模块接口跳转
- *
- */
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType';
 app.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('user/project/list?projectShowType=3&menu_b=menu_create_join&type=-1&menu_a=menu-project');
-	/*********************后台*******************/
+	// 文章
+    $stateProvider.state('userArticleList', {
+        url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleList.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@userArticleList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userEditArticle', {
+        url : '/user/article/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userArticleDetail', {
+        url : '/user/article/detail?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/articleDetail.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    });
+
+    // 数据库表
+    $stateProvider.state('userDictionaryList', {
+        url : '/user/dictionary/list?currentPage&name&category&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryList.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@userDictionaryList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userEditDictionary', {
+        url : '/user/dictionary/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userDictionaryDetail', {
+        url : '/user/dictionary/detail?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/dictionaryDetail.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    });
+
+    // 接口
+    $stateProvider.state('userInterList', {
+        url : '/user/interface/list?&interfaceName&url&currentPage&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.5'
+            },
+            'page@userInterList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('userInterfaceEdit', {
+        url : '/user/interface/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/interfaceEdit.tpl.html?v=v8.0.5';
+                }
+            }, 'interResEditorDiv@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html?v=v8.0.5'
+            },
+            'interFormParamDiv@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interFormParamDiv.tpl.html?v=v8.0.5'
+            },
+            'interHeaderDiv@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interHeaderDiv.tpl.html?v=v8.0.5'
+            },
+            'interParamRemakDiv@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interParamRemakDiv.tpl.html?v=v8.0.5'
+            }
+        }
+    });
+
+
 	$stateProvider.state('loginOrRegister', {
 		url : '/login',
 		views : {
@@ -118,38 +238,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
 		}
-	}).state('interfaceList', {
-		url : '/user/interface/list?' + commonUrlParam,
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/user/interfaceList.tpl.html?v=v8.0.5'
-			},
-			'page@interfaceList' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/user/interfaceDetail.tpl.html?v=v8.0.5';
-				}
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            },
-			'interResEditorDiv@interfaceList' : {
-				templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html?v=v8.0.5'
-			},
-			'interFormParamDiv@interfaceList' : {
-				templateUrl : 'resources/html/subTpl/interFormParamDiv.tpl.html?v=v8.0.5'
-			},
-			'interHeaderDiv@interfaceList' : {
-				templateUrl : 'resources/html/subTpl/interHeaderDiv.tpl.html?v=v8.0.5'
-			},
-			'interParamRemakDiv@interfaceList' : {
-				templateUrl : 'resources/html/subTpl/interParamRemakDiv.tpl.html?v=v8.0.5'
-			}
-			
-		}
 	}).state('errorList', {
 		url : '/user/error/list?' + commonUrlParam,
 		views : {
@@ -204,90 +292,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
             'detail' : {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/logDetail.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('articleList', {
-        url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
-        views : {
-            'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/articleList.tpl.html?v=v8.0.5';
-                }
-            },
-            'page@articleList' : {
-                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-            },'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('userEditArticle', {
-        url : '/user/article/edit?id&' + commonUrlParam,
-        views : {
-           'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }, 'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/articleEdit.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('userArticleDetail', {
-        url : '/user/article/detail?id&' + commonUrlParam,
-        views : {
-            'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }, 'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/articleDetail.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('userDictionaryList', {
-        url : '/user/dictionary/list?currentPage&name&category&' + commonUrlParam,
-        views : {
-            'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/dictionaryList.tpl.html?v=v8.0.5';
-                }
-            },
-            'page@userDictionaryList' : {
-                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-            },'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('userEditDictionary', {
-        url : '/user/dictionary/edit?id&' + commonUrlParam,
-        views : {
-            'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }, 'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/dictionaryEdit.tpl.html?v=v8.0.5';
-                }
-            }
-        }
-    }).state('userDictionaryDetail', {
-        url : '/user/dictionary/detail?id&' + commonUrlParam,
-        views : {
-            'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }, 'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/dictionaryDetail.tpl.html?v=v8.0.5';
                 }
             }
         }

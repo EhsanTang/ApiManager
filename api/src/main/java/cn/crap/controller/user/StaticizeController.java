@@ -120,7 +120,7 @@ public class StaticizeController extends BaseController{
         Page page = new Page(interfaceQuery);
         page.setAllRow(interfaceService.count(interfaceQuery));
 		returnMap.put("page", page);
-		returnMap.put("interfaceList", InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module, null));
+		returnMap.put("interfaceList", InterfaceAdapter.getDtoWithBLOBs(interfaceService.queryAll(interfaceQuery), module, null));
 		returnMap.put("activePage",moduleId+"_interface");
 		returnMap.put("url", module.getId() + "-interfaceList");
 		returnMap.put("needStaticizes", needStaticizes);
@@ -492,7 +492,7 @@ public class StaticizeController extends BaseController{
 				
 				// 静态化接口详情
                 interfaceQuery.setPageSize(ALL_PAGE_SIZE);
-				for(Interface inter: interfaceService.query(interfaceQuery)){
+				for(Interface inter: interfaceService.queryAll(interfaceQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + inter.getId()+".html");

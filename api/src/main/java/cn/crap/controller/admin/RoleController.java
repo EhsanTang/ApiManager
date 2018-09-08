@@ -37,6 +37,7 @@ public class RoleController extends BaseController {
         if (!MyString.isEmpty(roleName)) {
             example.createCriteria().andRoleNameLike("%" + roleName + "%");
         }
+        // TODO   Assert.isNull(query.getCurrentPage(), "WithBLOBs 不支持分页查询");
         List<RoleDto> roleDtos = RoleAdapter.getDto(roleService.selectByExampleWithBLOBs(example));
         return new JsonResult().success().data(roleDtos).page(page);
     }

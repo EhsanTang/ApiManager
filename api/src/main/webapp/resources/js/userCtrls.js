@@ -81,17 +81,23 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     };
 
     // 接口列表
-    $scope.queryInterfaceList = function(page) {
-        var params = "";
-        if($("#interfaceName").val()!=null&&$("#interfaceName").val()!=''){
-            params += "&interfaceName=" + $("#interfaceName").val();
+    $scope.queryInterfaceList = function(page, updateUrl) {
+        var params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams=";
+        params += "&interfaceName=" + $stateParams.interfaceName;
+        params += "&url=" + $stateParams.url;
+        params += "&moduleId="+ $stateParams.moduleId;
+        params += "&projectId="+ $stateParams.projectId;
+        if (updateUrl){
+            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
+            url = replaceParamFromUrl(url, 'interfaceName', $("#interfaceName").val());
+            url = replaceParamFromUrl(url, 'url', $("#url").val());
+            url = url.substr(1,url.length-1);
+            $rootScope.go(url);
+            return;
         }
-        if($("#url").val()!=null&&$("#url").val()!=''){
-            params += "&url=" + $("#url").val();
+        if (!page){
+            page = $stateParams.currentPage;
         }
-        params +="&moduleId="+ $stateParams.moduleId;
-        params +="&projectId="+ $stateParams.projectId;
-        params = "iUrl=user/interface/list.do|iLoading=FLOAT|iPost=true|iParams="+params;
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
     };
 
@@ -101,8 +107,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             + "&moduleId="+$stateParams.moduleId
             + "&projectId=" + $stateParams.projectId
             + "&category="+ $stateParams.category
-            + "&name="+$stateParams.name
-            + "&currentPage=" + $stateParams.currentPage;
+            + "&name="+$stateParams.name;
         if (updateUrl){
             var url = replaceParamFromUrl($location.url(), 'currentPage', page);
             url = replaceParamFromUrl(url, 'name', $("#searchName").val());
@@ -110,6 +115,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             url = url.substr(1,url.length-1);
             $rootScope.go(url);
             return;
+        }
+        if (!page){
+            page = $stateParams.currentPage;
         }
         $rootScope.getBaseDataToDataKey($scope, $http,params, page, "articles");
     };
@@ -119,8 +127,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=DICTIONARY"
             + "&moduleId="+$stateParams.moduleId
             + "&projectId=" + $stateParams.projectId
-            + "&name="+$stateParams.name
-            + "&currentPage=" + $stateParams.currentPage;
+            + "&name="+$stateParams.name;
         if (updateUrl){
             params += "&currentPage=" + page;
             var url = replaceParamFromUrl($location.url(), 'currentPage', page);
@@ -129,7 +136,10 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             $rootScope.go(url);
             return;
         }
-        $rootScope.getBaseDataToDataKey($scope,$http,params, null, "dictionaries");
+        if (!page){
+            page = $stateParams.currentPage;
+        }
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "dictionaries");
     };
 
     // 评论列表
@@ -159,7 +169,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
     };
 
-    $scope.articleDetail = function (isEdit) {
+    // 接口详情
+    $scope.getInterfaceDetail = function () {
+        var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model');
+    };
+
+    $scope.getArticleDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=ARTICLE" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
@@ -170,7 +186,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
         });
     };
-    $scope.dictionaryDetail = function (isEdit) {
+    $scope.getDictionaryDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {

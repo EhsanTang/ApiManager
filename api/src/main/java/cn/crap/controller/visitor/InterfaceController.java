@@ -102,7 +102,7 @@ public class InterfaceController extends BaseController {
                 request.setAttribute("result", ERROR_MODULE_ID);
                 return ERROR_VIEW;
             }
-            for (InterfaceWithBLOBs interFace : interfaceService.query(new InterfaceQuery().setModuleId(moduleId))) {
+            for (InterfaceWithBLOBs interFace : interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))) {
                 interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, false));
             }
 
@@ -145,7 +145,7 @@ public class InterfaceController extends BaseController {
             Map<String, Object> map = new HashMap<>();
             List<InterfacePDFDto> interfacePDFDtos = new ArrayList<>();
             if (interFace == null){
-                for (InterfaceWithBLOBs interfaceWithBLOBs : interfaceService.query(new InterfaceQuery().setModuleId(moduleId))) {
+                for (InterfaceWithBLOBs interfaceWithBLOBs : interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))) {
                     interfacePDFDtos.add(interfaceService.getInterDto(interfaceWithBLOBs, module, true));
                 }
             }else {
@@ -197,10 +197,10 @@ public class InterfaceController extends BaseController {
              * 查询相同模块下，相同接口名的其它版本号
              */
             InterfaceQuery query = new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualInterfaceName(interFace.getInterfaceName())
-                    .setExceptVersion(interFace.getVersion());
+                    .setExceptVersion(interFace.getVersion()).setPageSize(ALL_PAGE_SIZE);
             List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module, null);
 
-            return new JsonResult(1, InterfaceAdapter.getDto(interFace, module, null, false), null,
+            return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, false), null,
                     Tools.getMap("versions", versions,
                             "crumbs",
                             Tools.getCrumbs(

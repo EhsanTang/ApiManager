@@ -1,0 +1,234 @@
+<div class="p0 col-xs-12" ng-controller="userInterCtrl" ng-init="getInterfaceDetail()">
+		<form ng-submit="submitForm('user/interface/addOrUpdate.do',null, null, goBack)">
+			<div class="col-xs-12 main-nav">
+				<div class="btn-group btn-group-sm r3 fl mr10">
+					<button class="btn btn-default" ng-click="goBack()" type="button">
+						<i class="iconfont mt-3">&#xe605;&nbsp;</i>返回
+					</button>
+
+					<button class="btn btn-main cursor-not btn-sm" type="button">
+						<i class="iconfont f12 mt-3">&#xe618; 编辑接口</i>
+					</button>
+				</div>
+
+				<button type="submit" class="btn btn-adorn btn-sm">
+					<i class="iconfont f12 mt-3">&#xe602; 快速保存</i>
+				</button>
+			</div>
+
+            <div class="p15">
+                <div class="col-xs-12 p15 BGFFF mt50">
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="tc w80">接口名称</td>
+                        <td class="tc w400">
+                            <input class="form-control" type="text" required maxlength="50"
+                            ng-model="model.interfaceName" placeholder="示例：获取订单列表接口">
+                        </td>
+                        <td class="tc">
+                        模块名<br/>
+                        * 点击选择模块
+                        </td>
+                        <td>
+                            <input class="form-control cursor" type="text"  id="moduleName" autocomplete="off" required ng-model="model.moduleName"
+                                ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc">URL</td>
+                        <td class="tc" colspan="3">
+                            <div ng-class="{true: 'input-group w', false: 'w'}[model.moduleUrl!='']">
+                              <div class="input-group-addon" ng-bind="model.moduleUrl" ng-if="model.moduleUrl"></div>
+                              <input type="text" class="form-control" ng-model="model.url" required maxlength="200"
+                            placeholder="示例：http://api.crap.cn/CustomerOrder/{id}">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc w80">请求方式</td>
+                        <td class="tc">
+                            <input class="form-control cursor" type="text" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
+                                ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
+                        </td>
+                        <td class="tc">状态</td>
+                        <td>
+                            <input class="form-control" readonly type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
+                                   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc w80">版本号</td>
+                        <td class="tc"><input class="form-control" type="text"
+                            ng-model="model.version" required></td>
+                        <td class="tc">排序</td>
+                        <td class="tc">
+                        <input class="form-control" min="0"  placeholder="接口排序" type="number" ng-model="model.sequence"></td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <td class="tc w80">监控类型</td>
+                        <td class="tc">
+                        <input  class="form-control" type="text" ng-model="model.monitorTypeName" id="monitorTypeName" required placeholder="点击选择"
+                        ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITOR_TYPE|def='+model.monitorType,$event)">
+                        </td>
+                        <td class="tc"></td>
+                        <td class="tc"></td>
+                    </tr>
+                    <tr ng-if="model.monitorType>1">
+                        <td class="tc">监控内容<br/>符合该条件则会发送邮件告警</td>
+                        <td class="tc" colspan="3">
+                            <textarea class="form-control no-resize" ng-model="model.monitorText" rows="8"
+                                placeholder="请输入监控比较的内容" max="250">
+                            </textarea>
+                        </td>
+                    </tr>
+                    <tr ng-if="model.monitorType>1">
+                        <td class="tc">告警发送邮箱<br/>多个邮箱用;分割</td>
+                        <td class="tc" colspan="3">
+                            <textarea class="form-control no-resize" ng-model="model.monitorEmails" rows="4"
+                                placeholder="告警邮箱" max="250">
+                            </textarea>
+                        </td>
+                    </tr>
+                     -->
+                    <tr>
+                        <td class="tc">请求头</td>
+                        <td class="tc" colspan="3" ui-view="interHeaderDiv"></td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="tc">
+                            参数类型<br>
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 param-group iactive" value="表单模式"
+                            onclick="changeDisplay('formParam','customParam');selectButton(this,'param-group')">
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 param-group" value="自定义"
+                            onclick="changeDisplay('customParam','formParam');selectButton(this,'param-group')">
+                        </td>
+                        <td class="tc" colspan="3" ui-view="interFormParamDiv"></td>
+                    </tr>
+                    <tr ng-if="model.param.indexOf('form=')!=0">
+                        <td class="tc">
+                            自定义参数备注
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 remark-group iactive" value="编辑模式"
+                             onclick="changeDisplay('paramEditorDiv','paramImportDiv');selectButton(this,'remark-group')">
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 remark-group" value="JSON导入"
+                            onclick="changeDisplay('paramImportDiv','paramEditorDiv');selectButton(this,'remark-group')">
+                        </td>
+                        <td class="tc" colspan="3">
+                            <div class="input-group w none" id="paramImportDiv">
+                                    <textarea class="form-control no-resize" ng-model="model.importJson"
+                                        rows="5" placeholder="请输入需要导出的json数据"></textarea>
+                                    <div class="input-group-addon cursor btn-main"
+                                        ng-click="importParams('paramRemarks');">
+                                        导入</div>
+                            </div>
+                            <div id="paramEditorDiv" ui-view="interParamRemakDiv"></div>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="tc w80">返回类型</td>
+                        <td colspan="3">
+                            <input class="form-control" readonly type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
+                                   ng-click="loadPickByName('iwidth=220|iheight=220|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tc">
+                            返回参数
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 resparam-group iactive" value="编辑模式"
+                            onclick="changeDisplay('responseEditorDiv','responseImportDiv');selectButton(this,'resparam-group')">
+                            <input type="button" class="btn btn-default btn-sm w100 mt10 resparam-group" value="JSON导入"
+                            onclick="changeDisplay('responseImportDiv','responseEditorDiv');selectButton(this,'resparam-group')">
+                        </td>
+                        <td class="tc" colspan="3">
+                            <div class="input-group w none" id="responseImportDiv">
+                                    <textarea class="form-control no-resize" ng-model="model.importJson"
+                                        rows="5" placeholder="请输入需要导出的json数据"></textarea>
+                                    <div class="input-group-addon cursor btn-main"
+                                        ng-click="importParams('responseParams');">
+                                        导入</div>
+                            </div>
+                            <div id="responseEditorDiv" ui-view="interResEditorDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc">接口说明</td>
+                        <td colspan="3">
+                            <div id="interface-editor"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tc">正确返回示例<br>
+                        <input type="button" class="btn btn-default btn-sm w100 mt10" value="格式化数据"
+                            ng-click="jsonformat('trueExam',true)">
+                        </td>
+                        <td class="tc"><textarea class="form-control no-resize" ng-model="model.trueExam" rows="10"
+                                placeholder='请用标准json结构
+    示例：	{
+                "success": 1,
+                "data": {
+                    "num": 15
+                },
+                "error":
+                {
+                    "message":null,
+                    "code":null,
+                    "data":null
+                }
+            }'></textarea>
+                        </td>
+                        <td class="tc">错误返回示例<br> <input type="button"
+                            class="btn btn-default btn-sm" value="格式化数据"
+                            ng-click="jsonformat('falseExam',true)"></td>
+                        <td class="tc"><textarea class="form-control no-resize" ng-model="model.falseExam" rows="10"
+                                placeholder='请用标准json结构
+    示例：	{
+                "success": 0,
+                "error": {
+                    "code": 错误码,
+                    "data": {},
+                    "message": " error message"
+                }
+            }'></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="tc">请求示例<br>
+                            <input type="button" class="btn btn-default btn-sm w100 mt10" value="自动生成" ng-click="getRequestExam()">
+                        </td>
+                        <td class="tc"><textarea class="form-control no-resize"
+                                ng-model="model.requestExam" rows="5"
+                                placeholder='示例：
+    请求地址：
+        http://api.biyao.com
+    请求参数：
+        name=xxx
+    请求头：
+        uid=xxx'></textarea>
+                        </td>
+                        <td class="tc">错误列表</td>
+                        <td class="tc">
+                            <div class="input-group w">
+                                <textarea class="form-control no-resize" id="errorList"
+                                    placeholder="请点击“选择”按钮选择错误码
+    键盘输入可快速定位错误码
+    退格键可删除输入"
+                                    ng-model="model.errorList" rows="5" readonly></textarea>
+                                <div class="input-group-addon cursor btn-main"
+                                    ng-click="loadPick($event,300,400,'false','errorList','ERROR_CODE',null, model.errorList,'&key='+model.projectId,0);">
+                                    选择</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                </div>
+            </div>
+        </form>
+    </div>
+<div class="cb"></div>
+

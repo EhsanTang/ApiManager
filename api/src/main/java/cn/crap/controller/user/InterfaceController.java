@@ -120,7 +120,7 @@ public class InterfaceController extends BaseController{
 				}
 			}
 		}
-		return new JsonResult(1, InterfaceAdapter.getDto(model, module, null, false));
+		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 /**
  * 前端controller
  */
-var visitorModule = angular.module("visitorModule", []);
 //以html形式输出
 visitorModule.filter("trustHtml",function($sce){
 	 return function (input){ return $sce.trustAsHtml(input); } ;
@@ -95,7 +94,7 @@ visitorModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http,
     $scope.getData();
 });
 /**************************错误码列表****************************/
-userModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
 		if(setPwd) setPassword();
@@ -108,7 +107,7 @@ userModule.controller('errorCtrl', function($rootScope,$scope, $http, $state, $s
     $scope.getData();
 });
 /*************************数据库表列表******************************/
-userModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/article/diclist.do|iLoading=FLOAT|iPost=POST|iParams=&moduleId="+$stateParams.moduleId+"&name="+$stateParams.search;
 		//setPwd不为空，表示用户输入了密码，需要记录至cookie中
@@ -120,7 +119,7 @@ userModule.controller('visitorDictCtrl', function($rootScope,$scope, $http, $sta
     $scope.getData();
 });
 /**************************article列表****************************/
-userModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
+visitorModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {
 		var params = "iUrl=visitor/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=" + $stateParams.type
 		+"&moduleId="+$stateParams.moduleId+"&name="+$stateParams.name+"&category="+$stateParams.category+"&status=" + $stateParams.status;

@@ -18,9 +18,9 @@
 
 
         <div class="col-xs-12 p15 mt50">
-            <div class="BGFFF p15">
+            <div class="BGFFF p15 w">
 
-                <table class="table table-no-border">
+                <table class="table table-no-border w">
                     <tr>
                         <td class="tc w50">标题 *</td>
                         <td class="tc">
@@ -48,29 +48,29 @@
                             <input class="form-control" min="0"  type="number"
                                    ng-model="model.sequence"></td>
                     </tr>
-                    <tr>
-                        <td class="tc">内容</td>
-                        <td class="tc">
-                            <table class="table table-bordered table-hover mb5" id="content">
-                                <thead>
-                                <tr class="main-bg CFFF">
-                                    <th>字段</th>
-                                    <th>类型</th>
-                                    <th class="w100">空</th>
-                                    <th>默认</th>
-                                    <th class="w100">标识</th>
-                                    <th>注释</th>
-                                    <th class="w100">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <div onclick="addOneField('', '','', '','', '','')" class="main-color fr cursor pr15"
-                                 title="添加一行"><i class="iconfont f22">&#xe619;</i></div>
-                        </td>
-                    </tr>
                 </table>
+            </div>
+
+            <div class="h40 lh40 f16 pl20 adorn-bl-3 mt20 BGFFF">表字段</div>
+            <div class="p20 BGFFF mb50">
+                <table class="table-bordered input-no-border mb5 w" id="content">
+                    <thead>
+                    <tr class="BGF5 fw500">
+                        <td class="p10">字段</td>
+                        <td class="p10">类型</td>
+                        <td class="p10" class="w100">空</td>
+                        <td class="p10">默认</td>
+                        <td class="p10 w100">标识</td>
+                        <td class="p10 p10">注释</td>
+                        <td class="p10 w100 tc">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div onclick="addOneField('', '','', '','', '','')" class="main-color fr cursor pr15"
+                     title="添加一行"><i class="iconfont f22">&#xe619;</i></div>
+                <div class="cb"></div>
             </div>
         </div>
     </form>

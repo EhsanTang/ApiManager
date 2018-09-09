@@ -18,17 +18,20 @@ function addOneField(name, type, notNull,flag, def, remark, rowNum) {
 		rowNum = mydate.getTime();
 	}
 		$("#content")
-				.append("<tr>"
+				.append("<tr class='BGFFF'>"
 						+"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
 						+"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
 						+"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"
 						+"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
 						+"<td><select name='flag' class='form-control'><option value='common'"+ ( flag == 'common'  ? " selected":"") + ">普通</option><option value='primary'"+ ( flag == 'primary'  ? " selected":"") + ">主键</option><option value='foreign'"+ (flag == 'foreign' ? " selected":"") +">外键</option><option value='associate'"+ ( flag == 'associate'  ? " selected":"") + ">关联</option></select></td>"
 						+"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
-						+"<td class='cursor text-danger'>"
-						+		"<i class='iconfont' onclick='deleteOneParam(this)'>&#xe60e;</i>&nbsp;&nbsp; "
-						+		"<i class='iconfont' onclick='upward(this)'>&#xe623;</i>&nbsp;&nbsp;"
-						+		"<i class='iconfont' onclick='downward(this)'>&#xe624;</i>"
+						+"<td class='cursor tc'>"
+						+		"<button class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
+                        +           "<i class='iconfont text-danger' onclick='deleteOneParam(this)'>&#xe60e;</i> "
+                        +       "</button> &nbsp;"
+						+		"<span class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
+                        +           "<i class='iconfont'>&#xea17;</i>"
+                        +       "</span>"
 						+"</td>"
 						+"</tr>");
 }

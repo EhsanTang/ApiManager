@@ -44,7 +44,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 系统设置列表
     $scope.querySettingList = function(page) {
         var params = "iUrl=admin/setting/list.do|iLoading=FLOAT|iPost=true|iParams=&remark=" + $("#searchRemark").val()+"&key="+$stateParams.key;
-        $rootScope.getBaseDataToDataKey($scope, $http, params, page, "settings");
+        $rootScope.getBaseDataToDataKey($scope, $http, params, page, "settingList");
     };
     // 项目列表
     $scope.queryProjectList = function(page) {
@@ -175,25 +175,50 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
                 createWangEditor("interface-editor", "remark", initInterfaceEditor);
-            } else {
-                $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
-                $rootScope.model.errors = eval("("+$rootScope.model.errors+")");
+            }
 
-                // 如果param以form=开头，表示为form表单参数
-                if($rootScope.model.param.length>5 && $rootScope.model.param.substring(0,5)=="form="){
-                    $rootScope.model.formParams = eval("("+$rootScope.model.param.substring(5)+")");
-                }else{
-                    $rootScope.model.customParams = $rootScope.model.param;
-                    $rootScope.model.formParams = null;
-                }
+            $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
+            $rootScope.errorList = eval("("+$rootScope.model.errors+")");
 
-                $rootScope.modelheaders = eval("("+$rootScope.model.header+")");
-                $rootScope.model.responseParams = eval("("+$rootScope.model.responseParam+")");
-                $rootScope.model.paramRemarks = eval("("+$rootScope.model.paramRemark+")");
-                if($rootScope.model.method) {// 调试页面默认显示method中第一个
-                    $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
+            // 如果param以form=开头，表示为form表单参数
+            if($rootScope.model.param.length>5 && $rootScope.model.param.substring(0,5)=="form="){
+                $rootScope.formParamList = eval("("+$rootScope.model.param.substring(5)+")");
+            }else{
+                $rootScope.model.customParams = $rootScope.model.param;
+                $rootScope.formParamList = null;
+            }
+
+            $rootScope.headerList = eval("("+$rootScope.model.header+")");
+            if (isEdit) {
+                $rootScope.headerList.push(getOneParam());
+            }
+
+            $rootScope.responseParamList = eval("("+$rootScope.model.responseParam+")");
+            $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
+            if($rootScope.model.method) {// 调试页面默认显示method中第一个
+                $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
+            }
+            $("#editHeaderTable tbody").sortable({
+                cursor: "move",
+                items: "tr",                       //只是tr可以拖动
+                opacity: 1.0,                      //拖动时，透明度为0.6
+                revert: true,                      //释放时，增加动画
+                update: function(event, ui) {      //更新排序之后
+                    var tr = ui.item; //当前拖动的元素
+                    var index = tr.attr("index"); //当前元素的顺序
+                    var header = $rootScope.headerList.splice(index, 1);
+                    // 新的序号计算
+                    var newIndex = getNewArray('editHeaderTable');
+                    $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
+
+                    // $rootScope.headerList = getNewArray('editHeaderTable');
+                    // $rootScope.$apply();
                 }
-			}
+            });
+            $("#editHeaderTable tbody").sortable({
+                helper: fixHelperModified,
+                stop: updateIndex
+            }).disableSelection();
         });
     };
 
@@ -503,157 +528,6 @@ userModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $st
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
-});
-
-
-userModule.controller('backInterfaceDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
-    $scope.getRequestExam = function(editerId,targetId,item,tableId) {
-    	var params = "iUrl=user/interface/getRequestExam.do|iLoading=FLOAT|iPost=true|iParams=&"+$.param($rootScope.model);
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
-			 }else{
-				 $rootScope.error = null;
-				 $rootScope.model.requestExam = result.data.requestExam;
-			 }
-		});
-    };
-    $scope.editerParam = function(editerId,targetId,item,tableId) {
-    	if(tableId=='editParamTable'&&item.param!=''){
-    		
-    		// 如果param为空，或者以form=开头，表示为form表单参数，否则表示为自定义参数
-    		if(item.param.length<5 || item.param.substring(0,5)!="form="){
-    			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
-    				$rootScope.model.params = eval("([])");
-    			}else{
-    				return;
-    			}
-    		}else{
-    			// 将param转换为json数据
-        		try{
-        			$rootScope.model.params = eval("("+item.param.substring(5)+")");
-        		}catch(e){
-        			if(myConfirm("参数格式有误，将丢失所有参数，是否切换至表单模式？")){
-        				$rootScope.model.params = eval("([])");
-        			}else{
-        				return;
-        			}
-        		}
-    		}
-    		
-    	}else if(tableId=='editResponseParamTable'){
-    		$rootScope.model.responseParams = eval("("+item.responseParam+")");
-    	}else if(tableId=='editHeaderTable'){
-    		$rootScope.model.headers = eval("("+item.header+")");
-    	}else if(tableId=='eparamRemarkTable'){
-    		$rootScope.model.paramRemarks = eval("("+item.paramRemark+")");
-    	}
-		$("#"+editerId).removeClass('none');
-		$("#"+targetId).addClass('none');
-    };
-
-    $scope.modifyParam = function(editerId,targetId,item,type) {
-    	if(type=='param'){
-    		var json = getParamFromTable('editParamTable');
-    		try{
-    		 eval("("+json+")");
-    		}catch(e){
-    			alert("输入有误，json解析出错："+e);
-    			return;
-    		}
-    		item.param = "form="+json	
-    	}
-    	else if(type=="responseParam"){
-    		var json = getParamFromTable('editResponseParamTable');
-    		try{
-       		 eval("("+json+")");
-       		}catch(e){
-       			alert("输入有误，json解析出错："+e);
-       			return;
-       		}
-    		item.responseParam = json;
-    	}else if(type=="header"){
-    		var json = getParamFromTable('editHeaderTable');
-    		try{
-       		 eval("("+json+")");
-       		}catch(e){
-       			alert("输入有误，json解析出错："+e);
-       			return;
-       		}
-    		item.header = json;
-    	}else if(type=="paramRemark"){
-    		var json = getParamFromTable('eparamRemarkTable');
-    		try{
-       		 eval("("+json+")");
-       		}catch(e){
-       			alert("输入有误，json解析出错："+e);
-       			return;
-       		}
-    		item.paramRemark = json;
-    	}
-    	$("#"+editerId).addClass('none');
-		$("#"+targetId).removeClass('none');
-    };
-    /***********添加参数********/
-    $scope.addOneParam = function(field){
-    	var newObj=new Object();
-    	newObj.deep=0;
-    	newObj.type="string";
-    	newObj.necessary="true";
-        newObj.inUrl="false";
-    	$rootScope.model[field][$rootScope.model[field].length] = newObj;
-    }
-    /***********添加嵌套参数**************/
-    $scope.addOneParamByParent = function(field,deep,parentIndex){
-    	var newObj=new Object();
-    	newObj.type="string";
-    	newObj.necessary="true";
-    	if(parentIndex || parentIndex==0){
-    		// 兼容历史数据
-        	if(!deep){
-        		deep = 0;
-        		$rootScope.model[field][parentIndex].deep=0;
-        	}
-        	newObj.deep=deep*1+1;
-        	$rootScope.model[field].splice(parentIndex + 1, 0, newObj);
-    	}else{
-    		newObj.deep = 0*1;
-    		$rootScope.model[field][$rootScope.model[field].length]=newObj;
-    	}
-    }
-    
-    $scope.deleteOneParamByParent = function(field,parentIndex,deep){
-    	// 兼容历史数据
-    	if(!deep){
-    		deep = 0;
-    		$rootScope.model[field][parentIndex].deep=0;
-    	}
-    	var needDelete = 1;
-    	for(var i=parentIndex+1; i<$rootScope.model[field].length; i++){
-    		if($rootScope.model[field][i].deep>deep){
-    			needDelete ++;
-    		}else{
-    			break;
-    		}
-    	}
-    	$rootScope.model[field].splice(parentIndex, needDelete);
-    }
-    $scope.importParams = function(field){
-    	var jsonText = jsonToDiv($rootScope.model.importJson);
-    	if(jsonText.length > 0){
-    		$rootScope.model[field] = eval("("+jsonText+")");
-    		if(field == 'responseParams'){
-    			changeDisplay('responseEditorDiv','responseImportDiv');
-    			changeDisplay('responseEparam','responseParam');
-    		}else if(field == 'paramRemarks'){
-    			changeDisplay('paramEditorDiv','paramImportDiv');
-    			changeDisplay('eparamRemark','paramRemark');
-    		}
-    	}
-	}
-    /****************End:返回参数***************/
 });
 
 /**

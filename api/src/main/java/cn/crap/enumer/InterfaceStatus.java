@@ -1,7 +1,7 @@
 package cn.crap.enumer;
 
 public enum InterfaceStatus {
-	不可用("0"),可用("1");
+	废弃("0"), 已上线("1"),开发中("2"),测试中("3");
 	private final String value;
 
 	public static String getNameByValue(Byte value){

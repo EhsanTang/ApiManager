@@ -372,5 +372,17 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 				$rootScope.error = result;
 			});
 	 }
+
+	 // 添加接口
+    $rootScope.addInterfaceCallBack= function () {
+        var json = getParamFromTable('editHeaderTable', 'name');
+        try{
+            eval("("+json+")");
+        }catch(e){
+            alert("输入有误，json解析出错："+e);
+            return;
+        }
+        $rootScope.model.header = json;
+    }
 });
 

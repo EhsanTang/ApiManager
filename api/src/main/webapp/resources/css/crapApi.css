@@ -5,6 +5,11 @@ body{
     background-color:#F2F3F7;
     min-width:800px;
 }
+input::-webkit-input-placeholder {
+    color: #cccccc!important;
+    font-weight: normal;
+    font-size: 12px;
+}
 input{
     -webkit-box-shadow: none!important;
     box-shadow: none!important;
@@ -157,10 +162,12 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editParamTable input,#editParamTable select,#content input,#editHeaderTable input, #editHeaderTable select,
+#editHeaderTable tr{
+    height: 34px;
+}
+#editParamTable input,#editParamTable select,#content input, #editHeaderTable select,
 #editResponseParamTable input,#editResponseParamTable select,.tableInupt input{
     border: 1px solid #DDD;
-    border-radius: 2px;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
@@ -246,25 +253,37 @@ blockquote{
 .modal-body .container{
     max-width:100%;
 }
+
+.btn-GET, .btn-inter-1{ color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;  }
+.btn-GET:hover, .btn-inter-1:hover{  color: #ffffff; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;}
+
+
+.btn-inter-2{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;  }
+.btn-inter-2:hover{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;}
+
+.btn-POST, .btn-inter-3{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;  }
+.btn-POST:hover, .btn-inter-3:hover{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;}
+
+
+
+
 .btn-purple {
     color: #ffffff;
     background-color:#6f5499;
-    border-color: #563d7c;
 }
 .btn-purple:hover{
     color: #ffffff;
     background-color: #563d7c;
-    border-color: #4F307E;
+    opacity: 0.8;
 }
 .btn-blue {
     color: #ffffff;
     background-color:#1b809e;
-    border-color: #137491;
 }
 .btn-blue:hover{
     color: #ffffff;
     background-color: #137491;
-    border-color: #0C6984;
+    opacity: 0.8;
 }
 
 .navbar-fixed-top {

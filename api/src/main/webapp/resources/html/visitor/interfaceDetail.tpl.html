@@ -47,8 +47,7 @@
 		<span ng-bind-html="model.remark|trustHtml"></span>
 		
 		<div id="1_4">1.4 接口状态</div>
-		<span ng-if="model.status==1">可用</span>
-		<span ng-if="model.status==0">不可用</span>
+		<span ng-bind="model.statusName"></span>
 
 		<div id="1_5">1.5 返回contentType类型</div>
 		<span ng-bind="model.contentType"></span>
@@ -62,14 +61,14 @@
 			<a ng-href="{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}" target="_blank">正确数据URL</a>
 		</blockquote>
 		
-		<input type="text" class="form-control m10 input-xs dis-in-blo b0 no-b-s"
+		<input type="text" class="form-control m10 input-xs dis-in-blo no-b-s"
 		value="{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}">
 		
 		<blockquote>
 			<a ng-href="{{settings.DOMAIN}}/mock/falseExam.do?id={{model.id}}" target="_blank">错误数据URL</a>
 		</blockquote>
 		
-		<input type="text" class="form-control m10 input-xs dis-in-blo b0 no-b-s"
+		<input type="text" class="form-control m10 input-xs dis-in-blo no-b-s"
 		value="{{settings.DOMAIN}}/mock/falseExam.do?id={{model.id}}">
 					
 		
@@ -77,7 +76,7 @@
 		{{model.method|removeLast}}
 		
 		<div id="2_4">2.4 请求头说明</div>
-		<span ng-if="headers!=null&&headers.length==0" >
+		<span ng-if="headers==null || headers.length==0" >
 			无
 		</span>
 		<table class="table table-bordered" ng-if="headers!=null && headers.length>0" >
@@ -133,7 +132,7 @@
 		
 		
 		<!-- 如果不判断formParams!=null,当formParams还没加载成功,hasRequestHeader就会被调用导致报错 -->
-		<span ng-if="formParams!=null && formParams.length==0" >
+		<span ng-if="formParams == null || formParams.length==0" >
 			无
 		</span>
 		

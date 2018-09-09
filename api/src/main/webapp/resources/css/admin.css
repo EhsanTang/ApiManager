@@ -19,6 +19,15 @@ body{
     border: 1px solid #e0e0e0;
 }
 
+.input-no-border > tbody > tr > td{
+    padding: 0px!important;
+}
+.input-no-border input, .input-no-border select{
+    border: 0px!important;
+    font-size: 12px;
+    border-radius: 0px;
+}
+
 .text {
     border: 1px solid #ccc;
     height: 1000px;

@@ -9,6 +9,7 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
 import cn.crap.service.SettingService;
 import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
@@ -111,6 +112,7 @@ public class MainController extends BaseController {
                 settingMap.put(setting.getKey(), setting.getValue());
             }
         }
+        settingMap.put(IConst.DOMAIN, config.getDomain());
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);

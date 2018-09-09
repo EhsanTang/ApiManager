@@ -69,7 +69,9 @@
                     <td>{{item.interfaceName}}</td>
                     <td>{{item.fullUrl}}</td>
                     <td>{{item.version}}</td>
-                    <td>{{item.method}}</td>
+                    <td>
+                        <button class="btn btn-xs btn-default f12 p2 btn-{{item.method}}">{{item.method}}</button>
+                    </td>
                     <td>{{item.updateTimeStr}}</td>
                     <td class="tc">
                         <a class="f12 main-color mr10 cursor"

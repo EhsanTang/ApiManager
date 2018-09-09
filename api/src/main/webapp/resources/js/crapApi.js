@@ -33,10 +33,6 @@ function addOneField(name, type, notNull,flag, def, remark, rowNum) {
 						+"</tr>");
 }
 
-function deleteOneParam(nowTr) {
-	$(nowTr).parent().parent().remove();
-}
-
 function upward(nowTr){
 	var $tr = $(nowTr).parent().parent(); 
     if ($tr.index() != 0) { 
@@ -60,29 +56,39 @@ function unescapeAndDecode(name){
 	}
 	return "";
 }
-function getParamFromTable(tableId) {
+function getParamFromTable(tableId, requiredName) {
 	var json = "[";
 	var i = 0;
 	var j = 0;
 	$('#' + tableId).find('tbody').find('tr').each(function() {
-		i = i + 1;
-		j = 0;
-		if (i != 1)
-			json += ","
-		json += "{";
-		$(this).find('td').find('input').each(function(i, val) {
-				j = j + 1;
-				if (j != 1)
-					json += ",";
-				json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
-		});
-		$(this).find('td').find('select').each(function(i, val) {
-			j = j + 1;
-			if (j != 1)
-				json += ",";
-			json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
-	});
-		json += "}"
+        // 查看必填项是否填写，没填写则忽略该行
+        var ignore = false;
+        $(this).find('td').find('input').each(function(i, val) {
+            if (val.name == requiredName && val.value == ''){
+                ignore = true;
+            }
+        });
+        if (!ignore){
+            i = i + 1;
+            j = 0;
+            if (i != 1) {
+                json += ",";
+            }
+            json += "{";
+            $(this).find('td').find('input').each(function(i, val) {
+                j = j + 1;
+                if (j != 1)
+                    json += ",";
+                json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
+            });
+            $(this).find('td').find('select').each(function(i, val) {
+                j = j + 1;
+                if (j != 1)
+                    json += ",";
+                json += "\"" + val.name + "\":\"" + replaceAll(val.value,'"','\\"') + "\""
+            });
+            json += "}"
+        }
 	});
 	json += "]";
 	return json;

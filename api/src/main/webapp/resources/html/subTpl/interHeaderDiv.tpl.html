@@ -1,11 +1,12 @@
 <div class="h40 lh40 pl20 f16 adorn-bl-3">
     <a href="https://baike.baidu.com/item/http%E8%AF%B7%E6%B1%82%E5%A4%B4/6623287" target="_blank">请求头</a>
-    <span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
+    <span class="p0 f14 cursor mr20" onclick="tooltip('header-tip')" id="header-tip" data-toggle="tooltip" data-placement="right"
           title="「Accept-Encoding：浏览器能够进行解码的数据编码方式，比如gzip；Accept：浏览器可接受的MIME类型 等其他」">
         <i class="iconfont adorn-color mt-3">&#xe63e;</i>
     </span>
 </div>
-	<table class="table-bordered tl input-no-border mb0 w of-h" id="editHeaderTable">
+<div class="of-h">
+	<table class="table-bordered tl input-no-border mb0 w" id="editHeaderTable">
         <thead>
             <tr class="BGF5 fw500">
                 <td class="p10">名称</td>
@@ -17,17 +18,19 @@
             </tr>
         </thead>
         <tbody>
-			<tr ng-repeat="item in headerList track by $index"  index="{{$index}}"
-                ng-class="{true: 'last', false: ''}[headerList.length == $index + 1]">
+			<tr ng-repeat="item in headerList"
+                ng-class="{true: 'last BGFFF', false: 'BGFFF'}[headerList.length == $index + 1]">
 				<td>
                     <input class="form-control C000 fw500" type="text" name="name" autocomplete="off"
                            ng-keyup="addOneParam($event,'headerList')"
-                           ng-model="item.name" placeholder="参数名：必填">
+                           value="{{item.name}}" placeholder="参数名：必填">
                 </td>
-				<td><select name="necessary" class="form-control">
+				<td>
+                    <select name="necessary" class="form-control">
 						<option value="true" ng-selected="item.necessary=='true'">是</option>
 						<option value="false" ng-selected="item.necessary=='false'">否</option>
-				</select></td>
+				    </select>
+                </td>
 				<td>
                     <select name="type" class="form-control">
 						<option value="string" ng-selected="item.type=='string'">string</option>
@@ -43,25 +46,25 @@
 				<td>
                     <input class="form-control C000 fw500" type="text" name="def" autocomplete="off"
                            ng-keyup="addOneParam($event,'headerList')"
-                           ng-model="item.def" placeholder="默认值">
+                           value="{{item.def}}" placeholder="默认值">
                 </td>
 				<td>
                     <input class="form-control C000 fw500" type="text" name="remark" autocomplete="off"
                            ng-keyup="addOneParam($event,'headerList')"
-                           ng-model="item.remark">
+                           value="{{item.remark}}">
                 </td>
-				<td class="tc BGFFF">
-                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default mt5"
+				<td class="tc">
+                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default"
                             ng-click="deleteOneParam($event, 'headerList', $index)">
                         <i class="iconfont text-danger">&#xe60e;</i>
                     </button>
-                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default mt5"
+                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default"
                             ng-click="insertOneParam($event, 'headerList', $index)">
                         插入
                     </button>
 
 
-                    <span class="cursor btn btn-xs btn-default mt5" style="cursor: move;"
+                    <span class="cursor btn btn-xs btn-default" style="cursor: move;"
                              ng-if="headerList.length != $index + 1">
                         <i class="iconfont">&#xe604;</i>
                     </span>
@@ -69,5 +72,6 @@
 			</tr>
         </tbody>
 	</table>
+</div>
 	<!--<button type="button" ng-click="addOneParam('headerList')"
 		class="btn btn-xs btn-success fr ml10">添加</button> -->

@@ -162,9 +162,6 @@ blockquote{
     cursor: pointer;
 }
 /************添加参数*****************/
-#editHeaderTable tr{
-    height: 34px;
-}
 #editParamTable input,#editParamTable select,#content input, #editHeaderTable select,
 #editResponseParamTable input,#editResponseParamTable select,.tableInupt input{
     border: 1px solid #DDD;

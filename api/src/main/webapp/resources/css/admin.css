@@ -19,8 +19,12 @@ body{
     border: 1px solid #e0e0e0;
 }
 
+.input-no-border > tbody > tr{
+    height: 38px;
+    line-height: 38px;
+}
 .input-no-border > tbody > tr > td{
-    padding: 0px!important;
+    padding: 2px!important;
 }
 .input-no-border input, .input-no-border select{
     border: 0px!important;

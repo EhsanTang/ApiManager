@@ -94,7 +94,10 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
 
     /***********添加参数********/
     $scope.addOneParam = function($event,field){
+        //var newArray = getNewArray('editHeaderTable');
         if($($event.target).val() != ''){
+           // $rootScope[field] = [];
+            //$rootScope[field] = newArray;
             var tr = $($event.target).parent().parent();
             if( tr.hasClass("last") ){
                 $rootScope[field][$rootScope[field].length] = getOneParam();
@@ -175,37 +178,37 @@ var fixHelperModified = function(e, tr) {
         var $originals = tr.children();
         var $helper = tr.clone();
         $helper.children().each(function(index) {
-            $(this).width($originals.eq(index).width() + 2)
+            $(this).width($originals.eq(index).width() + 6)
         });
         return $helper;
     }
 var updateIndex = function(e, ui) {
 
 };
-function getNewArray(id, index) {
-    var newIndex = 0;
-    $("#"+ id).find('tr').each(function(i) {
-        if (index == $(this).attr("index")){
-            newIndex = i;
-        }
-    });
-    return newIndex;
-}
+// function getNewArray(id, index) {
+//     var newIndex = 0;
+//     $("#"+ id).find('tr').each(function(i) {
+//         if (index == $(this).attr("index")){
+//             newIndex = i;
+//         }
+//     });
+//     return newIndex;
+// }
 
-/**function getNewArray(id) {
-    var newArray = [];
-    $('#' + id).find('tbody').find('tr').each(function() {
-        var newObj=new Object();
-        $(this).find('td').find('input').each(function(i, val) {
-            newObj[val.name] = val.value;
-        });
-        $(this).find('td').find('select').each(function(i, val) {
-            newObj[val.name] = val.value;
-        });
-        newArray.push(newObj);
-    });
-    return newArray;
-}**/
+// function getNewArray(id) {
+//     var newArray = [];
+//     $('#' + id).find('tbody').find('tr').each(function() {
+//         var newObj=new Object();
+//         $(this).find('td').find('input').each(function(i, val) {
+//             newObj[val.name] = val.value;
+//         });
+//         $(this).find('td').find('select').each(function(i, val) {
+//             newObj[val.name] = val.value;
+//         });
+//         newArray.push(newObj);
+//     });
+//     return newArray;
+// }
 
 
 

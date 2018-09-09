@@ -191,6 +191,30 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             $rootScope.headerList = eval("("+$rootScope.model.header+")");
             if (isEdit) {
                 $rootScope.headerList.push(getOneParam());
+                $("#editHeaderTable tbody").sortable({
+                    placeholder : "md_move_border",//拖动某个dom之后残留在原位置的class样式名称，否则显示空白
+                    cursor: "move",
+                    axis: "y", // 只能在y轴拖拽
+                    items: "tr",                       //只是tr可以拖动
+                    opacity: 1.0,                      //拖动时，透明度为0.6
+                    revert: true,                      //释放时，增加动画
+                    update: function(event, ui) {      //更新排序之后
+                        // var tr = ui.item; //当前拖动的元素
+                        // var index = tr.attr("index"); //当前元素的顺序
+                        // var header = $rootScope.headerList.splice(index, 1);
+                        // // 新的序号计算
+                        // var newIndex = getNewArray('editHeaderTable');
+                        // $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
+                        $rootScope.$apply();
+                        //$rootScope.headerList = getNewArray('editHeaderTable');
+                        //$rootScope.$apply();
+                    }
+                });
+                $("#editHeaderTable tbody").sortable({
+                    connectToSortable : "#body",  //目标区域列表div的dom
+                    helper: fixHelperModified,
+                    stop: updateIndex
+                }).disableSelection();
             }
 
             $rootScope.responseParamList = eval("("+$rootScope.model.responseParam+")");
@@ -198,27 +222,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             if($rootScope.model.method) {// 调试页面默认显示method中第一个
                 $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
             }
-            $("#editHeaderTable tbody").sortable({
-                cursor: "move",
-                items: "tr",                       //只是tr可以拖动
-                opacity: 1.0,                      //拖动时，透明度为0.6
-                revert: true,                      //释放时，增加动画
-                update: function(event, ui) {      //更新排序之后
-                    var tr = ui.item; //当前拖动的元素
-                    var index = tr.attr("index"); //当前元素的顺序
-                    var header = $rootScope.headerList.splice(index, 1);
-                    // 新的序号计算
-                    var newIndex = getNewArray('editHeaderTable');
-                    $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
-
-                    // $rootScope.headerList = getNewArray('editHeaderTable');
-                    // $rootScope.$apply();
-                }
-            });
-            $("#editHeaderTable tbody").sortable({
-                helper: fixHelperModified,
-                stop: updateIndex
-            }).disableSelection();
         });
     };
 

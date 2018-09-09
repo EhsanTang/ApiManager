@@ -120,15 +120,15 @@
 			<!-- End:left -->
 
 			<!-- main -->
-			<div class="p0 h mah ofy-a ofx-h l250 fixed r0 ">
-					<div class="pb50">
-						<div ui-view="main" class="min-w700"></div>
-					</div>
+			<div class="p0 h mah ofy-a l250 fixed r0 ">
+                <div ui-view="main" class="min-w700 pb50"></div>
 			</div>
 			<!-- end:main -->
 		</div>
 	<script src="resources/framework/jquery-1.9.1.min.js"></script>
-	<script src="resources/framework/jquery.cookie.js"></script>
+    <!-- 加载顺序：必须在bootstrap前，否则tiptool不可用-->
+    <script src="resources/framework/jquery-ui.min-1.10.4.js"></script>
+    <script src="resources/framework/jquery.cookie.js"></script>
 	<script src="resources/framework/jquery.base64.js"></script>
 	<script charset="utf-8" src="resources/framework/wang-editor-3.1.1/wangEditor.min.js"></script>
 

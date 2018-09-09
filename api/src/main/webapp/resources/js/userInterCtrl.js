@@ -180,6 +180,8 @@ var fixHelperModified = function(e, tr) {
         $helper.children().each(function(index) {
             $(this).width($originals.eq(index).width() + 6)
         });
+        $helper.width(tr.width() + 1);
+        $helper.css("margin-left", "-1px");
         return $helper;
     }
 var updateIndex = function(e, ui) {

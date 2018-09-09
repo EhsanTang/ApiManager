@@ -193,8 +193,8 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                 $rootScope.headerList.push(getOneParam());
                 $("#editHeaderTable tbody").sortable({
                     cursor: "move",
-                    revert: true,
-                    revertDuration: 200, // 还原（revert）动画的持续时间，以毫秒计。如果 revert 选项是 false 则忽略。
+                    // revert: true,                      //释放时，增加动画
+                    // revertDuration: 200, // 还原（revert）动画的持续时间，以毫秒计。如果 revert 选项是 false 则忽略。
                     containment: "parent", // 约束拖拽范围的边界，不能超过父对象
                     delay: 100, //鼠标按下后直到拖拽开始为止的时间，以毫秒计。该选项可以防止点击在某个元素上时不必要的拖拽。
                     distance: 0, // 鼠标按下后拖拽开始前必须移动的距离，以像素计。该选项可以防止点击在某个元素上时不必要的拖拽
@@ -203,7 +203,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                     handle: "span", // 只有span才支持拖拽
                     items: "tr",                       //只是tr可以拖动
                     opacity: 1.0,                      //拖动时，透明度为0.6
-                    revert: true,                      //释放时，增加动画
                     update: function(event, ui) {      //更新排序之后
                         // var tr = ui.item; //当前拖动的元素
                         // var index = tr.attr("index"); //当前元素的顺序
@@ -211,7 +210,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                         // // 新的序号计算
                         // var newIndex = getNewArray('editHeaderTable');
                         // $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
-                        $rootScope.$apply();
+                        // $rootScope.$apply();
                         //$rootScope.headerList = getNewArray('editHeaderTable');
                         //$rootScope.$apply();
                     }

@@ -17,8 +17,7 @@ function addOneField(name, type, notNull,flag, def, remark, rowNum) {
 		var mydate = new Date();
 		rowNum = mydate.getTime();
 	}
-		$("#content")
-				.append("<tr class='BGFFF'>"
+		$("#content").append("<tr class='BGFFF'>"
 						+"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
 						+"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
 						+"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"

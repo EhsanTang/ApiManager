@@ -115,6 +115,14 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+    <choose >
+      <when test="limitStart != null and limitStart != -1 and maxResults != null and maxResults != -1" >
+        limit ${limitStart} , ${maxResults}
+      </when>
+      <when test="limitStart != null and limitStart != -1" >
+        limit ${limitStart}
+      </when>
+    </choose>
   </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.crap.model.mybatis.InterfaceCriteria" >
     select

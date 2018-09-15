@@ -63,6 +63,8 @@ public class InterfaceController extends BaseController{
 		if (!MyString.isEmpty(url)){
 			criteria.andFullUrlLike("%" + url + "%");
 		}
+		example.setLimitStart(page.getStart());
+		example.setMaxResults(page.getSize());
 
 		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(mybatisInterfaceService.selectByExampleWithBLOBs(example), null);
         page.setAllRow(mybatisInterfaceService.countByExample(example));

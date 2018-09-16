@@ -11,44 +11,21 @@ function propUpPsswordDiv(obj){
 	}
 }
 
-/****************数据库表****************/
-function addOneField(name, type, notNull,flag, def, remark, rowNum) {
-	if (!rowNum || rowNum == '') {
-		var mydate = new Date();
-		rowNum = mydate.getTime();
-	}
-		$("#content").append("<tr class='BGFFF'>"
-						+"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
-						+"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
-						+"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"
-						+"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
-						+"<td><select name='flag' class='form-control'><option value='common'"+ ( flag == 'common'  ? " selected":"") + ">普通</option><option value='primary'"+ ( flag == 'primary'  ? " selected":"") + ">主键</option><option value='foreign'"+ (flag == 'foreign' ? " selected":"") +">外键</option><option value='associate'"+ ( flag == 'associate'  ? " selected":"") + ">关联</option></select></td>"
-						+"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
-						+"<td class='cursor tc'>"
-						+		"<button class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
-                        +           "<i class='iconfont text-danger' onclick='deleteOneParam(this)'>&#xe60e;</i> "
-                        +       "</button> &nbsp;"
-						+		"<span class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
-                        +           "<i class='iconfont'>&#xea17;</i>"
-                        +       "</span>"
-						+"</td>"
-						+"</tr>");
-}
-
-function upward(nowTr){
-	var $tr = $(nowTr).parent().parent(); 
-    if ($tr.index() != 0) { 
-      $tr.fadeOut(1).fadeIn(600); 
-      $tr.prev().fadeOut(1).fadeIn(1000); 
-      $tr.prev().before($tr); 
-    } 
-}
-function downward(nowTr){
-	var $tr = $(nowTr).parent().parent(); 
-      $tr.fadeOut(1).fadeIn(600);  
-      $tr.next().fadeOut(1).fadeIn(1000); 
-      $tr.next().after($tr); 
-}
+// 数据字典改为拖动
+// function upward(nowTr){
+// 	var $tr = $(nowTr).parent().parent();
+//     if ($tr.index() != 0) {
+//       $tr.fadeOut(1).fadeIn(600);
+//       $tr.prev().fadeOut(1).fadeIn(1000);
+//       $tr.prev().before($tr);
+//     }
+// }
+// function downward(nowTr){
+// 	var $tr = $(nowTr).parent().parent();
+//       $tr.fadeOut(1).fadeIn(600);
+//       $tr.next().fadeOut(1).fadeIn(1000);
+//       $tr.next().after($tr);
+// }
 /****************End****************/
 
 function unescapeAndDecode(name){

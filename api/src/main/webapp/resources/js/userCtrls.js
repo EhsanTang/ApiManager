@@ -256,7 +256,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                     var i = 0;
                     $.each(content, function (n, value) {
                         i++;
-                        addOneField(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                        addOneDictionaryTr(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
                     });
                 }
                 $("#content tbody").sortable({

@@ -173,20 +173,6 @@ function getOneParam() {
     newObj.inUrl="false";
     return newObj;
 }
-
-var fixHelperModified = function(e, tr) {
-        var $originals = tr.children();
-        var $helper = tr.clone();
-        $helper.children().each(function(index) {
-            $(this).width($originals.eq(index).width() + 6)
-        });
-        $helper.width(tr.width() + 1);
-        $helper.css("margin-left", "-1px");
-        return $helper;
-    }
-var updateIndex = function(e, ui) {
-
-};
 // function getNewArray(id, index) {
 //     var newIndex = 0;
 //     $("#"+ id).find('tr').each(function(i) {

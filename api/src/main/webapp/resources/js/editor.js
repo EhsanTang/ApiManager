@@ -1,6 +1,10 @@
-var markdownEditor;
+/**
+ * 编辑器：富文本wang编辑器，markdown editorMe编辑器
+ * 数据字典，接口参数编辑方法
+ */
 
-function createEditorme(id, markdownContent) {
+var markdownEditor;
+function createEditorMe(id, markdownContent) {
     if (markdownEditor != null) {
         return;
     }
@@ -120,7 +124,6 @@ function initInterfaceEditor(editor, modelField) {
 }
 
 var userMarkdown = false;
-
 function changeEditor(obj, markdown) {
     $(".article-editor").removeClass("btn-main")
     $(".article-editor").addClass("btn-default")
@@ -129,7 +132,7 @@ function changeEditor(obj, markdown) {
         userMarkdown = true;
         $("#article-editor").addClass('none');
         $("#markdown-editor").removeClass('none');
-        createEditorme('markdown-editor', getRootScope().model.markdown);
+        createEditorMe('markdown-editor', getRootScope().model.markdown);
     } else {
         userMarkdown = false;
         $("#article-editor").removeClass('none');
@@ -137,4 +140,56 @@ function changeEditor(obj, markdown) {
     }
     $(obj).addClass('btn-main');
     $(obj).removeClass('btn-default');
+}
+
+/**
+ * 删除表格中的一行
+ * @param nowTr
+ */
+function deleteOneTr(nowTr) {
+    $(nowTr).parent().parent().parent().remove();
+}
+
+/**
+ * 表格拖动
+ * @param e
+ * @param tr
+ */
+var fixHelperModified = function(e, tr) {
+    var $originals = tr.children();
+    var $helper = tr.clone();
+    $helper.children().each(function(index) {
+        $(this).width($originals.eq(index).width() + 6)
+    });
+    $helper.width(tr.width() + 1);
+    $helper.css("margin-left", "-1px");
+    return $helper;
+}
+var updateIndex = function(e, ui) {};
+
+/*
+ * 数据字典方法
+ */
+/****************数据库表****************/
+function addOneDictionaryTr(name, type, notNull,flag, def, remark, rowNum) {
+    if (!rowNum || rowNum == '') {
+        var mydate = new Date();
+        rowNum = mydate.getTime();
+    }
+    $("#content").append("<tr class='BGFFF'>"
+        +"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
+        +"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
+        +"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"
+        +"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
+        +"<td><select name='flag' class='form-control'><option value='common'"+ ( flag == 'common'  ? " selected":"") + ">普通</option><option value='primary'"+ ( flag == 'primary'  ? " selected":"") + ">主键</option><option value='foreign'"+ (flag == 'foreign' ? " selected":"") +">外键</option><option value='associate'"+ ( flag == 'associate'  ? " selected":"") + ">关联</option></select></td>"
+        +"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
+        +"<td class='cursor tc'>"
+        +		"<button class=\"cursor btn btn-xs btn-default\">"
+        +           "<i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> "
+        +       "</button> &nbsp;"
+        +		"<span class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
+        +           "<i class='iconfont'>&#xea17;</i>"
+        +       "</span>"
+        +"</td>"
+        +"</tr>");
 }

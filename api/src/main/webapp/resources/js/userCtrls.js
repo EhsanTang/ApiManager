@@ -255,7 +255,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                 $("#content").find("tbody").find("tr").remove();
                 if (content != null && content != "") {
                     $.each(content, function (n, value) {
-                        addOneDictionaryTr(null, value.name, value.type, value.notNull, value.flag, value.def, value.remark);
+                        addOneDictionaryTr(null, value);
                     });
                 }
                 addOneDictionaryTr();

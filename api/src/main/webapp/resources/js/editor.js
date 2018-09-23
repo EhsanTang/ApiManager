@@ -188,7 +188,7 @@ var dictOperateHtml = "<td class='cursor tc'>" +
  * 数据字典方法
  */
 /****************数据库表****************/
-function addOneDictionaryTr(target, name, type, notNull,flag, def, remark) {
+function addOneDictionaryTr(target, model) {
     // 自动添加下一行
     if (target){
         if ( $(target).val() == ''){
@@ -200,14 +200,16 @@ function addOneDictionaryTr(target, name, type, notNull,flag, def, remark) {
             return;
         }
     }
-
+    if (!model){
+        model = new Object();
+    }
     $("#content").append("<tr>"
-        + replaceAll(dictNameHtml, 'DICT_NAME', name)
-        + replaceAll(dictTypeHtml, 'DICT_TYPE', type)
-        + replaceAll(dictNotNullHtml, notNull+'_select', ' selected ')
-        + replaceAll(dictDefhtml, 'DICT_DEF', def)
-        + replaceAll(dictFlagHtml, flag + '_select', ' selected ')
-        + replaceAll(dictRemarkHtml, 'DICT_REMARK', remark)
+        + replaceAll(dictNameHtml, 'DICT_NAME', model.name)
+        + replaceAll(dictTypeHtml, 'DICT_TYPE', model.type)
+        + replaceAll(dictNotNullHtml, model.notNull+'_select', ' selected ')
+        + replaceAll(dictDefhtml, 'DICT_DEF', model.def)
+        + replaceAll(dictFlagHtml, model.flag + '_select', ' selected ')
+        + replaceAll(dictRemarkHtml, 'DICT_REMARK', model.remark)
         + dictOperateHtml
         +"</tr>");
 }

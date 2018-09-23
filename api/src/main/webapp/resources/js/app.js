@@ -406,14 +406,25 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 
 	 // 添加接口
     $rootScope.addInterfaceCallBack= function () {
-        var json = getParamFromTable('editHeaderTable', 'name');
+        var headJson = getParamFromTable('editHeaderTable', 'name');
         try{
-            eval("("+json+")");
+            eval("("+headJson+")");
         }catch(e){
-            alert("输入有误，json解析出错："+e);
+            alert("请求头输入有误，json解析出错："+e);
             return;
         }
-        $rootScope.model.header = json;
+        $rootScope.model.header = headJson;
+
+        var responseJson = getParamFromTable('editResponseParamTable', 'name');
+
+        try{
+            eval("("+responseJson+")");
+        }catch(e){
+            alert("返回参数输入有误，json解析出错："+e);
+            return;
+        }
+        $rootScope.model.responseParam = responseJson;
+
     }
 });
 

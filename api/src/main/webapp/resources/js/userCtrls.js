@@ -189,44 +189,22 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
 
             if (isEdit) {
+                var responseList = eval("("+$rootScope.model.responseParam+")");
                 var headerList = eval("("+$rootScope.model.header+")");
                 $("#editHeaderTable").find("tbody").find("tr").remove();
+                $("#editResponseParamTable").find("tbody").find("tr").remove();
                 $.each(headerList, function (n, value) {
                     addOneInterHeadTr(null, value);
                 });
-                addOneInterHeadTr();
-                $("#editHeaderTable tbody").sortable({
-                    cursor: "move",
-                    // revert: true,                      //释放时，增加动画
-                    // revertDuration: 200, // 还原（revert）动画的持续时间，以毫秒计。如果 revert 选项是 false 则忽略。
-                    containment: "parent", // 约束拖拽范围的边界，不能超过父对象
-                    delay: 100, //鼠标按下后直到拖拽开始为止的时间，以毫秒计。该选项可以防止点击在某个元素上时不必要的拖拽。
-                    distance: 0, // 鼠标按下后拖拽开始前必须移动的距离，以像素计。该选项可以防止点击在某个元素上时不必要的拖拽
-                    cancel: "button", // 指令的空间不支持拖拽，可以是class、id等
-                    axis: "y", // 只能在y轴拖拽
-                    handle: "span", // 只有span才支持拖拽
-                    items: "tr",                       //只是tr可以拖动
-                    opacity: 1.0,                      //拖动时，透明度为0.6
-                    update: function(event, ui) {      //更新排序之后
-                        // var tr = ui.item; //当前拖动的元素
-                        // var index = tr.attr("index"); //当前元素的顺序
-                        // var header = $rootScope.headerList.splice(index, 1);
-                        // // 新的序号计算
-                        // var newIndex = getNewArray('editHeaderTable');
-                        // $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
-                        // $rootScope.$apply();
-                        //$rootScope.headerList = getNewArray('editHeaderTable');
-                        //$rootScope.$apply();
-                    }
+                $.each(responseList, function (n, value) {
+                    addOneInterRespTr(null, value);
                 });
-                $("#editHeaderTable tbody").sortable({
-                    connectToSortable : "#body",  //目标区域列表div的dom
-                    helper: fixHelperModified,
-                    stop: updateIndex
-                }).disableSelection();
+                addOneInterRespTr();
+                addOneInterHeadTr();
+                initDragTable("editHeaderTable");
+                initDragTable("editResponseParamTable");
             }
 
-            $rootScope.responseParamList = eval("("+$rootScope.model.responseParam+")");
             $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
             if($rootScope.model.method) {// 调试页面默认显示method中第一个
                 $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
@@ -261,21 +239,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                     addOneDictionaryTr(null, value);
                 });
                 addOneDictionaryTr();
-                $("#content tbody").sortable({
-                    cursor: "move",
-                    containment: "parent", // 约束拖拽范围的边界，不能超过父对象
-                    delay: 100, //鼠标按下后直到拖拽开始为止的时间，以毫秒计。该选项可以防止点击在某个元素上时不必要的拖拽。
-                    distance: 0, // 鼠标按下后拖拽开始前必须移动的距离，以像素计。该选项可以防止点击在某个元素上时不必要的拖拽
-                    cancel: "button", // 指令的空间不支持拖拽，可以是class、id等
-                    axis: "y", // 只能在y轴拖拽
-                    handle: "span", // 只有span才支持拖拽
-                    items: "tr",                       //只有tr可以拖动
-                    opacity: 1.0                    //拖动时，透明度为0.6
-                });
-                $("#content tbody").sortable({
-                    helper: fixHelperModified,
-                    stop: updateIndex
-                }).disableSelection();
+                initDragTable("content");
             }else if($rootScope.model.content!=''){
                 $rootScope.model.dictionaries = eval("("+$rootScope.model.content+")");
             }

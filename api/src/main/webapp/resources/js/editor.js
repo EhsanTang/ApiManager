@@ -141,6 +141,37 @@ function changeEditor(obj, markdown) {
     $(obj).removeClass('btn-default');
 }
 /********************** end:markdown 富文本 **********************/
+function initDragTable(id) {
+    $("#" + id + " tbody").sortable({
+        cursor: "move",
+        // revert: true,                      //释放时，增加动画
+        // revertDuration: 200, // 还原（revert）动画的持续时间，以毫秒计。如果 revert 选项是 false 则忽略。
+        containment: "parent", // 约束拖拽范围的边界，不能超过父对象
+        delay: 100, //鼠标按下后直到拖拽开始为止的时间，以毫秒计。该选项可以防止点击在某个元素上时不必要的拖拽。
+        distance: 0, // 鼠标按下后拖拽开始前必须移动的距离，以像素计。该选项可以防止点击在某个元素上时不必要的拖拽
+        cancel: "button", // 指令的空间不支持拖拽，可以是class、id等
+        axis: "y", // 只能在y轴拖拽
+        handle: "span", // 只有span才支持拖拽
+        items: ".drag",                       //只是tr可以拖动
+        opacity: 1.0,                      //拖动时，透明度为0.6
+        update: function(event, ui) {      //更新排序之后
+            // var tr = ui.item; //当前拖动的元素
+            // var index = tr.attr("index"); //当前元素的顺序
+            // var header = $rootScope.headerList.splice(index, 1);
+            // // 新的序号计算
+            // var newIndex = getNewArray('editHeaderTable');
+            // $rootScope.headerList.splice(newIndex - 1, 0, header[0]);
+            // $rootScope.$apply();
+            //$rootScope.headerList = getNewArray('editHeaderTable');
+            //$rootScope.$apply();
+        }
+    });
+    $("#" + id + " tbody").sortable({
+        connectToSortable : "#body",  //目标区域列表div的dom
+        helper: fixHelperModified,
+        stop: updateIndex
+    }).disableSelection()
+}
 /**
  * 表格拖动
  * @param e
@@ -215,7 +246,7 @@ function addOneDictionaryTr(target, model) {
     if (!model){
         model = new Object();
     }
-    $("#content").append("<tr>"
+    $("#content").append("<tr class='drag'>"
         + replaceAll(dictNameHtml, 'DICT_NAME', model.name)
         + replaceAll(dictTypeHtml, 'DICT_TYPE', model.type)
         + replaceAll(dictNotNullHtml, model.notNull+'_select', ' selected ')
@@ -227,6 +258,7 @@ function addOneDictionaryTr(target, model) {
 }
 
 /************** 接口 ******************/
+// 头信息
 var interHeadNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_HEAD_NAME' placeholder='参数名必填，或者将被过滤' autocomplete='off' " +
     "onkeyup='addOneInterHeadTr(this)'></td>";
 var interHeadNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
@@ -255,7 +287,7 @@ function addOneInterHeadTr(target, model) {
     if (!model){
         model = new Object();
     }
-    $("#editHeaderTable").append("<tr>"
+    $("#editHeaderTable").append("<tr class='drag'>"
         + replaceAll(interHeadNameHtml, 'INTER_HEAD_NAME', model.name)
         + replaceAll(interHeadNecessaryHtml, model.necessary+'_select', ' selected ')
         + replaceAll(interHeadTypeHtml, model.type+'_select', ' selected ')
@@ -265,9 +297,46 @@ function addOneInterHeadTr(target, model) {
         +"</tr>");
 }
 
+// 返回字段
+var interRespNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' autocomplete='off' value='INTER_RESP_NAME' onkeyup='addOneInterRespTr(this)' placeholder='参数名必填，或者会被过滤'></td>";
+var interRespType = "<td><select name='type' class='form-control' name='type'>"
+    + "<option value='string' string_select>string</option>"
+    + "<option value='number' number_select>number</option>"
+    + "<option value='boolean' boolean_select>boolean</option>"
+    + "<option value='object' object_select>object</option>"
+    + "<option value='array' array_select>array</option>"
+    + "<option value='array[number]' array[number]_select>array[number]</option>"
+    + "<option value='array[boolean]' array[boolean]_select>array[boolean]</option>"
+    + "<option value='array[string]' array[string]_select>array[string]</option>"
+    + "<option value='array[object]' array[string]_select>array[object]</option>"
+    + "</select> </td>";
+var interRespNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
+    + "<option value='true' true_select>是</option>"
+    + "<option value='false' false_select>否</option>"
+    + "</select></td>";
+var interRespRemarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='INTER_RESP_REMARK' onkeyup='addOneInterRespTr(this)'></td> ";
+var interRespOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
+
+function addOneInterRespTr(target, model) {
+    // 自动添加下一行
+    if (!isLast(target, model)){
+        return;
+    }
+    if (!model){
+        model = new Object();
+    }
+    $("#editResponseParamTable").append("<tr class='drag'>"
+        + replaceAll(interRespNameHtml, 'INTER_RESP_NAME', model.name)
+        + replaceAll(interRespNecessaryHtml, model.necessary+'_select', ' selected ')
+        + replaceAll(interRespType, model.type+'_select', ' selected ')
+        + replaceAll(interRespRemarkHtml, 'INTER_RESP_REMARK', model.remark)
+        + interRespOperateHtml
+        +"</tr>");
+}
+
 // 接口头信息
 
 /**if (!rowNum || rowNum == '') {
         var mydate = new Date();
         rowNum = mydate.getTime();
-    }**/
+}**/

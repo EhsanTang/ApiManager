@@ -38,10 +38,6 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
         		}
     		}
     		
-    	}else if(tableId=='editResponseParamTable'){
-    		$rootScope.model.responseParams = eval("("+item.responseParam+")");
-    	}else if(tableId=='editHeaderTable'){
-    		$rootScope.model.headers = eval("("+item.header+")");
     	}else if(tableId=='eparamRemarkTable'){
     		$rootScope.model.paramRemarks = eval("("+item.paramRemark+")");
     	}
@@ -59,25 +55,6 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
     			return;
     		}
     		item.param = "form="+json	
-    	}
-    	else if(type=="responseParam"){
-    		var json = getParamFromTable('editResponseParamTable');
-    		try{
-       		 eval("("+json+")");
-       		}catch(e){
-       			alert("输入有误，json解析出错："+e);
-       			return;
-       		}
-    		item.responseParam = json;
-    	}else if(type=="header"){
-    		var json = getParamFromTable('editHeaderTable');
-    		try{
-       		 eval("("+json+")");
-       		}catch(e){
-       			alert("输入有误，json解析出错："+e);
-       			return;
-       		}
-    		item.header = json;
     	}else if(type=="paramRemark"){
     		var json = getParamFromTable('eparamRemarkTable');
     		try{

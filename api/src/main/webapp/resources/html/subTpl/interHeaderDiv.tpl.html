@@ -17,61 +17,9 @@
                 <td class="w100 tc p10">操作</td>
             </tr>
         </thead>
-        <tbody>
-			<tr ng-repeat="item in headerList"
-                ng-class="{true: 'last BGFFF', false: 'BGFFF'}[headerList.length == $index + 1]">
-				<td>
-                    <input class="form-control C000 fw500" type="text" name="name" autocomplete="off"
-                           ng-keyup="addOneParam($event,'headerList')"
-                           value="{{item.name}}" placeholder="参数名：必填">
-                </td>
-				<td>
-                    <select name="necessary" class="form-control">
-						<option value="true" ng-selected="item.necessary=='true'">是</option>
-						<option value="false" ng-selected="item.necessary=='false'">否</option>
-				    </select>
-                </td>
-				<td>
-                    <select name="type" class="form-control">
-						<option value="string" ng-selected="item.type=='string'">string</option>
-						<option value="int" ng-selected="item.type=='int'">int</option>
-						<option value="float" ng-selected="item.type=='float'">float</option>
-						<option value="long" ng-selected="item.type=='long'">long</option>
-						<option value="byte" ng-selected="item.type=='byte'">byte</option>
-						<option value="double" ng-selected="item.type=='double'">double</option>
-						<option value="boolean" ng-selected="item.type=='boolean'">boolean</option>
-						<option value="file" ng-selected="item.type=='file'">file</option>
-				    </select>
-                </td>
-				<td>
-                    <input class="form-control C000 fw500" type="text" name="def" autocomplete="off"
-                           ng-keyup="addOneParam($event,'headerList')"
-                           value="{{item.def}}" placeholder="默认值">
-                </td>
-				<td>
-                    <input class="form-control C000 fw500" type="text" name="remark" autocomplete="off"
-                           ng-keyup="addOneParam($event,'headerList')"
-                           value="{{item.remark}}">
-                </td>
-				<td class="tc">
-                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default"
-                            ng-click="deleteOneParam($event, 'headerList', $index)">
-                        <i class="iconfont text-danger">&#xe60e;</i>
-                    </button>
-                    <button ng-if="headerList.length != $index + 1" type="button" class="cursor btn btn-xs btn-default"
-                            ng-click="insertOneParam($event, 'headerList', $index)">
-                        插入
-                    </button>
-
-
-                    <span class="cursor btn btn-xs btn-default" style="cursor: move;"
-                             ng-if="headerList.length != $index + 1">
-                        <i class="iconfont">&#xea17;</i>
-                    </span>
-                </td>
-			</tr>
-        </tbody>
+        <tbody></tbody>
 	</table>
+    <div onclick="addOneInterHeadTr()" class="main-color fr cursor pr15 mt10"
+         title="添加一行"><i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行</div>
+    <div class="cb"></div>
 </div>
-	<!--<button type="button" ng-click="addOneParam('headerList')"
-		class="btn btn-xs btn-success fr ml10">添加</button> -->

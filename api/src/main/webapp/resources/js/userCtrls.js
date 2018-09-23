@@ -188,9 +188,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                 $rootScope.formParamList = null;
             }
 
-            $rootScope.headerList = eval("("+$rootScope.model.header+")");
             if (isEdit) {
-                $rootScope.headerList.push(getOneParam());
+                var headerList = eval("("+$rootScope.model.header+")");
+                $("#editHeaderTable").find("tbody").find("tr").remove();
+                $.each(headerList, function (n, value) {
+                    addOneInterHeadTr(null, value);
+                });
+                addOneInterHeadTr();
                 $("#editHeaderTable tbody").sortable({
                     cursor: "move",
                     // revert: true,                      //释放时，增加动画
@@ -253,11 +257,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
                 var content = eval("(" + $rootScope.model.content + ")");
                 $("#content").find("tbody").find("tr").remove();
-                if (content != null && content != "") {
-                    $.each(content, function (n, value) {
-                        addOneDictionaryTr(null, value);
-                    });
-                }
+                $.each(content, function (n, value) {
+                    addOneDictionaryTr(null, value);
+                });
                 addOneDictionaryTr();
                 $("#content tbody").sortable({
                     cursor: "move",

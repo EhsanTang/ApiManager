@@ -92,28 +92,6 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
 		$("#"+targetId).removeClass('none');
     };
 
-    /***********添加参数********/
-    $scope.addOneParam = function($event,field){
-        //var newArray = getNewArray('editHeaderTable');
-        if($($event.target).val() != ''){
-           // $rootScope[field] = [];
-            //$rootScope[field] = newArray;
-            var tr = $($event.target).parent().parent();
-            if( tr.hasClass("last") ){
-                $rootScope[field][$rootScope[field].length] = getOneParam();
-                tr.removeClass("last");
-            }
-        }
-    }
-    $scope.insertOneParam = function($event,field, index){
-        var tr = $($event.target).parent().parent();
-        $rootScope[field].splice(index + 1, 0, getOneParam());
-    }
-    $scope.deleteOneParam = function($event, field, index) {
-        $rootScope[field].splice(index,1);
-        var i;
-    }
-
     /***********添加嵌套参数**************/
     $scope.addOneParamByParent = function(field,deep,parentIndex){
     	var newObj=new Object();
@@ -165,14 +143,6 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
     /****************End:返回参数***************/
 });
 
-function getOneParam() {
-    var newObj=new Object();
-    newObj.deep=0;
-    newObj.type="string";
-    newObj.necessary="true";
-    newObj.inUrl="false";
-    return newObj;
-}
 // function getNewArray(id, index) {
 //     var newIndex = 0;
 //     $("#"+ id).find('tr').each(function(i) {

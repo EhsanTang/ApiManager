@@ -167,7 +167,33 @@ var updateIndex = function(e, ui) {};
 function deleteOneTr(nowTr) {
     $(nowTr).parent().parent().parent().remove();
 }
+
+/**
+ * 判断是最后一个tr
+ * @param target
+ * @param model
+ * @returns {boolean}
+ */
+function isLast(target, model) {
+    if (target){
+        if ( $(target).val() == ''){
+            return false;
+        }
+        var tr = $(target).parent().parent();
+        var totalTrNum = tr.parent().children().length;
+        if( tr.index() + 1 != totalTrNum){
+            return false;
+        }
+    }
+    return true;
+}
 /********************** end: 接口、表格公用编辑方法 ************/
+var deleteButton = "<button class='cursor btn btn-xs btn-default'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
+var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>";
+/*
+ * 数据字典方法
+ */
+/**************** 数据库表 ****************/
 var dictNameHtml = "<td><input class='form-control' autocomplete='off' type='text' name='name' value='DICT_NAME' placeholder='必填，不填将被过滤' onkeyup='addOneDictionaryTr(this)'></td>";
 var dictTypeHtml = "<td><input class='form-control' type='text' name='type' value='DICT_TYPE' placeholder='类型'></td>";
 var dictNotNullHtml = "<td><select name='notNull' class='form-control'>" +
@@ -179,26 +205,12 @@ var dictFlagHtml = "<td><select name='flag' class='form-control'>" +
     "<option value='foreign' foreign_select>外键</option><option value='associate' associate_select>关联</option>" +
     "</select></td>";
 var dictRemarkHtml = "<td><input class='form-control' autocomplete='off' type='text' name='remark' value='DICT_REMARK' placeholder='备注' onkeyup='addOneDictionaryTr(this)'></td>";
-var dictOperateHtml = "<td class='cursor tc'>" +
-    "<button class='cursor btn btn-xs btn-default'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button> &nbsp;" +
-    "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>" +
-    "</td>"
+var dictOperateHtml = "<td class='cursor tc'>" + deleteButton + "&nbsp;" + moverSpan + "</td>"
 
-/*
- * 数据字典方法
- */
-/****************数据库表****************/
 function addOneDictionaryTr(target, model) {
     // 自动添加下一行
-    if (target){
-        if ( $(target).val() == ''){
-            return;
-        }
-        var tr = $(target).parent().parent();
-        var totalTrNum = tr.parent().children().length;
-        if( tr.index() + 1 != totalTrNum){
-            return;
-        }
+    if (!isLast(target, model)){
+        return;
     }
     if (!model){
         model = new Object();
@@ -214,6 +226,46 @@ function addOneDictionaryTr(target, model) {
         +"</tr>");
 }
 
+/************** 接口 ******************/
+var interHeadNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_HEAD_NAME' placeholder='参数名必填，或者将被过滤' autocomplete='off' " +
+    "onkeyup='addOneInterHeadTr(this)'></td>";
+var interHeadNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
+    + "<option value='true' true_select>是</option>"
+    + "<option value='false' false_select>否</option>"
+    + "</select></td>";
+var interHeadTypeHtml = "<td> <select name='type' class='form-control'>"
+    + "<option value='string' string_select>string</option>"
+    + "<option value='int' int_select>int</option>"
+    + "<option value='float' float_select>float</option>"
+    + "<option value='long' long_select>long</option>"
+    + "<option value='byte' byte_select>byte</option>"
+    + "<option value='double' double_select>double</option>"
+    + "<option value='boolean' boolean_select>boolean</option>"
+    + "<option value='file' file_select>file</option>"
+    + "</select> </td>";
+var interHeadDefHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup='addOneInterHeadTr(this)' value='INTER_HEAD_DEF' placeholder='默认值'></td>";
+var interHeadRemarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='INTER_HEAD_REMARK' onkeyup='addOneInterHeadTr(this)'></td> ";
+var interHeadOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
+
+function addOneInterHeadTr(target, model) {
+    // 自动添加下一行
+    if (!isLast(target, model)){
+        return;
+    }
+    if (!model){
+        model = new Object();
+    }
+    $("#editHeaderTable").append("<tr>"
+        + replaceAll(interHeadNameHtml, 'INTER_HEAD_NAME', model.name)
+        + replaceAll(interHeadNecessaryHtml, model.necessary+'_select', ' selected ')
+        + replaceAll(interHeadTypeHtml, model.type+'_select', ' selected ')
+        + replaceAll(interHeadDefHtml, 'INTER_HEAD_DEF', model.def)
+        + replaceAll(interHeadRemarkHtml, 'INTER_HEAD_REMARK', model.remark)
+        + interHeadOperateHtml
+        +"</tr>");
+}
+
+// 接口头信息
 
 /**if (!rowNum || rowNum == '') {
         var mydate = new Date();

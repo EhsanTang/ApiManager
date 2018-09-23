@@ -13,12 +13,12 @@
 				<td  class="w50">标识</td>
 				<td  class="w200">注释</td>
 			</tr>
-			<tr ng-repeat="item in dictionary"  class="{{item.flag|directoryBG}}">
+			<tr ng-repeat="item in dictionary"  class="{{item.flag|myColor}}">
 				<td>{{item.name}}</td>
 				<td>{{item.type}}</td>
 				<td>{{item.notNull=='true'?'是':'否'}}</td>
 				<td>{{item.def}}</td>
-				<td>{{item.flag|directoryFlagName}}</td>
+				<td>{{item.flag|toChinese}}</td>
 				<td>{{item.remark}}</td>
 			</tr>
 	</table>

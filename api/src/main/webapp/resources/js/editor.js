@@ -2,7 +2,6 @@
  * 编辑器：富文本wang编辑器，markdown editorMe编辑器
  * 数据字典，接口参数编辑方法
  */
-
 var markdownEditor;
 function createEditorMe(id, markdownContent) {
     if (markdownEditor != null) {
@@ -141,15 +140,7 @@ function changeEditor(obj, markdown) {
     $(obj).addClass('btn-main');
     $(obj).removeClass('btn-default');
 }
-
-/**
- * 删除表格中的一行
- * @param nowTr
- */
-function deleteOneTr(nowTr) {
-    $(nowTr).parent().parent().parent().remove();
-}
-
+/********************** end:markdown 富文本 **********************/
 /**
  * 表格拖动
  * @param e
@@ -166,30 +157,63 @@ var fixHelperModified = function(e, tr) {
     return $helper;
 }
 var updateIndex = function(e, ui) {};
+/********************** end:表格拖动 ********************/
+
+/**********************接口、表格公用编辑方法 ************/
+/**
+ * 删除表格中的一行
+ * @param nowTr
+ */
+function deleteOneTr(nowTr) {
+    $(nowTr).parent().parent().parent().remove();
+}
+/********************** end: 接口、表格公用编辑方法 ************/
+var dictNameHtml = "<td><input class='form-control' autocomplete='off' type='text' name='name' value='DICT_NAME' placeholder='必填，不填将被过滤' onkeyup='addOneDictionaryTr(this)'></td>";
+var dictTypeHtml = "<td><input class='form-control' type='text' name='type' value='DICT_TYPE' placeholder='类型'></td>";
+var dictNotNullHtml = "<td><select name='notNull' class='form-control'>" +
+    "<option value='true' true_select>true</option><option value='false' false_select>false</option>" +
+    "</select></td>";
+var dictDefhtml = "<td><input class='form-control' autocomplete='off' type='text' name='def' value='DICT_DEF' placeholder='默认值' onkeyup='addOneDictionaryTr(this)'></td>";
+var dictFlagHtml = "<td><select name='flag' class='form-control'>" +
+    "<option value='common' common_select>普通</option><option value='primary' primary_select>主键</option>" +
+    "<option value='foreign' foreign_select>外键</option><option value='associate' associate_select>关联</option>" +
+    "</select></td>";
+var dictRemarkHtml = "<td><input class='form-control' autocomplete='off' type='text' name='remark' value='DICT_REMARK' placeholder='备注' onkeyup='addOneDictionaryTr(this)'></td>";
+var dictOperateHtml = "<td class='cursor tc'>" +
+    "<button class='cursor btn btn-xs btn-default'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button> &nbsp;" +
+    "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>" +
+    "</td>"
 
 /*
  * 数据字典方法
  */
 /****************数据库表****************/
-function addOneDictionaryTr(name, type, notNull,flag, def, remark, rowNum) {
-    if (!rowNum || rowNum == '') {
-        var mydate = new Date();
-        rowNum = mydate.getTime();
+function addOneDictionaryTr(target, name, type, notNull,flag, def, remark) {
+    // 自动添加下一行
+    if (target){
+        if ( $(target).val() == ''){
+            return;
+        }
+        var tr = $(target).parent().parent();
+        var totalTrNum = tr.parent().children().length;
+        if( tr.index() + 1 != totalTrNum){
+            return;
+        }
     }
-    $("#content").append("<tr class='BGFFF'>"
-        +"<td><input class='form-control' type='text' name='name' value='"+ name + "' placeholder=\"字段名\"></td>"
-        +"<td><input class='form-control' type='text' name='type' value='"+ type + "' placeholder=\"类型\"></td>"
-        +"<td><select name='notNull' class='form-control'><option value='true'"+ (notNull=='true' ? " selected":"") + ">true</option><option value='false'"+ (notNull=='true' ? "":" selected") +">false</option></select></td>"
-        +"<td><input class='form-control' type='text' name='def' value='"+ def + "' placeholder=\"默认值\"></td>"
-        +"<td><select name='flag' class='form-control'><option value='common'"+ ( flag == 'common'  ? " selected":"") + ">普通</option><option value='primary'"+ ( flag == 'primary'  ? " selected":"") + ">主键</option><option value='foreign'"+ (flag == 'foreign' ? " selected":"") +">外键</option><option value='associate'"+ ( flag == 'associate'  ? " selected":"") + ">关联</option></select></td>"
-        +"<td><input class='form-control' type='text' name='remark' value='"+ remark + "' placeholder=\"注释\"></td>"
-        +"<td class='cursor tc'>"
-        +		"<button class=\"cursor btn btn-xs btn-default\">"
-        +           "<i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> "
-        +       "</button> &nbsp;"
-        +		"<span class=\"cursor btn btn-xs btn-default\" style=\"cursor: move;\">"
-        +           "<i class='iconfont'>&#xea17;</i>"
-        +       "</span>"
-        +"</td>"
+
+    $("#content").append("<tr>"
+        + replaceAll(dictNameHtml, 'DICT_NAME', name)
+        + replaceAll(dictTypeHtml, 'DICT_TYPE', type)
+        + replaceAll(dictNotNullHtml, notNull+'_select', ' selected ')
+        + replaceAll(dictDefhtml, 'DICT_DEF', def)
+        + replaceAll(dictFlagHtml, flag + '_select', ' selected ')
+        + replaceAll(dictRemarkHtml, 'DICT_REMARK', remark)
+        + dictOperateHtml
         +"</tr>");
 }
+
+
+/**if (!rowNum || rowNum == '') {
+        var mydate = new Date();
+        rowNum = mydate.getTime();
+    }**/

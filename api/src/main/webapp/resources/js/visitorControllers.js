@@ -40,32 +40,6 @@ visitorModule.filter("decodeURL",function($sce){
 	 } ;
 });
 
-// 数据库表flag转中文
-visitorModule.filter("directoryFlagName",function(){
-	return function (value) {
-		if(value=='primary')
-			return "主键";
-		else if(value=='foreign')
-			return "外键";
-		else if(value=='associate')
-			return "关联";
-		else
-			return "普通";
-	}
-});
-// 背景色
-visitorModule.filter("directoryBG",function(){
-	return function (value) {
-		if(value=='primary')
-			return "bg-danger";
-		else if(value=='foreign')
-			return "bg-success";
-		else if(value=='associate')
-			return "bg-info";
-		else
-			return "";
-	}
-});
 /***
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据

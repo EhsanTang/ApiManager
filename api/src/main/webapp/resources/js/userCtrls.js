@@ -245,20 +245,20 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
-            if (!$rootScope.model.content) {
-                return;
-            }
             // 编辑
             if (isEdit){
+                if (!$rootScope.model.content) {
+                    $rootScope.model.content = '{}';
+                }
+
                 var content = eval("(" + $rootScope.model.content + ")");
                 $("#content").find("tbody").find("tr").remove();
                 if (content != null && content != "") {
-                    var i = 0;
                     $.each(content, function (n, value) {
-                        i++;
-                        addOneDictionaryTr(value.name, value.type, value.notNull, value.flag, value.def, value.remark, value.rowNum);
+                        addOneDictionaryTr(null, value.name, value.type, value.notNull, value.flag, value.def, value.remark);
                     });
                 }
+                addOneDictionaryTr();
                 $("#content tbody").sortable({
                     cursor: "move",
                     containment: "parent", // 约束拖拽范围的边界，不能超过父对象
@@ -267,7 +267,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                     cancel: "button", // 指令的空间不支持拖拽，可以是class、id等
                     axis: "y", // 只能在y轴拖拽
                     handle: "span", // 只有span才支持拖拽
-                    items: "tr",                       //只是tr可以拖动
+                    items: "tr",                       //只有tr可以拖动
                     opacity: 1.0                    //拖动时，透明度为0.6
                 });
                 $("#content tbody").sortable({

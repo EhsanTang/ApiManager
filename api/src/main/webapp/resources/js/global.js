@@ -48,6 +48,9 @@ function replaceParamFromUrl(url, name, value) {
  * @param newStr 替换后的字符串
  */
 function replaceAll(originalStr,oldStr,newStr){
+	if (!newStr){
+		newStr = '';
+	}
 	var regExp = new RegExp(oldStr,"gm");
 	return originalStr.replace(regExp,newStr)
 }

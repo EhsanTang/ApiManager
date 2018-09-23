@@ -18,6 +18,37 @@ app.filter("removeLast",function(){
 app.filter("trustHtml",function($sce){
     return function (input){ return $sce.trustAsHtml(input); } ;
 });
+// 背景色
+app.filter("myColor",function(){
+    return function (value) {
+        if(value=='primary') {
+            return "bg-danger";
+        }
+        else if(value=='foreign') {
+            return "bg-success";
+        }
+        else if(value=='associate') {
+            return "bg-info";
+        }
+        else {
+            return "";
+        }
+    }
+});
+
+// flag等转中文
+app.filter("toChinese",function(){
+    return function (value) {
+        if(value=='primary')
+            return "主键";
+        else if(value=='foreign')
+            return "外键";
+        else if(value=='associate')
+            return "关联";
+        else
+            return "普通";
+    }
+});
 /**
  * 由于整个应用都会和路由打交道，所以这里把$state和$stateParams这两个对象放到$rootScope上，方便其它地方引用和注入。
  * 这里的run方法只会在angular启动的时候运行一次。
@@ -329,7 +360,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	 * 提交数据库表时回调将表格数据转换为json
 	 */
 	$rootScope.preAddDictionary = function(){
-		var content = getParamFromTable("content");
+		var content = getParamFromTable("content", 'name');
 		$rootScope.model.content = content;
 	}
 	/**

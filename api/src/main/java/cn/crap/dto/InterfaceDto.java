@@ -45,6 +45,7 @@ public class InterfaceDto{
 	private String contentType;
     private String contentTypeName;
     private List<ParamDto> crShowResponseParamList;
+    private List<ParamDto> crShowHeaderList;
 
 	public void setId(String id){
 		this.id=id;
@@ -307,5 +308,13 @@ public class InterfaceDto{
 
     public void setCrShowResponseParamList(List<ParamDto> crShowResponseParamList) {
         this.crShowResponseParamList = crShowResponseParamList;
+    }
+
+    public List<ParamDto> getCrShowHeaderList() {
+        return crShowHeaderList;
+    }
+
+    public void setCrShowHeaderList(List<ParamDto> crShowHeaderList) {
+        this.crShowHeaderList = crShowHeaderList;
     }
 }

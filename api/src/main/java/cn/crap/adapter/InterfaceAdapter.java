@@ -51,13 +51,14 @@ public class InterfaceAdapter {
 		dto.setErrors(handleText4Word(model.getErrors(), handleText4Word));
 		dto.setHeader(handleText4Word(model.getHeader(), handleText4Word));
 		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
-		List<ParamDto> responseParamList =JSONArray.toList(JSONArray.fromObject(
-                model.getResponseParam() == null ? "[]" : model.getResponseParam()), new ParamDto(), new JsonConfig());
-		// 参数排序，一级->二级
-        List<ParamDto> sortResponseParamList = new ArrayList<>();
-        sortParam(sortResponseParamList, responseParamList, 1);
-		dto.setCrShowResponseParamList(sortResponseParamList);
 
+		// 参数排序，一级->二级
+        List<ParamDto> responseParamList =JSONArray.toList(JSONArray.fromObject(
+                model.getResponseParam() == null ? "[]" : model.getResponseParam()), new ParamDto(), new JsonConfig());
+		dto.setCrShowResponseParamList(sortParam(null, responseParamList, null));
+        List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
+                model.getHeader() == null ? "[]" : model.getHeader()), new ParamDto(), new JsonConfig());
+        dto.setCrShowHeaderList(sortParam(null, headerList, null));
 
         return dto;
     }
@@ -258,19 +259,25 @@ public class InterfaceAdapter {
      * @param unfinished
      * @param deep 一级参数的 deep = 1
      */
-	private static void sortParam(List<ParamDto> finished, List<ParamDto> unfinished, int deep){
+	private static List<ParamDto> sortParam(List<ParamDto> finished, List<ParamDto> unfinished, Integer deep){
+	    if (deep == null){
+            deep = 1;
+        }
+        if (finished == null){
+            finished = new ArrayList<>();
+        }
 	    if (CollectionUtils.isEmpty(unfinished)){
-	        return;
+	        return finished;
         }
         List<ParamDto> newUnfinished = new ArrayList<>();
         for (ParamDto paramDto : unfinished){
             if (paramDto.getName() == null || StringUtils.isEmpty(paramDto.getName())){
                 continue;
             }
+            String name = paramDto.getName().trim();
+            paramDto.setName(name);
+            paramDto.setRealName(name);
             if (paramDto.getName().split(PARAM_SEPARATOR).length == deep){
-                String name = paramDto.getName().trim();
-                paramDto.setName(name);
-                paramDto.setRealName(name);
                 // 一级参数没有父参数，直接放入finished
                 if (deep == 1){
                     paramDto.setDeep(deep);
@@ -278,12 +285,13 @@ public class InterfaceAdapter {
                     continue;
                 }
                 for (int i = 0; i < finished.size(); i++){
-                    String[] params = finished.get(i).getName().split(PARAM_SEPARATOR);
-                    if (params.length == deep - 1){
-                        String parentNodeName = finished.get(i).getName() + PARAM_SEPARATOR;
+                    String parentParam = finished.get(i).getName();
+                    if (parentParam.split(PARAM_SEPARATOR).length == deep - 1){
+                        String parentNodeName = parentParam + PARAM_SEPARATOR;
                         if(name.startsWith(parentNodeName)){
                             paramDto.setDeep(deep);
-                            paramDto.setRealName(params[params.length-1]);
+                            String[] paramNames = name.split(PARAM_SEPARATOR);
+                            paramDto.setRealName(paramNames[paramNames.length-1]);
                             finished.add(i + 1, paramDto);
                             break;
                         }
@@ -300,7 +308,7 @@ public class InterfaceAdapter {
                 newUnfinished.add(paramDto);
             }
         }
-        sortParam(finished, newUnfinished, ++deep);
+        return sortParam(finished, newUnfinished, ++deep);
     }
 
 //    public static void main(String args[]){

@@ -189,10 +189,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
 
             if (isEdit) {
-                var headerList = eval("("+$rootScope.model.header+")");
                 $("#editHeaderTable").find("tbody").find("tr").remove();
                 $("#editResponseParamTable").find("tbody").find("tr").remove();
-                $.each(headerList, function (n, value) {
+                $.each($rootScope.model.crShowHeaderList, function (n, value) {
                     addOneInterHeadTr(null, value);
                 });
                 $.each($rootScope.model.crShowResponseParamList, function (n, value) {

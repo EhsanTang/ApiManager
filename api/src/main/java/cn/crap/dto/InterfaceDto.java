@@ -46,6 +46,8 @@ public class InterfaceDto{
     private String contentTypeName;
     private List<ParamDto> crShowResponseParamList;
     private List<ParamDto> crShowHeaderList;
+    // 参数类型：FORM、CUSTOM
+    private String paramType;
 
 	public void setId(String id){
 		this.id=id;
@@ -316,5 +318,13 @@ public class InterfaceDto{
 
     public void setCrShowHeaderList(List<ParamDto> crShowHeaderList) {
         this.crShowHeaderList = crShowHeaderList;
+    }
+
+    public String getParamType() {
+        return paramType;
+    }
+
+    public void setParamType(String paramType) {
+        this.paramType = paramType;
     }
 }

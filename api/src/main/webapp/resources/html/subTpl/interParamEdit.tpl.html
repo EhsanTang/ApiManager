@@ -1,0 +1,63 @@
+<div class="h40 lh40 f16 pl20 adorn-bl-3">
+    请求参数
+    <span class="p0 f14 cursor mr20" onclick="tooltip('param-tip')" id="param-tip" data-toggle="tooltip" data-placement="right"
+          title="「支持普通表单参数、自定义参数（row、json、xml等格式）」">
+        <i class="iconfont adorn-color mt-3">&#xe63e;</i>
+    </span>
+
+    <a class="main-color fr cursor mr30 f12" onclick="openMyDialog('JSON导入', 500);">
+        <i class="iconfont adorn-color f16 mt-3">&#xe63e;</i>&nbsp;JSON导入
+    </a>
+</div>
+<div class="p20">
+	<table class="table-bordered tl input-no-border mb0 w" id="editParamTable">
+        <thead>
+            <tr class="BGF5 fw500">
+
+                <td class="p10">名称</td>
+                <td class="p10 w70">是否必须</td>
+                <td class="p10 w100">位置</td>
+                <td class="p10 w150">类型</td>
+                <td class="p10 w150">默认值</td>
+                <td class="p10 w150">备注</td>
+                <td class="w100 tc p10">操作</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+	</table>
+    <div onclick="addOneInterParamTr()" class="main-color fr cursor pr15 mt10"
+         title="添加一行"><i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行</div>
+    <div class="cb"></div>
+</div>
+
+
+
+<!--<tr>
+    <td class="tc w200">
+        参数类型<br>
+        <input type="button" class="btn btn-default btn-sm w100 mt10 param-group iactive" value="表单模式"
+               onclick="changeDisplay('formParam','customParam');selectButton(this,'param-group')">
+        <input type="button" class="btn btn-default btn-sm w100 mt10 param-group" value="自定义"
+               onclick="changeDisplay('customParam','formParam');selectButton(this,'param-group')">
+    </td>
+    <td class="tc" ui-view="interFormParamDiv"></td>
+</tr>
+<tr ng-if="model.param.indexOf('form=')!=0">
+    <td class="tc">
+        自定义参数备注
+        <input type="button" class="btn btn-default btn-sm w100 mt10 remark-group iactive" value="编辑模式"
+               onclick="changeDisplay('paramEditorDiv','paramImportDiv');selectButton(this,'remark-group')">
+        <input type="button" class="btn btn-default btn-sm w100 mt10 remark-group" value="JSON导入"
+               onclick="changeDisplay('paramImportDiv','paramEditorDiv');selectButton(this,'remark-group')">
+    </td>
+    <td class="tc">
+        <div class="input-group w none" id="paramImportDiv">
+                                    <textarea class="form-control no-resize" ng-model="model.importJson"
+                                              rows="5" placeholder="请输入需要导出的json数据"></textarea>
+            <div class="input-group-addon cursor btn-main"
+                 ng-click="importParams('paramRemarks');">
+                导入</div>
+        </div>
+        <div id="paramEditorDiv" ui-view="interParamRemark"></div>
+    </td>
+</tr>-->

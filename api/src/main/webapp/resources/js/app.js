@@ -416,7 +416,6 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         $rootScope.model.header = headJson;
 
         var responseJson = getParamFromTable('editResponseParamTable', 'name');
-
         try{
             eval("("+responseJson+")");
         }catch(e){
@@ -425,6 +424,16 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
         $rootScope.model.responseParam = responseJson;
 
+        if($("#paramType").val() == 'FORM') {
+            var paramJson = getParamFromTable('editParamTable', 'name');
+            try {
+                eval("(" + paramJson + ")");
+            } catch (e) {
+                alert("请求参数输入有误，json解析出错：" + e);
+                return;
+            }
+            $rootScope.model.param = paramJson;
+        }
     }
 });
 

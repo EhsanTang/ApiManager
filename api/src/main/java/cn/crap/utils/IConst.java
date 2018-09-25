@@ -19,6 +19,8 @@ public interface IConst {
 	String C_AUTH_ROLE = "ROLE";
 	String C_AUTH_PROJECT = "PROJECT_";
 	String C_DELETE_PASSWORD = "delete";
+	String C_PARAM_FORM = "FORM";
+	String C_PARAM_CUSTOM = "CUSTOM";
 	int ALL_PAGE_SIZE = -100; // 不分页
 	int MAX_PROJECT_NUM = 50; // 系统允许创建的最大项目数
 	int MAX_MODULE_NUM = 50; // 系统允许创建的最大模块数

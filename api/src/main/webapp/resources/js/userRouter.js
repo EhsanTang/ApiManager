@@ -132,17 +132,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : function($stateParems){
                     return 'resources/html/subTpl/interImportJson.tpl.html?v=v8.0.5';
                 }
-            }, 'interResEditorDiv@userInterfaceEdit' : {
-                templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html?v=v8.0.5'
-            },
-            'interFormParamDiv@userInterfaceEdit' : {
-                templateUrl : 'resources/html/subTpl/interFormParamDiv.tpl.html?v=v8.0.5'
-            },
-            'interHeaderDiv@userInterfaceEdit' : {
-                templateUrl : 'resources/html/subTpl/interHeaderDiv.tpl.html?v=v8.0.5'
-            },
-            'interParamRemakDiv@userInterfaceEdit' : {
-                templateUrl : 'resources/html/subTpl/interParamRemakDiv.tpl.html?v=v8.0.5'
+            }, 'interResParamEdit@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interResParamEdit.tpl.html?v=v8.0.5'
+            }, 'interParamEdit@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interParamEdit.tpl.html,?v=v8.0.5'
+            }, 'interHeaderEdit@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interHeaderEdit.tpl.html?v=v8.0.5'
+            }, 'interParamRemark@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interParamRemark.tpl.html?v=v8.0.5'
             }
         }
     }).state('userInterfaceDetail', {

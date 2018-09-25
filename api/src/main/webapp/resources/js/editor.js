@@ -219,7 +219,7 @@ function isLast(target, model) {
     return true;
 }
 /********************** end: 接口、表格公用编辑方法 ************/
-var deleteButton = "<button class='cursor btn btn-xs btn-default'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
+var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>";
 /*
  * 数据字典方法
@@ -298,7 +298,8 @@ function addOneInterHeadTr(target, model) {
 }
 
 // 返回字段
-var interRespNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' autocomplete='off' value='INTER_RESP_NAME' onkeyup='addOneInterRespTr(this)' placeholder='参数名必填，或者会被过滤'></td>";
+var interRespNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' autocomplete='off' value='INTER_RESP_NAME' onkeyup='addOneInterRespTr(this)' " +
+    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam'></td>";
 var interRespType = "<td><select name='type' class='form-control' name='type'>"
     + "<option value='string' string_select>string</option>"
     + "<option value='number' number_select>number</option>"

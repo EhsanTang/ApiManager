@@ -8,11 +8,15 @@ public class ParamDto implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name = "";
+	// 前端显示，不带->的名称
+    private String realName = "";
 	private String necessary = "";
 	private String type = "";
 	private String remark = "";
 	private String def = "";
 	private String inUrl = "";
+	private Integer deep = 0;
+
 
 	public String getName() {
 		return name;
@@ -52,7 +56,23 @@ public class ParamDto implements Serializable{
 		this.inUrl = inUrl;
 	}
 
-	public String getParamPosition(){
+	public Integer getDeep() {
+		return deep;
+	}
+
+	public void setDeep(Integer deep) {
+		this.deep = deep;
+	}
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getParamPosition(){
 		if ("true".equals(inUrl)){
 			return "请求URL";
 		}else{

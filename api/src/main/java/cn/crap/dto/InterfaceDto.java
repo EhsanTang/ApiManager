@@ -1,6 +1,7 @@
 package cn.crap.dto;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Automatic generation by tools
@@ -14,6 +15,7 @@ public class InterfaceDto{
 	private String paramRemark;
 	private String requestExam;
 	private String responseParam;
+	// 错误码，多个错误码使用,分割
 	private String errorList;
 	private String trueExam;
 	private String falseExam;
@@ -24,6 +26,7 @@ public class InterfaceDto{
 	private String moduleUrl;
 	private String interfaceName;
 	private String remark;
+	// 错误码，json
 	private String errors;
 	private String updateBy;
     private String createTimeStr;
@@ -41,6 +44,7 @@ public class InterfaceDto{
 	private String remarkNoHtml;
 	private String contentType;
     private String contentTypeName;
+    private List<ParamDto> crShowResponseParamList;
 
 	public void setId(String id){
 		this.id=id;
@@ -296,4 +300,12 @@ public class InterfaceDto{
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
+
+    public List<ParamDto> getCrShowResponseParamList() {
+        return crShowResponseParamList;
+    }
+
+    public void setCrShowResponseParamList(List<ParamDto> crShowResponseParamList) {
+        this.crShowResponseParamList = crShowResponseParamList;
+    }
 }

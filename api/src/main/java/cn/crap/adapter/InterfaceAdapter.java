@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.InterfaceDto;
+import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.InterfaceStatus;
@@ -16,7 +17,11 @@ import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,46 +34,53 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean handleText){
+    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean handleText4Word){
         if (model == null){
             return null;
         }
 
-		InterfaceDto dto = getDto(model, module, project, handleText);
-		dto.setParam(handleText(model.getParam(), handleText));
-		dto.setParamRemark(handleText(model.getParamRemark(), handleText));
-		dto.setRequestExam(handleText(model.getRequestExam(), handleText));
-		dto.setResponseParam(handleText(model.getResponseParam(), handleText));
-		dto.setErrorList(handleText(model.getErrorList(), handleText));
-		dto.setTrueExam(handleText(model.getTrueExam(), handleText));
-		dto.setFalseExam(handleText(model.getFalseExam(), handleText));
-		dto.setRemark(handleText(model.getRemark(), handleText));
-		dto.setErrors(handleText(model.getErrors(), handleText));
-		dto.setHeader(handleText(model.getHeader(), handleText));
+		InterfaceDto dto = getDto(model, module, project, handleText4Word);
+		dto.setParam(handleText4Word(model.getParam(), handleText4Word));
+		dto.setParamRemark(handleText4Word(model.getParamRemark(), handleText4Word));
+		dto.setRequestExam(handleText4Word(model.getRequestExam(), handleText4Word));
+		dto.setResponseParam(handleText4Word(model.getResponseParam(), handleText4Word));
+		dto.setErrorList(handleText4Word(model.getErrorList(), handleText4Word));
+		dto.setTrueExam(handleText4Word(model.getTrueExam(), handleText4Word));
+		dto.setFalseExam(handleText4Word(model.getFalseExam(), handleText4Word));
+		dto.setRemark(handleText4Word(model.getRemark(), handleText4Word));
+		dto.setErrors(handleText4Word(model.getErrors(), handleText4Word));
+		dto.setHeader(handleText4Word(model.getHeader(), handleText4Word));
 		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
+		List<ParamDto> responseParamList =JSONArray.toList(JSONArray.fromObject(
+                model.getResponseParam() == null ? "[]" : model.getResponseParam()), new ParamDto(), new JsonConfig());
+		// 参数排序，一级->二级
+        List<ParamDto> sortResponseParamList = new ArrayList<>();
+        sortParam(sortResponseParamList, responseParamList, 1);
+		dto.setCrShowResponseParamList(sortResponseParamList);
+
 
         return dto;
     }
 
-	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean handleText){
+	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean handleText4Word){
 		if (model == null){
 			return null;
 		}
 
 		InterfaceDto dto = new InterfaceDto();
 		dto.setId(model.getId());
-		dto.setUrl(handleText(model.getUrl(), handleText));
+		dto.setUrl(handleText4Word(model.getUrl(), handleText4Word));
 		dto.setMethod(model.getMethod());
 
 		dto.setStatus(model.getStatus());
 		dto.setModuleId(model.getModuleId());
-		dto.setInterfaceName(handleText(model.getInterfaceName(), handleText));
-		dto.setUpdateBy(handleText(model.getUpdateBy(), handleText));
-		dto.setVersion(handleText(model.getVersion(), handleText));
+		dto.setInterfaceName(handleText4Word(model.getInterfaceName(), handleText4Word));
+		dto.setUpdateBy(handleText4Word(model.getUpdateBy(), handleText4Word));
+		dto.setVersion(handleText4Word(model.getVersion(), handleText4Word));
 		dto.setSequence(model.getSequence());
-		dto.setFullUrl(handleText(model.getFullUrl(), handleText));
+		dto.setFullUrl(handleText4Word(model.getFullUrl(), handleText4Word));
 		dto.setMonitorType(model.getMonitorType());
-		dto.setMonitorText(handleText(model.getMonitorText(), handleText));
+		dto.setMonitorText(handleText4Word(model.getMonitorText(), handleText4Word));
 		dto.setMonitorEmails(model.getMonitorEmails());
 		dto.setIsTemplate(model.getIsTemplate());
 		dto.setProjectId(model.getProjectId());
@@ -87,8 +99,8 @@ public class InterfaceAdapter {
 		}
 
 		if (module != null){
-			dto.setModuleName(handleText(module.getName(), handleText));
-			dto.setModuleUrl(handleText(module.getUrl(), handleText));
+			dto.setModuleName(handleText4Word(module.getName(), handleText4Word));
+			dto.setModuleUrl(handleText4Word(module.getUrl(), handleText4Word));
 		}
 		if (project != null){
 			dto.setProjectName(project.getName());
@@ -101,14 +113,14 @@ public class InterfaceAdapter {
      * html 转word 保留换行
 	 * 转义 < >
      * @param str
-     * @param handleText
+     * @param handleText4Word
      * @return
      */
-    private static String handleText(String str, boolean handleText){
+    private static String handleText4Word(String str, boolean handleText4Word){
         if (MyString.isEmpty(str)){
             return "";
         }
-    	if (handleText){
+    	if (handleText4Word){
     		str = str.replaceAll("</div>", "_CARP_BR_");
             str = str.replaceAll("</span>", "_CARP_BR_");
             str = str.replaceAll("<br/>", "_CARP_BR_");
@@ -238,4 +250,83 @@ public class InterfaceAdapter {
 		return dto;
 
 	}
+
+	private static final String PARAM_SEPARATOR = "->";
+    /**
+     *
+     * @param finished
+     * @param unfinished
+     * @param deep 一级参数的 deep = 1
+     */
+	private static void sortParam(List<ParamDto> finished, List<ParamDto> unfinished, int deep){
+	    if (CollectionUtils.isEmpty(unfinished)){
+	        return;
+        }
+        List<ParamDto> newUnfinished = new ArrayList<>();
+        for (ParamDto paramDto : unfinished){
+            if (paramDto.getName() == null || StringUtils.isEmpty(paramDto.getName())){
+                continue;
+            }
+            if (paramDto.getName().split(PARAM_SEPARATOR).length == deep){
+                String name = paramDto.getName().trim();
+                paramDto.setName(name);
+                paramDto.setRealName(name);
+                // 一级参数没有父参数，直接放入finished
+                if (deep == 1){
+                    paramDto.setDeep(deep);
+                    finished.add(paramDto);
+                    continue;
+                }
+                for (int i = 0; i < finished.size(); i++){
+                    String[] params = finished.get(i).getName().split(PARAM_SEPARATOR);
+                    if (params.length == deep - 1){
+                        String parentNodeName = finished.get(i).getName() + PARAM_SEPARATOR;
+                        if(name.startsWith(parentNodeName)){
+                            paramDto.setDeep(deep);
+                            paramDto.setRealName(params[params.length-1]);
+                            finished.add(i + 1, paramDto);
+                            break;
+                        }
+                    }
+
+                    // 没有找到父节点，追加到最后
+                    if (i == finished.size() - 1){
+                        paramDto.setDeep(1);
+                        finished.add(paramDto);
+                        break;
+                    }
+                }
+            } else if(paramDto.getName().split(PARAM_SEPARATOR).length > deep){
+                newUnfinished.add(paramDto);
+            }
+        }
+        sortParam(finished, newUnfinished, ++deep);
+    }
+
+//    public static void main(String args[]){
+//        List<ParamDto> finished = new ArrayList<>();
+//        List<ParamDto> unfinished = new ArrayList<>();
+//
+//        unfinished.add(getParamDto("first->second->third"));
+//        unfinished.add(getParamDto("first"));
+//        unfinished.add(getParamDto("second"));
+//        unfinished.add(getParamDto("first->second->third->4444"));
+//        unfinished.add(getParamDto("second4"));
+//        unfinished.add(getParamDto("first->second2"));
+//        unfinished.add(getParamDto("second->second2"));
+//        unfinished.add(getParamDto("second->first"));
+//        unfinished.add(getParamDto("first->second"));
+//        unfinished.add(getParamDto("first->second->third2"));
+//
+//        sortParam(finished, unfinished, 1);
+//        for (ParamDto paramDto : finished){
+//            System.out.println(paramDto.getName() + "--" + paramDto.getDeep());
+//        }
+//    }
+//
+//    private static ParamDto getParamDto(String name) {
+//        ParamDto paramDto5 = new ParamDto();
+//        paramDto5.setName(name);
+//        return paramDto5;
+//    }
 }

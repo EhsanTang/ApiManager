@@ -52,11 +52,11 @@
             <table class="table table-bordered ml20" ng-if="model.crShowHeaderList!=null && model.crShowHeaderList.length>0" >
                 <thead>
                 <tr class="BGEEE C000">
-                    <th class="tc w100">名称</th>
+                    <th>名称</th>
                     <th class="tc w50">必填</th>
                     <th class="tc w100">类型</th>
                     <th class="tc w150">默认值</th>
-                    <th class="tc">备注</th>
+                    <th class="tc w200">备注</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -151,11 +151,6 @@
         </div>
 
         <div class="col-xs-12 BGFFF p20 lh26 mt20 C555">
-            <h4 class="mt20 mb20 C000">请求示例</h4>
-            <div class="code pl20">
-                <pre>{{model.requestExam}}</pre>
-            </div>
-
             <h4 class="mt20 mb20 C000">正确返回示例</h4>
             <a class="pl20" ng-href="{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}" target="_blank">{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}</a>
             <div class="code pl20" ng-if="model.trueExam">

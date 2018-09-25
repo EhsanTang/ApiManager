@@ -174,7 +174,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
-                createWangEditor("interface-editor", "remark", initInterfaceEditor);
+                createWangEditor("interface-editor", "remark", initInterfaceEditor, 200);
             }
 
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;

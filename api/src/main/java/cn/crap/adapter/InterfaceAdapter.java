@@ -259,7 +259,7 @@ public class InterfaceAdapter {
      * @param unfinished
      * @param deep 一级参数的 deep = 1
      */
-	private static List<ParamDto> sortParam(List<ParamDto> finished, List<ParamDto> unfinished, Integer deep){
+	public static List<ParamDto> sortParam(List<ParamDto> finished, List<ParamDto> unfinished, Integer deep){
 	    if (deep == null){
             deep = 1;
         }

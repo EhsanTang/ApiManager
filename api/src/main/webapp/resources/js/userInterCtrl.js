@@ -2,7 +2,7 @@
  * 接口相关Controller
  */
 userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
-    $scope.getRequestExam = function(editerId,targetId,item,tableId) {
+    /**$scope.getRequestExam = function(editerId,targetId,item,tableId) {
     	var params = "iUrl=user/interface/getRequestExam.do|iLoading=FLOAT|iPost=true|iParams=&"+$.param($rootScope.model);
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
@@ -14,7 +14,7 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
 				 $rootScope.model.requestExam = result.data.requestExam;
 			 }
 		});
-    };
+    };**/
     $scope.editerParam = function(editerId,targetId,item,tableId) {
     	if(tableId=='editParamTable'&&item.param!=''){
     		
@@ -68,55 +68,6 @@ userInterModule.controller('userInterCtrl', function($rootScope,$scope, $http, $
     	$("#"+editerId).addClass('none');
 		$("#"+targetId).removeClass('none');
     };
-
-    /***********添加嵌套参数**************/
-    $scope.addOneParamByParent = function(field,deep,parentIndex){
-    	var newObj=new Object();
-    	newObj.type="string";
-    	newObj.necessary="true";
-    	if(parentIndex || parentIndex==0){
-    		// 兼容历史数据
-        	if(!deep){
-        		deep = 0;
-        		$rootScope.model[field][parentIndex].deep=0;
-        	}
-        	newObj.deep=deep*1+1;
-        	$rootScope.model[field].splice(parentIndex + 1, 0, newObj);
-    	}else{
-    		newObj.deep = 0*1;
-    		$rootScope.model[field][$rootScope.model[field].length]=newObj;
-    	}
-    }
-    
-    $scope.deleteOneParamByParent = function(field,parentIndex,deep){
-    	// 兼容历史数据
-    	if(!deep){
-    		deep = 0;
-    		$rootScope.model[field][parentIndex].deep=0;
-    	}
-    	var needDelete = 1;
-    	for(var i=parentIndex+1; i<$rootScope.model[field].length; i++){
-    		if($rootScope.model[field][i].deep>deep){
-    			needDelete ++;
-    		}else{
-    			break;
-    		}
-    	}
-    	$rootScope.model[field].splice(parentIndex, needDelete);
-    }
-    $scope.importParams = function(field){
-    	var jsonText = jsonToDiv($rootScope.model.importJson);
-    	if(jsonText.length > 0){
-    		$rootScope.model[field] = eval("("+jsonText+")");
-    		if(field == 'responseParams'){
-    			changeDisplay('responseEditorDiv','responseImportDiv');
-    			changeDisplay('responseEparam','responseParam');
-    		}else if(field == 'paramRemarks'){
-    			changeDisplay('paramEditorDiv','paramImportDiv');
-    			changeDisplay('eparamRemark','paramRemark');
-    		}
-    	}
-	}
     /****************End:返回参数***************/
 });
 

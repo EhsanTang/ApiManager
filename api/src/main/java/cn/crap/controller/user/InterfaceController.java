@@ -155,14 +155,14 @@ public class InterfaceController extends BaseController{
 	 * 根据参数生成请求示例
 	 * @param interFace
 	 * @return
-	 */
+
 	@RequestMapping("/getRequestExam.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult getRequestExam(@ModelAttribute InterfaceDto interFace) {
 		interfaceService.getInterFaceRequestExam(interFace);
 		return new JsonResult(1, interFace);
-	}
+	}*/
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
@@ -187,9 +187,10 @@ public class InterfaceController extends BaseController{
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
 
 		//请求示例为空，则自动添加
-		if(MyString.isEmpty(interFace.getRequestExam())){
+		/**if(MyString.isEmpty(interFace.getRequestExam())){
 			interfaceService.getInterFaceRequestExam(interFace);
-		}
+		}**/
+
         interFace.setMonitorType(MonitorType.No.getValue());
 		//检查邮件格式是否正确
 		/**if(interFace.getMonitorType() != MonitorType.No.getValue()){

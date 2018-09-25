@@ -218,6 +218,7 @@ function isLast(target, model) {
     }
     return true;
 }
+
 /********************** end: 接口、表格公用编辑方法 ************/
 var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>";
@@ -259,7 +260,8 @@ function addOneDictionaryTr(target, model) {
 
 /************** 接口 ******************/
 // 头信息
-var interHeadNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_HEAD_NAME' placeholder='参数名必填，或者将被过滤' autocomplete='off' " +
+var interHeadNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_HEAD_NAME' " +
+    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
     "onkeyup='addOneInterHeadTr(this)'></td>";
 var interHeadNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
     + "<option value='true' true_select>是</option>"
@@ -333,6 +335,23 @@ function addOneInterRespTr(target, model) {
         + replaceAll(interRespRemarkHtml, 'INTER_RESP_REMARK', model.remark)
         + interRespOperateHtml
         +"</tr>");
+}
+
+
+function importJson(type){
+    var jsonText = jsonToDiv($("#importResponseParam").val());
+    if(jsonText.length > 0){
+        if(type == 'responseParam'){
+            $.each( eval("("+jsonText+")"), function (n, value) {
+                addOneInterRespTr(null, value);
+            });
+        } else if(type == 'header'){
+            $.each( eval("("+jsonText+")"), function (n, value) {
+                addOneInterHeadTr(null, value);
+            });
+        }
+    }
+    closeMyDialog('myDialog');
 }
 
 // 接口头信息

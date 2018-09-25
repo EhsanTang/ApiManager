@@ -30,11 +30,10 @@
   			<p class="cursor pl20" onclick="scrollToId('2_3')">2.3 HTTP请求方式</p>
   			<p class="cursor pl20" onclick="scrollToId('2_4')">2.4  请求头说明</p>
   			<p class="cursor pl20" onclick="scrollToId('2_5')">2.5  输入参数说明</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_6')">2.6  请求示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_7')">2.7  返回参数说明</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_8')">2.8  正确返回示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_9')">2.9  错误返回示例</p>
-  			<p class="cursor pl20" onclick="scrollToId('2_10')">2.10  错误码</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_6')">2.6  返回参数说明</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_7')">2.7  正确返回示例</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_8')">2.8  错误返回示例</p>
+  			<p class="cursor pl20" onclick="scrollToId('2_9')">2.9  错误码</p>
 		</blockquote>
 		<div class="fb f18" id="1">1 功能说明</div>
 		<div id="1_1">1.1 接口名</div>
@@ -76,10 +75,10 @@
 		{{model.method|removeLast}}
 		
 		<div id="2_4">2.4 请求头说明</div>
-		<span ng-if="headers==null || headers.length==0" >
+		<span ng-if="model.crShowHeaderList==null || model.crShowHeaderList.length==0" >
 			无
 		</span>
-		<table class="table table-bordered" ng-if="headers!=null && headers.length>0" >
+		<table class="table table-bordered" ng-if="model.crShowHeaderList != null && model.crShowHeaderList.length>0" >
 			<thead>
 				<tr class="BGEEE C000">
 					<th class="tc w100">名称</th>
@@ -90,8 +89,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in headers">
-					<td class="tc fb C000">{{item.name}}</td>
+				<tr ng-repeat="item in model.crShowHeaderList">
+					<td class="tl">
+						<span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
+					</td>
 					<td class="tc C000">{{item.necessary}}</td>
 					<td class="tc C000">{{item.type}}</td>
 					<td class="tc C000">{{item.def}}</td>
@@ -160,17 +161,11 @@
 		</tbody>
 		</table>
 		
-		<div id="2_6">2.6 请求示例</div>
-		<div class="code">
-			<pre>{{model.requestExam}}</pre>
-		</div>
-		
-		<div id="2_7">2.7 返回参数说明</div>
-		<span ng-if="responseParams.length==0">无</span>
-		<table class="table table-bordered" ng-if="responseParams.length>0">
+		<div id="2_6">2.6 返回参数说明</div>
+		<span ng-if="model.crShowResponseParamList.length==0">无</span>
+		<table class="table table-bordered" ng-if="model.crShowResponseParamList.length>0">
 		<thead>
 			<tr class="BGEEE C000">
-				<th class="w50"></th>
 				<th class="tc">名称</th>
 				<th class="tc w100">类型</th>
 				<th class="tc w100">是否必须</th>
@@ -178,10 +173,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in responseParams" class="tc C000">
-				<td class="tc" style="color:red;">{{item.deep}}</td>
-				<td class="pl20 tl">
-					<span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
+			<tr ng-repeat="item in model.crShowResponseParamList" class="tc C000">
+				<td class="tl">
+					<span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
 				</td>
 				<td>{{item.type}}</td>
 				<td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
@@ -190,19 +184,19 @@
 		</tbody>
 		</table>
 		
-		<div id="2_8">2.8 正确返回示例</div>
+		<div id="2_7">2.7 正确返回示例</div>
 		<span ng-if="!model.trueExam">无</span>
 		<div class="code" ng-if="model.trueExam">
 			<pre>{{model.trueExam}}</pre>
 		</div>
 		
-		<div id="2_9">2.9 错误返回示例</div>
+		<div id="2_8">2.8 错误返回示例</div>
 		<span ng-if="!model.falseExam">无</span>
 		<div class="code" ng-if="model.falseExam">
 			<pre>{{model.falseExam}}</pre>
 		</div>
 		
-		<div id="2_10">2.10 错误码</div>
+		<div id="2_9">2.9 错误码</div>
 		<span ng-if="errors.length==0">无</span>
 		<table class="table table-bordered" ng-if="errors.length>0">
 		<thead>

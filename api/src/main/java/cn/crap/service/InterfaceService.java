@@ -165,21 +165,25 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         return interDto;
     }
 
-
+    /**
     public void getInterFaceRequestExam(InterfaceDto interFace) {
         Module module = moduleCache.get(interFace.getModuleId());
         interFace.setRequestExam("请求地址:"+ module.getUrl() + interFace.getUrl()+"\r\n");
 
         // 请求头
-        JSONArray headers = JSONArray.fromObject(interFace.getHeader());
+        List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
+                interFace.getHeader() == null ? "[]" : interFace.getHeader()), new ParamDto(), new JsonConfig());
+        InterfaceAdapter.sortParam(null, headerList, null);
+
         StringBuilder strHeaders = new StringBuilder("请求头:\r\n");
-        JSONObject obj = null;
-        for(int i=0;i<headers.size();i++){
-            obj = (JSONObject) headers.get(i);
-            strHeaders.append("\t"+obj.getString("name") + "="+ (obj.containsKey("def")?obj.getString("def"):"")+"\r\n");
+        ParamDto paramDto = null;
+        for(int i=0;i<headerList.size();i++){
+            paramDto = headerList.get(i);
+            strHeaders.append("\t"+paramDto.getRealName() + "="+ paramDto.getDef() +"\r\n");
         }
 
         // 请求参数
+        JSONObject obj = null;
         StringBuilder strParams = new StringBuilder("请求参数:\r\n");
         if(!MyString.isEmpty(interFace.getParam())){
             JSONArray params = null;
@@ -198,7 +202,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             }
         }
         interFace.setRequestExam(interFace.getRequestExam()+strHeaders.toString()+strParams.toString());
-    }
+    }**/
 
 
     public String getLuceneType() {

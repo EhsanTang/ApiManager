@@ -128,6 +128,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/interfaceEdit.tpl.html?v=v8.0.5';
                 }
+            },'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/interImportJson.tpl.html?v=v8.0.5';
+                }
             }, 'interResEditorDiv@userInterfaceEdit' : {
                 templateUrl : 'resources/html/subTpl/interResEditorDiv.tpl.html?v=v8.0.5'
             },

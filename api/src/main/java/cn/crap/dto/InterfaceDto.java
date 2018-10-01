@@ -44,8 +44,13 @@ public class InterfaceDto{
 	private String remarkNoHtml;
 	private String contentType;
     private String contentTypeName;
+
+    /**
+     * crShow开头的参数仅用于显示，请求中crShow开头的参数将被过滤
+     */
     private List<ParamDto> crShowResponseParamList;
     private List<ParamDto> crShowHeaderList;
+    private List<ParamDto> crShowParamList;
     // 参数类型：FORM、CUSTOM
     private String paramType;
 
@@ -326,5 +331,13 @@ public class InterfaceDto{
 
     public void setParamType(String paramType) {
         this.paramType = paramType;
+    }
+
+    public List<ParamDto> getCrShowParamList() {
+        return crShowParamList;
+    }
+
+    public void setCrShowParamList(List<ParamDto> crShowParamList) {
+        this.crShowParamList = crShowParamList;
     }
 }

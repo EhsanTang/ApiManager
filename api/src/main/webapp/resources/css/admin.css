@@ -156,3 +156,11 @@ body{
     word-break: keep-all!important;
     word-wrap: normal!important;
 }
+
+/*** editor **********/
+.info-bt-3{
+    border-top:3px solid #5bc0de;
+}
+.warning-bt-3{
+    border-top:3px solid #f0ad4e;
+}

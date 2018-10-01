@@ -174,6 +174,9 @@ public class InterfaceController extends BaseController{
 			return new JsonResult(MyError.E000005);
 		}
 		interFace.setUrl(interFace.getUrl().trim());
+		if (C_PARAM_FORM.equals(interFace.getParamType())){
+		    interFace.setParam(C_PARAM_FORM_PRE + interFace.getParam());
+        }
 		
 		/**
 		 * 根据选着的错误码id，组装json字符串

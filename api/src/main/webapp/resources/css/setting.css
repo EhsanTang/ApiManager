@@ -29,6 +29,7 @@ input:focus{border-color: #3275e4!important;!important;}
 .main-bb-1{ border-bottom:1px solid #3275e4!important}
 .main-br-1{ border-right:1px solid  #3275e4}
 .main-bl-3{ border-left:3px solid #3275e4}
+.main-bt-3{ border-top:3px solid #3275e4}
 .main-bl-1{ border-left:1px solid #3275e4}
 
 .bt-5 {border-top: 5px solid#3275e4}
@@ -40,6 +41,7 @@ input:focus{border-color: #3275e4!important;!important;}
 .adorn-color {color: #f82c1d}
 .adorn-bl-3{ border-left:3px solid #f82c1d}
 .adorn-bb-1{ border-bottom:1px solid #f82c1d}
+.adorn-bt-3{ border-top:3px solid #f82c1d}
 .adorn-bg {background-color: #f82c1d}
 
 .interface-detail blockquote {color: #3275e4}

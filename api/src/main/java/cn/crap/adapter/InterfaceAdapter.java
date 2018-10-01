@@ -15,6 +15,7 @@ import cn.crap.model.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONArray;
@@ -59,6 +60,13 @@ public class InterfaceAdapter {
         List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
                 model.getHeader() == null ? "[]" : model.getHeader()), new ParamDto(), new JsonConfig());
         dto.setCrShowHeaderList(sortParam(null, headerList, null));
+
+        dto.setParamType(model.getParam().startsWith(IConst.C_PARAM_FORM_PRE) ? IConst.C_PARAM_FORM : IConst.C_PARAM_CUSTOM);
+        if (IConst.C_PARAM_FORM.equals(dto.getParamType())) {
+            List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
+                    model.getParam() == null ? "[]" : model.getParam().substring(5, model.getParam().length())), new ParamDto(), new JsonConfig());
+            dto.setCrShowParamList(sortParam(null, paramList, null));
+        }
 
         return dto;
     }

@@ -73,7 +73,7 @@
             </table>
 
             <h4 class="mt20 mb20 C000">请求参数</h4>
-            <div class="code pl20" ng-if="model.customParams">
+            <div class="code pl20" ng-if="model.paramType == 'CUSTOM'">
                 <div class="bb1 mt0 pt0">自定义参数（Custom）</div>
                 <pre>{{model.customParams}}</pre>
                 <!-- 自定义参数备注 -->
@@ -103,7 +103,7 @@
             </div>
 
 
-            <table class="table table-bordered ml20" ng-if="formParamList!=null && formParamList.length>0" >
+            <table class="table table-bordered ml20" ng-if="model.paramType == 'FORM' && model.crShowParamList.length>0" >
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="tc">名称</th>
@@ -115,7 +115,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in formParamList" class="tc C000">
+                <tr ng-repeat="item in model.crShowParamList" class="tc C000">
                     <td class="fb">{{item.name}}</td>
                     <td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
                     <td ng-if="item.inUrl && item.inUrl=='true'">请求URL</td>

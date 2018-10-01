@@ -29,6 +29,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 .main-bb-1{ border-bottom:1px solid [MAIN_COLOR]!important}
 .main-br-1{ border-right:1px solid  [MAIN_COLOR]}
 .main-bl-3{ border-left:3px solid [MAIN_COLOR]}
+.main-bt-3{ border-top:3px solid [MAIN_COLOR]}
 .main-bl-1{ border-left:1px solid [MAIN_COLOR]}
 
 .bt-5 {border-top: 5px solid[MAIN_COLOR]}
@@ -40,6 +41,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 .adorn-color {color: [ADORN_COLOR]}
 .adorn-bl-3{ border-left:3px solid [ADORN_COLOR]}
 .adorn-bb-1{ border-bottom:1px solid [ADORN_COLOR]}
+.adorn-bt-3{ border-top:3px solid [ADORN_COLOR]}
 .adorn-bg {background-color: [ADORN_COLOR]}
 
 .interface-detail blockquote {color: [MAIN_COLOR]}

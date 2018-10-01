@@ -174,19 +174,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
-                createWangEditor("interface-editor", "remark", initInterfaceEditor, 200);
+                createWangEditor("interface-editor", "remark", initInterfaceEditor, 150);
             }
 
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
             $rootScope.errorList = eval("("+$rootScope.model.errors+")");
-
-            // 如果param以form=开头，表示为form表单参数
-            if($rootScope.model.param.length>5 && $rootScope.model.param.substring(0,5)=="form="){
-                $rootScope.formParamList = eval("("+$rootScope.model.param.substring(5)+")");
-            }else{
-                $rootScope.model.customParams = $rootScope.model.param;
-                $rootScope.formParamList = null;
-            }
 
             if (isEdit) {
                 $("#editHeaderTable").find("tbody").find("tr").remove();

@@ -133,7 +133,11 @@ body{
     border-left: 1px solid #e0e0e0;
     position: fixed;
     z-index: 100;
-    padding-left: 10px;
+    right:0px;
+    left:250px;
+    padding-left: 20px;
+    padding-right: 20px;
+
 }
 /******* markdown ******/
 .editormd-menu > li > a > .fa {
@@ -163,4 +167,7 @@ body{
 }
 .warning-bt-3{
     border-top:3px solid #f0ad4e;
+}
+.success-bt-3{
+    border-top:3px solid #5cb85c;
 }

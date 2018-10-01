@@ -4,12 +4,12 @@
 <div class="p20 pt10">
     <table class="table table-bordered">
         <tr>
-            <td class="tc w80">接口名称</td>
+            <td class="tc w100">接口名称</td>
             <td class="tc w400">
                 <input class="form-control" type="text" required maxlength="50"
                        ng-model="model.interfaceName" placeholder="示例：获取订单列表接口">
             </td>
-            <td class="tc">
+            <td class="tc w120">
                 模块名<br/>
                 * 点击选择模块
             </td>
@@ -30,7 +30,7 @@
             </td>
         </tr>
         <tr>
-            <td class="tc w80">请求方式</td>
+            <td class="tc">请求方式</td>
             <td class="tc">
                 <input class="form-control cursor" type="text" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
                        ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
@@ -42,7 +42,7 @@
             </td>
         </tr>
         <tr>
-            <td class="tc w80">版本号</td>
+            <td class="tc">版本号</td>
             <td class="tc"><input class="form-control" type="text"
                                   ng-model="model.version" required></td>
             <td class="tc">排序</td>
@@ -50,7 +50,7 @@
                 <input class="form-control" min="0"  placeholder="接口排序" type="number" ng-model="model.sequence"></td>
         </tr>
         <tr>
-            <td class="tc w80">返回类型</td>
+            <td class="tc">返回类型</td>
             <td class="tc">
                 <input class="form-control" readonly type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
                        ng-click="loadPickByName('iwidth=220|iheight=220|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">

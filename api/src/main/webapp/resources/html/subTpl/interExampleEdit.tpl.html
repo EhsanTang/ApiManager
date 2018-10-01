@@ -1,0 +1,72 @@
+<div class="h40 lh40 f16 pl20 success-bt-3">
+    返回示例
+</div>
+
+<div class="p20 pt10">
+    <table class="table table-bordered">
+        <!--
+        <tr>
+            <td class="tc w80">监控类型</td>
+            <td class="tc">
+            <input  class="form-control" type="text" ng-model="model.monitorTypeName" id="monitorTypeName" required placeholder="点击选择"
+            ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITOR_TYPE|def='+model.monitorType,$event)">
+            </td>
+            <td class="tc"></td>
+            <td class="tc"></td>
+        </tr>
+        <tr ng-if="model.monitorType>1">
+            <td class="tc">监控内容<br/>符合该条件则会发送邮件告警</td>
+            <td class="tc" colspan="3">
+                <textarea class="form-control no-resize" ng-model="model.monitorText" rows="8"
+                    placeholder="请输入监控比较的内容" max="250">
+                </textarea>
+            </td>
+        </tr>
+        <tr ng-if="model.monitorType>1">
+            <td class="tc">告警发送邮箱<br/>多个邮箱用;分割</td>
+            <td class="tc" colspan="3">
+                <textarea class="form-control no-resize" ng-model="model.monitorEmails" rows="4"
+                    placeholder="告警邮箱" max="250">
+                </textarea>
+            </td>
+        </tr>
+         -->
+
+        <tr>
+            <td class="tc w120">正确返回示例<br>
+                <input type="button" class="btn btn-default btn-sm w100 mt10" value="格式化数据"
+                       ng-click="jsonformat('trueExam',true)">
+            </td>
+            <td><textarea class="form-control no-resize" ng-model="model.trueExam" rows="10"
+                          placeholder='请用标准json结构
+    示例：	{
+                "success": 1,
+                "data": {
+                    "num": 15
+                },
+                "error":
+                {
+                    "message":null,
+                    "code":null,
+                    "data":null
+                }
+            }'></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="tc">错误返回示例<br> <input type="button"
+                                             class="btn btn-default btn-sm" value="格式化数据"
+                                             ng-click="jsonformat('falseExam',true)"></td>
+            <td class="tc"><textarea class="form-control no-resize" ng-model="model.falseExam" rows="10"
+                                     placeholder='请用标准json结构
+    示例：	{
+                "success": 0,
+                "error": {
+                    "code": 错误码,
+                    "data": {},
+                    "message": " error message"
+                }
+            }'></textarea></td>
+        </tr>
+    </table>
+</div>

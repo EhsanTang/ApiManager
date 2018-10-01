@@ -140,8 +140,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/subTpl/interParamEdit.tpl.html?v=v8.0.5'
             }, 'interHeaderEdit@userInterfaceEdit' : {
                 templateUrl : 'resources/html/subTpl/interHeaderEdit.tpl.html?v=v8.0.5'
-            }, 'interParamRemark@userInterfaceEdit' : {
-                templateUrl : 'resources/html/subTpl/interParamRemark.tpl.html?v=v8.0.5'
+            }, 'interExampleEdit@userInterfaceEdit' : {
+                templateUrl : 'resources/html/subTpl/interExampleEdit.tpl.html?v=v8.0.5'
             }
         }
     }).state('userInterfaceDetail', {

@@ -12,6 +12,11 @@ function goTop(){
 function scrollToId(id) {
     $("html, body").animate({scrollTop: $("#" + id).offset().top}, 400);
 }
+function scrollToIdByParentId(parentId, id, adjustPix) {
+    var mainContainer = $('#' + parentId);
+    var scrollToContainer =  $('#' + id);
+    mainContainer.animate({scrollTop: scrollToContainer.offset().top - mainContainer.offset().top + mainContainer.scrollTop() + adjustPix}, 200);
+}
 function tooltip(id){
 	 $("[data-toggle='tooltip']").tooltip(); 
 	 $("#"+id).tooltip('show');

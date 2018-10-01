@@ -1,6 +1,6 @@
 <div class="p0 col-xs-12" ng-controller="userInterCtrl" ng-init="getInterfaceDetail(true)">
 		<form ng-submit="submitForm('user/interface/addOrUpdate.do',addInterfaceCallBack, null, goBack)">
-			<div class="col-xs-12 main-nav">
+			<div class="main-nav">
 				<div class="btn-group btn-group-sm r3 fl mr10">
 					<button class="btn btn-default" ng-click="goBack()" type="button">
 						<i class="iconfont mt-3">&#xe605;&nbsp;</i>返回
@@ -14,92 +14,45 @@
 				<button type="submit" class="btn btn-adorn btn-sm">
 					<i class="iconfont f12 mt-3">&#xe602; 快速保存</i>
 				</button>
+
+                <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_example', -50)">
+                    #返回示例
+                </div>
+
+                <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_resParam', -50)">
+                    #返回参数
+                </div>
+
+                <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_param', -50)">
+                    #请求参数
+                </div>
+
+                <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_header', -50)">
+                    #请求头
+                </div>
+
+                <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_base', -50)">
+                    #基础信息
+                </div>
 			</div>
 
             <div class="p15">
-                <!-- 接口基本信息 -->
-                <div class="col-xs-12 p0 BGFFF mt50 shadow" ui-view="interBaseEdit"></div>
+              <!-- 接口基本信息 -->
+                <div class="col-xs-12 p0 BGFFF mt50 shadow" id="anchor_base" ui-view="interBaseEdit"></div>
 
                 <!-- 请求头 -->
-                <div class="col-xs-12 p0 BGFFF mt20 shadow" ui-view="interHeaderEdit"></div>
+                <div class="col-xs-12 p0 BGFFF mt20 shadow" id="anchor_header" ui-view="interHeaderEdit"></div>
 
                 <!-- 请求参数 -->
-                <div class="col-xs-12 p0 BGFFF mt20 shadow">
+                <div class="col-xs-12 p0 BGFFF mt20 shadow" id="anchor_param">
                     <input type="hidden" id="paramType" name="paramType" value="FORM">
                     <div ui-view="interParamEdit"></div>
                     <div ui-view="interParamRemarkEdit"></div>
                 </div>
 
-                <div class="col-xs-12 p0 BGFFF mt20 shadow" ui-view="interResParamEdit"></div>
+                <div class="col-xs-12 p0 BGFFF mt20 shadow" id="anchor_resParam" ui-view="interResParamEdit"></div>
 
-                <div class="col-xs-12 p15 BGFFF mt20">
-                <table class="table table-bordered">
-                    <!--
-                    <tr>
-                        <td class="tc w80">监控类型</td>
-                        <td class="tc">
-                        <input  class="form-control" type="text" ng-model="model.monitorTypeName" id="monitorTypeName" required placeholder="点击选择"
-                        ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=monitorTypeName|tag=monitorType|code=MONITOR_TYPE|def='+model.monitorType,$event)">
-                        </td>
-                        <td class="tc"></td>
-                        <td class="tc"></td>
-                    </tr>
-                    <tr ng-if="model.monitorType>1">
-                        <td class="tc">监控内容<br/>符合该条件则会发送邮件告警</td>
-                        <td class="tc" colspan="3">
-                            <textarea class="form-control no-resize" ng-model="model.monitorText" rows="8"
-                                placeholder="请输入监控比较的内容" max="250">
-                            </textarea>
-                        </td>
-                    </tr>
-                    <tr ng-if="model.monitorType>1">
-                        <td class="tc">告警发送邮箱<br/>多个邮箱用;分割</td>
-                        <td class="tc" colspan="3">
-                            <textarea class="form-control no-resize" ng-model="model.monitorEmails" rows="4"
-                                placeholder="告警邮箱" max="250">
-                            </textarea>
-                        </td>
-                    </tr>
-                     -->
-
-                    <tr>
-                        <td class="tc">正确返回示例<br>
-                        <input type="button" class="btn btn-default btn-sm w100 mt10" value="格式化数据"
-                            ng-click="jsonformat('trueExam',true)">
-                        </td>
-                        <td><textarea class="form-control no-resize" ng-model="model.trueExam" rows="10"
-                                placeholder='请用标准json结构
-    示例：	{
-                "success": 1,
-                "data": {
-                    "num": 15
-                },
-                "error":
-                {
-                    "message":null,
-                    "code":null,
-                    "data":null
-                }
-            }'></textarea>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td class="tc">错误返回示例<br> <input type="button"
-                            class="btn btn-default btn-sm" value="格式化数据"
-                            ng-click="jsonformat('falseExam',true)"></td>
-                        <td class="tc"><textarea class="form-control no-resize" ng-model="model.falseExam" rows="10"
-                                placeholder='请用标准json结构
-    示例：	{
-                "success": 0,
-                "error": {
-                    "code": 错误码,
-                    "data": {},
-                    "message": " error message"
-                }
-            }'></textarea></td>
-                    </tr>
-                </table>
-                </div>
+                <div class="col-xs-12 p0 BGFFF mt20 shadow" id="anchor_example" ui-view="interExampleEdit"></div>
             </div>
         </form>
     </div>

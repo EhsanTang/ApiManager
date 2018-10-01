@@ -34,8 +34,8 @@
                     <td class="w100">类型</td>
                     <td class="w100">状态</td>
                     <td class="w100">用户</td>
-                    <td class="w200">创建时间</td>
-                    <td class="w200">操作</td>
+                    <td class="w150">创建时间</td>
+                    <td class="w100">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,15 +47,14 @@
                     <td>{{item.userName}}</td>
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
-
-                        <a class="mr10 cursor"
+                        <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('editer-project','staticize-project');stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
 
-                        <a class="text-danger mr10 cursor" title="删除"
+                        <a class="btn btn-xs btn-danger mr5 cursor" title="删除"
                            ng-click="del('user/project/delete.do?id='+item.id,item.name);stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
                     </td>
                 </tr>

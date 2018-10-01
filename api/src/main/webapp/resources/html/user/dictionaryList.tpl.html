@@ -46,7 +46,7 @@
                     <td>简介</td>
                     <td>状态</td>
                     <td>创建时间</td>
-                    <td class="w250">操作</td>
+                    <td class="150">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,31 +54,31 @@
                     ng-click="go('user/dictionary/detail?id=' +item.id+ '&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
-                    <td>{{item.name| cut:true:15:' ...'}}</td>
-                    <td>{{item.brief| cut:true:15:' ...'}}</td>
+                    <td>{{item.name| cut:true:25:' ...'}}</td>
+                    <td>{{item.brief| cut:true:25:' ...'}}</td>
                     <td>{{item.statusName}}</td>
                     <td>{{item.createTimeStr}}</td>
-                    <td>
-                        <a class="f12 main-color mr10 cursor"
+                    <td class="f12">
+                        <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/dictionary/edit?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id={{item.id}}&type={{item.type}}&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="f12 main-color mr10 cursor" target="_blank"
+                        <a class="mr5 cursor btn btn-xs btn-info" target="_blank"
                            ng-click="stopPropagation($event);"
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
-                            <i class="iconfont f12">&#xe6e6;预览</i>
+                            <i class="iconfont f12">&#xe6e6;</i>
                         </a>
 
-                        <a class="f12 main-color mr10 cursor"
+                        <a class="mr5 cursor btn btn-xs btn-primary"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/log/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{item.id}}">
-                            <i class="iconfont">&#xe6bb;&nbsp;</i>日志
+                            <i class="iconfont">&#xe6bb;</i>
                         </a>
-                        <a class="f12 adorn-color mr10 cursor" title="删除"
+                        <a class="fmr5 cursor btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/article/delete.do?id='+item.id,item.name);stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
 
                     </td>

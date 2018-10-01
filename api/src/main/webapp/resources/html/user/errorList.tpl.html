@@ -44,7 +44,7 @@
                     <td>Code</td>
                     <td>Msg</td>
                     <td>项目</td>
-                    <td class="w300">操作</td>
+                    <td class="w100">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,16 +52,16 @@
                     <td>{{item.errorCode}}</td>
                     <td>{{item.errorMsg}}</td>
                     <td>{{item.projectName}}</td>
-                    <td>
-                        <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',item.projectId)"
+                    <td class="f12">
+                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',item.projectId)"
                            ng-click="detail('编辑【'+item.errorCode+'】',700,'user/error/detail.do?id='+item.id)"
                            data-toggle="tooltip" data-placement="top"
-                           data-original-title="编辑"> <i class="iconfont f12">&#xe69e;修改</i>
+                           data-original-title="编辑"> <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="f12 text-danger mr10 cursor" title="删除"
+                        <a class="mr5 btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',item.projectId)"
                            ng-click="del('user/error/delete.do?id='+item.id,item.errorCode)">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
                     </td>
                 </tr>

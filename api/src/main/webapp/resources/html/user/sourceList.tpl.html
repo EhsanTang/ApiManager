@@ -45,7 +45,7 @@
                     <th class="min-w200">名称</th>
                     <th class="min-w300">摘要</th>
                     <th class="min-w100">最后修改时间</th>
-                    <th class="w300 tc">操作</th>
+                    <th class="w200 tl">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,36 +54,27 @@
                     <td>{{item.name}}</td>
                     <td>{{item.remark|cut:true:50:' ...'}}</td>
                     <td>{{item.updateTimeStr}}</td>
-                    <td>
-                        <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                    <td class="f12">
+                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="f12 text-danger mr10 cursor" title="删除"
+                        <a class="mr5 btn btn-xs btn-info" ng-href="index.do#/source/detail?id={{item.id}}"
+                           target="_blank">
+                            <i class="iconfont f12">&#xe6e6;</i>
+                        </a>
+
+                        <a class="mr5 btn btn-xs btn-primary"
+                           ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                            <i class="iconfont">&#xe6bb;</i>
+                        </a>
+
+                        <a class="mr5 btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/source/delete.do?id='+item.id,item.name)">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
-                        <a class="f12 text-primary mr10 cursor" ng-href="index.do#/source/detail?id={{item.id}}"
-                           target="_blank">
-                            <i class="iconfont f12">&#xe6e6;预览</i>
-                        </a>
-                        <a class="f12 text-primary mr10 cursor"
-                           ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
-                            <i class="iconfont">&#xe6bb;&nbsp;</i>操作日志
-                        </a>
-                        <div class="w50 fr tl" ng-if="showOperation('PROJECT',$stateParams.projectId)">
-                            <a class="f12 text-danger mr10 cursor" title="向上移"
-                               ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index-1].id)"
-                               ng-if="$index>0">
-                                <i class="iconfont f12">&#xe623;</i>
-                            </a>
-                            <a class="f12 text-danger mr10 cursor" title="向下移"
-                               ng-click="changeSequence('user/source/changeSequence.do',item.id,list[$index+1].id)"
-                               ng-if="$index<list.length-1">
-                                <i class="iconfont f12">&#xe624;</i>
-                            </a>
-                        </div>
+
                     </td>
                 </tr>
 

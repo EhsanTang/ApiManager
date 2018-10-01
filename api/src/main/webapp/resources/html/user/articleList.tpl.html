@@ -59,7 +59,7 @@
                     <td>状态</td>
                     <td>可评论</td>
                     <td>创建时间</td>
-                    <td class="min-w300 tc">操作</td>
+                    <td class="w200">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,29 +74,30 @@
                     <td>{{item.statusName}}</td>
                     <td>{{item.canCommentName}}</td>
                     <td>{{item.createTimeStr}}</td>
-                    <td class="tc">
-                        <a class="f12 main-color mr10 cursor"
+                    <td class="f12">
+                        <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/article/edit?dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="f12 main-color mr10 cursor" target="_blank"
+                        <a class="mr5 cursor btn btn-xs btn-info" target="_blank"
                            ng-click="stopPropagation($event);"
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
-                            <i class="iconfont f12">&#xe6e6;预览</i>
-                        </a>
-                        <a class="f12 main-color mr10 cursor"
-                           ng-click="stopPropagation($event);"
-                           ng-href="#/user/comment/list?dataType=article&menu_b=menu_article&projectId={{item.projectId}}&articleId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
-                            <i class="iconfont f12">&#xe699;评论列表</i>
+                            <i class="iconfont f12">&#xe6e6;</i>
                         </a>
 
-                        <a class="f12 adorn-color mr10 cursor" title="删除"
+
+                        <a class="mr10 cursor btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/article/delete.do?id='+item.id,item.name);stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
 
+                        <a class="main-color mr10 cursor"
+                           ng-click="stopPropagation($event);"
+                           ng-href="#/user/comment/list?dataType=article&menu_b=menu_article&projectId={{item.projectId}}&articleId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
+                            评论列表
+                        </a>
                     </td>
                 </tr>
 

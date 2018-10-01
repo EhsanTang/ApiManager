@@ -27,7 +27,7 @@
                     <td>数据库表权限</td>
                     <td>文件权限</td>
                     <td>错误码</td>
-                    <td class="w200">操作</td>
+                    <td class="w100 tl">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -72,15 +72,15 @@
                     </td>
 
 
-                    <td>
-                        <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                    <td class="f12">
+                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="f12 text-danger mr10 cursor" title="删除"
+                        <a class="mr5 btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/projectUser/delete.do?id='+item.id,item.name)">
-                            <i class="iconfont f12">&#xe69d;删除</i>
+                            <i class="iconfont f12">&#xe69d;</i>
                         </a>
                     </td>
                 </tr>

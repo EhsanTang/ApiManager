@@ -34,8 +34,8 @@
                 <tr class="f14 C000 fw500">
                     <td>名称</td>
                     <td class="w200">Url前缀</td>
-                    <td class="w200">创建时间</td>
-                    <td class="w450">操作</td>
+                    <td class="w150">创建时间</td>
+                    <td class="w300">操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,36 +47,38 @@
                     <td>{{item.url}}</td>
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
-                        <a class="mr10 cursor text-primary" ng-if="showOperation('PROJECT',item.projectId)"
+                        <a class="mr5 cursor btn btn-xs btn-default" ng-if="showOperation('PROJECT',item.projectId)"
                            ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id);stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69e;修改</i>
+                            <i class="iconfont f12">&#xe69e;</i>
                         </a>
 
-                        <a class="mr10 cursor text-primary"
-                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
-                           ng-click="stopPropagation($event);">
-                            <i class="iconfont f12">&#xe740; 下载PDF</i>
-                        </a>
-                        <a class="mr10 cursor text-primary"
-                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"
-                           ng-click="stopPropagation($event);">
-                            <i class="iconfont f12">&#xe6a2; 下载WORD</i>
-                        </a>
-                        <a class="f12 text-danger mr10 cursor" title="删除"
-                           ng-if="showOperation('PROJECT',item.projectId)"
-                           ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
-                            <i class="iconfont f12">&#xe69d;删除</i>
-                        </a>
-
-                        <a class="mr10 cursor text-primary"
+                        <a class="mr5 cursor btn btn-xs btn-info"
                            ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}"
                            ng-click="stopPropagation($event);">
-                            <i class="iconfont">&#xe6bb;&nbsp;</i>日志
+                            <i class="iconfont">&#xe6bb;</i>
                         </a>
-                        <a class="mr10 cursor text-primary" ng-if="item.hasStaticize"
+
+                        <a class="f12 btn btn-xs btn-danger mr5 cursor" title="删除"
+                           ng-if="showOperation('PROJECT',item.projectId)"
+                           ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+
+                        <a class="mr10 cursor main-color" ng-if="item.hasStaticize"
                            ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"
                            ng-click="stopPropagation($event);">
                             <i class="iconfont f12">&#xe6f7;静态化地址</i>
+                        </a>
+
+                        <a class="mr10 cursor main-color"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
+                           ng-click="stopPropagation($event);">
+                            下载PDF
+                        </a>
+                        <a class="mr10 cursor main-color"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"
+                           ng-click="stopPropagation($event);">
+                            下载WORD
                         </a>
                     </td>
                 </tr>

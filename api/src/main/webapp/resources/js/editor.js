@@ -222,6 +222,38 @@ function isLast(target, model) {
 /********************** end: 接口、表格公用编辑方法 ************/
 var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>";
+var interNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_NAME' " +
+    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
+    "onkeyup='ADD_ONE_TR(this)'></td>";
+var remarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='REMARK' onkeyup='ADD_ONE_TR(this)'></td> ";
+var defHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup='ADD_ONE_TR(this)' value='DEF' placeholder='默认值'></td>";
+var interOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
+var interNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
+    + "<option value='true' true_select>是</option>"
+    + "<option value='false' false_select>否</option>"
+    + "</select></td>";
+var interTypeHtml = "<td> <select name='type' class='form-control'>"
+    + "<option value='string' string_select>string</option>"
+    + "<option value='int' int_select>int</option>"
+    + "<option value='float' float_select>float</option>"
+    + "<option value='long' long_select>long</option>"
+    + "<option value='byte' byte_select>byte</option>"
+    + "<option value='double' double_select>double</option>"
+    + "<option value='number' number_select>number</option>"
+    + "<option value='boolean' boolean_select>boolean</option>"
+    + "<option value='object' object_select>object</option>"
+    + "<option value='array' array_select>array</option>"
+    + "<option value='array[int]' array[int]_select>array[int]</option>"
+    + "<option value='array[float]' array[float]_select>array[float]</option>"
+    + "<option value='array[long]' array[long]_select>array[long]</option>"
+    + "<option value='array[byte]' array[byte]_select>array[byte]</option>"
+    + "<option value='array[double]' array[double]_select>array[double]</option>"
+    + "<option value='array[number]' array[number]_select>array[number]</option>"
+    + "<option value='array[boolean]' array[boolean]_select>array[boolean]</option>"
+    + "<option value='array[string]' array[string]_select>array[string]</option>"
+    + "<option value='array[object]' array[object]_select>array[object]</option>"
+    + "<option value='file' file_select>file</option>"
+    + "</select> </td>";
 /*
  * 数据字典方法
  */
@@ -231,13 +263,17 @@ var dictTypeHtml = "<td><input class='form-control' type='text' name='type' valu
 var dictNotNullHtml = "<td><select name='notNull' class='form-control'>" +
     "<option value='true' true_select>true</option><option value='false' false_select>false</option>" +
     "</select></td>";
-var dictDefhtml = "<td><input class='form-control' autocomplete='off' type='text' name='def' value='DICT_DEF' placeholder='默认值' onkeyup='addOneDictionaryTr(this)'></td>";
 var dictFlagHtml = "<td><select name='flag' class='form-control'>" +
     "<option value='common' common_select>普通</option><option value='primary' primary_select>主键</option>" +
     "<option value='foreign' foreign_select>外键</option><option value='associate' associate_select>关联</option>" +
     "</select></td>";
-var dictRemarkHtml = "<td><input class='form-control' autocomplete='off' type='text' name='remark' value='DICT_REMARK' placeholder='备注' onkeyup='addOneDictionaryTr(this)'></td>";
-var dictOperateHtml = "<td class='cursor tc'>" + deleteButton + "&nbsp;" + moverSpan + "</td>"
+/**
+ * 请求参数
+ */
+var interParamPositionHtml = "<td> <select name='inUrl' class='form-control'>"
+    + "<option value='false' false_select>普通参数</option>"
+    + "<option value='true' true_select>URL路径</option>"
+    + "</select></td>";
 
 function addOneDictionaryTr(target, model) {
     // 自动添加下一行
@@ -251,36 +287,14 @@ function addOneDictionaryTr(target, model) {
         + replaceAll(dictNameHtml, 'DICT_NAME', model.name)
         + replaceAll(dictTypeHtml, 'DICT_TYPE', model.type)
         + replaceAll(dictNotNullHtml, model.notNull+'_select', ' selected ')
-        + replaceAll(dictDefhtml, 'DICT_DEF', model.def)
+        + replaceAll(replaceAll(defHtml, 'DEF', model.def), "ADD_ONE_TR", "addOneDictionaryTr")
         + replaceAll(dictFlagHtml, model.flag + '_select', ' selected ')
-        + replaceAll(dictRemarkHtml, 'DICT_REMARK', model.remark)
-        + dictOperateHtml
+        + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneDictionaryTr")
+        + interOperateHtml
         +"</tr>");
 }
 
 /************** 接口 ******************/
-// 头信息
-var interHeadNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_HEAD_NAME' " +
-    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
-    "onkeyup='addOneInterHeadTr(this)'></td>";
-var interHeadNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
-    + "<option value='true' true_select>是</option>"
-    + "<option value='false' false_select>否</option>"
-    + "</select></td>";
-var interHeadTypeHtml = "<td> <select name='type' class='form-control'>"
-    + "<option value='string' string_select>string</option>"
-    + "<option value='int' int_select>int</option>"
-    + "<option value='float' float_select>float</option>"
-    + "<option value='long' long_select>long</option>"
-    + "<option value='byte' byte_select>byte</option>"
-    + "<option value='double' double_select>double</option>"
-    + "<option value='boolean' boolean_select>boolean</option>"
-    + "<option value='file' file_select>file</option>"
-    + "</select> </td>";
-var interHeadDefHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup='addOneInterHeadTr(this)' value='INTER_HEAD_DEF' placeholder='默认值'></td>";
-var interHeadRemarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='INTER_HEAD_REMARK' onkeyup='addOneInterHeadTr(this)'></td> ";
-var interHeadOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
-
 function addOneInterHeadTr(target, model) {
     // 自动添加下一行
     if (!isLast(target, model)){
@@ -290,36 +304,35 @@ function addOneInterHeadTr(target, model) {
         model = new Object();
     }
     $("#editHeaderTable").append("<tr class='drag'>"
-        + replaceAll(interHeadNameHtml, 'INTER_HEAD_NAME', model.name)
-        + replaceAll(interHeadNecessaryHtml, model.necessary+'_select', ' selected ')
-        + replaceAll(interHeadTypeHtml, model.type+'_select', ' selected ')
-        + replaceAll(interHeadDefHtml, 'INTER_HEAD_DEF', model.def)
-        + replaceAll(interHeadRemarkHtml, 'INTER_HEAD_REMARK', model.remark)
-        + interHeadOperateHtml
+        + replaceAll(replaceAll(interNameHtml, 'INTER_NAME', model.name), "ADD_ONE_TR", "addOneInterHeadTr")
+        + replaceAll(interNecessaryHtml, model.necessary+'_select', ' selected ')
+        + replaceAll(interTypeHtml, model.type+'_select', ' selected ')
+        + replaceAll(replaceAll(defHtml, 'DEF', model.def), "ADD_ONE_TR", "addOneInterHeadTr")
+        + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterHeadTr")
+        + interOperateHtml
+        +"</tr>");
+}
+
+function addOneInterParamTr(target, model) {
+    // 自动添加下一行
+    if (!isLast(target, model)){
+        return;
+    }
+    if (!model){
+        model = new Object();
+    }
+    $("#editParamTable").append("<tr class='drag'>"
+        + replaceAll(replaceAll(interNameHtml, 'INTER_NAME', model.name), "ADD_ONE_TR", "addOneInterParamTr")
+        + replaceAll(interNecessaryHtml, model.necessary+'_select', ' selected ')
+        + replaceAll(interParamPositionHtml, model.inUrl+'_select', ' selected ')
+        + replaceAll(interTypeHtml, model.type+'_select', ' selected ')
+        + replaceAll(replaceAll(defHtml, 'DEF', model.def), "ADD_ONE_TR", "addOneInterParamTr")
+        + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterParamTr")
+        + interOperateHtml
         +"</tr>");
 }
 
 // 返回字段
-var interRespNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' autocomplete='off' value='INTER_RESP_NAME' onkeyup='addOneInterRespTr(this)' " +
-    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam'></td>";
-var interRespType = "<td><select name='type' class='form-control' name='type'>"
-    + "<option value='string' string_select>string</option>"
-    + "<option value='number' number_select>number</option>"
-    + "<option value='boolean' boolean_select>boolean</option>"
-    + "<option value='object' object_select>object</option>"
-    + "<option value='array' array_select>array</option>"
-    + "<option value='array[number]' array[number]_select>array[number]</option>"
-    + "<option value='array[boolean]' array[boolean]_select>array[boolean]</option>"
-    + "<option value='array[string]' array[string]_select>array[string]</option>"
-    + "<option value='array[object]' array[string]_select>array[object]</option>"
-    + "</select> </td>";
-var interRespNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
-    + "<option value='true' true_select>是</option>"
-    + "<option value='false' false_select>否</option>"
-    + "</select></td>";
-var interRespRemarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='INTER_RESP_REMARK' onkeyup='addOneInterRespTr(this)'></td> ";
-var interRespOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
-
 function addOneInterRespTr(target, model) {
     // 自动添加下一行
     if (!isLast(target, model)){
@@ -329,15 +342,17 @@ function addOneInterRespTr(target, model) {
         model = new Object();
     }
     $("#editResponseParamTable").append("<tr class='drag'>"
-        + replaceAll(interRespNameHtml, 'INTER_RESP_NAME', model.name)
-        + replaceAll(interRespNecessaryHtml, model.necessary+'_select', ' selected ')
-        + replaceAll(interRespType, model.type+'_select', ' selected ')
-        + replaceAll(interRespRemarkHtml, 'INTER_RESP_REMARK', model.remark)
-        + interRespOperateHtml
+        + replaceAll(replaceAll(interNameHtml, 'INTER_NAME', model.name), "ADD_ONE_TR", "addOneInterRespTr")
+        + replaceAll(interNecessaryHtml, model.necessary+'_select', ' selected ')
+        + replaceAll(interTypeHtml, model.type+'_select', ' selected ')
+        + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterRespTr")
+        + interOperateHtml
         +"</tr>");
 }
 
 
+
+// 根据json，导入至参数
 function importJson(type){
     var jsonText = jsonToDiv($("#importResponseParam").val());
     if(jsonText.length > 0){
@@ -348,6 +363,10 @@ function importJson(type){
         } else if(type == 'header'){
             $.each( eval("("+jsonText+")"), function (n, value) {
                 addOneInterHeadTr(null, value);
+            });
+        }else if(type == 'param'){
+            $.each( eval("("+jsonText+")"), function (n, value) {
+                addOneInterParamTr(null, value);
             });
         }
     }

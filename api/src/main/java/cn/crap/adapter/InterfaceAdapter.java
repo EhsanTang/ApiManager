@@ -57,6 +57,7 @@ public class InterfaceAdapter {
         List<ParamDto> responseParamList =JSONArray.toList(JSONArray.fromObject(
                 model.getResponseParam() == null ? "[]" : model.getResponseParam()), new ParamDto(), new JsonConfig());
 		dto.setCrShowResponseParamList(sortParam(null, responseParamList, null));
+
         List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
                 model.getHeader() == null ? "[]" : model.getHeader()), new ParamDto(), new JsonConfig());
         dto.setCrShowHeaderList(sortParam(null, headerList, null));

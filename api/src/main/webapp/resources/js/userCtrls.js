@@ -188,9 +188,14 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                 $.each($rootScope.model.crShowResponseParamList, function (n, value) {
                     addOneInterRespTr(null, value);
                 });
+                $.each($rootScope.model.crShowParamList, function (n, value) {
+                    addOneInterParamTr(null, value);
+                });
                 addOneInterRespTr();
                 addOneInterHeadTr();
+                addOneInterParamTr();
                 initDragTable("editHeaderTable");
+                initDragTable("editParamTable");
                 initDragTable("editResponseParamTable");
             }
 

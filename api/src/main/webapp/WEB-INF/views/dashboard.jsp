@@ -115,12 +115,12 @@
                         <div class="lh26 fl mt20 ml10">
                             <a class="f12 text-primary mr5 cursor" href="project.do#/error/list?projectId=${item.id}"
                                target="_blank">
-                                <i class="iconfont f12">&#xe608; 错误码</i>
+                                <i class="iconfont f12">&#xe6b7; 错误码</i>
                             </a>
                             <br/>
                             <a class="f12 text-primary mr5 cursor mt10" href="project.do#/module/list?projectId=${item.id}"
                                target="_blank">
-                                <i class="iconfont f12">&#xe613; 模块列表</i>
+                                <i class="iconfont f12">&#xe83b; 模块列表</i>
                             </a>
                         </div>
                     </div>

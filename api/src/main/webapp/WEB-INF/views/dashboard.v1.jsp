@@ -38,7 +38,7 @@
         <div id="navbar" class="navbar-collapse collapse p0">
             <ul class="nav navbar-nav navbar-right ml20">
                 <li><a href='http://api.crap.cn/static/help/help-articleList--1.html' target="_blank" class="menu_a">帮助文档
-                    <i class="iconfont adorn-color f14">&#xe63e;</i></a>
+                    <i class="iconfont adorn-color f14">&#xe6a3;</i></a>
                 </li>
                 <li>
                     <a href='https://gitee.com/CrapApi/ApiDebug'
@@ -78,10 +78,10 @@
                         视频-用户版  <i class="iconfont f18">&#xe634;</i></a>
 
                     <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://gitee.com/CrapApi/ApiDebug" target="_blank">
-                        浏览器接口调试插件  <i class="iconfont f18">&#xe625;</i></a>
+                        浏览器接口调试插件  <i class="iconfont f18">&#xe748;</i></a>
 
                     <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://v.youku.com/v_show/id_XMzYwMzA2MzUyNA==.html" target="_blank">
-                        视频-管理员版  <i class="iconfont f18">&#xe612;</i></a>
+                        视频-管理员版  <i class="iconfont f18">&#xe6f5;</i></a>
                     <div class="mt20 tc">
                         <a href='https://gitee.com/CrapApi/CrapApi/stargazers'><img
                                 src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a>
@@ -139,12 +139,12 @@
                         <div class="lh26 fl mt20 ml10">
                             <a class="f12 text-primary mr5 cursor" href="project.do#/error/list?projectId=${item.id}"
                                target="_blank">
-                                <i class="iconfont f12">&#xe608; 错误码</i>
+                                <i class="iconfont f12">&#xe6b7; 错误码</i>
                             </a>
                             <br/>
                             <a class="f12 text-primary mr5 cursor mt10" href="project.do#/module/list?projectId=${item.id}"
                                target="_blank">
-                                <i class="iconfont f12">&#xe613; 模块列表</i>
+                                <i class="iconfont f12">&#xe83b; 模块列表</i>
                             </a>
                         </div>
                     </div>

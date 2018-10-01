@@ -3,12 +3,12 @@
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_main']"
             style="border-bottom: 1px solid #eeeeee; height: 50px; line-height: 50px; border-left: 1px solid #eeeeee;"
             ng-href="#/user/project?dataType=interface&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-            <i class="iconfont mt-3">&#xe616;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe87b;&nbsp;</i>
             <span class="f12">项目详情</span>
         </a>
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_module']"
            ng-href="#/user/module/list?dataType=module&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-            <i class="iconfont mt-3">&#xe722;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe83b;&nbsp;</i>
             <span class="f12">模块列表</span>
         </a>
 
@@ -19,19 +19,19 @@
         </a>
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_article']"
            ng-href="#/user/article/list?dataType=article&menu_a=menu-project&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
-            <i class="iconfont mt-3">&#xe637;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe6a2;&nbsp;</i>
             <span class="f12">文章列表</span>
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_dictionary']"
            ng-href="#/user/dictionary/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
-            <i class="iconfont mt-3">&#xe61c;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe70c;&nbsp;</i>
             <span class="f12">数据库表</span>
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_source']"
            ng-href="#/user/source/list?dataType=source&menu_a=menu-project&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
-            <i class="iconfont mt-3">&#xe638;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe6c0;&nbsp;</i>
             <span class="f12">文件</span>
         </a>
 
@@ -39,13 +39,13 @@
         <!-- TODO user/article/list?menu_a=menu-project&projectName=测试项目233&projectId=152845935636107000002&type=ARTICLE-->
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_error']"
            ng-href="#/user/error/list?dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-            <i class="iconfont mt-3">&#xe60c;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>
             <span class="f12">错误码</span>
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main bb1', false:'menu_b hover-main bb1'}[$stateParams.menu_b == 'menu_user']"
             ng-href="#/user/projectUser/list?menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-            <i class="iconfont mt-3">&#xe603;&nbsp;</i>
+            <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>
             <span class="f12">项目成员</span>
         </a>
     </div>
@@ -55,7 +55,7 @@
          ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
         <a class="menu_b lh40 fw500 h40 f14 pl10 BGF5 C555 mt-1 main-bb-1 C000 fw500" ng-if="top50Module.length>0"
            ng-href="#/user/{{$stateParams.dataType}}/list?dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-            <i class="iconfont mt-3 main-color f16">&#xe722;&nbsp;&nbsp;</i>所有模块</a>
+            <i class="iconfont mt-3 main-color f16">&#xe83b;&nbsp;&nbsp;</i>所有模块</a>
 
         <!-- 选中的排最前 -->
         <a ng-repeat="item in top50Module"

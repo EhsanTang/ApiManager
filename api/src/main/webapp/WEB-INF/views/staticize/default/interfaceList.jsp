@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="cb"></div>
 					<c:if test="${interfaceList.size() == 0}">
 						<div class="col-xs-12 tc mt10 mb10 C999">
-									<i class="iconfont f20 mt-5 mr10">&#xe626;</i>该模块下没有接口
+									<i class="iconfont f20 mt-5 mr10">&#xe69c;</i>该模块下没有接口
 						</div>
 					</c:if>
 					

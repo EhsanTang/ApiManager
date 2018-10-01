@@ -7,7 +7,7 @@
 		<button type="button"
 			class="ml5 mt1 btn btn-adorn btn-sm fr no-radius"
 			ng-click="getData(1);">
-			<i class="iconfont">&#xe60d;</i>&nbsp;查询
+			<i class="iconfont">&#xe6ac;</i>&nbsp;查询
 		</button>
 		<div class="form-group w200 fr">
 			<label class="sr-only" for="">名称</label>
@@ -31,7 +31,7 @@
 	</div>
 	
 	<div ng-if="list.length==0" class="col-xs-12 tc mt10 mb10 C999">
-			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>抱歉，该模块下没有接口
+			<i class="iconfont f20 mt-5 mr10">&#xe69c;</i>抱歉，该模块下没有接口
 	</div>
 	
 	<div ng-repeat="item in list" ng-if="list.length>0" class="col-xs-12 mb20 p0 dashed-t">
@@ -46,19 +46,19 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu min-w100 w100" aria-labelledby="dropdownMenu1">
-					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe61e; PDF</i></a></li>
-					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe637; WORD</i></a></li>
+					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=true"><i class="iconfont f12">&#xe740; PDF</i></a></li>
+					<li><a ng-href="visitor/interface/download/pdf.do?id={{item.id}}&pdf=false"><i class="iconfont f12">&#xe6a2; WORD</i></a></li>
 					<li role="separator" class="divider "></li>
 					<li>
 						<a
 								class="f12 text-primary mr10 cursor"
 								ng-href="#/interface/debug?projectId={{item.projectId}}&id={{item.id}}"> <i
-								class="iconfont f12">&#xe625;</i>&nbsp;调试
+								class="iconfont f12">&#xe748;</i>&nbsp;调试
 						</a>
 					</li>
 					<li>
 						<a class="ml5 f12 text-primary mr10 cursor" ng-href="#/interface/detail?projectId={{item.projectId}}&id={{item.id}}">
-							<i class="iconfont f12">&#xe60a;</i>&nbsp;详情</a>
+							<i class="iconfont f12">&#xe6e6;</i>&nbsp;详情</a>
 					</li>
 				</ul>
 			</div>

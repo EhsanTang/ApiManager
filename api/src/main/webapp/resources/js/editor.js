@@ -220,8 +220,8 @@ function isLast(target, model) {
 }
 
 /********************** end: 接口、表格公用编辑方法 ************/
-var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe60e;</i> </button>";
-var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xea17;</i></span>";
+var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe69d;</i> </button>";
+var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xe6fd;</i></span>";
 var interNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_NAME' " +
     "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
     "onkeyup='ADD_ONE_TR(this)'></td>";

@@ -5,7 +5,7 @@
 	</div>
 	
 	<div ng-if="moduleList.length==0" class="col-xs-12 tc mt10 mb10 C999">
-			<i class="iconfont f20 mt-5 mr10">&#xe626;</i>抱歉，没有模块
+			<i class="iconfont f20 mt-5 mr10">&#xe69c;</i>抱歉，没有模块
 	</div>
 	
 	<div ng-repeat="item in moduleList" class="dashed-t col-xs-12 pl0"  ng-if="moduleList.length>0">
@@ -17,18 +17,18 @@
 					</a>
 					
 					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=ARTICLE">
-						<i class="iconfont f12">&#xe637; 文章</i>
+						<i class="iconfont f12">&#xe6a2; 文章</i>
 					</a>
 					
 					<a class="f12 text-primary mr5 cursor" ng-href="#/source/list?projectId={{item.projectId}}&id={{item.id}}">
-						<i class="iconfont f12">&#xe638; 文件</i>
+						<i class="iconfont f12">&#xe6c0; 文件</i>
 					</a>
 					<a class="f12 text-primary mr5 cursor" ng-href="#/article/list?projectId={{item.projectId}}&moduleId={{item.id}}&type=DICTIONARY">
-						<i class="iconfont f12">&#xe61c; 数据库表</i>
+						<i class="iconfont f12">&#xe70c; 数据库表</i>
 					</a>
 					
 					<a class="f12 text-primary mr5 cursor" ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}">
-						<i class="iconfont f12">&#xe61e; 下载</i>
+						<i class="iconfont f12">&#xe740; 下载</i>
 					</a>
 		</div>
 	</div>

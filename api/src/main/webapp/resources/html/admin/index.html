@@ -33,9 +33,9 @@
 				</div>
 
 				<div class="m0 f14 fr">
-					<a href="#/profile" class="hover-main bl1 C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe603;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
+					<a href="#/profile" class="hover-main bl1 C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
 					<a href="home.do" class="hover-main C555 h50 lh50 dis fr pl10 pr10" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a>
-					<a href="#/admin/config/properties" class="hover-main C555 h50 lh50 dis fr pl10 pr10" ng-if="isSupperAdmin()"><i class="iconfont f14 mt-5">&#xe61a;</i>&nbsp;&nbsp;系统属性</span></a>
+					<a href="#/admin/config/properties" class="hover-main C555 h50 lh50 dis fr pl10 pr10" ng-if="isSupperAdmin()"><i class="iconfont f14 mt-5">&#xe6ae;</i>&nbsp;&nbsp;系统属性</span></a>
 				</div>
 
 		<!-- 全局性不消失错误提示：如禁用了弹窗 -->
@@ -68,20 +68,20 @@
                     <div class="w250 fl h BGFFF main-color">
                         <a href="#/user/project/list?projectShowType=3&type=-1&menu_a=menu-project&menu_b=menu_create_join"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
-                            <i class="iconfont f18 mr20 mt-3">&#xe649;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe6b4;</i>
                             <span class="f14"> 我的项目</span>
                         </a>
 
                         <a href="#/profile?menu_a=menu-profile"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
                            ng-click="profile(sessionAdminId)">
-                            <i class="iconfont f18 mr20 mt-3">&#xe603;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe6b8;</i>
                             <span class="f14"> 个人资料</span>
                         </a>
 
 						<a href="#/user/article/dictionary/importFromSql?menu_a=menu-import"
 						   ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-import']">
-                            <i class="iconfont f18 mr20 mt-3 fb">&#xe61c;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe70c;</i>
 							<span class="f14"> 导入数据库表</span>
 						</a>
 
@@ -89,18 +89,18 @@
                         <a href="#/admin/menu/list?parentId=0&menu_a=menu-menu&menuName=无"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-menu']"
                            ng-if="isAdmin('','MENU')">
-                            <i class="iconfont f18 mr20 mt-3">&#xe60f;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe699;</i>
                             <span class="f14"> 菜单管理</span>
                         </a>
                         <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting"
 						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
 							ng-if="isSupperAdmin()">
-                            <i class="iconfont f18 mr20 mt-3">&#xe61a;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe6ae;</i>
                             <span class="f14"> 系统管理</span>
                         </a>
                         <a class="hover-main" target="_blank"
                             href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=153406311429601002715">
-                            <i class="iconfont f16 mr20 mt-3">&#xe647;</i>
+                            <i class="iconfont f16 mr20 mt-3">&#xe7ce;</i>
                             <span class="f14"> 捐赠作者</span>
                         </a>
                         <a class="hover-main" target="_blank"
@@ -110,7 +110,7 @@
                         </a>
                         <a class="hover-main" target="_blank"
                            href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=ffff-1522587078634-1017019456-0002">
-                            <i class="iconfont f18 mr20 mt-3">&#xe650;</i>
+                            <i class="iconfont f18 mr20 mt-3">&#xe69b;</i>
                             <span class="f14"> 建议&留言</span>
                         </a>
 
@@ -160,7 +160,7 @@
 <div id="lookUp" class="look-up shadow">
 	<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
 	<div id="pickTip"></div>
-	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe615;</i>
+	<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe69a;</i>
 </div>
 
 <div id="fade"></div>
@@ -174,7 +174,7 @@
 			</button>
 			<div ui-view="detail"></div>
 		</div>
-		<i class="iconfont i-close CFFF f16" onclick="closeMyDialog('myDialog', 'myDialogContent')">&#xe615;</i>
+		<i class="iconfont i-close CFFF f16" onclick="closeMyDialog('myDialog', 'myDialogContent')">&#xe69a;</i>
 		<i class="iconfont i-full CFFF f16" onclick="fullMyDialog('myDialog', 'myDialogContent')">&#xe62e;</i>
 </div>   
 <div class="tip-div" id="tip-div"></div>

@@ -1,6 +1,6 @@
-var succ1 = '<div class=\"text-success h tc\"><i class="iconfont">&#xe60b;</i>&nbsp;&nbsp;';
+var succ1 = '<div class=\"text-success h tc\"><i class="iconfont">&#xe6b1;</i>&nbsp;&nbsp;';
 var succ2 = '</div>';
-var err1 = '<div class=\"text-danger h tc\"><i class="iconfont">&#xe60c;</i>&nbsp;&nbsp;';
+var err1 = '<div class=\"text-danger h tc\"><i class="iconfont">&#xe6b7;</i>&nbsp;&nbsp;';
 var err2 = '</div>';
 var loadText = "<div class='tc h tip'><p><img src=\"resources/images/loading.gif\" />&nbsp;&nbsp;努力加载中，请稍后...</p></div>";
 function openPage(link){

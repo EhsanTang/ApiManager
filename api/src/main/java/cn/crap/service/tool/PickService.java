@@ -51,7 +51,7 @@ public class PickService implements IPickService{
 
             case INTERFACE_STATUS:
                 for (InterfaceStatus status : InterfaceStatus.values()) {
-                    pick = new PickDto(status.getValue(), status.name());
+                    pick = new PickDto(status.getValue(), status.getName());
                     picks.add(pick);
                 }
                 return picks;

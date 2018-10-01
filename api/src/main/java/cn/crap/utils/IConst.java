@@ -22,6 +22,9 @@ public interface IConst {
 	String C_PARAM_FORM = "FORM";
     String C_PARAM_CUSTOM = "CUSTOM";
     String C_PARAM_FORM_PRE = "form=";
+    String C_METHOD_POST = "POST";
+    String C_METHOD_GET = "GET";
+
 
     int ALL_PAGE_SIZE = -100; // 不分页
 	int MAX_PROJECT_NUM = 50; // 系统允许创建的最大项目数

@@ -171,14 +171,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
     // 接口详情
     $scope.getInterfaceDetail = function (isEdit) {
-        var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id;
+        var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
                 createWangEditor("interface-editor", "remark", initInterfaceEditor, 150);
             }
 
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
-            $rootScope.errorList = eval("("+$rootScope.model.errors+")");
 
             if (isEdit) {
                 $("#editHeaderTable").find("tbody").find("tr").remove();

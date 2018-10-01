@@ -8,7 +8,7 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryInterfaceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe611;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-               ng-click="changeDisplay('interFaceDetail','copyInterFace');detail('新增接口',1100,'user/interface/detail.do?id=NULL','&moduleId='+$stateParams.moduleId+'&projectId='+$stateParams.projectId, createInterfaceEditor)">
+               ng-href="#/user/interface/edit?dataType=interface&id=NULL&menu_a=menu-project&menu_b=menu_interface&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增接口
             </a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"

@@ -1,26 +1,26 @@
 <div class="h40 lh40 f16 pl20 main-bt-3">
-    基础信息
+    基础信息<span class="C999 f12">（带 * 的为必填项）</span>
 </div>
 <div class="p20 pt10">
     <table class="table table-bordered">
         <tr>
-            <td class="tc w100">接口名称</td>
+            <td class="tc w100">接口名称 *</td>
             <td class="tc w400">
                 <input class="form-control" type="text" required maxlength="50"
                        ng-model="model.interfaceName" placeholder="示例：获取订单列表接口">
             </td>
             <td class="tc w120">
-                模块名<br/>
-                * 点击选择模块
+                模块名 *
             </td>
             <td>
                 <input class="form-control cursor" type="text"  id="moduleName" autocomplete="off" required ng-model="model.moduleName"
+                       placeholder="点击选择模块"
                        ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 
             </td>
         </tr>
         <tr>
-            <td class="tc">URL</td>
+            <td class="tc">URL *</td>
             <td class="tc" colspan="3">
                 <div ng-class="{true: 'input-group w', false: 'w'}[model.moduleUrl!='']">
                     <div class="input-group-addon" ng-bind="model.moduleUrl" ng-if="model.moduleUrl"></div>
@@ -30,19 +30,19 @@
             </td>
         </tr>
         <tr>
-            <td class="tc">请求方式</td>
+            <td class="tc">请求方式 *</td>
             <td class="tc">
                 <input class="form-control cursor" type="text" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
                        ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
             </td>
-            <td class="tc">状态</td>
+            <td class="tc">状态 *</td>
             <td>
                 <input class="form-control" readonly type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
                        ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
             </td>
         </tr>
         <tr>
-            <td class="tc">版本号</td>
+            <td class="tc">版本号 *</td>
             <td class="tc"><input class="form-control" type="text"
                                   ng-model="model.version" required></td>
             <td class="tc">排序</td>

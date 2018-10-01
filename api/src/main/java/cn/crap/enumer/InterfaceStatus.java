@@ -1,23 +1,33 @@
 package cn.crap.enumer;
 
 public enum InterfaceStatus {
-	废弃("0"), 已上线("1"),开发中("2"),测试中("3");
+	IDSCARD("0", "废弃"), ONLINE("1", "已上线"),DEVELOPING("2", "开发中"),TESTING("3", "测试中");
 	private final String value;
+	private final String name;
 
 	public static String getNameByValue(Byte value){
 		for( InterfaceStatus status : InterfaceStatus.values()){
 			if(status.value.equals(value + "")){
-				return status.name();
+				return status.getName();
 			}
 		}
 		return "";
 	}
 
-	private InterfaceStatus(String value){
+	private InterfaceStatus(String value, String name){
 		this.value = value;
+		this.name = name;
+	}
+
+	public Byte getByteValue(){
+		return new Byte(value);
 	}
 
 	public String getValue(){
 		return value;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

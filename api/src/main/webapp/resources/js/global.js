@@ -94,6 +94,7 @@ var dialogOldTop;
 var dialogOldLeft;
 var dialogOldHeight;
 var dialogOldWidth;
+var oldMaxHeight;
 function fullMyDialog(tagDiv,tagDivContent){
 	var target = $("#"+tagDiv);
 	if( target.css('top') != '0px'){
@@ -107,6 +108,7 @@ function fullMyDialog(tagDiv,tagDivContent){
 		$("#"+tagDiv).css("width","100%");
         $("#"+tagDiv).css("width","100%");
         if (tagDivContent) {
+            oldMaxHeight = $("#" + tagDivContent).maxHeight;
             $("#" + tagDivContent).css("max-height", "100%");
         }
 	}else{
@@ -115,7 +117,7 @@ function fullMyDialog(tagDiv,tagDivContent){
 		$("#"+tagDiv).css("height",dialogOldHeight);
 		$("#"+tagDiv).css("width",dialogOldWidth);
         if (tagDivContent) {
-            $("#" + tagDivContent).removecss("max-height");
+            $("#" + tagDivContent).css("max-height", oldMaxHeight);
         }
 	}
 }

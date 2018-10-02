@@ -3,6 +3,7 @@
  */
 body{
     min-width: 1000px;
+    height: auto!important;
 }
 .table-no-border td{
     border-top: 0px!important;

@@ -31,11 +31,11 @@
                 创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
 		</div>
 
-		<div class="fw500 cb f14 mt20">项目管理</div>
-		<div class="C999 p0 b1 mt10">
-            <a class="project-menu b0 lh20 p10"
+		<div class="fw500 cb f14 mt20">项目统计</div>
+		<div class="C999 p0 mt10">
+            <a class="project-menu lh20 p10"
                ng-href="#/user/module/list?dataType=interface&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-                <i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块列表<br>
+                <i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块<br>
                 <span class="f12 C999">模块总数：{{projectMoreInfo.moduleNum}}</span>
             </a>
             <a class="project-menu lh20 p10"
@@ -49,6 +49,34 @@
                 <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
             </a>
 
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/interface/list?dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe648;&nbsp;</i>接口<br>
+                <span class="f12 C999">接口总数：{{projectMoreInfo.interfaceNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/article/list?dataType=article&menu_a=menu-project&menu_b=menu_article&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6a2;&nbsp;</i>文章<br>
+                <span class="f12 C999">文章总数：{{projectMoreInfo.articleNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/dictionary/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe70c;&nbsp;</i>数据库表<br>
+                <span class="f12 C999">数据库表总数：{{projectMoreInfo.dictionaryNum}}</span>
+            </a>
+
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/source/list?dataType=source&menu_a=menu-project&menu_b=menu_source&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6c0;&nbsp;</i>文件<br>
+                <span class="f12 C999">文件总数：{{projectMoreInfo.sourceNum}}</span>
+            </a>
+        </div>
+        <div class="cb"></div>
+        <div class="fw500 cb f14 mt20">项目管理</div>
+        <div class="C999 p0 mt10">
+
 			<a class="project-menu" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
                 <i class="iconfont adorn-main mt-3">&#xe87b;&nbsp;</i>项目主页
             </a>
@@ -56,6 +84,12 @@
                ng-href="#/user/log/list?dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
                 <i class="iconfont">&#xe6bb;&nbsp;</i>日志
             </a>
+
+            <a class="project-menu"
+               ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
+                <i class="iconfont">&#xe640;静态化</i>
+            </a>
+
 			<a class="project-menu"
                  ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
 				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
@@ -64,11 +98,6 @@
 				<span ng-if="projectDetail.type != 2 || projectDetail.luceneSearch != 1">
 					<i class="iconfont text-danger">&#xe69d;&nbsp;删除索引</i>
 				</span>
-            </a>
-
-            <a class="project-menu"
-               ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
-                <i class="iconfont">&#xe640;静态化</i>
             </a>
 
 			<a class="project-menu"

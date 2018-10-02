@@ -59,7 +59,7 @@ body{
     display: block;
     padding-left:15px;
     border-bottom: 1px solid #eaeaea;
-    color: #555555;
+    color: #000000;
     width: 100%;
 }
 .left-menu:hover{
@@ -88,10 +88,13 @@ body{
     display: block;
     float: left;
     cursor: pointer;
-    width: 12.5%;
+    width: 160px;
     background-color: #f9fafc;
-    border-left: 1px solid #eeeeee;
+    border: 1px solid #eeeeee;
+    color:#555555;
     height: 60px;
+    margin-top:-1px;
+    margin-left:-1px;
     line-height: 60px;
     font-size: 14px;
     padding-left: 10px;

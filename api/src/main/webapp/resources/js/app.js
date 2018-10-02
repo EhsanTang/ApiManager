@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule','interfaceMethods', 'userInterModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule', 'userInterModule']);
 var userInterModule = angular.module("userInterModule", []);
 var visitorModule = angular.module("visitorModule", []);
 
@@ -18,8 +18,9 @@ app.filter("removeLast",function(){
 app.filter("trustHtml",function($sce){
     return function (input){ return $sce.trustAsHtml(input); } ;
 });
+
 // 背景色
-app.filter("myColor",function(){
+app.filter("getClass",function(){
     return function (value) {
         if(value=='primary') {
             return "bg-danger";
@@ -49,6 +50,20 @@ app.filter("toChinese",function(){
             return "普通";
     }
 });
+
+app.filter("getUrl",function($stateParams){
+	return function (value) {
+	    if (!value){
+	        return "";
+        }
+        var url = URL_LIST[value];
+	    if (!url){
+	        return "";
+        }
+	    return url;
+	}
+});
+
 /**
  * 由于整个应用都会和路由打交道，所以这里把$state和$stateParams这两个对象放到$rootScope上，方便其它地方引用和注入。
  * 这里的run方法只会在angular启动的时候运行一次。

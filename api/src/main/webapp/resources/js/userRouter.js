@@ -6,9 +6,9 @@
  * @param  {[type]} $urlRouterProvider
  * @return {[type]}
  */
-var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType';
+var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType&pageName';
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('user/project/list?projectShowType=3&menu_b=menu_create_join&type=-1&menu_a=menu-project');
+	$urlRouterProvider.otherwise(URL_LIST[MY_PROJECT]);
 	// 文章
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
@@ -182,7 +182,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('menuList', {
-		url : '/admin/menu/list?parentId&type&menuName&menu_a&menu_b',
+		url : '/admin/menu/list?parentId&type&menuName&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/menuList.tpl.html?v=v8.0.5'
@@ -201,7 +201,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('projectList', {
-		url : '/user/project/list?projectShowType&type&menu_a&menu_b&projectId&projectName',
+		url : '/user/project/list?projectShowType&type&' + commonUrlParam,
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -277,7 +277,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('projectUserList', {
-        url : '/user/projectUser/list?projectId&name&projectName&menu_a&menu_b',
+        url : '/user/projectUser/list?name&' + commonUrlParam,
         views : {
             'main' : {
                 templateUrl : 'resources/html/user/projectUserList.tpl.html?v=v8.0.5'
@@ -333,7 +333,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('settingList', {
-		url : '/admin/setting/list?key&menu_a&menu_b',
+		url : '/admin/setting/list?key&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/settingList.tpl.html?v=v8.0.5'
@@ -347,7 +347,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('settingDetail', {
-		url : '/admin/setting/detail?type&id&menu_a&menu_b',
+		url : '/admin/setting/detail?type&id&' + commonUrlParam,
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -360,7 +360,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('hotSearchList', {
-        url : '/admin/hotSearch/list?menu_a&menu_b',
+        url : '/admin/hotSearch/list?' + commonUrlParam,
         views : {
             'main' : {
                 templateUrl : 'resources/html/admin/hotSearchList.tpl.html?v=v8.0.5'
@@ -374,7 +374,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('configProperties', {
-		url : '/admin/config/properties?menu_a&menu_b',
+		url : '/admin/config/properties?' + commonUrlParam,
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -387,7 +387,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('dictionaryImoprtFromSql', {
-		url : '/user/article/dictionary/importFromSql?menu_a',
+		url : '/user/article/dictionary/importFromSql?' + commonUrlParam,
 		views : {
 			'main' :{
 				templateUrl : function($stateParems){
@@ -396,7 +396,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		}
 	}).state('userList', {
-		url : '/admin/user/list?menu_a&menu_b',
+		url : '/admin/user/list?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/userList.tpl.html?v=v8.0.5'
@@ -434,7 +434,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('roleList', {
-		url : '/admin/role/list?menu_a&menu_b',
+		url : '/admin/role/list?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/roleList.tpl.html?v=v8.0.5'
@@ -453,7 +453,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('profile', {
-		url : '/profile?menu_a',
+		url : '/profile?' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/admin/userDetail.tpl.html?v=v8.0.5'

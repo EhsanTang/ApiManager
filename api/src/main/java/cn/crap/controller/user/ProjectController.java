@@ -46,6 +46,10 @@ public class ProjectController extends BaseController {
     private RoleService roleService;
     @Autowired
     private InterfaceService interfaceService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private SourceService sourceService;
 
     @RequestMapping("/list.do")
     @ResponseBody
@@ -111,6 +115,10 @@ public class ProjectController extends BaseController {
         projectInfo.put("moduleNum", moduleService.count(new ModuleQuery().setProjectId(id)));
         projectInfo.put("projectUserNum", projectUserService.count(new ProjectUserQuery().setProjectId(id)));
         projectInfo.put("errorNum", errorService.count(new ErrorQuery().setProjectId(id)));
+        projectInfo.put("interfaceNum", interfaceService.count(new InterfaceQuery().setProjectId(id)));
+        projectInfo.put("articleNum", articleService.count(new ArticleQuery().setProjectId(id).setType(ArticleType.ARTICLE.name())));
+        projectInfo.put("dictionaryNum", articleService.count(new ArticleQuery().setProjectId(id).setType(ArticleType.DICTIONARY.name())));
+        projectInfo.put("sourceNum", sourceService.count(new SourceQuery().setProjectId(id)));
 
         return new JsonResult().data(projectInfo);
     }

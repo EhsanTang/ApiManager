@@ -1,4 +1,22 @@
-function format(txt, tiperror, compress/*是否为压缩模式*/) {/* 格式化JSON源码(对象转换为JSON文本) */
+function format(txt, tiperror){
+	try {
+	    var txtObj = JSON.parse(txt);
+        return JSON.stringify(txtObj, null, 5);
+    }catch (e){
+	    if (tiperror){
+            alert("格式化异常，请检查json格式是否有误" + e);
+        }
+	}
+}
+
+/**
+ * 待删除，已经被替换
+ * @param txt
+ * @param tiperror
+ * @param compress
+ * @returns {string}
+ */
+function format_delete(txt, tiperror, compress/*是否为压缩模式*/) {/* 格式化JSON源码(对象转换为JSON文本) */
 	var indentChar = '    ';
 	if (/^\s*$/.test(txt)) {
 		if (tiperror)

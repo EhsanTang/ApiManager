@@ -3,7 +3,7 @@
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
-            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块列表</button>
+            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块</button>
 
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryModuleList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
@@ -57,6 +57,16 @@
                            ng-click="stopPropagation($event);">
                             <i class="iconfont">&#xe6bb;</i>
                         </a>
+                        <a class="mr10 cursor btn btn-xs btn-default"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont f12">&#xe714; pdf</i>
+                        </a>
+                        <a class="mr10 cursor btn btn-xs btn-default"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont f12">&#xe714; word</i>
+                        </a>
 
                         <a class="f12 btn btn-xs btn-danger mr5 cursor" title="删除"
                            ng-if="showOperation('PROJECT',item.projectId)"
@@ -68,17 +78,6 @@
                            ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"
                            ng-click="stopPropagation($event);">
                             <i class="iconfont f12">&#xe6f7;静态化地址</i>
-                        </a>
-
-                        <a class="mr10 cursor main-color"
-                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
-                           ng-click="stopPropagation($event);">
-                            下载PDF
-                        </a>
-                        <a class="mr10 cursor main-color"
-                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"
-                           ng-click="stopPropagation($event);">
-                            下载WORD
                         </a>
                     </td>
                 </tr>

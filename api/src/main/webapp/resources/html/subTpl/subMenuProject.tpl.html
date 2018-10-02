@@ -2,21 +2,21 @@
 	<div class="w h50 fw500 lh50 f14 pl10 BGF5">项目管理</div>
 
     <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_create_join']"
-       ng-href="#user/project/list?projectShowType=3&menu_b=menu_create_join&type=-1&menu_a=menu-project">
+       ng-href="{{'my-project'|getUrl}}">
         我的项目
     </a>
 
 	<a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_create']"
-	   ng-href="#user/project/list?projectShowType=1&menu_b=menu_create&type=-1&menu_a=menu-project">
+	   ng-href="{{'my-create-project'|getUrl}}">
         我创建的项目
     </a>
 
 	<a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_join']"
-	   ng-href="#user/project/list?projectShowType=2&menu_b=menu_join&type=-1&menu_a=menu-project">
+	   ng-href="{{'my-join-project'|getUrl}}">
         我加入的项目
     </a>
 
     <a  ng-if="isAdmin()"
-        href="#user/project/list?projectShowType=0&menu_b=menu_all_project&type=-1&menu_a=menu-project"
+        href="{{'all-project'|getUrl}}"
        ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_all_project']">所有用户项目</a>
 </div>

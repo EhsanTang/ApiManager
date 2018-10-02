@@ -25,11 +25,15 @@
 					<img ng-src="{{settings.MINI_LOGO}}" />
 				</a>
 
-                <div class="fl h50 lh50 pl10 pr10 C000 f16 fw500" ng-if="$stateParams.projectName">
-                    项目【<span ng-bind="$stateParams.projectName"></span> 】
-				</div>
-				<div class="fl h50 lh50 pl10 pr10 C000 f16 fw500" ng-if="!$stateParams.projectName">
-					<span ng-bind="settings.TITLE"></span>
+                <div class="fl h50 lh50 pl20 pr20 C555 f14" >
+                    <span ng-if="$stateParams.projectName">
+                        项目【<span ng-bind="$stateParams.projectName"></span> 】
+                    </span>
+                    <span ng-if="!$stateParams.projectName" ng-bind="settings.TITLE"></span>
+                    <span ng-if="$stateParams.pageName">
+                        <i class="iconfont">&#xe6a7;</i>
+                        {{$stateParams.pageName}}
+                    </span>
 				</div>
 
 				<div class="m0 f14 fr">
@@ -66,20 +70,20 @@
 				<!-- left -->
 				<div class="left-menu shadow">
                     <div class="w250 fl h BGFFF main-color">
-                        <a href="#/user/project/list?projectShowType=3&type=-1&menu_a=menu-project&menu_b=menu_create_join"
+                        <a ng-href="{{'my-project'|getUrl}}"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
                             <i class="iconfont f18 mr20 mt-3">&#xe6b4;</i>
                             <span class="f14"> 我的项目</span>
                         </a>
 
-                        <a href="#/profile?menu_a=menu-profile"
+                        <a ng-href="{{'profile'|getUrl}}"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-profile']"
                            ng-click="profile(sessionAdminId)">
                             <i class="iconfont f18 mr20 mt-3">&#xe6b8;</i>
                             <span class="f14"> 个人资料</span>
                         </a>
 
-						<a href="#/user/article/dictionary/importFromSql?menu_a=menu-import"
+						<a ng-href="{{'importFromSql'|getUrl}}"
 						   ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-import']">
                             <i class="iconfont f18 mr20 mt-3">&#xe70c;</i>
 							<span class="f14"> 导入数据库表</span>
@@ -140,13 +144,13 @@
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
-	<script src="resources/js/app.js?v=v8.0.5"></script>
+    <script src="resources/js/const.js?v=v8.0.5"></script>
+    <script src="resources/js/app.js?v=v8.0.5"></script>
 	<script src="resources/js/services.js?v=v8.0.5"></script>
 	<script src="resources/js/userRouter.js?v=v8.0.5"></script>
 	<script src="resources/js/router.js?v=v8.0.5"></script>
     <script src="resources/js/userCtrls.js?v=v8.0.5"></script>
 	<script src="resources/js/userInterCtrl.js?v=v8.0.5"></script>
-	<script src="resources/js/interfaceMethods.js?v=v8.0.5"></script>
 
     <script src="resources/js/validateAndRefresh.js?v=v8.0.5"></script>
     <script src="resources/js/core.js?v=v8.0.5"></script>

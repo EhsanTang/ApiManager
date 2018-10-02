@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 <tr class="cursor" ng-repeat="item in projects"
-                    ng-click="go('user/project?dataType=interface&menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
+                    ng-click="go('user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
                     <td>{{item.name}}</td>
                     <td>{{item.typeName}}</td>
                     <td>{{item.statusName}}</td>

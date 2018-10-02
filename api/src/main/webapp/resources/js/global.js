@@ -319,4 +319,46 @@ function sleep(numberMillis) {
 	       now = new Date(); 
 	       if (now.getTime() > exitTime)    return;
 	    }
-	}
+}
+
+var tipMessage = "        .----.\n" +
+    "       _.'__    `.\n" +
+    "   .--($$)($$)--/#\\\n" +
+    " .' @          /###\\\n" +
+    " :         ,   #####\n" +
+    "  `-..__.-' _.-###/\n" +
+    "        `:_:    `\"'\n" +
+    "      .'\"\"\"\"\"'.\n" +
+    "     //  CRAP \\\\\n" +
+    "     //  API!  \\\\\n" +
+    "    `-._______.-'\n" +
+    "    ___`. | .'___\n" +
+    "   (______|______)\n";
+/**
+ * 立即运行函数，用来检测控制台是否打开
+ */
+!function () {
+    // 创建一个对象
+    var foo = /./;
+    var i = 0;
+    // 将其打印到控制台上，实际上是一个指针
+    console.info(foo);
+    foo.toString =  function () {
+        i++;
+        var tip = '';
+        for (var time=1; time < i; time++){
+            tip = tip + '又';
+        }
+        if (i==1) {
+            console.info('~ 想查看源代码？来这啊↩ ~');
+            console.info('~ https://github.com/EhsanTang/ApiManager ~');
+            console.info('~ https://gitee.com/CrapApi/CrapApi ~');
+            console.info('~ 完全开源、免费，记得star、fork再走哦 ~');
+            console.info('~ 视频介绍、安装部署...，请前往官网 http://api.crap.cn ~');
+        }else{
+            console.info('~ 你' + tip + '来了，star、fork了吗 ~');
+        }
+        return tipMessage;
+    };
+    // 要在第一次打印完之后再重写toString方法
+}()

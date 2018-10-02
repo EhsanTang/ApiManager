@@ -120,7 +120,7 @@
                             <br/>
                             <a class="f12 text-primary mr5 cursor mt10" href="project.do#/module/list?projectId=${item.id}"
                                target="_blank">
-                                <i class="iconfont f12">&#xe83b; 模块列表</i>
+                                <i class="iconfont f12">&#xe83b; 模块</i>
                             </a>
                         </div>
                     </div>

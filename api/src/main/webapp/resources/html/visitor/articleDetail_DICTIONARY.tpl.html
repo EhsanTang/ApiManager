@@ -13,7 +13,7 @@
 				<td  class="w50">标识</td>
 				<td  class="w200">注释</td>
 			</tr>
-			<tr ng-repeat="item in dictionary"  class="{{item.flag|myColor}}">
+			<tr ng-repeat="item in dictionary"  class="{{item.flag|getClass}}">
 				<td>{{item.name}}</td>
 				<td>{{item.type}}</td>
 				<td>{{item.notNull=='true'?'是':'否'}}</td>

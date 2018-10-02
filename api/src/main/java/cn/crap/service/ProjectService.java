@@ -48,6 +48,9 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
             project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
         }
 
+        if (MyString.isEmpty(project.getCover())){
+            project.setCover(Tools.getAvatar());
+        }
         if (project.getSequence() == null) {
             List<Project> models = this.query(new ProjectQuery().setPageSize(1).setUserId(project.getUserId()));
             if (models.size() > 0) {

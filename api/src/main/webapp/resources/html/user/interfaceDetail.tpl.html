@@ -4,9 +4,6 @@
             <button class="btn btn-default" ng-click="goBack()" type="button">
                 <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
             </button>
-            <button class="btn btn-main cursor-not btn-sm" type="button">
-                <i class="iconfont f12 mt-3">接口详情</i>
-            </button>
 
             <a class="btn btn-default btn-sm" ng-href="visitor/interface/download/pdf.do?id={{model.id}}&pdf=true"><i
                     class="iconfont f12 mt-3">&#xe714; PDF</i></a>
@@ -15,7 +12,7 @@
 
             <a class="btn btn-default btn-sm"
                ng-href="#/user/log/list?dataType=interface&menu_b=menu_interface&menu_a=menu-project&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{model.id}}">
-                <i class="iconfont f12 mt-3">&#xe6bb;&nbsp;</i>操作日志
+                <i class="iconfont f12 mt-3">&#xe6bb;&nbsp;</i>日志
             </a>
 
             <a ng-href="#/interface/debug?projectId={{model.projectId}}&id={{model.id}}" class="f12 btn btn-default btn-xs">
@@ -23,8 +20,8 @@
             </a>
 
             <a class="btn btn-default btn-sm" type="button"
-               ng-href="#/user/interface/edit?dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
-                <i class="iconfont f12 mt-3">&#xe69e; 编辑接口</i>
+               ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
             </a>
         </div>
     </div>

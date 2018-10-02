@@ -34,41 +34,41 @@
 		<div class="fw500 cb f14 mt20">项目统计</div>
 		<div class="C999 p0 mt10">
             <a class="project-menu lh20 p10"
-               ng-href="#/user/module/list?dataType=interface&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/module/list?pageName=模块&dataType=interface&menu_a=menu-project&menu_b=menu_module&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe83b;&nbsp;</i>模块<br>
                 <span class="f12 C999">模块总数：{{projectMoreInfo.moduleNum}}</span>
             </a>
             <a class="project-menu lh20 p10"
-               ng-href="#/user/error/list?dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/error/list?pageName=错误码&dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>错误码<br>
                 <span class="f12 C999">错误码总数：{{projectMoreInfo.errorNum}}</span>
             </a>
             <a class="project-menu lh20 p10"
-               ng-href="#/user/projectUser/list?menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>项目成员<br>
                 <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
             </a>
 
             <a class="project-menu lh20 p10"
-               ng-href="#/user/interface/list?dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/interface/list?pageName=接口&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe648;&nbsp;</i>接口<br>
                 <span class="f12 C999">接口总数：{{projectMoreInfo.interfaceNum}}</span>
             </a>
 
             <a class="project-menu lh20 p10"
-               ng-href="#/user/article/list?dataType=article&menu_a=menu-project&menu_b=menu_article&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/article/list?pageName=文章&dataType=article&menu_a=menu-project&menu_b=menu_article&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe6a2;&nbsp;</i>文章<br>
                 <span class="f12 C999">文章总数：{{projectMoreInfo.articleNum}}</span>
             </a>
 
             <a class="project-menu lh20 p10"
-               ng-href="#/user/dictionary/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/dictionary/list?pageName=数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe70c;&nbsp;</i>数据库表<br>
                 <span class="f12 C999">数据库表总数：{{projectMoreInfo.dictionaryNum}}</span>
             </a>
 
             <a class="project-menu lh20 p10"
-               ng-href="#/user/source/list?dataType=source&menu_a=menu-project&menu_b=menu_source&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+               ng-href="#/user/source/list?pageName=文件&dataType=source&menu_a=menu-project&menu_b=menu_source&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe6c0;&nbsp;</i>文件<br>
                 <span class="f12 C999">文件总数：{{projectMoreInfo.sourceNum}}</span>
             </a>
@@ -81,7 +81,7 @@
                 <i class="iconfont adorn-main mt-3">&#xe87b;&nbsp;</i>项目主页
             </a>
 			<a class="project-menu"
-               ng-href="#/user/log/list?dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
+               ng-href="#/user/log/list?pageName=日志&dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
                 <i class="iconfont">&#xe6bb;&nbsp;</i>日志
             </a>
 

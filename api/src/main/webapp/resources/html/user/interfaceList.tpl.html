@@ -3,7 +3,6 @@
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
-            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont f12 mt-3">&#xe648; 接口</i></button>
 
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryInterfaceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
@@ -63,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in interfaces" class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
+                <tr ng-repeat="item in interfaces" class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.interfaceName}}</td>
@@ -76,7 +75,7 @@
                     <td class="tc">
                         <a class="f12 mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
-                           ng-href="#/user/interface/edit?dataType=interface&id={{item.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
+                           ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{item.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
 

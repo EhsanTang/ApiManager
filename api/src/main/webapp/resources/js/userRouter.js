@@ -8,7 +8,7 @@
  */
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType&pageName';
 app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise(URL_LIST[MY_PROJECT]);
+	$urlRouterProvider.otherwise(replaceAll(URL_LIST[MY_PROJECT], "#", ''));
 	// 文章
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,

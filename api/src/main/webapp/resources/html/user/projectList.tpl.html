@@ -3,7 +3,6 @@
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
-            <button class="btn btn-sm cursor-not btn-main">项目列表</button>
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryProjectList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
@@ -30,10 +29,11 @@
             <table class="table table-hover table-striped f13">
                 <thead>
                 <tr class="f14 C000 fw500">
+                    <td class="w50">封面</td>
                     <td>名称</td>
                     <td class="w100">类型</td>
                     <td class="w100">状态</td>
-                    <td class="w100">用户</td>
+                    <td class="w100">创建者</td>
                     <td class="w150">创建时间</td>
                     <td class="w100">操作</td>
                 </tr>
@@ -41,6 +41,7 @@
                 <tbody>
                 <tr class="cursor" ng-repeat="item in projects"
                     ng-click="go('user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
+                    <td><img ng-src="{{item.cover}}" class="h20 w20 r50P" ></td>
                     <td>{{item.name}}</td>
                     <td>{{item.typeName}}</td>
                     <td>{{item.statusName}}</td>

@@ -3,9 +3,6 @@
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
-            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont mt-3">&#xe6b7;&nbsp;</i>错误码</button>
-
-
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryErrorList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
@@ -31,7 +28,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="queryErrorList(1);">
             <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
         </button>
     </div>

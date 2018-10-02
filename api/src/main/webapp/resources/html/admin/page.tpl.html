@@ -1,4 +1,4 @@
-﻿<nav ng-if="page[modelKey].totalPage > 0">
+﻿<nav ng-if="page[modelKey].totalPage > 1">
 		<ul class="pagination fr mt0 pagination-sm">
 			<li class="cursor"><a ng-click="pageMethod(callBackMethod, 1, true)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>
 			<li class="cursor"><a ng-click="pageMethod(callBackMethod,page[modelKey].currentPage-1, true)" ng-if="page[modelKey].currentPage>1">上一页</a></li> <!-- 当前页为第一页则不显示上一页 -->

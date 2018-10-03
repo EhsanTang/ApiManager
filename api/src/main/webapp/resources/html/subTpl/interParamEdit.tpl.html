@@ -12,23 +12,23 @@
 
 <div class="ml20 mr20 mb10 mt10">
     <div class="btn-group btn-group-sm r3 fl mr10">
-        <button class="btn btn-main btn-sm article-editor" type="button"
-                onclick="changeEditor(this, false)">
+        <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'FORM']"
+                type="button" onclick="changeParamType(this, true)">
             表单模式
         </button>
-        <button class="btn btn-default btn-sm article-editor" type="button"
-                onclick="changeEditor(this, true)">
+        <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'RAW']"
+                type="button" onclick="changeParamType(this, false)">
             自定义[Row]
         </button>
     </div>
     <div class="cb"></div>
 </div>
 
-<div class="p20 pt0">
+<input type="hidden" name="paramType" ng-model="model.paramType">
+<div class="p20 pt0" id="param-form" ng-if="model.paramType == 'FORM'">
 	<table class="table-bordered tl input-no-border mb0 w" id="editParamTable">
         <thead>
             <tr class="BGF5 fw500">
-
                 <td class="p10">名称</td>
                 <td class="p10 w50">必填</td>
                 <td class="p10 w100">位置</td>
@@ -45,6 +45,9 @@
     <div class="cb"></div>
 </div>
 
+<div class="p20 pt0" id="param-row" ng-if="model.paramType == 'RAW'">
+    <textarea  class="form-control no-resize" rows="8" ng-model="model.param"></textarea>
+</div>
 
 
 <!--<tr>

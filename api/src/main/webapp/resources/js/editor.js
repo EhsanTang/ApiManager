@@ -350,7 +350,23 @@ function addOneInterRespTr(target, model) {
         +"</tr>");
 }
 
-
+/**
+ * 切换参数类型
+ * @param obj
+ * @param form
+ */
+function changeParamType(obj, form) {
+    var root = getRootScope();
+    if (form) {
+        root.$apply(function () {
+            root.model['paramType'] = 'FORM';
+        });
+    } else {
+        root.$apply(function () {
+            root.model['paramType'] = 'RAW';
+        });
+    }
+}
 
 // 根据json，导入至参数
 function importJson(type){

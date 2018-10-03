@@ -20,7 +20,7 @@ public interface IConst {
 	String C_AUTH_PROJECT = "PROJECT_";
 	String C_DELETE_PASSWORD = "delete";
 	String C_PARAM_FORM = "FORM";
-    String C_PARAM_CUSTOM = "CUSTOM";
+    String C_PARAM_RAW = "RAW";
     String C_PARAM_FORM_PRE = "form=";
     String C_METHOD_POST = "POST";
     String C_METHOD_GET = "GET";

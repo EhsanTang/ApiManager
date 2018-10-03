@@ -439,7 +439,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
         $rootScope.model.responseParam = responseJson;
 
-        if($("#paramType").val() == 'FORM') {
+        if($rootScope.model.paramType == 'FORM') {
             var paramJson = getParamFromTable('editParamTable', 'name');
             try {
                 eval("(" + paramJson + ")");

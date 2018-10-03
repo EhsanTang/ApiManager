@@ -170,7 +170,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     };
 
     // 接口详情
-    $scope.getInterfaceDetail = function (isEdit) {
+    $scope.getInterfaceDetail = function (isEdit, isDebug) {
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
@@ -178,33 +178,54 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
 
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
+            // $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
+            if($rootScope.model.method) {// 调试页面默认显示method中第一个
+                $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
+            }
+
+            if (isDebug){
+                $("#editHeaderTable").find("tbody").find("tr").remove();
+                $("#editParamTable").find("tbody").find("tr").remove();
+                $rootScope.model.debugShowParam = true;
+                $.each($rootScope.model.crShowHeaderList, function (n, value) {
+                    addOneDebugTr('editHeaderTable',null, value);
+                });
+                if ($rootScope.model.crShowParamList){
+                    $.each($rootScope.model.crShowParamList, function (n, value) {
+                        addOneDebugTr('editParamTable', null, value);
+                    });
+                }
+
+                addOneDebugTr('editHeaderTable');
+                addOneDebugTr('editParamTable');
+                initDragTable("editHeaderTable");
+                initDragTable("editParamTable");
+            }
 
             if (isEdit) {
-                $("#editHeaderTable").find("tbody").find("tr").remove();
                 $("#editResponseParamTable").find("tbody").find("tr").remove();
+                $("#editHeaderTable").find("tbody").find("tr").remove();
+                $("#editParamTable").find("tbody").find("tr").remove();
+
                 $.each($rootScope.model.crShowHeaderList, function (n, value) {
-                    addOneInterHeadTr(null, value);
-                });
-                $.each($rootScope.model.crShowResponseParamList, function (n, value) {
-                    addOneInterRespTr(null, value);
+                    addOneInterHeadTr(null, value, isDebug);
                 });
                 if ($rootScope.model.crShowParamList){
                     $.each($rootScope.model.crShowParamList, function (n, value) {
                         addOneInterParamTr(null, value);
                     });
                 }
+                $.each($rootScope.model.crShowResponseParamList, function (n, value) {
+                    addOneInterRespTr(null, value);
+                });
 
                 addOneInterRespTr();
                 addOneInterHeadTr();
                 addOneInterParamTr();
+
                 initDragTable("editHeaderTable");
                 initDragTable("editParamTable");
                 initDragTable("editResponseParamTable");
-            }
-
-            $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
-            if($rootScope.model.method) {// 调试页面默认显示method中第一个
-                $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
             }
         });
     };
@@ -243,6 +264,17 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         });
     }
 
+    // 项目列表
+    $scope.debugInterface = function() {
+        $rootScope.model.header = getParamFromTable('editHeaderTable', 'name');
+        if($rootScope.model.paramType == 'FORM') {
+            $rootScope.model.param = getParamFromTable('editParamTable', 'name');
+        }
+        var params = "iUrl=user/interface/debug.do|iLoading=FLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
+        $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "debugResult", function () {
+            $rootScope.debugResult = format($rootScope.debugResult, false);
+        });
+    };
     /*********************************** 回调方法 *********************************/
     // 保存markdown
     $rootScope.saveArticleCallBack = function () {

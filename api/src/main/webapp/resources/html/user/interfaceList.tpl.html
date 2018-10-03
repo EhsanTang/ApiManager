@@ -51,7 +51,7 @@
                     <td>版本</td>
                     <td>Method</td>
                     <td>最后修改时间</td>
-                    <td class="min-w200 tc">
+                    <td class="min-w200">
                         操作
                         <span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
                                 title="「模板:设置为模板后，新建接口时将根据该模板接口初始化接口内容」">
@@ -72,7 +72,7 @@
                         <button class="btn btn-xs btn-default f12 p2 btn-{{item.method}}">{{item.method}}</button>
                     </td>
                     <td>{{item.updateTimeStr}}</td>
-                    <td class="tc">
+                    <td>
                         <a class="f12 mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{item.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
@@ -86,9 +86,8 @@
 
                         <a class="f12 mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
-                           ng-href="index.do#/interface/debug?projectId={{item.projectId}}&id={{item.id}}"
-                           target="_blank">
-                            <i class="iconfont">&#xe748;</i>
+                           ng-href="#/user/interface/debug?pageName=接口调试&dataType=interface&menu_b=menu_interface&menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}&id={{item.id}}" class="f12 btn btn-default btn-xs">
+                            <i class="iconfont f12 mt-3">&#xe748;</i>
                         </a>
 
                         <a class="f12 mr5 cursor btn-info btn btn-xs"

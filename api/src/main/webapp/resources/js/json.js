@@ -6,6 +6,7 @@ function format(txt, tiperror){
 	    if (tiperror){
             alert("格式化异常，请检查json格式是否有误" + e);
         }
+        return txt;
 	}
 }
 

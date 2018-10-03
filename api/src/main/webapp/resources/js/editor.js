@@ -313,6 +313,24 @@ function addOneInterHeadTr(target, model) {
         +"</tr>");
 }
 
+var debugValueHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup=\"ADD_ONE_TR('TABLE_ID',this)\" value='DEBUG_VALUE' placeholder='值'></td>";
+var debugNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='DEBUG_NAME' placeholder='参数名' autocomplete='off' onkeyup=\"ADD_ONE_TR('TABLE_ID',this)\"></td>";
+
+function addOneDebugTr(id, target, model) {
+    // 自动添加下一行
+    if (!isLast(target, model)){
+        return;
+    }
+    if (!model){
+        model = new Object();
+    }
+    $("#" + id).append("<tr class='drag'>"
+        + replaceAll(replaceAll(replaceAll(debugNameHtml, 'DEBUG_NAME', model.realName), "ADD_ONE_TR", "addOneDebugTr"), 'TABLE_ID', id)
+        + replaceAll(replaceAll(replaceAll(debugValueHtml, 'DEBUG_VALUE', model.def), "ADD_ONE_TR", "addOneDebugTr"), 'TABLE_ID', id)
+        + interOperateHtml
+        +"</tr>");
+}
+
 function addOneInterParamTr(target, model) {
     // 自动添加下一行
     if (!isLast(target, model)){

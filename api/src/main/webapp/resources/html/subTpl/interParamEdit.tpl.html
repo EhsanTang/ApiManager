@@ -25,7 +25,7 @@
 </div>
 
 <input type="hidden" name="paramType" ng-model="model.paramType">
-<div class="p20 pt0" id="param-form" ng-if="model.paramType == 'FORM'">
+<div ng-class="{true: 'p20 pt0', false:'p20 pt0 none'}[model.paramType == 'FORM']">
 	<table class="table-bordered tl input-no-border mb0 w" id="editParamTable">
         <thead>
             <tr class="BGF5 fw500">
@@ -44,8 +44,7 @@
          title="添加一行"><i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行</div>
     <div class="cb"></div>
 </div>
-
-<div class="p20 pt0" id="param-row" ng-if="model.paramType == 'RAW'">
+<div ng-class="{true: 'p20 pt0', false:'p20 pt0 none'}[model.paramType == 'RAW']">
     <textarea  class="form-control no-resize" rows="8" ng-model="model.param"></textarea>
 </div>
 

@@ -157,6 +157,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
+    }).state('userInterfaceDebug', {
+        url : '/user/interface/debug?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/interfaceDebug.tpl.html?v=v8.0.5';
+                }
+            }, 'interParamEdit@userInterfaceDebug' : {
+                templateUrl : 'resources/html/subTpl/interParamEdit.tpl.html?v=v8.0.5'
+            }, 'interHeaderEdit@userInterfaceDebug' : {
+                templateUrl : 'resources/html/subTpl/interHeaderEdit.tpl.html?v=v8.0.5'
+            }
+        }
     });
 
 

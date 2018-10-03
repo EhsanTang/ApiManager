@@ -1,0 +1,113 @@
+<div class="p0 col-xs-12" ng-init="getInterfaceDetail(false, true)">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <button class="btn btn-default" ng-click="goBack()" type="button">
+                <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
+            </button>
+
+            <a class="btn btn-default btn-sm" type="button"
+               ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xs-12 p20">
+        <div class="col-xs-12 BGFFF p20 pt10 lh40 mt50">
+            <table class="w mt10">
+                <tr>
+                    <td class="w100">
+                        <input class="form-control cursor w100 btn-group" type="text" readonly id="method"
+                               placeholder="请点击输入框选择" required ng-model="model.method"
+                               ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
+                    </td>
+                    <td class="pl10">
+                        <div class="input-group">
+                            <input type="text" class="form-control btn-group" placeholder="请输入url"
+                                   ng-model="model.fullUrl">
+                            <span class="input-group-addon cursor btn-main" ng-click="debugInterface();"><i
+                                    class="iconfont">&#xe634;</i>发送</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="cb"></div>
+
+        <div class="mt20 btn-group r0 mr10">
+            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[!model.debugShowParam]"
+                    type="button" ng-click="model.debugShowParam = false">
+                请求头
+            </button>
+            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[model.debugShowParam]"
+                    type="button" ng-click="model.debugShowParam = true">
+                参数
+            </button>
+        </div>
+        <div class="cb"></div>
+
+        <!-- 请求头 -->
+        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[!model.debugShowParam]">
+            <table class="table-bordered tl input-no-border mb0 w" id="editHeaderTable">
+                <thead>
+                <tr class="BGF5 fw500">
+                    <td class="p10 w300">请求头</td>
+                    <td class="p10">内容/值</td>
+                    <td class="w100 tc p10">操作</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div onclick="addOneDebugTr('editHeaderTable')" class="main-color fr cursor pr15 mt10" title="添加一行"><i
+                    class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行
+            </div>
+            <div class="cb"></div>
+        </div>
+
+        <!-- 请求参数 -->
+        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[model.debugShowParam]">
+            <input type="hidden" name="paramType" ng-model="model.paramType">
+
+            <div class="btn-group btn-group-sm r3 m10">
+                <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'FORM']"
+                        type="button" ng-click="model.paramType = 'FORM'">
+                    表单模式
+                </button>
+                <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'RAW']"
+                        type="button" ng-click="model.paramType = 'RAW'">
+                    自定义[Row]
+                </button>
+            </div>
+            <div class="cb"></div>
+
+            <div ng-class="{true: 'p10 bt1', false:'p10 bt1 none'}[model.paramType == 'RAW']">
+                <textarea class="form-control no-resize" rows="8" ng-model="model.param" placeholder="请输入自定义/RAW/源数据"></textarea>
+            </div>
+
+            <div ng-class="{true: 'pt0', false:'pt0 none'}[model.paramType == 'FORM']">
+                <table class="table-bordered tl input-no-border mb0 w" id="editParamTable">
+                    <thead>
+                    <tr class="BGF5 fw500">
+                        <td class="p10 w300">参数名</td>
+                        <td class="p10">参数值</td>
+                        <td class="w100 tc p10">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div onclick="addOneDebugTr('editParamTable')" class="main-color fr cursor pr15 mt10" title="添加一行">
+                    <i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行
+                </div>
+                <div class="cb"></div>
+            </div>
+        </div>
+
+        <div class="code BGFFF mt20 p20" ng-if="debugResult.debugResult">
+            <pre>{{debugResult.debugResult}}</pre>
+        </div>
+    </div>
+
+</div>
+<div class="cb"></div>
+
+

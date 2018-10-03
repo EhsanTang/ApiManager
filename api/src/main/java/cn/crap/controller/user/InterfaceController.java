@@ -4,6 +4,7 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.InterfaceStatus;
@@ -22,6 +23,8 @@ import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -31,7 +34,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/interface")
@@ -251,6 +256,67 @@ public class InterfaceController extends BaseController{
 			luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		}
 		return new JsonResult(1, interFace);
+	}
+
+
+	@RequestMapping("/debug.do")
+	@ResponseBody
+	@AuthPassport
+	public JsonResult debug(@ModelAttribute InterfaceDto interFace) throws IOException, Exception {
+		Assert.notNull(interFace.getMethod(), "请求方法不能为空");
+		Assert.notNull(interFace.getFullUrl(), "地址不能为空");
+        Assert.isTrue(interFace.getFullUrl().startsWith("http"), "地址必须以 http开头");
+
+        String fullUrl = interFace.getFullUrl();
+
+        List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
+                interFace.getHeader() == null ? "[]" : interFace.getHeader()), new ParamDto(), new JsonConfig());
+
+        List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
+                interFace.getParam() == null ? "[]" : interFace.getParam()), new ParamDto(), new JsonConfig());
+
+        Map<String, String> httpParams = new HashMap<>();
+        for (ParamDto paramDto : paramList) {
+            if (fullUrl.contains("{" + paramDto.getRealName() + "}")) {
+                fullUrl = fullUrl.replace("{" + paramDto.getRealName() + "}", paramDto.getDef());
+            } else {
+                httpParams.put(paramDto.getRealName(), paramDto.getDef());
+            }
+        }
+
+        Map<String, String> httpHeaders = new HashMap<>();
+        for (ParamDto paramDto : headerList) {
+            httpHeaders.put(paramDto.getRealName(), paramDto.getDef());
+        }
+        // 如果自定义参数不为空，则表示需要使用post发送自定义包体
+        if (C_PARAM_RAW.equals(interFace.getParamType())) {
+            return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.postBody(fullUrl, interFace.getParam(), httpHeaders)));
+        }
+
+        try {
+            switch (interFace.getMethod()) {
+                case "POST":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.post(fullUrl, httpParams, httpHeaders)));
+                case "GET":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.get(fullUrl, httpParams, httpHeaders)));
+                case "PUT":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.put(fullUrl, httpParams, httpHeaders)));
+                case "DELETE":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.delete(fullUrl, httpParams, httpHeaders)));
+                case "HEAD":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.head(fullUrl, httpParams, httpHeaders)));
+                case "OPTIONS":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.options(fullUrl, httpParams, httpHeaders)));
+                case "TRACE":
+                    return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.trace(fullUrl, httpParams, httpHeaders)));
+                default:
+                    return new JsonResult(1, Tools.getMap("debugResult", "不支持的请求方法：" + interFace.getMethod()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(1, Tools.getMap("debugResult", "调试出错\r\nmessage:" + e.getMessage()));
+        }
+
 	}
 
 	@RequestMapping("/delete.do")

@@ -5,6 +5,7 @@ import cn.crap.enumer.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.BasePo;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 
 @Service
 public class BaseService<PO extends BasePo, DAO> {
+    protected Logger log = Logger.getLogger("service");
 
     private BaseDao<PO> baseDao;
     private TableId tableId;

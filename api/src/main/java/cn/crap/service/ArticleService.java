@@ -21,6 +21,7 @@ import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -31,6 +32,7 @@ import java.util.List;
 
 @Service
 public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> implements ILuceneService, IConst {
+
     private ArticleDao articleDao;
     @Autowired
     private CustomArticleDao customArticleMapper;
@@ -90,7 +92,6 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
      */
     public List<Article> query(ArticleQuery query) throws MyException {
         Assert.notNull(query);
-
         Page page = new Page(query);
         ArticleCriteria example = getArticleCriteria(query);
         if (page.getSize() != ALL_PAGE_SIZE){

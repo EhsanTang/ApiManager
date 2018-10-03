@@ -6,6 +6,7 @@ import cn.crap.enumer.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
 import cn.crap.service.tool.SettingCache;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +20,8 @@ import java.util.Map;
  */
 @Service
 public class InitSystem {
+    protected Logger log = Logger.getLogger(getClass());
+
     @Resource
     private SettingCache settingCache;
     private SettingService settingService;
@@ -30,7 +33,7 @@ public class InitSystem {
     }
 
     public void init(){
-        System.out.println("初始化系统数据中....");
+        log.info("初始化系统数据中....");
         initSetting();
     }
     /**

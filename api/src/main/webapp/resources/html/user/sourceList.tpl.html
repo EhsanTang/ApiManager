@@ -3,10 +3,6 @@
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
-
-            <button class="btn btn-sm cursor-not btn-main"><i class="iconfont f12 mt-3">&#xe6c0; 文件</i></button>
-
-
             <a type="button" class="btn btn-default" id="refresh" ng-click="querySourceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
@@ -65,7 +61,7 @@
                         </a>
 
                         <a class="mr5 btn btn-xs btn-primary"
-                           ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                           ng-href="#/user/log/list?pageName=文件日志&identy={{item.id}}&dataType=source&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont">&#xe6bb;</i>
                         </a>
 

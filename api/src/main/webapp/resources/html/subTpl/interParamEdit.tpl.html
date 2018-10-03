@@ -13,11 +13,11 @@
 <div class="ml20 mr20 mb10 mt10">
     <div class="btn-group btn-group-sm r3 fl mr10">
         <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'FORM']"
-                type="button" onclick="changeParamType(this, true)">
+                type="button" ng-click="model.paramType = 'FORM'">
             表单模式
         </button>
         <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'RAW']"
-                type="button" onclick="changeParamType(this, false)">
+                type="button" ng-click="model.paramType = 'RAW'">
             自定义[Row]
         </button>
     </div>

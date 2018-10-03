@@ -4,9 +4,6 @@
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
 
-            <button class="btn btn-main cursor-not btn-sm"><i
-                    class="iconfont f12 mt-3">&#xe6a2; 文章</i></button>
-
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryArticleList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
@@ -64,7 +61,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in articles" class="cursor"
-                    ng-click="go('user/article/detail?id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
+                    ng-click="go('user/article/detail?pageName=文章详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:15:' ...'}}</td>
@@ -77,7 +74,7 @@
                     <td class="f12">
                         <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
-                           ng-href="#/user/article/edit?dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
+                           ng-href="#/user/article/edit?pageName=编辑文章&dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 cursor btn btn-xs btn-info" target="_blank"

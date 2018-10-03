@@ -4,14 +4,11 @@
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
 
-            <button class="btn btn-main cursor-not btn-sm"><i
-                    class="iconfont f12 mt-3">&#xe70c; 数据库表</i></button>
-
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryDictionaryList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
             <a type="button" class="btn btn-default btn-sm"
-               ng-href="#/user/dictionary/edit?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id=NULL&type={{$stateParams.type}}&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+               ng-href="#/user/dictionary/edit?pageName=新增数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id=NULL&type={{$stateParams.type}}&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增数据库表</i>
             </a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
@@ -51,7 +48,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in dictionaries" class="cursor"
-                    ng-click="go('user/dictionary/detail?id=' +item.id+ '&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName=' +
+                    ng-click="go('user/dictionary/detail?pageName=数据库表详情&id=' +item.id+ '&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:25:' ...'}}</td>
@@ -61,19 +58,13 @@
                     <td class="f12">
                         <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
-                           ng-href="#/user/dictionary/edit?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id={{item.id}}&type={{item.type}}&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}">
+                           ng-href="#/user/dictionary/edit?pageName=编辑数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id={{item.id}}&type={{item.type}}&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{item.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 cursor btn btn-xs btn-info" target="_blank"
                            ng-click="stopPropagation($event);"
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
                             <i class="iconfont f12">&#xe6e6;</i>
-                        </a>
-
-                        <a class="mr5 cursor btn btn-xs btn-primary"
-                           ng-click="stopPropagation($event);"
-                           ng-href="#/user/log/list?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{item.id}}">
-                            <i class="iconfont">&#xe6bb;</i>
                         </a>
                         <a class="fmr5 cursor btn btn-xs btn-danger" title="删除"
                            ng-if="showOperation('PROJECT',$stateParams.projectId)"

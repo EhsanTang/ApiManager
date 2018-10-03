@@ -32,12 +32,12 @@
 			<tr>
 					<td class="tc">排序</td>
 					<td class="tc" colspan="3">
-					<input class="form-control" min="0"  required type="number" ng-model="model.sequence"></td>
+					<input class="form-control" min="0"  type="number" ng-model="model.sequence"></td>
 			</tr>
 			<tr ng-if="model.parentId=='0'">
 				<td class="tc" rowspan="2">图标</td>
 				<td class="tc">
-					<input class="form-control" id="iconRemarkName" ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=iconRemarkName|tag=iconRemark|code=MENU_ICON|def='+model.iconRemark,$event)"
+					<input class="form-control" readonly id="iconRemarkName" ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=iconRemarkName|tag=iconRemark|code=MENU_ICON|def='+model.iconRemark,$event)"
 						   placeholder="点击输入框选着图标" ng-model="model.iconRemarkName"/>
 				</td>
 			</tr>

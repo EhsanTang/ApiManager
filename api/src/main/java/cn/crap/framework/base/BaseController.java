@@ -138,7 +138,7 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
      * @throws MyException
      */
     protected void checkUserPermissionByProject(Project project, int type) throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000069);
+        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000021);
         /**
          * 最高管理员修改项目
          * the supper admin can do anything

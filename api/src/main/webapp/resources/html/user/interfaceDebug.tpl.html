@@ -35,19 +35,19 @@
         <div class="cb"></div>
 
         <div class="mt20 btn-group r0 mr10">
-            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[!model.debugShowParam]"
-                    type="button" ng-click="model.debugShowParam = false">
+            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[!debugShowParam]"
+                    type="button" ng-click="debugShowParam = false">
                 请求头
             </button>
-            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[model.debugShowParam]"
-                    type="button" ng-click="model.debugShowParam = true">
+            <button ng-class="{true: 'btn btn-main param-type', false:'btn btn-default param-type'}[debugShowParam]"
+                    type="button" ng-click="debugShowParam = true">
                 参数
             </button>
         </div>
         <div class="cb"></div>
 
         <!-- 请求头 -->
-        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[!model.debugShowParam]">
+        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[!debugShowParam]">
             <table class="table-bordered tl input-no-border mb0 w" id="editHeaderTable">
                 <thead>
                 <tr class="BGF5 fw500">
@@ -65,7 +65,7 @@
         </div>
 
         <!-- 请求参数 -->
-        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[model.debugShowParam]">
+        <div ng-class="{true: 'mt10 BGFFF pb10 shadow', false:'mt10 BGFFF pb10 shadow none'}[debugShowParam]">
             <input type="hidden" name="paramType" ng-model="model.paramType">
 
             <div class="btn-group btn-group-sm r3 m10">

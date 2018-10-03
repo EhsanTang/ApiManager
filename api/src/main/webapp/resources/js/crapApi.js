@@ -8,6 +8,8 @@ function propUpPsswordDiv(obj){
 		changeimg('imgCode','verificationCode');
 		$("#password").val('');
 		$("#password").focus();
+	}else if(msg.indexOf(NEED_LOGIN)>=0 ){
+		openPage('loginOrRegister.do#/login');
 	}
 }
 

@@ -171,6 +171,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
     // 接口详情
     $scope.getInterfaceDetail = function (isEdit, isDebug) {
+        $rootScope.debugShowParam = true;
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
@@ -186,7 +187,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             if (isDebug){
                 $("#editHeaderTable").find("tbody").find("tr").remove();
                 $("#editParamTable").find("tbody").find("tr").remove();
-                $rootScope.model.debugShowParam = true;
                 $.each($rootScope.model.crShowHeaderList, function (n, value) {
                     addOneDebugTr('editHeaderTable',null, value);
                 });

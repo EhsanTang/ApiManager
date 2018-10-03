@@ -111,7 +111,7 @@
                         <span ng-if="error.indexOf('CrapApi-400')>0">
 									404-抱歉，地址有误，网页找不到了
 				        </span>
-                        <span ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
+                        <span onclick="propUpPsswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
                     </button>
                 </div>
                 <div class="f16 fb p20 fl ndis BGFFF b1" id="tip-error" ng-if="hasError(errorTips,'tip-error')">

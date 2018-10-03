@@ -240,25 +240,6 @@ visitorModule.controller('interfaceDetailCtrl', function($rootScope,$scope, $htt
 				 
 				 $rootScope.paramRemarks = eval("("+result.data.paramRemark+")");
 				 $rootScope.others = result.others;
-				 if(result.data.method)// 调试页面默认显示method中第一个
-					 $rootScope.model.debugMethod = result.data.method.split(",")[0];
-			 }
-		});
-    };
-    $scope.getDebugResult= function() {
-    	$rootScope.model.headers = getParamFromTable("debugHeader");
-		$rootScope.model.params =getParamFromTable("debugParams");
-    	var params = "iUrl=visitor/interface/debug.do|iLoading=FLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-				 $rootScope.model = null;
-			 }else{
-				 $rootScope.model.debugResult = result.data.debugResult;
-				 
-				 $rootScope.jsonformat("debugResult",false);
-				 $rootScope.others = result.others;
 			 }
 		});
     };

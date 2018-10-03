@@ -72,16 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/visitor/interfaceDetail.tpl.html'
             }
         }
-    }).state('visitorInterfaceDebugCtrl', {
-		url : '/interface/debug?projectId&id',
-		views : {
-			'main' :{
-				templateUrl : function($stateParems){
-					return 'resources/html/visitor/interfaceDebug.tpl.html?v=v8.0.5';
-				}
-			}
-		}
-	}).state('visitorSourceList', {
+    }).state('visitorSourceList', {
 		url : '/source/list?projectId&moduleId',
 		views : {
 			'main' : {

@@ -55,7 +55,9 @@ function httpSuccess(data, iLoading, tipTime) {
 			$("#password").val('');
 			$("#password").focus();
 			data = "[ERROR][" + NEED_PASSWORD_CODE + "] "+data.error.message+"，点击请输入访问密码";
-		}else{
+		}else if(data.error.code == NEED_LOGIN ){
+            data = "[ERROR][" + NEED_LOGIN + "] "+data.error.message;
+        }else{
 			data = "[ERROR]"+data.error.message;
 		}
 	}

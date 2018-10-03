@@ -20,7 +20,7 @@ public class LoginUserHelper implements IConst{
     public static LoginInfoDto getUser(MyError error) throws MyException{
         LoginInfoDto loginInfoDto = tryGetUser();
         if (loginInfoDto == null){
-            throw new MyException(error == null ? MyError.E000064 : error);
+            throw new MyException(error == null ? MyError.E000021 : error);
         }
         return loginInfoDto;
     }

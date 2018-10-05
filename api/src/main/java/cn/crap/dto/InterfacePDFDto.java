@@ -15,11 +15,11 @@ public class InterfacePDFDto implements Serializable{
 	private List<ParamDto> formParams;
 	private String customParams;
 	private List<ParamDto> headers;
-	private List<ResponseParamDto> responseParam;
+	private List<ParamDto> responseParam;
 	private List<ErrorDto> errors;
 	private String trueMockUrl;
 	private String falseMockUrl;
-	private List<ResponseParamDto> paramRemarks;
+	private List<ParamDto> paramRemarks;
 	// 是否是自定义参数
 	private boolean custom = false;
 
@@ -56,7 +56,7 @@ public class InterfacePDFDto implements Serializable{
 		this.headers = headers;
 	}
 
-	public List<ResponseParamDto> getResponseParam() {
+	public List<ParamDto> getResponseParam() {
 		return responseParam;
 	}
 
@@ -64,12 +64,12 @@ public class InterfacePDFDto implements Serializable{
 	 * 名称根据deep缩进
 	 * @param responseParam
 	 */
-	public void setResponseParam(List<ResponseParamDto> responseParam) {
+	public void setResponseParam(List<ParamDto> responseParam) {
 		if (CollectionUtils.isEmpty(responseParam)){
 			this.responseParam = new ArrayList<>();
 			return;
 		}
-		for (ResponseParamDto responseParamDto : responseParam){
+		for (ParamDto responseParamDto : responseParam){
 			Integer deep = responseParamDto.getDeep();
 			if (deep == null){
                 responseParamDto.setDeep(0);
@@ -111,11 +111,11 @@ public class InterfacePDFDto implements Serializable{
 		this.falseMockUrl = falseMockUrl;
 	}
 
-	public List<ResponseParamDto> getParamRemarks() {
+	public List<ParamDto> getParamRemarks() {
 		return paramRemarks;
 	}
 
-	public void setParamRemarks(List<ResponseParamDto> paramRemarks) {
+	public void setParamRemarks(List<ParamDto> paramRemarks) {
 		this.paramRemarks = paramRemarks;
 	}
 

@@ -134,35 +134,10 @@
             <h5 style="color:#999999;">请求示列</h5>
             ${f.customParams}
             <br/><br/>
-            <h5 style="color:#999999;">参数备注</h5>
-            <table style="width:100%;">
-                <tr style="background:${MAIN_COLOR};color:#fff;">
-                    <th style="width:30px;"></th>
-                    <th>名称</th>
-                    <th style="width:60px;">类型</th>
-                    <th style="width:50px;">是否必须</th>
-                    <th style="width:80px;">备注</th>
-                </tr>
-                <c:forEach var="v" items="${f.paramRemarks}">
-                    <tr>
-                        <td style="color:red;">${v.deep}</td>
-                        <td style="padding-left:20px;">
-                            <div>${v.name}</div>
-                        </td>
-                        <td>${v.type}</td>
-                        <td>${v.necessary}</td>
-                        <td>${v.remark}</td>
-                    </tr>
-                </c:forEach>
-            </table>
         </c:if>
+
         <br/>
-        <h3>(9) 请求示例</h3>
-        <div style="background:#F0F0F0; padding:10px;">
-            <pre style="font-family: SimSun;">${f.model.requestExam}</pre>
-        </div>
-        <br/>
-        <h3>(10) 返回数据说明</h3>
+        <h3>(9) 返回数据说明</h3>
         <table style="width:100%;">
             <tr style="background:${MAIN_COLOR};color:#fff;">
                 <th style="width:30px;"></th>
@@ -184,17 +159,17 @@
             </c:forEach>
         </table>
         <br/>
-        <h3>(11) 正确返回示例</h3>
+        <h3>(10) 正确返回示例</h3>
         <div style="background:#F0F0F0; padding:10px;">
             <pre>${f.model.trueExam}</pre>
         </div>
         <br/>
-        <h3>(12) 错误返回示例</h3>
+        <h3>(11) 错误返回示例</h3>
         <div style="background:#F0F0F0; padding:10px;">
             <pre>${f.model.falseExam}</pre>
         </div>
         <br/>
-        <h3>(13) 错误码</h3>
+        <h3>(12) 错误码</h3>
         <table style="width:100%;">
             <tr style="background:${MAIN_COLOR};color:#fff;">
                 <td>Code</td>

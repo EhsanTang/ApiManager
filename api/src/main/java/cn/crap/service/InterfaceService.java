@@ -150,7 +150,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, handleText4Word));
         if(interFace.getParam().startsWith("form=")){
-            interDto.setFormParams(JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig()));
+            List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig());
+            interDto.setFormParams(InterfaceAdapter.sortParam(null, paramList, null));
         }else{
             interDto.setCustom(true);
             interDto.setCustomParams( interFace.getParam());
@@ -158,9 +159,12 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         interDto.setTrueMockUrl(config.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
         interDto.setFalseMockUrl(config.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
 
-        interDto.setHeaders(JSONArray.toList( JSONArray.fromObject(interFace.getHeader()), new ParamDto(), new JsonConfig()));
-        interDto.setResponseParam(JSONArray.toList( JSONArray.fromObject(interFace.getResponseParam()),new ResponseParamDto(), new JsonConfig()));
-        interDto.setParamRemarks(JSONArray.toList( JSONArray.fromObject(interFace.getParamRemark()), new ResponseParamDto(), new JsonConfig()));
+        List<ParamDto> headerList = JSONArray.toList(JSONArray.fromObject(interFace.getHeader()), new ParamDto(), new JsonConfig());
+        interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
+
+        List<ParamDto> resParamList = JSONArray.toList(JSONArray.fromObject(interFace.getResponseParam()), new ParamDto(), new JsonConfig());
+        interDto.setResponseParam(InterfaceAdapter.sortParam(null, resParamList, null));
+
         interDto.setErrors(JSONArray.toList( JSONArray.fromObject(interFace.getErrors()),new ErrorDto(), new JsonConfig()));
         return interDto;
     }

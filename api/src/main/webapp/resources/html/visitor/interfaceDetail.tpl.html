@@ -103,39 +103,12 @@
 		</table>
 		
 		<div id="2_5">2.5 输入参数说明</div>
-		<div class="code" ng-if="model.customParams">
+		<div class="code" ng-if="model.paramType == 'RAW'">
 			<div class="bb1 mt0 pt0">自定义参数（Custom）</div>
-			<pre>{{model.customParams}}</pre>
-		<thead>
-			<tr class="BGEEE C000">
-				<th class="w50"></th>
-				<th class="tc">名称</th>
-				<th class="tc w100">类型</th>
-				<th class="tc w100">必填</th>
-				<th class="tc w200">备注</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in paramRemarks">
-				<td class="tc" style="color:red;">{{item.deep}}</td>
-				<td class="C000 pl20">
-					<span style="padding-left:{{item.deep*15 + 'px'}}">{{item.name}}</span>
-				</td>
-				<td class="tc C000">{{item.type}}</td>
-				<td class="tc C000">{{item.necessary}}</td>
-				<td class="tc C000">{{item.remark}}</td>
-			</tr>
-		</tbody>
-		</table>
+			<pre>{{model.param}}</pre>
 		</div>
-		
-		
-		<!-- 如果不判断formParams!=null,当formParams还没加载成功,hasRequestHeader就会被调用导致报错 -->
-		<span ng-if="formParams == null || formParams.length==0" >
-			无
-		</span>
-		
-		<table class="table table-bordered" ng-if="formParams!=null && formParams.length>0" >
+
+		<table class="table table-bordered" ng-if="model.paramType == 'FORM' && model.crShowParamList.length>0" >
 		<thead>
 			<tr class="BGEEE C000">
 				<th class="tc">名称</th>
@@ -147,7 +120,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in formParams" class="tc C000">
+			<tr ng-repeat="item in model.crShowParamList" class="tc C000">
 				<td class="fb">{{item.name}}</td>
 				<td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
 				<td ng-if="item.inUrl && item.inUrl=='true'">请求URL</td>

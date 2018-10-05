@@ -11,7 +11,7 @@
 	<div class="col-xs-12 p0" ng-if="list.length>0">
 			<div ng-repeat="item in list" class="dashed-t">
 				<div class="pt20 pl0 f16 fb">
-					<a ng-href="#/{{item.projectId}}/article/detail/{{item.moduleId}}/{{item.type}}/{{item.id}}" class="C000 no_unl">{{item.name}}</a></div>
+					<a ng-href="#article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}" class="C000 no_unl">{{item.name}}</a></div>
 				<div class ="f14  pt10 C555" ng-bind="item.brief"></div>
 				<div class="tr C999 f12 p10">模块:{{item.moduleName}}  <span class="C999 pl20">{{getDate(item.createTime)|date:'yyyy-MM-dd'}}</span></div>
 			</div>

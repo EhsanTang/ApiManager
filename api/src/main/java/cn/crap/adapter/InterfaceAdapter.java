@@ -62,7 +62,8 @@ public class InterfaceAdapter {
                 model.getHeader() == null ? "[]" : model.getHeader()), new ParamDto(), new JsonConfig());
         dto.setCrShowHeaderList(sortParam(null, headerList, null));
 
-        dto.setParamType(model.getParam().startsWith(IConst.C_PARAM_FORM_PRE) ? IConst.C_PARAM_FORM : IConst.C_PARAM_RAW);
+        dto.setParamType((model.getParam() == null || model.getParam().startsWith(IConst.C_PARAM_FORM_PRE)) ?
+				IConst.C_PARAM_FORM : IConst.C_PARAM_RAW);
         if (IConst.C_PARAM_FORM.equals(dto.getParamType())) {
             List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
                     model.getParam() == null ? "[]" : model.getParam().substring(5, model.getParam().length())), new ParamDto(), new JsonConfig());
@@ -176,7 +177,6 @@ public class InterfaceAdapter {
 		model.setIsTemplate(dto.getIsTemplate());
 		model.setProjectId(dto.getProjectId());
 		model.setContentType(dto.getContentType());
-		
         return model;
     }
 

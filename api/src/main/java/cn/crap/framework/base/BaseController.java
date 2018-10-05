@@ -77,7 +77,7 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public JsonResult expHandler(HttpServletRequest request, Exception ex) {
-        log.error(ex);
+        log.error("未知异常", ex);
         if (ex instanceof MyException) {
             return new JsonResult((MyException) ex);
         } else if (ex instanceof NullPointerException) {

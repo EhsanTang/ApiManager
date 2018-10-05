@@ -1,10 +1,13 @@
 <div class="r0 p10 pt0 col-xs-12">
 	<div class="col-xs-12 p0 mt10">
 		<form ng-submit="submitForm('user/interface/copy.do')">
+			接口名称：
 			<input class="form-control mb10" type="text"
 							ng-model="model.interfaceName" placeholder="示例：获取订单列表接口" required>
+			接口地址：
 			<input class="form-control mb10" type="text" ng-model="model.url" required
 							placeholder="示例：http://api.crap.cn/CustomerOrder/GetMyOrderList">
+			模块：
 			<input class="form-control mb10" readonly id="moduleName" type="text" ng-model="model.moduleName" required placeholder="点击输入框选择模块"
 					ng-focus="loadPickByName('iwidth=220|iheight=320|tagName=moduleName|showType=4|tag=moduleId|code=MY_MODULE|def='+model.moduleId,$event)">
 			<button type="submit" class="btn btn-adorn fr">拷贝</button>

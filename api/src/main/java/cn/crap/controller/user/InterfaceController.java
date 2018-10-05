@@ -99,7 +99,6 @@ public class InterfaceController extends BaseController{
 			module = moduleCache.get(moduleId);
 			model.setModuleId( moduleId);
 			model.setProjectId(module.getProjectId() == null ? projectId : module.getProjectId());
-			model.setParam("form=[]");
 			model.setResponseParam("[]");
 			model.setHeader("[]");
 			model.setParamRemark("[]");
@@ -107,7 +106,9 @@ public class InterfaceController extends BaseController{
             model.setMethod(IConst.C_METHOD_GET);
             model.setStatus(InterfaceStatus.ONLINE.getByteValue());
             model.setContentType(InterfaceContentType.JSON.getType());
-			if(!MyString.isEmpty(module.getTemplateId())){
+            model.setParam(IConst.C_PARAM_FORM_PRE + "[]");
+
+            if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
 				// 根据模板初始化接口
 				if(template != null){
@@ -130,30 +131,37 @@ public class InterfaceController extends BaseController{
 	}
 	
 	/**
-	 * @param interFace
 	 * @return
 	 * @throws MyException
 	 * @throws IOException
 	 */
 	@RequestMapping("/copy.do")
 	@ResponseBody
-	public JsonResult copy(@ModelAttribute InterfaceDto interFace) throws MyException, IOException {
-		//判断是否拥有该模块的权限
+	public JsonResult copy(@RequestParam String id, String interfaceName, String url, @RequestParam String moduleId) throws MyException, IOException {
+		InterfaceWithBLOBs interFace = interfaceService.getById(id);
+
+		//判断是否拥有原来项目的权限
 		checkUserPermissionByProject(interFace.getProjectId(), ADD_INTER);
-		Module module = moduleCache.get(interFace.getModuleId());
+		Module module = moduleCache.get(moduleId);
+		// 检查新项目的权限
+        checkUserPermissionByModuleId(moduleId, ADD_INTER);
 
 		if(!config.isCanRepeatUrl()){
-			if (interfaceService.count(new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){
+			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){
 				throw new MyException(MyError.E000004);
 			}
 		}
-		interFace.setId(null);
-		interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-        InterfaceWithBLOBs model = InterfaceAdapter.getModel(interFace);
-        interfaceService.insert(model);
 
-        interFace.setId(model.getId());
-		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
+		interFace.setId(null);
+		interFace.setUrl(url);
+        interFace.setFullUrl((module.getUrl() == null ? "" : module.getUrl()) + url);
+        interFace.setInterfaceName(interfaceName);
+        interFace.setModuleId(moduleId);
+        interFace.setProjectId(module.getProjectId());
+        interfaceService.insert(interFace);
+
+        interFace.setId(interFace.getId());
+		luceneService.add(InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interFace, null, null, false)));
 		return new JsonResult(1, interFace);
 	}
 	
@@ -272,27 +280,26 @@ public class InterfaceController extends BaseController{
         List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
                 interFace.getHeader() == null ? "[]" : interFace.getHeader()), new ParamDto(), new JsonConfig());
 
-        List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
-                interFace.getParam() == null ? "[]" : interFace.getParam()), new ParamDto(), new JsonConfig());
-
-        Map<String, String> httpParams = new HashMap<>();
-        for (ParamDto paramDto : paramList) {
-            if (fullUrl.contains("{" + paramDto.getRealName() + "}")) {
-                fullUrl = fullUrl.replace("{" + paramDto.getRealName() + "}", paramDto.getDef());
-            } else {
-                httpParams.put(paramDto.getRealName(), paramDto.getDef());
-            }
-        }
-
         Map<String, String> httpHeaders = new HashMap<>();
         for (ParamDto paramDto : headerList) {
-            httpHeaders.put(paramDto.getRealName(), paramDto.getDef());
+            httpHeaders.put(paramDto.getName(), paramDto.getDef());
         }
         // 如果自定义参数不为空，则表示需要使用post发送自定义包体
         if (C_PARAM_RAW.equals(interFace.getParamType())) {
             return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.postBody(fullUrl, interFace.getParam(), httpHeaders)));
         }
 
+        List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
+                interFace.getParam() == null ? "[]" : interFace.getParam()), new ParamDto(), new JsonConfig());
+
+        Map<String, String> httpParams = new HashMap<>();
+        for (ParamDto paramDto : paramList) {
+            if (fullUrl.contains("{" + paramDto.getRealName() + "}")) {
+                fullUrl = fullUrl.replace("{" + paramDto.getName() + "}", paramDto.getDef());
+            } else {
+                httpParams.put(paramDto.getName(), paramDto.getDef());
+            }
+        }
         try {
             switch (interFace.getMethod()) {
                 case "POST":

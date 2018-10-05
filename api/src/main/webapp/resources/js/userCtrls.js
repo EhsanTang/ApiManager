@@ -271,8 +271,8 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             $rootScope.model.param = getParamFromTable('editParamTable', 'name');
         }
         var params = "iUrl=user/interface/debug.do|iLoading=FLOAT|iPost=POST|iParams=&"+$.param($rootScope.model);
-        $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "debugResult", function () {
-            $rootScope.debugResult = format($rootScope.debugResult, false);
+        $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "debug", function () {
+            $rootScope.debugResult = format($rootScope.debug.debugResult, false);
         });
     };
     /*********************************** 回调方法 *********************************/

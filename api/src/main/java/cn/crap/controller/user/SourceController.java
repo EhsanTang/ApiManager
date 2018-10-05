@@ -9,6 +9,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.model.Source;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.ISearchService;
@@ -17,6 +18,7 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,8 +43,21 @@ public class SourceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
-		checkUserPermissionByModuleId((query.getModuleId()), VIEW);
+	public JsonResult list(String projectId, String moduleId, String name, Integer currentPage) throws MyException{
+        Assert.isTrue(MyString.isNotEmpty(projectId) || MyString.isNotEmpty(moduleId), "projectId & moduleId 不能同时为空");
+
+        Module module = null;
+        Project project;
+        if (MyString.isNotEmpty(moduleId)){
+            module = moduleCache.get(moduleId);
+            project = projectCache.get(module.getProjectId());
+        }else {
+            project = projectCache.get(projectId);
+        }
+
+        SourceQuery query = new SourceQuery().setProjectId(projectId).setModuleId(moduleId)
+                .setName(name).setCurrentPage(currentPage);
+        checkUserPermissionByProject(project.getId(), VIEW);
 
 		Page page= new Page(query);
 		page.setAllRow(sourceService.count(query));
@@ -57,6 +72,7 @@ public class SourceController extends BaseController{
 	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
         Module module;
+        Project project;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
@@ -65,6 +81,12 @@ public class SourceController extends BaseController{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
             module = moduleCache.get(source.getModuleId());
+            if (module == null || module.getId() == null){
+                module = null;
+                project = projectCache.get(source.getProjectId());
+                model.setProjectId(project.getId());
+            }
+
 		}
 		return new JsonResult(1, SourceAdapter.getDto(model, module));
 	}

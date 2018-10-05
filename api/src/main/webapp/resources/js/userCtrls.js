@@ -155,7 +155,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     };
 
     $scope.querySourceList = function(page) {
-        var params = "iUrl=user/source/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId;
+        var params = "iUrl=user/source/list.do|iLoading=FLOAT|iPost=true|iParams=&name="+$stateParams.name+"&moduleId="+$stateParams.moduleId+ "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "sources");
     };
 

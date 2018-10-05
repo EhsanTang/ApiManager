@@ -6,7 +6,7 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="querySourceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
-               ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId)">
+               ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId + '&projectId=' + $stateParams.projectId)">
                 <i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增文件
             </a>
             <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"

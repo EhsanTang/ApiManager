@@ -100,6 +100,9 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
+		LoginInfoDto user = LoginUserHelper.getUser();
+
+		checkCrapDebug(user.getId(), moduleDto.getProjectId());
 
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
@@ -121,11 +124,6 @@ public class ModuleController extends BaseController implements ILogConst{
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
-			LoginInfoDto user = LoginUserHelper.getUser();
-			String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
-			if (projectId.equals(moduleDto.getProjectId())){
-				throw new MyException(MyError.E000067);
-			}
 			Integer maxModule = settingCache.getInteger(SettingEnum.MAX_MODULE);
 			Integer totalModuleNum = moduleService.count(new ModuleQuery().setUserId(user.getId()));
 			if (totalModuleNum > maxModule ||totalModuleNum > MAX_MODULE_NUM){
@@ -142,7 +140,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		/**
 		 * 刷新用户权限
 		 */
-		LoginInfoDto user = LoginUserHelper.getUser();
+        user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
 		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, projectService, projectUserService));
 		return new JsonResult(1,module);
@@ -181,8 +179,13 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	public JsonResult delete(@ModelAttribute Module module) throws Exception{
 		// 系统数据，不允许删除
-		if(module.getId().equals("web"))
-			throw new MyException(MyError.E000009);
+		if(module.getId().equals("web")) {
+            throw new MyException(MyError.E000009);
+        }
+
+        LoginInfoDto user = LoginUserHelper.getUser();
+        checkCrapDebug(user.getId(), module.getProjectId());
+
 				
 		Module dbModule = moduleCache.get(module.getId());
 		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);

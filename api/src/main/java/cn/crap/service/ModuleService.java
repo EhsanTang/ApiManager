@@ -78,8 +78,12 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
     }
 
     public boolean delete(String id) throws MyException{
-        // TODO 日志
         Assert.notNull(id, "id can't be null");
+
+        Module dbModule = getById(id);
+        Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
+        logService.insert(log);
+
         return super.delete(id);
     }
     /**

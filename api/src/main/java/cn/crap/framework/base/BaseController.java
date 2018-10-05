@@ -49,6 +49,12 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     @Autowired
     protected Config config;
 
+    protected void checkCrapDebug(String userId, String projectId) throws MyException{
+        String debugProjectId = MD5.encrytMD5(userId, "").substring(0, 20) + "-debug";
+        if (debugProjectId.equals(projectId)){
+            throw new MyException(MyError.E000067);
+        }
+    }
     /**
      * @param param 待校验参数
      * @param tip 前端提示文案

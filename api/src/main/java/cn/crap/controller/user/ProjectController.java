@@ -14,6 +14,7 @@ import cn.crap.model.Project;
 import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,8 +128,11 @@ public class ProjectController extends BaseController {
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception {
-        String userId = LoginUserHelper.getUser().getId();
+        LoginInfoDto user = LoginUserHelper.getUser();
+        String userId = user.getId();
         String projectId = project.getId();
+
+        checkCrapDebug(userId, projectId);
 
         // 私有项目不能建立索引
         if (project.getType() == ProjectType.PRIVATE.getType()) {
@@ -184,9 +188,10 @@ public class ProjectController extends BaseController {
     @ResponseBody
     public JsonResult delete(@ModelAttribute Project project) throws Exception {
         // 系统数据，不允许删除
-        if (project.getId().equals("web"))
+        if (project.getId().equals("web")) {
             throw new MyException(MyError.E000009);
-
+        }
+        checkCrapDebug(LoginUserHelper.getUser().getId(), project.getId());
 
         Project model = projectCache.get(project.getId());
         checkUserPermissionByProject(model);

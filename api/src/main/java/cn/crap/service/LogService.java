@@ -121,11 +121,6 @@ public class LogService extends BaseService<Log, LogDao> {
                 json = JSONObject.fromObject(log.getContent());
                 Module module = (Module) JSONObject.toBean(json, Module.class);
                 checkLog(module.getProjectId());
-
-                // 模块不允许恢复修改操作，需要关联修改接口数据
-                if (!log.getType().equals(LogType.DELTET.name())) {
-                    throw new MyException(MyError.E000050);
-                }
                 moduleService.update(module);
                 break;
             case "PROJECTWITHBLOBS":

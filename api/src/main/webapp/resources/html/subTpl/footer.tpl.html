@@ -54,10 +54,10 @@
 					<p>&nbsp;加密项目，请输入访问密码</p>
 				</blockquote>
 				<div class="input-wrapper mt20 bt1">
-					<input id="password" type="text" placeholder="请输入访问密码">
+					<input id="password" type="text" placeholder="图形验证码" autocomplete="off" placeholder="请输入访问密码">
 				</div>
 				<div class="input-wrapper bt0" ng-if="settings.VISITCODE=='true'">
-						<input type="text" id="visitCode" placeholder="图形验证码">
+						<input type="text" id="visitCode" placeholder="图形验证码" autocomplete="off">
 						<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
 							data-toggle="tooltip">
 							<img id="imgCode" width="80" height="30"

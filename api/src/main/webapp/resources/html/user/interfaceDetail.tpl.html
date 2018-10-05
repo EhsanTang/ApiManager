@@ -139,7 +139,7 @@
             </div>
 
             <h4 class="mt20 mb20 C000">错误码</h4>
-            <table class="table table-bordered ml20" ng-if="errorList!= null && errorList.length>0">
+            <table class="table table-bordered ml20" ng-if="errors!= null && errors.length>0">
                 <thead>
                 <tr class="BGEEE C000">
                     <th class="tc w200">Code</th>
@@ -147,7 +147,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in errorList">
+                <tr ng-repeat="item in errors">
                     <td class="tc fb C000">{{item.errorCode}}</td>
                     <td class="tc C000">{{item.errorMsg}}</td>
                 </tr>

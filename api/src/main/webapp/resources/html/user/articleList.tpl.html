@@ -47,7 +47,7 @@
                 <thead>
                 <tr class="f14 C000 fw500">
                     <td class="w50">
-                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);stopPropagation($event);">
                     </td>
                     <td class="min-w300">项目名称</td>
                     <td ng-if="$stateParams.type=='PAGE'">key</td>

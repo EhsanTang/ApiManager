@@ -36,7 +36,7 @@
                 <thead>
                 <tr class="f14 C000 fw500">
                     <th class="w60">
-                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">&nbsp;全选
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',sources)">&nbsp;全选
                     </th>
                     <th class="min-w200">名称</th>
                     <th class="min-w300">摘要</th>
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in sources">
-                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);stopPropagation($event);"></td>
                     <td>{{item.name}}</td>
                     <td>{{item.remark|cut:true:50:' ...'}}</td>
                     <td>{{item.updateTimeStr}}</td>

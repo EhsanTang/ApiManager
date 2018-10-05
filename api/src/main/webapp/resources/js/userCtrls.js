@@ -177,7 +177,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             if (isEdit) {
                 createWangEditor("interface-editor", "remark", initInterfaceEditor, 150);
             }
-
+            $rootScope.errors = eval("("+$rootScope.model.errors+")")
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
             // $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
             if($rootScope.model.method) {// 调试页面默认显示method中第一个

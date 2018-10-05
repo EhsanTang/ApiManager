@@ -37,7 +37,7 @@
                 <thead>
                 <tr class="f14 C000 fw500">
                     <td>
-                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',list)">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',dictionaries)">
                     </td>
                     <td>名称</td>
                     <td>简介</td>
@@ -50,7 +50,7 @@
                 <tr ng-repeat="item in dictionaries" class="cursor"
                     ng-click="go('user/dictionary/detail?pageName=数据库表详情&id=' +item.id+ '&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
-                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);stopPropagation($event);"></td>
                     <td>{{item.name| cut:true:25:' ...'}}</td>
                     <td>{{item.brief| cut:true:25:' ...'}}</td>
                     <td>{{item.statusName}}</td>

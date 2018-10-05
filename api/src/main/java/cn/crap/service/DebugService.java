@@ -36,9 +36,7 @@ public class DebugService extends BaseService<Debug, DebugDao> {
         if (model == null) {
             return false;
         }
-        if (MyString.isEmpty(model.getId())) {
-            model.setId(IdGenerator.getId(TableId.DEBUG));
-        }
+
         if (model.getSequence() == null){
             List<Debug> models = this.query(new DebugQuery().setPageSize(1).setModuleId(model.getModuleId()));
             if (models.size() > 0){

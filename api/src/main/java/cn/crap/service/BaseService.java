@@ -5,6 +5,7 @@ import cn.crap.enumer.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.BasePo;
+import cn.crap.utils.MyString;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -33,7 +34,12 @@ public class BaseService<PO extends BasePo, DAO> {
         if (po == null) {
             return false;
         }
-        po.setId(IdGenerator.getId(tableId));
+
+        // 兼容CrapDebug系统
+        if (MyString.isEmpty(po.getId())){
+            po.setId(IdGenerator.getId(tableId));
+        }
+
         if (po.getSequence() == null){
             po.setSequence(0);
         }

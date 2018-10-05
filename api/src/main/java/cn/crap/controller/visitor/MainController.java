@@ -12,11 +12,11 @@ import cn.crap.model.HotSearch;
 import cn.crap.model.Project;
 import cn.crap.query.ArticleQuery;
 import cn.crap.query.ProjectQuery;
+import cn.crap.schedule.OpenSourceInfoTask;
+import cn.crap.schedule.TaskUtil;
 import cn.crap.service.*;
 import cn.crap.service.tool.LuceneSearchService;
 import cn.crap.utils.*;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,8 +60,6 @@ public class MainController extends BaseController{
     private static final String FORK_NUM = "forkNum";
     private static final String STAR_NUM = "starNum";
 
-    private static final String GITHUB_REPOS_API = "https://api.github.com/repos/EhsanTang/ApiManager";
-    private static final String GITEE_REPOS_API = "https://gitee.com/api/v5/repos/CrapApi/CrapApi";
 
     /**
 	 * 默认页面，重定向web.do，不直接进入web.do是因为进入默认地址，浏览器中的href不会改变， 会导致用户第一点击闪屏
@@ -107,8 +105,6 @@ public class MainController extends BaseController{
         }
         modelMap.addAttribute("projectList", projectList);
 
-
-
         List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
         	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
@@ -128,41 +124,13 @@ public class MainController extends BaseController{
         modelMap.addAttribute("menuList", menuList);
 
         // fork & star 数量
-        getStarAndForkNum(modelMap);
+		TaskUtil.execute(new OpenSourceInfoTask());
+		modelMap.addAttribute(FORK_NUM, OpenSourceInfoTask.forNumStr);
+		modelMap.addAttribute(STAR_NUM, OpenSourceInfoTask.starNumStr);
 
         return "WEB-INF/views/dashboard.jsp";
     }
 
-    private void getStarAndForkNum(ModelMap modelMap) {
-        String forNumStr = stringCache.get(FORK_NUM);
-        String starNumStr = stringCache.get(STAR_NUM);
-        try {
-            int forNum = 0;
-            int starNum = 0;
-            if (forNumStr == null || starNumStr == null) {
-                JSONObject jsonObject = JSON.parseObject( HttpPostGet.get(GITHUB_REPOS_API, null, null, 2000));
-                forNum = jsonObject.getInteger("forks_count");
-                starNum = jsonObject.getInteger("stargazers_count");
-
-                jsonObject =  JSON.parseObject( HttpPostGet.get(GITEE_REPOS_API, null, null, 2000));
-                forNum = forNum + jsonObject.getInteger("forks_count");
-                starNum = starNum + jsonObject.getInteger("stargazers_count");
-
-                forNumStr = forNum + "";
-                starNumStr = starNum + "";
-                stringCache.add(FORK_NUM, forNumStr);
-                stringCache.add(STAR_NUM, starNumStr);
-            }
-        }catch (Exception e){
-            forNumStr = "--";
-            starNumStr = "--";
-            stringCache.add(FORK_NUM, forNumStr);
-            stringCache.add(STAR_NUM, starNumStr);
-            e.printStackTrace();
-        }
-        modelMap.addAttribute(FORK_NUM, forNumStr);
-        modelMap.addAttribute(STAR_NUM, starNumStr);
-    }
 
     /**
 	 * 公共

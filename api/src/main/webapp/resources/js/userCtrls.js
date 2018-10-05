@@ -418,15 +418,6 @@ userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 					alert(isSuccess.replace('[ERROR]', ''));
 				 }else{
 					 $rootScope.model = result.data.model;
-					 if( $rootScope.model.remberPwd != 'NO'){
-						 $timeout(function() {
-							 $("#remberPwdYes").click();
-		                 })
-					 }else{
-						 $timeout(function() {
-							 $("#remberPwdNo").click();
-		                 })
-					 }
 					 // 已经登陆成功，跳转至后台主页
 					 if($rootScope.model && $rootScope.model.sessionAdminName){
 							window.location.href="admin.do";
@@ -436,9 +427,6 @@ userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 			});
 		}
     };
-    $scope.changeRadio = function(value){
-    	$rootScope.model.remberPwd = value;
-    }
 
     $scope.login = function(iurl,myLoading){
 		var iLoading = "TIPFLOAT";

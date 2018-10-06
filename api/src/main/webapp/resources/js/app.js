@@ -202,7 +202,6 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 				 
 			});;
 	};
-
 	//点击拷贝接口详情回调
 	$rootScope.copyInterface = function() {
 		changeDisplay('copyInterFace','interFaceDetail');

@@ -130,7 +130,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             },'detail' : {
                 templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/interImportJson.tpl.html?v=v8.0.5';
+                    return 'resources/html/subTpl/interEditDialog.tpl.html?v=v8.0.5';
                 }
             }, 'interBaseEdit@userInterfaceEdit' : {
                 templateUrl : 'resources/html/subTpl/interBaseEdit.tpl.html?v=v8.0.5'

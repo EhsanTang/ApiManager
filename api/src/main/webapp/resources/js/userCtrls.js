@@ -172,6 +172,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 接口详情
     $scope.getInterfaceDetail = function (isEdit, isDebug) {
         $rootScope.debugShowParam = true;
+        $rootScope.interfaceDialog = 'header';
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
@@ -274,6 +275,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "debug", function () {
             $rootScope.debugResult = format($rootScope.debug.debugResult, false);
         });
+    };
+
+    $scope.openInterfaceDialog = function(id, title, width){
+        $rootScope.interfaceDialog = id;
+        openMyDialog(title, width);
     };
     /*********************************** 回调方法 *********************************/
     // 保存markdown

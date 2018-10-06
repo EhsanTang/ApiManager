@@ -7,9 +7,13 @@
 					</button>
 				</div>
 
-				<button type="submit" class="btn btn-adorn btn-sm">
+				<button type="submit" class="btn btn-adorn btn-sm" id="submit">
 					<i class="iconfont f12 mt-3">&#xe747; 快速保存</i>
 				</button>
+
+                <button type="button" class="btn btn-main btn-sm" ng-click="openInterfaceDialog('remark', '快速', 500)">
+                    <i class="iconfont f12 mt-3">&#xe747; 保存</i>
+                </button>
 
                 <div class="cursor fr ml20 f14 C999" onclick="scrollToIdByParentId('main', 'anchor_example', -50)">
                     #返回示例

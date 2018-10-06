@@ -1,0 +1,20 @@
+<div ng-class="{true: 'p10 pt0', false:'p10 pt0 none'}[interfaceDialog == 'header' || interfaceDialog == 'param' ||  interfaceDialog == 'responseParam' ]">
+	<textarea class="form-control no-resize" id="importResponseParam" rows="5" placeholder="请输入需要导出的json数据，必须为合法的json格式"></textarea>
+    <button ng-class="{true: 'btn btn-sm btn-warning fr mt20 ml20', false:'btn btn-sm btn-warning fr mt20 ml20 none'}[interfaceDialog == 'responseParam' ]"
+            onclick="importJson('responseParam')">导入至返回参数</button>
+    <button ng-class="{true: 'btn btn-sm btn-info fr mt20 ml20', false:'btn btn-sm btn-info fr mt20 ml20 none'}[interfaceDialog == 'param' ]"
+            onclick="importJson('param')">导入至请求参数</button>
+    <button ng-class="{true: 'btn btn-sm btn-adorn fr mt20 ml20', false:'btn btn-sm btn-adorn fr mt20 ml20 none'}[interfaceDialog == 'header' ]"
+             onclick="importJson('header')">导入至请求头</button>
+</div>
+
+<div ng-class="{true: 'p10 pt0', false:'p10 pt0 none'}[interfaceDialog == 'remark' ]">
+    备注 * ：
+    <textarea class="form-control no-resize" ng-model="model.modifyRemark" rows="5" placeholder="请输入备注"></textarea>
+
+    <button type="button" class="btn btn-sm btn-main fr mt20 ml20" onclick="$('#submit').click();closeMyDialog('myDialog');">
+        <i class="iconfont f12 mt-3">&#xe747; 保存</i>
+    </button>
+</div>
+<div class="cb"></div>
+

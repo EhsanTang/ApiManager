@@ -169,7 +169,7 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto interFace) throws IOException, MyException {
+	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto interFace, String modifyRemark) throws IOException, MyException {
 		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
 
 		if(MyString.isEmpty(interFace.getUrl())) {
@@ -231,7 +231,7 @@ public class InterfaceController extends BaseController{
 			}
 			
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
-			interfaceService.update(InterfaceAdapter.getModel(interFace), "接口", "");
+			interfaceService.update(InterfaceAdapter.getModel(interFace), "接口", modifyRemark);
 			if(interFace.getId().equals(interFace.getProjectId())){
 				throw new MyException(MyError.E000027);
 			}

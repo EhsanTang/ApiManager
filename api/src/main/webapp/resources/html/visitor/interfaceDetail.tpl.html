@@ -121,7 +121,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in model.crShowParamList" class="tc C000">
-				<td class="fb">{{item.name}}</td>
+				<span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
 				<td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
 				<td ng-if="item.inUrl && item.inUrl=='true'">请求URL</td>
 				<td ng-if="!item.inUrl || item.inUrl!='true'">普通参数</td>

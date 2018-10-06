@@ -22,6 +22,7 @@ public class UserDto implements Serializable{
 	private String thirdlyId;
 	private Byte status;
 	private Integer sequence;
+	private String createTimeStr;
 
 
 	public String getId() {
@@ -142,5 +143,12 @@ public class UserDto implements Serializable{
 		}
 		return UserType.getNameByValue(type);
 	}
-	
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
 }

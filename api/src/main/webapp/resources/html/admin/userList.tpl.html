@@ -64,6 +64,7 @@
                     <th class="tc b0">类型</th>
                     <th class="tc b0">角色</th>
                     <th class="tc b0">权限</th>
+                    <th class="tc w150 b0">创建时间</th>
                     <th class="w100 tc b0">操作</th>
                 </tr>
                 </thead>
@@ -74,6 +75,7 @@
                     <td class="tc w100" ng-bind="item.type==100?'管理员':'普通用户'"></td>
                     <td class="tc w100">{{item.roleName}}</td>
                     <td class="tc">{{item.authName}}</td>
+                    <td class="tc">{{item.createTimeStr}}</td>
                     <td class="tc w100">
                         <a class="f12 text-primary mr10 cursor" ng-if="showOperation('USER','');"
                            ng-click="detail('编辑【'+item.userName+'】',700,'user/detail.do?id='+item.id)"

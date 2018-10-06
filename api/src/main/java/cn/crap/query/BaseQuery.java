@@ -11,6 +11,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public abstract class BaseQuery<T> {
     private String id;
+    private String projectId;
+    private String moduleId;
     private Integer currentPage;
     private Integer pageSize;
     private String sort;
@@ -66,6 +68,24 @@ public abstract class BaseQuery<T> {
 
     public T setStatus(Byte status) {
         this.status = status;
+        return getQuery();
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public T setProjectId(String projectId) {
+        this.projectId = projectId;
+        return getQuery();
+    }
+
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public T setModuleId(String moduleId) {
+        this.moduleId = moduleId;
         return getQuery();
     }
 }

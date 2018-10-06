@@ -8,24 +8,13 @@ import cn.crap.utils.SafetyUtil;
  * @date 2018/6/30 14:17
  */
 public class ArticleQuery extends BaseQuery<ArticleQuery>{
-    private String projectId;
     private String name;
-    private String moduleId;
     private String type;
     private String category;
     private String key;
 
     @Override
     public ArticleQuery getQuery(){
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public ArticleQuery setProjectId(String projectId) {
-        this.projectId = projectId;
         return this;
     }
 
@@ -36,15 +25,6 @@ public class ArticleQuery extends BaseQuery<ArticleQuery>{
 
     public ArticleQuery setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getModuleId() {
-        return moduleId;
-    }
-
-    public ArticleQuery setModuleId(String moduleId) {
-        this.moduleId = moduleId;
         return this;
     }
 

@@ -53,15 +53,9 @@ public class ArticleController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
-		Assert.isTrue(MyString.isNotEmpty(query.getModuleId()) || MyString.isNotEmpty(query.getProjectId()), "项目ID & 模块ID不能同时为空");
-
-        Module module = moduleCache.get(query.getModuleId());
-        Project project = projectCache.get(module.getProjectId());
-        if (project.getId() == null){
-            project = projectCache.get(query.getProjectId());
-        }
-
-        checkUserPermissionByProject(project, VIEW);
+		Project project = getProject(query);
+		Module module = getModule(query);
+        checkPermission(project, VIEW);
 
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
@@ -75,33 +69,25 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult detail(String id, String type, String moduleId, String projectId) throws MyException{
-		Module module = new Module();
-		Project project = new Project();
-		if (moduleId != null) {
-			module = moduleCache.get(moduleId);
-			project = projectCache.get(module.getProjectId());
-			checkUserPermissionByProject(project, VIEW);
-		}else {
-            project = projectCache.get(projectId);
-        }
-
-		if(id != null){
-            ArticleWithBLOBs article =  articleService.getById(id);
-            checkUserPermissionByProject(article.getProjectId(), VIEW);
+	public JsonResult detail(String id, @ModelAttribute ArticleQuery query) throws MyException{
+		Project project = getProject(query);
+		Module module = getModule(query);
+		ArticleWithBLOBs article = new ArticleWithBLOBs();
+		if (id != null){
+			article =  articleService.getById(id);
+			project = projectCache.get(article.getProjectId());
 			module = moduleCache.get(article.getModuleId());
-			return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
+		}else {
+			article.setType(query.getType());
+			article.setModuleId(module == null ? null : module.getId());
+			article.setStatus(ArticleStatus.COMMON.getStatus());
+			article.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+			article.setCanComment(CommonEnum.TRUE.getByteValue());
+			article.setProjectId(project.getId());
 		}
 
-        ArticleWithBLOBs model = new ArticleWithBLOBs();
-		model.setType(type);
-		model.setModuleId(moduleId);
-		model.setProjectId(module.getProjectId());
-        model.setStatus(ArticleStatus.COMMON.getStatus());
-        model.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
-		model.setCanComment(CommonEnum.TRUE.getByteValue());
-        model.setProjectId(projectId);
-		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(model, module, project));
+		checkPermission(project, VIEW);
+		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
@@ -113,9 +99,10 @@ public class ArticleController extends BaseController{
         }
 
         Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
-        checkUserPermissionByProject(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 
+        // 修改
 		if(!MyString.isEmpty(dto.getId())){
+            checkPermission(project, dto.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
             ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
 
             // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
@@ -131,11 +118,12 @@ public class ArticleController extends BaseController{
 
 			articleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
 
-			ArticleWithBLOBs dbArticle = articleService.getById(dto.getId());
-			luceneService.update(ArticleAdapter.getSearchDto(dbArticle));
+			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(dto.getId())));
             return new JsonResult(1,dto);
 		}
 
+		// 新增
+        checkPermission(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
         ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
         article.setProjectId(project.getId());
 
@@ -168,7 +156,7 @@ public class ArticleController extends BaseController{
 			}
 			Article model = articleService.getById(tempId);
 			Project project = projectCache.get(model.getProjectId());
-			checkUserPermissionByProject(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
+			checkPermission(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
 
 			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
 				throw new MyException(MyError.E000009);
@@ -189,26 +177,7 @@ public class ArticleController extends BaseController{
 		}
 		return new JsonResult(1,null);
 	}
-	
-	@RequestMapping("/changeSequence.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) throws MyException {
-		ArticleWithBLOBs change = articleService.getById(changeId);
-        ArticleWithBLOBs model = articleService.getById(id);
 
-		checkUserPermissionByProject(change.getProjectId(), change.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
-		checkUserPermissionByProject(model.getProjectId(), model.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE:MOD_DICT);
-		
-		int modelSequence = model.getSequence();
-		model.setSequence(change.getSequence());
-		change.setSequence(modelSequence);
-
-		articleService.update(model);
-		articleService.update(change);
-		return new JsonResult(1, null);
-	}
-	
 	@RequestMapping("/dictionary/importFromSql.do")
 	@ResponseBody
 	@AuthPassport
@@ -221,6 +190,8 @@ public class ArticleController extends BaseController{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
 		Module module = moduleCache.get(moduleId);
+        checkPermission(projectCache.get(module.getProjectId()), VIEW);
+
 		article.setProjectId(module.getProjectId());
 		articleService.insert(article);
 		return new JsonResult(1, new Article());

@@ -10,7 +10,6 @@ import java.util.List;
  * @date 2018/6/30 14:17
  */
 public class ErrorQuery extends BaseQuery<ErrorQuery>{
-    private String projectId;
     private String errorCode;
     private String equalErrorCode;
     private String errorMsg;
@@ -18,15 +17,6 @@ public class ErrorQuery extends BaseQuery<ErrorQuery>{
 
     @Override
     public ErrorQuery getQuery(){
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public ErrorQuery setProjectId(String projectId) {
-        this.projectId = projectId;
         return this;
     }
 

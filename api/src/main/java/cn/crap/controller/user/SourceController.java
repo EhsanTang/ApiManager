@@ -43,21 +43,9 @@ public class SourceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String projectId, String moduleId, String name, Integer currentPage) throws MyException{
-        Assert.isTrue(MyString.isNotEmpty(projectId) || MyString.isNotEmpty(moduleId), "projectId & moduleId 不能同时为空");
-
-        Module module = null;
-        Project project;
-        if (MyString.isNotEmpty(moduleId)){
-            module = moduleCache.get(moduleId);
-            project = projectCache.get(module.getProjectId());
-        }else {
-            project = projectCache.get(projectId);
-        }
-
-        SourceQuery query = new SourceQuery().setProjectId(projectId).setModuleId(moduleId)
-                .setName(name).setCurrentPage(currentPage);
-        checkUserPermissionByProject(project.getId(), VIEW);
+	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
+        Project project = getProject(query);
+        checkPermission(project, VIEW);
 
 		Page page= new Page(query);
 		page.setAllRow(sourceService.count(query));
@@ -76,7 +64,7 @@ public class SourceController extends BaseController{
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
-			checkUserPermissionByModuleId( model.getModuleId(), VIEW);
+			checkPermission( model.getModuleId(), VIEW);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
@@ -137,11 +125,11 @@ public class SourceController extends BaseController{
 			SearchDto searchDto = SourceAdapter.getSearchDto(source);
 			source.setUpdateTime(new Date());
 			if(!MyString.isEmpty(source.getId())){
-				checkUserPermissionByModuleId((source.getModuleId()), MOD_SOURCE);
+				checkPermission((source.getModuleId()), MOD_SOURCE);
 				sourceService.update(source, true);
 
 			}else{
-				checkUserPermissionByModuleId((source.getModuleId()), ADD_SOURCE);
+				checkPermission((source.getModuleId()), ADD_SOURCE);
 				sourceService.insert(source);
 			}
 			// 新增的source没有id，必须在持久化后从新设置id
@@ -165,7 +153,7 @@ public class SourceController extends BaseController{
 				continue;
 			}
 			// 权限
-			checkUserPermissionByModuleId(sourceService.getById( tempId ).getModuleId(), DEL_SOURCE);
+			checkPermission(sourceService.getById( tempId ).getModuleId(), DEL_SOURCE);
 			Source source = new Source();
 			source.setId(tempId);
 			
@@ -182,8 +170,8 @@ public class SourceController extends BaseController{
 		Source change = sourceService.getById(changeId);
 		Source model = sourceService.getById(id);
 		// 权限
-		checkUserPermissionByModuleId(change.getModuleId(), MOD_SOURCE);
-		checkUserPermissionByModuleId(model.getModuleId(), MOD_SOURCE);
+		checkPermission(change.getModuleId(), MOD_SOURCE);
+		checkPermission(model.getModuleId(), MOD_SOURCE);
 				
 		int modelSequence = model.getSequence();
 		

@@ -9,8 +9,6 @@ import cn.crap.utils.SafetyUtil;
  */
 public class SourceQuery extends BaseQuery<SourceQuery>{
     private String name;
-    private String projectId;
-    private String moduleId;
 
     @Override
     public SourceQuery getQuery(){
@@ -24,24 +22,6 @@ public class SourceQuery extends BaseQuery<SourceQuery>{
 
     public SourceQuery setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public SourceQuery setProjectId(String projectId) {
-        this.projectId = projectId;
-        return this;
-    }
-
-    public String getModuleId() {
-        return moduleId;
-    }
-
-    public SourceQuery setModuleId(String moduleId) {
-        this.moduleId = moduleId;
         return this;
     }
 }

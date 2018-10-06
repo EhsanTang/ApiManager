@@ -8,13 +8,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Comment;
-import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +94,7 @@ public class ProjectController extends BaseController {
         Project model;
         if (project.getId() != null) {
             model = projectCache.get(project.getId());
-            checkUserPermissionByProject(model,VIEW);
+            checkPermission(model,VIEW);
         } else {
             model = new Project();
             model.setType(ProjectType.PRIVATE.getByteType());
@@ -142,7 +139,7 @@ public class ProjectController extends BaseController {
         // 修改
         if (!MyString.isEmpty(projectId)) {
             Project dbProject = projectCache.get(projectId);
-            checkUserPermissionByProject(dbProject);
+            checkPermission(dbProject);
 
             // 普通用户不能推荐项目，将项目类型修改为原有类型
             if (LoginUserHelper.getUser().getType() == UserType.USER.getType()) {
@@ -194,7 +191,7 @@ public class ProjectController extends BaseController {
         checkCrapDebug(LoginUserHelper.getUser().getId(), project.getId());
 
         Project model = projectCache.get(project.getId());
-        checkUserPermissionByProject(model);
+        checkPermission(model);
 
 
         // 只有子模块数量为0，才允许删除项目
@@ -224,8 +221,8 @@ public class ProjectController extends BaseController {
         Project change = projectCache.get(changeId);
         Project model = projectCache.get(id);
 
-        checkUserPermissionByProject(change);
-        checkUserPermissionByProject(model);
+        checkPermission(change);
+        checkPermission(model);
 
         int modelSequence = model.getSequence();
         model.setSequence(change.getSequence());
@@ -242,7 +239,7 @@ public class ProjectController extends BaseController {
     @AuthPassport
     public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
         Project model = projectCache.get(projectId);
-        checkUserPermissionByProject(model);
+        checkPermission(model);
         return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
     }
 }

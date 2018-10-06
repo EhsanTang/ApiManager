@@ -9,7 +9,6 @@ import cn.crap.utils.SafetyUtil;
  */
 public class ProjectUserQuery extends BaseQuery<ProjectUserQuery>{
     private String userId;
-    private String projectId;
 
     @Override
     public ProjectUserQuery getQuery(){
@@ -22,15 +21,6 @@ public class ProjectUserQuery extends BaseQuery<ProjectUserQuery>{
 
     public ProjectUserQuery setUserId(String userId) {
         this.userId = userId;
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public ProjectUserQuery setProjectId(String projectId) {
-        this.projectId = projectId;
         return this;
     }
 }

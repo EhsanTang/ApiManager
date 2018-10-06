@@ -1,33 +1,32 @@
 package cn.crap.framework.base;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.beans.Config;
-import cn.crap.dto.ProjectUserDto;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.enumer.InterfaceContentType;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.ProjectType;
+import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
+import cn.crap.query.BaseQuery;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.ProjectType;
-import cn.crap.framework.JsonResult;
-import cn.crap.framework.MyException;
-import cn.crap.model.Project;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
@@ -49,6 +48,38 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     @Autowired
     protected Config config;
 
+    protected Project getProject(BaseQuery query){
+        Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId & moduleId 不能同时为空");
+
+        if (query.getModuleId() != null){
+            Module module = moduleCache.get(query.getModuleId());
+            if (module.getProjectId() != null){
+                Project project = projectCache.get(module.getProjectId());
+                return project.getId() == null ? null : project;
+            }
+        }
+
+        if (query.getProjectId()!= null){
+            Project project = projectCache.get(query.getProjectId());
+            return project.getId() == null ? null : project;
+        }
+        return null;
+    }
+
+    protected Module getModule(BaseQuery query){
+        if (query.getModuleId() != null){
+            Module module = moduleCache.get(query.getModuleId());
+            return module.getId() == null ? null : module;
+        }
+        return null;
+    }
+
+    /**
+     * 检查是否是crapDebug的项目，crapDebug插件的项目不允许修改、删除
+     * @param userId
+     * @param projectId
+     * @throws MyException
+     */
     protected void checkCrapDebug(String userId, String projectId) throws MyException{
         String debugProjectId = MD5.encrytMD5(userId, "").substring(0, 20) + "-debug";
         if (debugProjectId.equals(projectId)){
@@ -138,63 +169,20 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     }
 
     /**
-     * 用户页面权限检查
-     *
+     * 权限校验
      * @param project
      * @throws MyException
      */
-    protected void checkUserPermissionByProject(Project project, int type) throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000021);
-        /**
-         * 最高管理员修改项目
-         * the supper admin can do anything
-         */
-        if (user != null && ("," + user.getRoleId()).indexOf("," + C_SUPER + ",") >= 0) {
-            return;
-        }
-
-        /**
-         * 修改自己的项目
-         * myself project
-         */
-        if (user.getId().equals(project.getUserId())) {
-            return;
-        }
-
-        if (type < 0) {
-            throw new MyException(MyError.E000022);
-        }
-
-        // 项目成员
-        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
-        if (puDto == null) {
-            throw new MyException(MyError.E000022);
-        }
-
-        /**
-         * if login user is one member, then he can see the data
-         */
-        if (type == VIEW) {
-            return;
-        }
-
-        if (type < puDto.getProjectAuth().length - 1 && puDto.getProjectAuth()[type]) {
-            return;
-        }
-
-        throw new MyException(MyError.E000022);
+    protected void checkPermission(Project project) throws MyException {
+        PermissionUtil.checkPermission(project, MY_DATE);
     }
 
-    protected void checkUserPermissionByProject(Project project) throws MyException {
-        checkUserPermissionByProject(project, MY_DATE);
+    protected void checkPermission(Project project, int type) throws MyException {
+        PermissionUtil.checkPermission(project, type);
     }
 
-    protected void checkUserPermissionByProject(String projectId, int type) throws MyException {
-        checkUserPermissionByProject(projectCache.get(projectId), type);
-    }
-
-    protected void checkUserPermissionByModuleId(String moduleId, int type) throws MyException {
-        checkUserPermissionByProject(projectCache.get(moduleCache.get(moduleId).getProjectId()), type);
+    protected void checkPermission(String projectId, int type) throws MyException {
+        PermissionUtil.checkPermission(projectCache.get(projectId), type);
     }
 
     /**

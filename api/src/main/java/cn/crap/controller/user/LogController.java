@@ -35,7 +35,7 @@ public class LogController extends BaseController {
         List<Log> logList = logService.query(query);
 
         if (logList.size() > 0){
-            checkUserPermissionByProject(logService.getProjectIdByLog(logList.get(0)), MY_DATE);
+            checkPermission(logService.getProjectIdByLog(logList.get(0)), MY_DATE);
         }
 
         return new JsonResult().success().data(LogAdapter.getDto(logList)).page(page);
@@ -47,7 +47,7 @@ public class LogController extends BaseController {
         Log model;
         if (!log.getId().equals(IConst.NULL_ID)) {
             model = logService.getById(log.getId());
-            checkUserPermissionByProject(logService.getProjectIdByLog(model), MY_DATE);
+            checkPermission(logService.getProjectIdByLog(model), MY_DATE);
         } else {
             model = new Log();
         }
@@ -58,7 +58,7 @@ public class LogController extends BaseController {
     @ResponseBody
     public JsonResult recover(@ModelAttribute Log log) throws MyException {
         log = logService.getById(log.getId());;
-        checkUserPermissionByProject(logService.getProjectIdByLog(log), MY_DATE);
+        checkPermission(logService.getProjectIdByLog(log), MY_DATE);
         logService.recover(log);
         return new JsonResult(1, null);
     }

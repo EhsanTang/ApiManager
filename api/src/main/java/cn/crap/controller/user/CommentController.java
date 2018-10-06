@@ -7,7 +7,9 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.ArticleWithBLOBs;
 import cn.crap.model.Comment;
+import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
@@ -43,10 +45,9 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute CommentQuery query) throws MyException {
-		
-		checkUserPermissionByProject( articleService.getById(query.getArticleId()).getProjectId(), VIEW);
-		Page page= new Page(query);
+		checkPermission(articleService.getById(query.getArticleId()).getProjectId() , VIEW);
 
+		Page page= new Page(query);
 		page.setAllRow(commentService.count(query));
 
 		List<Comment> commentList = commentService.query(query);
@@ -57,23 +58,19 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id) throws MyException {
-		Comment dbComment = null;
-		if (id != null) {
-			dbComment = commentService.getById(id);
-			checkUserPermissionByProject( articleService.getById( dbComment.getArticleId() ).getProjectId(), VIEW);
-		}
+		Comment dbComment = commentService.getById(id);
+        ArticleWithBLOBs article = articleService.getById(dbComment.getArticleId());
 
-		if (dbComment == null){
-			dbComment = new Comment();
-		}
-		return new JsonResult(1, dbComment);
+        checkPermission(article.getProjectId(), VIEW);
+		return new JsonResult().data(dbComment);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute CommentDto commentDto) throws MyException {
-		checkUserPermissionByProject(articleService.getById(commentDto.getArticleId()).getProjectId() , MOD_ARTICLE);
+        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
+        checkPermission(article.getProjectId(), MOD_ARTICLE);
 		Comment comment = CommentAdapter.getModel(commentDto);
 		comment.setUpdateTime(new Date());
 		commentService.update(comment);
@@ -106,7 +103,8 @@ public class CommentController extends BaseController {
 				continue;
 			}
 			Comment comment = commentService.getById(tempId);
-			checkUserPermissionByProject(articleService.getById(comment.getArticleId()).getProjectId(), DEL_ARTICLE);
+            ArticleWithBLOBs article = articleService.getById(comment.getArticleId());
+            checkPermission(article.getProjectId(), DEL_ARTICLE);
 			commentService.delete(tempId);
 		}
 		return new JsonResult(1, null);

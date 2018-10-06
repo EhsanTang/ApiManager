@@ -10,7 +10,6 @@ import cn.crap.utils.SafetyUtil;
 public class ModuleQuery extends BaseQuery<ModuleQuery>{
     private String name;
     private String userId;
-    private String projectId;
 
     @Override
     public ModuleQuery getQuery(){
@@ -33,15 +32,6 @@ public class ModuleQuery extends BaseQuery<ModuleQuery>{
 
     public ModuleQuery setUserId(String userId) {
         this.userId = userId;
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public ModuleQuery setProjectId(String projectId) {
-        this.projectId = projectId;
         return this;
     }
 }

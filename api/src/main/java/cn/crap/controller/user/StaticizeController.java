@@ -288,7 +288,7 @@ public class StaticizeController extends BaseController{
 	@ResponseBody
 	public JsonResult delStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
 		Project project = projectCache.get(projectId);
-		checkUserPermissionByProject(project);
+		checkPermission(project);
 		String path = Tools.getStaticPath(project);
 		Tools.deleteFile(path);
 		return new JsonResult(1, null );
@@ -303,7 +303,7 @@ public class StaticizeController extends BaseController{
 	@ResponseBody
 	public JsonResult downloadStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
 		Project project = projectCache.get(projectId);
-		checkUserPermissionByProject(project);
+		checkPermission(project);
 		String path = Tools.getStaticPath(project);
 		File file = new File(path);
     	if( !file.exists()){
@@ -366,7 +366,7 @@ public class StaticizeController extends BaseController{
 		String secretKey = settingCache.get(S_SECRETKEY).getValue();
 		Project project = projectCache.get(projectId);
 		
-		checkUserPermissionByProject(project);
+		checkPermission(project);
 		
 		String path = Tools.getStaticPath(project);
 		Tools.createFile(path);

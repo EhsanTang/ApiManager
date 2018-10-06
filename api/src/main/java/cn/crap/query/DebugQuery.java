@@ -7,22 +7,12 @@ import java.util.List;
  * @date 2018/6/30 14:17
  */
 public class DebugQuery extends BaseQuery<DebugQuery>{
-    private String moduleId;
     private String userId;
 
     private List<String> moduleIds;
 
     @Override
     public DebugQuery getQuery(){
-        return this;
-    }
-
-    public String getModuleId() {
-        return moduleId;
-    }
-
-    public DebugQuery setModuleId(String moduleId) {
-        this.moduleId = moduleId;
         return this;
     }
 

@@ -59,7 +59,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
 			Project project = projectCache.get(query.getProjectId());
-			checkUserPermissionByProject(project, VIEW);
+			checkPermission(project, VIEW);
 
             List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
             page.setAllRow(moduleService.count(query));
@@ -75,14 +75,14 @@ public class ModuleController extends BaseController implements ILogConst{
 		if(id != null){
 			module= moduleService.getById(id);
 			project = projectCache.get(module.getProjectId());
-			checkUserPermissionByProject(project, VIEW);
+			checkPermission(project, VIEW);
 
             if (module.getTemplateId() != null) {
                 templeteInterface = interfaceService.getById(module.getTemplateId());
             }
 		}else{
 		    project = projectCache.get(projectId);
-			checkUserPermissionByProject(project, VIEW);
+			checkPermission(project, VIEW);
 			module=new Module();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
@@ -118,7 +118,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
         Module module = ModuleAdapter.getModel(moduleDto);
 		if(id != null){
-			checkUserPermissionByModuleId(id, MOD_MODULE);
+			checkPermission(id, MOD_MODULE);
 
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
@@ -130,7 +130,7 @@ public class ModuleController extends BaseController implements ILogConst{
                 throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());
-			checkUserPermissionByProject(module.getProjectId(), ADD_MODULE);
+			checkPermission(module.getProjectId(), ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
 			module.setVersion(0);
 			moduleService.insert(module);
@@ -158,7 +158,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
 		Module module = moduleService.getById(inter.getModuleId());
-		checkUserPermissionByProject(projectCache.get( module.getProjectId() ), MOD_MODULE);
+		checkPermission(projectCache.get( module.getProjectId() ), MOD_MODULE);
 		
 		module.setTemplateId( inter.getIsTemplate() ? "-1" : inter.getId() );
 		moduleService.update(module);
@@ -188,7 +188,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
 				
 		Module dbModule = moduleCache.get(module.getId());
-		checkUserPermissionByProject(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
+		checkPermission(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
 		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){
 			throw new MyException(MyError.E000024);
@@ -222,8 +222,8 @@ public class ModuleController extends BaseController implements ILogConst{
 		Module change = moduleService.getById(changeId);
 		Module model = moduleService.getById(id);
 		
-		checkUserPermissionByProject(projectCache.get( change.getProjectId() ), MOD_MODULE);
-		checkUserPermissionByProject(projectCache.get( model.getProjectId() ), MOD_MODULE);
+		checkPermission(projectCache.get( change.getProjectId() ), MOD_MODULE);
+		checkPermission(projectCache.get( model.getProjectId() ), MOD_MODULE);
 		
 		int modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());

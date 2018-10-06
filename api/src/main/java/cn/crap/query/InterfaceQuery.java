@@ -8,8 +8,6 @@ import cn.crap.utils.SafetyUtil;
  * @date 2018/6/30 14:17
  */
 public class InterfaceQuery extends BaseQuery<InterfaceQuery>{
-    private String moduleId;
-    private String projectId;
     private String fullUrl;
     private String exceptId;
     private String interfaceName;
@@ -19,24 +17,6 @@ public class InterfaceQuery extends BaseQuery<InterfaceQuery>{
 
     @Override
     public InterfaceQuery getQuery(){
-        return this;
-    }
-
-    public String getModuleId() {
-        return moduleId;
-    }
-
-    public InterfaceQuery setModuleId(String moduleId) {
-        this.moduleId = moduleId;
-        return this;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public InterfaceQuery setProjectId(String projectId) {
-        this.projectId = projectId;
         return this;
     }
 

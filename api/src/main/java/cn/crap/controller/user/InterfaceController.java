@@ -14,8 +14,10 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.*;
 import cn.crap.model.Error;
+import cn.crap.model.InterfaceWithBLOBs;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.ErrorService;
@@ -23,7 +25,6 @@ import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
 import cn.crap.utils.*;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,26 +56,13 @@ public class InterfaceController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult list(String moduleId, String projectId, String interfaceName, String url,
-			 Integer currentPage) throws MyException{
-		Assert.isTrue(MyString.isNotEmpty(projectId) || MyString.isNotEmpty(moduleId), "projectId & moduleId 不能同时为空");
+	public JsonResult list(@ModelAttribute InterfaceQuery query, String url) throws MyException{
+        Module module = getModule(query);
+        Project project = getProject(query);
+        checkPermission(project, VIEW);
 
-        Module module = null;
-        Project project;
-        if (MyString.isNotEmpty(moduleId)){
-            module = moduleCache.get(moduleId);
-            project = projectCache.get(module.getProjectId());
-        }else {
-            project = projectCache.get(projectId);
-        }
-
-
-		InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(projectId).setModuleId(moduleId)
-                .setInterfaceName(interfaceName).setFullUrl(url).setCurrentPage(currentPage);
+        InterfaceQuery interfaceQuery = query.setFullUrl(url);
 		Page page= new Page(interfaceQuery);
-
-
-		checkUserPermissionByProject(project.getId(), VIEW);
 
 		List<InterfaceDto> interfaces = InterfaceAdapter.getDto(interfaceService.query(interfaceQuery), module, project);
 		page.setAllRow(interfaceService.count(interfaceQuery));
@@ -89,11 +77,10 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(String id, String moduleId, String projectId) throws MyException {
 		InterfaceWithBLOBs model;
-		Module module = null;
+		Module module;
 		if(id != null){
 			model= interfaceService.getById(id);
 			module = moduleCache.get(model.getModuleId());
-			checkUserPermissionByProject(model.getProjectId(), VIEW);
 		}else{
 			model = new InterfaceWithBLOBs();
 			module = moduleCache.get(moduleId);
@@ -127,6 +114,7 @@ public class InterfaceController extends BaseController{
 				}
 			}
 		}
+        checkPermission(model.getProjectId(), VIEW);
 		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
 	}
 	
@@ -141,10 +129,10 @@ public class InterfaceController extends BaseController{
 		InterfaceWithBLOBs interFace = interfaceService.getById(id);
 
 		//判断是否拥有原来项目的权限
-		checkUserPermissionByProject(interFace.getProjectId(), ADD_INTER);
+		checkPermission(interFace.getProjectId(), ADD_INTER);
 		Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
-        checkUserPermissionByModuleId(moduleId, ADD_INTER);
+        checkPermission(moduleId, ADD_INTER);
 
 		if(!config.isCanRepeatUrl()){
 			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){
@@ -233,7 +221,7 @@ public class InterfaceController extends BaseController{
 				throw new MyException(MyError.E000047);
 			}
 			// 判断是否有修改模块的权限
-			checkUserPermissionByProject(project, MOD_INTER);
+			checkPermission(project, MOD_INTER);
 			
 			//同一模块下不允许 url 重复
             InterfaceQuery interfaceQuery = new InterfaceQuery();
@@ -250,7 +238,7 @@ public class InterfaceController extends BaseController{
 			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
 			
 		} else {
-			checkUserPermissionByProject(projectCache.get(interFace.getProjectId() ), ADD_INTER);
+			checkPermission(interFace.getProjectId(), ADD_INTER);
             InterfaceQuery interfaceQuery = new InterfaceQuery();
             interfaceQuery.setModuleId(interFace.getModuleId()).setFullUrl(module.getUrl() +interFace.getUrl());
 			if(!config.isCanRepeatUrl() && interfaceService.count(interfaceQuery)>0){
@@ -341,7 +329,7 @@ public class InterfaceController extends BaseController{
 				continue;
 			}
 			InterfaceWithBLOBs interFace = interfaceService.getById( tempId );
-			checkUserPermissionByProject(interFace.getProjectId(), DEL_INTER);
+			checkPermission(interFace.getProjectId(), DEL_INTER);
 			interfaceService.delete(interFace.getId(), "接口", "");
 			luceneService.delete(new SearchDto(interFace.getId()));
 		}
@@ -353,8 +341,8 @@ public class InterfaceController extends BaseController{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		InterfaceWithBLOBs change = interfaceService.getById(changeId);
 		InterfaceWithBLOBs model = interfaceService.getById(id);
-		checkUserPermissionByProject(model.getProjectId(), MOD_INTER);
-		checkUserPermissionByProject(change.getProjectId(), MOD_INTER);
+		checkPermission(model.getProjectId(), MOD_INTER);
+		checkPermission(change.getProjectId(), MOD_INTER);
 		
 		int modelSequence = model.getSequence();
 		

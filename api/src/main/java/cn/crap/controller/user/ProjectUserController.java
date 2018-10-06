@@ -42,7 +42,7 @@ public class ProjectUserController extends BaseController{
 		Assert.notNull(query.getProjectId());
         Page page= new Page(query);
 
-        checkUserPermissionByProject( projectCache.get(query.getProjectId()));
+        checkPermission( projectCache.get(query.getProjectId()));
 
 		List<ProjectUser> projectUsers = projectUserService.query(query);
         page.setAllRow(projectUserService.count(query));
@@ -57,9 +57,9 @@ public class ProjectUserController extends BaseController{
 		Project project = projectCache.get(projectId);
 		if(id != null){
 			projectUser= projectUserService.getById(id);
-			checkUserPermissionByProject(project);
+			checkPermission(project);
 		}else{
-			checkUserPermissionByProject(project);
+			checkPermission(project);
 			projectUser = new ProjectUser();
 			projectUser.setStatus(Byte.valueOf("1"));
 			projectUser.setProjectId(projectId);
@@ -72,7 +72,7 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectUserDto projectUser) throws Exception{
-		checkUserPermissionByProject( projectCache.get( projectUser.getProjectId() ));
+		checkPermission( projectCache.get( projectUser.getProjectId() ));
 		User search = null;
 		if( !MyString.isEmpty(projectUser.getUserId()) ){
 			search = userService.getById( projectUser.getUserId() );
@@ -93,7 +93,7 @@ public class ProjectUserController extends BaseController{
 		// 修改
 		if(!MyString.isEmpty(projectUser.getId())){
 			ProjectUser old = projectUserService.getById(projectUser.getId());
-			checkUserPermissionByProject( projectCache.get( old.getProjectId() ));
+			checkPermission( projectCache.get( old.getProjectId() ));
 		}
 		
 		try{
@@ -114,7 +114,7 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult delete(@RequestParam String id) throws Exception{
 		ProjectUser projectUser = projectUserService.getById(id);
-		checkUserPermissionByProject(projectCache.get( projectUser.getProjectId() ));
+		checkPermission(projectCache.get( projectUser.getProjectId() ));
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
 	}

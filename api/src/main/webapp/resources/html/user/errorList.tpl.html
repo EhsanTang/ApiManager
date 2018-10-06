@@ -50,13 +50,12 @@
                     <td>{{item.errorMsg}}</td>
                     <td>{{item.projectName}}</td>
                     <td class="f12">
-                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',item.projectId)"
+                        <a class="mr5 btn btn-xs btn-default"
                            ng-click="detail('编辑【'+item.errorCode+'】',700,'user/error/detail.do?id='+item.id)"
                            data-toggle="tooltip" data-placement="top"
                            data-original-title="编辑"> <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 btn btn-xs btn-danger" title="删除"
-                           ng-if="showOperation('PROJECT',item.projectId)"
                            ng-click="del('user/error/delete.do?id='+item.id,item.errorCode)">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

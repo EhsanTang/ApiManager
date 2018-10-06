@@ -5,7 +5,7 @@
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryProjectUserList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+            <a type="button" class="btn btn-default btn-sm"
                ng-click="detail('新增成员',800,'user/projectUser/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增成员
             </a>
@@ -71,12 +71,11 @@
 
 
                     <td class="f12">
-                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                        <a class="mr5 btn btn-xs btn-default"
                            ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 btn btn-xs btn-danger" title="删除"
-                           ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/projectUser/delete.do?id='+item.id,item.userName)">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

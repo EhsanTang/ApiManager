@@ -51,8 +51,9 @@ public class LoginInfoDto implements Serializable{
 		if( type == UserType.ADMIN.getType() ){
 			sb.append(authStr+",");
 			sb.append("ADMIN,");
-			if(roleId != null && roleId.indexOf("super") >= 0)
+			if(roleId != null && roleId.indexOf("super") >= 0) {
 				sb.append("super,");
+			}
 			if (roleId != null && !"".equals(roleId)) {
 				RoleCriteria example = new RoleCriteria();
 				RoleCriteria.Criteria criteria = example.createCriteria().andIdIn(Tools.getIdsFromField(roleId));

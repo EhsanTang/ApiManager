@@ -352,8 +352,9 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			return true;
 		}
 		var needAuth = dataType;
-		if(moduleId)
-			needAuth = needAuth+"_"+moduleId;
+		if(moduleId) {
+            needAuth = needAuth + "_" + moduleId;
+        }
 		var sessionAuth = $("#sessionAuth").val();
 		if((","+sessionAuth+",").indexOf(","+needAuth+",")>=0){
 			return true;

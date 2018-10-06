@@ -5,11 +5,11 @@
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
             <a type="button" class="btn btn-default" id="refresh" ng-click="querySourceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+            <a type="button" class="btn btn-default btn-sm"
                ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId + '&projectId=' + $stateParams.projectId)">
                 <i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增文件
             </a>
-            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+            <a type="button" class="btn btn-default btn-sm"
                ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的文件？')">
                 <i class="iconfont fb mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -51,7 +51,7 @@
                     <td>{{item.remark|cut:true:50:' ...'}}</td>
                     <td>{{item.updateTimeStr}}</td>
                     <td class="f12">
-                        <a class="mr5 btn btn-xs btn-default" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+                        <a class="mr5 btn btn-xs btn-default"
                            ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
@@ -66,7 +66,6 @@
                         </a>
 
                         <a class="mr5 btn btn-xs btn-danger" title="删除"
-                           ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="del('user/source/delete.do?id='+item.id,item.name)">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

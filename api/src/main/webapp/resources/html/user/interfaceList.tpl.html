@@ -6,11 +6,11 @@
 
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryInterfaceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+            <a type="button" class="btn btn-default btn-sm"
                ng-href="#/user/interface/edit?dataType=interface&id=NULL&menu_a=menu-project&menu_b=menu_interface&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增接口
             </a>
-            <a type="button" class="btn btn-default btn-sm" ng-if="showOperation('PROJECT',$stateParams.projectId)"
+            <a type="button" class="btn btn-default btn-sm"
                ng-click="del('user/interface/delete.do?ids='+deleteIds,'','确认批量删除选中的接口？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -108,7 +108,6 @@
                         </a>
 
                         <a class="f12 text-danger mr10 cursor"
-                           ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="sendRequest('user/module/setTemplate.do?id='+item.id);stopPropagation($event);">
                             <i class="f12" ng-if="item.template">取消模板</i>
                             <i class="f12 text-success" ng-if="!item.template">设置模板</i>

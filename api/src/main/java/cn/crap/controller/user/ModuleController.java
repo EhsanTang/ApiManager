@@ -118,7 +118,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
         Module module = ModuleAdapter.getModel(moduleDto);
 		if(id != null){
-			checkPermission(id, MOD_MODULE);
+			checkPermission(module.getProjectId(), MOD_MODULE);
 
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl

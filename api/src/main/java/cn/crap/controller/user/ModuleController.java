@@ -177,11 +177,9 @@ public class ModuleController extends BaseController implements ILogConst{
             throw new MyException(MyError.E000009);
         }
 
+        Module dbModule = moduleCache.get(module.getId());
         LoginInfoDto user = LoginUserHelper.getUser();
-        checkCrapDebug(user.getId(), module.getProjectId());
-
-				
-		Module dbModule = moduleCache.get(module.getId());
+        checkCrapDebug(user.getId(), dbModule.getProjectId());
 		checkPermission(projectCache.get( dbModule.getProjectId() ), DEL_MODULE);
 		
 		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){

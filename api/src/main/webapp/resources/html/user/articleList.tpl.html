@@ -64,7 +64,7 @@
                     ng-click="go('user/article/detail?pageName=文章详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
-                    <td>{{item.name| cut:true:15:' ...'}}</td>
+                    <td>{{item.name| cut:true:30:' ...'}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
                     <td ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
                     <td ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>

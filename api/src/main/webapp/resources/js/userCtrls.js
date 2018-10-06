@@ -199,8 +199,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
                 addOneDebugTr('editHeaderTable');
                 addOneDebugTr('editParamTable');
-                initDragTable("editHeaderTable");
-                initDragTable("editParamTable");
             }
 
             if (isEdit) {

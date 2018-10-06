@@ -392,22 +392,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 });
 /*** 导入数据库表 ***/
 userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-    var params = "iUrl=user/article/detail.do?id=NULL|iLoading=FLOAT";
-    httpService.callHttpMethod($http,params).success(function(result) {
-        var isSuccess = httpSuccess(result,'iLoading=FLOAT');
-        if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-            $rootScope.error = isSuccess.replace('[ERROR]', '');
-            $rootScope.model = null;
-        }else{
-            $rootScope.model = result.data;
-            $rootScope.model.isMysql="true";
-            $rootScope.error = null;
-        }
-    }).error(function(result) {
-        closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
-        $rootScope.error = result;
-
-    });
+    $rootScope.model = {};
+    $rootScope.model.isMysql="true";
+    $rootScope.error = null;
 });
 /**************************后端接口列表****************************/
 userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$timeout,httpService) {

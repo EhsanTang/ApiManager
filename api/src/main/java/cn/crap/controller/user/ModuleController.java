@@ -106,11 +106,6 @@ public class ModuleController extends BaseController implements ILogConst{
 
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
-		if(id != null) {
-			moduleDto.setCanDelete(null);
-			moduleDto.setProjectId(null);
-			moduleDto.setStatus(null);
-		}
 
 		if (MyString.isEmpty(moduleDto.getCategory())){
             moduleDto.setCategory("默认分类");
@@ -118,8 +113,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
         Module module = ModuleAdapter.getModel(moduleDto);
 		if(id != null){
-			checkPermission(module.getProjectId(), MOD_MODULE);
-
+			checkPermission(moduleDto.getProjectId(), MOD_MODULE);
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);

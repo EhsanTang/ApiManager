@@ -90,11 +90,11 @@ public class UserPickService implements IPickService{
              * 拷贝接口时使用
              */
             case MY_MODULE:
-                for (Project p : projectService.query(new ProjectQuery().setUserId(user.getId()))) {
+                for (Project p : projectService.query(new ProjectQuery().setPageSize(100).setUserId(user.getId()))) {
                     pick = new PickDto(IConst.SEPARATOR, p.getName());
                     picks.add(pick);
 
-                    for (Module m : moduleService.query(new ModuleQuery().setProjectId(p.getId()))) {
+                    for (Module m : moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100))) {
                         pick = new PickDto(m.getId(), m.getName());
                         picks.add(pick);
                     }
@@ -105,7 +105,7 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                for (Module m : moduleService.query(new ModuleQuery().setProjectId(key))) {
+                for (Module m : moduleService.query(new ModuleQuery().setProjectId(key).setPageSize(100))) {
                     pick = new PickDto(m.getId(), m.getName());
                     picks.add(pick);
                 }
@@ -113,8 +113,8 @@ public class UserPickService implements IPickService{
 
 
             case USER:
-                if (MyString.isEmpty(key) || key.trim().length() < 4) {
-                    throw new MyException(MyError.E000065, "输入的搜索长度必须大于3");
+                if (MyString.isEmpty(key) || key.trim().length() < 6) {
+                    throw new MyException(MyError.E000065, "输入的搜索长度必须大于5");
                 }
                 key = "%" + key + "%";
                 Set<String> userIds = new TreeSet<>();

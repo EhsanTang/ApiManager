@@ -119,8 +119,8 @@ public class ModuleController extends BaseController implements ILogConst{
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
 			Integer maxModule = settingCache.getInteger(SettingEnum.MAX_MODULE);
-			Integer totalModuleNum = moduleService.count(new ModuleQuery().setUserId(user.getId()));
-			if (totalModuleNum > maxModule ||totalModuleNum > MAX_MODULE_NUM){
+			Integer totalModuleNum = moduleService.count(new ModuleQuery().setProjectId(moduleDto.getProjectId()));
+			if (totalModuleNum > maxModule){
                 throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());

@@ -27,8 +27,6 @@ public interface IConst {
 
 
     int ALL_PAGE_SIZE = -100; // 不分页
-	int MAX_PROJECT_NUM = 50; // 系统允许创建的最大项目数
-	int MAX_MODULE_NUM = 50; // 系统允许创建的最大模块数
 
 	// 缓存
     String C_CACHE_LEFT_MENU = "cache:leftMenu";

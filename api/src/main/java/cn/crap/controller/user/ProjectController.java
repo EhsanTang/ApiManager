@@ -158,7 +158,7 @@ public class ProjectController extends BaseController {
         else {
             int totalProjectNum = projectService.count(new ProjectQuery().setUserId(userId));
             Integer maxProject = settingCache.getInteger(SettingEnum.MAX_PROJECT);
-            if (totalProjectNum > maxProject || totalProjectNum > MAX_PROJECT_NUM) {
+            if (totalProjectNum > maxProject) {
                 throw new MyException(MyError.E000068, maxProject + "");
             }
 

@@ -17,6 +17,15 @@
     <link href="resources/css/crapApi.css?v=v8.0.5" rel="stylesheet" type="text/css"/>
     <link href="resources/css/setting.css?v=v8.0.5" rel="stylesheet" type="text/css"/>
     <title>${title}</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?491d117c0be889f9a6ea575c92108833";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 <body class="BGFFF">
 
@@ -201,8 +210,5 @@
     </div>
 </div>
 
-<script src="resources/framework/jquery-1.9.1.min.js"></script>
-<script src="resources/js/core.js?v=v8.0.5"></script>
-<script src="resources/js/crapApi.js?v=v8.0.5"></script>
 </body>
 </html>

@@ -73,7 +73,6 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      */
     public List<InterfaceWithBLOBs> queryAll(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
-        Assert.isNull(query.getCurrentPage(), "WithBLOBs 不支持分页查询");
         InterfaceCriteria example = getInterfaceCriteria(query);
         example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
 

@@ -133,7 +133,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
         if (query.getType() != null) {
             criteria.andTypeEqualTo(query.getType());
         }
-        if (query.getCategory() != null) {
+        if (MyString.isNotEmpty(query.getCategory())) {
             criteria.andCategoryEqualTo(query.getCategory());
         }
         if (query.getKey() != null) {

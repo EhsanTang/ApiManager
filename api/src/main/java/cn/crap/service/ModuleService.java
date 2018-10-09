@@ -9,10 +9,7 @@ import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.ModuleCriteria;
 import cn.crap.query.ModuleQuery;
-import cn.crap.utils.ILogConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -23,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst{
+public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst, IConst{
     @Autowired
     private LogService logService;
     private ModuleDao moduleDao;
@@ -97,8 +94,10 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
 
         Page page = new Page(query);
         ModuleCriteria example = getModuleCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
+        if (page.getSize() != ALL_PAGE_SIZE) {
+            example.setLimitStart(page.getStart());
+            example.setMaxResults(page.getSize());
+        }
         example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
 
         return moduleDao.selectByExample(example);

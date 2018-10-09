@@ -525,7 +525,7 @@ public class StaticizeController extends BaseController{
 		returnMap.put("project", project);
 		returnMap.put("module", module);
 		// 将选中的模块放到第一位
-		List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(project.getId()));
+		List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(project.getId()).setPageSize(ALL_PAGE_SIZE));
 
 		if(module != null){
 			for(Module m:moduleList){

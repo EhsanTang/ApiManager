@@ -376,7 +376,7 @@ public class StaticizeController extends BaseController{
 		int pageSize = 15;
 		int totalPage = 0;
 		if(needStaticizes.indexOf(",error,") >= 0){
-			int errorSize = errorService.count(new ErrorQuery().setProjectId(projectId));
+			int errorSize = errorService.count(new ErrorQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE));
 			// 计算总页数
 			totalPage = (errorSize+pageSize-1)/pageSize;
 			if(totalPage == 0){
@@ -392,7 +392,7 @@ public class StaticizeController extends BaseController{
 		
 		Map<String, Object> map = new HashMap<>();
 
-		for(Module module : moduleService.query(new ModuleQuery().setProjectId(projectId))){
+		for(Module module : moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE))){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文章，分类
 				List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
@@ -448,7 +448,7 @@ public class StaticizeController extends BaseController{
 			
 			if(needStaticizes.indexOf(",dictionary,") >= 0){
 				// 数据库表列表
-                ArticleQuery articleQuery = new ArticleQuery().setModuleId(module.getId()).setType(ArticleType.DICTIONARY.name());
+                ArticleQuery articleQuery = new ArticleQuery().setModuleId(module.getId()).setType(ArticleType.DICTIONARY.name()).setPageSize(IConst.ALL_PAGE_SIZE);
                 int articleSize = articleService.count(articleQuery);
 				// 计算总页数
 				totalPage = (articleSize+pageSize-1)/pageSize;
@@ -474,7 +474,7 @@ public class StaticizeController extends BaseController{
 			if(needStaticizes.indexOf("interface") >= 0){
 				// 接口列表
 				// 计算总页数
-                InterfaceQuery interfaceQuery = new InterfaceQuery().setModuleId(module.getId());
+                InterfaceQuery interfaceQuery = new InterfaceQuery().setModuleId(module.getId()).setPageSize(IConst.ALL_PAGE_SIZE);
                 totalPage = (interfaceService.count(interfaceQuery)+pageSize-1)/pageSize;
 				if(totalPage == 0){
 					totalPage = 1;
@@ -489,7 +489,7 @@ public class StaticizeController extends BaseController{
 				
 				// 静态化接口详情
                 interfaceQuery.setPageSize(ALL_PAGE_SIZE);
-				for(Interface inter: interfaceService.queryAll(interfaceQuery)){
+				for(Interface inter: interfaceService.query(interfaceQuery)){
 					String html = HttpPostGet.get(config.getDomain()+ "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() + 
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + inter.getId()+".html");

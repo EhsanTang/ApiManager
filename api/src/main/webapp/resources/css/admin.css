@@ -78,7 +78,7 @@ body{
     padding-left:15px;
     padding-right:15px;
     overflow:hidden;
-    border-bottom: 1px dashed #eaeaea;
+    border-bottom: 1px solid #eaeaea;
     width: 100%;
     color: #555555;
     font-size: 13px;

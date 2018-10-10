@@ -162,8 +162,8 @@ public class MainController extends BaseController {
     @AuthPassport(authority = C_SUPER)
     public JsonResult compress() throws Exception{
         String cssFileUrls[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css"};
-        String jsFileUrls[] = new String[]{"app.js", "core.js", "crapApi.js", "global.js", "router.js", "userCtrls.js",
-                "userRouter.js", "visitorControllers.js", "visitorRouter.js"};
+        String jsFileUrls[] = new String[]{"app.js", "core.js", "crapApi.js", "global.js", "json.js", "router.js",
+                "userCtrls.js", "userRouter.js", "visitorControllers.js", "visitorRouter.js", "editor.js"};
 
         String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
         String jsBaseFileUrl = Tools.getServicePath() + "resources/js/";

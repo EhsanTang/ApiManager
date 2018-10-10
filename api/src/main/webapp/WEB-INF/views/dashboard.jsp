@@ -15,15 +15,6 @@
     <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
     <link href="resources/css/allCss.css?v=v8.0.5" rel="stylesheet" type="text/css"/>
     <title>${title}</title>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?491d117c0be889f9a6ea575c92108833";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
 </head>
 <body class="BGFFF">
 
@@ -33,7 +24,7 @@
             <div class="row p0 m0 CFFF">
                 <div class="mt100 tc">
                         <a href="/">
-                            <img class="h100" src="${logo}"/>
+                            <img class="h100 w100" src="${logo}"/>
                         </a>
 
                 </div>
@@ -207,6 +198,14 @@
         </div>
     </div>
 </div>
-
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?491d117c0be889f9a6ea575c92108833";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </body>
 </html>

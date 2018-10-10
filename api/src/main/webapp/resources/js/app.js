@@ -86,7 +86,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         history.back(-1);
     }
     
-    $rootScope.goBack = function reload(){
+    $rootScope.reload = function reload(){
         location.reload();
     }
 

@@ -85,6 +85,11 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
     $rootScope.goBack = function goBack(){
         history.back(-1);
     }
+    
+    $rootScope.goBack = function reload(){
+        location.reload();
+    }
+
     $rootScope.go = function (href) {
         $location.url(href);
     }

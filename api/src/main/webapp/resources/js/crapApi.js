@@ -239,3 +239,11 @@ function flushDB(obj){
 		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}
 }
+
+//刷新缓存
+function compress(obj){
+    if (myConfirm("确定压缩js/css吗？")) {
+        selectButton(obj,'menu_a');
+        callAjaxByName('iUrl=admin/compress.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
+    }
+}

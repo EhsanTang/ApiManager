@@ -36,7 +36,7 @@
 		<i class="iconfont f20" style="color: #FFF;">&#xe617;</i>
 	</div>
 	<script src="<%=basePath %>resources/framework/jquery-1.9.1.min.js"></script>
-	<script src="<%=basePath %>resources/framework/bootstrap-3.0.0/js/bootstrap.js"></script>
+	<script src="<%=basePath %>resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
 	<script src="<%=basePath %>resources/js/core.js"></script>
 	<script src="<%=basePath %>resources/js/global.js"></script>
 	<script src="<%=basePath %>resources/js/crapApi.js"></script>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,9 @@ public class MainController extends BaseController {
     private ISearchService luceneService;
     @Autowired
     private SettingService settingService;
+    private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
+    private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
+
 
     /**
      * admin dashboard
@@ -152,4 +156,35 @@ public class MainController extends BaseController {
         objectCache.flushDB();
         return new JsonResult().success();
     }
+
+    @ResponseBody
+    @RequestMapping("/admin/compress.do")
+    @AuthPassport(authority = C_SUPER)
+    public JsonResult compress() throws Exception{
+        String cssFileUrls[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css"};
+        String jsFileUrls[] = new String[]{"app.js", "core.js", "crapApi.js", "global.js", "router.js", "userCtrls.js",
+                "userRouter.js", "visitorControllers.js", "visitorRouter.js"};
+
+        String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
+        String jsBaseFileUrl = Tools.getServicePath() + "resources/js/";
+
+        for (String cssFileUrl : cssFileUrls){
+            compress(CSS_COMPRESS_URL, cssBaseFileUrl, cssFileUrl);
+        }
+
+        for (String jsFileUrl : jsFileUrls){
+            compress(JS_COMPRESS_URL, jsBaseFileUrl, jsFileUrl);
+        }
+
+        return new JsonResult().success();
+    }
+
+    private void compress(String compressUrl, String cssBaseFileUrl, String cssFileUrl) throws Exception {
+        String cssSource = Tools.readFile(cssBaseFileUrl + cssFileUrl);
+        String cssCompress = HttpPostGet.postBody(compressUrl, cssSource, null);
+        JSONObject jsonObject = JSONObject.fromObject(cssCompress);
+        Tools.staticize(jsonObject.getString("result"), cssBaseFileUrl + cssFileUrl);
+    }
+
+
 }

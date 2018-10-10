@@ -67,12 +67,14 @@ public class MainController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/home.do")
-	public void home(HttpServletResponse response) throws Exception {
+	public String home(HttpServletResponse response, ModelMap modelMap) throws Exception {
 		SettingDto indexUrl = settingCache.get(S_INDEX_PAGE);
-		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())){
+		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())
+                && !indexUrl.getValue().equals(IndexPageUrl.INDEX_HTML.getValue())){
 			response.sendRedirect(indexUrl.getValue());
+			return null;
 		}else{
-			response.sendRedirect("index.do");
+			return dashboard(modelMap);
 		}
 	}
 	

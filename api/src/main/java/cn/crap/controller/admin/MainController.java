@@ -168,22 +168,25 @@ public class MainController extends BaseController {
         String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
         String jsBaseFileUrl = Tools.getServicePath() + "resources/js/";
 
+        String allCss = "";
         for (String cssFileUrl : cssFileUrls){
-            compress(CSS_COMPRESS_URL, cssBaseFileUrl, cssFileUrl);
+            allCss = allCss + compress(CSS_COMPRESS_URL, cssBaseFileUrl, cssFileUrl);
         }
 
         for (String jsFileUrl : jsFileUrls){
             compress(JS_COMPRESS_URL, jsBaseFileUrl, jsFileUrl);
         }
-
+        Tools.staticize(allCss, cssBaseFileUrl + "allCss.css");
         return new JsonResult().success();
     }
 
-    private void compress(String compressUrl, String cssBaseFileUrl, String cssFileUrl) throws Exception {
+    private String compress(String compressUrl, String cssBaseFileUrl, String cssFileUrl) throws Exception {
         String cssSource = Tools.readFile(cssBaseFileUrl + cssFileUrl);
         String cssCompress = HttpPostGet.postBody(compressUrl, cssSource, null);
         JSONObject jsonObject = JSONObject.fromObject(cssCompress);
-        Tools.staticize(jsonObject.getString("result"), cssBaseFileUrl + cssFileUrl);
+        String compressResult = jsonObject.getString("result");
+        Tools.staticize(compressResult, cssBaseFileUrl + cssFileUrl);
+        return compressResult;
     }
 
 

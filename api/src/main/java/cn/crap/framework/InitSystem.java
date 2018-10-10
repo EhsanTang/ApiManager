@@ -1,11 +1,13 @@
 package cn.crap.framework;
 
 import cn.crap.adapter.SettingAdapter;
+import cn.crap.controller.admin.MainController;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
 import cn.crap.service.tool.SettingCache;
+import cn.crap.utils.Tools;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +74,18 @@ public class InitSystem {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }
+
+        // 合并css
+        String allCss = "";
+        try {
+            String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
+            for (String cssFileUrl : MainController.CSS_FILE_URLS) {
+                allCss = allCss + Tools.readFile(cssBaseFileUrl + cssFileUrl);
+            }
+            Tools.staticize(allCss, cssBaseFileUrl + "allCss.css");
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

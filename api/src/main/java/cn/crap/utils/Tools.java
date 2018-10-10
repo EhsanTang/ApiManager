@@ -358,7 +358,7 @@ public class Tools {
     }
 
     public static String getServicePath() {
-        String path = ThreadContext.request().getSession().getServletContext().getRealPath("/");
+        String path = Tools.class.getClassLoader().getResource("").getPath().replace("WEB-INF/classes/", "");;
         return path.endsWith("/") ? path : path + "/";
     }
 

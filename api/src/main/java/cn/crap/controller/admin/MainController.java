@@ -31,6 +31,7 @@ public class MainController extends BaseController {
     private SettingService settingService;
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
+    public final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css"};
 
 
     /**
@@ -161,7 +162,6 @@ public class MainController extends BaseController {
     @RequestMapping("/admin/compress.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult compress() throws Exception{
-        String cssFileUrls[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css"};
         String jsFileUrls[] = new String[]{"app.js", "core.js", "crapApi.js", "global.js", "json.js", "router.js",
                 "userCtrls.js", "userRouter.js", "visitorControllers.js", "visitorRouter.js", "editor.js"};
 
@@ -169,7 +169,7 @@ public class MainController extends BaseController {
         String jsBaseFileUrl = Tools.getServicePath() + "resources/js/";
 
         String allCss = "";
-        for (String cssFileUrl : cssFileUrls){
+        for (String cssFileUrl : CSS_FILE_URLS){
             allCss = allCss + compress(CSS_COMPRESS_URL, cssBaseFileUrl, cssFileUrl);
         }
 

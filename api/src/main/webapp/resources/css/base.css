@@ -126,7 +126,7 @@ table{border-collapse:collapse;border-spacing:0}
 .unl{text-decoration:underline!important}
 .no_unl{text-decoration:none!important}
 .no_unl:hover {text-decoration: none!important}
-.tl{text-align:left}
+.tl{text-align:left!important;}
 .tc{text-align:center!important;}
 .tr{text-align:right}
 .bc{margin-left:auto;margin-right:auto}

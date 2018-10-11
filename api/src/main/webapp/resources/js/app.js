@@ -6,7 +6,6 @@ var NEED_PASSWORD_CODE = "E000007";
 var INVALID_PASSWORD_CODE = "E000011";
 var NEED_LOGIN = "E000021";
 
-
 app.filter("removeLast",function(){
     return function (value) {
         if(!value)

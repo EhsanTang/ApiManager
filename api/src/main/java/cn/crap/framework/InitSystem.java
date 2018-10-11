@@ -1,13 +1,12 @@
 package cn.crap.framework;
 
 import cn.crap.adapter.SettingAdapter;
-import cn.crap.controller.admin.MainController;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
 import cn.crap.service.tool.SettingCache;
-import cn.crap.utils.Tools;
+import cn.crap.service.tool.SystemService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,8 @@ public class InitSystem {
 
     @Resource
     private SettingCache settingCache;
+    @Resource
+    private SystemService systemService;
     private SettingService settingService;
 
     @Resource
@@ -72,20 +73,15 @@ public class InitSystem {
                     continue;
                 }
             }catch (Exception e){
-                e.printStackTrace();
+                log.error("初始化setting数据异常....", e);
             }
+        }
+        try{
+            log.info("合并资源....");
+            systemService.mergeSource();
+        }catch (Exception e){
+            log.error("合并资源文件异常....", e);
         }
 
-        // 合并css
-        String allCss = "";
-        try {
-            String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
-            for (String cssFileUrl : MainController.CSS_FILE_URLS) {
-                allCss = allCss + Tools.readFile(cssBaseFileUrl + cssFileUrl);
-            }
-            Tools.staticize(allCss, cssBaseFileUrl + "allCss.css");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

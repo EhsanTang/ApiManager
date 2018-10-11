@@ -363,6 +363,13 @@ var tipMessage = "        .----.\n" +
     // 要在第一次打印完之后再重写toString方法
 }();
 
+// 进入默认地址
+(function () {
+    var href = location.href;
+    if (href.indexOf("#") <= 0 && href.indexOf("admin.do") > 0){
+        location.href = href + URL_LIST[MY_PROJECT];
+    }
+})();
 
 // 百度统计
 var _hmt = _hmt || [];

@@ -397,9 +397,7 @@ userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope,
 /**************************后端接口列表****************************/
 userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$timeout,httpService) {
 	$scope.getData = function() {
-		if($rootScope.model && $rootScope.model.sessionAdminName){
-			window.location.href="admin.do";
-		}else if($rootScope.model && $rootScope.model.tipMessage){
+		if($rootScope.model && $rootScope.model.tipMessage){
 			showMessage('warnMessage', $rootScope.model.tipMessage,true,5);
 		}else{
 			var params = "iUrl=back/preLogin.do|iLoading=FLOAT";
@@ -409,10 +407,6 @@ userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 					alert(isSuccess.replace('[ERROR]', ''));
 				 }else{
 					 $rootScope.model = result.data.model;
-					 // 已经登陆成功，跳转至后台主页
-					 if($rootScope.model && $rootScope.model.sessionAdminName){
-							window.location.href="admin.do";
-					}
 					 showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
 				 }
 			});
@@ -434,9 +428,10 @@ userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state,
 				 $rootScope.model = result.data;
 				 //关闭编辑对话框
 				 closeMyDialog('myDialog');
-				 $timeout(function() {
-					 $("#refresh").click();
-                 })
+                // 已经登陆成功，跳转至后台主页
+                if($rootScope.model && $rootScope.model.sessionAdminName){
+                    window.location.href="admin.do";
+                }
 			 }
 		}).error(function(result) {
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);

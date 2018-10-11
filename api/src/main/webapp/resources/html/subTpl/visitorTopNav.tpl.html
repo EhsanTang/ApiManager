@@ -15,18 +15,18 @@
 			<div id="navbar" class="navbar-collapse collapse p0">
 				<ul class="nav navbar-nav navbar-right ml20">
 	               	<li>
-	                	<a ng-href="index.do#/project/list?projectShowType=4" class="menu_a ng-binding" onclick="selectButton(this,'menu_a')">推荐项目</a>
+	                	<a ng-href="index.do#/project/list?projectShowType=4" class="visitor_top_menu ng-binding" onclick="selectButton(this,'visitor_top_menu')">推荐项目</a>
 	                </li>
 	                <li ng-if="sessionAdminName!=''">
-	                	<a ng-href="index.do#/project/list?projectShowType=3" class="menu_a ng-binding" onclick="selectButton(this,'menu_a')">我的项目</a>
+	                	<a ng-href="index.do#/project/list?projectShowType=3" class="visitor_top_menu ng-binding" onclick="selectButton(this,'visitor_top_menu')">我的项目</a>
 	                </li>
 	                
 					<li ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length==0">
-	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="menu_a" onclick="selectButton(this,'menu_a')"></a>
+	                	<a ng-href="{{item.menu.menuUrl}}" ng-bind="item.menu.menuName" class="visitor_top_menu" onclick="selectButton(this,'visitor_top_menu')"></a>
 	                </li>
 	                
 	                <li class="dropdown" ng-repeat="item in fontMenus" ng-if="item.menu.type=='TOP'&&item.subMenu.length>0">
-	                	 <a href="javascript:void(0)" class="dropdown-toggle menu_a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'menu_a')">
+	                	 <a href="javascript:void(0)" class="dropdown-toggle visitor_top_menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="selectButton(this,'visitor_top_menu')">
 	                	 <span ng-bind="item.menu.menuName"></span> <span class="caret"></span></a>
 	                 	 <ul class="dropdown-menu">
 	                    	<li ng-repeat="subItem in item.subMenu">

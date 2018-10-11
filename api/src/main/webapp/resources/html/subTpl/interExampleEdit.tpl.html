@@ -38,19 +38,7 @@
                        ng-click="jsonformat('trueExam',true)">
             </td>
             <td><textarea class="form-control no-resize" ng-model="model.trueExam" rows="10"
-                          placeholder='请用标准json结构
-    示例：	{
-                "success": 1,
-                "data": {
-                    "num": 15
-                },
-                "error":
-                {
-                    "message":null,
-                    "code":null,
-                    "data":null
-                }
-            }'></textarea>
+                          placeholder='请用标准json结构如：{"success":true}'></textarea>
             </td>
         </tr>
         <tr>
@@ -58,15 +46,7 @@
                                              class="btn btn-default btn-sm" value="格式化数据"
                                              ng-click="jsonformat('falseExam',true)"></td>
             <td class="tc"><textarea class="form-control no-resize" ng-model="model.falseExam" rows="10"
-                                     placeholder='请用标准json结构
-    示例：	{
-                "success": 0,
-                "error": {
-                    "code": 错误码,
-                    "data": {},
-                    "message": " error message"
-                }
-            }'></textarea></td>
+                                     placeholder='请用标准json结构如：{"success":false}'></textarea></td>
         </tr>
     </table>
 </div>

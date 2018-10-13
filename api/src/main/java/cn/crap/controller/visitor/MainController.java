@@ -2,8 +2,9 @@ package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.beans.Config;
+import cn.crap.constant.IConst;
 import cn.crap.dto.*;
-import cn.crap.enumer.*;
+import cn.crap.constant.enumer.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;

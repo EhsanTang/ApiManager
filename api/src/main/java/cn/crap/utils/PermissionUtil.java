@@ -1,9 +1,11 @@
 package cn.crap.utils;
 
 import cn.crap.adapter.ProjectUserAdapter;
+import cn.crap.constant.IAuthCode;
+import cn.crap.constant.IConst;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
 
@@ -11,7 +13,7 @@ import cn.crap.model.Project;
  * @author Ehsan
  * @date 2018/10/6 12:34
  */
-public class PermissionUtil implements IConst, IAuthCode{
+public class PermissionUtil implements IConst, IAuthCode {
     /**
      * 用户页面权限检查
      *

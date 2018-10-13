@@ -2,8 +2,8 @@ package cn.crap.adapter;
 
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
-import cn.crap.enumer.LuceneSearchType;
-import cn.crap.enumer.ProjectType;
+import cn.crap.constant.enumer.LuceneSearchType;
+import cn.crap.constant.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Module;
 import cn.crap.model.Project;

@@ -1,8 +1,8 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.SettingDao;
-import cn.crap.enumer.SettingStatus;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.SettingStatus;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Setting;
 import cn.crap.model.SettingCriteria;

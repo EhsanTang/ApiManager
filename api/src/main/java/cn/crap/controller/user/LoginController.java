@@ -1,12 +1,13 @@
 package cn.crap.controller.user;
 
 import cn.crap.beans.Config;
+import cn.crap.constant.IConst;
 import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.LoginType;
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.LoginType;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;

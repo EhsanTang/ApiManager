@@ -2,14 +2,14 @@ package cn.crap.controller.admin;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.SettingStatus;
+import cn.crap.constant.enumer.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
 import cn.crap.utils.HttpPostGet;
-import cn.crap.utils.IConst;
+import cn.crap.constant.IConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;

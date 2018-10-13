@@ -17,6 +17,9 @@ public class SystemService {
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
 
+    /**
+     * 合并js、css资源
+     */
     public void mergeSource(){
         try {
             String allCss = "";
@@ -37,6 +40,10 @@ public class SystemService {
         }
     }
 
+    /**
+     * 压缩css、jss资源
+     * @throws Exception
+     */
     public void compressSource() throws Exception{
         String cssBaseFileUrl = Tools.getServicePath() + "resources/css/";
         for (String cssFileUrl : CSS_FILE_URLS){

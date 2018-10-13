@@ -1,6 +1,7 @@
 package cn.crap.controller;
 
-import cn.crap.enumer.SettingEnum;
+import cn.crap.constant.IConst;
+import cn.crap.constant.enumer.SettingEnum;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.service.MenuService;

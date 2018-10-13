@@ -1,7 +1,7 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.RoleDao;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Role;
 import cn.crap.model.RoleCriteria;

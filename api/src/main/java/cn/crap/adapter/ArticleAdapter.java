@@ -2,10 +2,10 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.ArticleStatus;
-import cn.crap.enumer.ArticleType;
-import cn.crap.enumer.LuceneSearchType;
-import cn.crap.enumer.ProjectType;
+import cn.crap.constant.enumer.ArticleStatus;
+import cn.crap.constant.enumer.ArticleType;
+import cn.crap.constant.enumer.LuceneSearchType;
+import cn.crap.constant.enumer.ProjectType;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;

@@ -2,12 +2,12 @@ package cn.crap.service.tool;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumer.*;
+import cn.crap.constant.enumer.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.*;
-import cn.crap.utils.IConst;
+import cn.crap.constant.IConst;
 import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

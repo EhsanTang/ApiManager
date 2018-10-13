@@ -1,10 +1,12 @@
 package cn.crap.framework.base;
 
 import cn.crap.beans.Config;
+import cn.crap.constant.IAuthCode;
+import cn.crap.constant.IConst;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.InterfaceContentType;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.ProjectType;
+import cn.crap.constant.enumer.InterfaceContentType;
+import cn.crap.constant.enumer.MyError;
+import cn.crap.constant.enumer.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;

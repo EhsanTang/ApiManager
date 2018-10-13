@@ -1,10 +1,12 @@
 package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
+import cn.crap.constant.IConst;
+import cn.crap.constant.ILogConst;
 import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.dao.mybatis.ProjectDao;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.LogType;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
 import cn.crap.model.Project;

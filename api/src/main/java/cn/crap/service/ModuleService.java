@@ -1,9 +1,11 @@
 package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
+import cn.crap.constant.IConst;
+import cn.crap.constant.ILogConst;
 import cn.crap.dao.mybatis.ModuleDao;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.LogType;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
@@ -20,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst, IConst{
+public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst, IConst {
     @Autowired
     private LogService logService;
     private ModuleDao moduleDao;

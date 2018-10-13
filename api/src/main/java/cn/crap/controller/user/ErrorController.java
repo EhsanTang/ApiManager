@@ -2,8 +2,8 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.SettingEnum;
+import cn.crap.constant.enumer.MyError;
+import cn.crap.constant.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

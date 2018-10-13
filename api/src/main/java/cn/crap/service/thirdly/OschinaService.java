@@ -2,7 +2,7 @@ package cn.crap.service.thirdly;
 
 import java.util.Map;
 
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

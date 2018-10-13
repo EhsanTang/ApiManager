@@ -7,7 +7,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.model.Log;
 import cn.crap.query.LogQuery;
 import cn.crap.service.LogService;
-import cn.crap.utils.IConst;
+import cn.crap.constant.IConst;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

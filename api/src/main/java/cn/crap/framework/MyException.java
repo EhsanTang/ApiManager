@@ -1,6 +1,6 @@
 package cn.crap.framework;
 
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 
 public class MyException  extends Exception{
 

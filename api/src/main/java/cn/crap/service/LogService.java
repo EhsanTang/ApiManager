@@ -1,9 +1,8 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.LogDao;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.MyError;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.LogQuery;

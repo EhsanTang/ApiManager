@@ -1,7 +1,7 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.BaseDao;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.BasePo;

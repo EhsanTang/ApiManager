@@ -2,7 +2,7 @@ package cn.crap.dto;
 
 import java.io.Serializable;
 
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.utils.MyString;
 

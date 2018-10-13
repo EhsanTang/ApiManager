@@ -1,13 +1,13 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.ProjectUserDao;
-import cn.crap.enumer.TableId;
+import cn.crap.constant.enumer.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.ProjectUserCriteria;
 import cn.crap.query.ProjectUserQuery;
-import cn.crap.utils.IConst;
-import cn.crap.utils.ILogConst;
+import cn.crap.constant.IConst;
+import cn.crap.constant.ILogConst;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.stereotype.Service;

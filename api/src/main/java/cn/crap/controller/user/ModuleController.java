@@ -2,12 +2,13 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
+import cn.crap.constant.ILogConst;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
-import cn.crap.enumer.ArticleType;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.SettingEnum;
+import cn.crap.constant.enumer.ArticleType;
+import cn.crap.constant.enumer.LogType;
+import cn.crap.constant.enumer.MyError;
+import cn.crap.constant.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -31,7 +32,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user/module")
-public class ModuleController extends BaseController implements ILogConst{
+public class ModuleController extends BaseController implements ILogConst {
 
 	@Autowired
 	private RoleService roleService;

@@ -1,9 +1,9 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectDto;
-import cn.crap.enumer.LuceneSearchType;
-import cn.crap.enumer.ProjectStatus;
-import cn.crap.enumer.ProjectType;
+import cn.crap.constant.enumer.LuceneSearchType;
+import cn.crap.constant.enumer.ProjectStatus;
+import cn.crap.constant.enumer.ProjectType;
 import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.service.UserService;

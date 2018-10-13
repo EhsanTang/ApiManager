@@ -1,7 +1,8 @@
 package cn.crap.utils;
 
+import cn.crap.constant.IConst;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Project;
@@ -12,7 +13,7 @@ import org.springframework.util.Assert;
  * @author Ehsan
  * @date 17/12/30 15:59
  */
-public class LoginUserHelper implements IConst{
+public class LoginUserHelper implements IConst {
     /**
      * 如果未登陆，则返回指定的错误码
      * @return

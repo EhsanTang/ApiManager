@@ -2,14 +2,13 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.CommentDto;
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.ArticleWithBLOBs;
 import cn.crap.model.Comment;
-import cn.crap.model.Project;
 import cn.crap.model.User;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;

@@ -2,7 +2,7 @@ package cn.crap.service.tool;
 
 import cn.crap.adapter.SettingAdapter;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.SettingEnum;
+import cn.crap.constant.enumer.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
 import cn.crap.beans.Config;

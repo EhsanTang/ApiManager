@@ -4,7 +4,7 @@ import cn.crap.dto.MailBean;
 import cn.crap.service.IEmailService;
 import cn.crap.beans.Config;
 import cn.crap.utils.Aes;
-import cn.crap.utils.IConst;
+import cn.crap.constant.IConst;
 import cn.crap.utils.ISetting;
 import cn.crap.utils.Tools;
 import org.apache.commons.logging.Log;

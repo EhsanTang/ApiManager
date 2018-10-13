@@ -2,7 +2,7 @@ package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.ProjectDto;
-import cn.crap.enumer.ProjectShowType;
+import cn.crap.constant.enumer.ProjectShowType;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.ProjectStatus;
+import cn.crap.constant.enumer.ProjectStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

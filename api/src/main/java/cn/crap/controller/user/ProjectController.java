@@ -3,7 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
-import cn.crap.enumer.*;
+import cn.crap.constant.enumer.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

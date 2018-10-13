@@ -1,5 +1,6 @@
 package cn.crap.service.tool;
 
+import cn.crap.constant.IConst;
 import cn.crap.dto.SearchDto;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;

@@ -1,6 +1,6 @@
 package cn.crap.dto;
 
-import cn.crap.enumer.UserType;
+import cn.crap.constant.enumer.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;
@@ -8,7 +8,7 @@ import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
 import cn.crap.service.RoleService;
-import cn.crap.utils.IConst;
+import cn.crap.constant.IConst;
 import cn.crap.utils.Tools;
 
 import java.io.Serializable;

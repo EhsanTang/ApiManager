@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.crap.dto.DictionaryDto;
-import cn.crap.enumer.ArticleType;
-import cn.crap.enumer.DictionaryPropertyType;
-import cn.crap.enumer.MyError;
+import cn.crap.constant.enumer.ArticleType;
+import cn.crap.constant.enumer.DictionaryPropertyType;
+import cn.crap.constant.enumer.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.model.ArticleWithBLOBs;
 import net.sf.json.JSONArray;

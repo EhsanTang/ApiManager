@@ -11,6 +11,7 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Setting;
 import cn.crap.query.SettingQuery;
 import cn.crap.service.SettingService;
+import cn.crap.service.tool.SystemService;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class SettingController extends BaseController {
     private SettingService customSettingService;
     @Autowired
     private Config config;
+    @Autowired
+    private SystemService systemService;
     private final static String[] indexUrls = new String[]{"index.do", "visitor/", "project.do", "dashboard.htm"};
 
     /**
@@ -89,24 +92,9 @@ public class SettingController extends BaseController {
             settingService.insert(SettingAdapter.getModel(settingDto));
         }
         settingCache.del(settingDto.getKey());
+        systemService.updateSettingCss();
+        systemService.mergeSource();
 
-        // 更新css模板，静态化css文件
-        String cssPath = Tools.getServicePath() + "resources/css/";
-        Tools.createFile(cssPath);
-        String cssContent = Tools.readFile(cssPath + "setting.tpl");
-        for (SettingDto s : settingCache.getAll()) {
-            String value = s.getValue();
-            if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
-                if (!value.startsWith("http://") && !value.startsWith("https://")) {
-                    value = config.getDomain() + "/" + value;
-                }
-            }
-            cssContent = cssContent.replace("[" + s.getKey() + "]", value);
-        }
-        cssContent = cssContent.replace("[MAIN_COLOR_HOVER]",
-                Tools.getRgba(0.1f, settingCache.get(S_MAIN_COLOR).getValue()));
-
-        Tools.staticize(cssContent, cssPath + "/setting.css");
         return new JsonResult().data(settingDto);
     }
 

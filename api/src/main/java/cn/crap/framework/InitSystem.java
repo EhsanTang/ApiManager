@@ -10,6 +10,7 @@ import cn.crap.service.tool.SystemService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -27,18 +28,20 @@ public class InitSystem {
     private SettingCache settingCache;
     @Resource
     private SystemService systemService;
+    @Resource
     private SettingService settingService;
 
-    @Resource
-    public void InitSystem(SettingService settingService){
-        this.settingService = settingService;
-        init();
-    }
-
+    /**
+     *  PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器执行一次
+     *  PostConstruct在构造函数之后执行,init()方法之前执行
+     */
+    @PostConstruct
     public void init(){
         log.info("初始化系统数据中....");
         initSetting();
+        mergeSource();
     }
+
     /**
      * 初始化系统配置
      */
@@ -76,12 +79,17 @@ public class InitSystem {
                 log.error("初始化setting数据异常....", e);
             }
         }
+    }
+
+    /**
+     * 合并资源
+     */
+    public void mergeSource(){
         try{
             log.info("合并资源....");
             systemService.mergeSource();
         }catch (Exception e){
             log.error("合并资源文件异常....", e);
         }
-
     }
 }

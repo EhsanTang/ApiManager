@@ -19,7 +19,6 @@
 <body class="BGFFF">
 
 <div class="login-bg mb20 w p0" style="height: 600px">
-    <div class="trans">
         <div class="container p0">
             <div class="row p0 m0 CFFF">
                 <div class="mt100 tc">
@@ -41,7 +40,7 @@
                            target="_self">浏览项目</a>
                     </c:if>
                     <c:if test="${login == false}">
-                        <a class="btn btn-adorn r5 w150 f14 ml10" href="loginOrRegister.do#/login"
+                        <a class="btn btn-main r5 w150 f14 ml10" href="loginOrRegister.do#/login"
                            target="_self">登陆
                         </a>
                     </c:if>
@@ -64,7 +63,6 @@
 
             </div>
         </div>
-    </div>
 </div>
 <!-- End: top-->
 

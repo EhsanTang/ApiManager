@@ -1,7 +1,7 @@
 package cn.crap.enumer;
 
 public enum MenuType {
-	FRONT("前端左侧菜单"),BOTTOM("前端底部菜单"),TOP("前端顶部菜单"),FRIEND("底部友情链接");
+	FRONT("前端左侧菜单"),BOTTOM("前端底部菜单"),TOP("前端顶部菜单"),FUNCTION("功能介绍"),FRIEND("底部友情链接");
 	private final String chineseName;
 
 	public static String getChineseNameByValue(String enumName){

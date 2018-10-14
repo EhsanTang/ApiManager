@@ -4,6 +4,7 @@ import cn.crap.dto.MenuDto;
 import cn.crap.enumer.MenuType;
 import cn.crap.model.Menu;
 import cn.crap.utils.BeanUtil;
+import cn.crap.utils.IConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class MenuAdapter {
         }
         Menu menu = new Menu();
         menu.setIconRemark(menuDto.getIconRemark());
+        if (IConst.NULL.equals(menuDto.getIconRemark())){
+            menu.setIconRemark("");
+        }
         menu.setId(menuDto.getId());
         menu.setMenuName(menuDto.getMenuName());
         menu.setMenuUrl(menuDto.getMenuUrl());

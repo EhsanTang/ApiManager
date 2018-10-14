@@ -56,7 +56,7 @@
                         <!-- 菜单只有两级，只有parentId=0的菜单才能查看子菜单 -->
                         <a class="f12 text-primary mr10 cursor"
                            ng-href="#/admin/menu/list?parentId={{item.id}}&menuName={{item.menuName}}"
-                           ng-if="item.parentId=='0' && $stateParams.type!='FRIEND' && $stateParams.type!='BOTTOM'">
+                           ng-if="item.parentId=='0' && $stateParams.type!='FRIEND' && $stateParams.type!='BOTTOM' && $stateParams.type!='FUNCTION'">
                             <i class="iconfont f12">&#xe699;子菜单</i>
                         </a>
                         <a class="f12 text-danger mr10 cursor" title="删除"

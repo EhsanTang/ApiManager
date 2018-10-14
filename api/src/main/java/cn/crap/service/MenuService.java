@@ -68,8 +68,10 @@ public class MenuService extends BaseService<Menu, MenuDao> {
 
         Page page = new Page(query);
         MenuCriteria example = getMenuCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
+        if (page.getSize() != IConst.ALL_PAGE_SIZE) {
+            example.setLimitStart(page.getStart());
+            example.setMaxResults(page.getSize());
+        }
         example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
 
         return menuDao.selectByExample(example);
@@ -108,8 +110,8 @@ public class MenuService extends BaseService<Menu, MenuDao> {
     }
 
 
-    public List<MenuWithSubMenuDto> getLeftMenu() throws MyException {
-        List<Menu> menus = query(new MenuQuery().setParentId("0"));
+    public List<MenuWithSubMenuDto> getMenu() throws MyException {
+        List<Menu> menus = query(new MenuQuery().setParentId("0").setPageSize(IConst.ALL_PAGE_SIZE));
         List<String> menuIds = new ArrayList<>();
         for (Menu menu : menus) {
             menuIds.add(menu.getId());

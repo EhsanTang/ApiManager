@@ -82,7 +82,7 @@ public class MenuController extends BaseController {
             menuService.insert(MenuAdapter.getModel(menuDto));
         }
         // 清除缓存
-        objectCache.del(C_CACHE_LEFT_MENU);
+        objectCache.del(C_CACHE_MENU);
         return new JsonResult().data(menuDto);
     }
 
@@ -95,7 +95,7 @@ public class MenuController extends BaseController {
         }
         menuService.delete(id);
         // 清除缓存
-        objectCache.del(C_CACHE_LEFT_MENU);
+        objectCache.del(C_CACHE_MENU);
         return SUCCESS;
     }
 
@@ -115,7 +115,7 @@ public class MenuController extends BaseController {
         menuService.update(change);
 
         // 清除缓存
-        objectCache.del(C_CACHE_LEFT_MENU);
+        objectCache.del(C_CACHE_MENU);
         return SUCCESS;
     }
 

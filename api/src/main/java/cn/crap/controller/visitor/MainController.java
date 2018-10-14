@@ -93,6 +93,7 @@ public class MainController extends BaseController{
 
 		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
 		modelMap.addAttribute("login", loginInfoDto != null);
+		modelMap.addAttribute("avatarUrl", loginInfoDto != null ? loginInfoDto.getAvatarUrl() : "resources/images/logo_new.png");
         modelMap.addAttribute("title", settingCache.get(S_TITLE).getValue());
         modelMap.addAttribute("keywords", settingCache.get(S_KEYWORDS).getValue());
         modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
@@ -118,10 +119,10 @@ public class MainController extends BaseController{
         modelMap.addAttribute("articleList", articleList);
 
         // 从缓存中获取菜单
-        List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+        List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);
         if(menuList == null){
-            menuList = customMenuService.getLeftMenu();
-            objectCache.add(C_CACHE_LEFT_MENU, menuList);
+            menuList = customMenuService.getMenu();
+            objectCache.add(C_CACHE_MENU, menuList);
         }
         modelMap.addAttribute("menuList", menuList);
 
@@ -218,10 +219,10 @@ public class MainController extends BaseController{
 		returnMap.put("settingMap", settingMap);
 
 		// 从缓存中获取菜单
-		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_LEFT_MENU);
+		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);
 		if(menus == null){
-			menus = customMenuService.getLeftMenu();
-			objectCache.add(C_CACHE_LEFT_MENU, menus);
+			menus = customMenuService.getMenu();
+			objectCache.add(C_CACHE_MENU, menus);
 		}
 		
 		returnMap.put("menuList", menus);

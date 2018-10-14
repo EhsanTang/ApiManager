@@ -6,8 +6,14 @@ a{text-decoration: none;}
 a:hover{color: #f82c1d;text-decoration: none;}
 .a-main{color:#ffffff;}
 .a-main:hover{color:#3275e4!important}
+.main-color{color:#3275e4!important}
+.main-hover-color:hover{color:#3275e4!important}
+
 .a-adorn{color:#ffffff;}
 .a-adorn:hover{color:#f82c1d!important}
+.adorn-color{color:#f82c1d!important}
+.adorn-hover-color:hover{color:#f82c1d!important}
+
 input:focus{border-color: #3275e4!important;!important;}
 
 .s-bg-color {background-color: #f7f7f7}

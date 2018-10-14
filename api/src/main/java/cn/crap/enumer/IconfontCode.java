@@ -25,6 +25,9 @@ public enum IconfontCode {
 	DELETE("&#xe69d;", "删除"),
 	USER("&#xe6b8;", "用户"),
 	SAVE("&#xe747;", "保存"),
+	ON_WAY("&#xe757;", "趋势"),
+	DOLLAR("&#xe702;", "美元"),
+	DEBUG("&#xe748;", "调试"),
 	CLOSE("&#xe69a;", "关闭");
 	private String name;
 	private String value;

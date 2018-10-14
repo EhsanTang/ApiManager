@@ -69,6 +69,8 @@ public class UserPickService implements IPickService{
                 }
                 return picks;
             case MENU_ICON:
+                pick = new PickDto("icon_null", IConst.NULL, "不使用图标");
+                picks.add(pick);
                 for (IconfontCode iconfontCode : IconfontCode.values()) {
                     pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
                     picks.add(pick);

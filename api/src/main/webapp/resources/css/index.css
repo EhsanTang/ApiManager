@@ -1,0 +1,37 @@
+ /** 首页css **/
+ .index-top-menu
+ {
+     position: relative;
+     height: 30px;
+     line-height: 30px;
+     margin-top: 20px;
+ }
+ .index-top-menu div{
+     z-index: 1;
+     position: relative;
+     font-size:14px;
+     font-weight: 400;
+ }
+ .index-top-menu:after
+ {
+     content: ' ';
+     position: absolute;
+     width: 100%;
+     border-bottom: 1px solid #eeeeee;
+     top:15px;
+     right:0px;
+ }
+
+ .fun-introduce{
+     line-height: 30px;
+     position: relative;
+ }
+ .fun-introduce:after
+ {
+     content: ' ';
+     position: absolute;
+     width: 100%;
+     border-bottom: 1px solid #eeeeee;
+     right:0px;
+     top:0px;
+ }

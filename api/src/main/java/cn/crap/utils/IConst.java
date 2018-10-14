@@ -29,7 +29,7 @@ public interface IConst {
     int ALL_PAGE_SIZE = -100; // 不分页
 
 	// 缓存
-    String C_CACHE_LEFT_MENU = "cache:leftMenu";
+    String C_CACHE_MENU = "cache:menu";
 
 	String CACHE_IMGCODE = ":imgCode";
 	String CACHE_IMGCODE_TIMES = ":imgCodeTimes";

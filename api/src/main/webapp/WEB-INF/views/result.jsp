@@ -26,7 +26,7 @@
 		<div style="padding:20px;min-height:100px;white-space: pre-wrap;word-wrap: break-word;">
 		${result}
 		</div><div style="padding:20px;text-align:right;margin-top:30px;">
-		<a style="color:#6f5499;" href="http://api.crap.cn">返回首页</a>
+		<a style="color:#6f5499;" href="/home.do">返回首页</a>
 		<br/></div></div>
 
 </body>

@@ -76,9 +76,8 @@ public class LoginUserHelper implements IConst{
      * @return
      * @throws MyException
      */
-    public static boolean isAdmin() throws MyException {
-        LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
-        String authority = user.getAuthStr();
+    public static boolean isSuperAdmin() throws MyException {
+        LoginInfoDto user = tryGetUser();
         if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
             return true;
         }

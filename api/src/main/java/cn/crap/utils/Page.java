@@ -13,7 +13,7 @@ public class Page implements Serializable{
 	private int totalPage = 0; // totalPage will always big than -1
 
 	public Page(Integer currentPage){
-		this(12, currentPage == null ? 1 : currentPage);
+		this(20, currentPage == null ? 1 : currentPage);
 	}
 
 	public Page(BaseQuery baseQuery){
@@ -22,7 +22,7 @@ public class Page implements Serializable{
 
 	public Page(Integer size, Integer currentPage){
 		currentPage = (currentPage == null ? 1 : currentPage);
-        size = (size == null ? 12 : size);
+        size = (size == null ? 20 : size);
 		Assert.isTrue(size <= 1000, "pageSzie 不能大于1000");
 		Assert.notNull(currentPage > 0);
 

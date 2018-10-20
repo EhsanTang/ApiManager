@@ -7,13 +7,13 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.LoginType;
 import cn.crap.enumer.MyError;
+import cn.crap.enumer.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.User;
-import cn.crap.model.UserCriteria;
 import cn.crap.query.UserQuery;
 import cn.crap.service.*;
 import cn.crap.utils.*;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -296,7 +297,6 @@ public class LoginController extends BaseController{
 				UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
 				users = userService.query(query);
 			}else{
-				UserCriteria example = new UserCriteria();
 				UserQuery query = new UserQuery().setEqualUserName(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
 				users =  userService.query(query);
 			}
@@ -335,5 +335,26 @@ public class LoginController extends BaseController{
 			return new JsonResult(1, model);
 		}
 	}
-	
+
+
+	@RequestMapping("/mock.do")
+	public String mock(HttpServletResponse response, String userId) throws Exception{
+	    // 最高管理员能模拟所有用户
+	    if (MyString.isEmpty(userId) || LoginUserHelper.isSuperAdmin()){
+            userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
+        }
+        User user = userService.getById(userId);
+        if (user == null){
+            HttpServletRequest request = ThreadContext.request();
+            request.setAttribute("title", "抱歉，系统不允许未登陆试用！");
+            request.setAttribute("result", "抱歉，系统不允许未登陆试用！");
+            return "WEB-INF/views/result.jsp";
+        }
+        LoginDto loginDto = new LoginDto();
+        loginDto.setRemberPwd("NO");
+        loginDto.setUserName(user.getUserName());
+        customUserService.login(loginDto, user);
+        response.sendRedirect("admin.do");
+        return null;
+	}
 }

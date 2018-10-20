@@ -167,7 +167,7 @@ public class ArticleController extends BaseController{
 			}
 
 			// 非管理员不能删除PAGE
-			if (ArticleStatus.PAGE.getStatus().equals(model.getStatus()) && !LoginUserHelper.isAdmin()){
+			if (ArticleStatus.PAGE.getStatus().equals(model.getStatus()) && !LoginUserHelper.isSuperAdmin()){
                 throw new MyException(MyError.E000009);
             }
 

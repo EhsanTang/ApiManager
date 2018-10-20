@@ -100,19 +100,10 @@ public class MainController extends BaseController{
         modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
 
-        List<Project> projectList =(List<Project>) objectCache.get(PROJECT_LIST);
-        if (CollectionUtils.isEmpty(projectList)) {
-			ProjectQuery projectQuery = new ProjectQuery().setStatus(ProjectStatus.RECOMMEND.getStatus()).setPageSize(12);
-			projectList = projectService.query(projectQuery);
-            objectCache.add(PROJECT_LIST, projectList);
-        }
-        modelMap.addAttribute("projectList", projectList);
-
         List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
         	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
 					.setPageSize(5);
-
             articleList = ArticleAdapter.getDto(articleService.query(query), null, null);
             objectCache.add(ARTICLE_LIST, articleList);
         }

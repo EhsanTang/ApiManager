@@ -67,7 +67,7 @@
 <!-- 功能点介绍 -->
 <div class="index-top-menu">
     <div class="container p0">
-        <c:if test="${login}">
+        <!--<c:if test="${login}">
             <img class="main-bg fl w40 h40 r50P mt-5" src="${avatarUrl}"/>
         </c:if>
         <c:if test="${!login}">
@@ -80,7 +80,7 @@
                 <a class="C555 adorn-hover-color" href="index.do#/project/list?projectShowType=3"
                    target="_blank">浏览项目</a>
             </div>
-        </c:if>
+        </c:if>-->
         <c:forEach items="${menuList}" var="menuDto" varStatus="id">
             <c:if test="${menuDto.menu.type=='TOP'}">
                 <div class="BGFFF fr ml50 pl15 pr15">
@@ -93,7 +93,7 @@
 <div class="cb"></div>
 
 <div class="fun-introduce container p0 bl1 br1 bb1 mt50">
-    <div class="mt-15 bc BGFFF w250 f18 z10 rel tc fw500 adorn-color">开源免费在线管理平台</div>
+    <div class="mt-15 bc BGFFF w400 f30 z10 rel tc fw500 adorn-color">开源免费在线管理平台</div>
     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
         <c:if test="${menuDto.menu.type=='FUNCTION'}">
             <div class="col-xs-3 tc h200 f20 mt10">
@@ -106,12 +106,24 @@
     <div class="cb"></div>
 </div>
 
-<div class="BGF9 bt1 bb1 pt50 pb50 mt50">
-    <div class="container">
+<div class="BGF9 pt20 mt50">
+    <div class="container p0">
+        <div class="tc f30 fw400 mb10 mt50">项目主页</div>
+        <div class="w50 adorn-bt-3 bc mb20"> </div>
+        <img src="resources/images/admin_project.jpg" class="w shadow mb20">
+
+        <div class="tc f30 fw400 mb10 mt50">接口调试插件</div>
+        <div class="w50 adorn-bt-3 bc mb20"> </div>
+        <img src="resources/images/chrome_debug.jpg" class="w shadow mb50">
+    </div>
+</div>
+
+<div class="BGF9 pt20 pb50">
+    <div class="container BGFFF pt20 pb20 shadow">
         <table>
             <tr>
-                <td class="tc w100 f16 fb">使<br>用<br>指<br>南</td>
-                <td class="bl1 pl50 mt50 pb20 pt20">
+                <td class="tc w100 f20 fw500 adorn-color">使<br>用<br>指<br>南</td>
+                <td class="bl1 pl50 mt50">
                     <c:forEach items="${articleList}" var="article" varStatus="id">
                         <div class="mb20">
                             <a href="index.do#/article/detail?projectId=${article.projectId}&moduleId=${article.moduleId}&type=${article.type}&id=${article.id}"
@@ -120,8 +132,8 @@
                         </div>
                     </c:forEach>
                     <div class="tc">
-                        <a class="mt20 btn btn-sm btn-default w250" href="index.do#/article/list?type=ARTICLE&status=2">
-                            More...
+                        <a class="mt20 btn btn-sm btn-default w600 BGFFF C999 b0" href="index.do#/article/list?type=ARTICLE&status=2">
+                            MORE
                         </a>
                     </div>
                 </td>
@@ -130,47 +142,11 @@
     </div>
 </div>
 
-
-<div class="container p0 mt10">
-    <div class="row p0 m0">
-        <!--<div class="cb f30 w tc dashed-b fw600 pt20">推荐项目
-            <a class="adorn-color f12 fn" href="index.do#/project/list?myself=false">More...</a>
-        </div> -->
-        <!--<c:forEach items="${projectList}" var="item" varStatus="id">
-            <div class="col-sm-6 col-md-4 col-lg-3 m0 p0">
-                <div class="b1 tl r3 h220 m15 p15">
-                    <div>
-                        <a class="fl" href="project.do#/module/list?projectId=${item.id}" target="_blank">
-                            <img class="h70 w70 r50P" src="${item.cover}"/>
-                        </a>
-                        <div class="lh26 fl mt20 ml10">
-                            <a class="f12 text-primary mr5 cursor" href="project.do#/error/list?projectId=${item.id}"
-                               target="_blank">
-                                <i class="iconfont f12">&#xe6b7; 错误码</i>
-                            </a>
-                            <br/>
-                            <a class="f12 text-primary mr5 cursor mt10" href="project.do#/module/list?projectId=${item.id}"
-                               target="_blank">
-                                <i class="iconfont f12">&#xe83b; 模块</i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="cb"></div>
-                    <div class="h30 of-h f14 C000 pt10">
-                        <a href="project.do#/module/list?projectId=${item.id}" target="_blank"
-                           class="adorn-color">${item.name}</a>
-                    </div>
-                    <div class="h80 of-h C555 pt10 pb5">
-                            ${item.remark}
-                    </div>
-                </div>
-            </div>
-        </c:forEach> -->
-
+<div class="container p0">
         <!-- 求赞赏 -->
         <div class="cb"></div>
-        <div class="lh26 mt10 f12 mb30 p50">
-            <div class="bc w100 fw500 f16 bb1 mb50 tc p10 adorn-color">开发者宣言</div>
+        <div class="lh26 f12 p30">
+            <div class="bc w150 fw500 f20 bb1 mb50 tc p10 adorn-color">开发者宣言</div>
             <table>
                 <td class="tl">
                     各位好，我是Nico，一名年纪轻轻就秃了头的程序猿<br/>
@@ -192,36 +168,14 @@
                 </td>
             </table>
         </div>
-
-    </div>
 </div>
 
 
 <!-- footer navbar -->
-<div class="p0 m0 mt30 def-bg w s-nav-bg-color s-nav-color">
-    <div class="container p0">
-        <div class="row p0 m0">
-            <div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">
-                ©crap.cn&nbsp;版本号 [V8.0.0]
-                <ul class="dis-in-tab">
-                    <li class="dis-in-tab mr20">
-                        <a target="_blank" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>
-                    </li>
-                    <li class="dis-in-tab mr20">
-                        <a target="_blank" href="https://github.com/EhsanTang/CrapApi">源码:GitHub</a>
-                    </li>
-                    <li class="dis-in-tab mr20">
-                        <a target="_blank" href="https://git.oschina.net/CrapApi/CrapApi">源码:码云</a>
-                    </li>
-                    <c:forEach items="${menuList}" var="menuDto" varStatus="id">
-                        <c:if test="${menuDto.menu.type=='BOTTOM'}">
-                            <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
-                        </c:if>
-                    </c:forEach>
-                </ul>
-                <div class="mt20">
+<div class="m0 w lh26">
+        <div class="container mt20 r5 r20 p5 h26 tr">
                     友情链接：
-                    <ul class="dis-in-tab p0">
+                    <ul class="dis-in-tab p0 m0">
                         <li class="dis-in-tab mr20"><a target="_blank" href="http://api.crap.cn">CrapApi官网</a> <span
                                 class="bg_line"></span></li>
                         <c:forEach items="${menuList}" var="menuDto" varStatus="id">
@@ -230,11 +184,29 @@
                             </c:if>
                         </c:forEach>
                     </ul>
-                </div>
-            </div>
         </div>
-    </div>
+
+        <div class="container h26  r20 p0 pl20 tc b1 mb20">
+            ©crap.cn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本号 [V8.0.0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <ul class="dis-in-tab p0 m0">
+                <li class="dis-in-tab mr20">
+                    <a target="_blank" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>
+                </li>
+                <li class="dis-in-tab mr20">
+                    <a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
+                </li>
+                <li class="dis-in-tab mr20">
+                    <a target="_blank" href="https://git.oschina.net/CrapApi/CrapApi">码云</a>
+                </li>
+                <c:forEach items="${menuList}" var="menuDto" varStatus="id">
+                    <c:if test="${menuDto.menu.type=='BOTTOM'}">
+                        <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </div>
 </div>
+
 <script>
     var _hmt = _hmt || [];
     (function() {

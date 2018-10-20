@@ -86,7 +86,7 @@ public class SourceController extends BaseController{
 			if(MyString.isEmpty(source.getFilePath())){
 				throw new MyException(MyError.E000016);
 			}
-			
+
 			// 判断版本号是否正确 .CAV.文件标识.版本号 
 			if( !source.getFilePath().contains(".CAV.") ){
 				throw new MyException(MyError.E000017);
@@ -125,11 +125,11 @@ public class SourceController extends BaseController{
 			SearchDto searchDto = SourceAdapter.getSearchDto(source);
 			source.setUpdateTime(new Date());
 			if(!MyString.isEmpty(source.getId())){
-				checkPermission((source.getModuleId()), MOD_SOURCE);
+				checkPermission(source.getProjectId(), MOD_SOURCE);
 				sourceService.update(source, true);
 
 			}else{
-				checkPermission((source.getModuleId()), ADD_SOURCE);
+				checkPermission(source.getProjectId(), ADD_SOURCE);
 				sourceService.insert(source);
 			}
 			// 新增的source没有id，必须在持久化后从新设置id

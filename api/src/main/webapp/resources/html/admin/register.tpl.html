@@ -3,8 +3,7 @@
   						<span class="pl10 C000 f18 fb">注册</span>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
-					<form class="form-horizontal p15 mt10" ng-submit="submitForm('back/register.do','','FLOAT')" ng-controller="preRegisterCtrl">
-						<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
+					<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('register.do', registerSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('preRegister.do')">
 						<div class="input-wrapper ">
 							    <input type="email" ng-model="model.userName" placeholder="邮箱"  autocomplete="off" required>
 						</div>
@@ -33,6 +32,5 @@
 							<div class="fl lab ml20"><a href="#/login" class="cursor">登陆 →</a></div>
 						</div>
 					</form>
-					<div id="warnMessage" class="text-error mb15 mt10"></div>
-					<div class="text-error mb15 mt10 dis" ng-if="error" ng-bind="error"></div>
+					<div class="text-error mb15 mt10" id="main-error" ng-if="hasError(error,'main-error')" ng-bind="error"></div>
 					

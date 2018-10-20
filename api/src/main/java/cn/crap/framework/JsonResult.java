@@ -76,6 +76,11 @@ public class JsonResult implements Serializable {
 		return this;
 	}
 
+	public JsonResult fail(){
+		this.success = 0;
+		return this;
+	}
+
 	public JsonResult others(Object others){
 		this.others = others;
 		return this;

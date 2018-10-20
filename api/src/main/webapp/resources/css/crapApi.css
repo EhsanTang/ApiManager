@@ -225,7 +225,6 @@ blockquote{
 }
 .text-error {
     position: relative;
-    display: none;
     border: 1px solid red;
     font-size: 12px;
     text-align: center;

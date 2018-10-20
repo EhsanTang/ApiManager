@@ -345,8 +345,9 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			$("#"+id).removeClass("ndis");
 			return true;
 		}else{
-			if(!$("#"+id).hasClass("ndis"))
-				$("#"+id).addClass("ndis");
+			if(!$("#"+id).hasClass("ndis")) {
+                $("#" + id).addClass("ndis");
+            }
 			return false;
 		}
 	}

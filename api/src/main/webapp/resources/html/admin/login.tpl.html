@@ -3,8 +3,7 @@
 	<span class="pl10 C000 f18 fb">用户登录</span>
 </blockquote>
 <input type="hidden" value="[ERROR][LOGINPAGE]" />
-<form class="form-horizontal p15 mt10" id="loginForm" ng-submit="login('login.do','FLOAT')" ng-controller="preLoginCtrl">
-    <button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
+<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('login.do', loginSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('preLogin.do')">
     <div class="input-wrapper">
 		<input type="text" ng-model="model.userName" placeholder="用户名（6-20位）" autocomplete="off" required name="userName"/>
 	</div>
@@ -64,4 +63,5 @@
 		</div>
 	</div>
 </form>
-<div id="warnMessage" class="text-error mb15 mt10"></div>
+
+<div class="text-error mb15 mt10" id="main-error" ng-if="hasError(error,'main-error')" ng-bind="error"></div>

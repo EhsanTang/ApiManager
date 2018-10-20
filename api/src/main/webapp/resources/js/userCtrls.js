@@ -26,6 +26,38 @@ userModule.filter('cut', function () {
 
 userModule.controller('detailCtrl', function($scope, $http, $state, $stateParams,httpService) {});
 
+userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http, $state, $stateParams,httpService) {
+    $scope.loginOrRegister = function(iurl, callBack, submitForm){
+        var params = "iUrl=" + iurl + "|iLoading=FLOAT|iPost=POST";
+        if (submitForm) {
+            params = params + "|iParams=&"+ $.param($rootScope.model);
+        }
+        httpService.callHttpMethod($http,params).success(function(result) {
+            var isSuccess = httpSuccess(result,'iLoading=FLOAT');
+            if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
+                $rootScope.error = isSuccess.replace('[ERROR]', '');
+            } else if(result.success==1){
+                $rootScope.error = null;
+                if (result.data) {
+                    $rootScope.model = result.data.model;
+                }
+                if (callBack){
+                    callBack();
+                }
+            } else {
+                $rootScope.error = result.error.message;
+            }
+        }).error(function(result) {
+            $rootScope.error = "未知异常，请联系开发人员查看日志";
+        });
+    }
+    $scope.loginSuccess = function () {
+        window.location.href="admin.do";
+    }
+    $scope.registerSuccess = function () {
+        go("login");
+    }
+});
 
 /***
  * 后台初始化，加载系统设置，菜单等
@@ -35,6 +67,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     $scope.pageMethod = function(callBackMethod, page, updateUrl) {
         $scope[callBackMethod](page, updateUrl);
     };
+
     /*********************************** 列表 *********************************/
 	// 左侧菜单，前50个模块
     $scope.queryTop50Module = function() {
@@ -394,76 +427,7 @@ userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope,
     $rootScope.model.isMysql="true";
     $rootScope.error = null;
 });
-/**************************后端接口列表****************************/
-userModule.controller('preLoginCtrl', function($rootScope,$scope, $http, $state, $stateParams,$timeout,httpService) {
-	$scope.getData = function() {
-		if($rootScope.model && $rootScope.model.tipMessage){
-			showMessage('warnMessage', $rootScope.model.tipMessage,true,5);
-		}else{
-			var params = "iUrl=back/preLogin.do|iLoading=FLOAT";
-			httpService.callHttpMethod($http,params).success(function(result) {
-				var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
-				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-					alert(isSuccess.replace('[ERROR]', ''));
-				 }else{
-					 $rootScope.model = result.data.model;
-					 showMessage('warnMessage', $rootScope.model.tipMessage,true,3);
-				 }
-			});
-		}
-    };
 
-    $scope.login = function(iurl,myLoading){
-		var iLoading = "TIPFLOAT";
-		if(myLoading){
-			iLoading = myLoading;
-		}
-		var params = "iUrl="+iurl+"|iLoading="+iLoading+"|iPost=POST|iParams=&"+ $('#loginForm').serialize();
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading='+iLoading);
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-			 }else if(result.success==1){
-				 $rootScope.error = null;
-				 $rootScope.model = result.data;
-				 //关闭编辑对话框
-				 closeMyDialog('myDialog');
-                // 已经登陆成功，跳转至后台主页
-                if($rootScope.model && $rootScope.model.sessionAdminName){
-                    window.location.href="admin.do";
-                }
-			 }
-		}).error(function(result) {
-			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);
-			$rootScope.error = result;
-			 
-		});
-	}
-    $scope.getData();
-});
-
-userModule.controller('preRegisterCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
-	$scope.getData = function() {
-		if($rootScope.model && $rootScope.model.id){
-			$rootScope.model.tipMessage = "注册成功，请登录";
-			$rootScope.verificationCode = "";
-			window.location.href="loginOrRegister.do#/login";
-		}else if($rootScope.model && $rootScope.model.tipMessage){
-			showMessage('warnMessage', $rootScope.model.tipMessage,true,5);
-		}else{
-			var params = "iUrl=back/preRegister.do|iLoading=FLOAT";
-			httpService.callHttpMethod($http,params).success(function(result) {
-				var isSuccess = httpSuccess(result,'iLoading=FLOAT','0');
-				if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-					alert(isSuccess.replace('[ERROR]', ''));
-				 }else{
-					 $rootScope.model = result.data;
-				 }
-			});
-		}
-    };
-    $scope.getData();
-});
 
 /**************************菜单列表****************************/
 adminModule.controller('adminCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {

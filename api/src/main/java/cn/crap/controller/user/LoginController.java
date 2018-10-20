@@ -68,7 +68,7 @@ public class LoginController extends BaseController{
 	/**
 	 * 登陆页面获取基础数据
 	 */
-	@RequestMapping("/back/preLogin.do")
+	@RequestMapping("/preLogin.do")
 	@ResponseBody
 	public JsonResult preLogin() {
 		Map<String, String> settingMap = new HashMap<>();
@@ -83,8 +83,6 @@ public class LoginController extends BaseController{
 		}else{
 			model.setPassword("");
 		}
-	
-		model.setTipMessage("");
 		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		model.setSessionAdminName(user == null? null:user.getUserName());
 		Map<String,Object> returnMap = new HashMap<>();
@@ -95,7 +93,7 @@ public class LoginController extends BaseController{
 	/**
 	 * 注册页面获取基础数据
 	 */
-	@RequestMapping("/back/preRegister.do")
+	@RequestMapping("/preRegister.do")
 	@ResponseBody
 	public JsonResult preRegister() {
 		LoginDto model = new LoginDto();
@@ -204,7 +202,7 @@ public class LoginController extends BaseController{
 	}
 	
 	
-	@RequestMapping("/back/register.do")
+	@RequestMapping("/register.do")
 	@ResponseBody
 	public JsonResult register(@ModelAttribute LoginDto model) throws MyException, UnsupportedEncodingException, MessagingException {
 		if( !config.isOpenRegister() ){
@@ -279,15 +277,12 @@ public class LoginController extends BaseController{
 	@RequestMapping("/login.do")
 	@ResponseBody
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
-		try{
 			if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
 				if(MyString.isEmpty(model.getVerificationCode()) ){
-					model.setTipMessage("验证码为空,请刷新浏览器再试！");
-					return new JsonResult(1, model);
+				    throw new MyException(MyError.E000010);
 				}
 				if (!model.getVerificationCode().equals(Tools.getImgCode())) {
-					model.setTipMessage("验证码有误,请重新输入或刷新浏览器再试！");
-					return new JsonResult(1, model);
+                    throw new MyException(MyError.E000010);
 				}
 			}
 
@@ -305,35 +300,12 @@ public class LoginController extends BaseController{
 				User user = users.get(0);
 				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
 					customUserService.login(model, user);
-					return new JsonResult(1, model);
+					return new JsonResult().success();
 				}
-				model.setTipMessage("用户密码有误");
-				return new JsonResult(1, model);
+                throw new MyException(MyError.E000014);
 			}else{
-				model.setTipMessage("用户名不存在");
-				return new JsonResult(1, model);
+                throw new MyException(MyError.E000013);
 			}
-		}catch(Exception e){
-			if(e instanceof MyException){
-				MyException myException = (MyException) e;
-				model.setTipMessage( myException.getMessage() );
-			}else{
-				log.error(e.getMessage(), e);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				e.printStackTrace(new PrintStream(baos));
-				String exceptionDetail[] = baos.toString().split("Caused by:");
-				try {
-					baos.close();
-				} catch (IOException ioe) {}
-				
-				String cusedBy = "";
-				if (exceptionDetail.length > 0) {
-					cusedBy = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
-				}
-				model.setTipMessage("未知异常，请查看日志：" + cusedBy);
-			}
-			return new JsonResult(1, model);
-		}
 	}
 
 

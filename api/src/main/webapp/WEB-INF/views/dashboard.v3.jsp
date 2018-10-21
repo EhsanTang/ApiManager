@@ -44,7 +44,7 @@
                     </c:if>
                     <c:if test="${login == false}">
                         <a class="btn btn-adorn r5 w150 f14 ml10" href="loginOrRegister.do#/login"
-                           target="_self">登陆
+                           target="_self">登录
                         </a>
                     </c:if>
                 </div>

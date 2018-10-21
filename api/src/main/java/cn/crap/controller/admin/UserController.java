@@ -171,7 +171,7 @@ public class UserController extends BaseController {
             userCache.add(user.getId(), new LoginInfoDto(dbUser, roleService, projectService, projectUserService));
         }
 
-        // 如果前端设置了密码，则修改密码，否者使用旧密码，登陆类型设置为允许普通登陆
+        // 如果前端设置了密码，则修改密码，否者使用旧密码，登录类型设置为允许普通登录
         if (!MyString.isEmpty(user.getPassword())) {
             user.setPasswordSalt(Tools.getChar(20));
             user.setPassword(MD5.encrytMD5(user.getPassword(), user.getPasswordSalt()));

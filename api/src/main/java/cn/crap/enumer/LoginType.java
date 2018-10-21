@@ -3,7 +3,7 @@ package cn.crap.enumer;
 public enum LoginType {
 	
 	
-	COMMON("普通登陆",0),
+	COMMON("普通登录",0),
 	GITHUB("GitHub",1),
 	OSCHINA("OsChina",2);
 	

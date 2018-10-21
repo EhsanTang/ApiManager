@@ -65,7 +65,7 @@ public class LoginController extends BaseController{
 	
 	
 	/**
-	 * 登陆页面获取基础数据
+	 * 登录页面获取基础数据
 	 */
 	@RequestMapping("/preLogin.do")
 	@ResponseBody
@@ -197,7 +197,7 @@ public class LoginController extends BaseController{
 		user.setPasswordSalt(Tools.getChar(20));
 		user.setPassword( MD5.encrytMD5(findPwdDto.getNewPwd(), user.getPasswordSalt()));
 		userService.update(user);
-		return new JsonResult(1, user).tip("重置密码成功，请重新登陆");
+		return new JsonResult(1, user).tip("重置密码成功，请重新登录");
 	}
 	
 	
@@ -256,7 +256,7 @@ public class LoginController extends BaseController{
 	}
 	
 	/**
-	 * 登陆，该方法必须在根目录下，即/user/login.do 前不能添加其他路径，如：back/user/login.do，否者设置cookie会失败
+	 * 登录，该方法必须在根目录下，即/user/login.do 前不能添加其他路径，如：back/user/login.do，否者设置cookie会失败
 	 * @param model
 	 * @return
 	 * @throws IOException
@@ -274,9 +274,9 @@ public class LoginController extends BaseController{
 				}
 			}
 
-			// 只允许普通账号方式登陆，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登陆
+			// 只允许普通账号方式登录，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登录
 			List<User> users = null;
-			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登陆
+			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登录
 				UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
 				users = userService.query(query);
 			}else{
@@ -306,8 +306,8 @@ public class LoginController extends BaseController{
         User user = userService.getById(userId);
         if (user == null){
             HttpServletRequest request = ThreadContext.request();
-            request.setAttribute("title", "抱歉，系统不允许未登陆试用！");
-            request.setAttribute("result", "抱歉，系统不允许未登陆试用！");
+            request.setAttribute("title", "抱歉，系统不允许未登录试用！");
+            request.setAttribute("result", "抱歉，系统不允许未登录试用！");
             return "WEB-INF/views/result.jsp";
         }
         LoginDto loginDto = new LoginDto();

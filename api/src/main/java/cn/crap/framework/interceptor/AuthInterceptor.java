@@ -44,7 +44,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
                 ThreadContext.set(request, response);
             }
             /**
-             * 未登陆用户唯一识别，验证码等需要
+             * 未登录用户唯一识别，验证码等需要
              */
             String uuid = MyCookie.getCookie(IConst.COOKIE_UUID, false);
             if (MyString.isEmpty(uuid)) {
@@ -61,7 +61,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             }
 
             /**
-             * 不需要登陆的接口
+             * 不需要登录的接口
              */
             AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
             if (authPassport == null || authPassport.validate() == false) {
@@ -74,7 +74,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 
             /**
              * 前端没有传递token，未登录
-             * 前端传递的 uid 和 token不一致，未登陆
+             * 前端传递的 uid 和 token不一致，未登录
              */
             LoginInfoDto user = userCache.get(uid);
             if (user == null || MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)) {

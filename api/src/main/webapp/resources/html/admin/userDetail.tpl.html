@@ -4,7 +4,7 @@
             个人资料
         </div>
         <div class="notice h30 pl20 pt5 mt20" ng-if="model.status==1 && sessionAdminId==model.id">
-            <i class="iconfont f16 pr20">&#xe6bc;</i>邮箱尚未验证，请登陆邮箱验证！
+            <i class="iconfont f16 pr20">&#xe6bc;</i>邮箱尚未验证，请登录邮箱验证！
             <a class="cursor" target="_self" href="javascrpit:void(0);"
                onclick="callAjaxByName('iUrl=user/sendValidateEmail.do|iLoading=PROPUPFLOAT发送中，请稍后...|ishowMethod=updateDivWithImg');">
                 重新发送验证码

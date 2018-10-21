@@ -28,7 +28,7 @@ public enum SettingEnum {
             }),
 
     // 后端
-    NO_NEED_LOGIN_USER("NO_NEED_LOGIN_USER", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "0", "不需要登陆直接模拟的用户，快速试用，0表示不开放试用功能", null),
+    NO_NEED_LOGIN_USER("NO_NEED_LOGIN_USER", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "0", "不需要登录直接模拟的用户，快速试用，0表示不开放试用功能", null),
     IMAGE_CODE("IMAGE_CODE", SettingStatus.HIDDEN, SettingType.SELECT, false, 101, "Times New Roman", "图形验字体（部分系统显示有问题，可切换字体）",
             new String[]{"TimesNewRoman|Times New Roman"}),
     MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "项目下允许创建的最大模块数", null),

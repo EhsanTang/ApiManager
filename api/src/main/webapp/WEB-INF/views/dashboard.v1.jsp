@@ -69,7 +69,7 @@
                         <a class="btn btn-adorn btn-sm r20 w150 f14" href="loginOrRegister.do#/register" target="_self">快速注册<i
                                 class="iconfont f18 pl10">&#xe604;</i></a>
                         <a class="btn btn-adorn btn-sm r20 w150 f14 ml10" href="loginOrRegister.do#/login"
-                           target="_self">登陆<i class="iconfont f18 pl10">&#xe601;</i></a>
+                           target="_self">登录<i class="iconfont f18 pl10">&#xe601;</i></a>
                     </c:if>
                 </div>
                 <div class="hidden-sm hidden-xs col-md-3  p50 shadow h300 mt100 r10 dashboard f12">

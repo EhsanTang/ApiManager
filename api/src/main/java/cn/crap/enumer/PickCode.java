@@ -26,7 +26,7 @@ public enum PickCode {
     MONITOR_TYPE("MONITOR_TYPE", "监控类型"),
 
 	/**
-	 * User code : 登陆后可见，和用户信息绑定
+	 * User code : 登录后可见，和用户信息绑定
 	 */
     ERROR_CODE("ERROR_CODE", "错误码"),
     CATEGORY("CATEGORY", "文章分类"),

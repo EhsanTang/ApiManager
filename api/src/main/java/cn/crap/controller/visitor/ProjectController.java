@@ -37,7 +37,7 @@ public class ProjectController extends BaseController{
 		if(user != null && ProjectShowType.CREATE_JOIN.getType() == projectShowType){
             query.setUserId(user.getId());
 		}else{
-            // 未登陆用户，查看推荐的项目
+            // 未登录用户，查看推荐的项目
             query.setStatus(ProjectStatus.RECOMMEND.getStatus());
 		}
 

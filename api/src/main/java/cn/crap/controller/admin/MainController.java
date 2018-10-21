@@ -77,7 +77,7 @@ public class MainController extends BaseController {
     }
 
     /**
-     * 登陆 or 注册页面
+     * 登录 or 注册页面
      *
      * @return
      * @throws Exception

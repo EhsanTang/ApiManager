@@ -66,7 +66,7 @@ public class GitHubController extends BaseController {
             user.setUserName(Tools.handleUserName(gitHubUser.getLogin()));
             user.setTrueName(gitHubUser.getName());
 
-            // 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
+            // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(gitHubUser.getEmail())) {
                 String email = gitHubUser.getEmail();
                 List<User> existUser = userService.query(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
@@ -87,7 +87,7 @@ public class GitHubController extends BaseController {
             user = users.get(0);
         }
 
-        // 登陆
+        // 登录
         LoginDto model = new LoginDto();
         model.setUserName(user.getUserName());
         model.setRemberPwd("NO");

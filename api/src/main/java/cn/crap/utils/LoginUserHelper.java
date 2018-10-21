@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
  */
 public class LoginUserHelper implements IConst{
     /**
-     * 如果未登陆，则返回指定的错误码
+     * 如果未登录，则返回指定的错误码
      * @return
      */
     public static LoginInfoDto getUser(MyError error) throws MyException{
@@ -26,7 +26,7 @@ public class LoginUserHelper implements IConst{
     }
 
     /**
-     * 如果未登陆，则返回错误码
+     * 如果未登录，则返回错误码
      * @return
      * @throws MyException
      */
@@ -35,7 +35,7 @@ public class LoginUserHelper implements IConst{
     }
 
     /**
-     * 如果登陆了，则返回用户信息，否则返回null
+     * 如果登录了，则返回用户信息，否则返回null
      * @return
      */
     public static LoginInfoDto tryGetUser(){
@@ -45,7 +45,7 @@ public class LoginUserHelper implements IConst{
     }
 
     /**
-     * 检查登陆用户是否有用需要的authPassport
+     * 检查登录用户是否有用需要的authPassport
      * @param authPassport
      * @return
      * @throws MyException

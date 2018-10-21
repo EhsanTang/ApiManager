@@ -54,7 +54,7 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
         window.location.href="admin.do";
     }
     $scope.registerSuccess = function () {
-        $rootScope.error = "注册成功，请登陆";
+        $rootScope.error = "注册成功，请登录";
         $rootScope.go("login");
     }
 });

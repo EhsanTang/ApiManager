@@ -13,7 +13,7 @@ public class LoginDto implements Serializable{
 	public String rpassword;
 	public String remberPwd;
 	public String verificationCode;
-	public String sessionAdminName; // 如果sessionAdminName 不为null，则表示已经登陆
+	public String sessionAdminName; // 如果sessionAdminName 不为null，则表示已经登录
 	public String tipMessage;
 	public String email;
 	

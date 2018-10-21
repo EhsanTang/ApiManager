@@ -62,7 +62,7 @@ public class GitOschinaController extends BaseController {
             user.setUserName(Tools.handleUserName(oschinaUser.getLogin()));
             user.setTrueName(oschinaUser.getName());
 
-            // 登陆用户类型&邮箱有唯一约束，同一个邮箱在同一个登陆类型下不允许绑定两个账号
+            // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(oschinaUser.getEmail())) {
                 List<User> existUser = userService.query(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
                 if (existUser == null || existUser.size() == 0) {
@@ -84,7 +84,7 @@ public class GitOschinaController extends BaseController {
             user = users.get(0);
         }
 
-        // 登陆
+        // 登录
         LoginDto model = new LoginDto();
         model.setUserName(user.getUserName());
         model.setRemberPwd("NO");

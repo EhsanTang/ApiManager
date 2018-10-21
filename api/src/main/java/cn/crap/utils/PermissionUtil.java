@@ -53,7 +53,7 @@ public class PermissionUtil implements IConst, IAuthCode{
         }
 
         /**
-         * 登陆用户为项目成员即可查看
+         * 登录用户为项目成员即可查看
          */
         if (type == VIEW) {
             return;

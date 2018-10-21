@@ -42,7 +42,7 @@ public class ProjectAdapter {
         }
 
 		if (model.getType() != null && ProjectType.PRIVATE.getType() == model.getType()){
-            dto.setVisitWay("授权访问（项目成员或创建者登陆后才能访问）-- 安全度：高");
+            dto.setVisitWay("授权访问（项目成员或创建者登录后才能访问）-- 安全度：高");
         }else if (model.getType() != null && ProjectType.PUBLIC.getType() == model.getType() && MyString.isNotEmpty(model.getPassword())){
             dto.setVisitWay("通过访问密码访问 -- 安全度：中");
         }else{

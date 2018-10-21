@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping
+@RequestMapping("/admin")
 public class MenuController extends BaseController {
     @Autowired
     private MenuService menuService;
@@ -98,25 +98,4 @@ public class MenuController extends BaseController {
         objectCache.del(C_CACHE_MENU);
         return SUCCESS;
     }
-
-    @RequestMapping("/back/menu/changeSequence.do")
-    @ResponseBody
-    @AuthPassport(authority = C_AUTH_MENU)
-    public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {
-
-        Menu change = menuService.getById(changeId);
-        Menu model = menuService.getById(id);
-        int modelSequence = model.getSequence();
-
-        model.setSequence(change.getSequence());
-        change.setSequence(modelSequence);
-
-        menuService.update(model);
-        menuService.update(change);
-
-        // 清除缓存
-        objectCache.del(C_CACHE_MENU);
-        return SUCCESS;
-    }
-
 }

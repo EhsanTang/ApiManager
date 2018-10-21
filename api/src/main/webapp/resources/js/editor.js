@@ -45,7 +45,7 @@ function createEditorMe(id, markdownContent) {
         //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
         imageUpload: true,
         imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-        imageUploadURL: "markdown/upload.do",
+        imageUploadURL: "user/markdown/upload.do",
         onload: function () {
             console.log('onload', this);
             //this.fullscreen();
@@ -86,7 +86,7 @@ function initArticleEditor(editor, modelField) {
     var root = getRootScope();
     editor.customConfig.uploadImgMaxLength = 1;
     editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
-    editor.customConfig.uploadImgServer = 'file/upload.do';
+    editor.customConfig.uploadImgServer = 'user/file/upload.do';
     editor.customConfig.uploadFileName = 'img';
     editor.customConfig.zIndex = 999;
     editor.customConfig.uploadImgHooks = {

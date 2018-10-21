@@ -66,7 +66,7 @@ public class EmailService implements IEmailService {
 	@Override
 	public void sendRegisterEmail(String eamil, String id) throws UnsupportedEncodingException, MessagingException{
 		String code =  Aes.encrypt(id);
-		String domain = config.getDomain() + "/back/validateEmail.do?i=" + code;
+		String domain = config.getDomain() + "/user/validateEmail.do?i=" + code;
 		MailBean mailBean = new MailBean();
 		mailBean.setContext( getMtml(eamil, "注册邮箱验证", "点击验证邮箱：<a href=\""+domain+"\">"+domain+"</a>"));
 		mailBean.setToEmail(eamil);

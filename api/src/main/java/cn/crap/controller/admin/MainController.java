@@ -48,7 +48,7 @@ public class MainController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/property.do")
+    @RequestMapping("/admin/property.do")
     @AuthPassport(authority = C_AUTH_SETTING)
     @ResponseBody
     public JsonResult property() throws Exception {
@@ -91,7 +91,7 @@ public class MainController extends BaseController {
     /**
      * 删除错误提示
      */
-    @RequestMapping("/back/closeErrorTips.do")
+    @RequestMapping("/admin/closeErrorTips.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_ADMIN)
     public JsonResult closeErrorTips() throws Exception {
@@ -102,7 +102,7 @@ public class MainController extends BaseController {
     /**
      * 后台页面初始化
      */
-    @RequestMapping("/back/init.do")
+    @RequestMapping("/admin/init.do")
     @ResponseBody
     @AuthPassport
     public JsonResult init(HttpServletRequest request) throws Exception {
@@ -130,7 +130,7 @@ public class MainController extends BaseController {
      * 重建索引，只有最高管理员才具有该权限
      */
     @ResponseBody
-    @RequestMapping("/back/rebuildIndex.do")
+    @RequestMapping("/admin/rebuildIndex.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult rebuildIndex() throws Exception {
         return new JsonResult(1, luceneService.rebuild());
@@ -142,7 +142,7 @@ public class MainController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/back/flushDB.do")
+    @RequestMapping("/admin/flushDB.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult flushDb() {
         projectCache.flushDB();

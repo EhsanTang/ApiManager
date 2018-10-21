@@ -40,7 +40,7 @@
                     </c:if>
                     <c:if test="${login == false}">
                         <a class="btn btn-main r5 w150 f14 ml10" href="loginOrRegister.do#/login" target="_blank">登陆</a>
-                        <a class="btn btn-adorn r5 w150 f14 ml10" href="mock.do" target="_blank">免登陆试用</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10" href="user/mock.do" target="_blank">免登陆试用</a>
                     </c:if>
                 </div>
 

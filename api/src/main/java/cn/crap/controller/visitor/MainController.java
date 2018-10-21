@@ -134,8 +134,8 @@ public class MainController extends BaseController{
 	 * @throws MessagingException
 	 */
 	@RequestMapping("/result.do")
-	public String validateEmail(String result) throws UnsupportedEncodingException, MessagingException {
-		ThreadContext.request().setAttribute("result", result);
+	public String validateEmail(HttpServletRequest request, String result) throws UnsupportedEncodingException, MessagingException {
+		request.setAttribute("result", result);
 		return "WEB-INF/views/result.jsp";
 	}
 	

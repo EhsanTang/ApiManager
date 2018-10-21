@@ -6,7 +6,7 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryMenuList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
-               ng-click="detail('新增菜单',800,'menu/detail.do?id=NULL','&parentId='+$stateParams.parentId +'&type='+$stateParams.type)">
+               ng-click="detail('新增菜单',800,'admin/menu/detail.do?id=NULL','&parentId='+$stateParams.parentId +'&type='+$stateParams.type)">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增
             </a>
         </div>
@@ -49,7 +49,7 @@
                     <td class="tc">{{item.sequence}}</td>
                     <td class="tc">
                         <a class="f12 text-primary mr10 cursor"
-                           ng-click="detail('编辑【'+item.menuName+'】',800,'menu/detail.do?id='+item.id)"
+                           ng-click="detail('编辑【'+item.menuName+'】',800,'admin/menu/detail.do?id='+item.id)"
                            data-toggle="tooltip" data-placement="top"
                            data-original-title="编辑"> <i class="iconfont f12">&#xe69e;修改</i>
                         </a>
@@ -60,7 +60,7 @@
                             <i class="iconfont f12">&#xe699;子菜单</i>
                         </a>
                         <a class="f12 text-danger mr10 cursor" title="删除"
-                           ng-click="del('menu/delete.do?id='+item.id,item.menuName)">
+                           ng-click="del('admin/menu/delete.do?id='+item.id,item.menuName)">
                             <i class="iconfont f12">&#xe69d;删除</i>
                         </a>
                     </td>

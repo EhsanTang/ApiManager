@@ -227,19 +227,19 @@ function needHiddenModule() {
 function rebuildIndex(obj){
 	if (myConfirm("确定重建索引？")) {
 		selectButton(obj,'menu_a');
-		callAjaxByName('iUrl=back/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
+		callAjaxByName('iUrl=admin/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
 	}
 }
 
 function loginOut(){
-    callAjaxByName("iUrl=back/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
+    callAjaxByName("iUrl=user/loginOut.do|isHowMethod=updateDiv|iLoading=false|ishowMethod=doNothing|iAsync=false");
     location.reload();
 }
 //刷新缓存
 function flushDB(obj){
 	if (myConfirm("确定刷新缓存？")) {
 		selectButton(obj,'menu_a');
-		callAjaxByName('iUrl=back/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
+		callAjaxByName('iUrl=admin/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}
 }
 

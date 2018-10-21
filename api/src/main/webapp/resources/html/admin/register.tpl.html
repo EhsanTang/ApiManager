@@ -3,7 +3,7 @@
   						<span class="pl10 C000 f18 fw500">注册</span>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
-					<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('register.do', registerSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('preRegister.do')">
+					<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('user/register.do', registerSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('user/preRegister.do')">
 						<div class="input-wrapper ">
 							    <input type="email" ng-model="model.email" placeholder="邮箱"  autocomplete="off" required>
 						</div>

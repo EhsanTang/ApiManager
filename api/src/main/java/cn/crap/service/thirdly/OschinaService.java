@@ -24,7 +24,7 @@ public class OschinaService {
 			String oschinaAuthUrl = "https://git.oschina.net/oauth/token";
 
 	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", config.getOschinaClientID(),
-	        		"client_secret", config.getOschinaClientSecret(),"code",code,"redirect_uri",config.getDomain() +"/oschina/login.do");
+	        		"client_secret", config.getOschinaClientSecret(),"code",code,"redirect_uri",config.getDomain() +"/oschina/login.ignore");
 	        
 	        String rs = HttpPostGet.post(oschinaAuthUrl, params, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);

@@ -37,6 +37,7 @@ import java.util.Map;
  * @author Ehsan
  */
 @Controller("visitorArticleController")
+@RequestMapping("/visitor")
 public class ArticleController extends BaseController {
     @Autowired
     private ModuleService moduleService;
@@ -46,7 +47,7 @@ public class ArticleController extends BaseController {
     private CommentService commentService;
 
 
-    @RequestMapping("/visitor/article/diclist.do")
+    @RequestMapping("/article/diclist.do")
     @ResponseBody
     public JsonResult list(@ModelAttribute ArticleQuery query,
                            String password,
@@ -68,7 +69,7 @@ public class ArticleController extends BaseController {
     }
 
 
-    @RequestMapping("/visitor/article/list.do")
+    @RequestMapping("/article/list.do")
     @ResponseBody
     public JsonResult articleList(@ModelAttribute ArticleQuery query,
                            String password,
@@ -112,7 +113,7 @@ public class ArticleController extends BaseController {
     }
 
 
-    @RequestMapping("/visitor/article/detail.do")
+    @RequestMapping("/article/detail.do")
     @ResponseBody
     public JsonResult articleDetail(@RequestParam String id,
                                 String password, String visitCode,

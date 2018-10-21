@@ -102,10 +102,24 @@ public class ThreadContext implements Filter {
     }
 
     public static HttpServletRequest request() {
+        if (THREAD_OBJECT.get() == null){
+            return null;
+        }
         return THREAD_OBJECT.get().request;
     }
 
+    public static void set(HttpServletRequest request, HttpServletResponse response) {
+        THREAD_OBJECT.set(new ThreadObject(request, response));
+    }
+
+    public static void clear(){
+        THREAD_OBJECT.set(null);
+    }
+
     public static HttpServletResponse response() {
+        if (THREAD_OBJECT.get() == null){
+            return null;
+        }
         return THREAD_OBJECT.get().response;
     }
 

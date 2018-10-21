@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/admin")
 public class SettingController extends BaseController {
 
     @Autowired
@@ -37,7 +38,7 @@ public class SettingController extends BaseController {
     /**
      * @return
      */
-    @RequestMapping("/admin/setting/list.do")
+    @RequestMapping("/setting/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult list(@ModelAttribute SettingQuery query) throws MyException{
@@ -47,7 +48,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(SettingAdapter.getDto(settingService.query(query))).page(page);
     }
 
-    @RequestMapping("/admin/setting/detail.do")
+    @RequestMapping("/setting/detail.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult detail(String id, String key, String type) {
@@ -65,7 +66,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(SettingAdapter.getDto(setting));
     }
 
-    @RequestMapping("/admin/setting/addOrUpdate.do")
+    @RequestMapping("/setting/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult addOrUpdate(@ModelAttribute SettingDto settingDto) throws Exception {
@@ -98,7 +99,7 @@ public class SettingController extends BaseController {
         return new JsonResult().data(settingDto);
     }
 
-    @RequestMapping("/admin/setting/delete.do")
+    @RequestMapping("/setting/delete.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult delete(@RequestParam String id) throws MyException {
@@ -111,7 +112,7 @@ public class SettingController extends BaseController {
         return SUCCESS;
     }
 
-    @RequestMapping("/admin/setting/changeSequence.do")
+    @RequestMapping("/setting/changeSequence.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {

@@ -3,7 +3,7 @@
 	<span class="pl10 C000 f18 fw500">登录</span>
 </blockquote>
 <input type="hidden" value="[ERROR][LOGINPAGE]" />
-<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('login.do', loginSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('preLogin.do')">
+<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('user/login.do', loginSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('user/preLogin.do')">
     <div class="input-wrapper">
 		<input type="text" ng-model="model.userName" placeholder="用户名（6-20位）" autocomplete="off" required name="userName"/>
 	</div>
@@ -30,10 +30,10 @@
 	</div>
 	<div class="form-group mt10 mb10 C999">
 		你也可以利用以下方式进行登录 <br/>
-		<a href="github/authorize.do" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a href="github/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
 			<i class="iconfont f30">&#xe631;</i> 
 		</a> 
-		<a href="oschina/authorize.do" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a href="oschina/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
 			<i class="iconfont f30">&#xe646;</i> 
 		</a>  
 		

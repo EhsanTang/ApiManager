@@ -25,14 +25,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpTrace;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -105,6 +98,19 @@ public class HttpPostGet {
 
     public static String put(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
         HttpPut method = new HttpPut(path);
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+                .setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
+        // 请求的参数信息传递
+        List<NameValuePair> pairs = buildPairs(params);
+        if (pairs.size() > 0) {
+            HttpEntity entity = new UrlEncodedFormEntity(pairs, "utf-8");
+            method.setEntity(entity);
+        }
+        method.setConfig(requestConfig);
+        return getResponse(method, headers);
+    }
+    public static String patch(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+        HttpPatch method = new HttpPatch(path);
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
                 .setConnectionRequestTimeout(5000).setStaleConnectionCheckEnabled(true).build();
         // 请求的参数信息传递
@@ -228,7 +234,7 @@ public class HttpPostGet {
         HttpResponse response = client.execute(method);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
-            throw new ClientProtocolException("Path:" + method.getURI() + "-Unexpected response status: " + status);
+            throw new ClientProtocolException("Path:" + method.getURI() + "- Unexpected response status: " + status);
         }
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");

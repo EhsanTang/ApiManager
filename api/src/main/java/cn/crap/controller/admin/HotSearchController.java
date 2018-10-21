@@ -32,7 +32,7 @@ public class HotSearchController extends BaseController {
         return new JsonResult(1, HotSearchAdapter.getDto(hotSearchService.query(query)), page);
     }
 
-    @RequestMapping("/hotSearch/detail.do")
+    @RequestMapping("/admin/hotSearch/detail.do")
     @ResponseBody
     @AuthPassport(authority = C_HOT_SEARCH)
     public JsonResult detail(String id) {
@@ -44,7 +44,7 @@ public class HotSearchController extends BaseController {
     }
 
 
-    @RequestMapping("/hotSearch/delete.do")
+    @RequestMapping("/admin/hotSearch/delete.do")
     @ResponseBody
     @AuthPassport(authority = C_HOT_SEARCH)
     public JsonResult delete(@RequestParam String id) throws MyException {

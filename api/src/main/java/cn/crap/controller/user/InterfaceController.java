@@ -304,6 +304,8 @@ public class InterfaceController extends BaseController{
                     return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.options(fullUrl, httpParams, httpHeaders)));
                 case "TRACE":
                     return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.trace(fullUrl, httpParams, httpHeaders)));
+				case "PATCH":
+					return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.patch(fullUrl, httpParams, httpHeaders)));
                 default:
                     return new JsonResult(1, Tools.getMap("debugResult", "不支持的请求方法：" + interFace.getMethod()));
             }

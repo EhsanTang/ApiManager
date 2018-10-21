@@ -327,7 +327,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $("#downloadUrl").html("");
     }
 	$scope.getData = function(page,setPwd) {
-		var params = "iUrl=back/init.do|iLoading=fase"; //  表示查询所有
+		var params = "iUrl=admin/init.do|iLoading=fase"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=false');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -405,7 +405,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 		});
 	}
 	$scope.closeErrorTips = function(){
-		var params = "iUrl=back/closeErrorTips.do|iLoading=FLOAT";
+		var params = "iUrl=admin/closeErrorTips.do|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=FLOAT');
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
@@ -417,7 +417,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 		});
 	}
 	$scope.loginOut = function(){
-		callAjaxByName("iUrl=back/loginOut.do|iLoading=false|ishowMethod=doNothing");
+		callAjaxByName("iUrl=user/loginOut.do|iLoading=false|ishowMethod=doNothing");
 	}
     $scope.getData();
 });
@@ -433,7 +433,7 @@ userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope,
 adminModule.controller('adminCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     // 系统属性
     $scope.getProperty = function() {
-        var params = "iUrl=property.do|iLoading=FLOAT";
+        var params = "iUrl=admin/property.do|iLoading=FLOAT";
         $rootScope.getBaseDataToDataKey($scope,$http,params, null, "property");
     };
 
@@ -442,7 +442,7 @@ adminModule.controller('adminCtrl', function($rootScope,$scope, $http, $state, $
 		if($("#searchType").val()!=null&&$("#searchType").val()!=''){
 			$stateParams.type = $("#searchType").val();
 		}
-		var params = "iUrl=menu/list.do|iLoading=FLOAT|iParams=&type="+$stateParams.type;
+		var params = "iUrl=admin/menu/list.do|iLoading=FLOAT|iParams=&type="+$stateParams.type;
 		if($("#menuName").val()!=null&&$("#menuName").val()!=''){
 			params += "&menuName=" + $("#menuName").val();
 		}else{

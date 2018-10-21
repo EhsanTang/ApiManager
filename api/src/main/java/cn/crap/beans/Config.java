@@ -1,9 +1,12 @@
 package cn.crap.beans;
 
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import cn.crap.utils.MyString;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class Config{
@@ -88,7 +91,17 @@ public class Config{
 		return clientSecret;
 	}
 
-	public String getDomain() {
+    public String getDomain() {
+        return getDomain(Tools.getRequest());
+    }
+
+	public String getDomain(HttpServletRequest request) {
+		try{
+			return request.getScheme()+"://"+ request.getServerName() +
+                    (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
+		}catch (Exception e){
+		    e.printStackTrace();
+        }
 		return domain;
 	}
 

@@ -28,7 +28,7 @@ public class FileController extends BaseController{
 	@Autowired
 	private Config config;
 	
-	@RequestMapping(value="/file/upload.do")
+	@RequestMapping(value="/user/file/upload.do")
 	@ResponseBody
 	@AuthPassport
 	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack,
@@ -50,7 +50,7 @@ public class FileController extends BaseController{
        }
 	}
 
-    @RequestMapping(value="/markdown/upload.do")
+    @RequestMapping(value="/user/markdown/upload.do")
     @ResponseBody
     @AuthPassport
     public void markdown(@RequestParam(value = "editormd-image-file", required = false) MultipartFile file, HttpServletRequest request) {

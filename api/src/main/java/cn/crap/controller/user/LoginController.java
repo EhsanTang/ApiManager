@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/user")
 public class LoginController extends BaseController{
 	@Autowired
 	private IEmailService emailService;
@@ -53,7 +54,7 @@ public class LoginController extends BaseController{
 	/**
 	 * 退出登录
 	 */
-	@RequestMapping("/back/loginOut.do")
+	@RequestMapping("/loginOut.do")
 	@ResponseBody
 	public JsonResult loginOut() throws IOException {
 		String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
@@ -102,7 +103,7 @@ public class LoginController extends BaseController{
 	 * @throws MessagingException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/back/validateEmail.do")
+	@RequestMapping("/validateEmail.do")
 	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException, MyException {
 		HttpServletRequest request = ThreadContext.request();
 		String id =  Aes.desEncrypt(i);
@@ -132,7 +133,7 @@ public class LoginController extends BaseController{
 	 * @throws MessagingException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/back/sendValidateEmail.do")
+	@RequestMapping("/sendValidateEmail.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult sendValidateEmail() throws Exception {
@@ -148,7 +149,7 @@ public class LoginController extends BaseController{
 	 * @throws UnsupportedEncodingException 
 	 * @throws MyException 
 	 */
-	@RequestMapping("/account/findPwd/sendEmail.do")
+	@RequestMapping("/findPwd/sendEmail.do")
 	@ResponseBody
 	public JsonResult findPwdSendEmail(String email, String imgCode) throws UnsupportedEncodingException, MessagingException, MyException{
         if (MyString.isEmpty(email)) {
@@ -176,7 +177,7 @@ public class LoginController extends BaseController{
 	 * @throws MessagingException
 	 * @throws MyException 
 	 */
-	@RequestMapping("/account/findPwd/reset.do")
+	@RequestMapping("/findPwd/reset.do")
 	@ResponseBody
 	public JsonResult reset(@ModelAttribute FindPwdDto findPwdDto) throws UnsupportedEncodingException, MessagingException, MyException{
 		findPwdDto.check();
@@ -255,7 +256,7 @@ public class LoginController extends BaseController{
 	}
 	
 	/**
-	 * 登陆，该方法必须在根目录下，即/login.do 前不能添加其他路径，如：back/login.do，否者设置cookie会失败
+	 * 登陆，该方法必须在根目录下，即/user/login.do 前不能添加其他路径，如：back/user/login.do，否者设置cookie会失败
 	 * @param model
 	 * @return
 	 * @throws IOException

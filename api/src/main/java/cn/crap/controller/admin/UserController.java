@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/user")
 public class UserController extends BaseController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserService customUserService;
 
-    @RequestMapping("/user/list.do")
+    @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
     public JsonResult list(@ModelAttribute UserQuery query) throws MyException{
@@ -50,7 +51,7 @@ public class UserController extends BaseController {
         return new JsonResult(1, UserAdapter.getDto(userService.query(query)), page);
     }
 
-    @RequestMapping("/user/detail.do")
+    @RequestMapping("/detail.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
     public JsonResult detail(String id) {
@@ -61,7 +62,7 @@ public class UserController extends BaseController {
         return new JsonResult().data(UserAdapter.getDto(user));
     }
 
-    @RequestMapping("/user/addOrUpdate.do")
+    @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
     public JsonResult add(@ModelAttribute UserDto userDto, String password) throws MyException {

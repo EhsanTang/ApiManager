@@ -1,7 +1,7 @@
 package cn.crap.enumer;
 
 public enum RequestMethod {
-	POST("POST"),GET("GET"),PUT("PUT"),HEAD("HEAD"),DELETE("DELETE"),OPTIONS("OPTIONS"),TRACE("TRACE");
+	POST("POST"),GET("GET"),PUT("PUT"),HEAD("HEAD"),DELETE("DELETE"),OPTIONS("OPTIONS"),TRACE("TRACE"),PATCH("PATCH");
 	private final String name;
 	
 	private RequestMethod(String name){

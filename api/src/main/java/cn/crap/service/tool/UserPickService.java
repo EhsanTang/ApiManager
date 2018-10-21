@@ -11,11 +11,11 @@ import cn.crap.model.Error;
 import cn.crap.model.*;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.query.ProjectQuery;
 import cn.crap.service.*;
 import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -92,7 +92,7 @@ public class UserPickService implements IPickService{
              * 拷贝接口时使用
              */
             case MY_MODULE:
-                for (Project p : projectService.query(new ProjectQuery().setPageSize(100).setUserId(user.getId()))) {
+                for (Project p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
                     pick = new PickDto(IConst.SEPARATOR, p.getName());
                     picks.add(pick);
 

@@ -3,6 +3,7 @@ package cn.crap.controller.visitor;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.ProjectDto;
 import cn.crap.enumer.ProjectShowType;
+import cn.crap.model.Project;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
@@ -32,16 +33,22 @@ public class ProjectController extends BaseController{
 	public JsonResult list(@ModelAttribute ProjectQuery query, @RequestParam(defaultValue="3") Integer projectShowType) throws MyException{
 		
 		Page page= new Page(query);
-		LoginInfoDto user =  LoginUserHelper.tryGetUser();
-
-		if(user != null && ProjectShowType.CREATE_JOIN.getType() == projectShowType){
-            query.setUserId(user.getId());
-		}else{
-            // 未登录用户，查看推荐的项目
-            query.setStatus(ProjectStatus.RECOMMEND.getStatus());
+		LoginInfoDto user =  LoginUserHelper.getUser();
+		String userId = user.getId();
+		List<Project> models = null;
+		// 我创建 & 加入的项目
+		if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
+			page.setAllRow(projectService.count(userId, false, query.getName()));
+			models = projectService.query(userId, false, query.getName(), page);
 		}
 
-        List<ProjectDto> projectDtos = ProjectAdapter.getDto(projectService.query(query), null);
+		// 我加入的项目
+		else if (ProjectShowType.JOIN.getType() == projectShowType) {
+			page.setAllRow(projectService.count(userId, true, query.getName()));
+			models = projectService.query(userId, true, query.getName(), page);
+		}
+
+        List<ProjectDto> projectDtos = ProjectAdapter.getDto(models, null);
         page.setAllRow(projectService.count(query));
 
         return new JsonResult().data(projectDtos).page(page);

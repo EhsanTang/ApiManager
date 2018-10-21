@@ -15,6 +15,7 @@ public class LoginDto implements Serializable{
 	public String verificationCode;
 	public String sessionAdminName; // 如果sessionAdminName 不为null，则表示已经登陆
 	public String tipMessage;
+	public String email;
 	
 	public String getUserName() {
 		return userName;
@@ -64,5 +65,12 @@ public class LoginDto implements Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

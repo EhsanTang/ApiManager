@@ -108,7 +108,7 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public JsonResult expHandler(HttpServletRequest request, Exception ex) {
-        log.error("未知异常", ex);
+        log.error("异常", ex);
         if (ex instanceof MyException) {
             return new JsonResult((MyException) ex);
         } else if (ex instanceof NullPointerException) {
@@ -230,7 +230,12 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
          * 如果开启了验证码，则需要校验图形验证码是否正确，防止暴力破解
          */
         if (settingCache.get(S_VISITCODE).getValue().equals("true")) {
-            String imgCode = Tools.getImgCode();
+            String imgCode = "";
+            try{
+                imgCode = Tools.getImgCode();
+            }catch (MyException e){
+                throw new MyException(MyError.E000007);
+            }
             if (MyString.notEquals(imgCode, visitCode)) {
                 throw new MyException(MyError.E000007);
             }

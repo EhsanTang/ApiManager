@@ -37,9 +37,8 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
                 $rootScope.error = isSuccess.replace('[ERROR]', '');
             } else if(result.success==1){
-                $rootScope.error = null;
                 if (result.data) {
-                    $rootScope.model = result.data.model;
+                    $rootScope.model = result.data;
                 }
                 if (callBack){
                     callBack();
@@ -55,7 +54,8 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
         window.location.href="admin.do";
     }
     $scope.registerSuccess = function () {
-        go("login");
+        $rootScope.error = "注册成功，请登陆";
+        $rootScope.go("login");
     }
 });
 

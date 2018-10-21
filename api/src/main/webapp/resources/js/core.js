@@ -87,8 +87,9 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 	}
 	
 	// 显示提示语句，只有异步请求才显示提示框
-	if(aAsync)
-		showTip(iTarget,iLoading);
+	if(aAsync) {
+        showTip(iTarget, iLoading);
+    }
 
 	xParams = xParams + '&CPTS=' + new Date().getTime();
 			$.ajax({
@@ -109,38 +110,37 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 						data = "[ERROR]"+ eval("(" + data + ")").error.message;
 					}
 					if(data.indexOf('"success":1') >= 0){
-						data = "[OK]操作成功！";
+					    var json = eval("(" + data + ")");
+					    if (json.tipMessage != null && json.tipMessage !=''){
+                            data = "[OK]" + json.tipMessage;
+                        }else {
+                            data = "[OK]操作成功！";
+                        }
 					}
 
 					//当返回失败页面时需将data替换成提示语句
-					if (isHowMethod == '1' || isHowMethod == 'updateInput') 
-					{
+					if (isHowMethod == '1' || isHowMethod == 'updateInput') {
 						$("#"+iTarget).val(data.replace('[OK]', '').replace('[ERROR]', ''));
-					} 
-					else if (isHowMethod == '2' || isHowMethod == 'updateDivWithImg') 
-					{
-						if (data.indexOf('[OK]') >= 0)
-							$("#"+iTarget).html(succ1+ data.replace('[OK]', '')+ succ2);
-						else
-							$("#"+iTarget).html(err1+ data.replace('[ERROR]', '') + err2);
-					} 
-					else if (isHowMethod == '3' || isHowMethod == 'updateDiv') 
-					{
+					} else if (isHowMethod == '2' || isHowMethod == 'updateDivWithImg') {
+						if (data.indexOf('[OK]') >= 0) {
+                            $("#" + iTarget).html(succ1 + data.replace('[OK]', '') + succ2);
+                        }
+						else {
+                            $("#" + iTarget).html(err1 + data.replace('[ERROR]', '') + err2);
+                        }
+					}else if (isHowMethod == '3' || isHowMethod == 'updateDiv') {
 						$("#"+iTarget).html(data.replace('[OK]', '').replace('[ERROR]', ''));
-					} 
-					else if (isHowMethod == '4' || isHowMethod == 'html') 
-					{
+					} else if (isHowMethod == '4' || isHowMethod == 'html') {
 						if (data.indexOf('[ERROR]') < 0){
-							if(data.trim().length==0)
-								$("#"+iTarget).html("<div class='tc pt10'>没有数据！</div>");
-							else
-								$("#"+iTarget).html(data);
+							if(data.trim().length==0) {
+                                $("#" + iTarget).html("<div class='tc pt10'>没有数据！</div>");
+                            } else {
+                                $("#" + iTarget).html(data);
+                            }
 						}else{
 							$("#"+iTarget).html(err1+data.replace('[ERROR]', '')+ err2);
 						}
-					} 
-					else if (isHowMethod == '5' || isHowMethod == 'replaceDiv') 
-					{
+					} else if (isHowMethod == '5' || isHowMethod == 'replaceDiv') {
 						if (data.indexOf('[ERROR]') < 0)
 							$("#"+iTarget).replaceWith(data);
 						else{
@@ -149,9 +149,7 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 							showMessage('lookUp','false',false,-1);
 						}
 							
-					} 
-					else if (isHowMethod == '6' || isHowMethod == 'deleteDiv') 
-					{
+					} else if (isHowMethod == '6' || isHowMethod == 'deleteDiv') {
 						if (data.indexOf('[ERROR]') < 0)
 							$("#"+iTarget).fadeOut(300);
 						else{
@@ -160,10 +158,8 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 							showMessage('lookUp','false',false,-1);
 						}
 							
-					} 
-					else if (isHowMethod == '7' || isHowMethod == 'return')
-					{
-							idata = data;
+					} else if (isHowMethod == '7' || isHowMethod == 'return') {
+                        idata = data;
 					}
 					if (iCallBack) {
 							if (iCallBackParam) {
@@ -173,8 +169,9 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 							}
 					}
 					//100需自行处理提示信息
-					if (isHowMethod != '100' && isHowMethod != 'custom')
-						closeTip(data,iLoading,tipTime);
+					if (isHowMethod != '100' && isHowMethod != 'custom') {
+                        closeTip(data, iLoading, tipTime);
+                    }
 				}
 			});
 			return idata;
@@ -206,7 +203,7 @@ function showTip(iTarget,iLoading) {
 		}
 		floatTimes = floatTimes + 1;
 	}
-	if (oldLoadText.toUpperCase().indexOf('PROPUP') >= 0 && !floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
+	if (!floatOrPropUp && document.getElementById(iTarget)&&document.getElementById(iTarget).tagName != "INPUT") {
 		if (iLoading.toUpperCase() != "FALSE"){
 			//传递的参数含有图片，表示不以div的形式显示提示内容
 			if(iLoading.indexOf("<img")>=0){
@@ -220,16 +217,20 @@ function showTip(iTarget,iLoading) {
 	}
 }
 function closeTip(data,iLoading,tipTime){
-	tipTime = tipTime?tipTime:2;
+	tipTime = tipTime?tipTime:5;
+    if (data.indexOf('[OK]')>=0 || data.indexOf('[ERROR]') < 0){
+        tipTime = 2;
+    }
+
 	var tipMessage = tipTime+ "秒后自动关闭";
 	if(tipTime==-1){//不关闭
 		tipMessage = '';
 	}
 	if(data.indexOf('[OK]')>=0){
 		if( data.replace('[OK]','')!='' )
-			tipMessage = data.replace('[OK]','') + tipMessage;
+			tipMessage = data.replace('[OK]','') + '，' + tipMessage;
 		else
-			tipMessage = "操作成功！<br>" + tipMessage;
+			tipMessage = "操作成功" + '，' + tipMessage;
 	}
 	if(data.indexOf('[ERROR]')>=0){
 		tipMessage = data.replace('[ERROR]', '') + "<br>" + tipMessage;
@@ -245,10 +246,6 @@ function closeTip(data,iLoading,tipTime){
 			$("#lookUpContent").html(succ1+tipMessage+succ2);
 		}
 		else{
-			if(tipTime !=-1){
-				tipTime = 5;
-				tipMessage = tipTime+ "秒后自动关闭";
-			}
 			$("#lookUpContent").html(err1+tipMessage +err2);
 		}
 		showMessage('lookUp','false',false,tipTime);

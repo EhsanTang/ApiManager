@@ -27,9 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -85,9 +83,7 @@ public class LoginController extends BaseController{
 		}
 		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		model.setSessionAdminName(user == null? null:user.getUserName());
-		Map<String,Object> returnMap = new HashMap<>();
-		returnMap.put("model", model);
-		return new JsonResult(1, returnMap);
+		return new JsonResult(1, model);
 	}
 	
 	/**
@@ -154,8 +150,10 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping("/account/findPwd/sendEmail.do")
 	@ResponseBody
-	public JsonResult findPwdSendEmail(@RequestParam String email, @RequestParam String imgCode) throws UnsupportedEncodingException, MessagingException, MyException{
-		
+	public JsonResult findPwdSendEmail(String email, String imgCode) throws UnsupportedEncodingException, MessagingException, MyException{
+        if (MyString.isEmpty(email)) {
+            throw new MyException(MyError.E000065, "邮箱不能为空");
+        }
 		if (MyString.isEmpty(imgCode) || !imgCode.equals(Tools.getImgCode())) {
 			throw new MyException(MyError.E000010);
 		}
@@ -167,7 +165,7 @@ public class LoginController extends BaseController{
 			throw new MyException(MyError.E000030);
 		}
 		emailService.sendFindPwdEmail(user.get(0).getEmail());
-		return new JsonResult(1, user.get(0));
+		return new JsonResult(1, user.get(0)).tip("邮件发送成功");
 	}
 	
 	/**
@@ -198,72 +196,61 @@ public class LoginController extends BaseController{
 		user.setPasswordSalt(Tools.getChar(20));
 		user.setPassword( MD5.encrytMD5(findPwdDto.getNewPwd(), user.getPasswordSalt()));
 		userService.update(user);
-		return new JsonResult(1, user);
+		return new JsonResult(1, user).tip("重置密码成功，请重新登陆");
 	}
 	
 	
 	@RequestMapping("/register.do")
 	@ResponseBody
-	public JsonResult register(@ModelAttribute LoginDto model) throws MyException, UnsupportedEncodingException, MessagingException {
+	public JsonResult register(@ModelAttribute LoginDto loginDto) throws MyException, UnsupportedEncodingException, MessagingException {
 		if( !config.isOpenRegister() ){
-			model.setTipMessage("系统尚未开放注册功能，请联系管理员开放");
-			return new JsonResult(1, model); 
+		    throw new MyException(MyError.E000065, "系统尚未开放注册功能，请联系管理员开放");
 		}
-		if( MyString.isEmpty(model.getUserName())){
-			model.setTipMessage("邮箱不能为空");
-			return new JsonResult(1, model);
+		if( MyString.isEmpty(loginDto.getEmail())){
+            throw new MyException(MyError.E000065, "邮箱不能为空");
 		}
-		if( MyString.isEmpty(model.getPassword()) || model.getPassword().length()<6 ){
-			model.setTipMessage("密码不能为空，且长度不能少于6位");
-			return new JsonResult(1, model);
-		}
-		if( !model.getPassword().equals(model.getRpassword()) ){
-			model.setTipMessage("两次输入密码不一致");
-			return new JsonResult(1, model);
+		if( MyString.isEmpty(loginDto.getPassword()) || loginDto.getPassword().length()<6 ){
+            throw new MyException(MyError.E000065, "密码不能为空，且长度不能少于6位");
+        }
+		if( !loginDto.getPassword().equals(loginDto.getRpassword()) ){
+            throw new MyException(MyError.E000065, "两次输入密码不一致");
 		}
 		
 		if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
-			if (MyString.isEmpty(model.getVerificationCode()) || !model.getVerificationCode().equals(Tools.getImgCode())) {
-				model.setTipMessage("验证码有误");
-				return new JsonResult(1, model);
+			if (MyString.isEmpty(loginDto.getVerificationCode()) || !loginDto.getVerificationCode().equals(Tools.getImgCode())) {
+                throw new MyException(MyError.E000065, "验证码有误");
 			}
 		}
 
-        UserQuery query = new UserQuery().setEqualEmail(model.getUserName().toLowerCase());
+        UserQuery query = new UserQuery().setEqualEmail(loginDto.getEmail().toLowerCase());
 		if( userService.count(query) >0 ){
-			model.setTipMessage("邮箱已经注册");
-			return new JsonResult(1, model);
+            throw new MyException(MyError.E000065, "邮箱已经注册");
 		}
 		
 		User user = new User();
-		try{
-			user.setUserName(model.getUserName().split("@")[0]);
-			// 判断用户名是否重名，重名则修改昵称
-            query = new UserQuery().setEqualUserName(model.getUserName());
+        user.setUserName(loginDto.getEmail().split("@")[0]);
+        // 判断用户名是否重名，重名则修改昵称
+        query = new UserQuery().setEqualUserName(user.getUserName());
 
-			if( userService.count(query) >0 ){
-				user.setUserName("ca_"+ model.getUserName().split("@")[0]+"_"+Tools.getChar(5));
-			}
-			
-			user.setEmail(model.getUserName());
-			user.setPasswordSalt(Tools.getChar(20));
-			user.setPassword(MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()));
-			user.setStatus(Byte.valueOf("1"));
-			user.setType(Byte.valueOf("1"));
-			userService.insert(user);
-		}catch(Exception e){
-			e.printStackTrace();
-			model.setTipMessage(e.getMessage());
-			model.setId(null);
-			return new JsonResult(1, model);
-		}
-		try{
+        if (userService.count(query) > 0) {
+            user.setUserName("ca_" + user.getUserName() + "_" + Tools.getChar(5));
+        }
+
+        user.setEmail(loginDto.getEmail());
+        user.setPasswordSalt(Tools.getChar(20));
+        user.setPassword(MD5.encrytMD5(loginDto.getPassword(), user.getPasswordSalt()));
+        user.setStatus(Byte.valueOf("1"));
+        user.setType(Byte.valueOf("1"));
+        userService.insert(user);
+
+        try{
 			emailService.sendRegisterEmail(user.getEmail(), user.getId());
 		}catch(Exception e){
-			log.error("注册验证邮件发送失败:" + user.getUserName(), e);
+            log.error("注册验证邮件发送失败:" + user.getUserName(), e);
+            throw new MyException(MyError.E000065, "注册验证邮件发送失败");
 		}
-		model.setId(user.getId());
-		return new JsonResult(1, model);
+		loginDto.setId(user.getId());
+		return new JsonResult(1, loginDto);
 		
 	}
 	
@@ -279,10 +266,10 @@ public class LoginController extends BaseController{
 	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
 			if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
 				if(MyString.isEmpty(model.getVerificationCode()) ){
-				    throw new MyException(MyError.E000010);
+                    throw new MyException(MyError.E000065, "验证码有误");
 				}
 				if (!model.getVerificationCode().equals(Tools.getImgCode())) {
-                    throw new MyException(MyError.E000010);
+                    throw new MyException(MyError.E000065, "验证码有误");
 				}
 			}
 

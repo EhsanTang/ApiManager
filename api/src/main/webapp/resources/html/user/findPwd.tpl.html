@@ -1,6 +1,6 @@
 
 <blockquote>
-	<sapn class="pl10 C000 f18 fb">找回密码</span>
+	<span class="pl10 C000 f18 fb">找回密码</span>
 </blockquote>
 <form class="form-horizontal p15 pb5 mt10" id="findPwd_form">
 	<div class="input-wrapper">
@@ -20,7 +20,7 @@
 	</div>
 	<div class="form-group mt10 mb0">
 		<button type="submit" class="btn btn-block btn-default r5"
-		onclick="callAjaxByName('iUrl=account/findPwd/sendEmail.do|iFormId=findPwd_form|iLoading=PROPUPFLOAT邮件发送中...|isHowMethod=updateDivWithImg');">
+		onclick="callAjaxByName('iUrl=account/findPwd/sendEmail.do|iFormId=findPwd_form|iLoading=TIPFLOAT邮件发送中...');">
 			1. 发送邮箱验证码<i class='iconfont mt-1 pl10 f16'>&#xe634;</i>
 		</button>
 	</div>
@@ -35,7 +35,7 @@
 	</div>
 	<div class="form-group mt30 mb10">
 		<button type="submit"
-			onclick="callAjaxByName('iUrl=account/findPwd/reset.do|iFormId=findPwd_form|iLoading=PROPUPFLOAT重置密码中...|ishowMethod=updateDivWithImg');"
+			onclick="callAjaxByName('iUrl=account/findPwd/reset.do|iFormId=findPwd_form|iLoading=TIPFLOAT重置密码中...');"
 			class="btn btn-block btn-main r5">
 			2. 重置密码<i class='iconfont mt-1 pl10 f16'>&#xe82b;</i>
 		</button>
@@ -51,4 +51,3 @@
 		</div>
 	</div>
 </form>
-<div id="warnMessage" class="text-error mb15 mt10"></div>

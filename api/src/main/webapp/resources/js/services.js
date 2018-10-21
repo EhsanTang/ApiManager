@@ -47,7 +47,7 @@ function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
 }
 function httpSuccess(data, iLoading, tipTime) {
 	if(data.success==0){
-		if(data.error.code == INVALID_PASSWORD_CODE || data.error.code == NEED_PASSWORD_CODE){
+		if(data.error.code == NEED_PASSWORD_CODE){
 			lookUp('passwordDiv', '', 300, 300 ,6,'');
 			showMessage('passwordDiv','false',false,-1);
 			showMessage('fade','false',false,-1);

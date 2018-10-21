@@ -1,11 +1,11 @@
 
 					<blockquote>
-  						<span class="pl10 C000 f18 fb">注册</span>
+  						<span class="pl10 C000 f18 fw500">注册</span>
 					</blockquote>
 					<input type="hidden" value="[ERROR][LOGINPAGE]"/>
 					<form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('register.do', registerSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('preRegister.do')">
 						<div class="input-wrapper ">
-							    <input type="email" ng-model="model.userName" placeholder="邮箱"  autocomplete="off" required>
+							    <input type="email" ng-model="model.email" placeholder="邮箱"  autocomplete="off" required>
 						</div>
 						<div class="input-wrapper">
 								<input type="password" ng-model="model.password" placeholder="密码（不少于6位）"  autocomplete="off" required>
@@ -13,7 +13,7 @@
 						<div class="input-wrapper">
 								<input type="password" ng-model="model.rpassword" placeholder="确认密码"  autocomplete="off" required>
 						</div>
-						<div class="input-wrapper">
+						<div class="input-wrapper" ng-if="settings.VERIFICATIONCODE=='true'">
 								<input type="text" ng-model="model.verificationCode"  autocomplete="off"  placeholder="图形验证码" required>
 								
 								<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张" data-toggle="tooltip">
@@ -22,7 +22,7 @@
 								</div>
 						</div>
 						<div class="form-group mt30 mb30">
-							<button type="submit" class="btn btn-block btn-default r5 adorn-color cursor">注册<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
+							<button type="submit" class="btn btn-block btn-main r5 ">注册<i class='iconfont mt-1 pl10'>&#xe601;</i></button>
 						</div>
 						
 						<div class="form-group mb0 f12 C555 tr">

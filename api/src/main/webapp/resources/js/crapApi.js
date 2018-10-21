@@ -1,13 +1,16 @@
 /****************密码访问*****************/
-function propUpPsswordDiv(obj){
+function propUpPasswordDiv(obj){
 	var msg = obj.textContent;
-	if(msg.indexOf(INVALID_PASSWORD_CODE)>=0 || msg.indexOf(NEED_PASSWORD_CODE)>=0){
-		lookUp('passwordDiv', '', 300, 300 ,6,'');
-		showMessage('passwordDiv','false',false,-1);
-		showMessage('fade','false',false,-1);
-		changeimg('imgCode','verificationCode');
-		$("#password").val('');
-		$("#password").focus();
+	if(msg.indexOf(NEED_PASSWORD_CODE)>=0){
+        var obj = document.getElementById('passwordDiv');
+        if (obj){
+            lookUp('passwordDiv', '', 300, 300 ,6,'');
+            showMessage('passwordDiv','false',false,-1);
+            showMessage('fade','false',false,-1);
+            changeimg('imgCode','verificationCode');
+            $("#password").val('');
+            $("#password").focus();
+		}
 	}else if(msg.indexOf(NEED_LOGIN)>=0 ){
 		openPage('loginOrRegister.do#/login');
 	}

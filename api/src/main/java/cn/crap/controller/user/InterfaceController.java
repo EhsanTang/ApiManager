@@ -129,7 +129,7 @@ public class InterfaceController extends BaseController{
 		InterfaceWithBLOBs interFace = interfaceService.getById(id);
 
 		//判断是否拥有原来项目的权限
-		checkPermission(interFace.getProjectId(), ADD_INTER);
+		checkPermission(interFace.getProjectId(), VIEW);
 		Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
         checkPermission(module.getProjectId(), ADD_INTER);

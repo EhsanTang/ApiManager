@@ -314,7 +314,7 @@ public class LoginController extends BaseController{
         loginDto.setRemberPwd("NO");
         loginDto.setUserName(user.getUserName());
         customUserService.login(loginDto, user);
-        response.sendRedirect("admin.do");
+        response.sendRedirect("/admin.do");
         return null;
 	}
 }

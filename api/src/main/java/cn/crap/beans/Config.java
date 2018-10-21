@@ -92,13 +92,15 @@ public class Config{
 	}
 
     public String getDomain() {
-        return getDomain(Tools.getRequest());
+        return getDomainByRequest(null);
     }
 
-	public String getDomain(HttpServletRequest request) {
+	public String getDomainByRequest(HttpServletRequest request) {
 		try{
-			return request.getScheme()+"://"+ request.getServerName() +
-                    (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
+		    if (null != null) {
+                return request.getScheme() + "://" + request.getServerName() +
+                        (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
+            }
 		}catch (Exception e){
 		    e.printStackTrace();
         }

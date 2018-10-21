@@ -132,7 +132,7 @@ public class InterfaceController extends BaseController{
 		checkPermission(interFace.getProjectId(), ADD_INTER);
 		Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
-        checkPermission(moduleId, ADD_INTER);
+        checkPermission(module.getProjectId(), ADD_INTER);
 
 		if(!config.isCanRepeatUrl()){
 			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){

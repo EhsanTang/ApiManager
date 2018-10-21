@@ -157,8 +157,7 @@ public class MainController extends BaseController {
     @RequestMapping("/admin/compress.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult compress() throws Exception{
-        // TODO
-        // systemService.compressSource();
+        systemService.compressSource();
         systemService.mergeSource();
         return new JsonResult().success();
     }

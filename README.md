@@ -1,6 +1,6 @@
 # CrapApi
-[官网在线使用地址](http://crap.cn)
-[官网在线使用地址](http://api.crap.cn)
+[官网在线使用地址crap.cn](http://crap.cn)
+[官网在线使用地址api.crap.cn](http://api.crap.cn)
 
 [CrapApi视频介绍-用户版](http://v.youku.com/v_show/id_XMzU4NjQwODIzNg==.html)
 

@@ -41,8 +41,6 @@ public class InterfaceController extends BaseController {
     private InterfaceService interfaceService;
     @Autowired
     private ModuleService moduleService;
-    @Autowired
-    private Config config;
 
     private final static String ERROR_INTERFACE_ID = "接口id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！";
     private final static String ERROR_MODULE_ID = "模块id有误，生成PDF失败。请确认配置文件config.properties中的网站域名配置是否正确！";
@@ -139,7 +137,7 @@ public class InterfaceController extends BaseController {
         checkFrontPermission("", "", project);
         if (pdf) {
             String secretKey = settingCache.get(S_SECRETKEY).getValue();
-            String fileName = Html2Pdf.createPdf(req, config, id, moduleId, secretKey);
+            String fileName = Html2Pdf.createPdf(req, id, moduleId, secretKey);
             DownloadUtils.downloadWord(response, new File(fileName), downloadName, true);
         }else{
             Map<String, Object> map = new HashMap<>();

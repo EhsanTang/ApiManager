@@ -14,15 +14,12 @@ public class ObjectCache{
 	private static Cache<String, Object> cache;
 	public static final String CACHE_PREFIX = "object";
 
-	@Autowired
-	private Config config;
-
 	public Cache<String, Object> getCache(){
 		if (cache == null) {
 			cache = CacheBuilder.newBuilder()
 					.initialCapacity(10)
 					.concurrencyLevel(5)
-					.expireAfterWrite(config.getCacheTime(), TimeUnit.SECONDS)
+					.expireAfterWrite(Config.cacheTime, TimeUnit.SECONDS)
 					.build();
 		}
 		return cache;

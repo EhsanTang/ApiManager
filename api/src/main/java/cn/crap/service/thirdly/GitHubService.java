@@ -15,13 +15,10 @@ import cn.crap.utils.Tools;
 
 @Service
 public class GitHubService {
-	@Autowired
-	private Config config;
-	
 	   public GitHubAccessToken getAccessToken(String code,String redirect_uri) throws Exception{
 	        String url ="https://github.com/login/oauth/access_token";
-	        Map<String,String> params = Tools.getStrMap("client_id",config.getClientID(),
-	        		"client_secret",config.getClientSecret(),"code",code,"redirect_uri",redirect_uri);
+	        Map<String,String> params = Tools.getStrMap("client_id",Config.clientID,
+	        		"client_secret",Config.clientSecret,"code",code,"redirect_uri",redirect_uri);
 	        
 	        String rs = HttpPostGet.post(url, params, Tools.getStrMap("Accept","application/json"));
 	        GitHubAccessToken accessToken = JSON.parseObject(rs,GitHubAccessToken.class);

@@ -49,10 +49,7 @@ public class InterfaceController extends BaseController{
 	private ISearchService luceneService;
 	@Autowired
 	private ErrorService errorService;
-	@Autowired
-	private Config config;
-	
-	
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
@@ -134,7 +131,7 @@ public class InterfaceController extends BaseController{
 		// 检查新项目的权限
         checkPermission(module.getProjectId(), ADD_INTER);
 
-		if(!config.isCanRepeatUrl()){
+		if(!Config.canRepeatUrl){
 			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){
 				throw new MyException(MyError.E000004);
 			}
@@ -226,7 +223,7 @@ public class InterfaceController extends BaseController{
 			//同一模块下不允许 url 重复
             InterfaceQuery interfaceQuery = new InterfaceQuery();
             interfaceQuery.setModuleId(interFace.getModuleId()).setFullUrl(module.getUrl() +interFace.getUrl()).setExceptId(interFace.getId());
-			if( !config.isCanRepeatUrl() && interfaceService.count(interfaceQuery) >0 ){
+			if( !Config.canRepeatUrl && interfaceService.count(interfaceQuery) >0 ){
 				throw new MyException(MyError.E000004);
 			}
 			
@@ -241,7 +238,7 @@ public class InterfaceController extends BaseController{
 			checkPermission(interFace.getProjectId(), ADD_INTER);
             InterfaceQuery interfaceQuery = new InterfaceQuery();
             interfaceQuery.setModuleId(interFace.getModuleId()).setFullUrl(module.getUrl() +interFace.getUrl());
-			if(!config.isCanRepeatUrl() && interfaceService.count(interfaceQuery)>0){
+			if(!Config.canRepeatUrl && interfaceService.count(interfaceQuery)>0){
 				return new JsonResult(MyError.E000004);
 			}
 			interFace.setFullUrl(module.getUrl() + interFace.getUrl());

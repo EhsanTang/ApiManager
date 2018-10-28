@@ -45,8 +45,6 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected UserCache userCache;
     @Resource(name = "objectCache")
     protected ObjectCache objectCache;
-    @Autowired
-    protected Config config;
 
     protected Project getProject(BaseQuery query){
         Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId & moduleId 不能同时为空");

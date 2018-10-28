@@ -17,9 +17,6 @@ public class StringCache{
 	private static Cache<String, String> cache;
 	public static final String CACHE_PREFIX = "str:";
 
-	@Autowired
-	private Config config;
-
 	public Cache<String, String> getCache(){
 	    if (cache == null) {
             cache = CacheBuilder.newBuilder()

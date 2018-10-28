@@ -28,8 +28,6 @@ public class MenuService extends BaseService<Menu, MenuDao> {
     @Autowired
     private ProjectService projectService;
     @Autowired
-    private Config config;
-    @Autowired
     private ModuleService moduleService;
     @Resource(name = "pickService")
     private IPickService pickService;

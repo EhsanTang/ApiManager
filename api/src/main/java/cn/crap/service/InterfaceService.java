@@ -5,7 +5,10 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dao.mybatis.InterfaceDao;
-import cn.crap.dto.*;
+import cn.crap.dto.ErrorDto;
+import cn.crap.dto.InterfacePDFDto;
+import cn.crap.dto.ParamDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.enumer.LogType;
 import cn.crap.enumer.TableId;
 import cn.crap.framework.MyException;
@@ -17,7 +20,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,6 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     private LogService logService;
     @Autowired
     private CustomInterfaceDao customInterfaceMapper;
-    @Autowired
-    private Config config;
 
     @Resource
     public void InterfaceDao(InterfaceDao interfaceDao) {
@@ -155,8 +155,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             interDto.setCustom(true);
             interDto.setCustomParams( interFace.getParam());
         }
-        interDto.setTrueMockUrl(config.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
-        interDto.setFalseMockUrl(config.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
+        interDto.setTrueMockUrl(Config.domain+"/mock/trueExam.do?id="+interFace.getId());
+        interDto.setFalseMockUrl(Config.domain+"/mock/falseExam.do?id="+interFace.getId());
 
         List<ParamDto> headerList = JSONArray.toList(JSONArray.fromObject(interFace.getHeader()), new ParamDto(), new JsonConfig());
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));

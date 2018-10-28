@@ -33,8 +33,6 @@ import java.util.List;
 @Controller
 public class GitHubController extends BaseController {
     @Autowired
-    private Config config;
-    @Autowired
     private GitHubService githHubService;
     @Autowired
     private UserService userService;
@@ -51,7 +49,7 @@ public class GitHubController extends BaseController {
     public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
         String state = Tools.getChar(20);
-        response.sendRedirect(String.format(authorizeUrl, config.getClientID(), state));
+        response.sendRedirect(String.format(authorizeUrl, Config.clientID, state));
     }
 
     @RequestMapping("/github/login.ignore")

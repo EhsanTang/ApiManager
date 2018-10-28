@@ -32,8 +32,6 @@ import java.util.List;
 @Controller
 public class GitOschinaController extends BaseController {
     @Autowired
-    private Config config;
-    @Autowired
     private OschinaService oschinaService;
     @Autowired
     private UserService userService;
@@ -48,13 +46,13 @@ public class GitOschinaController extends BaseController {
     @RequestMapping("/oschina/authorize.ignore")
     public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authorizeUrl = "https://git.oschina.net/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
-        response.sendRedirect(String.format(authorizeUrl, config.getOschinaClientID(), config.getDomain() + "/oschina/login.ignore"));
+        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, Config.domain + "/oschina/login.ignore"));
     }
 
     @RequestMapping("/oschina/login.ignore")
     public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = null;
-        GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, config.getDomain()).getAccess_token());
+        GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, Config.domain).getAccess_token());
 
         List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
         if (users.size() == 0) {

@@ -18,8 +18,6 @@ public class ProjectCache{
 	public static final String CACHE_PREFIX = "project:";
 
 	@Autowired
-	private Config config;
-	@Autowired
 	private ProjectService projectService;
 
     public Cache<String, Project> getCache(){
@@ -27,7 +25,7 @@ public class ProjectCache{
             cache = CacheBuilder.newBuilder()
                     .initialCapacity(10)
                     .concurrencyLevel(5)
-                    .expireAfterWrite(config.getCacheTime(), TimeUnit.SECONDS)
+                    .expireAfterWrite(Config.cacheTime, TimeUnit.SECONDS)
                     .build();
         }
         return cache;

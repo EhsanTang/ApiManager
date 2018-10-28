@@ -22,8 +22,6 @@ public class SettingCache{
 	public static final String CACHE_PREFIX = "setting";
 
 	@Autowired
-	private Config config;
-	@Autowired
 	private SettingService customSettingService;
 
 	public Cache<String, SettingDto> getCache(){
@@ -31,7 +29,7 @@ public class SettingCache{
             cache = CacheBuilder.newBuilder()
                     .initialCapacity(10)
                     .concurrencyLevel(5)
-                    .expireAfterWrite(config.getCacheTime(), TimeUnit.SECONDS)
+                    .expireAfterWrite(Config.cacheTime, TimeUnit.SECONDS)
                     .build();
         }
         return cache;
@@ -94,4 +92,11 @@ public class SettingCache{
         return CACHE_PREFIX + key;
     }
 
+    public boolean equalse(SettingEnum settingEnum, String value){
+    	if (value == null || settingEnum == null || this.get(settingEnum.getKey()) == null
+				|| this.get(settingEnum.getKey()).getValue() == null){
+			return false;
+		}
+		return this.get(settingEnum.getKey()).getValue().equals(value);
+	}
 }

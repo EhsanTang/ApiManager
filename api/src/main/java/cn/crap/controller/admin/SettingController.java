@@ -30,8 +30,6 @@ public class SettingController extends BaseController {
     @Autowired
     private SettingService customSettingService;
     @Autowired
-    private Config config;
-    @Autowired
     private SystemService systemService;
     private final static String[] indexUrls = new String[]{"index.do", "visitor/", "project.do", "dashboard.htm"};
 

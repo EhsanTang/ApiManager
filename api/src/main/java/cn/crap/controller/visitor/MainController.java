@@ -48,8 +48,6 @@ public class MainController extends BaseController{
     private ProjectService projectService;
 	@Autowired
     private ArticleService articleService;
-	@Autowired
-	private Config config;
 
 	private static final String TOTAL_USER = "totalUser";
     private static final String TOTAL_PROJECT = "totalProject";
@@ -196,9 +194,9 @@ public class MainController extends BaseController{
 			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		settingMap.put(IConst.DOMAIN, config.getDomain());
-		settingMap.put(IConst.SETTING_OPEN_REGISTER, config.isOpenRegister()+"");
-		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( config.getClientID() )? "false":"true");
+		settingMap.put(IConst.DOMAIN, Config.domain);
+		settingMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
+		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
 
 		// 新增加且没有写入数据库的配置
 		for (SettingEnum settingEnum : SettingEnum.values()){
@@ -227,7 +225,7 @@ public class MainController extends BaseController{
 	@RequestMapping("/visitorSearch.do")
 	@ResponseBody
 	public JsonResult visitorSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
-		if(config.isLuceneSearchNeedLogin()){
+		if(Config.luceneSearchNeedLogin){
 			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
 		}
 		keyword = keyword.trim();

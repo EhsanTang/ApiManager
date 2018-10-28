@@ -37,7 +37,7 @@
 //	@Autowired
 //	public void setExecutor(Config config){
 //		if(exec == null){
-//			exec = Executors.newFixedThreadPool(config.getCacheTime());
+//			exec = Executors.newFixedThreadPool(Config.cacheTime);
 //			time = config.getMonitorCacheTime();
 //			tryTimes = config.getMonitorTryTimes();
 //		}

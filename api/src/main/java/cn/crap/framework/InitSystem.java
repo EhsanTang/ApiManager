@@ -38,6 +38,7 @@ public class InitSystem {
     @PostConstruct
     public void init(){
         log.info("初始化系统数据中....");
+        initConfig();
         initSetting();
         mergeSource();
     }
@@ -90,6 +91,15 @@ public class InitSystem {
             systemService.mergeSource();
         }catch (Exception e){
             log.error("合并资源文件异常....", e);
+        }
+    }
+
+    public void initConfig(){
+        try{
+            log.info("初始化config....");
+            systemService.initConfig();
+        }catch (Exception e){
+            log.error("初始化config....", e);
         }
     }
 }

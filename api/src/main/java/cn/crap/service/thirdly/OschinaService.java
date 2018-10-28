@@ -17,14 +17,12 @@ import cn.crap.utils.Tools;
 
 @Service
 public class OschinaService {
-	@Autowired
-	private Config config;
-	
+
 	   public GitHubAccessToken getAccessToken(String code,String redirect_uri) throws Exception{
 			String oschinaAuthUrl = "https://git.oschina.net/oauth/token";
 
-	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", config.getOschinaClientID(),
-	        		"client_secret", config.getOschinaClientSecret(),"code",code,"redirect_uri",config.getDomain() +"/oschina/login.ignore");
+	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", Config.oschinaClientID,
+	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri",Config.domain +"/oschina/login.ignore");
 	        
 	        String rs = HttpPostGet.post(oschinaAuthUrl, params, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);

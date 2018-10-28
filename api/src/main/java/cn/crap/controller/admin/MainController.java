@@ -1,5 +1,6 @@
 package cn.crap.controller.admin;
 
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enumer.SettingStatus;
@@ -52,8 +53,22 @@ public class MainController extends BaseController {
     @AuthPassport(authority = C_AUTH_SETTING)
     @ResponseBody
     public JsonResult property() throws Exception {
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        returnMap.put("properties", config);
+        Map<String, Object> returnMap = new HashMap<>();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("domain", Config.domain);
+        properties.put("openRegister", Config.openRegister);
+        properties.put("luceneSearchNeedLogin", Config.luceneSearchNeedLogin);
+        properties.put("openRegister", Config.openRegister);
+        properties.put("canRepeatUrl", Config.canRepeatUrl);
+        properties.put("cacheTime", Config.cacheTime);
+        properties.put("loginInforTime", Config.loginInforTime);
+        properties.put("fileSize", Config.fileSize);
+        properties.put("fileType", Config.fileType);
+        properties.put("imageType", Config.imageType);
+        properties.put("mail", Config.mail);
+        properties.put("clientID", Config.clientID);
+
+        returnMap.put("properties", properties);
         // 从crapApi获取版本信息
         try {
             String crapApiInfo =
@@ -112,7 +127,7 @@ public class MainController extends BaseController {
                 settingMap.put(setting.getKey(), setting.getValue());
             }
         }
-        settingMap.put(IConst.DOMAIN, config.getDomain());
+        settingMap.put(IConst.DOMAIN, Config.domain);
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);

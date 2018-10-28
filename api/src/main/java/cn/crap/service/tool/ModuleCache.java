@@ -1,7 +1,7 @@
 package cn.crap.service.tool;
 
-import cn.crap.model.Module;
 import cn.crap.beans.Config;
+import cn.crap.model.Module;
 import cn.crap.service.ModuleService;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
@@ -18,8 +18,6 @@ public class ModuleCache{
 	public static final String CACHE_PREFIX = "module:";
 
 	@Autowired
-	private Config config;
-	@Autowired
 	private ModuleService moduleService;
 
 	public Cache<String, Module> getCache(){
@@ -27,7 +25,7 @@ public class ModuleCache{
 			cache = CacheBuilder.newBuilder()
 					.initialCapacity(10)
 					.concurrencyLevel(5)
-					.expireAfterWrite(config.getCacheTime(), TimeUnit.SECONDS)
+					.expireAfterWrite(Config.cacheTime, TimeUnit.SECONDS)
 					.build();
 		}
 		return cache;

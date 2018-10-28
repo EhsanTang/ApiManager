@@ -43,8 +43,6 @@ public class LoginController extends BaseController{
 	@Autowired
 	private UserService customUserService;
 	@Autowired
-	private Config config;
-	@Autowired
 	private ProjectService projectService;
 	@Autowired
 	private ProjectUserService projectUserService;
@@ -204,7 +202,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/register.do")
 	@ResponseBody
 	public JsonResult register(@ModelAttribute LoginDto loginDto) throws MyException, UnsupportedEncodingException, MessagingException {
-		if( !config.isOpenRegister() ){
+		if( !Config.openRegister ){
 		    throw new MyException(MyError.E000065, "系统尚未开放注册功能，请联系管理员开放");
 		}
 		if( MyString.isEmpty(loginDto.getEmail())){

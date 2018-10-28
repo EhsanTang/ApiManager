@@ -40,8 +40,6 @@ public class LuceneSearchService implements ISearchService {
 	private SettingCache settingCache;
 	@Autowired
 	private StringCache stringCache;
-	@Autowired
-	private Config config;
 
 	/**
 	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个

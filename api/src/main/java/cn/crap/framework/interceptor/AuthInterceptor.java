@@ -25,9 +25,7 @@ import java.net.InetAddress;
 public class AuthInterceptor extends HandlerInterceptorAdapter{
 	@Autowired
 	private UserCache userCache;
-	@Autowired
-	private Config config;
-	
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean threadHasRequest = true;

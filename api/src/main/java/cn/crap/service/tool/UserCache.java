@@ -15,15 +15,12 @@ public class UserCache{
 	private static Cache<String, LoginInfoDto> cache;
 	public static final String CACHE_PREFIX= "user:";
 
-	@Autowired
-	private Config config;
-
 	public Cache<String, LoginInfoDto> getCache(){
 	    if (cache == null) {
             cache = CacheBuilder.newBuilder()
                     .initialCapacity(10)
                     .concurrencyLevel(5)
-                    .expireAfterWrite(config.getLoginInforTime(), TimeUnit.SECONDS)
+                    .expireAfterWrite(Config.loginInforTime, TimeUnit.SECONDS)
                     .build();
         }
         return cache;

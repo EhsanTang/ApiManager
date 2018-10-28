@@ -7,4 +7,16 @@ public class MyInteger {
         }
         return value;
     }
+
+    public static int getInt(String value, int defValue){
+        if (value == null){
+            return defValue;
+        }
+        try{
+            return Integer.parseInt(value);
+        }catch (Exception e){
+            e.printStackTrace();
+            return defValue;
+        }
+    }
 }

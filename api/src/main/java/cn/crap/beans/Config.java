@@ -1,176 +1,107 @@
 package cn.crap.beans;
 
-import cn.crap.utils.Tools;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import cn.crap.utils.MyString;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class Config{
-	
-	@Value("${github.clientID}")
-	private String clientID;
-	
-	@Value("${github.clientSecret}")
-	private String clientSecret;
-	
-	@Value("${git.oschina.clientID}")
-	private String oschinaClientID;
-	
-	@Value("${git.oschina.clientSecret}")
-	private String oschinaClientSecret;
-	
-	@Value("${web.domain}")
-	private String domain;
-	
-	@Value("${web.cacheTime}")
-	private int cacheTime;
-	
-	@Value("${web.loginInforTime}")
-	private int loginInforTime;
-	
-	@Value("${web.fileSize}")
-	private int fileSize;
-	
-	@Value("${web.imageType}")
-	private String imageType;
-	
-	@Value("${web.fileType}")
-	private String fileType;
+	public static String clientID;
+	public static String clientSecret;
+    public static String oschinaClientID;
+	public static String oschinaClientSecret;
+    public static String domain;
+    public static int cacheTime;
+    public static int loginInforTime;
+    public static int fileSize;
+	public static String imageType;
+	public static String fileType;
+	public static boolean openRegister;
+	public static boolean luceneSearchNeedLogin;
+	public static String baidu;
+	public static boolean canRepeatUrl;
+	public static String mail;
+	public static String accessKeyId;
+	public static String accessKeySecret;
+	public static String endPoint;
+	public static String bucketName;
+	public static String imgPrefix;
 
-	// 该功能暂时关闭
-//	@Value("${web.monitorThreadNum}")
-//	private int monitorThreadNum;
-//
-//	@Value("${web.monitorCacheTime}")
-//	private int monitorCacheTime;
-//
-//	@Value("${web.monitorTryTimes}")
-//	private int monitorTryTimes;
-//
-//	@Value("${web.monitorEmailSendIndex}")
-//	private int monitorEmailSendIndex;
-
-	@Value("${web.openRegister}")
-	private boolean openRegister;
-	
-	@Value("${web.luceneSearchNeedLogin}")
-	private boolean luceneSearchNeedLogin;
-	
-	@Value("${web.baidu}")
-	private String baidu;
-	
-	@Value("${web.canRepeatUrl}")
-	private boolean canRepeatUrl;
-	
-	@Value("${mail.username}")
-	private String mail;
-	
-	public String getBaidu() {
-		if(MyString.isEmpty(baidu))
-			return "";
-		return baidu;
-	}
-
-	public boolean isLuceneSearchNeedLogin() {
-		return luceneSearchNeedLogin;
-	}
-
-	public boolean isOpenRegister() {
-		return openRegister;
-	}
-
-	public String getClientID() {
-		return clientID;
-	}
-
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-    public String getDomain() {
-        return getDomainByRequest(null);
+    public static String getConfigClientID() {
+        return "github.clientID";
     }
 
-	public String getDomainByRequest(HttpServletRequest request) {
-		try{
-		    if (null != null) {
-                return request.getScheme() + "://" + request.getServerName() +
-                        (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
-            }
-		}catch (Exception e){
-		    e.printStackTrace();
-        }
-		return domain;
-	}
+    public static String getConfigClientSecret() {
+        return "github.clientSecret";
+    }
 
-	public int getCacheTime() {
-		return cacheTime;
-	}
+    public static String getConfigOschinaClientID() {
+        return "git.oschina.clientID";
+    }
 
-	public int getLoginInforTime() {
-		return loginInforTime;
-	}
+    public static String getConfigOschinaClientSecret() {
+        return "git.oschina.clientSecret";
+    }
 
-	public int getFileSize() {
-		return fileSize;
-	}
+    public static String getConfigDomain() {
+        return "web.domain";
+    }
 
-	public String getImageType() {
-		return imageType;
-	}
+    public static String getConfigCacheTime() {
+        return "web.cacheTime";
+    }
 
-	public String getFileType() {
-		return fileType;
-	}
+    public static String getConfigLoginInforTime() {
+        return "web.loginInforTime";
+    }
 
-//	public int getMonitorThreadNum() {
-//		if(monitorThreadNum > 1000){
-//			return 1000;
-//		}
-//		return monitorThreadNum;
-//	}
-//
-//	public int getMonitorCacheTime() {
-//		return monitorCacheTime;
-//	}
-//
-//	public int getMonitorTryTimes(){
-//		if(monitorTryTimes > 100)
-//			return 100;
-//		if(monitorTryTimes<1)
-//			return 1;
-//		return monitorTryTimes;
-//	}
-//
-//	public int getMonitorEmailSendIndex(){
-//		if(monitorEmailSendIndex<2){
-//			return 2;
-//		}
-//		if(monitorEmailSendIndex>10){
-//			return 10;
-//		}
-//		return monitorEmailSendIndex;
-//	}
-	
-	public String getMail(){
-		return mail;
-	}
+    public static String getConfigFileSize() {
+        return "web.fileSize";
+    }
 
-	public boolean isCanRepeatUrl() {
-		return canRepeatUrl;
-	}
+    public static String getConfigImageType() {
+        return "web.imageType";
+    }
 
-	public String getOschinaClientID() {
-		return oschinaClientID;
-	}
+    public static String getConfigFileType() {
+        return "web.fileType";
+    }
 
-	public String getOschinaClientSecret() {
-		return oschinaClientSecret;
-	}
-	
-	
+    public static String getConfigOpenRegister() {
+        return "web.openRegister";
+    }
+
+    public static String getConfigLuceneSearchNeedLogin() {
+        return "web.luceneSearchNeedLogin";
+    }
+
+    public static String getConfigBaidu() {
+        return "web.baidu";
+    }
+
+    public static String getCanCanRepeatUrl() {
+        return "web.canRepeatUrl";
+    }
+
+    public static String getConfigMail() {
+        return "mail.username";
+    }
+
+    public static String getConfigAccessKeyId() {
+        return "aliyun.oss.accessKeyId";
+    }
+
+    public static String getConfigAccessKeySecret() {
+        return "aliyun.oss.accessKeySecret";
+    }
+
+    public static String getConfigEndPoint() {
+        return "aliyun.oss.endPoint";
+    }
+
+    public static String getConfigBucketName() {
+        return "aliyun.oss.bucketName";
+    }
+
+    public static String getConfigImgPrefix() {
+        return "aliyun.oss.imgPrefix";
+    }
 }

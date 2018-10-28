@@ -8,10 +8,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectListing;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,32 +19,31 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 @Controller
 public class FileController extends BaseController{
 
-	@RequestMapping(value="/user/file/upload.do")
-	@ResponseBody
-	@AuthPassport
-	public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack,
-			String property) {
+    @RequestMapping(value="/user/file/upload.do")
+    @ResponseBody
+    @AuthPassport
+    public void upload(@RequestParam(value = "img", required = false) MultipartFile file,@RequestParam(defaultValue="") String callBack,
+                       String property) {
         String result = upload(file);
-	    if(!callBack.equals("")){
-	       if(result.indexOf("[ERROR]")<0){
-	    	   printMsg("<script>parent."+callBack+"('[OK]上传成功','"+result+"','"+property+"')</script>");
-	       }else{
-	    	   printMsg("<script>parent.uploadImgCallBack('[ERROR]上传失败','"+result+"')</script>");
-	       }
-       }else{
-			if(result.indexOf("[ERROR]")<0){
-				printMsg("{\"errno\": 0,\"data\": [\"" + result + "\"]}");
-			}else {
-				printMsg("{\"errno\": 1,\"errorMessage\": \"" + result + "\"}");
+        if(!callBack.equals("")){
+            if(result.indexOf("[ERROR]")<0){
+                printMsg("<script>parent."+callBack+"('[OK]上传成功','"+result+"','"+property+"')</script>");
+            }else{
+                printMsg("<script>parent.uploadImgCallBack('[ERROR]上传失败','"+result+"')</script>");
+            }
+        }else{
+            if(result.indexOf("[ERROR]")<0){
+                printMsg("{\"errno\": 0,\"data\": [\"" + result + "\"]}");
+            }else {
+                printMsg("{\"errno\": 1,\"errorMessage\": \"" + result + "\"}");
 
-			}
-       }
-	}
+            }
+        }
+    }
 
     @RequestMapping(value="/user/markdown/upload.do")
     @ResponseBody
@@ -95,21 +91,21 @@ public class FileController extends BaseController{
             }
 
             realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.DDHHmmss)+Tools.getChar(6)+version+"."+suffix;
-          //保存
+            //保存
             try {
-                 if(!new File(destDir+saveUrl).exists()){
-                     new File(destDir+saveUrl).mkdirs();
-                 }
+                if(!new File(destDir+saveUrl).exists()){
+                    new File(destDir+saveUrl).mkdirs();
+                }
 
-                 if (settingCache.equalse(SettingEnum.OPEN_ALIYUN, "true")){
-                     if(result.indexOf("[ERROR]")<0){
-                         updateFileToAliyun(file, saveUrl+realFileName);
-                     }
-                 }
+                if (settingCache.equalse(SettingEnum.OPEN_ALIYUN, "true")){
+                    if(result.indexOf("[ERROR]")<0){
+                        updateFileToAliyun(file, saveUrl+realFileName);
+                    }
+                }
 
-                 File targetFile = new File(destDir+saveUrl,realFileName);
-                 file.transferTo(targetFile);
-                 result = saveUrl+realFileName;
+                File targetFile = new File(destDir+saveUrl,realFileName);
+                file.transferTo(targetFile);
+                result = saveUrl+realFileName;
             } catch (Exception e) {
                 e.printStackTrace();
                 result = "[ERROR]上传失败";
@@ -124,7 +120,7 @@ public class FileController extends BaseController{
     @AuthPassport(authority = C_AUTH_SETTING)
     public void updateAllFileToAliyun(){
         OSSClient client = null;
-	    try {
+        try {
             String basePath = Tools.getServicePath() + "resources/upload";
             ClientConfiguration conf = new ClientConfiguration();
             conf.setConnectionTimeout(1000);
@@ -132,7 +128,7 @@ public class FileController extends BaseController{
             client = new OSSClient(Config.endPoint, Config.accessKeyId, Config.accessKeySecret, conf);
             updateFileToAliyun(new File(basePath), client);
         }catch (Exception e){
-	        throw e;
+            throw e;
         }finally {
             if (client != null) {
                 client.shutdown();

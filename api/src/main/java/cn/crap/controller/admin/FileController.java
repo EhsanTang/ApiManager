@@ -119,6 +119,27 @@ public class FileController extends BaseController{
         return result;
     }
 
+    @RequestMapping(value="/user/file/uploadAllToAliyun.do")
+    @ResponseBody
+    @AuthPassport(authority = C_AUTH_SETTING)
+    public void updateAllFileToAliyun(){
+        OSSClient client = null;
+	    try {
+            String basePath = Tools.getServicePath() + "resources/upload";
+            ClientConfiguration conf = new ClientConfiguration();
+            conf.setConnectionTimeout(1000);
+            conf.setSocketTimeout(1000);
+            client = new OSSClient(Config.endPoint, Config.accessKeyId, Config.accessKeySecret, conf);
+            updateFileToAliyun(new File(basePath), client);
+        }catch (Exception e){
+	        throw e;
+        }finally {
+            if (client != null) {
+                client.shutdown();
+            }
+        }
+    }
+
     public void updateFileToAliyun(MultipartFile file, String dir) {
         if (file != null && !StringUtils.isEmpty(file.getOriginalFilename())){
             OSSClient client = null;
@@ -138,19 +159,7 @@ public class FileController extends BaseController{
         }
     }
 
-    @RequestMapping(value="/user/file/uploadAllToAliyun.do")
-    @ResponseBody
-    @AuthPassport(authority = C_AUTH_SETTING)
-    public void updateAllFileToAliyun(){
-	    String basePath = Tools.getServicePath() + "resources/upload";
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setConnectionTimeout(1000);
-        conf.setSocketTimeout(1000);
-        OSSClient client = new OSSClient(Config.endPoint, Config.accessKeyId, Config.accessKeySecret, conf);
-        updateFile(new File(basePath), client);
-    }
-
-    public static void updateFile(File file, OSSClient client){
+    public static void updateFileToAliyun(File file, OSSClient client){
         if(file != null){
             if(file.isDirectory()){
                 File[] fileArray=file.listFiles();
@@ -158,7 +167,7 @@ public class FileController extends BaseController{
 
                     for (int i = 0; i < fileArray.length; i++) {
                         //递归调用
-                        updateFile(fileArray[i], client);
+                        updateFileToAliyun(fileArray[i], client);
                     }
                 }
             }

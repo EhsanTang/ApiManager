@@ -82,7 +82,7 @@ public class FileController extends BaseController{
             }else{
                 saveUrl +="resources/upload/files";
             }
-            saveUrl +="/"+ DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD)+"/";
+            saveUrl +="/"+ DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM)+"/";
             String version = ".CAV."+Tools.getChar(6)+".1";
             // 如果文件包含版本号：.CAV.文件标识.版本号 //版本号CrapApi Version
             try{
@@ -94,7 +94,7 @@ public class FileController extends BaseController{
                 e.printStackTrace();
             }
 
-            realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.HHmmss)+Tools.getChar(6)+version+"."+suffix;
+            realFileName = DateFormartUtil.getDateByFormat(DateFormartUtil.DDHHmmss)+Tools.getChar(6)+version+"."+suffix;
           //保存
             try {
                  if(!new File(destDir+saveUrl).exists()){

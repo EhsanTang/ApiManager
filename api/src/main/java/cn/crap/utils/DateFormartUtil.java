@@ -14,14 +14,17 @@ public class DateFormartUtil {
 	//yyyyMMddHHmmSS
 	//S毫秒
 	//s秒
+	public static String YYYY_MM = "yyyy-MM";
 	public static String YYYY_MM_DD = "yyyy-MM-dd";
 	public static String DDHH="ddHH";
 	public static String YYYY_MM_DD_HH_mm_ss="yyyy-MM-dd HH:mm:ss";
 	public static String YYYY_MM_DD_HH_mm="yyyy-MM-dd HH:mm";
 	public static String YYYYMMDDHHmmss="yyyyMMddHHmmss";
 	public static String HHmmss="HHmmss";
+    public static String DDHHmmss="ddHHmmss";
 
-	public static boolean isWeekend(String date){
+
+    public static boolean isWeekend(String date){
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat(YYYY_MM_DD);
 		Date myDate1=null;
 		try {

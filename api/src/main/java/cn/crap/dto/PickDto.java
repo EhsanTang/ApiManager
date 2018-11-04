@@ -2,6 +2,7 @@ package cn.crap.dto;
 
 import cn.crap.enu.DataType;
 import cn.crap.utils.Tools;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -22,20 +23,18 @@ public class PickDto implements Serializable{
 
 	public PickDto(){}
 	public PickDto(String id,String value,String name){
-        id = handleId(id);
-		this.id=id;
+        this.id = handleId(id);
 		this.value=value;
 		this.name=name;
 	}
 
     public PickDto(String id,String name){
-        id = handleId(id);
-		this.id=id;
+        this.id = handleId(id);
 		this.value=id;
 		this.name=name;
 	}
 	public PickDto(DataType dateType){
-		this.id=dateType.name();
+        this.id = handleId(name);
 		this.value=dateType.name();
 		this.name=dateType.getName();
 	}
@@ -62,7 +61,8 @@ public class PickDto implements Serializable{
         if (id == null){
             id = System.currentTimeMillis() + Tools.getChar(10);
         }
-        id.replace("\\.", "_");
+        id = id.replaceAll("\\.", "_");
+        id = StringUtils.deleteWhitespace(id);
         return id;
     }
 }

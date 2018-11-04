@@ -298,7 +298,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/mock.do")
 	public String mock(HttpServletResponse response, String userId) throws Exception{
 	    // 最高管理员能模拟所有用户
-	    if (MyString.isEmpty(userId) || LoginUserHelper.isSuperAdmin()){
+	    if (MyString.isEmpty(userId) || !LoginUserHelper.isSuperAdmin()){
             userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
         }
         User user = userService.getById(userId);

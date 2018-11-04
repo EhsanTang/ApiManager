@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.MenuDto;
-import cn.crap.enumer.MenuType;
+import cn.crap.enu.MenuType;
 import cn.crap.model.Menu;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.IConst;

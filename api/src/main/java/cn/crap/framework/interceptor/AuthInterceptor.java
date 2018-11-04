@@ -1,8 +1,7 @@
 package cn.crap.framework.interceptor;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.service.tool.UserCache;

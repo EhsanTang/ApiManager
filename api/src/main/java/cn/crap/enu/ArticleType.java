@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum ArticleType {
 	DICTIONARY("项目数据库表"), ARTICLE("文章");

@@ -2,13 +2,11 @@ package cn.crap.service;
 
 import cn.crap.dao.custom.CustomDebugDao;
 import cn.crap.dao.mybatis.DebugDao;
-import cn.crap.enumer.TableId;
-import cn.crap.framework.IdGenerator;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Debug;
 import cn.crap.model.DebugCriteria;
 import cn.crap.query.DebugQuery;
-import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;

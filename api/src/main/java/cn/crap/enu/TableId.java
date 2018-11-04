@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum TableId {
 	ARTICLE("01"), SETTING("02"), ERROR("03"), COMMENT("04"), MENU("05"), USER("06"),PROJECT("07"),

@@ -1,10 +1,9 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -16,8 +15,6 @@ import cn.crap.query.InterfaceQuery;
 import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
 import cn.crap.utils.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

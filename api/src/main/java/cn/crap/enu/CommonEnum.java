@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum CommonEnum {
 	TRUE("true", new Byte("1")),

@@ -6,10 +6,10 @@ import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.InterfaceContentType;
-import cn.crap.enumer.InterfaceStatus;
-import cn.crap.enumer.MonitorType;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.InterfaceContentType;
+import cn.crap.enu.InterfaceStatus;
+import cn.crap.enu.MonitorType;
+import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -329,8 +329,9 @@ public class InterfaceController extends BaseController{
 			}
 			InterfaceWithBLOBs interFace = interfaceService.getById( tempId );
 			checkPermission(interFace.getProjectId(), DEL_INTER);
+
+            luceneService.delete(new SearchDto(interFace.getId()));
 			interfaceService.delete(interFace.getId(), "接口", "");
-			luceneService.delete(new SearchDto(interFace.getId()));
 		}
 		return new JsonResult(1, null);
 	}

@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 import org.springframework.util.StringUtils;
 

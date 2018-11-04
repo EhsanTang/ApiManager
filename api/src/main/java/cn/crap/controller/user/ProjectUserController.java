@@ -2,7 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.ProjectUserDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

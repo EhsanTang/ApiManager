@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum DataType {
 	SETTING("系统设置"),USER("用户管理"),MENU("菜单管理"),ROLE("权限管理")

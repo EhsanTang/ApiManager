@@ -1,6 +1,6 @@
 package cn.crap.adapter;
 
-import cn.crap.enumer.LogType;
+import cn.crap.enu.LogType;
 import cn.crap.model.Log;
 import cn.crap.utils.LoginUserHelper;
 import net.sf.json.JSONObject;

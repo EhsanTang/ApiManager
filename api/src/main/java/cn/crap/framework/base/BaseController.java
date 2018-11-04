@@ -1,10 +1,9 @@
 package cn.crap.framework.base;
 
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.InterfaceContentType;
-import cn.crap.enumer.MyError;
-import cn.crap.enumer.ProjectType;
+import cn.crap.enu.InterfaceContentType;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -15,7 +14,6 @@ import cn.crap.query.BaseQuery;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -132,7 +130,10 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
              */
             if (ex instanceof DataIntegrityViolationException) {
                 if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
-                    return new JsonResult(new MyException(MyError.E000052, "（字段：" + errorReason.split("'")[1] + "）"));
+                    int index = errorReason.indexOf("insert into") + 11;
+                    String table = errorReason.substring(index, index + 100).split(" ")[1].trim();
+
+                    return new JsonResult(new MyException(MyError.E000052, "（字段：" + table + "." + errorReason.split("'")[1] + "）"));
                 }
             }
             return new JsonResult(new MyException(MyError.E000001, ex.getMessage() + "，详细错误：" + errorReason));
@@ -287,5 +288,4 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         String value = ThreadContext.request().getParameter(key);
         return value == null ? def : value;
     }
-
 }

@@ -9,8 +9,8 @@ import cn.crap.dto.ErrorDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.LogType;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
@@ -236,11 +236,9 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if(MyString.isEmpty(remark)) {
             remark = dbModel.getInterfaceName();
         }
-
+        super.delete(id);
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
-
-        super.delete(id);
     }
 
 

@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum MenuType {
 	FRONT("前端左侧菜单"),BOTTOM("前端底部菜单"),TOP("前端顶部菜单"),FUNCTION("功能介绍"),FRIEND("底部友情链接");

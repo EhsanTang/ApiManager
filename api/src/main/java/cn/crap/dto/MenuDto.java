@@ -1,8 +1,5 @@
 package cn.crap.dto;
 
-import cn.crap.enumer.MenuType;
-import cn.crap.utils.MyString;
-
 public class MenuDto{
     private String id;
     private String menuName;

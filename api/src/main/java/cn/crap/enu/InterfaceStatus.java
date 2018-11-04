@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum InterfaceStatus {
 	IDSCARD("0", "废弃"), ONLINE("1", "已上线"),DEVELOPING("2", "开发中"),TESTING("3", "测试中");

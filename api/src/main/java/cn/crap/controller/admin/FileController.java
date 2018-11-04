@@ -1,7 +1,7 @@
 package cn.crap.controller.admin;
 
 import cn.crap.beans.Config;
-import cn.crap.enumer.SettingEnum;
+import cn.crap.enu.SettingEnum;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.utils.DateFormartUtil;

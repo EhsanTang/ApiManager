@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum CanDeleteEnum {
 	CAN("可以删除", 1), CAN_NOT("不可以删除", 0);

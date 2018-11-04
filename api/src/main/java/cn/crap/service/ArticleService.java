@@ -5,10 +5,10 @@ import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dao.mybatis.ArticleDao;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.ArticleStatus;
-import cn.crap.enumer.CanDeleteEnum;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.ArticleStatus;
+import cn.crap.enu.CanDeleteEnum;
+import cn.crap.enu.LogType;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleCriteria;
@@ -21,7 +21,6 @@ import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -175,10 +174,10 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
         if (MyString.isEmpty(remark)) {
             remark = dbModel.getName();
         }
+        super.delete(id);
+
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
-
-        super.delete(id);
     }
 
     public List<SearchDto> getAll() {

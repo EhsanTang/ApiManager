@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum UserType {
 	ADMIN("管理员", Byte.valueOf("100")),USER("普通用户",Byte.valueOf("1"));

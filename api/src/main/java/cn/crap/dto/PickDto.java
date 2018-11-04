@@ -2,7 +2,7 @@ package cn.crap.dto;
 
 import java.io.Serializable;
 
-import cn.crap.enumer.DataType;
+import cn.crap.enu.DataType;
 
 /**
  * 前端下拉选着框DTO

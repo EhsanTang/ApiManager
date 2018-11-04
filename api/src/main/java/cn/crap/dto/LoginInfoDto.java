@@ -1,6 +1,6 @@
 package cn.crap.dto;
 
-import cn.crap.enumer.UserType;
+import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.ProjectQuery;

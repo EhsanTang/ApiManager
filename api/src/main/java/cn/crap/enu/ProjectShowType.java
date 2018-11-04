@@ -1,11 +1,11 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
-public enum ProjectType {
-	PRIVATE("私有项目", 1), PUBLIC("公开项目",2);
+public enum ProjectShowType {
+	ALL("所有项目", 0), MY_CREATE("我创建的项目",1), JOIN("我加入的项目",2), CREATE_JOIN("创建或加入的项目", 3), RECOMMEND("推荐项目", 4);
 	private final int type;
 	private final String name;
-	
-	ProjectType(String name, int type){
+
+	ProjectShowType(String name, int type){
 		this.type = type;
 		this.name = name;
 	}
@@ -14,7 +14,7 @@ public enum ProjectType {
 	    if (type == null){
 	        return "";
         }
-		for(ProjectType projectType : ProjectType.values()){
+		for(ProjectShowType projectType : ProjectShowType.values()){
 			if(projectType.getType() == type) {
 				return projectType.getName();
 			}

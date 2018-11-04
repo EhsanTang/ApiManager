@@ -1,10 +1,9 @@
 package cn.crap.service;
 
-import cn.crap.beans.Config;
 import cn.crap.dao.mybatis.MenuDao;
 import cn.crap.dto.MenuWithSubMenuDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Menu;
 import cn.crap.model.MenuCriteria;

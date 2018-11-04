@@ -1,9 +1,8 @@
 package cn.crap.controller.admin;
 
 import cn.crap.adapter.SettingAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -13,7 +12,6 @@ import cn.crap.query.SettingQuery;
 import cn.crap.service.SettingService;
 import cn.crap.service.tool.SystemService;
 import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

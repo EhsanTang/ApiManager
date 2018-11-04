@@ -1,6 +1,6 @@
 package cn.crap.controller.visitor;
 
-import cn.crap.enumer.InterfaceContentType;
+import cn.crap.enu.InterfaceContentType;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.service.InterfaceService;

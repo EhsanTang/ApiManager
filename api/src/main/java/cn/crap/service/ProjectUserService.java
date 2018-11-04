@@ -1,7 +1,7 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.ProjectUserDao;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.ProjectUserCriteria;

@@ -2,8 +2,8 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.dao.mybatis.ModuleDao;
-import cn.crap.enumer.LogType;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.LogType;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
 import cn.crap.model.Module;

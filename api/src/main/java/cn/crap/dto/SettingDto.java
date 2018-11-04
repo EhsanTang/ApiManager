@@ -1,6 +1,6 @@
 package cn.crap.dto;
 
-import cn.crap.enumer.SettingType;
+import cn.crap.enu.SettingType;
 import cn.crap.utils.MyString;
 
 public class SettingDto{

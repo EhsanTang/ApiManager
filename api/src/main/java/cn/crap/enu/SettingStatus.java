@@ -1,11 +1,14 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
-public enum ProjectStatus {
-	COMMON("普通项目", 1),RECOMMEND("推荐项目", 2);
+public enum SettingStatus {
+	/**
+	 * 前端配置会返回至浏览器，后端配资只在服务端使用
+	 */
+	DELETE("删除", -1), COMMON("前端配置", 1), HIDDEN("后端设置", 100);
 	private final int status;
 	private final String name;
-	
-	ProjectStatus(String name, int status){
+
+	SettingStatus(String name, int status){
 		this.status = status;
 		this.name = name;
 	}
@@ -14,7 +17,7 @@ public enum ProjectStatus {
 		if (status == null){
 			return "";
 		}
-		for(ProjectStatus projectStatus : ProjectStatus.values()){
+		for(SettingStatus projectStatus : SettingStatus.values()){
 			if(projectStatus.getStatus() == status)
 				return projectStatus.getName();
 		}

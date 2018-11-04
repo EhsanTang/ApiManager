@@ -3,7 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enumer.*;
+import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -171,9 +171,8 @@ public class ArticleController extends BaseController{
                 throw new MyException(MyError.E000009);
             }
 
-			articleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
-
 			luceneService.delete(new SearchDto(model.getId()));
+			articleService.delete(tempId, ArticleType.getByEnumName(model.getType()) , "");
 		}
 		return new JsonResult(1,null);
 	}

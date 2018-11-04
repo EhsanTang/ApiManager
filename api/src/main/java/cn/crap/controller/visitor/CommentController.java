@@ -2,7 +2,7 @@ package cn.crap.controller.visitor;
 
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;

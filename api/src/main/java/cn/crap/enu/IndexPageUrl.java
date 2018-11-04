@@ -1,4 +1,4 @@
-package cn.crap.enumer;
+package cn.crap.enu;
 
 public enum IndexPageUrl {
 	INDEX_HTML("dashboard.htm", "数据大盘"),

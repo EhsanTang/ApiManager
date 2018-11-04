@@ -15,11 +15,15 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>*.json</url-pattern>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.json</url-pattern>
+        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.htm</url-pattern>
+        <url-pattern>*.ignore</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>/</url-pattern>
 	</filter-mapping>
 
 	<!-- 要保证ThreadContext位于所有拦截器的第一个 -->
@@ -30,24 +34,15 @@
 		<init-param>
 			<param-name>ignoreSuffixes</param-name><!-- 需要忽略的后缀 -->
 			<param-value>
-				.jpg,.png,.html,.js,.css,.jpeg,.doc,.pdf
+				.jpg,.png,.html,.js,.css,.jpeg,.doc,.pdf,.ignore
 			</param-value>
 		</init-param>
 	</filter>
     <filter-mapping>
         <filter-name>ThreadContext</filter-name>
         <url-pattern>*.do</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ThreadContext</filter-name>
         <url-pattern>*.json</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ThreadContext</filter-name>
         <url-pattern>*.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ThreadContext</filter-name>
         <url-pattern>/</url-pattern>
     </filter-mapping>
 
@@ -60,19 +55,10 @@
 	<filter-mapping>
 		<filter-name>paramFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-    <filter-mapping>
-        <filter-name>paramFilter</filter-name>
         <url-pattern>*.json</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>paramFilter</filter-name>
         <url-pattern>*.htm</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>paramFilter</filter-name>
-        <url-pattern>/</url-pattern>
-    </filter-mapping>
+
 
     <!-- spring配置 -->
 	<servlet>
@@ -86,7 +72,8 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>spring</servlet-name>
-		<url-pattern>*.do</url-pattern>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.json</url-pattern>
 		<url-pattern>*.htm</url-pattern>
         <!--filter不拦截-->
         <url-pattern>*.ignore</url-pattern>

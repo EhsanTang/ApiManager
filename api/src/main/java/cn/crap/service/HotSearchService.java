@@ -2,7 +2,7 @@ package cn.crap.service;
 
 import cn.crap.dao.custom.CustomHotSearchDao;
 import cn.crap.dao.mybatis.HotSearchDao;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.HotSearch;
 import cn.crap.model.HotSearchCriteria;

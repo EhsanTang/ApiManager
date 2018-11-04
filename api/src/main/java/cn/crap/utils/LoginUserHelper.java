@@ -1,7 +1,7 @@
 package cn.crap.utils;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Project;

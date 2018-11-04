@@ -1,6 +1,6 @@
 package cn.crap.utils;
 
-import cn.crap.enumer.MyError;
+import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 
 /**

@@ -3,7 +3,7 @@ package cn.crap.controller.admin;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.enumer.SettingStatus;
+import cn.crap.enu.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;

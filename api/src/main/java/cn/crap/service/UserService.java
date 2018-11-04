@@ -3,7 +3,7 @@ package cn.crap.service;
 import cn.crap.dao.mybatis.UserDao;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enumer.TableId;
+import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.User;
 import cn.crap.model.UserCriteria;

@@ -238,7 +238,9 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	};
 	// 选中某个选项
 	$rootScope.checkboxSelect = function(checkValues,value){
-		if( $rootScope[checkValues].indexOf(","+value+",")>=0 ){
+		if (!$rootScope[checkValues] ){
+            $rootScope[checkValues] = value+","
+		}else if($rootScope[checkValues].indexOf(","+value+",")>=0 ){
 			$rootScope[checkValues] = $rootScope[checkValues].replace(value+",","");
 		}else{
 			$rootScope[checkValues] = $rootScope[checkValues]+value+","

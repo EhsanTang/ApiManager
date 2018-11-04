@@ -64,7 +64,7 @@
                 <tbody>
                 <tr ng-repeat="item in interfaces" class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
-                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);stopPropagation($event);"></td>
+                    <td ng-click="stopPropagation($event);"><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);"></td>
                     <td>{{item.interfaceName}}</td>
                     <td>{{item.fullUrl}}</td>
                     <td>{{item.version}}</td>

@@ -254,11 +254,10 @@ CREATE TABLE `log` (
   `type` varchar(20) NOT NULL,
   `updateBy` varchar(50) NOT NULL DEFAULT '' COMMENT '操作人',
   `remark` varchar(100) NOT NULL,
-  `content` text NOT NULL,
+  `content` longtext NOT NULL,
   `identy` varchar(50) NOT NULL COMMENT '数据唯一主键',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `log`

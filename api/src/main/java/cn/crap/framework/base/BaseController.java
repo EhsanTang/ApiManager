@@ -113,12 +113,13 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
             log.error("异常", ex);
             ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
             ex.printStackTrace(new PrintStream(outPutStream));
-            String exceptionDetail[] = outPutStream.toString().split("Caused by:");
+            String errorStackTrace = outPutStream.toString();
             try {
                 outPutStream.close();
             } catch (IOException e) {
             }
 
+            String exceptionDetail[] = errorStackTrace.split("Caused by:");
             String errorReason = "";
             if (exceptionDetail.length > 0) {
                 errorReason = exceptionDetail[exceptionDetail.length - 1].split("\n")[0];
@@ -130,8 +131,8 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
              */
             if (ex instanceof DataIntegrityViolationException) {
                 if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
-                    int index = errorReason.indexOf("insert into") + 11;
-                    String table = errorReason.substring(index, index + 100).split(" ")[1].trim();
+                    int index = errorStackTrace.indexOf("insert into") + 11;
+                    String table = errorStackTrace.substring(index, index + 100).split(" ")[1].trim();
 
                     return new JsonResult(new MyException(MyError.E000052, "（字段：" + table + "." + errorReason.split("'")[1] + "）"));
                 }

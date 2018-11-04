@@ -32,6 +32,7 @@ public class ExampleController extends BaseController{
 	@RequestMapping("/visitor/example/body.do")
 	@ResponseBody
 	public JsonResult body(@RequestBody String body) throws MyException{
+		log.warn("--visitor/example/body.do:" + body);
 		return new JsonResult(1, body);
 	}
 	

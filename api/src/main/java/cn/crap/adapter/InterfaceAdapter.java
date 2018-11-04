@@ -18,8 +18,7 @@ import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -54,19 +53,16 @@ public class InterfaceAdapter {
 		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
 
 		// 参数排序，一级->二级
-        List<ParamDto> responseParamList =JSONArray.toList(JSONArray.fromObject(
-                model.getResponseParam() == null ? "[]" : model.getResponseParam()), new ParamDto(), new JsonConfig());
+		List<ParamDto> responseParamList = JSONArray.parseArray(model.getResponseParam() == null ? "[]" : model.getResponseParam(), ParamDto.class);
 		dto.setCrShowResponseParamList(sortParam(null, responseParamList, null));
 
-        List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
-                model.getHeader() == null ? "[]" : model.getHeader()), new ParamDto(), new JsonConfig());
+        List<ParamDto> headerList =JSONArray.parseArray(model.getHeader() == null ? "[]" : model.getHeader(), ParamDto.class);
         dto.setCrShowHeaderList(sortParam(null, headerList, null));
 
         dto.setParamType((model.getParam() == null || model.getParam().startsWith(IConst.C_PARAM_FORM_PRE)) ?
 				IConst.C_PARAM_FORM : IConst.C_PARAM_RAW);
         if (IConst.C_PARAM_FORM.equals(dto.getParamType())) {
-            List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
-                    model.getParam() == null ? "[]" : model.getParam().substring(5, model.getParam().length())), new ParamDto(), new JsonConfig());
+            List<ParamDto> paramList = JSONArray.parseArray(model.getParam() == null ? "[]" : model.getParam().substring(5, model.getParam().length()), ParamDto.class);
             dto.setCrShowParamList(sortParam(null, paramList, null));
             dto.setParam("");
         }

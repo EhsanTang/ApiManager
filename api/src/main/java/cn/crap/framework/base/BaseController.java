@@ -27,7 +27,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 public abstract class BaseController implements IAuthCode, IConst, ISetting {
-    protected final static String ERROR_VIEW = "/WEB-INF/views/interFacePdf.jsp";
+    protected final static String ERROR_VIEW = "/WEB-INF/views/result.jsp";
     protected final static int SIZE = 15;
     protected Logger log = Logger.getLogger(getClass());
     protected final static JsonResult SUCCESS = new JsonResult();

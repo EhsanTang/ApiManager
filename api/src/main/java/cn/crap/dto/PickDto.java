@@ -1,8 +1,9 @@
 package cn.crap.dto;
 
-import java.io.Serializable;
-
 import cn.crap.enu.DataType;
+import cn.crap.utils.Tools;
+
+import java.io.Serializable;
 
 /**
  * 前端下拉选着框DTO
@@ -18,14 +19,17 @@ public class PickDto implements Serializable{
 	private String id;
 	private String value;
 	private String name;
-	
+
 	public PickDto(){}
 	public PickDto(String id,String value,String name){
+        id = handleId(id);
 		this.id=id;
 		this.value=value;
 		this.name=name;
 	}
-	public PickDto(String id,String name){
+
+    public PickDto(String id,String name){
+        id = handleId(id);
 		this.id=id;
 		this.value=id;
 		this.name=name;
@@ -53,6 +57,12 @@ public class PickDto implements Serializable{
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
+    private String handleId(String id) {
+        if (id == null){
+            id = System.currentTimeMillis() + Tools.getChar(10);
+        }
+        id.replace("\\.", "_");
+        return id;
+    }
 }

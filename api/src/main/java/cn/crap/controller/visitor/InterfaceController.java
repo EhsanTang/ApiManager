@@ -52,8 +52,8 @@ public class InterfaceController extends BaseController {
      */
     @RequestMapping("/detail/pdf.do")
     public String pdf(String id, String moduleId, @RequestParam String secretKey) throws Exception {
+        HttpServletRequest request = ThreadContext.request();
         try {
-            HttpServletRequest request = ThreadContext.request();
             if (MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
                 request.setAttribute("result", "接口ID&模块ID不能同时为空！");
                 return ERROR_VIEW;
@@ -105,7 +105,7 @@ public class InterfaceController extends BaseController {
             request.setAttribute("moduleName", module.getName());
             return "/WEB-INF/views/interFacePdf.jsp";
         } catch (Exception e) {
-            ThreadContext.request().setAttribute("result", "接口数据有误，请修改接口后再试，错误信息：" + e.getMessage());
+            request.setAttribute("result", "接口数据有误，请修改接口后再试，错误信息：" + e.getMessage());
             return ERROR_VIEW;
         }
     }

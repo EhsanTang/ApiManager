@@ -19,7 +19,7 @@ import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
-import net.sf.json.JSONArray;
+import com.alibaba.fastjson.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -148,8 +148,10 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace, Module module, boolean handleText4Word) {
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, handleText4Word));
+
+
         if(interFace.getParam().startsWith("form=")){
-            List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(interFace.getParam().substring(5)), new ParamDto(), new JsonConfig());
+            List<ParamDto> paramList = JSONArray.parseArray(interFace.getParam() == null ? "[]" : interFace.getParam().substring(5, interFace.getParam().length()), ParamDto.class);
             interDto.setFormParams(InterfaceAdapter.sortParam(null, paramList, null));
         }else{
             interDto.setCustom(true);
@@ -158,13 +160,13 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         interDto.setTrueMockUrl(Config.domain+"/mock/trueExam.do?id="+interFace.getId());
         interDto.setFalseMockUrl(Config.domain+"/mock/falseExam.do?id="+interFace.getId());
 
-        List<ParamDto> headerList = JSONArray.toList(JSONArray.fromObject(interFace.getHeader()), new ParamDto(), new JsonConfig());
+        List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
 
-        List<ParamDto> resParamList = JSONArray.toList(JSONArray.fromObject(interFace.getResponseParam()), new ParamDto(), new JsonConfig());
+        List<ParamDto> resParamList = JSONArray.parseArray(interFace.getResponseParam() == null ? "[]" : interFace.getResponseParam(), ParamDto.class);
         interDto.setResponseParam(InterfaceAdapter.sortParam(null, resParamList, null));
 
-        interDto.setErrors(JSONArray.toList( JSONArray.fromObject(interFace.getErrors()),new ErrorDto(), new JsonConfig()));
+        interDto.setErrors(JSONArray.parseArray(interFace.getErrors(), ErrorDto.class));
         return interDto;
     }
 

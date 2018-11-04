@@ -86,7 +86,7 @@ public class InterfaceController extends BaseController {
                 interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
-                return ERROR_VIEW;
+                return "/WEB-INF/views/interFacePdf.jsp";
             }
 
             /**

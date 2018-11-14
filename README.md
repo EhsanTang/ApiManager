@@ -1,8 +1,3 @@
-[阿里云双十一团购，点我入团](https://m.aliyun.com/act/team1111/#/share?params=N.gBec05aruh.6lemlmsg)
-<a target="_blank" href="https://m.aliyun.com/act/team1111/#/share?params=N.gBec05aruh.6lemlmsg">
-   <img style="width:100%;" src="https://api.crap.cn/resources/upload/images/2018-11/091707555I3rE5.CAV.ACLfiw.1.jpg"/>
-</a>
-
 # CrapApi
 [官网在线使用地址crap.cn](http://crap.cn)
 [官网在线使用地址api.crap.cn](http://api.crap.cn)

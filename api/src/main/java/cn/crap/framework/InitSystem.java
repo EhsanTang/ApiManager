@@ -41,6 +41,7 @@ public class InitSystem {
         initConfig();
         initSetting();
         mergeSource();
+        updatDataBase();
     }
 
     /**
@@ -100,6 +101,15 @@ public class InitSystem {
             systemService.initConfig();
         }catch (Exception e){
             log.error("初始化config....", e);
+        }
+    }
+
+    public void updatDataBase(){
+        try{
+            log.info("更新数据库结构....");
+            systemService.updateDataBase();
+        }catch (Throwable e){
+            log.error("更新数据库结构失败....", e);
         }
     }
 }

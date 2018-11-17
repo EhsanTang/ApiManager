@@ -1,14 +1,20 @@
 package cn.crap.service.tool;
 
 import cn.crap.beans.Config;
+import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
 import cn.crap.utils.*;
+import com.google.common.collect.Maps;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
 /**
@@ -19,12 +25,63 @@ import java.util.Properties;
 public class SystemService {
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private Logger log = Logger.getLogger(getClass());
 
     private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
             "userCtrls.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js", "crapApi.js", "json.js", "editor.js"};
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
+
+
+    private static final LinkedHashMap<Integer, String> DATA_BASE_CHANGE_SQL_MAP = Maps.newLinkedHashMap();
+    static {
+        //	v8.0.5 修改，允许模块为空，2018-11-17
+        DATA_BASE_CHANGE_SQL_MAP.put(1, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
+        DATA_BASE_CHANGE_SQL_MAP.put(2, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
+        DATA_BASE_CHANGE_SQL_MAP.put(3, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
+    }
+
+    /**
+     * 数据库更新
+     */
+    public void updateDataBase(){
+        Setting setting = settingService.getByKey(SettingEnum.DATABASE_CHANGE_LOG.getKey());
+        Integer lastSqIndex = 0;
+        try {
+            if (setting != null && MyString.isNotEmpty(setting.getValue())) {
+                lastSqIndex = Integer.parseInt(setting.getValue());
+            }
+        }catch (Exception e){
+            log.error("检查数据库更新，获取最后一条执行序号失败", e);
+        }
+
+        Iterator iterator = DATA_BASE_CHANGE_SQL_MAP.keySet().iterator();
+        while (iterator.hasNext()) {
+            String sql = null;
+            Integer sqlIndex = null;
+            try {
+                sqlIndex = (Integer) iterator.next();
+                sql = DATA_BASE_CHANGE_SQL_MAP.get(sqlIndex);
+
+                if (sqlIndex <= lastSqIndex) {
+                    log.warn("检查数据库更新，sql已经执行过，跳过sql:" + sql);
+                    continue;
+                }
+
+                lastSqIndex = sqlIndex;
+                log.warn("检查数据库更新，执行sql:" + sql);
+                jdbcTemplate.execute(sql);
+            }catch (Throwable e){
+                log.error("执行sql失败，sqlIndex:" + sqlIndex + ", sql:" + sql, e);
+            }
+        }
+        setting.setValue(lastSqIndex + "");
+        settingService.update(setting);
+    }
 
     /**
      * 将config配置加载至静态类

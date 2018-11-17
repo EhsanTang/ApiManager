@@ -152,8 +152,10 @@ public class ModuleController extends BaseController implements ILogConst{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
 		Module module = moduleService.getById(inter.getModuleId());
-		checkPermission(projectCache.get( module.getProjectId() ), MOD_MODULE);
-		
+		checkPermission(projectCache.get( inter.getProjectId() ), MOD_MODULE);
+		if (module == null){
+			throw new MyException(MyError.E000073);
+		}
 		module.setTemplateId( inter.getIsTemplate() ? "-1" : inter.getId() );
 		moduleService.update(module);
 		

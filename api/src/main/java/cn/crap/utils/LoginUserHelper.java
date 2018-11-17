@@ -40,8 +40,13 @@ public class LoginUserHelper implements IConst{
      */
     public static LoginInfoDto tryGetUser(){
         UserCache userCache = SpringContextHolder.getBean("userCache", UserCache.class);
-        String uId = MyCookie.getCookie(C_COOKIE_USERID, false);
-        return userCache.get(uId);
+        String uid = MyCookie.getCookie(C_COOKIE_USERID, false);
+        String token = MyCookie.getCookie(IConst.COOKIE_TOKEN);
+        LoginInfoDto user = userCache.get(uid);
+        if (user == null || MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)) {
+            return null;
+        }
+        return user;
     }
 
     /**

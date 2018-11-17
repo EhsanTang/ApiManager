@@ -66,15 +66,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             }
 
 
-            String token = MyCookie.getCookie(IConst.COOKIE_TOKEN);
-            String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
-
             /**
              * 前端没有传递token，未登录
              * 前端传递的 uid 和 token不一致，未登录
              */
-            LoginInfoDto user = userCache.get(uid);
-            if (user == null || MyString.isEmpty(token) || MyString.isEmpty(uid) || !Aes.desEncrypt(token).equals(uid)) {
+            LoginInfoDto user = LoginUserHelper.tryGetUser();
+            if (user == null) {
                 if (request.getRequestURI().endsWith("admin.do")) {
                     response.sendRedirect("loginOrRegister.do#/login");
                     return false;
@@ -84,6 +81,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             }
 
             // 每次访问，将用户登录有效信息延长
+            String uid = MyCookie.getCookie(IConst.C_COOKIE_USERID);
             userCache.add(uid, user);
 
             if (!authPassport.authority().equals("")) {

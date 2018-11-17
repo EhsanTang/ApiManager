@@ -60,7 +60,7 @@
         <a ng-repeat="item in top50Module"
            ng-if="$stateParams.moduleId == item.id"
            class="menu_b hover-main active-main C999 f12"
-           ng-href="#/user/{{$stateParams.dataType}}/list?pageName={{$stateParams.pageName}}&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&moduleId={{item.id}}&projectId={{item.projectId}}&projectName={{item.projectName}}"
+           ng-href="#/user/{{$stateParams.dataType}}/list?pageName={{$stateParams.pageName}}&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{item.projectId}}&projectName={{item.projectName}}"
            ng-bind="item.name"></a>
 
         <a ng-repeat="item in top50Module"

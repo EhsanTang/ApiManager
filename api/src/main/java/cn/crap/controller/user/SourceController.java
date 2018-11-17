@@ -126,7 +126,6 @@ public class SourceController extends BaseController{
 			if(!MyString.isEmpty(source.getId())){
 				checkPermission(source.getProjectId(), MOD_SOURCE);
 				sourceService.update(source, true);
-
 			}else{
 				checkPermission(source.getProjectId(), ADD_SOURCE);
 				sourceService.insert(source);
@@ -152,7 +151,7 @@ public class SourceController extends BaseController{
 				continue;
 			}
 			// 权限
-			checkPermission(sourceService.getById( tempId ).getModuleId(), DEL_SOURCE);
+			checkPermission(sourceService.getById( tempId ).getProjectId(), DEL_SOURCE);
 			Source source = new Source();
 			source.setId(tempId);
 			

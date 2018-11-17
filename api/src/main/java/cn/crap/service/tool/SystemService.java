@@ -69,12 +69,12 @@ public class SystemService {
                 sql = CHANGE_SQL_MAP.get(sqlIndex);
 
                 if (sqlIndex <= lastSqIndex) {
-                    log.warn("检查数据库更新，sql已经执行过，跳过sql:" + sql);
+                    log.warn("检查数据库更新，序号:" + sqlIndex + "，sql已经执行过，跳过sql:" + sql);
                     continue;
                 }
 
                 lastSqIndex = sqlIndex;
-                log.warn("检查数据库更新，执行sql:" + sql);
+                log.warn("检查数据库更新，序号:" + sqlIndex + "，执行sql:" + sql);
                 jdbcTemplate.execute(sql);
             }catch (Throwable e){
                 log.error("执行sql失败，sqlIndex:" + sqlIndex + ", sql:" + sql, e);

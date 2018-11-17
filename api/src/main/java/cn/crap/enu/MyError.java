@@ -61,7 +61,7 @@ public enum MyError {
 	E000055("admin账号为内置账号，不能修改用户名"),
 	E000056("非法请求，拒绝响应"),
 	E000057("尚未静态化，静态化后方可下载"),
-	E000058("最多允许同步100个接口，请删除部分接口再试，或联系管理员修改数量！", "Up to 100 interfaces are allowed at most. Delete some interfaces, try again, or contact us to modify the quantity!"),
+	E000058("最多允许同步100个接口，请删除部分接口再试，或联系管理员修改数量！"),
 	E000059("非法的url，前端首页地址正能为站内相对地址：以font/、index.do开头的地址"),
 	E000060("不允许匿名评论，请使用github、码云或注册账号后评论（便于问题解决后及时通知）"),
 	E000061("用户密码不能为空"),

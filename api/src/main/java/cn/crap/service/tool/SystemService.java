@@ -39,11 +39,12 @@ public class SystemService {
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
         //	v8.0.5 修改，允许模块为空，2018-11-17
-        CHANGE_SQL_MAP.put(1, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
-        CHANGE_SQL_MAP.put(2, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
-        CHANGE_SQL_MAP.put(3, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
-        CHANGE_SQL_MAP.put(4, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
-        CHANGE_SQL_MAP.put(5, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
+        CHANGE_SQL_MAP.put(1, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
+        CHANGE_SQL_MAP.put(2, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
+        CHANGE_SQL_MAP.put(3, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
+        // CHANGE_SQL_MAP.put(4, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
+        // CHANGE_SQL_MAP.put(5, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
+
     }
 
     /**

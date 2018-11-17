@@ -44,7 +44,7 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
         Project project = getProject(query);
-        checkPermission(project, VIEW);
+        checkPermission(project, READ);
 
 		Page page= new Page(query);
 		page.setAllRow(sourceService.count(query));
@@ -63,7 +63,7 @@ public class SourceController extends BaseController{
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
-			checkPermission( model.getModuleId(), VIEW);
+			checkPermission( model.getModuleId(), READ);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());

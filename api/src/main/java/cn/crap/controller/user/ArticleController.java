@@ -55,7 +55,7 @@ public class ArticleController extends BaseController{
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
 		Project project = getProject(query);
 		Module module = getModule(query);
-        checkPermission(project, VIEW);
+        checkPermission(project, READ);
 
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
@@ -86,7 +86,7 @@ public class ArticleController extends BaseController{
 			article.setProjectId(project.getId());
 		}
 
-		checkPermission(project, VIEW);
+		checkPermission(project, READ);
 		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
 	}
 	
@@ -189,7 +189,7 @@ public class ArticleController extends BaseController{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
 		Module module = moduleCache.get(moduleId);
-        checkPermission(projectCache.get(module.getProjectId()), VIEW);
+        checkPermission(projectCache.get(module.getProjectId()), READ);
 
 		article.setProjectId(module.getProjectId());
 		articleService.insert(article);

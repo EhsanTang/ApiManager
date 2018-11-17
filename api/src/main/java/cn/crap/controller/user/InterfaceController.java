@@ -56,7 +56,7 @@ public class InterfaceController extends BaseController{
 	public JsonResult list(@ModelAttribute InterfaceQuery query, String url) throws MyException{
         Module module = getModule(query);
         Project project = getProject(query);
-        checkPermission(project, VIEW);
+        checkPermission(project, READ);
 
         InterfaceQuery interfaceQuery = query.setFullUrl(url);
 		Page page= new Page(interfaceQuery);
@@ -111,7 +111,7 @@ public class InterfaceController extends BaseController{
 				}
 			}
 		}
-        checkPermission(model.getProjectId(), VIEW);
+        checkPermission(model.getProjectId(), READ);
 		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
 	}
 	
@@ -126,7 +126,7 @@ public class InterfaceController extends BaseController{
 		InterfaceWithBLOBs interFace = interfaceService.getById(id);
 
 		//判断是否拥有原来项目的权限
-		checkPermission(interFace.getProjectId(), VIEW);
+		checkPermission(interFace.getProjectId(), READ);
 		Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
         checkPermission(module.getProjectId(), ADD_INTER);
@@ -182,7 +182,7 @@ public class InterfaceController extends BaseController{
 			String oldProjectId = interfaceService.getById(interFace.getId()).getProjectId();
 
 			// 判断是否有修改模块的权限
-			checkPermission(oldProjectId, VIEW);
+			checkPermission(oldProjectId, READ);
             checkPermission(newProjectId, MOD_INTER);
 
 			//同一模块下不允许 url 重复

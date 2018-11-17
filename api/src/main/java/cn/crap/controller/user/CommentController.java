@@ -44,7 +44,7 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute CommentQuery query) throws MyException {
-		checkPermission(articleService.getById(query.getArticleId()).getProjectId() , VIEW);
+		checkPermission(articleService.getById(query.getArticleId()).getProjectId() , READ);
 
 		Page page= new Page(query);
 		page.setAllRow(commentService.count(query));
@@ -60,7 +60,7 @@ public class CommentController extends BaseController {
 		Comment dbComment = commentService.getById(id);
         ArticleWithBLOBs article = articleService.getById(dbComment.getArticleId());
 
-        checkPermission(article.getProjectId(), VIEW);
+        checkPermission(article.getProjectId(), READ);
 		return new JsonResult().data(dbComment);
 	}
 	

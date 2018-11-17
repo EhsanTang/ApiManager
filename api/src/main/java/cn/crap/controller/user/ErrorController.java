@@ -40,7 +40,7 @@ public class ErrorController extends BaseController{
     @AuthPassport
     public JsonResult list(@ModelAttribute ErrorQuery query) throws MyException {
         Project project = getProject(query);
-        checkPermission(project, VIEW);
+        checkPermission(project, READ);
 
         Page page = new Page(query);
         List<Error> models = errorService.query(query);
@@ -58,11 +58,11 @@ public class ErrorController extends BaseController{
         Error model;
         if (id != null) {
             model = errorService.getById(id);
-            checkPermission(projectCache.get(model.getProjectId()), VIEW);
+            checkPermission(projectCache.get(model.getProjectId()), READ);
         } else {
             model = new Error();
             model.setProjectId(projectId);
-            checkPermission(projectCache.get(projectId), VIEW);
+            checkPermission(projectCache.get(projectId), READ);
         }
         return new JsonResult(1, ErrorAdapter.getDto(model));
     }

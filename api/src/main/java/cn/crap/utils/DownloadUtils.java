@@ -16,6 +16,7 @@ public class DownloadUtils {
         BufferedInputStream bin = null;
         byte[] buffer = new byte[1024];
         try {
+            name = name.trim();
             fin = new FileInputStream(file);
             response.setCharacterEncoding("utf-8");
             response.setContentType(isPdf ? "application/pdf" : "application/msword");

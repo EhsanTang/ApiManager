@@ -9,7 +9,7 @@ public interface IAuthCode {
      * only myself can operate
      */
     int MY_DATE = -1;
-    int VIEW = 100;
+    int READ = 100;
     int MOD_INTER = 1;
     int ADD_INTER = 2;
     int DEL_INTER = 3;

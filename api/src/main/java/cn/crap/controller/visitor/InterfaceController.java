@@ -17,6 +17,7 @@ import cn.crap.service.ModuleService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,7 +83,7 @@ public class InterfaceController extends BaseController {
                     request.setAttribute("result", ERROR_INTERFACE_ID);
                     return ERROR_VIEW;
                 }
-                Module module = moduleService.getById(interFace.getModuleId());
+                Module module = moduleCache.get(interFace.getModuleId());
                 interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
@@ -114,20 +115,16 @@ public class InterfaceController extends BaseController {
     @ResponseBody
     public void download(String id, String moduleId, @RequestParam(defaultValue = "true") boolean pdf,
                          HttpServletRequest req, HttpServletResponse response) throws Exception {
-        Module module = null;
-        if (MyString.isEmpty(id) && MyString.isEmpty(moduleId)){
-            throw new MyException(MyError.E000029);
-        }
+        Assert.isTrue(id != null || moduleId != null, MyError.E000029.getMessage());
 
         InterfaceWithBLOBs interFace = null;
-        if (!MyString.isEmpty(id)) {
+        Module module = moduleCache.get(moduleId);
+        if (id != null) {
             interFace = interfaceService.getById(id);
             module = moduleCache.get(interFace.getModuleId());
-        }else if(!MyString.isEmpty(moduleId)){
-            module = moduleCache.get(moduleId);
         }
 
-        Project project = projectCache.get(module.getProjectId());
+        Project project = getProject(interFace == null ? null : interFace.getProjectId(), module.getId());
         String downloadName = (interFace == null) ? module.getName() : interFace.getInterfaceName();
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码:使用缓存的密码，不需要验证码
@@ -149,7 +146,6 @@ public class InterfaceController extends BaseController {
 
             map.put("interfacePDFDtos", interfacePDFDtos);
             WordUtils.downloadWord(response, map, downloadName);
-
         }
     }
 

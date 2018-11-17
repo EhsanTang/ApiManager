@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * Automatic generation by tools
- * dto: exchange data with VIEW
+ * dto: exchange data with READ
  */
 public class ArticleDto implements Serializable {
 	private String id;

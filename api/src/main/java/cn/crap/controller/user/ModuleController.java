@@ -59,7 +59,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
 			Project project = projectCache.get(query.getProjectId());
-			checkPermission(project, VIEW);
+			checkPermission(project, READ);
 
             List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
             page.setAllRow(moduleService.count(query));
@@ -75,14 +75,14 @@ public class ModuleController extends BaseController implements ILogConst{
 		if(id != null){
 			module= moduleService.getById(id);
 			project = projectCache.get(module.getProjectId());
-			checkPermission(project, VIEW);
+			checkPermission(project, READ);
 
             if (module.getTemplateId() != null) {
                 templeteInterface = interfaceService.getById(module.getTemplateId());
             }
 		}else{
 		    project = projectCache.get(projectId);
-			checkPermission(project, VIEW);
+			checkPermission(project, READ);
 			module=new Module();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);

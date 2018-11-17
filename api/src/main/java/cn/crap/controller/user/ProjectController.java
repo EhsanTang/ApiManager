@@ -94,7 +94,7 @@ public class ProjectController extends BaseController {
         Project model;
         if (project.getId() != null) {
             model = projectCache.get(project.getId());
-            checkPermission(model,VIEW);
+            checkPermission(model, READ);
         } else {
             model = new Project();
             model.setType(ProjectType.PRIVATE.getByteType());

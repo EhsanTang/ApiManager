@@ -149,99 +149,57 @@ public class InterfaceController extends BaseController{
 		luceneService.add(InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interFace, null, null, false)));
 		return new JsonResult(1, interFace);
 	}
-	
-	/**
-	 * 根据参数生成请求示例
-	 * @param interFace
-	 * @return
-
-	@RequestMapping("/getRequestExam.do")
-	@ResponseBody
-	@AuthPassport
-	public JsonResult getRequestExam(@ModelAttribute InterfaceDto interFace) {
-		interfaceService.getInterFaceRequestExam(interFace);
-		return new JsonResult(1, interFace);
-	}*/
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto interFace, String modifyRemark) throws IOException, MyException {
 		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
+        Assert.notNull(interFace.getUrl(), "url can't be null");
 
-		if(MyString.isEmpty(interFace.getUrl())) {
-			return new JsonResult(MyError.E000005);
-		}
+        Module module = moduleCache.get(interFace.getModuleId());
+        String newProjectId = getProjectId(interFace.getProjectId(), interFace.getModuleId());
+        interFace.setProjectId(newProjectId);
 		interFace.setUrl(interFace.getUrl().trim());
-		if (C_PARAM_FORM.equals(interFace.getParamType())){
+        interFace.setFullUrl(module.getUrl() + interFace.getUrl());
+
+        if (C_PARAM_FORM.equals(interFace.getParamType())){
 		    interFace.setParam(C_PARAM_FORM_PRE + interFace.getParam());
         }
 		
 		/**
 		 * 根据选着的错误码id，组装json字符串
 		 */
-        ErrorQuery query = new ErrorQuery().setProjectId(interFace.getProjectId())
-                .setErrorCodeList(Tools.getIdsFromField(interFace.getErrorList())).setPageSize(100);
+        ErrorQuery query = new ErrorQuery().setProjectId(newProjectId).setErrorCodeList(Tools.getIdsFromField(interFace.getErrorList())).setPageSize(100);
         List<Error> errors  = errorService.query(query);
 		interFace.setErrors(JSONArray.fromObject(errors).toString());
 
 		LoginInfoDto user = LoginUserHelper.getUser();
 		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
-
-		//请求示例为空，则自动添加
-		/**if(MyString.isEmpty(interFace.getRequestExam())){
-			interfaceService.getInterFaceRequestExam(interFace);
-		}**/
-
         interFace.setMonitorType(MonitorType.No.getValue());
-		//检查邮件格式是否正确
-		/**if(interFace.getMonitorType() != MonitorType.No.getValue()){
-			if(!MyString.isEmpty(interFace.getMonitorEmails())){
-				for(String email : interFace.getMonitorEmails().split(";")){
-					if( !Tools.checkEmail(email) ){
-						throw new MyException(E000032");
-					}
-				}
-			}else{
-				throw new MyException(E000032");
-			}
-		}**/
 
-		Module module = moduleCache.get(interFace.getModuleId());
 		if (!MyString.isEmpty(interFace.getId())) {
-			String oldModuleId = interfaceService.getById(interFace.getId()).getModuleId();
-			String projectId = moduleCache.get(oldModuleId).getProjectId();
-			Project project = projectCache.get(interFace.getProjectId() );
+			String oldProjectId = interfaceService.getById(interFace.getId()).getProjectId();
 
-			// 接口只能在同一个项目下的模块中移动
-			if( !projectId.equals(project.getId())){
-				throw new MyException(MyError.E000047);
-			}
 			// 判断是否有修改模块的权限
-			checkPermission(project, MOD_INTER);
-			
+			checkPermission(oldProjectId, VIEW);
+            checkPermission(newProjectId, MOD_INTER);
+
 			//同一模块下不允许 url 重复
-            InterfaceQuery interfaceQuery = new InterfaceQuery();
-            interfaceQuery.setModuleId(interFace.getModuleId()).setFullUrl(module.getUrl() +interFace.getUrl()).setExceptId(interFace.getId());
+            InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId)
+                    .setFullUrl(interFace.getFullUrl()).setExceptId(interFace.getId());
 			if( !Config.canRepeatUrl && interfaceService.count(interfaceQuery) >0 ){
 				throw new MyException(MyError.E000004);
 			}
 			
-			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			interfaceService.update(InterfaceAdapter.getModel(interFace), "接口", modifyRemark);
-			if(interFace.getId().equals(interFace.getProjectId())){
-				throw new MyException(MyError.E000027);
-			}
 			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
-			
 		} else {
 			checkPermission(interFace.getProjectId(), ADD_INTER);
-            InterfaceQuery interfaceQuery = new InterfaceQuery();
-            interfaceQuery.setModuleId(interFace.getModuleId()).setFullUrl(module.getUrl() +interFace.getUrl());
+            InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl());
 			if(!Config.canRepeatUrl && interfaceService.count(interfaceQuery)>0){
 				return new JsonResult(MyError.E000004);
 			}
-			interFace.setFullUrl(module.getUrl() + interFace.getUrl());
 			InterfaceWithBLOBs model = InterfaceAdapter.getModel(interFace);
 			interfaceService.insert(model);
 

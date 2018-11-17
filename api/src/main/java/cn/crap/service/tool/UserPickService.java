@@ -12,19 +12,14 @@ import cn.crap.model.*;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.*;
-import cn.crap.utils.IConst;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * 采用责任链模式
@@ -95,8 +90,13 @@ public class UserPickService implements IPickService{
                 for (Project p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
                     pick = new PickDto(IConst.SEPARATOR, p.getName());
                     picks.add(pick);
-
-                    for (Module m : moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100))) {
+                    List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
+                    if (CollectionUtils.isEmpty(moduleList)){
+                        pick = new PickDto(System.currentTimeMillis() + Tools.getChar(20), null,"项目下尚未创建模块");
+                        picks.add(pick);
+                        continue;
+                    }
+                    for (Module m : moduleList) {
                         pick = new PickDto(m.getId(), m.getName());
                         picks.add(pick);
                     }

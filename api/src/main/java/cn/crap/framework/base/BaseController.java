@@ -49,17 +49,21 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
 
         if (query.getModuleId() != null){
             Module module = moduleCache.get(query.getModuleId());
-            if (module.getProjectId() != null){
-                Project project = projectCache.get(module.getProjectId());
-                return project.getId() == null ? null : project;
-            }
+            return projectCache.get(module.getProjectId());
         }
 
         if (query.getProjectId()!= null){
-            Project project = projectCache.get(query.getProjectId());
-            return project.getId() == null ? null : project;
+            return projectCache.get(query.getProjectId());
         }
         return null;
+    }
+
+    protected String getProjectId(String projectId, String moduleId){
+        Assert.isTrue(projectId != null || moduleId != null, "projectId & moduleId 不能同时为空");
+        if (moduleId != null){
+            return moduleCache.get(moduleId).getProjectId();
+        }
+        return projectId;
     }
 
     protected Module getModule(BaseQuery query){

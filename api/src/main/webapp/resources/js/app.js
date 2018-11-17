@@ -280,12 +280,13 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 				 $rootScope.model = result.data;
 				 //关闭编辑对话框
 				 closeMyDialog('myDialog');
-				 $timeout(function() {
-					 $("#refresh").click();
-                 })
                 if(afterCallBack){
                     afterCallBack();
-                }
+                } else {
+                    $timeout(function() {
+                        $("#refresh").click();
+                    })
+				}
 			 }
 		}).error(function(result) {
 			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading='+iLoading, 3);

@@ -14,10 +14,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
-import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -146,34 +143,11 @@ public class InterfaceAdapter {
         if (dto == null){
             return null;
         }
-		InterfaceWithBLOBs model = new InterfaceWithBLOBs();
-        model.setId(dto.getId());
-		model.setUrl(dto.getUrl());
-		model.setMethod(dto.getMethod());
-		model.setParam(dto.getParam());
-		model.setParamRemark(dto.getParamRemark());
-		model.setRequestExam(dto.getRequestExam());
-		model.setResponseParam(dto.getResponseParam());
-		model.setErrorList(dto.getErrorList());
-		model.setTrueExam(dto.getTrueExam());
-		model.setFalseExam(dto.getFalseExam());
-		model.setStatus(dto.getStatus());
-		model.setModuleId(dto.getModuleId());
-		model.setInterfaceName(dto.getInterfaceName());
-		model.setRemark(dto.getRemark());
-		model.setErrors(dto.getErrors());
-		model.setUpdateBy(dto.getUpdateBy());
-		model.setVersion(dto.getVersion());
-		model.setSequence(dto.getSequence());
-		model.setHeader(dto.getHeader());
-		model.setFullUrl(dto.getFullUrl());
-		model.setMonitorType(dto.getMonitorType());
-		model.setMonitorText(dto.getMonitorText());
-		model.setMonitorEmails(dto.getMonitorEmails());
-		model.setIsTemplate(dto.getIsTemplate());
-		model.setProjectId(dto.getProjectId());
-		model.setContentType(dto.getContentType());
-        return model;
+
+		InterfaceWithBLOBs interfaceWithBLOBs = new InterfaceWithBLOBs();
+		BeanUtil.copyProperties(dto, interfaceWithBLOBs);
+        interfaceWithBLOBs.setCreateTime(null);
+        return interfaceWithBLOBs;
     }
 
     public static List<InterfaceDto> getDtoWithBLOBs(List<InterfaceWithBLOBs> models){
@@ -226,7 +200,6 @@ public class InterfaceAdapter {
 	public static SearchDto getSearchDto(InterfaceDto model) {
 		Assert.notNull(model);
 		Assert.notNull(model.getProjectId());
-		Assert.notNull(model.getModuleId());
 
 		ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
 		ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);

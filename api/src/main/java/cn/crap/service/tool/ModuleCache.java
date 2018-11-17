@@ -33,17 +33,25 @@ public class ModuleCache{
 	
 	public Module get(String moduleId){
 		if(MyString.isEmpty(moduleId)){
-			return new Module();
+			Module module = new Module();
+			module.setUrl("");
+			return module;
 		}
+
 		String cacheKey = assembleKey(moduleId);
 		Module module = getCache().getIfPresent(cacheKey);
-		if(module == null){
-			module = moduleService.getById(moduleId);
-			if(module == null) {
-				module = new Module();
-			}
-			getCache().put(cacheKey, module);
+		if(module != null){
+			return module;
 		}
+
+		module = moduleService.getById(moduleId);
+		if(module == null) {
+			module = new Module();
+			module.setUrl("");
+			return module;
+		}
+
+		getCache().put(cacheKey, module);
 		//内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
 		Module p = new Module();
 		BeanUtils.copyProperties(module, p);

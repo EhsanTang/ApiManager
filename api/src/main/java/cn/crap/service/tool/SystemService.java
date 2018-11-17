@@ -36,13 +36,14 @@ public class SystemService {
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
 
-
-    private static final LinkedHashMap<Integer, String> DATA_BASE_CHANGE_SQL_MAP = Maps.newLinkedHashMap();
+    private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
         //	v8.0.5 修改，允许模块为空，2018-11-17
-        DATA_BASE_CHANGE_SQL_MAP.put(1, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
-        DATA_BASE_CHANGE_SQL_MAP.put(2, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
-        DATA_BASE_CHANGE_SQL_MAP.put(3, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
+        CHANGE_SQL_MAP.put(1, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
+        CHANGE_SQL_MAP.put(2, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
+        CHANGE_SQL_MAP.put(3, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
+        CHANGE_SQL_MAP.put(4, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
+        CHANGE_SQL_MAP.put(5, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
     }
 
     /**
@@ -59,13 +60,13 @@ public class SystemService {
             log.error("检查数据库更新，获取最后一条执行序号失败", e);
         }
 
-        Iterator iterator = DATA_BASE_CHANGE_SQL_MAP.keySet().iterator();
+        Iterator iterator = CHANGE_SQL_MAP.keySet().iterator();
         while (iterator.hasNext()) {
             String sql = null;
             Integer sqlIndex = null;
             try {
                 sqlIndex = (Integer) iterator.next();
-                sql = DATA_BASE_CHANGE_SQL_MAP.get(sqlIndex);
+                sql = CHANGE_SQL_MAP.get(sqlIndex);
 
                 if (sqlIndex <= lastSqIndex) {
                     log.warn("检查数据库更新，sql已经执行过，跳过sql:" + sql);

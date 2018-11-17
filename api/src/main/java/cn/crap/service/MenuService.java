@@ -145,6 +145,8 @@ public class MenuService extends BaseService<Menu, MenuDao> {
         if (!radio.equals("")) {
             StringBuilder pickContent = new StringBuilder();
             String separator = "<div class='separator'>%s</div>";
+            String nullValue = "<div class='p5 tl C999'>%s</div>";
+
             String radioDiv = "<div class='p5 tl cursor%s' id='d_%s' onclick=\"pickCheck('%s','true');\">"
                     + "<input id='%s' type='radio' %s disabled name='cid' value='%s'> "
                     + "&nbsp;&nbsp; <span class='cidName'>%s</span></div>";
@@ -153,7 +155,9 @@ public class MenuService extends BaseService<Menu, MenuDao> {
                     + "&nbsp;&nbsp; <span class='cidName'>%s</span><br></div>";
 
             for (PickDto p : picks) {
-                if (p.getValue().equals(IConst.SEPARATOR)) {
+                if (p.getValue() == null){
+                    pickContent.append(String.format(nullValue, p.getName()));
+                } else if (p.getValue().equals(IConst.SEPARATOR)) {
                     pickContent.append(String.format(separator, p.getName()));
                 } else {
                     if (radio.equals("true")) {

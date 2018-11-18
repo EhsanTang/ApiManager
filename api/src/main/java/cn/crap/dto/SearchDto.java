@@ -19,7 +19,8 @@ public class SearchDto implements Serializable{
 	private boolean needCreateIndex = true; // 是否需要建立索引
 	private String href;//接口、文章的地址，不需要分词，需要建立索引
 	private String projectId; // 不参与分词
-	
+	private String filePath;
+
 	public SearchDto(){};
 	public SearchDto(String id, String title, String type, String url, String content, String version, String moduleName, Date createTime){
 			this.id = id;
@@ -118,6 +119,12 @@ public class SearchDto implements Serializable{
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-	
-	
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 }

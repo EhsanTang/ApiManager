@@ -146,67 +146,64 @@ public class InterfaceController extends BaseController{
         interfaceService.insert(interFace);
 
         interFace.setId(interFace.getId());
-		luceneService.add(InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interFace, null, null, false)));
+		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
 		return new JsonResult(1, interFace);
 	}
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto interFace, String modifyRemark) throws IOException, MyException {
-		Assert.notNull(interFace.getProjectId(), "projectId can't be null");
-        Assert.notNull(interFace.getUrl(), "url can't be null");
+	public JsonResult addOrUpdate(@ModelAttribute InterfaceDto dto, String modifyRemark) throws IOException, MyException {
+		Assert.notNull(dto.getProjectId(), "projectId can't be null");
+        Assert.notNull(dto.getUrl(), "url can't be null");
 
-        Module module = moduleCache.get(interFace.getModuleId());
-        String newProjectId = getProjectId(interFace.getProjectId(), interFace.getModuleId());
-        interFace.setProjectId(newProjectId);
-		interFace.setUrl(interFace.getUrl().trim());
-        interFace.setFullUrl(module.getUrl() + interFace.getUrl());
+        String id = dto.getId();
+        Module module = moduleCache.get(dto.getModuleId());
+        String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
+        dto.setProjectId(newProjectId);
+		dto.setUrl(dto.getUrl().trim());
+        dto.setFullUrl(module.getUrl() + dto.getUrl());
 
-        if (C_PARAM_FORM.equals(interFace.getParamType())){
-		    interFace.setParam(C_PARAM_FORM_PRE + interFace.getParam());
+        if (C_PARAM_FORM.equals(dto.getParamType())){
+		    dto.setParam(C_PARAM_FORM_PRE + dto.getParam());
         }
 		
 		/**
 		 * 根据选着的错误码id，组装json字符串
 		 */
-        ErrorQuery query = new ErrorQuery().setProjectId(newProjectId).setErrorCodeList(Tools.getIdsFromField(interFace.getErrorList())).setPageSize(100);
+        ErrorQuery query = new ErrorQuery().setProjectId(newProjectId).setErrorCodeList(Tools.getIdsFromField(dto.getErrorList())).setPageSize(100);
         List<Error> errors  = errorService.query(query);
-		interFace.setErrors(JSONArray.fromObject(errors).toString());
+		dto.setErrors(JSONArray.fromObject(errors).toString());
 
 		LoginInfoDto user = LoginUserHelper.getUser();
-		interFace.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
-        interFace.setMonitorType(MonitorType.No.getValue());
-
-		if (!MyString.isEmpty(interFace.getId())) {
+		dto.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
+        dto.setMonitorType(MonitorType.No.getValue());
+        InterfaceWithBLOBs interFace = InterfaceAdapter.getModel(dto);
+        if (id != null) {
 			String oldProjectId = interfaceService.getById(interFace.getId()).getProjectId();
-
 			// 判断是否有修改模块的权限
 			checkPermission(oldProjectId, READ);
             checkPermission(newProjectId, MOD_INTER);
 
 			//同一模块下不允许 url 重复
-            InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId)
-                    .setFullUrl(interFace.getFullUrl()).setExceptId(interFace.getId());
+            InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl()).setExceptId(interFace.getId());
 			if( !Config.canRepeatUrl && interfaceService.count(interfaceQuery) >0 ){
 				throw new MyException(MyError.E000004);
 			}
 			
-			interfaceService.update(InterfaceAdapter.getModel(interFace), "接口", modifyRemark);
-			luceneService.update(InterfaceAdapter.getSearchDto(interFace));
+			interfaceService.update(interFace, "接口", modifyRemark);
 		} else {
 			checkPermission(interFace.getProjectId(), ADD_INTER);
             InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl());
 			if(!Config.canRepeatUrl && interfaceService.count(interfaceQuery)>0){
 				return new JsonResult(MyError.E000004);
 			}
-			InterfaceWithBLOBs model = InterfaceAdapter.getModel(interFace);
-			interfaceService.insert(model);
-
-			interFace.setId(model.getId());
-			luceneService.add(InterfaceAdapter.getSearchDto(interFace));
+			interfaceService.insert(interFace);
+			id = interFace.getId();
 		}
-		return new JsonResult(1, interFace);
+
+        luceneService.update(InterfaceAdapter.getSearchDto(interfaceService.getById(id)));
+        return new JsonResult(1, interFace);
 	}
 
 

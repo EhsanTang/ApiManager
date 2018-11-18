@@ -39,7 +39,6 @@ public class SourceAdapter {
         }
 		if (module != null) {
             dto.setModuleName(module.getName());
-            dto.setProjectId(module.getProjectId());
         }
         return dto;
     }
@@ -49,15 +48,9 @@ public class SourceAdapter {
             return null;
         }
         Source model = new Source();
-        model.setId(dto.getId());
-		model.setSequence(dto.getSequence());
-		model.setStatus(dto.getStatus());
-		model.setName(dto.getName());
-		model.setModuleId(dto.getModuleId());
-		model.setRemark(dto.getRemark());
-		model.setFilePath(dto.getFilePath());
-		model.setProjectId(dto.getProjectId());
-		
+        BeanUtil.copyProperties(dto, model);
+        model.setCreateTime(null);
+        model.setUpdateTime(null);
         return model;
     }
 
@@ -107,7 +100,7 @@ public class SourceAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dto.setContent(source.getRemark() + docContent);
+        dto.setContent(MyString.getStr(source.getRemark()) + docContent);
         //如果备注为空，则提取文档内容前2500 个字
         if( MyString.isEmpty(source.getRemark()) ){
             source.setRemark( docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
@@ -115,6 +108,7 @@ public class SourceAdapter {
         ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
         Project project = projectCache.get(source.getProjectId());
 
+        dto.setNeedCreateIndex(false);
         if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
             dto.setNeedCreateIndex(true);
         }

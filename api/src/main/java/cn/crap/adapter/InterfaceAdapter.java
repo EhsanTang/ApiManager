@@ -182,12 +182,12 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static List<SearchDto> getSearchDto(List<InterfaceDto> models){
+	public static List<SearchDto> getSearchDto(List<InterfaceWithBLOBs> models){
 		if (models == null){
 			return new ArrayList<>();
 		}
 		List<SearchDto> dtos = new ArrayList<>();
-		for (InterfaceDto model : models){
+		for (InterfaceWithBLOBs model : models){
 		    try{
 			    dtos.add(getSearchDto(model));
             }catch (Exception e){
@@ -197,7 +197,7 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static SearchDto getSearchDto(InterfaceDto model) {
+	public static SearchDto getSearchDto(InterfaceWithBLOBs model) {
 		Assert.notNull(model);
 		Assert.notNull(model.getProjectId());
 
@@ -209,8 +209,8 @@ public class InterfaceAdapter {
 
 		SearchDto dto = new SearchDto();
 		dto.setId(model.getId());
-		dto.setCreateTime(DateFormartUtil.getByFormat(model.getCreateTimeStr(), DateFormartUtil.YYYY_MM_DD_HH_mm));
-		dto.setContent(model.getRemark() + model.getResponseParam() + model.getParam());
+		dto.setCreateTime(model.getCreateTime());
+		dto.setContent(MyString.getStr(model.getRemark()) + MyString.getStr(model.getResponseParam()) + MyString.getStr(model.getParam()));
 		dto.setModuleName(module.getName());
 		dto.setTitle(model.getInterfaceName());
 		dto.setType(Interface.class.getSimpleName());

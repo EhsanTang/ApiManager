@@ -18,13 +18,13 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -63,7 +63,7 @@ public class SourceController extends BaseController{
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
-			checkPermission( model.getModuleId(), READ);
+			checkPermission( model.getProjectId(), READ);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
@@ -73,7 +73,6 @@ public class SourceController extends BaseController{
                 project = projectCache.get(source.getProjectId());
                 model.setProjectId(project.getId());
             }
-
 		}
 		return new JsonResult(1, SourceAdapter.getDto(model, module));
 	}
@@ -81,60 +80,62 @@ public class SourceController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute Source source) throws Exception{
-			if(MyString.isEmpty(source.getFilePath())){
-				throw new MyException(MyError.E000016);
-			}
+	public JsonResult addOrUpdate(@ModelAttribute SourceDto dto) throws Exception{
+        Assert.notNull(dto.getProjectId(), "projectId can't be null");
+        Assert.notNull(dto.getFilePath(), MyError.E000016.getMessage());
 
-			// 判断版本号是否正确 .CAV.文件标识.版本号 
-			if( !source.getFilePath().contains(".CAV.") ){
-				throw new MyException(MyError.E000017);
-			}
-			
-			// 校验文件名是否正确
-			String vsesions[];
-			try{
-				vsesions = source.getFilePath().split("\\.");
-				if( !vsesions[vsesions.length-4].equals("CAV") ){
-					throw new MyException(MyError.E000017);
-				}
-	  			Long.parseLong(vsesions[vsesions.length-2]);
-			}catch(Exception e){
-				throw new MyException(MyError.E000017);
-			}
-			
-			if(!MyString.isEmpty(source.getId())){
-				Source oldSource = sourceService.getById(source.getId());
-				String oldVsesions[]  = oldSource.getFilePath().split("\\.");
-				if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){
-					// 文件标识有误
-					throw new MyException(MyError.E000018);
-				}
-					
-				// 新版本号必须 >= 旧版本号
-				if( (Long.parseLong(oldVsesions[oldVsesions.length-2])) > Long.parseLong(vsesions[vsesions.length-2]) ){
-						// 文件标识有误
-					throw new MyException(MyError.E000019);
-				}else if((Long.parseLong(oldVsesions[oldVsesions.length-2])) == Long.parseLong(vsesions[vsesions.length-2]) ){
-					// 新旧版本号一致，不更新文档地址
-					source.setFilePath(oldSource.getFilePath());
-				}
-			}
-			
-			SearchDto searchDto = SourceAdapter.getSearchDto(source);
-			source.setUpdateTime(new Date());
-			if(!MyString.isEmpty(source.getId())){
-				checkPermission(source.getProjectId(), MOD_SOURCE);
-				sourceService.update(source, true);
-			}else{
-				checkPermission(source.getProjectId(), ADD_SOURCE);
-				sourceService.insert(source);
-			}
-			// 新增的source没有id，必须在持久化后从新设置id
-			searchDto.setId(source.getId());
-			luceneService.update(searchDto);
-			return new JsonResult(1,source);
+        String id = dto.getId();
+        String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
+        dto.setProjectId(newProjectId);
+        Source source = SourceAdapter.getModel(dto);
+
+        // 判断版本号是否正确 .CAV.文件标识.版本号
+        if( !source.getFilePath().contains(".CAV.") ){
+            throw new MyException(MyError.E000017);
+        }
+
+        // 校验文件名是否正确
+        String vsesions[];
+        try{
+            vsesions = source.getFilePath().split("\\.");
+            if( !vsesions[vsesions.length-4].equals("CAV") ){
+                throw new MyException(MyError.E000017);
+            }
+            Long.parseLong(vsesions[vsesions.length-2]);
+        }catch(Exception e){
+            throw new MyException(MyError.E000017);
+        }
+
+        if(id != null){
+            Source oldSource = sourceService.getById(source.getId());
+            String oldVsesions[]  = oldSource.getFilePath().split("\\.");
+            if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){
+                // 文件标识有误
+                throw new MyException(MyError.E000018);
+            }
+
+            // 新版本号必须 >= 旧版本号
+            if( (Long.parseLong(oldVsesions[oldVsesions.length-2])) > Long.parseLong(vsesions[vsesions.length-2]) ){
+                // 文件标识有误
+                throw new MyException(MyError.E000019);
+            }else if((Long.parseLong(oldVsesions[oldVsesions.length-2])) == Long.parseLong(vsesions[vsesions.length-2]) ){
+                // 新旧版本号一致，不更新文档地址
+                source.setFilePath(oldSource.getFilePath());
+            }
+
+            checkPermission(source.getProjectId(), MOD_SOURCE);
+            sourceService.update(source, true);
+        }else {
+            checkPermission(source.getProjectId(), ADD_SOURCE);
+            sourceService.insert(source);
+            id = source.getId();
+        }
+
+        SearchDto searchDto = SourceAdapter.getSearchDto(sourceService.getById(id));
+        luceneService.update(searchDto);
+        return new JsonResult(1, source);
 	}
+
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport

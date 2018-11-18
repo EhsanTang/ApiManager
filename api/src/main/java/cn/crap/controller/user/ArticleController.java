@@ -98,6 +98,7 @@ public class ArticleController extends BaseController{
             throw new MyException(MyError.E000066);
         }
 
+        String id = dto.getId();
 		String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         Project newProject = projectCache.get(newProjectId);
 		dto.setProjectId(newProjectId);
@@ -110,7 +111,7 @@ public class ArticleController extends BaseController{
         }
 
         // 修改
-		if(article.getId() != null){
+		if(id != null){
             String oldProjectId = articleService.getById(article.getId()).getProjectId();
             checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
             checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
@@ -123,13 +124,14 @@ public class ArticleController extends BaseController{
 			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
 			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(article.getId())));
             return new JsonResult(1, article);
-		}
+		} else{
+            // 新增
+            checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
+            articleService.insert(article);
+            id = article.getId();
+        }
 
-		// 新增
-        checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
-
-        articleService.insert(article);
-        luceneService.add(ArticleAdapter.getSearchDto(article));
+        luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
         return new JsonResult(1, article);
     }
 	

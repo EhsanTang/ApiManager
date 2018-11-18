@@ -15,6 +15,7 @@ import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,7 @@ public class ArticleAdapter {
 		String modelId = model.getId();
 		dto.setId(modelId);
 		dto.setCreateTime(model.getCreateTime());
-		dto.setContent(model.getBrief() + model.getContent());
+		dto.setContent(MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()));
 		dto.setModuleName(moduleCache.get(modelId).getName());
 		dto.setTitle(model.getName());
 		dto.setType("Article");

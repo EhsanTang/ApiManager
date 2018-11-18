@@ -8,9 +8,9 @@
 				<tr>
 					<td class="tc">模块</td>
 					<td>
-						* 点击选择模块
-						<input class="form-control" type="text"  id="moduleName" required readonly ng-model="model.moduleName"
-							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+						点击选择模块
+						<input class="form-control" type="text"  id="moduleName" readonly ng-model="model.moduleName"
+							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 					</td>
 				</tr>
 					<tr>
@@ -35,7 +35,7 @@
 					<td class="tc w200">上传文件</td>
 					<td>
 						<div class="input-group w">
-								<input class="form-control no-resize" ng-model="model.filePath" placeholder="请点击“上传”按钮选择文件或输入文件路径">
+								<input class="form-control no-resize" required ng-model="model.filePath" placeholder="请点击“上传”按钮选择文件或输入文件路径">
 								<div class="input-group-addon cursor btn-main" title="点击选择文件" onclick="$('#filePath').click();">
 									<i class="iconfont">&#xe6a8;</i> 选择文件
 								</div>

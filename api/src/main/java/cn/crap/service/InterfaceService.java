@@ -20,7 +20,6 @@ import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import com.alibaba.fastjson.JSONArray;
-import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -265,13 +264,13 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     }
 
     public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()), null, null));
+        return InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()));
     }
 
     @Override
     public List<SearchDto> getAllByProjectId(String projectId) {
         InterfaceCriteria example = new InterfaceCriteria();
         example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(InterfaceAdapter.getDtoWithBLOBs(interfaceDao.selectByExampleWithBLOBs(example), null, null));
+        return  InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(example));
     }
 }

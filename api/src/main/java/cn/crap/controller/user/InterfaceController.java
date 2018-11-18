@@ -122,14 +122,15 @@ public class InterfaceController extends BaseController{
 	 */
 	@RequestMapping("/copy.do")
 	@ResponseBody
-	public JsonResult copy(@RequestParam String id, String interfaceName, String url, @RequestParam String moduleId) throws MyException, IOException {
+	public JsonResult copy(@RequestParam String id, String interfaceName, String url, String moduleId) throws MyException, IOException {
 		InterfaceWithBLOBs interFace = interfaceService.getById(id);
 
 		//判断是否拥有原来项目的权限
 		checkPermission(interFace.getProjectId(), READ);
-		Module module = moduleCache.get(moduleId);
+        Project project = getProject(interFace.getProjectId(), moduleId);
+        Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
-        checkPermission(module.getProjectId(), ADD_INTER);
+        checkPermission(project, ADD_INTER);
 
 		if(!Config.canRepeatUrl){
 			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){

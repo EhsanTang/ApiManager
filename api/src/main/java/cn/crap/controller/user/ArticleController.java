@@ -93,51 +93,44 @@ public class ArticleController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception{
-	    Assert.notNull(dto.getModuleId(), "模块不能为空");
-	    if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
+	    Assert.notNull(dto.getProjectId(), "projectId can't be null");
+        if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())){
             throw new MyException(MyError.E000066);
         }
 
-        Project project = projectCache.get(moduleCache.get(dto.getModuleId()).getProjectId());
+		String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
+        Project newProject = projectCache.get(newProjectId);
+		dto.setProjectId(newProjectId);
+
+        ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
+        // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
+        if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
+            article.setMkey(null);
+            article.setStatus(null);
+        }
 
         // 修改
-		if(!MyString.isEmpty(dto.getId())){
-            checkPermission(project, dto.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
-            ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
-
-            // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
-            if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
-                article.setMkey(null);
-				article.setStatus(null);
-            }
+		if(article.getId() != null){
+            String oldProjectId = articleService.getById(article.getId()).getProjectId();
+            checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
+            checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
 
             // 只有项目拥有者可以修改是否可以删除属性
-            if (!LoginUserHelper.isAdminOrProjectOwner(project)){
+            if (!LoginUserHelper.isAdminOrProjectOwner(newProject)){
                 article.setCanDelete(null);
             }
 
-			articleService.update(article, ArticleType.getByEnumName(dto.getType()), "");
-
-			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(dto.getId())));
-            return new JsonResult(1,dto);
+			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
+			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(article.getId())));
+            return new JsonResult(1, article);
 		}
 
 		// 新增
-        checkPermission(project, dto.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
-        ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
-        article.setProjectId(project.getId());
-
-		// key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
-		if (!LoginUserHelper.checkAuthPassport(DataType.ARTICLE.name())){
-			article.setMkey(null);
-			article.setStatus(null);
-		}
+        checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
 
         articleService.insert(article);
-
         luceneService.add(ArticleAdapter.getSearchDto(article));
-        return new JsonResult(1, dto);
-
+        return new JsonResult(1, article);
     }
 	
 	@RequestMapping("/delete.do")

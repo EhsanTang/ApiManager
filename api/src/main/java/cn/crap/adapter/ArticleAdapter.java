@@ -71,24 +71,8 @@ public class ArticleAdapter {
             return null;
         }
 		ArticleWithBLOBs model = new ArticleWithBLOBs();
-        model.setId(dto.getId());
-		model.setName(dto.getName());
-		model.setBrief(dto.getBrief());
-		model.setContent(dto.getContent());
-		model.setClick(dto.getClick());
-		model.setType(dto.getType());
-		model.setStatus(dto.getStatus());
-		model.setModuleId(dto.getModuleId());
-		model.setMkey(dto.getMkey());
-		model.setCanDelete(dto.getCanDelete());
-		model.setCategory(dto.getCategory());
-		model.setCanComment(dto.getCanComment());
-		model.setCommentCount(dto.getCommentCount());
-		model.setSequence(dto.getSequence());
-		model.setMarkdown(dto.getMarkdown());
-		model.setStatus(dto.getStatus());
-		model.setProjectId(null);
-
+		BeanUtil.copyProperties(dto, model);
+        model.setCreateTime(null);
         return model;
     }
 

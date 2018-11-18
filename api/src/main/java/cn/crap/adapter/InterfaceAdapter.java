@@ -130,6 +130,7 @@ public class InterfaceAdapter {
             str = str.replaceAll("</span>", "_CARP_BR_");
             str = str.replaceAll("<br/>", "_CARP_BR_");
             str = str.replaceAll("<br>", "_CARP_BR_");
+            str = str.replaceAll("</p>", "_CARP_BR_");
             str = str.replaceAll("\r\n", "_CARP_BR_");
             str = str.replaceAll("\n", "_CARP_BR_");
             str = Tools.removeHtml(str);

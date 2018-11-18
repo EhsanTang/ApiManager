@@ -18,7 +18,7 @@
 <div ng-repeat="item in comments" class="p10 dashed-t mt10 lh20">
 	<div class="pl50">
 		<img ng-src="{{item.avatarUrl}}" class="avatar">
-		<div class="f12 text-primary">{{item.userName}} · <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
+		<div class="f12 text-primary">{{item.userName}}  <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
 		<div class="fn lh20 mt5 C555 f14">{{item.content}}</div>
 		<div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
 			<span class="text-primary">回复</span>:  {{item.reply}}<br>

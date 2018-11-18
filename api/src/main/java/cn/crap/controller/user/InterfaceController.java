@@ -143,7 +143,7 @@ public class InterfaceController extends BaseController{
         interFace.setFullUrl((module.getUrl() == null ? "" : module.getUrl()) + url);
         interFace.setInterfaceName(interfaceName);
         interFace.setModuleId(moduleId);
-        interFace.setProjectId(module.getProjectId());
+        interFace.setProjectId(project.getId());
         interfaceService.insert(interFace);
 
         interFace.setId(interFace.getId());

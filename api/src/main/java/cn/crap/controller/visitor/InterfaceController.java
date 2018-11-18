@@ -84,7 +84,14 @@ public class InterfaceController extends BaseController {
                     return ERROR_VIEW;
                 }
                 Module module = moduleCache.get(interFace.getModuleId());
-                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
+
+                InterfacePDFDto interDto = interfaceService.getInterDto(interFace, module, true);
+                String remarkNoHtml = interDto.getModel().getRemarkNoHtml();
+                if (remarkNoHtml != null){
+                    interDto.getModel().setRemarkNoHtml(remarkNoHtml.replaceAll("<w:br/>", "<br/>"));
+                }
+
+                interfacePDFDtos.add(interDto);
                 request.setAttribute("interfaces", interfacePDFDtos);
                 request.setAttribute("moduleName", module.getName());
                 return "/WEB-INF/views/interFacePdf.jsp";
@@ -99,7 +106,13 @@ public class InterfaceController extends BaseController {
                 return ERROR_VIEW;
             }
             for (InterfaceWithBLOBs interFace : interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))) {
-                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, false));
+                InterfacePDFDto interDto = interfaceService.getInterDto(interFace, module, true);
+                String remarkNoHtml = interDto.getModel().getRemarkNoHtml();
+                if (remarkNoHtml != null){
+                    interDto.getModel().setRemarkNoHtml(remarkNoHtml.replaceAll("<w:br/>", "<br/>"));
+                }
+
+                interfacePDFDtos.add(interDto);
             }
 
             request.setAttribute("interfaces", interfacePDFDtos);

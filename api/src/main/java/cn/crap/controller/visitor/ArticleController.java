@@ -135,7 +135,7 @@ public class ArticleController extends BaseController {
         id = article.getId();
 
         Module module = moduleCache.get(article.getModuleId());
-        Project project = projectCache.get(module.getProjectId());
+        Project project = projectCache.get(getProjectId(article.getProjectId(), module.getId()));
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);

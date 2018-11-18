@@ -17,19 +17,19 @@
             <div class="BGFFF p15 w">
                 <table class="table table-no-border w">
                     <tr>
-                        <td class="tc w50">标题 *</td>
+                        <td class="tc w50">标题 <span class="adorn-color fb">*</span></td>
                         <td class="tc" colspan="3">
                             <input class="form-control" type="text" ng-model="model.name" required>
                         </td>
 
                     </tr>
                     <tr>
-                        <td class="tc">模块 *</td>
+                        <td class="tc">模块</td>
                         <td class="tl">
-                            <input class="form-control cursor" type="text" id="moduleName" required
+                            <input class="form-control cursor" type="text" id="moduleName" readonly
                                    ng-model="model.moduleName"
                                    autocomplete="off"
-                                   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=PROJECT_MODULES|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+                                   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
                         </td>
                         <td class="tc">排序</td>
                         <td class="tc">

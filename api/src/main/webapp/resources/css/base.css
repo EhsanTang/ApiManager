@@ -229,8 +229,7 @@ table{border-collapse:collapse;border-spacing:0}
 /***********max-width*******************/
 .maw40 {max-width:40px;}
 .maw100 {max-width:100px;}
-.maw200 {max-width:100px;}
-.maw200 {max-width:400px;}
+.maw200 {max-width:200px;}
 .maw400 {max-width:400px;}
 
 .mah {max-height:100%;}

@@ -119,7 +119,9 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     public JsonResult expHandler(HttpServletRequest request, Exception ex) {
         if (ex instanceof MyException) {
             return new JsonResult((MyException) ex);
-        } else if (ex instanceof NullPointerException) {
+        }
+        // TODO 获取所有的参数
+        if (ex instanceof NullPointerException) {
             log.error("异常", ex);
             return new JsonResult(new MyException(MyError.E000051));
         } else {

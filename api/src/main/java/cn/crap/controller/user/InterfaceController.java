@@ -24,8 +24,7 @@ import cn.crap.service.ErrorService;
 import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
 import cn.crap.utils.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -174,7 +173,7 @@ public class InterfaceController extends BaseController{
 		 */
         ErrorQuery query = new ErrorQuery().setProjectId(newProjectId).setErrorCodeList(Tools.getIdsFromField(dto.getErrorList())).setPageSize(100);
         List<Error> errors  = errorService.query(query);
-		dto.setErrors(JSONArray.fromObject(errors).toString());
+		dto.setErrors(JSONArray.toJSONString(errors));
 
 		LoginInfoDto user = LoginUserHelper.getUser();
 		dto.setUpdateBy("userName："+user.getUserName()+" | trueName："+ user.getTrueName());
@@ -218,8 +217,7 @@ public class InterfaceController extends BaseController{
 
         String fullUrl = interFace.getFullUrl();
 
-        List<ParamDto> headerList =JSONArray.toList(JSONArray.fromObject(
-                interFace.getHeader() == null ? "[]" : interFace.getHeader()), new ParamDto(), new JsonConfig());
+		List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
 
         Map<String, String> httpHeaders = new HashMap<>();
         for (ParamDto paramDto : headerList) {
@@ -230,8 +228,8 @@ public class InterfaceController extends BaseController{
             return new JsonResult(1, Tools.getMap("debugResult", HttpPostGet.postBody(fullUrl, interFace.getParam(), httpHeaders)));
         }
 
-        List<ParamDto> paramList = JSONArray.toList(JSONArray.fromObject(
-                interFace.getParam() == null ? "[]" : interFace.getParam()), new ParamDto(), new JsonConfig());
+        List<ParamDto> paramList = JSONArray.parseArray(interFace.getParam() == null ? "[]" : interFace.getParam(), ParamDto.class);
+
 
         Map<String, String> httpParams = new HashMap<>();
         for (ParamDto paramDto : paramList) {

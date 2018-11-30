@@ -62,6 +62,8 @@ ApiManager GitHub,apimanager github,Apimanager 码云,ApiManager 开源中国
 API接口管理系统,API接口管理,在线API接口管理,API接口调试工具,RestApi,API调试插件
 ```
 
+[捐赠]
+
 <img width = "100" height = "100" align=left src="http://api.crap.cn/resources/images/alipay.jpg?id=4446"/>
  
 <img width = "100" height = "100" align=left  src="http://api.crap.cn/resources/images/wepay.jpg"/>

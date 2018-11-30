@@ -15,7 +15,7 @@
 
 [CrapApi收费吗？]
 
-<img width = "100%" height="200" src="http://api.crap.cn/resources/upload/images/2018-11/30125624tQ8H9J.CAV.D9HF8c.1.png"/>
+<img width = "100%" height="200" src="http://api.crap.cn/resources/upload/images/2018-11/30125745Lb91id.CAV.RjAQs7.1.png"/>
 
 ```
 CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，所有功能免费全部开放，不收取任何费用！

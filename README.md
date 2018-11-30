@@ -13,8 +13,8 @@
 一个由angularjs+bootstrap+springMVC+mybatis搭建的免费开源的API接口、文档管理系统（应用接口管理系统）
 ```
 
-<img width = "300" height = "100" div align=left src="http://api.crap.cn/resources/upload/images/2018-11/30115017BeCtHe.CAV.c2Ks1J.1.png"/>
 [CrapApi收费吗？]
+<img width = "300" align=left src="http://api.crap.cn/resources/upload/images/2018-11/30115017BeCtHe.CAV.c2Ks1J.1.png"/>
 ```
 CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，所有功能免费全部开放，不收取任何费用！
 企业内部、个人、团体等可以免费使用该项目及源码。但未经许可，禁止任何以盈利为目的商业行为使用CrapApi！
@@ -59,9 +59,9 @@ ApiManager GitHub,apimanager github,Apimanager 码云,ApiManager 开源中国
 API接口管理系统,API接口管理,在线API接口管理,API接口调试工具,RestApi,API调试插件
 ```
 
-<img width = "100" height = "100" div align=left src="http://api.crap.cn/resources/images/alipay.jpg?id=4446"/>
+<img width = "100" height = "100" align=left src="http://api.crap.cn/resources/images/alipay.jpg?id=4446"/>
  
-<img width = "100" height = "100" div align=left  src="http://api.crap.cn/resources/images/wepay.jpg"/>
+<img width = "100" height = "100" align=left  src="http://api.crap.cn/resources/images/wepay.jpg"/>
 
 ```
 各位好，我是Nico，一名年纪轻轻就秃了头的程序猿，

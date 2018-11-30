@@ -14,15 +14,14 @@
 ```
 
 [CrapApi收费吗？]
-<div>
-<img width = "300" align=left src="http://api.crap.cn/resources/upload/images/2018-11/30115017BeCtHe.CAV.c2Ks1J.1.png"/>
+<img width = "300" height="200" align=left src="http://api.crap.cn/resources/upload/images/2018-11/30115017BeCtHe.CAV.c2Ks1J.1.png"/>
 ```
 CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，所有功能免费全部开放，不收取任何费用！
 企业内部、个人、团体等可以免费使用该项目及源码。但未经许可，禁止任何以盈利为目的商业行为使用CrapApi！
 当然项目发展离不开你的支持，如果觉得项目确实不错，可以在码云上捐赠，所有捐赠将用于系统服务器、CDN、数据库等费用！！
 付费用户群：263949884，捐助100元及以上可加入付费用户群，可享有需求优先解决、协助部署、二次开发帮助等服务
 ```
-</div>
+
 [CrapApi能做什么？]
 ```
 主要功能：项目管理、用户管理、模块管理、接口管理、接口版本管理、接口拷贝、接口文档pdf下载、接口mock、模块加密访问、

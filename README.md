@@ -12,13 +12,16 @@
 ```
 一个由angularjs+bootstrap+springMVC+mybatis搭建的免费开源的API接口、文档管理系统（应用接口管理系统）
 ```
+
+<img width = "300" height = "100" div align=left src="http://api.crap.cn/resources/upload/images/2018-11/30115017BeCtHe.CAV.c2Ks1J.1.png"/>
 [CrapApi收费吗？]
 ```
 CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，所有功能免费全部开放，不收取任何费用！
 企业内部、个人、团体等可以免费使用该项目及源码。但未经许可，禁止任何以盈利为目的商业行为使用CrapApi！
-当然项目发展离不开你的支持，如果觉得项目确实不错，可以在码云上捐赠，请作者喝杯咖啡吧！
-
+当然项目发展离不开你的支持，如果觉得项目确实不错，可以在码云上捐赠，所有捐赠将用于系统服务器、CDN、数据库等费用！！
 ```
+
+
 [CrapApi能做什么？]
 ```
 主要功能：项目管理、用户管理、模块管理、接口管理、接口版本管理、接口拷贝、接口文档pdf下载、接口mock、模块加密访问、
@@ -57,7 +60,6 @@ API接口管理系统,API接口管理,在线API接口管理,API接口调试工�
 ```
 
 <img width = "100" height = "100" div align=left src="http://api.crap.cn/resources/images/alipay.jpg?id=4446"/>
-
  
 <img width = "100" height = "100" div align=left  src="http://api.crap.cn/resources/images/wepay.jpg"/>
 

@@ -239,6 +239,22 @@ blockquote{
     width: 100%;
 }
 
+.text-success {
+    position: relative;
+    border: 1px solid green;
+    font-size: 12px;
+    text-align: center;
+    background: #dff0d8;
+    color: #333333;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -khtml-border-radius: 3px;
+    padding: 2px;
+    line-height: 26px;
+    width: 100%;
+}
+
 #editForm table td{
     padding:6px 8px;
 }

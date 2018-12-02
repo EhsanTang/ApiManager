@@ -219,6 +219,14 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
 
             if (isDebug){
+                var val = $("#hasInstallPlug").val();
+                if (val == "true"){
+                    $("#has-plug").removeClass("none");
+                    $("#no-plug").addClass("none");
+                    $("#crap-debug-send-new").removeClass("none");
+                    $("#crap-debug-send").addClass("none");
+                }
+
                 $("#editHeaderTable").find("tbody").find("tr").remove();
                 $("#editParamTable").find("tbody").find("tr").remove();
                 $.each($rootScope.model.crShowHeaderList, function (n, value) {
@@ -404,6 +412,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 			 }
 		});
 	}
+
 	$scope.closeErrorTips = function(){
 		var params = "iUrl=admin/closeErrorTips.do|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {

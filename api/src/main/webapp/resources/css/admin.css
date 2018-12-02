@@ -50,7 +50,7 @@ body{
     width: 30px;
 }
 .admin-nav{
-    border-bottom: 1px solid #cccccc;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,.1);
 }
 .menu_a,.left-menu a{
     text-align: left;
@@ -131,8 +131,8 @@ body{
     padding: 0px;
     font-size: 16px;
     background-color: #ffffff;
-    height: 50px;
-    padding-top: 10px;
+    height: 55px;
+    padding-top: 15px;
     border-bottom: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
     position: fixed;

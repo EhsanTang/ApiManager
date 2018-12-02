@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/result.jsp";
@@ -114,18 +115,19 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         throwExceptionWhenIsNull(param, tip, null);
     }
 
+
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public JsonResult expHandler(HttpServletRequest request, Exception ex) {
         if (ex instanceof MyException) {
             return new JsonResult((MyException) ex);
         }
-        // TODO 获取所有的参数
+
         if (ex instanceof NullPointerException) {
-            log.error("异常", ex);
+            log.error("异常, params:" + getAllStrParam(request), ex);
             return new JsonResult(new MyException(MyError.E000051));
         } else {
-            log.error("异常", ex);
+            log.error("异常, params:" + getAllStrParam(request), ex);
             ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
             ex.printStackTrace(new PrintStream(outPutStream));
             String errorStackTrace = outPutStream.toString();
@@ -148,7 +150,6 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
                 if (errorReason.contains("com.mysql.jdbc.MysqlDataTruncation")) {
                     int index = errorStackTrace.indexOf("insert into") + 11;
                     String table = errorStackTrace.substring(index, index + 100).split(" ")[1].trim();
-
                     return new JsonResult(new MyException(MyError.E000052, "（字段：" + table + "." + errorReason.split("'")[1] + "）"));
                 }
             }
@@ -303,5 +304,27 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
     protected Object getParam(String key, String def) {
         String value = ThreadContext.request().getParameter(key);
         return value == null ? def : value;
+    }
+
+    private String getAllStrParam(HttpServletRequest request){
+        try {
+            StringBuilder sb = new StringBuilder("[");
+            Enumeration paramNames = request.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = (String) paramNames.nextElement();
+                sb.append(paramName + "=");
+                boolean isFirst = true;
+                for (String paramValue : request.getParameterValues(paramName)) {
+                    sb.append((isFirst ? "" : ",") + paramValue);
+                    isFirst = false;
+                }
+                sb.append(";");
+            }
+            sb.append("]");
+            return sb.toString();
+        }catch (Exception e){
+            log.error("获取请求参数异常", e);
+            return "";
+        }
     }
 }

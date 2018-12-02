@@ -117,7 +117,7 @@ public class MainController extends BaseController {
     /**
      * 后台页面初始化
      */
-    @RequestMapping("/admin/init.do")
+    @RequestMapping({"/admin/init.do", "back/init.do"})
     @ResponseBody
     @AuthPassport
     public JsonResult init(HttpServletRequest request) throws Exception {

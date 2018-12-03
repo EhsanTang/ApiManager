@@ -187,7 +187,7 @@
         </div>
 
         <div class="container h26  r20 p0 pl20 tc b1 mb20">
-            ©<a href="http://crap.cn" target="_blank">crap.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本号 [V8.1.0-bate]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            ©<a href="http://crap.cn" target="_blank">crap.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本号 [V8.1.0]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <ul class="dis-in-tab p0 m0">
                 <li class="dis-in-tab mr20">
                     <a target="_blank" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>

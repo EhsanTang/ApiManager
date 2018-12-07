@@ -85,7 +85,7 @@ public class InterfaceController extends BaseController {
                 }
                 Module module = moduleCache.get(interFace.getModuleId());
 
-                InterfacePDFDto interDto = interfaceService.getInterDto(interFace, module, true);
+                InterfacePDFDto interDto = interfaceService.getInterPDFDto(interFace, module, true);
                 String remarkNoHtml = interDto.getModel().getRemarkNoHtml();
                 if (remarkNoHtml != null){
                     interDto.getModel().setRemarkNoHtml(remarkNoHtml.replaceAll("<w:br/>", "<br/>"));
@@ -106,7 +106,7 @@ public class InterfaceController extends BaseController {
                 return ERROR_VIEW;
             }
             for (InterfaceWithBLOBs interFace : interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))) {
-                InterfacePDFDto interDto = interfaceService.getInterDto(interFace, module, true);
+                InterfacePDFDto interDto = interfaceService.getInterPDFDto(interFace, module, true);
                 String remarkNoHtml = interDto.getModel().getRemarkNoHtml();
                 if (remarkNoHtml != null){
                     interDto.getModel().setRemarkNoHtml(remarkNoHtml.replaceAll("<w:br/>", "<br/>"));
@@ -151,10 +151,10 @@ public class InterfaceController extends BaseController {
             List<InterfacePDFDto> interfacePDFDtos = new ArrayList<>();
             if (interFace == null){
                 for (InterfaceWithBLOBs interfaceWithBLOBs : interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))) {
-                    interfacePDFDtos.add(interfaceService.getInterDto(interfaceWithBLOBs, module, true));
+                    interfacePDFDtos.add(interfaceService.getInterPDFDto(interfaceWithBLOBs, module, true));
                 }
             }else {
-                interfacePDFDtos.add(interfaceService.getInterDto(interFace, module, true));
+                interfacePDFDtos.add(interfaceService.getInterPDFDto(interFace, module, true));
             }
 
             map.put("interfacePDFDtos", interfacePDFDtos);

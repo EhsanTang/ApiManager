@@ -92,15 +92,15 @@
                 <td>是否必须</td>
                 <td>类型</td>
                 <td>默认值</td>
-                <td style="width:260px;">备注</td>
+                <td style="width:100px;">备注</td>
             </tr>
             <c:forEach var="v" items="${f.headers}">
                 <tr>
                     <td>${v.name}</td>
-                    <td>${v.necessary}</td>
-                    <td>${v.type}</td>
-                    <td>${v.def}</td>
-                    <td>${v.remark}</td>
+                    <td style="width:50px;">${v.necessary}</td>
+                    <td style="width:50px;">${v.type}</td>
+                    <td style="width:50px;">${v.def}</td>
+                    <td style="width:50px;">${v.remark}</td>
                 </tr>
             </c:forEach>
         </table>
@@ -110,15 +110,14 @@
             <table style="width:100%;">
                 <tr style="background:${MAIN_COLOR};color:#fff;">
                     <td>名称</td>
-                    <td>是否必须</td>
-                    <td>参数位置</td>
-                    <td>类型</td>
-                    <td>默认值</td>
-                    <td style="width:260px;">备注</td>
+                    <td style="width:50px;">是否必须</td>
+                    <td style="width:50px;">参数位置</td>
+                    <td style="width:50px;">类型</td>
+                    <td style="width:50px;">默认值</td>
+                    <td style="width:100px;">备注</td>
                 </tr>
 
                 <c:forEach var="v" items="${f.formParams}">
-
                     <tr>
                         <td>${v.name}</td>
                         <td>${v.necessary}</td>
@@ -140,17 +139,15 @@
         <h3>(9) 返回数据说明</h3>
         <table style="width:100%;">
             <tr style="background:${MAIN_COLOR};color:#fff;">
-                <th style="width:30px;"></th>
-                <th>名称</th>
-                <th style="width:60px;">类型</th>
-                <th style="width:50px;">是否必须</th>
-                <th style="width:80px;">备注</th>
+                <td>名称</td>
+                <td style="width:50px;">类型</td>
+                <td style="width:50px;">是否必须</td>
+                <td style="width:80px;">备注</td>
             </tr>
             <c:forEach var="v" items="${f.responseParam}">
                 <tr>
-                    <td style="color:red;">${v.deep}</td>
-                    <td style="padding-left:20px;">
-                        <div>${v.name}</div>
+                    <td style="padding-left:${v.deep*15}px'" >
+                        <div>${v.realName}</div>
                     </td>
                     <td>${v.type}</td>
                     <td>${v.necessary}</td>

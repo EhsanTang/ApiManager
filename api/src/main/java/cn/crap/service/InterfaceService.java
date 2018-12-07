@@ -144,7 +144,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      * @param handleText4Word 是否需要处理字符内容
      * @return
      */
-    public InterfacePDFDto getInterDto(InterfaceWithBLOBs interFace, Module module, boolean handleText4Word) {
+    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, Module module, boolean handleText4Word) {
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, handleText4Word));
 

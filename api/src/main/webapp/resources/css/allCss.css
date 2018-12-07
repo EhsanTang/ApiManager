@@ -1033,13 +1033,13 @@ body{
 }
 
 /*** editor **********/
-.info-bt-3{
+.info-bl-3{
     border-top:3px solid #5bc0de;
 }
-.warning-bt-3{
+.warning-bl-3{
     border-top:3px solid #f0ad4e;
 }
-.success-bt-3{
+.success-bl-3{
     border-top:3px solid #5cb85c;
 }
 

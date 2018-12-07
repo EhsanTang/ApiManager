@@ -166,12 +166,12 @@ body{
 }
 
 /*** editor **********/
-.info-bt-3{
-    border-top:3px solid #5bc0de;
+.info-bl-3{
+    border-left:3px solid #5bc0de;
 }
-.warning-bt-3{
-    border-top:3px solid #f0ad4e;
+.warning-bl-3{
+    border-left:3px solid #f0ad4e;
 }
-.success-bt-3{
-    border-top:3px solid #5cb85c;
+.success-bl-3{
+    border-left:3px solid #5cb85c;
 }

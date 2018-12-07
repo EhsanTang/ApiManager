@@ -222,12 +222,15 @@ function isLast(target, model) {
 /********************** end: 接口、表格公用编辑方法 ************/
 var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe69d;</i> </button>";
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xe6fd;</i></span>";
+var insertButton = "<button class='cursor btn btn-xs btn-default' type='button' onclick='ADD_ONE_TR(this, null, true)'>插入</button>";
+
 var interNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_NAME' " +
     "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
     "onkeyup='ADD_ONE_TR(this)'></td>";
 var remarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='REMARK' onkeyup='ADD_ONE_TR(this)'></td> ";
 var defHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup='ADD_ONE_TR(this)' value='DEF' placeholder='默认值'></td>";
-var interOperateHtml = "<td class='tc BGFFF'>" + deleteButton + "&nbsp;" + moverSpan + "</td>";
+var interOperateHtml = "<td class='tc BGFFF'>" + moverSpan + "&nbsp;" + deleteButton + "</td>";
+var interResOperateHtml = "<td class='tc BGFFF'>" + insertButton + "&nbsp;" + moverSpan + "&nbsp;" + deleteButton + "</td>";
 var interNecessaryHtml = "<td> <select name='necessary' class='form-control'>"
     + "<option value='true' true_select>是</option>"
     + "<option value='false' false_select>否</option>"
@@ -351,7 +354,7 @@ function addOneInterParamTr(target, model) {
 }
 
 // 返回字段
-function addOneInterRespTr(target, model) {
+function addOneInterRespTr(target, model, isInsert) {
     // 自动添加下一行
     if (!isLast(target, model)){
         return;
@@ -359,13 +362,19 @@ function addOneInterRespTr(target, model) {
     if (!model){
         model = new Object();
     }
-    $("#editResponseParamTable").append("<tr class='drag'>"
-        + replaceAll(replaceAll(interNameHtml, 'INTER_NAME', model.name), "ADD_ONE_TR", "addOneInterRespTr")
-        + replaceAll(interNecessaryHtml, model.necessary+'_select', ' selected ')
-        + replaceAll(interTypeHtml, model.type+'_select', ' selected ')
-        + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterRespTr")
-        + interOperateHtml
-        +"</tr>");
+
+    var trContent = "<tr class='drag'>"
+    + replaceAll(replaceAll(interNameHtml, 'INTER_NAME', model.name), "ADD_ONE_TR", "addOneInterRespTr")
+    + replaceAll(interNecessaryHtml, model.necessary+'_select', ' selected ')
+    + replaceAll(interTypeHtml, model.type+'_select', ' selected ')
+    + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterRespTr")
+    + replaceAll(interResOperateHtml, "ADD_ONE_TR", "addOneInterRespTr")
+    +"</tr>";
+    if (isInsert && isInsert == true){
+        //var $tr = $(target).parent().parent();
+    } else {
+        $("#editResponseParamTable").append(trContent);
+    }
 }
 
 // 根据json，导入至参数

@@ -222,7 +222,7 @@ function isLast(target, model) {
 /********************** end: 接口、表格公用编辑方法 ************/
 var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'><i class='iconfont text-danger' onclick='deleteOneTr(this)'>&#xe69d;</i> </button>";
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xe6fd;</i></span>";
-var insertButton = "<button class='cursor btn btn-xs btn-default' type='button' onclick='ADD_ONE_TR(this, null, true)'>插入</button>";
+var insertButton = "<button class='cursor btn btn-xs btn-default C999' type='button' onclick='ADD_ONE_TR(this, null, true)'>插入</button>";
 
 var interNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_NAME' " +
     "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
@@ -355,8 +355,8 @@ function addOneInterParamTr(target, model) {
 
 // 返回字段
 function addOneInterRespTr(target, model, isInsert) {
-    // 自动添加下一行
-    if (!isLast(target, model)){
+    // 自动添加下一行:最后一行，且不是插入
+    if (!isLast(target, model) && (!isInsert)){
         return;
     }
     if (!model){
@@ -370,11 +370,26 @@ function addOneInterRespTr(target, model, isInsert) {
     + replaceAll(replaceAll(remarkHtml, 'REMARK', model.remark), "ADD_ONE_TR", "addOneInterRespTr")
     + replaceAll(interResOperateHtml, "ADD_ONE_TR", "addOneInterRespTr")
     +"</tr>";
-    if (isInsert && isInsert == true){
-        //var $tr = $(target).parent().parent();
-    } else {
+    if (!isInsert){
         $("#editResponseParamTable").append(trContent);
+        if (target){
+            // 自动追加一行，不需要选中
+            return;
+        }
+        // 选中最后一行
+        $("#editResponseParamTable").find('tr').last().find('td').find('input').first().focus();
+        return;
     }
+
+    // 插入子参数
+    var $tr = $(target).parent().parent();
+    $tr.after(trContent);
+    var resParamName = $tr.find('td').find('input').first().val();
+    if (resParamName && resParamName.length > 0){
+        resParamName = resParamName + "->";
+    }
+    // 选中新增加的行
+    $tr.next().find('td').find('input').first().val('').focus().val(resParamName);
 }
 
 // 根据json，导入至参数

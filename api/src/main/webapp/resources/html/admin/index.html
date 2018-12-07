@@ -35,6 +35,19 @@
                     </span>
 				</div>
 
+                <!-- 全局性不消失错误提示：如禁用了弹窗 -->
+                <button type="button" class="lh50 h50 break-word ndis" id="global-error"></button>
+                <div class="fl f16 lh50 h50 ndis" id="main-error" ng-if="hasError(error,'main-error')">
+                    <button type="button" class="btn btn-danger btn-xs break-word">
+                        <span ng-if="error.indexOf('CrapApi-400')>0">404-抱歉，地址有误，网页找不到了</span>
+                        <span onclick="propUpPasswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
+                    </button>
+                </div>
+                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+                    <button type="button" class="btn btn-danger btn-xs break-word" ng-bind="errorTips"></button>
+                    <button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">删除提示</button>
+                </div>
+
 				<div class="m0 f14 fr">
 					<a href="#/profile?menu_a=menu-profile&pageName=个人资料" class="hover-main bl1 C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
 					<a href="home.do" class="hover-main C555 h50 lh50 dis fr pl10 pr10" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a>
@@ -102,28 +115,6 @@
 
 			<!-- main -->
 			<div class="p0 h mah ofy-a l250 fixed r0 " id="main">
-                <!-- 全局性不消失错误提示：如禁用了弹窗 -->
-                <button type="button" class="p20 btn btn-danger btn-xs break-word ndis BGFFF b1" id="global-error"></button>
-                <div class="f16 fb p20 ndis BGFFF b1" id="main-error" ng-if="hasError(error,'main-error')">
-                    <button type="button" class="btn btn-danger btn-xs break-word">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span ng-if="error.indexOf('CrapApi-400')>0">
-									404-抱歉，地址有误，网页找不到了
-				        </span>
-                        <span onclick="propUpPasswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
-                    </button>
-                </div>
-                <div class="f16 fb p20 fl ndis BGFFF b1" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
-                    <button type="button" class="btn btn-danger btn-xs break-word">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span ng-bind="errorTips"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span> 删除提示</span>
-                    </button>
-                </div>
-
                 <div ui-view="main" class="min-w700 pb50"></div>
 			</div>
 			<!-- end:main -->

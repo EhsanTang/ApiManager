@@ -33,6 +33,9 @@
                     <span class="adorn-color">邀请加入</span>（邀请码2小时有效，邀请后将默认拥有除删除外的其他权限，可进入【项目成员】处修改权限）：<br/>
                     <span class="C999 pl50" ng-bind="projectDetail.inviteUrl"></span>
                 </span>
+                <span ng-if="projectDetail.inviteUrl == null">
+                    退出项目：<a class="adorn-color" target="_self" ng-href="user/projectUser/quit.do?projectId={{projectDetail.id}}">点击退出</a>
+                </span>
 
 		</div>
 

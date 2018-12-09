@@ -21,6 +21,7 @@ import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,6 +98,23 @@ public class ProjectUserController extends BaseController{
 		return new JsonResult(1,null);
 	}
 
+
+    @RequestMapping("/quit.do")
+    public String quit(@RequestParam String projectId, HttpServletRequest request) throws Exception{
+        LoginInfoDto loginInfoDto = LoginUserHelper.getUser();
+        String userId = loginInfoDto.getId();
+        List<ProjectUser> projectUser = projectUserService.query(new ProjectUserQuery().setUserId(userId).setProjectId(projectId));
+        if (CollectionUtils.isEmpty(projectUser)){
+            request.setAttribute("title", "操作成功");
+            request.setAttribute("result", "退出成功");
+            return ERROR_VIEW;
+        }
+        projectUserService.delete(projectUser.get(0).getId());
+        request.setAttribute("title", "操作成功");
+        request.setAttribute("result", "退出成功");
+        return ERROR_VIEW;
+    }
+
     @RequestMapping("/invite.do")
     public String invite(@RequestParam String code, HttpServletRequest request) throws Exception{
         String projectId = projectService.getProjectIdFromInviteCode(code);
@@ -129,6 +147,8 @@ public class ProjectUserController extends BaseController{
         request.setAttribute("result", "加入成功");
         return ERROR_VIEW;
     }
+
+
 
 
 }

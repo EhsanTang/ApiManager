@@ -1,6 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
 import cn.crap.enu.*;
@@ -90,17 +91,19 @@ public class ProjectController extends BaseController {
     @RequestMapping("/detail.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult detail(@ModelAttribute Project project) throws MyException {
-        Project model;
-        if (project.getId() != null) {
-            model = projectCache.get(project.getId());
+    public JsonResult detail(String id) throws MyException {
+        if (MyString.isNotEmpty(id)) {
+            Project model = projectCache.get(id);
             checkPermission(model, READ);
-        } else {
-            model = new Project();
-            model.setType(ProjectType.PRIVATE.getByteType());
-            model.setStatus(ProjectStatus.COMMON.getStatus());
-            model.setLuceneSearch(CommonEnum.FALSE.getByteValue());
+            ProjectDto dto = ProjectAdapter.getDto(model, null);
+            dto.setInviteUrl(projectService.getInviteUrl(dto));
+            return new JsonResult(1, dto);
         }
+
+        Project model = new Project();
+        model.setType(ProjectType.PRIVATE.getByteType());
+        model.setStatus(ProjectStatus.COMMON.getStatus());
+        model.setLuceneSearch(CommonEnum.FALSE.getByteValue());
         return new JsonResult(1, ProjectAdapter.getDto(model, null));
     }
 

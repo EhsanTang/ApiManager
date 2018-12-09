@@ -157,7 +157,7 @@ public class MenuService extends BaseService<Menu, MenuDao> {
             for (PickDto p : picks) {
                 if (p.getValue() == null){
                     pickContent.append(String.format(nullValue, p.getName()));
-                } else if (p.getValue().equals(IConst.SEPARATOR)) {
+                } else if (p.getValue().equals(IConst.C_SEPARATOR)) {
                     pickContent.append(String.format(separator, p.getName()));
                 } else {
                     if (radio.equals("true")) {

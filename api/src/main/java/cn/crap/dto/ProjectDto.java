@@ -1,7 +1,5 @@
 package cn.crap.dto;
 
-import java.util.Date;
-
 /**
  * Automatic generation by tools
  * dto: exchange data with view
@@ -26,6 +24,10 @@ public class ProjectDto {
 	 * 访问方式
 	 */
 	private String visitWay;
+    /**
+     * 邀请链接
+     */
+    private String inviteUrl;
 
 	public void setId(String id){
 		this.id=id;
@@ -144,4 +146,12 @@ public class ProjectDto {
 	public void setVisitWay(String visitWay) {
 		this.visitWay = visitWay;
 	}
+
+    public String getInviteUrl() {
+        return inviteUrl;
+    }
+
+    public void setInviteUrl(String inviteUrl) {
+        this.inviteUrl = inviteUrl;
+    }
 }

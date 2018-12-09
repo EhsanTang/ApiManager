@@ -202,6 +202,10 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
         PermissionUtil.checkPermission(projectCache.get(projectId), type);
     }
 
+    protected void checkPermission(String projectId) throws MyException {
+        PermissionUtil.checkPermission(projectCache.get(projectId), MY_DATE);
+    }
+
     /**
      * 初次输入浏览密码是需要验证码，然后记录至缓存中，第二次访问若缓存中有密码，则不需要检查验证码是否争取
      *

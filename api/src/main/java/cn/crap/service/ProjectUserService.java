@@ -19,11 +19,13 @@ import java.util.List;
 @Service
 public class ProjectUserService extends BaseService<ProjectUser, ProjectUserDao> implements ILogConst, IConst {
     private ProjectUserDao projectUserDao;
+
     @Resource
     public void ProjectUserDao(ProjectUserDao projectUserDao) {
         this.projectUserDao = projectUserDao;
         super.setBaseDao(projectUserDao, TableId.PROJECT_USER);
     }
+
 
     @Override
     public boolean insert(ProjectUser model) throws MyException{

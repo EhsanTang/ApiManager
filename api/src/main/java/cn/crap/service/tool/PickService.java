@@ -128,7 +128,7 @@ public class PickService implements IPickService{
                 }
                 return picks;
             case IMAGE_CODE:
-                pick = new PickDto(IConst.SEPARATOR, "默认字体");
+                pick = new PickDto(IConst.C_SEPARATOR, "默认字体");
                 picks.add(pick);
                 for (String iconfont : SettingEnum.IMAGE_CODE.getOptions()) {
                     String[] split = iconfont.split("\\|");
@@ -136,7 +136,7 @@ public class PickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.SEPARATOR, "服务器支持的字体");
+                pick = new PickDto(IConst.C_SEPARATOR, "服务器支持的字体");
                 picks.add(pick);
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 String[] fontFamilies = ge.getAvailableFontFamilyNames();

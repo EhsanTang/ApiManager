@@ -1,6 +1,7 @@
 package cn.crap.framework;
 
 import cn.crap.adapter.SettingAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
@@ -95,10 +96,13 @@ public class InitSystem {
         }
     }
 
+    /**
+     * 将config配置加载至静态类
+     */
     public void initConfig(){
         try{
             log.info("初始化config....");
-            systemService.initConfig();
+            Config.init();
         }catch (Exception e){
             log.error("初始化config....", e);
         }

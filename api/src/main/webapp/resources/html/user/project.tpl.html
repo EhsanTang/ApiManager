@@ -28,7 +28,12 @@
 				</span>
 				<br/>
 				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span><br>
-                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
+                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span><br>
+                <span ng-if="projectDetail.inviteUrl != null">
+                    <span class="adorn-color">邀请加入</span>（邀请码2小时有效，邀请后将默认拥有除删除外的其他权限，可进入【项目成员】处修改权限）：<br/>
+                    <span class="C999 pl50" ng-bind="projectDetail.inviteUrl"></span>
+                </span>
+
 		</div>
 
 		<div class="fw500 cb f14 mt20">项目统计</div>
@@ -39,9 +44,9 @@
                 <span class="f12 C999">模块总数：{{projectMoreInfo.moduleNum}}</span>
             </a>
             <a class="project-menu lh20 p10"
-               ng-href="#/user/error/list?pageName=状态吗&dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
-                <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>状态吗<br>
-                <span class="f12 C999">状态吗总数：{{projectMoreInfo.errorNum}}</span>
+               ng-href="#/user/error/list?pageName=状态码&dataType=error&menu_a=menu-project&menu_b=menu_error&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>状态码<br>
+                <span class="f12 C999">状态码总数：{{projectMoreInfo.errorNum}}</span>
             </a>
             <a class="project-menu lh20 p10"
                ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">

@@ -88,7 +88,7 @@ public class UserPickService implements IPickService{
              */
             case MY_MODULE:
                 for (Project p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
-                    pick = new PickDto(IConst.SEPARATOR, p.getName());
+                    pick = new PickDto(IConst.C_SEPARATOR, p.getName());
                     picks.add(pick);
                     List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
                     if (CollectionUtils.isEmpty(moduleList)){

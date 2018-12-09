@@ -1,9 +1,12 @@
 package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
+import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.dao.mybatis.ProjectDao;
+import cn.crap.dto.ProjectDto;
 import cn.crap.enu.LogType;
+import cn.crap.enu.MyError;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nullable;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -26,7 +30,6 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
     private CustomProjectDao customMapper;
 
     private ProjectDao projectDao;
-
     @Resource
     public void ProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
@@ -161,4 +164,45 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
         Assert.notNull(userId, "userId can't be null");
         return customMapper.countProjectByUserId(userId, onlyJoin, name);
     }
+
+
+    /**
+     * 获取邀请将入的链接
+     * @param projectDto
+     * @return
+     */
+    public String getInviteUrl(ProjectDto projectDto) throws MyException {
+        Assert.notNull(projectDto);
+        if (LoginUserHelper.getUser().getId().equals(projectDto.getUserId())) {
+            return Config.domain + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());
+        }
+        return null;
+    }
+
+    /**
+     * 解析邀请码
+     * @param code
+     * @return
+     * @throws MyException
+     */
+    @Nullable
+    public String getProjectIdFromInviteCode(String code) throws MyException{
+        if (MyString.isEmpty(code)){
+            throw new MyException(MyError.E000065, "邀请码不能为空");
+        }
+
+        try{
+            String originalCode = Aes.desEncrypt(code);
+            String projectId = originalCode.split(SEPARATOR)[0];
+            String timeStr = originalCode.split(SEPARATOR)[1];
+            if (Long.parseLong(timeStr) + TWO_HOUR > System.currentTimeMillis()){
+                return projectId;
+            }
+            throw new MyException(MyError.E000065, "抱歉，来得太晚了，邀请码过期");
+        } catch (Exception e){
+            throw new MyException(MyError.E000065, "未知异常：" + e.getMessage());
+        }
+    }
+
+
 }

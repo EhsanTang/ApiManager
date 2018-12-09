@@ -4,6 +4,7 @@ package cn.crap.utils;
  * @author Ehsan
  */
 public interface IConst {
+	String SEPARATOR = ":"; // 分割符
 	String NULL = "_NULL";
 	String C_TRUE = "true";
 	String NULL_ID = "NULL"; //当新增数据时，前段传递的id=NULL
@@ -24,11 +25,15 @@ public interface IConst {
     String C_PARAM_FORM_PRE = "form=";
     String C_METHOD_POST = "POST";
     String C_METHOD_GET = "GET";
+    String C_SEPARATOR = "C_SEPARATOR";
 
 
     int ALL_PAGE_SIZE = -100; // 不分页
+    long ONE_DAY = 24 * 60 * 60 * 1000;
+    long TWO_HOUR = 2 * 60 * 60 * 1000;
 
-	// 缓存
+
+    // 缓存
     String C_CACHE_MENU = "cache:menu";
 
 	String CACHE_IMGCODE = ":imgCode";
@@ -47,7 +52,6 @@ public interface IConst {
 	String COOKIE_TOKEN= "token";
 	String COOKIE_UUID = "uuid";
 	String COOKIE_REMBER_PWD = "cookieRemberPwd";
-	String SEPARATOR = "SEPARATOR";
 	String REGISTER = "register";
 	String GITHUB = "gitHub:";
 	String OSCHINA = "oschina:";

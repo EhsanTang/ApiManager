@@ -1,8 +1,10 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectUserAdapter;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectUserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -10,9 +12,10 @@ import cn.crap.model.Project;
 import cn.crap.model.ProjectUser;
 import cn.crap.model.User;
 import cn.crap.query.ProjectUserQuery;
-import cn.crap.query.UserQuery;
+import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
 import cn.crap.service.UserService;
+import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -30,7 +34,7 @@ import java.util.List;
 public class ProjectUserController extends BaseController{
 
 	@Autowired
-	private UserService customUserService;
+	private ProjectService projectService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -52,18 +56,11 @@ public class ProjectUserController extends BaseController{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(String id, @RequestParam String projectId) throws MyException{
-		ProjectUser projectUser;
-		Project project = projectCache.get(projectId);
-		if(id != null){
-			projectUser= projectUserService.getById(id);
-			checkPermission(project);
-		}else{
-			checkPermission(project);
-			projectUser = new ProjectUser();
-			projectUser.setStatus(Byte.valueOf("1"));
-			projectUser.setProjectId(projectId);
-		}
+	public JsonResult detail(String id) throws MyException{
+	    Assert.notNull(id);
+		ProjectUser projectUser = projectUserService.getById(id);
+        Project project = projectCache.get(projectUser.getProjectId());
+		checkPermission(project);
         ProjectUserDto projectUserDto = ProjectUserAdapter.getDto(projectUser, project);
         projectUserDto.setProjectAuth(null);
 		return new JsonResult(1, projectUserDto);
@@ -72,41 +69,22 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectUserDto projectUser) throws Exception{
-		checkPermission( projectCache.get( projectUser.getProjectId() ));
-		User search = null;
-		if( !MyString.isEmpty(projectUser.getUserId()) ){
-			search = userService.getById( projectUser.getUserId() );
-		}else if( !MyString.isEmpty( projectUser.getUserEmail()) ){
-            UserQuery query = new UserQuery().setEqualEmail(projectUser.getUserEmail());
-			List<User> users = userService.query(query);
-			if( users.size() == 1){
-				search = users.get(0);
-			}
-		}
-		
-		if(search == null ||  MyString.isEmpty( search.getId() )){
-			throw new MyException(MyError.E000040);
-		}
-		
-		projectUser.setUserEmail(search.getEmail());
-		projectUser.setUserName(search.getUserName());
-		// 修改
-		if(!MyString.isEmpty(projectUser.getId())){
-			ProjectUser old = projectUserService.getById(projectUser.getId());
-			checkPermission( projectCache.get( old.getProjectId() ));
-		}
-		
-		try{
-			if(!MyString.isEmpty(projectUser.getId())){
-				projectUserService.update(ProjectUserAdapter.getModel(projectUser));
-			}else{
-				projectUserService.insert(ProjectUserAdapter.getModel(projectUser));
-			}
-		}catch(Exception e){
-			// 重复添加
-			throw new MyException(MyError.E000039);
-		}
-		
+	    Assert.notNull(projectUser.getId());
+        ProjectUser old = projectUserService.getById(projectUser.getId());
+        checkPermission(old.getProjectId());
+
+        User user = userService.getById(old.getUserId());
+        projectUser.setUserEmail(user.getEmail());
+		projectUser.setUserName(user.getUserName());
+
+        ProjectUser model = ProjectUserAdapter.getModel(projectUser);
+        /**
+         * 禁止修改
+         */
+        model.setProjectId(null);
+        model.setUserId(null);
+        model.setStatus(null);
+        projectUserService.update(model);
 		return new JsonResult(1,projectUser);
 	}
 	
@@ -118,4 +96,39 @@ public class ProjectUserController extends BaseController{
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
 	}
+
+    @RequestMapping("/invite.do")
+    public String invite(@RequestParam String code, HttpServletRequest request) throws Exception{
+        String projectId = projectService.getProjectIdFromInviteCode(code);
+        Project project = projectService.getById(projectId);
+        if (project == null){
+            request.setAttribute("result", "抱歉，来得太晚了，项目已经被删除了");
+            return ERROR_VIEW;
+        }
+
+        LoginInfoDto loginInfoDto = LoginUserHelper.getUser();
+        String userId = loginInfoDto.getId();
+        if (projectUserService.count(new ProjectUserQuery().setUserId(userId).setProjectId(projectId)) > 0){
+            request.setAttribute("result", MyError.E000039.getMessage());
+            return ERROR_VIEW;
+        }
+
+        if (userId.equals(project.getUserId())){
+            request.setAttribute("result", "项目成员不能添加自己");
+            return ERROR_VIEW;
+        }
+
+        ProjectUser projectUser = new ProjectUser();
+        projectUser.setProjectId(projectId);
+        projectUser.setUserId(userId);
+        projectUser.setStatus(ProjectUserStatus.NORMAL.getStatus());
+        projectUser.setUserEmail(loginInfoDto.getEmail());
+        projectUser.setUserName(loginInfoDto.getUserName());
+        projectUserService.insert(projectUser);
+        request.setAttribute("title", "操作成功");
+        request.setAttribute("result", "加入成功");
+        return ERROR_VIEW;
+    }
+
+
 }

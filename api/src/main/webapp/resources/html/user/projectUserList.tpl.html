@@ -6,8 +6,8 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryProjectUserList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
-               ng-click="detail('新增成员',800,'user/projectUser/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
-                <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增成员
+               ng-href="#/user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;邀请成员
             </a>
         </div>
     </div>
@@ -24,7 +24,7 @@
                     <td>文章权限</td>
                     <td>数据库表权限</td>
                     <td>文件权限</td>
-                    <td>状态吗</td>
+                    <td>状态码</td>
                     <td class="w100 tl">操作</td>
                 </tr>
                 </thead>

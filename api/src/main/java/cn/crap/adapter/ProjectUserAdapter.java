@@ -57,32 +57,7 @@ public class ProjectUserAdapter {
             return null;
         }
         ProjectUser model = new ProjectUser();
-        model.setId(dto.getId());
-		model.setStatus(dto.getStatus());
-		model.setSequence(dto.getSequence());
-		model.setProjectId(dto.getProjectId());
-		model.setUserId(dto.getUserId());
-		model.setAddModule(dto.getAddModule());
-		model.setDelModule(dto.getDelModule());
-		model.setModModule(dto.getModModule());
-		model.setAddInter(dto.getAddInter());
-		model.setDelInter(dto.getDelInter());
-		model.setModInter(dto.getModInter());
-		model.setAddArticle(dto.getAddArticle());
-		model.setDelArticle(dto.getDelArticle());
-		model.setModArticle(dto.getModArticle());
-		model.setAddSource(dto.getAddSource());
-		model.setDelSource(dto.getDelSource());
-		model.setModSource(dto.getModSource());
-		model.setAddDict(dto.getAddDict());
-		model.setDelDict(dto.getDelDict());
-		model.setModDict(dto.getModDict());
-		model.setUserEmail(dto.getUserEmail());
-		model.setUserName(dto.getUserName());
-		model.setAddError(dto.getAddError());
-		model.setDelError(dto.getDelError());
-		model.setModError(dto.getModError());
-		
+		BeanUtil.copyProperties(dto, model);
         return model;
     }
 

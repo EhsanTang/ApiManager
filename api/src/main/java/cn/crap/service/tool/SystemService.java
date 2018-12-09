@@ -4,7 +4,10 @@ import cn.crap.beans.Config;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
-import cn.crap.utils.*;
+import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.ISetting;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import com.google.common.collect.Maps;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
@@ -12,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Properties;
 
 /**
  * @author Ehsan
@@ -83,41 +84,6 @@ public class SystemService {
         }
         setting.setValue(lastSqIndex + "");
         settingService.update(setting);
-    }
-
-    /**
-     * 将config配置加载至静态类
-     */
-    public void initConfig(){
-        try {
-            Properties properties = new Properties();
-            // 使用ClassLoader加载properties配置文件生成对应的输入流
-            InputStream in = SystemService.class.getResourceAsStream("/config.properties");
-            // 使用properties对象加载输入流
-            properties.load(in);
-            Config.clientID = properties.getProperty(Config.getConfigClientID());
-            Config.clientSecret = properties.getProperty(Config.getConfigClientSecret());
-            Config.oschinaClientID = properties.getProperty(Config.getConfigOschinaClientID());
-            Config.oschinaClientSecret = properties.getProperty(Config.getConfigOschinaClientSecret());
-            Config.domain = properties.getProperty(Config.getConfigDomain());
-            Config.cacheTime = MyInteger.getInt(properties.getProperty(Config.getConfigCacheTime()), 3600);
-            Config.loginInforTime = MyInteger.getInt(properties.getProperty(Config.getConfigLoginInforTime()), 3600);
-            Config.fileSize = MyInteger.getInt(properties.getProperty(Config.getConfigFileSize()), 2);
-            Config.imageType = properties.getProperty(Config.getConfigImageType());
-            Config.fileType = properties.getProperty(Config.getConfigFileType());
-            Config.openRegister = MyString.getBoolean(properties.getProperty(Config.getConfigOpenRegister()), true);
-            Config.luceneSearchNeedLogin = MyString.getBoolean(properties.getProperty(Config.getConfigLuceneSearchNeedLogin()), true);
-            Config.canRepeatUrl = MyString.getBoolean(properties.getProperty(Config.getCanCanRepeatUrl()), true);
-            Config.baidu = properties.getProperty(Config.getConfigBaidu());
-            Config.mail = properties.getProperty(Config.getConfigMail());
-            Config.accessKeyId = properties.getProperty(Config.getConfigAccessKeyId());
-            Config.accessKeySecret = properties.getProperty(Config.getConfigAccessKeySecret());
-            Config.endPoint = properties.getProperty(Config.getConfigEndPoint());
-            Config.bucketName = properties.getProperty(Config.getConfigBucketName());
-            Config.imgPrefix = properties.getProperty(Config.getConfigImgPrefix());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     /**

@@ -48,7 +48,6 @@ public class ProjectAdapter {
         }else{
             dto.setVisitWay("通过项目地址访问 -- 安全度：低");
         }
-
         return dto;
     }
 

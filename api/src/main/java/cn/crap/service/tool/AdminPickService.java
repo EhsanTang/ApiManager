@@ -52,7 +52,7 @@ public class AdminPickService implements IPickService{
         switch (pickCode) {
 
             case AUTH:
-                pick = new PickDto(IConst.SEPARATOR, "用户、菜单、角色、系统设置管理");
+                pick = new PickDto(IConst.C_SEPARATOR, "用户、菜单、角色、系统设置管理");
                 picks.add(pick);
 
                 for (DataType dataType : DataType.values()) {
@@ -89,7 +89,7 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
+                pick = new PickDto(IConst.C_SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
                 for (Project project : projectService.query(recommendProjectQuery)) {
@@ -97,7 +97,7 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
                 pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
@@ -110,14 +110,14 @@ public class AdminPickService implements IPickService{
                 }
                 return picks;
             case MENU_URL:
-                pick = new PickDto(IConst.SEPARATOR, "项目列表");
+                pick = new PickDto(IConst.C_SEPARATOR, "项目列表");
                 picks.add(pick);
                 pick = new PickDto("m_myproject", "index.do#/project/list?projectShowType=3", "我的项目列表");
                 picks.add(pick);
                 pick = new PickDto("recommend_project", "index.do#/project/list?projectShowType=4", "推荐项目列表");
                 picks.add(pick);
 
-                pick = new PickDto(IConst.SEPARATOR, "项目主页【推荐项目】");
+                pick = new PickDto(IConst.C_SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
                 for (Project project : projectService.query(recommendProjectQuery)) {
@@ -125,7 +125,7 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
                 picks.add(pick);
 
                 pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");

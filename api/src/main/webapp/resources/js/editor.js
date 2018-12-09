@@ -224,11 +224,11 @@ var deleteButton = "<button class='cursor btn btn-xs btn-default' type='button'>
 var moverSpan = "<span class='cursor btn btn-xs btn-default' style='cursor: move;'><i class='iconfont'>&#xe6fd;</i></span>";
 var insertButton = "<button class='cursor btn btn-xs btn-default C999' type='button' onclick='ADD_ONE_TR(this, null, true)'>插入</button>";
 
-var interNameHtml = "<td><input class='form-control C000 fw500' type='text' name='name' value='INTER_NAME' " +
-    "placeholder='参数名必填，或者会被过滤。多级参数请使用\"->\"分割，如：firstParam->secondParam' autocomplete='off' " +
+var interNameHtml = "<td><input class='form-control C555 fw500' type='text' name='name' value='INTER_NAME' " +
+    "placeholder='参数名必填，多级参数请使用\"->\"分割，如：f1->f2' autocomplete='off' " +
     "onkeyup='ADD_ONE_TR(this)'></td>";
-var remarkHtml = "<td><input class='form-control C000 fw500' type='text' name='remark' autocomplete='off' value='REMARK' onkeyup='ADD_ONE_TR(this)'></td> ";
-var defHtml = "<td> <input class='form-control C000 fw500' type= 'text' name='def' autocomplete='off' onkeyup='ADD_ONE_TR(this)' value='DEF' placeholder='默认值'></td>";
+var remarkHtml = "<td><input class='form-control C000' type='text' name='remark' autocomplete='off' value='REMARK' onkeyup='ADD_ONE_TR(this)'></td> ";
+var defHtml = "<td> <input class='form-control C000' type= 'text' name='def' autocomplete='off' onkeyup='ADD_ONE_TR(this)' value='DEF' placeholder='默认值'></td>";
 var interOperateHtml = "<td class='tc BGFFF'>" + moverSpan + "&nbsp;" + deleteButton + "</td>";
 var interResOperateHtml = "<td class='tc BGFFF'>" + insertButton + "&nbsp;" + moverSpan + "&nbsp;" + deleteButton + "</td>";
 var interNecessaryHtml = "<td> <select name='necessary' class='form-control'>"

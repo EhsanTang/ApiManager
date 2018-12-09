@@ -31,7 +31,12 @@ body{
 .input-no-border > tbody > tr > td{
     padding: 2px!important;
 }
-.input-no-border input, .input-no-border select{
+.input-no-border input{
+    border: 0px!important;
+    font-size: 14px;
+    border-radius: 0px;
+}
+.input-no-border select{
     border: 0px!important;
     font-size: 12px;
     border-radius: 0px;
@@ -174,4 +179,14 @@ body{
 }
 .success-bl-3{
     border-left:3px solid #5cb85c;
+}
+.editor-table{
+    margin-bottom: 0px!important;
+}
+.editor-table td{
+    border: 0px!important;
+    border-top: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd!important;
+    border-left: 1px dashed #e5e5e5!important;
+    background:#ffffff;
 }

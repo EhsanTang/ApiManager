@@ -1,18 +1,14 @@
-<div class="h40 lh40 f16 pl20 info-bl-3 BGF5">
-    请求参数
-    <span class="p0 f14 cursor mr20" onclick="tooltip('param-tip')" id="param-tip" data-toggle="tooltip" data-placement="right"
-          title="「支持普通表单参数、自定义参数（row、json、xml等格式）」">
-        <i class="iconfont adorn-color mt-3">&#xe6a3;</i>
-    </span>
+<div class="h40 lh40 f16 pl20 info-bl-3">
+    <div class="fl">
+        请求参数
+        <span class="p0 f14 cursor mr20" onclick="tooltip('param-tip')" id="param-tip" data-toggle="tooltip" data-placement="right"
+              title="「支持普通表单参数、自定义参数（row、json、xml等格式）」">
+         <i class="iconfont adorn-color mt-3">&#xe6a3;</i>
+        </span>
+    </div>
 
-    <a class="main-color fr cursor mr30 f12"
-       ng-click="openInterfaceDialog('param', '导入参数', 500);">
-        <i class="iconfont adorn-color f16 mt-3">&#xe601;</i>&nbsp;导入请求参数
-    </a>
-</div>
 
-<div class="ml20 mr20 mb10 mt10">
-    <div class="btn-group btn-group-sm r3 fl mr10">
+    <div class="btn-group btn-group-sm r3 fl mr20 mt5">
         <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'FORM']"
                 type="button" ng-click="model.paramType = 'FORM'">
             表单模式
@@ -22,14 +18,20 @@
             自定义[Row]
         </button>
     </div>
-    <div class="cb"></div>
+
+    <button type="button" onclick="addOneInterParamTr()" class="btn btn-sm btn-main active-main fr mr10 mt5">
+        添加一行
+    </button>
+    <button type="button" class="btn btn-sm btn-main active-main fr mr10 mt5" ng-click="openInterfaceDialog('param', '导入参数', 500);">
+        导入请求参数
+    </button>
 </div>
 
+
 <input type="hidden" name="paramType" ng-model="model.paramType">
-<div ng-class="{true: 'p20 pt0', false:'p20 pt0 none'}[model.paramType == 'FORM']">
-	<table class="table-bordered tl input-no-border mb0 w" id="editParamTable">
+	<table ng-class="{true: 'table-bordered tl editor-table input-no-border mb0 w', false:'table-bordered tl editor-table input-no-border mb0 w none'}[model.paramType == 'FORM']" id="editParamTable">
         <thead>
-            <tr class="BGF5 fw500">
+            <tr class="BGF5 fw500 f14 C000">
                 <td class="p10">名称</td>
                 <td class="p10 w60">必填</td>
                 <td class="p10 w100">位置</td>
@@ -41,12 +43,8 @@
         </thead>
         <tbody></tbody>
 	</table>
-    <div onclick="addOneInterParamTr()" class="main-color fr cursor pr15 mt10"
-         title="添加一行"><i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行</div>
-    <div class="cb"></div>
-</div>
-<div ng-class="{true: 'p20 pt0', false:'p20 pt0 none'}[model.paramType == 'RAW']">
-    <textarea  class="form-control no-resize" rows="8" ng-model="model.param"></textarea>
+<div ng-class="{true: 'p0', false:'p0 none'}[model.paramType == 'RAW']">
+    <textarea  class="form-control no-resize r0 b0" rows="8" ng-model="model.param"></textarea>
 </div>
 
 

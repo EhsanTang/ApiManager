@@ -5,15 +5,17 @@
         <i class="iconfont adorn-color mt-3">&#xe6a3;</i>
     </span>
 
-	<a class="main-color fr cursor mr30 f12"
-	   ng-click="openInterfaceDialog('responseParam', '导入返回参数', 500);">
-		<i class="iconfont adorn-color f16 mt-3">&#xe601;</i>&nbsp;导入返回参数
-	</a>
+    <button type="button" onclick="addOneInterRespTr()" class="btn btn-sm btn-main active-main fr mr10 mt5">
+        添加一行
+    </button>
+    <button type="button" class="btn btn-sm btn-main active-main fr mr10 mt5" ng-click="openInterfaceDialog('responseParam', '导入返回参数', 500);">
+        导入返回参数
+    </button>
+
 </div>
-<div class="p20 pt10">
-	<table class="table-bordered tl input-no-border mb0 w" id="editResponseParamTable">
+	<table class="table-bordered tl editor-table input-no-border mb0 w" id="editResponseParamTable">
 		<thead>
-		<tr class="BGF5 fw500">
+		<tr class="BGF5 fw500 f14 C000">
 			<td class="p10">名称</td>
 			<td class="p10 w60">必填</td>
 			<td class="p10 w100">类型</td>
@@ -23,7 +25,3 @@
 		</thead>
 		<tbody></tbody>
 	</table>
-	<div onclick="addOneInterRespTr()" class="main-color fr cursor pr15 mt10"
-		 title="添加一行"><i class="iconfont f16 mt-3">&#xe604;</i> &nbsp;添加一行</div>
-	<div class="cb"></div>
-</div>

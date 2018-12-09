@@ -266,6 +266,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
                 initDragTable("editHeaderTable");
                 initDragTable("editParamTable");
                 initDragTable("editResponseParamTable");
+                $("#interfaceName").focus();
             }
         });
     };

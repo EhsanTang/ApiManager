@@ -81,8 +81,14 @@ public class IndexController extends BaseController {
 			try {
 				imageCode.write(out);
 				out.flush();
+			} catch (Exception e){
+			    e.printStackTrace();
 			} finally {
-				out.close();
+			    if (out != null){
+			        try {
+                        out.close();
+                    }catch (Exception e) {}
+                }
 			}
 		}
 

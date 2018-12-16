@@ -90,18 +90,20 @@
             <div class="BGFFF p15 mt10" id="editor-div">
                 <div class="col-xs-12 p15 mb10">
                     <div class="btn-group btn-group-sm r3 fl mr10">
-                        <button class="btn btn-main btn-sm article-editor" type="button"
-                                onclick="changeEditor(this, false)">
+                        <button type="button"
+                                ng-class="{true: 'btn btn-main btn-sm article-editor', false: 'btn btn-btn-default btn-sm article-editor'}[model.useMarkdown == false]"
+                                ng-click="model.useMarkdown = false">
                             <i class="iconfont f12 mt-3">&#xe69e; 富文本编辑器</i>
                         </button>
-                        <button class="btn btn-default btn-sm article-editor" type="button"
-                                onclick="changeEditor(this, true)">
+                        <button type="button"
+                                ng-class="{true: 'btn btn-main btn-sm article-editor', false: 'btn btn-btn-default btn-sm article-editor'}[model.useMarkdown == true]"
+                                ng-click="model.useMarkdown = true;createEditorMe()">
                             <i class="iconfont mt-3">&#xe8e6;&nbsp;</i>MarkDown编辑器
                         </button>
                     </div>
 
-                    <div id="article-editor" class="mt50"></div>
-                    <div id="markdown-editor" class="mt50 none">
+                    <div id="article-editor" ng-class="{true: 'mt50', false: 'mt50 none'}[model.useMarkdown == false]"></div>
+                    <div id="markdown-editor" ng-class="{true: 'mt50', false: 'mt50 none'}[model.useMarkdown == true]">
                         <textarea style="display:none;"></textarea>
                     </div>
                 </div>

@@ -17,16 +17,14 @@ import cn.crap.model.Log;
 import cn.crap.query.ArticleQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -167,6 +165,53 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
 
         super.update(model);
     }
+
+    /**
+     * 更新属性
+     * @param id
+     * @param attributeKey
+     * @param attributeValue
+     * @throws MyException
+     */
+    public void updateAttribute(String id, String attributeKey, String attributeValue) throws MyException{
+        Assert.notNull(id);
+        Assert.notNull(attributeKey);
+        if (MyString.isEmpty(attributeKey)) {
+            return;
+        }
+        Article dbModel = getById(id);
+        Map<String, String> attributeMap = AttributeUtils.getAttributeMap(dbModel.getAttributes());
+        attributeMap.put(attributeKey, attributeValue);
+
+        ArticleWithBLOBs model = new ArticleWithBLOBs();
+        model.setId(id);
+        model.setAttributes(AttributeUtils.getAttributeStr(attributeMap));
+
+        super.update(model);
+    }
+
+    /**
+     * 删除属性值
+     * @param id
+     * @param attributeKey
+     * @throws MyException
+     */
+    public void deleteAttribute(String id, String attributeKey) throws MyException{
+        Assert.notNull(id);
+        Assert.notNull(attributeKey);
+        if (MyString.isEmpty(attributeKey)) {
+            return;
+        }
+        Article dbModel = getById(id);
+        Map<String, String> attributeMap = AttributeUtils.getAttributeMap(dbModel.getAttributes());
+        attributeMap.remove(attributeKey);
+
+        ArticleWithBLOBs model = new ArticleWithBLOBs();
+        model.setId(id);
+        model.setAttributes(AttributeUtils.getAttributeStr(attributeMap));
+        super.update(model);
+    }
+
 
     public void delete(String id, String modelName, String remark) throws MyException{
         Assert.notNull(id);

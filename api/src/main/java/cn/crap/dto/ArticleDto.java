@@ -30,6 +30,11 @@ public class ArticleDto implements Serializable {
 	private String projectId;
 	private String createTimeStr;
 	private String projectName;
+	private String attributes;
+	/**
+	 * 是否用markdown
+	 */
+	private Boolean useMarkdown;
 
 	public void setId(String id){
 		this.id=id;
@@ -189,5 +194,21 @@ public class ArticleDto implements Serializable {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public String getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(String attributes) {
+		this.attributes = attributes;
+	}
+
+	public Boolean getUseMarkdown() {
+		return useMarkdown;
+	}
+
+	public void setUseMarkdown(Boolean useMarkdown) {
+		this.useMarkdown = useMarkdown;
 	}
 }

@@ -2,9 +2,10 @@
  * 编辑器：富文本wang编辑器，markdown editorMe编辑器
  * 数据字典，接口参数编辑方法
  */
+    // 标识是否初始化过，display = none时，初始化样式有问题
 var markdownEditor;
 function createEditorMe(id, markdownContent) {
-    if (markdownEditor != null) {
+    if (markdownEditor != null){
         return;
     }
     markdownEditor = editormd(id, {
@@ -65,7 +66,6 @@ function createEditorMe(id, markdownContent) {
 }
 
 function createWangEditor(id, modelField, init, height) {
-    userMarkdown = false;
     var root = getRootScope();
     var E = window.wangEditor;
     var editor = new E(document.getElementById(id));
@@ -122,24 +122,6 @@ function initInterfaceEditor(editor, modelField) {
     }
 }
 
-var userMarkdown = false;
-function changeEditor(obj, markdown) {
-    $(".article-editor").removeClass("btn-main")
-    $(".article-editor").addClass("btn-default")
-
-    if (markdown) {
-        userMarkdown = true;
-        $("#article-editor").addClass('none');
-        $("#markdown-editor").removeClass('none');
-        createEditorMe('markdown-editor', getRootScope().model.markdown);
-    } else {
-        userMarkdown = false;
-        $("#article-editor").removeClass('none');
-        $("#markdown-editor").addClass('none');
-    }
-    $(obj).addClass('btn-main');
-    $(obj).removeClass('btn-default');
-}
 /********************** end:markdown 富文本 **********************/
 function initDragTable(id) {
     $("#" + id + " tbody").sortable({

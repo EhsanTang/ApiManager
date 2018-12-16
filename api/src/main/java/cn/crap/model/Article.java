@@ -33,6 +33,8 @@ public class Article extends BasePo{
 
     private String projectId;
 
+    private String attributes;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -153,5 +155,13 @@ public class Article extends BasePo{
 
     public void setProjectId(String projectId) {
         this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
     }
 }

@@ -17,6 +17,7 @@
     <result column="commentCount" property="commentCount" jdbcType="INTEGER" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
     <result column="projectId" property="projectId" jdbcType="VARCHAR" />
+    <result column="attributes" property="attributes" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.ArticleWithBLOBs" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
@@ -82,7 +83,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, brief, click, type, status, createTime, moduleId, mkey, canDelete, category, 
-    canComment, commentCount, sequence, projectId
+    canComment, commentCount, sequence, projectId, attributes
   </sql>
   <sql id="Blob_Column_List" >
     content, markdown
@@ -152,13 +153,13 @@
       createTime, moduleId, mkey, 
       canDelete, category, canComment, 
       commentCount, sequence, projectId, 
-      content, markdown)
+      content, markdown, attributes)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, 
       #{click,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{moduleId,jdbcType=VARCHAR}, #{mkey,jdbcType=VARCHAR}, 
       #{canDelete,jdbcType=TINYINT}, #{category,jdbcType=VARCHAR}, #{canComment,jdbcType=TINYINT}, 
       #{commentCount,jdbcType=INTEGER}, #{sequence,jdbcType=INTEGER}, #{projectId,jdbcType=VARCHAR}, 
-      #{content,jdbcType=LONGVARCHAR}, #{markdown,jdbcType=LONGVARCHAR})
+      #{content,jdbcType=LONGVARCHAR}, #{markdown,jdbcType=LONGVARCHAR}, #{attributes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.ArticleWithBLOBs" >
     
@@ -328,6 +329,9 @@
       <if test="record.markdown != null" >
         markdown = #{record.markdown,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.attributes != null" >
+        attributes = #{record.attributes,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -427,6 +431,9 @@
       </if>
       <if test="markdown != null" >
         markdown = #{markdown,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attributes != null" >
+        attributes = #{attributes,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}

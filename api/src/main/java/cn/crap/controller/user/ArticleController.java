@@ -123,16 +123,24 @@ public class ArticleController extends BaseController{
 
 			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
 			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(article.getId())));
-            return new JsonResult(1, article);
 		} else{
             // 新增
             checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
             articleService.insert(article);
             id = article.getId();
+            luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
         }
 
-        luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
+        /**
+         * 跟新商品标
+         */
+        if (dto.getUseMarkdown() != null && dto.getUseMarkdown()){
+            articleService.updateAttribute(id, IAttributeConst.MARK_DOWN, IAttributeConst.TRUE);
+        } else {
+            articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
+        }
         return new JsonResult(1, article);
+
     }
 	
 	@RequestMapping("/delete.do")

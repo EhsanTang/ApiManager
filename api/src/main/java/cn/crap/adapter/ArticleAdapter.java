@@ -13,9 +13,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
-import cn.crap.utils.BeanUtil;
-import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.MyString;
+import cn.crap.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +56,10 @@ public class ArticleAdapter {
 		ArticleDto dto = getDto(model, module, project);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
+        dto.setUseMarkdown(false);
+		if (AttributeUtils.getAttributeMap(model.getAttributes()).containsKey(IAttributeConst.MARK_DOWN)){
+            dto.setUseMarkdown(true);
+        }
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
 		return dto;
 	}
@@ -74,6 +76,7 @@ public class ArticleAdapter {
 		ArticleWithBLOBs model = new ArticleWithBLOBs();
 		BeanUtil.copyProperties(dto, model);
         model.setCreateTime(null);
+		model.setAttributes(null);
         return model;
     }
 

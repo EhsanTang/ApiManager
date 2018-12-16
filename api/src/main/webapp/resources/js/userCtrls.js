@@ -276,11 +276,18 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
         	// 存在 article-editor 则初始化
-			if (isEdit) {
-                markdownEditor = null;
-                createWangEditor("article-editor", "content", initArticleEditor, "500px");
+			if (!isEdit) {
+                return;
             }
+            if ($rootScope.model.useMarkdown){
+                markdownEditor = null;
+                createEditorMe('markdown-editor', getRootScope().model.markdown);
+            }
+            createWangEditor("article-editor", "content", initArticleEditor, "500px");
         });
+    };
+    $scope.createEditorMe = function () {
+        createEditorMe('markdown-editor', getRootScope().model.markdown);
     };
     $scope.getDictionaryDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
@@ -324,9 +331,10 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     /*********************************** 回调方法 *********************************/
     // 保存markdown
     $rootScope.saveArticleCallBack = function () {
-        if (!userMarkdown){
+        if ($rootScope.model.useMarkdown == false){
             return;
         }
+        $rootScope.model.useMarkdown = true;
         $rootScope.model.markdown = markdownEditor.getMarkdown();
         $rootScope.model.content = markdownEditor.getHTML()
     }

@@ -1,4 +1,5 @@
-<div class="col-xs-12 p0" ng-init="getArticleDetail()">
+<link href="resources/framework/editormd-1.5.0/css/editormd.css" rel="stylesheet" type="text/css" ng-if="model.useMarkdown"/>
+<div  ng-init="getArticleDetail()" ng-class="{true:'col-xs-12 p0 markdown-body', false:'col-xs-12 p0'}[]">
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <button class="btn btn-default" ng-click="goBack()" type="button">

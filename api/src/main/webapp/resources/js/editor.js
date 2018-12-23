@@ -23,7 +23,7 @@ function createEditorMe(id, markdownContent) {
             return ["undo", "redo", "|", "bold", "del", "italic", "quote", "|"
                 , "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
-                "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+                "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "pagebreak", "|",
                 "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "help"];
         },
         //syncScrolling : false,

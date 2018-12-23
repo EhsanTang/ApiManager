@@ -122,13 +122,11 @@ public class ArticleController extends BaseController{
             }
 
 			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
-			luceneService.update(ArticleAdapter.getSearchDto(articleService.getById(article.getId())));
 		} else{
             // 新增
             checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
             articleService.insert(article);
             id = article.getId();
-            luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
         }
 
         /**
@@ -139,7 +137,8 @@ public class ArticleController extends BaseController{
         } else {
             articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
         }
-        return new JsonResult(1, article);
+		luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
+		return new JsonResult(1, article);
 
     }
 	

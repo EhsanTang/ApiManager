@@ -20,6 +20,7 @@ function createEditorMe(id, markdownContent) {
             // return editormd.toolbarModes["mini"]; // full, simple, mini
             // Or return editormd.toolbarModes[name]; // full, simple, mini
             // Using "||" set icons align right.
+            // "emoji", "html-entities" json数据被拦截
             return ["undo", "redo", "|", "bold", "del", "italic", "quote", "|"
                 , "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",

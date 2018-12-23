@@ -107,18 +107,18 @@ visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http,
 			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
 				 $rootScope.error = isSuccess.replace('[ERROR]', '');
 				 $rootScope.dictionary = null;
-				 $rootScope.webpage = null;
+				 $rootScope.article = null;
 				 $rootScope.model = null;//初始化评论对象
 			 }else{
-				 $rootScope.webpage = result.data;
+				 $rootScope.article = result.data;
 				 $rootScope.page = result.page;
 				 $rootScope.model = result.others.comment;//初始化评论对象
 				 $rootScope.comments = result.others.comments;//评论列表
 				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
 				 $rootScope.others = result.others;//导航路径
 				 //如果是数据库表，则将内容转为json
-				 if($rootScope.webpage.content!=''&&$rootScope.webpage.type=="DICTIONARY"){
-					 $rootScope.dictionary = eval("("+$rootScope.webpage.content+")");
+				 if($rootScope.article.content!=''&&$rootScope.article.type=="DICTIONARY"){
+					 $rootScope.dictionary = eval("("+$rootScope.article.content+")");
 			     }
 			 }
 		});

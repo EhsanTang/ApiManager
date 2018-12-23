@@ -165,6 +165,6 @@ public class ArticleController extends BaseController {
                 .add(article.getName(), "void")
                 .getList();
         returnMap.put("crumbs", crumbDtos);
-        return new JsonResult(1, article, page, returnMap);
+        return new JsonResult(1,  ArticleAdapter.getDtoWithBLOBs(article, module, project), page, returnMap);
     }
 }

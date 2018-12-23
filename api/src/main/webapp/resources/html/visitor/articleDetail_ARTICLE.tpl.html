@@ -1,15 +1,18 @@
-<div class="r0 p20 pt10 col-xs-12 BGFFF" ng-controller="articleDetailCtrl">
-<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
-<div class="col-xs-12 p0 lh26 code pt10">
-	<div class="pl10 pr10 mr10 f16 fb mb10 adorn-bl-3">{{webpage.name}}</div>
-	<div class="mb10 pl20 C999 f12 dashed-b pb10" ng-if="webpage.brief!=''">
-			{{webpage.brief}}
-	</div>	
-					
-	<div class="f14 mt-3 imgCenter" ng-bind-html="webpage.content|trustHtml"></div>
-	
-	<div ui-view="addComment" class="f14" ng-if="webpage.canComment==1"></div>
-</div>
+<div ng-class="{true:'r0 p20 pt10 col-xs-12 BGFFF markdown-body', false:'r0 p20 pt10 col-xs-12 BGFFF w-e-text'}[article.useMarkdown]" ng-controller="articleDetailCtrl">
+    <link ng-href="resources/framework/editormd-1.5.0/css/editormd.css" rel="stylesheet" type="text/css" ng-if="article.useMarkdown"/>
+    <link ng-href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css" ng-if="!article.useMarkdown"/>
+
+	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
+	<div class="col-xs-12 p0 lh26 code pt10">
+		<div class="pl10 pr10 mr10 f16 fb mb10 adorn-bl-3">{{article.name}}</div>
+		<div class="mb10 pl20 C999 f12 dashed-b pb10" ng-if="article.brief!=''">
+				{{article.brief}}
+		</div>
+
+		<div class="f14 mt-3 imgCenter" ng-bind-html="article.content|trustHtml"></div>
+
+		<div ui-view="addComment" class="f14" ng-if="article.canComment==1"></div>
+	</div>
 </div>
 <div class="cb"></div>
 

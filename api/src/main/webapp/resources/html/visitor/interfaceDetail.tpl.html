@@ -1,3 +1,4 @@
+<link href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css"/>
 <div class="r0 p20 pt10 col-xs-12" ng-controller="interfaceDetailCtrl">
 <button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 <div class="col-xs-12 p0 f12 lh26 interface-detail">
@@ -44,7 +45,7 @@
 		<span ng-bind="model.version"></span>
 
 		<div id="1_3">1.3 接口说明</div>
-		<span ng-bind-html="model.remark|trustHtml"></span>
+		<span ng-bind-html="model.remark|trustHtml" class="w-e-text"></span>
 
 		<div id="1_4">1.4 接口状态</div>
 		<span ng-bind="model.statusName"></span>

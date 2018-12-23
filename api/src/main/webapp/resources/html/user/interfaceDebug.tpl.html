@@ -98,7 +98,7 @@
             </div>
             <div class="cb"></div>
 
-            <input type="hidden" ng-bind="model.paramType" id="crap-debug-paramType">
+            <input type="hidden" value="{{model.paramType}}" id="crap-debug-paramType">
             <div ng-class="{true: 'p10 bt1', false:'p10 bt1 none'}[model.paramType == 'RAW']">
                 <textarea class="form-control no-resize" rows="8" ng-model="model.param" placeholder="请输入自定义/RAW/源数据" id="crap-debug-raw"></textarea>
             </div>

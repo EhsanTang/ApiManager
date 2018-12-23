@@ -73,7 +73,7 @@
 
 
 		<div id="2_3">2.3 HTTP请求方式</div>
-		{{model.method|removeLast}}
+		{{model.method|removeLast:','}}
 
 		<div id="2_4">2.4 请求头说明</div>
 		<span ng-if="model.crShowHeaderList==null || model.crShowHeaderList.length==0" >

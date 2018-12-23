@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -118,7 +119,7 @@ public class ProjectUserController extends BaseController{
     }
 
     @RequestMapping("/invite.do")
-    public String invite(@RequestParam String code, HttpServletRequest request) throws Exception{
+    public String invite(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception{
         String projectId = projectService.getProjectIdFromInviteCode(code);
         Project project = projectService.getById(projectId);
         if (project == null){
@@ -126,7 +127,12 @@ public class ProjectUserController extends BaseController{
             return ERROR_VIEW;
         }
 
-        LoginInfoDto loginInfoDto = LoginUserHelper.getUser();
+        LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+        if (loginInfoDto == null){
+            response.sendRedirect("/loginOrRegister.do#/login");
+            return null;
+        }
+
         String userId = loginInfoDto.getId();
         if (projectUserService.count(new ProjectUserQuery().setUserId(userId).setProjectId(projectId)) > 0){
             request.setAttribute("result", MyError.E000039.getMessage());

@@ -6,12 +6,18 @@ var NEED_PASSWORD_CODE = "E000007";
 var NEED_LOGIN = "E000021";
 
 app.filter("removeLast",function(){
-    return function (value) {
-        if(!value)
+    return function (value, needRemoveChar) {
+        if(!value) {
             return "";
-        else{
+        }else if (needRemoveChar){
+            if (value.endsWith(needRemoveChar)){
+                return value.substring(0,value.length-1);
+			}else {
+                return value;
+			}
+        }else {
             return value.substring(0,value.length-1);
-        }
+		}
     }
 });
 //以html形式输出

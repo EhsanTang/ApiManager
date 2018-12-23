@@ -29,7 +29,7 @@
 	<div class="col-xs-12 p20">
         <div class="col-xs-12 BGFFF p20 pt10 lh40 mt50">
             <button class="btn btn-xs btn-default btn-inter-{{model.status}}">{{model.statusName}}</button>
-            <button class="btn btn-xs btn-default btn-{{model.method}}">{{model.method}}</button>
+            <button class="btn btn-xs btn-default btn-{{model.method|removeLast:','}}">{{model.method|removeLast:','}}</button>
             <button class="btn btn-xs btn-default">版本：{{model.version}}</button>
             <button class="btn btn-xs btn-default">返回类型：{{model.contentType}}</button>
 

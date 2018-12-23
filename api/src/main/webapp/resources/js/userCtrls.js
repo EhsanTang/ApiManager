@@ -279,8 +279,8 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 			if (!isEdit) {
                 return;
             }
+            markdownEditor = null;
             if ($rootScope.model.useMarkdown){
-                markdownEditor = null;
                 createEditorMe('markdown-editor', getRootScope().model.markdown);
             }
             createWangEditor("article-editor", "content", initArticleEditor, "500px");

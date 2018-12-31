@@ -276,7 +276,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
         	// 存在 article-editor 则初始化
-			if (!isEdit) {
+			if (!isEdit || $rootScope.model.type!='ARTICLE') {
                 return;
             }
             markdownEditor = null;

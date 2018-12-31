@@ -5,11 +5,11 @@ package cn.crap.utils;
  * @date 2018/12/31 15:43
  */
 public abstract class BaseGenerateUtil {
-    public abstract boolean canHanle();
+    public abstract boolean canHanle(String type);
 
     /**
      * 数据库表
      * @return
      */
-    public abstract boolean hanle();
+    public abstract String hanle();
 }

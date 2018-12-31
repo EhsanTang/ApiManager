@@ -252,13 +252,22 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			$rootScope[checkValues] = $rootScope[checkValues]+value+","
 		}
 	}
-	// 全选，不选
-	$rootScope.selectAll = function(id,name,list){
+    /**
+	 * 全选、不选
+     * @param id 全选按钮
+     * @param name 列表项
+     * @param list 数据集
+     * @param field 选着的数据集字段
+     */
+	$rootScope.selectAll = function(id,name,list,field){
+		if (!field){
+            field = "id";
+		}
 		selectAll(id, name);
 		if($("#"+id).prop("checked")==true){ 
 			$rootScope[name] = ",";
 			for (var i=0;i<list.length;i++){
-				$rootScope[name] = $rootScope[name] + list[i].id + "," ;
+				$rootScope[name] = $rootScope[name] + list[i][field] + "," ;
 			}
 		}else{
 			$rootScope[name] = ",";

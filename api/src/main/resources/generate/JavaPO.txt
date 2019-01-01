@@ -1,0 +1,8 @@
+package cn.crap.xxx;
+
+import java.util.Date;
+
+public class JavaPO{
+CA_PO_FIELD
+CA_PO_GET_SET
+}

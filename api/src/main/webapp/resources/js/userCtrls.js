@@ -312,7 +312,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         });
     }
 
-    // 项目列表
+    // 接口调试
     $scope.debugInterface = function() {
         $rootScope.model.header = getParamFromTable('editHeaderTable', 'name');
         if($rootScope.model.paramType == 'FORM') {
@@ -322,6 +322,12 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "debug", function () {
             $rootScope.debugResult = format($rootScope.debug.debugResult, false);
         });
+    };
+
+    // 代码生成
+    $scope.generateCode = function(type) {
+        var params = "iUrl=user/dictionary/generateCode.do|iLoading=FLOAT|iPost=POST|iParams=&fieldNames=" + $rootScope.selectFields + "&type=" + type;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, 0, "generateCodeResult");
     };
 
     $scope.openInterfaceDialog = function(id, title, width){

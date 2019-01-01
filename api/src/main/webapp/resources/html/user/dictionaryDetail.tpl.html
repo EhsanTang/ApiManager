@@ -13,26 +13,45 @@
                ng-href="#/user/dictionary/edit?dataType=dictionary&id={{model.id}}&menu_a=menu-project&menu_b=menu_dictionary&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
             </a>
+
         </div>
     </div>
 
     <div class="p20 mt60">
         <div class="BGFFF p15 min-h500 pb50">
-            <div class="col-xs-6 fl p3 pl10 pr10 f14 fb mt10 mb20 adorn-bl-3">{{model.name}}</div>
-            <div class="col-xs-12 p0 pb20 f14 mt0 mb20 dashed-b">
-                {{model.brief}}
+            <div class="col-xs-12 p3 pl10 pr10 f14 fb mt10 mb20 adorn-bl-3">{{model.name}}</div>
+            <div class="col-xs-12 mb10 pl20 pb10 pr20 pt0 mb20 C999 f12 dashed-b" ng-if="model.brief && model.brief!=''" ng-bind="model.brief"></div>
+
+            <div class="btn-group btn-group-sm r3 fr mr10 mb20">
+                <button class="btn btn-main" type="button">
+                    生成代码
+                </button>
+
+                <a class="btn btn-default btn-sm" type="button" ng-click="generateCode('MY_BATIS_XML')">
+                     MyBatis xml
+                </a>
+
+                <a class="btn btn-default btn-sm" type="button" ng-click="generateCode('JAVA_PO')">
+                     Java 对象
+                </a>
             </div>
 
             <table class="table table-bordered f12 C555 mb5">
-                <tr class="adorn-color BGEEE">
+                <tr class="BGEEE">
+                    <td class="w50">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','selectFields', model.dictionaries, 'name', 'type')">
+                    </td>
                     <td class="w200">字段</td>
-                    <td  class="w150">类型</td>
-                    <td  class="w50">空</td>
-                    <td  class="w150">默认</td>
-                    <td  class="w50">标识</td>
-                    <td  class="w200">注释</td>
+                    <td class="w150">类型</td>
+                    <td class="w60">空</td>
+                    <td class="w150">默认</td>
+                    <td class="w50">标识</td>
+                    <td class="w200">注释</td>
                 </tr>
                 <tr ng-repeat="item in model.dictionaries"  class="{{item.flag|getClass}}">
+                    <td>
+                        <input type="checkbox" name="selectFields" ng-click="checkboxSelect('selectFields',item.name, item.type);">
+                    </td>
                     <td>{{item.name}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.notNull=='true'?'是':'否'}}</td>
@@ -41,8 +60,13 @@
                     <td>{{item.remark}}</td>
                 </tr>
             </table>
+
+            <div class="code mt20" ng-if="generateCodeResult">
+                <textarea class="form-control no-resize" rows="50" ng-bind="generateCodeResult"></textarea>
+            </div>
         </div>
     </div>
+
 </div>
 <div class="cb"></div>
 

@@ -129,14 +129,18 @@ public class ArticleController extends BaseController{
             id = article.getId();
         }
 
-        /**
-         * 跟新商品标
-         */
-        if (dto.getUseMarkdown() != null && dto.getUseMarkdown()){
-            articleService.updateAttribute(id, IAttributeConst.MARK_DOWN, IAttributeConst.TRUE);
-        } else {
-            articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
-        }
+		/**
+		 * 更新标：
+		 * mark_down：文本编辑器内容
+		 */
+        if (ArticleType.ARTICLE.name().equals(dto.getType())){
+			if (dto.getUseMarkdown() != null && dto.getUseMarkdown()){
+				articleService.updateAttribute(id, IAttributeConst.MARK_DOWN, IAttributeConst.TRUE);
+			} else {
+				articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
+			}
+		}
+
 		luceneService.add(ArticleAdapter.getSearchDto(articleService.getById(id)));
 		return new JsonResult(1, article);
 

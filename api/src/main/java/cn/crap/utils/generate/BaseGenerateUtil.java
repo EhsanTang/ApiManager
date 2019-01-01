@@ -25,6 +25,9 @@ public abstract class BaseGenerateUtil {
      * @return
      */
     public Set<String> getFields(String fieldNames){
+        if (StringUtils.isEmpty(fieldNames)){
+            return new HashSet<>();
+        }
         Set<String> fieldSet = new HashSet<>();
         fieldSet.addAll(Splitter.on(",").omitEmptyStrings().splitToList(fieldNames));
         return fieldSet;

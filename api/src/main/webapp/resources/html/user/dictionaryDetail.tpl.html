@@ -27,19 +27,19 @@
                     生成代码
                 </button>
 
-                <a class="btn btn-default btn-sm" type="button" ng-click="generateCode('SQL_SELECT')">
-                    <i class="iconfont f12 mt-3">&#xe69e; Sql 查询字段</i>
+                <a class="btn btn-default btn-sm" type="button" ng-click="generateCode('MY_BATIS_XML')">
+                     MyBatis xml
                 </a>
 
                 <a class="btn btn-default btn-sm" type="button" ng-click="generateCode('JAVA_PO')">
-                    <i class="iconfont f12 mt-3">&#xe69e; Java 对象</i>
+                     Java 对象
                 </a>
             </div>
 
             <table class="table table-bordered f12 C555 mb5">
                 <tr class="BGEEE">
                     <td class="w50">
-                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','selectFields', model.dictionaries, 'name')">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','selectFields', model.dictionaries, 'name', 'type')">
                     </td>
                     <td class="w200">字段</td>
                     <td class="w150">类型</td>
@@ -50,7 +50,7 @@
                 </tr>
                 <tr ng-repeat="item in model.dictionaries"  class="{{item.flag|getClass}}">
                     <td>
-                        <input type="checkbox" name="selectFields" ng-click="checkboxSelect('selectFields',item.name);">
+                        <input type="checkbox" name="selectFields" ng-click="checkboxSelect('selectFields',item.name, item.type);">
                     </td>
                     <td>{{item.name}}</td>
                     <td>{{item.type}}</td>
@@ -62,7 +62,7 @@
             </table>
 
             <div class="code mt20" ng-if="generateCodeResult">
-                <pre ng-bind="generateCodeResult"></pre>
+                <textarea class="form-control no-resize" rows="50" ng-bind="generateCodeResult"></textarea>
             </div>
         </div>
     </div>

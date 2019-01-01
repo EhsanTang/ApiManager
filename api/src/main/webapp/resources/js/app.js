@@ -243,9 +243,13 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	    }
 	};
 	// 选中某个选项
-	$rootScope.checkboxSelect = function(checkValues,value){
+	$rootScope.checkboxSelect = function(checkValues,value1, value2){
+        var value = value1;
+        if (value2){
+            value = value + "_CA_SEPARATOR_" + value2;
+        }
 		if (!$rootScope[checkValues] ){
-            $rootScope[checkValues] = value+","
+            $rootScope[checkValues] = value+",";
 		}else if($rootScope[checkValues].indexOf(","+value+",")>=0 ){
 			$rootScope[checkValues] = $rootScope[checkValues].replace(value+",","");
 		}else{
@@ -259,15 +263,19 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
      * @param list 数据集
      * @param field 选着的数据集字段
      */
-	$rootScope.selectAll = function(id,name,list,field){
-		if (!field){
-            field = "id";
+	$rootScope.selectAll = function(id,name,list,field1, field2){
+		if (!field1){
+            field1 = "id";
 		}
 		selectAll(id, name);
 		if($("#"+id).prop("checked")==true){ 
 			$rootScope[name] = ",";
 			for (var i=0;i<list.length;i++){
-				$rootScope[name] = $rootScope[name] + list[i][field] + "," ;
+				var value = list[i][field1];
+				if (field2){
+                    value = value + "_CA_SEPARATOR_" + list[i][field2];
+				}
+				$rootScope[name] = $rootScope[name] + value + "," ;
 			}
 		}else{
 			$rootScope[name] = ",";

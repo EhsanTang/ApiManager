@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--
+* 必读
+* 1. 替换xxxDAO 为项目中的 DAO 所在包 + DAO名称，如：cn.crap.dao.ArticleDAO
+* 2. 替换xxxPO 为项目中的 PO 所在包 + PO名称，如：cn.crap.model.ArticlePO
+* 3. 替换xxx_table 为数据库对应的表名
+* 4. 检查生成的xml中是否包含"未知类型"，如包含需要人工处理（不识别的系统类型）
+* 5. 替换delete、update xml中的查询条件"查询条件"
+*
+* 本文件有crap.cn 系统自动生成
+* CRAP接口管理、调试系统：
+*   专业api接口管理系统，完全免费开源的接口管理系统，JAVA开源接口管理系统，支持一键生成pdf、word接口文档、接口调试、项目协作、在线模拟数据、
+*   需求文档管理等。配合浏览器ApiDeubg接口调试插件，能实现本地接口调试及跨站调试
+ -->
+
+<mapper namespace="xxxDAO">
+  <resultMap id="baseResultMap" type="xxxPO">
+    <id column="id" property="id"/>
+    <result column="createTime" property="createTime"/>
+    <result column="assignedTo" property="assignedTo"/>
+    <result column="priority" property="priority"/>
+    <result column="name" property="name"/>
+    <result column="content" property="content"/>
+    <result column="severity" property="severity"/>
+    <result column="createdBy" property="createdBy"/>
+    <result column="updateBy" property="updateBy"/>
+    <result column="updateTime" property="updateTime"/>
+    <result column="sequence" property="sequence"/>
+    <result column="moduleId" property="moduleId"/>
+    <result column="attributes" property="attributes"/>
+    <result column="tester" property="tester"/>
+    <result column="projectId" property="projectId"/>
+    <result column="traceType" property="traceType"/>
+    <result column="tracer" property="tracer"/>
+    <result column="status" property="status"/>
+    <result column="deadline" property="deadline"/>
+    <result column="updateBy" property="updateBy"/>
+  </resultMap>
+
+  <resultMap id="resultMap" type="xxxPO" extends="baseResultMap">
+  </resultMap>
+
+  <!-- 基本的字段，供其他查询引用-->
+  <sql id="baseColumn">
+        createTime,assignedTo,priority,updateBy,id,name,content,severity,createdBy,updateTime,sequence,moduleId,attributes,tester,projectId,traceType,tracer,status,deadline
+    </sql>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="xxxPO">
+        insert into xxx_table (createTime,assignedTo,priority,updateBy,id,name,content,severity,createdBy,updateTime,sequence,moduleId,attributes,tester,projectId,traceType,tracer,status,deadline)
+        values (#{createTime},#{assignedTo},#{priority},#{updateBy},#{id},#{name},#{content},#{severity},#{createdBy},#{updateTime},#{sequence},#{moduleId},#{attributes},#{tester},#{projectId},#{traceType},#{tracer},#{status},#{deadline})
+    </insert>
+
+  <!-- 查询 -->
+  <select id="select" resultMap="resultMap" parameterType="xxxPO">
+    select
+    <include refid="baseColumn"/>
+    from xxx_table
+    where 查询条件
+  </select>
+
+  <!-- 删除 -->
+  <delete id="delete" parameterType="xxxPO">
+        delete from xxx_table
+        where 查询条件
+    </delete>
+
+  <!-- 查询总数 -->
+  <select id="count" parameterType="xxxPO" resultType="java.lang.Integer">
+        select count(*) from xxx_table
+        where 查询条件
+    </select>
+
+  <!-- 更新 -->
+  <update id="update" parameterType="xxxPO">
+    update xxx_table
+    <set>
+      <if test="createTime != null">
+        createTime = #{createTime},
+      </if>
+      <if test="assignedTo != null">
+        assignedTo = #{assignedTo},
+      </if>
+      <if test="priority != null">
+        priority = #{priority},
+      </if>
+      <if test="updateBy != null">
+        updateBy = #{updateBy},
+      </if>
+      <if test="id != null">
+        id = #{id},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="content != null">
+        content = #{content},
+      </if>
+      <if test="severity != null">
+        severity = #{severity},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence},
+      </if>
+      <if test="moduleId != null">
+        moduleId = #{moduleId},
+      </if>
+      <if test="attributes != null">
+        attributes = #{attributes},
+      </if>
+      <if test="tester != null">
+        tester = #{tester},
+      </if>
+      <if test="projectId != null">
+        projectId = #{projectId},
+      </if>
+      <if test="traceType != null">
+        traceType = #{traceType},
+      </if>
+      <if test="tracer != null">
+        tracer = #{tracer},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline},
+      </if>
+    </set>
+    where 查询条件
+  </update>
+</mapper>

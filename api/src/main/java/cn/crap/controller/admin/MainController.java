@@ -177,7 +177,13 @@ public class MainController extends BaseController {
         return new JsonResult().success();
     }
 
-
+    @ResponseBody
+    @RequestMapping("/admin/cleanLog.do")
+    @AuthPassport(authority = C_SUPER)
+    public JsonResult cleanLog() throws Exception{
+        systemService.cleanLog();
+        return new JsonResult().success();
+    }
 
 
 }

@@ -225,7 +225,7 @@ function needHiddenModule() {
 
 // 重建索引
 function rebuildIndex(obj){
-	if (myConfirm("确定重建索引？")) {
+	if (myConfirm("确定重建索引（安全，不会影响系统运行）？")) {
 		selectButton(obj,'menu_a');
 		callAjaxByName('iUrl=admin/rebuildIndex.do|iLoading=PROPUPFLOAT重建索引中，刷新页面可以查看实时进度...|ishowMethod=updateDivWithImg');
 	}
@@ -237,14 +237,22 @@ function loginOut(){
 }
 //刷新缓存
 function flushDB(obj){
-	if (myConfirm("确定刷新缓存？")) {
+	if (myConfirm("确定刷新缓存（安全，不会影响系统运行）？")) {
 		selectButton(obj,'menu_a');
 		callAjaxByName('iUrl=admin/flushDB.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
 	}
 }
 
-//刷新缓存
+//删除30天前的日志
+function cleanLog(obj){
+    if (myConfirm("确定删除30天的日志（文章、接口等日志，删除后无法恢复）？")) {
+        selectButton(obj,'menu_a');
+        callAjaxByName('iUrl=admin/cleanLog.do|iLoading=TIPFLOAT删除中，请稍后...|ishowMethod=updateDivWithImg');
+    }
+}
+
+//压缩css
 function compress(obj){
 	selectButton(obj,'menu_a');
-	callAjaxByName('iUrl=admin/compress.do|iLoading=TIPFLOAT刷新中，请稍后...|ishowMethod=updateDivWithImg');
+	callAjaxByName('iUrl=admin/compress.do|iLoading=TIPFLOAT压缩中，请稍后...|ishowMethod=updateDivWithImg');
 }

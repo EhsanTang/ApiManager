@@ -172,6 +172,9 @@ public class LogService extends BaseService<Log, LogDao> {
     }
 
     private void checkModule(String moduleId) throws MyException {
+        if (MyString.isEmpty(moduleId)){
+            return;
+        }
         Assert.notNull(moduleId);
         Module module = moduleService.getById(moduleId);
         if (module == null) {

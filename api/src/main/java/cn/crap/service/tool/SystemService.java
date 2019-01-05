@@ -49,6 +49,12 @@ public class SystemService {
     }
 
     /**
+     * 清理日志
+     */
+    public void cleanLog(){
+        jdbcTemplate.execute("DELETE FROM log WHERE createTime < DATE_SUB(NOW(),INTERVAL 30 day)");
+    }
+    /**
      * 数据库更新
      */
     public void updateDataBase(){

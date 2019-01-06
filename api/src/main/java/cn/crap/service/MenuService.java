@@ -137,7 +137,7 @@ public class MenuService extends BaseService<Menu, MenuDao> {
 
         // 单选是否可以为空
         if (radio.equals("true") && !MyString.isEmpty(notNull) && notNull.equals("false")) {
-            PickDto pick = new PickDto("pick_null", "", "");
+            PickDto pick = new PickDto("pick_null", "", "无");
             picks.add(0, pick);
         }
 

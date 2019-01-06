@@ -1,8 +1,13 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.BugDto;
+import cn.crap.enu.BugPriority;
+import cn.crap.enu.BugSeverity;
+import cn.crap.enu.BugStatus;
+import cn.crap.enu.BugTraceType;
 import cn.crap.model.Bug;
 import cn.crap.utils.BeanUtil;
+import cn.crap.utils.DateFormartUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,13 @@ public class BugAdapter {
 
         BugDto dto = new BugDto();
         BeanUtil.copyProperties(model, dto);
+        dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
+        dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
+        dto.setStatusStr(BugStatus.getNameByValue(model.getStatus()));
+        dto.setPriorityStr(BugPriority.getNameByValue(model.getPriority()));
+        dto.setSeverityStr(BugSeverity.getNameByValue(model.getSeverity()));
+        dto.setTraceTypeStr(BugTraceType.getNameByValue(model.getTraceType()));
+
         return dto;
     }
 
@@ -29,7 +41,8 @@ public class BugAdapter {
             return null;
         }
         Bug model = new Bug();
-        BeanUtil.copyProperties(model, dto, "createTime", "createdBy");
+        BeanUtil.copyProperties(dto, model);
+
         return model;
     }
 

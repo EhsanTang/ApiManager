@@ -2,35 +2,22 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Bug {
-
-	private Date createTime;
+public class Bug extends BasePo{
 	private String assignedTo;
-	private Integer priority;
+	private Byte priority;
 	private String updateBy;
-	private String id;
 	private String name;
 	private String content;
-	private Integer severity;
+	private Byte severity;
 	private String createdBy;
-	private Date updateTime;
-	private Integer sequence;
 	private String moduleId;
 	private String attributes;
 	private String tester;
 	private String projectId;
-	private Integer traceType;
+	private Byte traceType;
 	private String tracer;
-	private Integer status;
+	private Byte status;
 	private Date deadline;
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
 
 	public String getAssignedTo() {
 		return assignedTo;
@@ -40,11 +27,11 @@ public class Bug {
 		this.assignedTo = assignedTo;
 	}
 
-	public Integer getPriority() {
+	public Byte getPriority() {
 		return priority;
 	}
 
-	public void setPriority(Integer priority) {
+	public void setPriority(Byte priority) {
 		this.priority = priority;
 	}
 
@@ -54,14 +41,6 @@ public class Bug {
 
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -80,11 +59,11 @@ public class Bug {
 		this.content = content;
 	}
 
-	public Integer getSeverity() {
+	public Byte getSeverity() {
 		return severity;
 	}
 
-	public void setSeverity(Integer severity) {
+	public void setSeverity(Byte severity) {
 		this.severity = severity;
 	}
 
@@ -94,22 +73,6 @@ public class Bug {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	public Integer getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(Integer sequence) {
-		this.sequence = sequence;
 	}
 
 	public String getModuleId() {
@@ -144,11 +107,11 @@ public class Bug {
 		this.projectId = projectId;
 	}
 
-	public Integer getTraceType() {
+	public Byte getTraceType() {
 		return traceType;
 	}
 
-	public void setTraceType(Integer traceType) {
+	public void setTraceType(Byte traceType) {
 		this.traceType = traceType;
 	}
 
@@ -160,11 +123,11 @@ public class Bug {
 		this.tracer = tracer;
 	}
 
-	public Integer getStatus() {
+	public Byte getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(Byte status) {
 		this.status = status;
 	}
 

@@ -265,32 +265,97 @@ blockquote{
     max-width:100%;
 }
 
-.btn-GET, .btn-inter-1{ color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;  }
-.btn-GET:hover, .btn-inter-1:hover{  color: #ffffff; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;}
+/************状态按钮***********/
+.btn-bug-status-0, .btn-bug-status--1, .btn-bug-status--2, .btn-bug-status--3, .btn-bug-status--4{
+    color: #555555; border-color: #999999; background-color: #eeeeee;
+}
+.btn-bug-status-0:hover, .btn-bug-status--1:hover, .btn-bug-status--2:hover, .btn-bug-status--3:hover, .btn-bug-status--4:hover{
+    color: #555555!important; border-color: #999999; background-color: #eeeeee; opacity: 0.8;
+}
 
+.btn-GET, .btn-inter-1,
+.btn-bug-status-10, .btn-bug-status-11, .btn-bug-status-12{
+    color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;
+}
+.btn-GET:hover, .btn-inter-1:hover,
+.btn-bug-status-10:hover, .btn-bug-status-11:hover, .btn-bug-status-12:hover{
+    color: #ffffff!important; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;
+}
 
-.btn-inter-2{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;  }
-.btn-inter-2:hover{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;}
+.btn-inter-2, .btn-bug-status-20{
+    color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;
+}
+.btn-inter-2:hover,
+.btn-bug-status-20:hover{
+    color: #ffffff!important; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;
+}
 
-.btn-POST, .btn-inter-3{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;  }
-.btn-POST:hover, .btn-inter-3:hover{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;}
+.btn-bug-status-21, .btn-bug-status-22{
+    color: #ffffff; border-color: #eea236; background-color: #f0ad4e;
+}
+.btn-bug-status-21:hover, .btn-bug-status-22:hover{
+    color: #ffffff!important; border-color: #eea236; background-color: #f0ad4e; opacity: 0.8;
+}
 
-.btn-purple {
+.btn-POST, .btn-inter-3, .btn-bug-status-23{
+    color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;
+}
+.btn-POST:hover, .btn-inter-3:hover, .btn-bug-status-23:hover{
+    color: #ffffff!important; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;
+}
+
+.btn-purple, .btn-bug-status-30, .btn-bug-status-31{
     color: #ffffff;
     background-color:#6f5499;
 }
-.btn-purple:hover{
-    color: #ffffff;
+.btn-purple:hover,
+.btn-bug-status-30:hover, .btn-bug-status-31:hover{
+    color: #ffffff!important;
     background-color: #563d7c;
     opacity: 0.8;
 }
+
 .btn-blue {
     color: #ffffff;
     background-color:#1b809e;
 }
 .btn-blue:hover{
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #137491;
+    opacity: 0.8;
+}
+
+/********** 颜色 ************/
+.bug-priority-1, .bug-severity-4{
+    color: #999999;
+}
+.bug-priority-1:hover, .bug-severity-4:hover{
+    color: #999999!important;
+    border-color:#999999;
+    opacity: 0.8;
+}
+.bug-priority-2, .bug-severity-3{
+    color: #5bc0de;
+}
+.bug-priority-2:hover, .bug-severity-3:hover{
+    color: #5bc0de!important;
+    border-color: #5bc0de;
+    opacity: 0.8;
+}
+.bug-priority-3, .bug-severity-2{
+    color: #eea236;
+}
+.bug-priority-3:hover, .bug-severity-2:hover{
+    color: #eea236!important;
+    border-color: #eea236;
+    opacity: 0.8;
+}
+.bug-priority-4, .bug-severity-1{
+    color: #f82c1d;
+}
+.bug-priority-4:hover, .bug-severity-1:hover{
+    color: #f82c1d!important;
+    border-color: #f82c1d;
     opacity: 0.8;
 }
 
@@ -408,8 +473,8 @@ blockquote{
 }
 .look-up .i-close {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 8px;
+    right: 10px;
     font-size: 14px;
     cursor: pointer;
     color:#999;

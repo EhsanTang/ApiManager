@@ -8,6 +8,23 @@
  */
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType&pageName';
 app.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider.state('userBugList', {
+        url : '/user/bug/list?currentPage&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/bugList.tpl.html?v=v8.0.5';
+                }
+            }, 'page@userArticleList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    })
+
 	// 文章
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,

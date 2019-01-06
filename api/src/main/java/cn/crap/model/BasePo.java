@@ -8,6 +8,8 @@ public class BasePo implements Serializable{
     private String id;
     private Integer sequence;
     private Date createTime;
+    private Date updateTime;
+    private String attributes;
 
     public String getId() {
         return id;
@@ -31,5 +33,21 @@ public class BasePo implements Serializable{
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 
+@Deprecated
 @Service
 public class BaseService<PO extends BasePo, DAO> {
     protected Logger log = Logger.getLogger("service");

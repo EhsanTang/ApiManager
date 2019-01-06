@@ -158,60 +158,6 @@ function checkText(obj, oldNavigateText, span, checkBox, length) {
 		}
 	}
 }
-// pick 确认
-function setPick() {
-	var length = document.getElementsByName('cid').length;
-	var checkBoxValue = "";
-	var checkBoxName = "";
-	var rootScope = getRootScope();
-	for (var i = 0; i < length; i++) {
-		if (pickRadio == 'true') {
-			if (document.getElementsByName('cid')[i].checked == true) {
-				rootScope.$apply(function() {
-					if(pickTagName){
-						$("#"+pickTagName).val($(".cidName")[i].textContent);
-						if(rootScope.model) {
-                            rootScope.model[pickTagName] = $(".cidName")[i].textContent;
-                        }
-					}
-					$("#"+pickTag).val(document.getElementsByName('cid')[i].value);
-					if(rootScope.model) {
-                        rootScope.model[pickTag] = document.getElementsByName('cid')[i].value;
-                    }
-				});
-				break;
-			}
-		} else {
-			if (document.getElementsByName('cid')[i].checked == true) {
-				checkBoxValue = checkBoxValue + document.getElementsByName('cid')[i].value + ',';
-				checkBoxName = checkBoxName + $(".cidName")[i].textContent + ',';
-			}
-		}
-	}
-	if (pickRadio == 'false') {
-			//同时跟新控件的值和模型的值，有些控件没有使用模型，如接口参数
-			rootScope.$apply(function() {
-				$("#"+pickTag).val(checkBoxValue);
-				rootScope.model[pickTag] = checkBoxValue;
-				if(pickTagName){
-					checkBoxName = replaceAll(checkBoxName, "-", "");
-					checkBoxName = replaceAll(checkBoxName, " ", "");
-					$("#"+pickTagName).val(checkBoxName);
-					rootScope.model[pickTagName] = checkBoxName;
-				}
-			});
-	}
-	// 回调函数
-	if (pickCallBack) {
-		if (pickCallBackParam) {
-			pickCallBack(pickCallBackParam);
-		} else {
-			pickCallBack();
-		}
-	}
-	// 关闭对话框
-	iClose('lookUp');
-}
 /** *************选中显示菜单权限则回调隐藏模块*************** */
 // 待删除
 function needHiddenModule() {

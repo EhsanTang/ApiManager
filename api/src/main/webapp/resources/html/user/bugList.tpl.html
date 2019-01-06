@@ -40,9 +40,10 @@
             <div ng-repeat="item in bugs" class="cursor bb1 p10 BGFFF f14">
                 <div>
                     <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
-                    <span class="mr10 mt-3 f12 btn btn-xs btn-bug-status-{{item.status}}" id="bug-status-{{item.id}}"
-                            ng-click="loadPickByName('iwidth=150|iheight=290|tag=status|tagName=bug-statusStr|code=BUG_STATUS|params=&&isList=true&listDataName=bugs|def=' + item.status,$event);">
-                        {{tem.statusStr}}
+                    <span class="mr10 mt-3 f12 btn btn-xs btn-bug-status-{{item.status}}"
+                          id="status-{{item.id}}" crap-data-def="{{item.status}}" crap-data-id="status-{{item.id}}"
+                          crap-data-class="btn-bug-status" onclick="loadBugPick(this, event,150,290,'BUG_STATUS')">
+                        {{item.statusStr}}
                     </span>
                     {{item.name| cut:true:60:' ...'}}
                     <div class="fr f12">

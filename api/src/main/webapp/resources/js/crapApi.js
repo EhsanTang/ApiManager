@@ -85,7 +85,7 @@ function setPassword(){
         getRootScope().error = "";
 	}
 }
-/** ***************pick控件搜索*************** */
+/** ***************pick控件搜索：暂时废弃*************** */
 var navigateText = "";
 var deep = 0;
 var select = 0;

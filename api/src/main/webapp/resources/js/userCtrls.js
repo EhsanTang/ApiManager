@@ -134,23 +134,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
     };
 
-    // bug列表
-    $scope.queryBugList = function(page, updateUrl) {
-        var params = "iUrl=user/bug/list.do|iLoading=FLOAT|iPost=POST|iParams="
-            + "&moduleId="+$stateParams.moduleId
-            + "&projectId=" + $stateParams.projectId;
-        if (updateUrl){
-            var url = replaceParamFromUrl($location.url(), 'currentPage', page);
-            url = url.substr(1,url.length-1);
-            $rootScope.go(url);
-            return;
-        }
-        if (!page){
-            page = $stateParams.currentPage;
-        }
-        $rootScope.getBaseDataToDataKey($scope, $http,params, page, "bugs");
-    };
-
     // 文章列表
     $scope.queryArticleList = function(page, updateUrl) {
         var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"

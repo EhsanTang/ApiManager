@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule', 'userInterModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'visitorModule', 'userInterModule']);
 var userInterModule = angular.module("userInterModule", []);
 var visitorModule = angular.module("visitorModule", []);
 

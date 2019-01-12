@@ -57,7 +57,7 @@
 
 
     <div class="shadow" ng-init="queryTop50Module()"
-         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
+         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'bug' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
         <a class="menu_b lh40 fw500 h40 f14 pl10 BGF5 C555 mt-1 main-bb-1 C000 fw500" ng-if="top50Module.length>0"
            ng-href="#/user/{{$stateParams.dataType}}/list?pageName=所有模块&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3 main-color f16">&#xe83b;&nbsp;&nbsp;</i>所有模块</a>

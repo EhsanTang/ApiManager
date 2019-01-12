@@ -23,7 +23,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
-    })
+    }).state('userEditBug', {
+        url : '/user/bug/edit?id&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }, 'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/bugEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    });
 
 	// 文章
     $stateProvider.state('userArticleList', {

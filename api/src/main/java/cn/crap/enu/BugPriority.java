@@ -1,5 +1,7 @@
 package cn.crap.enu;
 
+import java.util.Optional;
+
 /**
  * bug严重程度
  */
@@ -11,13 +13,21 @@ public enum BugPriority {
 	private final String value;
 	private final String name;
 
-	public static String getNameByValue(Byte value){
-		for( BugPriority status : BugPriority.values()){
+	public static BugPriority getByValue(Byte value){
+		if (value == null){
+			return null;
+		}
+		for(BugPriority status : BugPriority.values()){
 			if(status.value.equals(value + "")){
-				return status.getName();
+				return status;
 			}
 		}
-		return "";
+		return null;
+	}
+
+	public static String getNameByValue(Byte value){
+		BugPriority priority = getByValue(value);
+		return Optional.ofNullable(priority).map(s->s.getName()).orElse("");
 	}
 
 	BugPriority(String value, String name){

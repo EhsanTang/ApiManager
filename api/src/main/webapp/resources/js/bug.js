@@ -1,9 +1,10 @@
-function loadBugPick($this, $event, iwidth, iheight,code) {
+function loadBugPick($this, $event, iwidth, iheight,type) {
     /***********加载选择对话框********************/
     var obj = $($this);
+    var tag = obj.attr('id');
     $("#pickContent").html(loadText);
-    callAjaxByName("iUrl=user/bug/pick.do|isHowMethod=updateDiv|iPost=POST|iParams=&code="+code+"&tag="+ obj.attr("crap-data-id") +
-        "&def=" + obj.attr("crap-data-def"));
-    lookUp('lookUp', $event, iheight, iwidth, 5, obj.attr("crap-data-id"));
+    callAjaxByName("iUrl=user/bug/pick.do|isHowMethod=updateDiv|iPost=POST|iParams=&type="+type+"&tag="+ tag +
+        "&def=" + obj.attr("crap-def"));
+    lookUp('lookUp', $event, iheight, iwidth, 5, tag);
     showMessage('lookUp','false',false,-1);
 }

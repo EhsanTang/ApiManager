@@ -266,50 +266,50 @@ blockquote{
 }
 
 /************状态按钮***********/
-.btn-bug-status-0, .btn-bug-status--1, .btn-bug-status--2, .btn-bug-status--3, .btn-bug-status--4{
+.bug-status-0, .bug-status--1, .bug-status--2, .bug-status--3, .bug-status--4{
     color: #555555; border-color: #999999; background-color: #eeeeee;
 }
-.btn-bug-status-0:hover, .btn-bug-status--1:hover, .btn-bug-status--2:hover, .btn-bug-status--3:hover, .btn-bug-status--4:hover{
+.bug-status-0:hover, .bug-status--1:hover, .bug-status--2:hover, .bug-status--3:hover, .bug-status--4:hover{
     color: #555555!important; border-color: #999999; background-color: #eeeeee; opacity: 0.8;
 }
 
 .btn-GET, .btn-inter-1,
-.btn-bug-status-10, .btn-bug-status-11, .btn-bug-status-12{
+.bug-status-10, .bug-status-11, .bug-status-12{
     color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;
 }
 .btn-GET:hover, .btn-inter-1:hover,
-.btn-bug-status-10:hover, .btn-bug-status-11:hover, .btn-bug-status-12:hover{
+.bug-status-10:hover, .bug-status-11:hover, .bug-status-12:hover{
     color: #ffffff!important; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;
 }
 
-.btn-inter-2, .btn-bug-status-20{
+.btn-inter-2, .bug-status-20{
     color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;
 }
 .btn-inter-2:hover,
-.btn-bug-status-20:hover{
+.bug-status-20:hover{
     color: #ffffff!important; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;
 }
 
-.btn-bug-status-21, .btn-bug-status-22{
+.bug-status-21, .bug-status-22{
     color: #ffffff; border-color: #eea236; background-color: #f0ad4e;
 }
-.btn-bug-status-21:hover, .btn-bug-status-22:hover{
+.bug-status-21:hover, .bug-status-22:hover{
     color: #ffffff!important; border-color: #eea236; background-color: #f0ad4e; opacity: 0.8;
 }
 
-.btn-POST, .btn-inter-3, .btn-bug-status-23{
+.btn-POST, .btn-inter-3, .bug-status-23{
     color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;
 }
-.btn-POST:hover, .btn-inter-3:hover, .btn-bug-status-23:hover{
+.btn-POST:hover, .btn-inter-3:hover, .bug-status-23:hover{
     color: #ffffff!important; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;
 }
 
-.btn-purple, .btn-bug-status-30, .btn-bug-status-31{
+.btn-purple, .bug-status-30, .bug-status-31{
     color: #ffffff;
     background-color:#6f5499;
 }
 .btn-purple:hover,
-.btn-bug-status-30:hover, .btn-bug-status-31:hover{
+.bug-status-30:hover, .bug-status-31:hover{
     color: #ffffff!important;
     background-color: #563d7c;
     opacity: 0.8;

@@ -58,51 +58,51 @@
     <update id="update" parameterType="cn.crap.model.Bug">
         update bug
         <set>
-            <if test="query.assignedTo != null">
-                assignedTo = #{query.assignedTo},
+            <if test="assignedTo != null">
+                assignedTo = #{assignedTo},
             </if>
-            <if test="query.priority != null">
-                priority = #{query.priority},
+            <if test="priority != null">
+                priority = #{priority},
             </if>
-            <if test="query.updateBy != null">
-                updateBy = #{query.updateBy},
+            <if test="updateBy != null">
+                updateBy = #{updateBy},
             </if>
-            <if test="query.name != null">
-                name = #{query.name},
+            <if test="name != null">
+                name = #{name},
             </if>
-            <if test="query.content != null">
-                content = #{query.content},
+            <if test="content != null">
+                content = #{content},
             </if>
-            <if test="query.severity != null">
-                severity = #{query.severity},
+            <if test="severity != null">
+                severity = #{severity},
             </if>
-            <if test="query.sequence != null">
-                sequence = #{query.sequence},
+            <if test="sequence != null">
+                sequence = #{sequence},
             </if>
-            <if test="query.moduleId != null">
-                moduleId = #{query.moduleId},
+            <if test="moduleId != null">
+                moduleId = #{moduleId},
             </if>
-            <if test="query.attributes != null">
-                attributes = #{query.attributes},
+            <if test="attributes != null">
+                attributes = #{attributes},
             </if>
-            <if test="query.tester != null">
-                tester = #{query.tester},
+            <if test="tester != null">
+                tester = #{tester},
             </if>
-            <if test="query.traceType != null">
-                traceType = #{query.traceType},
+            <if test="traceType != null">
+                traceType = #{traceType},
             </if>
-            <if test="query.tracer != null">
-                tracer = #{query.tracer},
+            <if test="tracer != null">
+                tracer = #{tracer},
             </if>
-            <if test="query.status != null">
-                status = #{query.status},
+            <if test="status != null">
+                status = #{status},
             </if>
-            <if test="query.deadline != null">
-                deadline = #{query.deadline},
+            <if test="deadline != null">
+                deadline = #{deadline},
             </if>
-            updateTime = #{query.updateTime}
+            updateTime = #{updateTime}
         </set>
-        where id=#{query.id}
+        where id=#{id}
     </update>
 
 

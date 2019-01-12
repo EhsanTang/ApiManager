@@ -1,5 +1,7 @@
 package cn.crap.enu;
 
+import java.util.Optional;
+
 public enum BugStatus {
     /**
      * 10-19 待解决的状态
@@ -38,14 +40,23 @@ public enum BugStatus {
 	private final String value;
 	private final String name;
 
+    public static BugStatus getByValue(Byte value){
+        if (value == null){
+            return null;
+        }
+        for( BugStatus status : BugStatus.values()){
+            if(status.value.equals(value + "")){
+                return status;
+            }
+        }
+        return null;
+    }
+
 	public static String getNameByValue(Byte value){
-		for( BugStatus status : BugStatus.values()){
-			if(status.value.equals(value + "")){
-				return status.getName();
-			}
-		}
-		return "";
-	}
+        BugStatus bugStatus = getByValue(value);
+        return Optional.ofNullable(bugStatus).map(s->s.getName()).orElse("");
+
+    }
 
 	BugStatus(String value, String name){
 		this.value = value;

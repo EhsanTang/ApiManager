@@ -6,7 +6,9 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.model.BasePo;
 import cn.crap.query.BaseQuery;
 import cn.crap.utils.AttributeUtils;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
+import cn.crap.utils.TableField;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -19,16 +21,32 @@ import java.util.Map;
 public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
     protected Logger log = Logger.getLogger("service");
 
-    private NewBaseDao<PO, Query> myBaseDao;
+    private NewBaseDao<PO, Query> newBaseDao;
     private TableId tableId;
     public void setBaseDao(NewBaseDao<PO, Query> myBaseDao, TableId tableId) {
-        this.myBaseDao = myBaseDao;
+        this.newBaseDao = myBaseDao;
         this.tableId = tableId;
     }
 
     public PO get(String id) {
         Assert.notNull(id);
-        return myBaseDao.get(id);
+        return newBaseDao.get(id);
+    }
+
+    public int getMaxSequence(PO po, Query query){
+        if (po.getSequence() != null){
+            return po.getSequence();
+        }
+        query.setPageSize(1);
+        query.setCurrentPage(1);
+        query.setSort(TableField.SORT.SEQUENCE_DESC);
+        query.setProjectId(po.getProjectId());
+
+        List<PO> poList = this.select(query);
+        if (poList.size() > 0){
+            return poList.get(0).getSequence() + 1;
+        }
+        return 0;
     }
 
     public boolean insert(PO po){
@@ -41,8 +59,18 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         if (po.getSequence() == null){
             po.setSequence(0);
         }
+
+        if (po.getSequence() < 0){
+            po.setSequence(0);
+        }
+        /**
+         * 不能超过mysql最大限制
+         */
+        if (po.getSequence() > IConst.C_MAX_SEQUENCE){
+            po.setSequence(IConst.C_MAX_SEQUENCE);
+        }
         po.setCreateTime(new Date());
-        return myBaseDao.insert(po) > 0;
+        return newBaseDao.insert(po) > 0;
     }
 
     public boolean update(PO po){
@@ -51,22 +79,22 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
 
         po.setCreateTime(null);
         po.setUpdateTime(new Date());
-        return myBaseDao.update(po) > 0 ? true : false;
+        return newBaseDao.update(po) > 0 ? true : false;
     }
 
     public boolean delete(String id){
         Assert.notNull(id, "id can't be null");
-        return myBaseDao.delete(id) > 0 ? true : false;
+        return newBaseDao.delete(id) > 0 ? true : false;
     }
 
     public int count(Query query){
         Assert.notNull(query, "query can't be null");
-        return myBaseDao.count(query);
+        return newBaseDao.count(query);
     }
 
     public List<PO> select(Query query){
         Assert.notNull(query, "query can't be null");
-        return myBaseDao.select(query);
+        return newBaseDao.select(query);
     }
 
     /**

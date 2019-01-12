@@ -40,28 +40,34 @@
             <div ng-repeat="item in bugs" class="cursor bb1 p10 BGFFF f14">
                 <div>
                     <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
-                    <span class="mr10 mt-3 f12 btn btn-xs btn-bug-status-{{item.status}}"
-                          id="status-{{item.id}}" crap-data-def="{{item.status}}" crap-data-id="status-{{item.id}}"
-                          crap-data-class="btn-bug-status" onclick="loadBugPick(this, event,150,290,'BUG_STATUS')">
-                        {{item.statusStr}}
+                    <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}"
+                          id="status-{{item.id}}" crap-def="{{item.status}}" crap-id="{{item.id}}" crap-class-pre="bug-status"
+                          onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
+                        <span id="status-{{item.id}}-text">{{item.statusStr}}</span>
+                        <i class="iconfont">&#xe614;</i>
                     </span>
+
                     {{item.name| cut:true:60:' ...'}}
                     <div class="fr f12">
                         {{item.createdBy}} → {{item.assignedTo}}
                         <span ng-bind="item.createTimeStr" class="C999 pl10"></span>
                     </div>
                 </div>
+
                 <div class="mt10 f12">
-                    <button class="mr10 btn btn-xs bug-priority-{{item.priority}}" id="bug-priorityStr-{{item.id}}"
-                            ng-click="loadPickByName('iwidth=100|iheight=150|tag=priority|tagName=bug-priorityStr|code=PRIORITY|params=&isList=true&listDataName=bugs|def=' + item.priority,$event);">
+                    <button class="mr10 btn btn-xs bug-priority-{{item.priority}}"
+                            id="priority-{{item.id}}" crap-def="{{item.priority}}" crap-id="{{item.id}}" crap-class-pre="bug-priority"
+                            onclick="loadBugPick(this, event,90,150,'PRIORITY')">
                         <i class="iconfont">&#xe80c;</i>
-                        {{item.priorityStr}}
+                        <span id="priority-{{item.id}}-text">{{item.priorityStr}}</span>
                         <i class="iconfont">&#xe614;</i>
                     </button>
-                    <button class="mr10 btn btn-xs bug-severity-{{item.severity}}" id="bug-severityStr"
-                            ng-click="loadPickByName('iwidth=100|iheight=150|tag=severity|tag=bug-severityStr|code=SEVERITY|params=&isList=true&listDataName=bugs|def=' + item.severity,$event);">
-                    <i class="iconfont">&#xe6b6;</i>
-                        {{item.severityStr}}
+
+                    <button class="mr10 btn btn-xs bug-severity-{{item.severity}}"
+                            id="severity-{{item.id}}" crap-def="{{item.severity}}" crap-id="{{item.id}}" crap-class-pre="bug-severity"
+                            onclick="loadBugPick(this, event,100,150,'SEVERITY')">
+                        <i class="iconfont">&#xe6b6;</i>
+                        <span id="severity-{{item.id}}-text">{{item.severityStr}}</span>
                         <i class="iconfont">&#xe614;</i>
                     </button>
                     <span class="CAAA mr10" ng-bind="item.traceTypeStr"></span>

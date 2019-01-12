@@ -35,18 +35,44 @@ public class BugController extends BaseController{
     @Autowired
     MenuService customMenuService;
 
+    /**
+     * bug管理系统下拉选择框
+     * @param request
+     * @param type
+     * @param def
+     * @param tag
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "pick.do")
-    public String pickOut(HttpServletRequest request, String code, @RequestParam(defaultValue = "")  String key, String def,
+    public String pickUp(HttpServletRequest request, String type, String def,
                           String tag) throws Exception {
-
-        String pickContent = customMenuService.pick("true", code, key, def, "true");
+        String pickContent = customMenuService.pick("true", type, null, def, "true");
         request.setAttribute("tag", tag);
         request.setAttribute("pickContent", pickContent);
+        request.setAttribute("type", type);
         return "WEB-INF/views/bugPick.jsp";
     }
 
     /**
-     * 错误码列表
+     * 修改缺陷状态（严重程度、优先级等）
+     * @param type 待修改的状态类型
+     * @param value 新的状态
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "changeStatus.do")
+    @ResponseBody
+    public JsonResult changeStatus(String id, @RequestParam(defaultValue = "") String type, Byte value) throws Exception{
+        // TODO 修改日志
+        Bug bug = bugService.getChangeStatusPO(id, type, value);
+        boolean update = bugService.update(bug);
+        return new JsonResult(update);
+    }
+
+
+    /**
+     * bug列表
      * @return
      * @throws MyException
      */

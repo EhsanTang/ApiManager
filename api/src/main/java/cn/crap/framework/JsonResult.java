@@ -21,6 +21,11 @@ public class JsonResult implements Serializable {
 	public JsonResult(){
 		this.success = 1;
 	}
+
+	public JsonResult(boolean isSuccess){
+		this.success = (isSuccess ? 1 : 0);
+	}
+
 	public JsonResult(Integer success,Object data,String errorCode,String errorMessage){
 		this.data = data;
 		this.success = success;

@@ -13,6 +13,10 @@ public enum BugPriority {
 	private final String value;
 	private final String name;
 
+	public static BugPriority getByValue(String value){
+		return getByValue(Byte.parseByte(value));
+	}
+
 	public static BugPriority getByValue(Byte value){
 		if (value == null){
 			return null;

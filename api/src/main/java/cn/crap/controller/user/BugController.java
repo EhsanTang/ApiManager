@@ -8,6 +8,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Bug;
+import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.query.BugQuery;
 import cn.crap.service.BugService;
@@ -28,7 +29,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/bug")
 public class BugController extends BaseController{
-    // TODO 权限待定
+    // TODO 权限目前只要项目成员即可操作
 
     @Autowired
     private BugService bugService;
@@ -45,6 +46,7 @@ public class BugController extends BaseController{
      * @throws Exception
      */
     @RequestMapping(value = "pick.do")
+    @AuthPassport
     public String pickUp(HttpServletRequest request, String type, String def,
                           String tag) throws Exception {
         String pickContent = customMenuService.pick("true", type, null, def, "true");
@@ -61,13 +63,23 @@ public class BugController extends BaseController{
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "changeStatus.do")
+    @RequestMapping(value = "changeBug.do")
     @ResponseBody
-    public JsonResult changeStatus(String id, @RequestParam(defaultValue = "") String type, Byte value) throws Exception{
+    @AuthPassport
+    public JsonResult changeBug(String id, @RequestParam(defaultValue = "") String type, String value) throws Exception{
         // TODO 修改日志
-        Bug bug = bugService.getChangeStatusPO(id, type, value);
+        Bug dbBug = bugService.get(id);
+        checkPermission(dbBug.getProjectId(), READ);
+
+        Bug bug = bugService.getChangeBugPO(id, type, value);
         boolean update = bugService.update(bug);
-        return new JsonResult(update);
+
+        dbBug = bugService.get(id);
+        Module module = moduleCache.get(dbBug.getModuleId());
+        Project project = projectCache.get(dbBug.getProjectId());
+
+        BugDto dto = BugAdapter.getDto(dbBug, module, project);
+        return new JsonResult(update).data(dto);
     }
 
 
@@ -96,19 +108,25 @@ public class BugController extends BaseController{
     @AuthPassport
     public JsonResult detail(String id, String projectId) throws MyException {
         Bug model;
+        Module module = null;
+        Project project = null;
         if (id != null) {
             model = bugService.get(id);
+            module = moduleCache.get(model.getModuleId());
+            project = projectCache.get(model.getProjectId());
             checkPermission(projectCache.get(model.getProjectId()), READ);
         } else {
             model = new Bug();
             model.setProjectId(projectId);
-            checkPermission(projectCache.get(projectId), READ);
+            project = projectCache.get(model.getProjectId());
+            checkPermission(project, READ);
         }
-        return new JsonResult(1, BugAdapter.getDto(model));
+        return new JsonResult(1, BugAdapter.getDto(model, module, project));
     }
 
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
+    @AuthPassport
     public JsonResult addOrUpdate(@ModelAttribute BugDto dto) throws MyException {
         String projectId = dto.getProjectId();
         Assert.notNull(projectId, "projectId can't be null");
@@ -138,6 +156,7 @@ public class BugController extends BaseController{
 
     @RequestMapping("/delete.do")
     @ResponseBody
+    @AuthPassport
     public JsonResult delete(String id) throws MyException {
         throwExceptionWhenIsNull(id, "id");
 

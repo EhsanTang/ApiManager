@@ -1,6 +1,5 @@
 <link href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css" />
-<div class="col-xs-12 p0 r0" ng-init="getArticleDetail(true)">
-    <form method="post" ng-submit="submitForm('user/article/addOrUpdate.do',saveArticleCallBack, null, goBack);">
+<div class="col-xs-12 p0 r0" ng-init="getBugDetail(true)" ng-controller="bugCtrl">
         <div class="col-xs-12 main-nav">
             <div class="btn-group btn-group-sm r3 fl mr10">
                 <button class="btn btn-default" ng-click="goBack()" type="button">
@@ -8,76 +7,84 @@
                 </button>
             </div>
 
+            <span class="mr10 f12 btn bug-status-{{bugVO.status}}"
+                  id="status" crap-def="{{bugVO.status}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-status"
+                  onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
+                        状态：
+                        <span id="status-text">{{bugVO.statusStr}}</span>
+                        <i class="iconfont mt-3">&#xe614;</i>
+            </span>
+
             <button type="submit" class="btn btn-adorn btn-sm">
                 <i class="iconfont f12 mt-3">&#xe747; 快速保存</i>
             </button>
         </div>
 
-        <div class="col-xs-12 p20 mt60">
+        <div class="col-xs-7 p20 mt60">
+            <div class="BGFFF p20">
+                <input class="form-control f14 fb bug-border-fff pr0 pl0" type="text" ng-model="bugVO.name" required>
+                <div id="bug-editor" class="mt20"></div>
+            </div>
+        </div>
+        <div class="col-xs-5 p20 pl0 mt60">
             <div class="BGFFF p15">
-                <table class="table table-no-border">
+                <div class="fb f14">属性</div>
+                <table class="table table-no-border f12 C555">
                     <tr>
-                        <td class="w70 f14 fb C000">标题 <span class="adorn-color fb">*</span></td>
-                        <td colspan="3">
-                            <input class="form-control" type="text" ng-model="model.name" required>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="f14 fb C000">类目
-                            <span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
-                                  title="「没有找到合适的类目？进入文章所在模块，点击编辑模块即可新增类目」">
-					        <i class="iconfont adorn-color mt-3">&#xe6a3;</i>
-				            </span>
-                        </td>
+                        <td class="w60">项目</td>
                         <td>
-                            <input class="form-control" type="text" id="category" ng-model="model.category"
-                                   placeholder="点击选择类目" readonly
-                                   ng-click="loadPick($event,220,250,'true','category','CATEGORY', '', model.category, '&key='+model.moduleId, 5);">
+                            <div type="text" ng-bind="bugVO.projectName" readonly></div>
                         </td>
 
-                        <td class="w70 fb C000">模块</td>
+                        <td class="w80">模块</td>
                         <td class="tl">
-                            <input class="form-control cursor" type="text" id="moduleName" ng-model="model.moduleName"
-                                   readonly autocomplete="off"
-                                   ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
-                        </td>
-                    </tr>
-                    <tr ng-if="showOperation('ARTICLE','');">
-                        <td class="f14 fb C000">状态
-                            <span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
-                                  title="「推荐：将出现在首页推荐文章菜单下，站点页面：需要添加key，后端菜单将支持选着跳转至该站点页面（如果首页、联系页面等）」">
-					        <i class="iconfont adorn-color mt-3">&#xe6a3;</i>
-				            </span>
-                        </td>
-                        <td colspan="3">
-                            <input class="form-control" type="text" id="statusName" placeholder="点击选择状态"
-                                   ng-model="model.statusName" readonly
-                                   ng-click="loadPickByName('iwidth=200|iheight=220|tagName=statusName|tag=status|code=ARTICLE_STATUS|def='+model.status,$event)">
+                            <input class="form-control" type="text" id="moduleId" ng-model="bugVO.moduleName"
+                                   crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" readonly
+                                   onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
                         </td>
                     </tr>
 
-                    <tr ng-if="model.status == 100">
-                        <td class="f14 fb C000">Key *</td>
-                        <td class="tc" colspan="3">
-                            <input class="form-control" type="text" ng-model="model.mkey"
-                                   placeholder="页面唯一标识，不可重复，英文，如：HELP">
-                        </td>
-                    </tr>
 
                     <tr>
-                        <td class="f14 fb C000">评论</td>
+                        <td>优先级</td>
                         <td>
-                            <select name="type" class="form-control" ng-model="model.canComment">
-                                <option value="1" ng-selected="item.canComment==1">可评论</option>
-                                <option value="0" ng-selected="item.canComment==0">不可评论</option>
-                            </select>
+                            <button class="btn btn-sm bug-priority-{{bugVO.priority}} b1 w tl"
+                                    id="priority" crap-def="{{bugVO.priority}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-priority"
+                                    onclick="loadBugPick(this, event,90,150,'PRIORITY')">
+                                <i class="iconfont">&#xe80c;</i>
+                                <span id="priority-text">{{bugVO.priorityStr}}</span>
+                                <i class="iconfont fr">&#xe614;</i>
+                            </button>
                         </td>
-                        <td class="f14 fb C000">排序</td>
-                        <td class="tc">
-                            <input class="form-control" min="0" type="number" ng-model="model.sequence">
+                        <td>严重程度</td>
+                        <td>
+                            <button class="btn btn-sm bug-severity-{{bugVO.severity}} b1 w tl"
+                                    id="severity" crap-def="{{bugVO.severity}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-severity"
+                                    onclick="loadBugPick(this, event,100,150,'SEVERITY')">
+                                <i class="iconfont">&#xe6b6;</i>
+                                <span id="severity-text">{{bugVO.severityStr}}</span>
+                                <i class="iconfont fr">&#xe614;</i>
+                            </button>
                         </td>
                     </tr>
+
+
+                    <tr>
+                        <td>xxx</td>
+                        <td>
+                        </td>
+                        <td>跟踪类型</td>
+                        <td>
+                            <button class="btn btn-sm b1 w tl"
+                                    id="traceType" crap-def="{{bugVO.traceType}}" crap-id="{{bugVO.id}}"
+                                    onclick="loadBugPick(this, event, 120,180,'TRACE_TYPE')">
+                                <span id="traceType-text">{{bugVO.traceTypeStr}}</span>
+                                <i class="iconfont fr">&#xe614;</i>
+                            </button>
+
+                        </td>
+                    </tr>
+
 
                     <tr>
                         <td class="tc f14 fb C000">简介</td>
@@ -89,29 +96,10 @@
 
             <div class="BGFFF p15 mt10" id="editor-div">
                 <div class="col-xs-12 p15 mb10">
-                    <div class="btn-group btn-group-sm r3 fl mr10">
-                        <button type="button"
-                                ng-class="{true: 'btn btn-main btn-sm article-editor', false: 'btn btn-btn-default btn-sm article-editor'}[model.useMarkdown == false]"
-                                ng-click="model.useMarkdown = false">
-                            <i class="iconfont f12 mt-3">&#xe69e; 富文本编辑器</i>
-                        </button>
-                        <button type="button"
-                                ng-class="{true: 'btn btn-main btn-sm article-editor', false: 'btn btn-btn-default btn-sm article-editor'}[model.useMarkdown == true]"
-                                ng-click="model.useMarkdown = true;createEditorMe()">
-                            <i class="iconfont mt-3">&#xe8e6;&nbsp;</i>MarkDown编辑器
-                        </button>
-                    </div>
-
-                    <div id="article-editor" ng-class="{true: 'mt50', false: 'mt50 none'}[model.useMarkdown == false]"></div>
-                    <div id="markdown-editor" ng-class="{true: 'mt50', false: 'mt50 none'}[model.useMarkdown == true]">
-                        <textarea style="display:none;"></textarea>
-                    </div>
                 </div>
                 <div class="cb"></div>
             </div>
         </div>
-    </form>
-
 </div>
 <div class="cb"></div>
 <script src="resources/framework/wang-editor-3.1.1/wangEditor.min.js" charset="utf-8" ></script>

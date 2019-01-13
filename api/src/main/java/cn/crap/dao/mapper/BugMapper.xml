@@ -82,6 +82,9 @@
             <if test="moduleId != null">
                 moduleId = #{moduleId},
             </if>
+            <if test="projectId != null">
+                projectId = #{projectId},
+            </if>
             <if test="attributes != null">
                 attributes = #{attributes},
             </if>

@@ -209,7 +209,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
-                createWangEditor("interface-editor", "remark", initInterfaceEditor, 150);
+                createWangEditor("interface-editor", $rootScope.model.remark, initInterfaceEditor, 150);
             }
             $rootScope.errors = eval("("+$rootScope.model.errors+")")
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
@@ -281,13 +281,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
             markdownEditor = null;
             if ($rootScope.model.useMarkdown){
-                createEditorMe('markdown-editor', getRootScope().model.markdown);
+                createEditorMe('markdown-editor', $rootScope.model.markdown);
             }
-            createWangEditor("article-editor", "content", initArticleEditor, "500px");
+            createWangEditor("article-editor", $rootScope.model.content, initArticleEditor, "500px");
         });
     };
     $scope.createEditorMe = function () {
-        createEditorMe('markdown-editor', getRootScope().model.markdown);
+        createEditorMe('markdown-editor', $rootScope.model.markdown);
     };
     $scope.getDictionaryDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +

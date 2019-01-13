@@ -13,6 +13,9 @@ public class BugDto extends Bug implements Serializable {
     private String createTimeStr;
     private String updateTimeStr;
 
+    private String moduleName;
+    private String projectName;
+
     public String getStatusStr() {
         return statusStr;
     }
@@ -59,5 +62,21 @@ public class BugDto extends Bug implements Serializable {
 
     public void setTraceTypeStr(String traceTypeStr) {
         this.traceTypeStr = traceTypeStr;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

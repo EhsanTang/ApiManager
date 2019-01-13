@@ -6,6 +6,8 @@ import cn.crap.enu.BugSeverity;
 import cn.crap.enu.BugStatus;
 import cn.crap.enu.BugTraceType;
 import cn.crap.model.Bug;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class BugAdapter {
-    public static BugDto getDto(Bug model){
+    public static BugDto getDto(Bug model, Module module, Project project){
         if (model == null){
             return null;
         }
@@ -32,6 +34,13 @@ public class BugAdapter {
         dto.setPriorityStr(BugPriority.getNameByValue(model.getPriority()));
         dto.setSeverityStr(BugSeverity.getNameByValue(model.getSeverity()));
         dto.setTraceTypeStr(BugTraceType.getNameByValue(model.getTraceType()));
+
+        if (module != null){
+            dto.setModuleName(module.getName());
+        }
+        if (project != null){
+            dto.setProjectName(project.getName());
+        }
 
         return dto;
     }
@@ -52,7 +61,7 @@ public class BugAdapter {
         }
         List<BugDto> dtos = new ArrayList<>();
         for (Bug model : models){
-            dtos.add(getDto(model));
+            dtos.add(getDto(model, null, null));
         }
         return dtos;
     }

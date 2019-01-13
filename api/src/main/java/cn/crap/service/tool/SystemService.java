@@ -31,7 +31,7 @@ public class SystemService {
 
     private Logger log = Logger.getLogger(getClass());
 
-    private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "index.css"};
+    private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "bug.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
             "userCtrls.js", "bugCtrls.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js",
             "crapApi.js", "json.js", "editor.js", "bug.js"};

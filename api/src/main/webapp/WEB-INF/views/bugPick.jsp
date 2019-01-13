@@ -17,14 +17,14 @@
         for (var i = 0; i < length; i++) {
             if (document.getElementsByName('cid')[i].checked == true) {
                 //  发送http请求
-                changeStatus(target, $("#" + pickTagText), i);
+                changeBug(target, $("#" + pickTagText), i);
                 break;
             }
         }
         iClose('lookUp');
     }
-    // 更新状态changeStatus
-    function changeStatus($pickTag, $pickTagText, index) {
+    // 更新状态changeBug
+    function changeBug($pickTag, $pickTagText, index) {
         var value = document.getElementsByName('cid')[index].value;
         var id = $pickTag.attr("crap-id");
         var def = $pickTag.attr("crap-def");
@@ -34,7 +34,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'user/bug/changeStatus.do',
+            url: 'user/bug/changeBug.do',
             async: true,
             data: params,
             complete: function (data) {
@@ -44,9 +44,15 @@
                     showTipWithTime(data.error.message, 5)
                 } else {
                     $pickTagText.html($(".cidName")[index].textContent);
-                    $pickTag.removeClass(classPre + "-" + def);
-                    $pickTag.addClass(classPre + "-" + value);
+                    if (classPre) {
+                        $pickTag.removeClass(classPre + "-" + def);
+                        $pickTag.addClass(classPre + "-" + value);
+                    }
                     $pickTag.attr("crap-def", value);
+                    var rootScope = getRootScope();
+                    rootScope.$apply(function () {
+                        rootScope.bugVO =  data.data;
+                    });
                 }
             }
         });

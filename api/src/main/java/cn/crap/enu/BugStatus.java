@@ -40,6 +40,9 @@ public enum BugStatus {
 	private final String value;
 	private final String name;
 
+    public static BugStatus getByValue(String value){
+        return getByValue(Byte.parseByte(value));
+    }
     public static BugStatus getByValue(Byte value){
         if (value == null){
             return null;

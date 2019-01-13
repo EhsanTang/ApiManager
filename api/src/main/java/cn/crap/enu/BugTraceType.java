@@ -1,5 +1,7 @@
 package cn.crap.enu;
 
+import java.util.Optional;
+
 /**
  * bug严重程度
  */
@@ -15,14 +17,28 @@ public enum BugTraceType {
 	private final String value;
 	private final String name;
 
-	public static String getNameByValue(Byte value){
-		for( BugTraceType status : BugTraceType.values()){
-			if(status.value.equals(value + "")){
-				return status.getName();
-			}
-		}
-		return "";
-	}
+    public static BugTraceType getByValue(String value){
+        return getByValue(Byte.parseByte(value));
+    }
+
+
+    public static BugTraceType getByValue(Byte value){
+        if (value == null){
+            return null;
+        }
+        for(BugTraceType status : BugTraceType.values()){
+            if(status.value.equals(value + "")){
+                return status;
+            }
+        }
+        return null;
+    }
+
+    public static String getNameByValue(Byte value){
+        BugTraceType traceType = getByValue(value);
+        return Optional.ofNullable(traceType).map(s->s.getName()).orElse("");
+    }
+
 
 	BugTraceType(String value, String name){
 		this.value = value;

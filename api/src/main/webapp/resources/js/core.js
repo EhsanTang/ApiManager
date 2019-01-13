@@ -260,11 +260,13 @@ function closeTip(data,iLoading,tipTime){
 	}
 	if(iLoading.toUpperCase().indexOf('TIP') >= 0){
 		if(tipMessage!="" && tipMessage!="false" && tipMessage!=false){
-            if (tipMessage.length < 10) {
+            if (tipMessage.length < 10){
+                $("#tip-div").width(100)
+            } else if (tipMessage.length < 20){
                 $("#tip-div").width(200)
-            } else if (tipMessage.length < 50) {
+            } else if (tipMessage.length < 50){
                 $("#tip-div").width(400)
-            } else {
+            }else{
                 $("#tip-div").width(600)
             }
 		}
@@ -278,6 +280,8 @@ function showTipWithTime(message, times) {
         return;
     }
     if (message.length < 10){
+        $("#tip-div").width(100)
+    } else if (message.length < 20){
         $("#tip-div").width(200)
     } else if (message.length < 50){
         $("#tip-div").width(400)

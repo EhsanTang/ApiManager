@@ -211,7 +211,7 @@ table{border-collapse:collapse;border-spacing:0}
 .pt100{padding-top:100px!important}
 
 /***********padding-right*******************/
-.pr5{padding-right:5px!important}.pr10{padding-right:10px!important}
+.pr0{padding-right:0px!important}.pr10{padding-right:10px!important}
 .pr15{padding-right:15px!important}.pr20{padding-right:20px!important}.pr30{padding-right:30px!important}
 .pr50{padding-right:50px!important}.pr75{padding-right:75px!important}.pr100{padding-right:100px!important}
 

@@ -4,7 +4,7 @@
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
 
-            <a type="button" class="btn btn-default" id="refresh" ng-click="queryArticleList(list.page.currentPage)"><i
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryBugList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
             <a type="button" class="btn btn-default btn-sm"
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryArticleList(1, true);">
+        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryBugList(1, true);">
             <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
         </button>
     </div>
@@ -47,7 +47,9 @@
                         <i class="iconfont">&#xe614;</i>
                     </span>
 
-                    {{item.name| cut:true:60:' ...'}}
+                    <a ng-href="#/user/bug/edit?id={{item.id}}&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+                        {{item.name| cut:true:60:' ...'}}
+                    </a>
                     <div class="fr f12">
                         {{item.createdBy}} → {{item.assignedTo}}
                         <span ng-bind="item.createTimeStr" class="C999 pl10"></span>
@@ -70,7 +72,14 @@
                         <span id="severity-{{item.id}}-text">{{item.severityStr}}</span>
                         <i class="iconfont">&#xe614;</i>
                     </button>
-                    <span class="CAAA mr10" ng-bind="item.traceTypeStr"></span>
+
+                    <button class="mr10 btn btn-xs C999"
+                            id="traceType-{{item.id}}" crap-def="{{item.traceType}}" crap-id="{{item.id}}"
+                            onclick="loadBugPick(this, event,120,180,'TRACE_TYPE')">
+                        <span id="traceType-{{item.id}}-text">{{item.traceTypeStr}}</span>
+                        <i class="iconfont">&#xe614;</i>
+                    </button>
+
                     <span class="CAAA mr10" ng-bind="item.updateTimeStr + ' 更新'"></span>
                 </div>
             </div>

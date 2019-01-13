@@ -13,6 +13,10 @@ public enum BugSeverity {
 	private final String value;
 	private final String name;
 
+    public static BugSeverity getByValue(String value){
+        return getByValue(Byte.parseByte(value));
+    }
+
     public static BugSeverity getByValue(Byte value){
         if (value == null){
             return null;

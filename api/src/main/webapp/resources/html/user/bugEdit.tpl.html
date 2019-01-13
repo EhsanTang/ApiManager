@@ -22,7 +22,8 @@
 
         <div class="col-xs-7 p20 mt60">
             <div class="BGFFF p20">
-                <input class="form-control f14 fb bug-border-fff pr0 pl0" type="text" ng-model="bugVO.name" required>
+                <input class="form-control f14 fb bug-border-fff pr0 pl0" type="text" ng-model="bugVO.name" required
+                    ng-blur="updateBugName()">
                 <div id="bug-editor" class="mt20"></div>
             </div>
         </div>

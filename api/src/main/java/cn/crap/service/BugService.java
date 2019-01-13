@@ -71,12 +71,16 @@ public class BugService extends NewBaseService<Bug, BugQuery> implements IConst 
         } else if (PickCode.PRIORITY.getCode().equals(type)){
             BugPriority bugPriority = Optional.ofNullable(BugPriority.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "优先级有误"));
             bug.setPriority(bugPriority.getByteValue());
-        }else if (PickCode.MY_MODULE.getCode().equals(type)){
+        } else if (PickCode.MY_MODULE.getCode().equals(type)){
             Module module = moduleCache.get(value);
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());
             bug.setProjectId(module.getProjectId());
             PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), IAuthCode.READ);
+        } else if ("NAME".equalsIgnoreCase(type)){
+            bug.setName(value);
+        } else if ("CONTENT".equalsIgnoreCase(type)){
+            bug.setContent(value);
         } else {
             throw new MyException(MyError.E000065, "不识别的类型：" + type);
         }

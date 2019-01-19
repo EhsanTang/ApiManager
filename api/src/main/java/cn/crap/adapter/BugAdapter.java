@@ -5,11 +5,14 @@ import cn.crap.enu.BugPriority;
 import cn.crap.enu.BugSeverity;
 import cn.crap.enu.BugStatus;
 import cn.crap.enu.BugTraceType;
+import cn.crap.framework.MyException;
 import cn.crap.model.Bug;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.LoginUserHelper;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,21 @@ public class BugAdapter {
         }
 
         return dto;
+    }
+
+    public static Bug getModel(String projectId, String moduleId) throws MyException {
+        Assert.notNull(projectId, "projectId 不能为空");
+        Bug model = new Bug();
+        model.setProjectId(projectId);
+        model.setName("新建缺陷");
+        model.setContent("");
+        model.setTraceType(BugTraceType.FUNCTION.getByteValue());
+        model.setPriority(BugPriority.MIDDLE.getByteValue());
+        model.setSeverity(BugSeverity.MAJOR.getByteValue());
+        model.setStatus(BugStatus.NEW.getByteValue());
+        model.setModuleId(moduleId);
+        model.setCreatedBy(LoginUserHelper.getUser().getId());
+        return model;
     }
 
     public static Bug getModel(BugDto dto){

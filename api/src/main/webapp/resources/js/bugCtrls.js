@@ -2,7 +2,7 @@
  * bug管理系统 controller
  */
 var bugModule = angular.module("bugModule", []);
-
+var VO_NAME = 'bugVO';
 // bug列表
 userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
     $scope.queryBugList = function (page, updateUrl) {
@@ -24,26 +24,38 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
     $scope.getBugDetail = function (isEdit) {
         var params = "iUrl=user/bug/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'bugVO', function () {
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null, VO_NAME, function () {
             // 存在 article-editor 则初始化
             if (!isEdit) {
                 return;
             }
-            $rootScope.bugVO.oldName = $rootScope.bugVO.name;
-            createWangEditor("bug-editor", $rootScope.bugVO.content, initBugEditor, "300px");
+            $rootScope[VO_NAME].oldName = $rootScope[VO_NAME].name;
+            $rootScope[VO_NAME].isEdit = false;
+            createWangEditor("bug-editor", $rootScope[VO_NAME].content, initBugEditor, "300px");
         });
     };
 
     // 更新状态changeBug
     $scope.updateBugName = function() {
-        var name = $rootScope.bugVO.name;
-        if ($rootScope.bugVO.oldName != name){
+        var name = $rootScope[VO_NAME].name;
+        if ($rootScope[VO_NAME].oldName != name){
             var params = "iUrl=user/bug/changeBug.do|iLoading=FLOAT|iPost=POST|iParams=&type=name&value=" +name +
-            "&id=" +$rootScope.bugVO.id ;
+            "&id=" +$rootScope[VO_NAME].id ;
             $rootScope.getBaseDataToDataKey($scope,$http,params,null,'bugVO', function () {
-                $rootScope.bugVO.oldName = name;
+                $rootScope[VO_NAME].oldName = name;
+                $rootScope[VO_NAME].isEdit = false;
             });
         }
+    }
+
+    // 更新状态changeBug
+    $scope.updateBugContent = function() {
+    var content = $rootScope[VO_NAME].content;
+        var params = "iUrl=user/bug/changeBug.do|iLoading=FLOAT|iPost=POST|iParams=&type=content&value=" +content +
+            "&id=" +$rootScope[VO_NAME].id ;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'bugVO', function () {
+            $rootScope[VO_NAME].isEdit = false;
+        });
     }
 });
 
@@ -76,6 +88,6 @@ function initBugEditor(editor) {
     ];
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        root.model.content = html;
+        root[VO_NAME].content = html;
     }
 }

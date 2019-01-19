@@ -14,17 +14,17 @@
                         <span id="status-text">{{bugVO.statusStr}}</span>
                         <i class="iconfont mt-3">&#xe614;</i>
             </span>
-
-            <button type="submit" class="btn btn-adorn btn-sm">
-                <i class="iconfont f12 mt-3">&#xe747; 快速保存</i>
-            </button>
         </div>
 
         <div class="col-xs-7 p20 mt60">
             <div class="BGFFF p20">
                 <input class="form-control f14 fb bug-border-fff pr0 pl0" type="text" ng-model="bugVO.name" required
                     ng-blur="updateBugName()">
-                <div id="bug-editor" class="mt20"></div>
+                <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑</button>
+                <button ng-class="{true: 'btn btn-xs btn-adorn fr', false:'none'}[bugVO.isEdit == true]" ng-click="updateBugContent();">保存</button>
+                <div class="cb"></div>
+                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt20', false:'none'}[bugVO.isEdit == false]"></div>
+                <div id="bug-editor" ng-class="{true: 'mt20', false:'none'}[bugVO.isEdit == true]"></div>
             </div>
         </div>
         <div class="col-xs-5 p20 pl0 mt60">

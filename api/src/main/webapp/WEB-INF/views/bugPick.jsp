@@ -52,6 +52,7 @@
                     var rootScope = getRootScope();
                     rootScope.$apply(function () {
                         rootScope.bugVO =  data.data;
+                        rootScope.bugVO.isEdit = false;
                     });
                 }
             }

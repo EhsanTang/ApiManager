@@ -107,6 +107,7 @@ public class BugController extends BaseController{
     @ResponseBody
     @AuthPassport
     public JsonResult detail(String id, String projectId) throws MyException {
+        checkPermission(projectId, READ);
         Bug model;
         Module module = null;
         Project project = null;
@@ -116,42 +117,11 @@ public class BugController extends BaseController{
             project = projectCache.get(model.getProjectId());
             checkPermission(projectCache.get(model.getProjectId()), READ);
         } else {
-            model = new Bug();
-            model.setProjectId(projectId);
-            project = projectCache.get(model.getProjectId());
-            checkPermission(project, READ);
+            project = projectCache.get(projectId);
+            model = BugAdapter.getModel(projectId, null);
+            bugService.insert(model);
         }
         return new JsonResult(1, BugAdapter.getDto(model, module, project));
-    }
-
-    @RequestMapping("/addOrUpdate.do")
-    @ResponseBody
-    @AuthPassport
-    public JsonResult addOrUpdate(@ModelAttribute BugDto dto) throws MyException {
-        String projectId = dto.getProjectId();
-        Assert.notNull(projectId, "projectId can't be null");
-
-        if (!MyString.isEmpty(dto.getId())) {
-            Bug dbBug = bugService.get(dto.getId());
-            // checkPermission(dbBug.getProjectId(), MOD_ERROR);
-
-            Bug newModel = BugAdapter.getModel(dto);
-            bugService.update(newModel);
-            return new JsonResult(1, dto);
-        }
-
-        dto.setStatus(BugStatus.NEW.getByteValue());
-        dto.setAssignedTo("tt");
-        dto.setCreatedBy("tt");
-        dto.setName("name");
-        dto.setPriority(BugPriority.URGENT.getByteValue());
-        dto.setSeverity(BugSeverity.BLOCK.getByteValue());
-        dto.setTester("tt");
-        dto.setTracer("tt");
-        dto.setTraceType(BugTraceType.FUNCTION.getByteValue());
-        // checkPermission(projectId, ADD_ERROR);
-        bugService.insert(BugAdapter.getModel(dto));
-        return new JsonResult(1, dto);
     }
 
     @RequestMapping("/delete.do")

@@ -161,7 +161,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		
 		interfaceService.deleteTemplateByModuleId(module.getId());
 		if(!inter.getIsTemplate()){
-			inter.setIsTemplate(true);;
+			inter.setIsTemplate(true);
 			interfaceService.update(inter);
 		}
 		

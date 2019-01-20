@@ -9,7 +9,7 @@
         <result column="name" property="name"/>
         <result column="content" property="content"/>
         <result column="severity" property="severity"/>
-        <result column="createdBy" property="createdBy"/>
+        <result column="creator" property="creator"/>
         <result column="updateBy" property="updateBy"/>
         <result column="updateTime" property="updateTime"/>
         <result column="sequence" property="sequence"/>
@@ -17,7 +17,7 @@
         <result column="attributes" property="attributes"/>
         <result column="tester" property="tester"/>
         <result column="projectId" property="projectId"/>
-        <result column="traceType" property="traceType"/>
+        <result column="type" property="type"/>
         <result column="tracer" property="tracer"/>
         <result column="status" property="status"/>
         <result column="deadline" property="deadline"/>
@@ -25,7 +25,7 @@
 
     <!-- 基本的字段，供其他查询引用-->
     <sql id="baseColumn">
-        id,createTime,assignedTo,priority,updateBy,name,content,severity,createdBy,updateTime,sequence,moduleId,attributes,tester,projectId,traceType,tracer,status,deadline
+        id,createTime,assignedTo,priority,updateBy,name,content,severity,creator,updateTime,sequence,moduleId,attributes,tester,projectId,type,tracer,status,deadline
    </sql>
 
     <sql id="querySql">
@@ -41,8 +41,8 @@
 
     <!-- 新增 -->
     <insert id="insert" parameterType="cn.crap.model.BugPO">
-        insert into bug (id,createTime,assignedTo,priority,updateBy,name,content,severity,createdBy,updateTime,sequence,moduleId,attributes,tester,projectId,traceType,tracer,status,deadline)
-        values (#{id},NOW(),#{assignedTo},#{priority},#{updateBy},#{name},#{content},#{severity},#{createdBy},NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{projectId},#{traceType},#{tracer},#{status},#{deadline})
+        insert into bug (id,createTime,assignedTo,priority,updateBy,name,content,severity,creator,updateTime,sequence,moduleId,attributes,tester,projectId,type,tracer,status,deadline)
+        values (#{id},NOW(),#{assignedTo},#{priority},#{updateBy},#{name},#{content},#{severity},#{creator},NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{projectId},#{type},#{tracer},#{status},#{deadline})
    </insert>
 
     <!-- 删除 -->
@@ -88,8 +88,8 @@
             <if test="tester != null">
                 tester = #{tester},
             </if>
-            <if test="traceType != null">
-                traceType = #{traceType},
+            <if test="type != null">
+                type = #{type},
             </if>
             <if test="tracer != null">
                 tracer = #{tracer},

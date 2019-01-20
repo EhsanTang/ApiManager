@@ -51,7 +51,7 @@
                         {{item.name| cut:true:60:' ...'}}
                     </a>
                     <div class="fr f12">
-                        {{item.createdBy}} → {{item.assignedTo}}
+                        {{item.creator}} → {{item.assignedTo}}
                         <span ng-bind="item.createTimeStr" class="C999 pl10"></span>
                     </div>
                 </div>
@@ -74,9 +74,9 @@
                     </button>
 
                     <button class="mr10 btn btn-xs C999"
-                            id="traceType-{{item.id}}" crap-def="{{item.traceType}}" crap-id="{{item.id}}"
+                            id="type-{{item.id}}" crap-def="{{item.type}}" crap-id="{{item.id}}"
                             onclick="loadBugPick(this, event,120,180,'TRACE_TYPE')">
-                        <span id="traceType-{{item.id}}-text">{{item.traceTypeStr}}</span>
+                        <span id="type-{{item.id}}-text">{{item.typeStr}}</span>
                         <i class="iconfont">&#xe614;</i>
                     </button>
 

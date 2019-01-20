@@ -38,23 +38,33 @@
                 <div class="fb f14">属性</div>
                 <table class="table table-no-border f12 C555">
                     <tr>
-                        <td class="w60">项目</td>
-                        <td>
-                            <div type="text" ng-bind="bugVO.projectName" readonly></div>
-                        </td>
-
-                        <td class="w80">模块</td>
-                        <td class="tl">
-                            <button class="btn btn-sm btn-default w tl" type="button" id="moduleId"
-                                   crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" readonly
-                                   onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
-                                <i class="iconfont main-color mr5">&#xe83b;</i>
-                                <span id="moduleId-text">{{bugVO.moduleName}}</span>
-                            </button>
+                        <td>项目</td>
+                        <td colspan="3">
+                            <div type="text" ng-bind="bugVO.projectName| cut:true:30:' ...'" readonly></div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="w60">模块</td>
+                        <td class="tl">
+                            <button class="btn btn-sm btn-default w tl break-word" type="button" id="moduleId"
+                                    crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" readonly
+                                    onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
+                                <i class="iconfont main-color mr5">&#xe83b;</i>
+                                <span id="moduleId-text">{{bugVO.moduleName|cut:true:7:' ..'}}</span>
+                            </button>
+                        </td>
+                        <td class="w60">类型</td>
+                        <td>
+                            <button class="btn btn-sm b1 w tl"
+                                    id="type" crap-def="{{bugVO.type}}" crap-id="{{bugVO.id}}" crap-name="type"
+                                    onclick="loadBugPick(this, event, 120,180,'TRACE_TYPE')">
+                                <span id="type-text">{{bugVO.typeStr}}</span>
+                                <i class="iconfont fr">&#xe614;</i>
+                            </button>
 
+                        </td>
+                    </tr>
                     <tr>
                         <td>优先级</td>
                         <td>
@@ -66,7 +76,7 @@
                                 <i class="iconfont fr">&#xe614;</i>
                             </button>
                         </td>
-                        <td>严重程度</td>
+                        <td>程度</td>
                         <td>
                             <button class="btn btn-sm bug-severity-{{bugVO.severity}} b1 w tl" crap-name="severity"
                                     id="severity" crap-def="{{bugVO.severity}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-severity"
@@ -78,19 +88,29 @@
                         </td>
                     </tr>
 
-
                     <tr>
-                        <td>类型</td>
-                        <td colspan="3">
-                            <button class="btn btn-sm b1 w tl"
-                                    id="traceType" crap-def="{{bugVO.traceType}}" crap-id="{{bugVO.id}}" crap-name="traceType"
-                                    onclick="loadBugPick(this, event, 120,180,'TRACE_TYPE')">
-                                <span id="traceType-text">{{bugVO.traceTypeStr}}</span>
+                        <td>处理人</td>
+                        <td>
+                            <button class="btn btn-sm bug-creator{{bugVO.priority}} b1 w tl" crap-name="priority"
+                                    id="priority" crap-def="{{bugVO.priority}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-priority"
+                                    onclick="loadBugPick(this, event,90,150,'PRIORITY')">
+                                <i class="iconfont mr5">&#xe80c;</i>
+                                <span id="priority-text">{{bugVO.priorityStr}}</span>
                                 <i class="iconfont fr">&#xe614;</i>
                             </button>
-
+                        </td>
+                        <td>抄送人</td>
+                        <td>
+                            <button class="btn btn-sm bug-tracer-{{bugVO.tracer}} b1 w tl" crap-name="tracer"
+                                    id="tracer" crap-def="{{bugVO.tracer}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-tracer"
+                                    onclick="loadBugPick(this, event,100,150,'TRACER')">
+                                <i class="iconfont mr5">&#xe6b6;</i>
+                                <span id="tracer-text">{{bugVO.tracerStr}}</span>
+                                <i class="iconfont fr">&#xe614;</i>
+                            </button>
                         </td>
                     </tr>
+
 
                 </table>
             </div>

@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * bug严重程度
  */
-public enum BugTraceType {
+public enum BugType {
     /**
      * 问题类型:1线上问题，2功能缺陷，3需求问题，4性能瓶颈，5反馈意见
      */
@@ -17,16 +17,16 @@ public enum BugTraceType {
 	private final String value;
 	private final String name;
 
-    public static BugTraceType getByValue(String value){
+    public static BugType getByValue(String value){
         return getByValue(Byte.parseByte(value));
     }
 
 
-    public static BugTraceType getByValue(Byte value){
+    public static BugType getByValue(Byte value){
         if (value == null){
             return null;
         }
-        for(BugTraceType status : BugTraceType.values()){
+        for(BugType status : BugType.values()){
             if(status.value.equals(value + "")){
                 return status;
             }
@@ -35,12 +35,12 @@ public enum BugTraceType {
     }
 
     public static String getNameByValue(Byte value){
-        BugTraceType traceType = getByValue(value);
-        return Optional.ofNullable(traceType).map(s->s.getName()).orElse("");
+        BugType type = getByValue(value);
+        return Optional.ofNullable(type).map(s->s.getName()).orElse("");
     }
 
 
-	BugTraceType(String value, String name){
+	BugType(String value, String name){
 		this.value = value;
 		this.name = name;
 	}

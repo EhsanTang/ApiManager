@@ -4,7 +4,7 @@ import cn.crap.dto.BugDTO;
 import cn.crap.enu.BugPriority;
 import cn.crap.enu.BugSeverity;
 import cn.crap.enu.BugStatus;
-import cn.crap.enu.BugTraceType;
+import cn.crap.enu.BugType;
 import cn.crap.model.BugPO;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
@@ -35,7 +35,7 @@ public class BugAdapter {
         dto.setStatusStr(BugStatus.getNameByValue(model.getStatus()));
         dto.setPriorityStr(BugPriority.getNameByValue(model.getPriority()));
         dto.setSeverityStr(BugSeverity.getNameByValue(model.getSeverity()));
-        dto.setTraceTypeStr(BugTraceType.getNameByValue(model.getTraceType()));
+        dto.setTraceStr(BugType.getNameByValue(model.getTrace()));
 
         if (module != null){
             dto.setModuleName(module.getName());
@@ -65,14 +65,14 @@ public class BugAdapter {
         bugDTO.setProjectName(project.getName());
         bugDTO.setName("【新建缺陷】");
         bugDTO.setContent("<p>[缺陷描述]:<br>[重现步骤]:<br>[期望结果]:<br>[原因定位]:<br>[建议修改]:<br></p>");
-        bugDTO.setTraceType(BugTraceType.FUNCTION.getByteValue());
+        bugDTO.setTrace(BugType.FUNCTION.getByteValue());
         bugDTO.setPriority(BugPriority.MIDDLE.getByteValue());
         bugDTO.setSeverity(BugSeverity.MAJOR.getByteValue());
         bugDTO.setStatus(BugStatus.NEW.getByteValue());
         bugDTO.setStatusStr(BugStatus.getNameByValue(bugDTO.getStatus()));
         bugDTO.setPriorityStr(BugPriority.getNameByValue(bugDTO.getPriority()));
         bugDTO.setSeverityStr(BugSeverity.getNameByValue(bugDTO.getSeverity()));
-        bugDTO.setTraceTypeStr(BugTraceType.getNameByValue(bugDTO.getTraceType()));
+        bugDTO.setTraceStr(BugType.getNameByValue(bugDTO.getTrace()));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getName()).orElse(null));
         return bugDTO;

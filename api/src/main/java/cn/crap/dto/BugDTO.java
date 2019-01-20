@@ -8,7 +8,7 @@ public class BugDTO extends BugPO implements Serializable {
     private String statusStr;
     private String severityStr;
     private String priorityStr;
-    private String traceTypeStr;
+    private String typeStr;
     private String createTimeStr;
     private String updateTimeStr;
 
@@ -55,12 +55,12 @@ public class BugDTO extends BugPO implements Serializable {
         this.priorityStr = priorityStr;
     }
 
-    public String getTraceTypeStr() {
-        return traceTypeStr;
+    public String getTraceStr() {
+        return typeStr;
     }
 
-    public void setTraceTypeStr(String traceTypeStr) {
-        this.traceTypeStr = traceTypeStr;
+    public void setTraceStr(String typeStr) {
+        this.typeStr = typeStr;
     }
 
     public String getModuleName() {

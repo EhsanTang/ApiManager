@@ -9,12 +9,12 @@ public class BugPO extends BasePo{
 	private String name;
 	private String content;
 	private Byte severity;
-	private String createdBy;
+	private String creator;
 	private String moduleId;
 	private String attributes;
 	private String tester;
 	private String projectId;
-	private Byte traceType;
+	private Byte type;
 	private String tracer;
 	private Byte status;
 	private Date deadline;
@@ -67,12 +67,12 @@ public class BugPO extends BasePo{
 		this.severity = severity;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public String getCreator() {
+		return creator;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 	public String getModuleId() {
@@ -83,10 +83,12 @@ public class BugPO extends BasePo{
 		this.moduleId = moduleId;
 	}
 
+	@Override
 	public String getAttributes() {
 		return attributes;
 	}
 
+	@Override
 	public void setAttributes(String attributes) {
 		this.attributes = attributes;
 	}
@@ -99,6 +101,7 @@ public class BugPO extends BasePo{
 		this.tester = tester;
 	}
 
+	@Override
 	public String getProjectId() {
 		return projectId;
 	}
@@ -107,12 +110,12 @@ public class BugPO extends BasePo{
 		this.projectId = projectId;
 	}
 
-	public Byte getTraceType() {
-		return traceType;
+	public Byte getTrace() {
+		return type;
 	}
 
-	public void setTraceType(Byte traceType) {
-		this.traceType = traceType;
+	public void setTrace(Byte type) {
+		this.type = type;
 	}
 
 	public String getTracer() {

@@ -52,7 +52,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         if (bug.getContent() == null){
             bug.setContent("");
         }
-        bug.setCreatedBy(LoginUserHelper.getUser().getId());
+        bug.setCreator(LoginUserHelper.getUser().getId());
         bug.setStatus(BugStatus.NEW.getByteValue());
         bug.setSequence(getMaxSequence(bug, new BugQuery()));
         return super.insert(bug);
@@ -68,8 +68,8 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             BugSeverity bugSeverity = Optional.ofNullable(BugSeverity.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "严重程度有误"));
             bug.setSeverity(bugSeverity.getByteValue());
         } else if (PickCode.TRACE_TYPE.getCode().equals(type)){
-            BugTraceType traceType = Optional.ofNullable(BugTraceType.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "跟踪类型有误"));
-            bug.setTraceType(traceType.getByteValue());
+            BugType bugType = Optional.ofNullable(BugType.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "跟踪类型有误"));
+            bug.setTrace(bugType.getByteValue());
         } else if (PickCode.PRIORITY.getCode().equals(type)){
             BugPriority bugPriority = Optional.ofNullable(BugPriority.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "优先级有误"));
             bug.setPriority(bugPriority.getByteValue());

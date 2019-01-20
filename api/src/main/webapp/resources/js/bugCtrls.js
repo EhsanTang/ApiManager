@@ -6,6 +6,11 @@ var VO_NAME = 'bugVO';
 var VO_LIST_NAME = 'bugVOList';
 // bug列表
 userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    /**
+     * 列表
+     * @param page
+     * @param updateUrl
+     */
     $scope.queryBugList = function (page, updateUrl) {
         var params = "iUrl=user/bug/list.do|iLoading=FLOAT|iPost=POST|iParams="
             + "&moduleId=" + $stateParams.moduleId
@@ -22,42 +27,58 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
         $rootScope.getBaseDataToDataKey($scope, $http, params, page, VO_LIST_NAME);
     };
 
+    /**
+     * 详情
+     */
+    var bugEdit;
     $scope.getBugDetail = function () {
         var params = "iUrl=user/bug/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null, VO_NAME, function () {
+            bugEdit = createWangEditor("bug-editor", $rootScope[VO_NAME].content, initBugEditor, "300px");
             $rootScope[VO_NAME].oldName = $rootScope[VO_NAME].name;
-            $rootScope[VO_NAME].isEdit = false;
+            $rootScope[VO_NAME].oldContent = $rootScope[VO_NAME].content;
             if ($stateParams.isAdd && $stateParams.isAdd == 'true'){
                 $("#bug-name").focus();
                 $rootScope[VO_NAME].isEdit = true;
             }
-            createWangEditor("bug-editor", $rootScope[VO_NAME].content, initBugEditor, "300px");
             return;
         });
     };
 
-    // 更新状态changeBug
+    /**
+     * 名称
+     */
     $scope.updateBugName = function() {
         var name = $rootScope[VO_NAME].name;
         if ($rootScope[VO_NAME].oldName != name){
             var params = "iUrl=user/bug/changeBug.do|iLoading=FLOAT|iPost=POST|iParams=&type=name&value=" +name +
             "&id=" +$rootScope[VO_NAME].id ;
-            $rootScope.getBaseDataToDataKey($scope,$http,params,null,'bugVO', function () {
+            $rootScope.getBaseDataToDataKey($scope,$http,params,null, null, function () {
                 $rootScope[VO_NAME].oldName = name;
-                $rootScope[VO_NAME].isEdit = false;
             });
         }
     }
 
-    // 更新状态changeBug
+    /**
+     * 内容
+     */
     $scope.updateBugContent = function() {
-    var content = $rootScope[VO_NAME].content;
+        var content = $rootScope[VO_NAME].content;
         var params = "iUrl=user/bug/changeBug.do|iLoading=FLOAT|iPost=POST|iParams=&type=content&value=" +content +
             "&id=" +$rootScope[VO_NAME].id ;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,null,'bugVO', function () {
+        $rootScope.getBaseDataToDataKey($scope,$http,params,null, null, function () {
             $rootScope[VO_NAME].isEdit = false;
+            $rootScope[VO_NAME].oldContent = $rootScope[VO_NAME].content;
         });
+    }
+    /**
+     * 取消编辑
+     */
+    $scope.cancelBugContent = function() {
+       $rootScope[VO_NAME].content = $rootScope[VO_NAME].oldContent;
+       bugEdit.txt.html($rootScope[VO_NAME].content);
+       $rootScope[VO_NAME].isEdit = false;
     }
 });
 

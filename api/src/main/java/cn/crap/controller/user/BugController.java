@@ -13,6 +13,7 @@ import cn.crap.model.Project;
 import cn.crap.query.BugQuery;
 import cn.crap.service.BugService;
 import cn.crap.service.MenuService;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,6 +67,10 @@ public class BugController extends BaseController{
     @AuthPassport
     public JsonResult changeBug(String id, @RequestParam(defaultValue = "") String type, String value) throws Exception{
         // TODO 修改日志
+        // id为0，忽略
+        if (MyString.isEmpty(id)){
+            return new JsonResult(true);
+        }
         BugPO dbBug = bugService.get(id);
         checkPermission(dbBug.getProjectId(), READ);
 

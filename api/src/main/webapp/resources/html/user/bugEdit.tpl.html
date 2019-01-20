@@ -7,22 +7,29 @@
                 </button>
             </div>
 
-            <span class="mr10 f12 btn bug-status-{{bugVO.status}}"
+            <span class="mr10 f12 btn bug-status-{{bugVO.status}}"  crap-name="status"
                   id="status" crap-def="{{bugVO.status}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-status"
                   onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
                         状态：
                         <span id="status-text">{{bugVO.statusStr}}</span>
                         <i class="iconfont mt-3">&#xe614;</i>
             </span>
+
+            <button type="submit" class="btn btn-adorn btn-sm">
+                <i class="iconfont f12 mt-3">&#xe747; 保存</i>
+            </button>
         </div>
 
         <div class="col-xs-7 p20 mt60">
             <div class="BGFFF p20">
-                <input class="form-control f14 fb bug-border-fff pr0 pl0 mb10" id="bug-name" type="text" ng-model="bugVO.name" required ng-blur="updateBugName()">
-                <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑</button>
+                <div class="dashed-b mb10">
+                    <input class="form-control f14 fb bug-border-fff pr0 pl0 mb10" id="bug-name" type="text" ng-model="bugVO.name" required ng-blur="updateBugName()">
+                </div>
+                <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[!bugVO.isEdit || bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑描述</button>
                 <button ng-class="{true: 'btn btn-xs btn-adorn fr', false:'none'}[bugVO.isEdit == true]" ng-click="updateBugContent();">保存</button>
+                <button ng-class="{true: 'btn btn-xs btn-default mr10 fr', false:'none'}[bugVO.isEdit == true]" ng-click="cancelBugContent();">取消编辑</button>
                 <div class="cb"></div>
-                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == false]"></div>
+                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[!bugVO.isEdit ||bugVO.isEdit == false]"></div>
                 <div id="bug-editor" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == true]"></div>
             </div>
         </div>
@@ -38,9 +45,12 @@
 
                         <td class="w80">模块</td>
                         <td class="tl">
-                            <input class="form-control" type="text" id="moduleId" ng-model="bugVO.moduleName"
-                                   crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" readonly
+                            <button class="btn btn-sm btn-default w tl" type="button" id="moduleId"
+                                   crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" readonly
                                    onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
+                                <i class="iconfont main-color mr5">&#xe83b;</i>
+                                <span id="moduleId-text">{{bugVO.moduleName}}</span>
+                            </button>
                         </td>
                     </tr>
 
@@ -48,20 +58,20 @@
                     <tr>
                         <td>优先级</td>
                         <td>
-                            <button class="btn btn-sm bug-priority-{{bugVO.priority}} b1 w tl"
+                            <button class="btn btn-sm bug-priority-{{bugVO.priority}} b1 w tl" crap-name="priority"
                                     id="priority" crap-def="{{bugVO.priority}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-priority"
                                     onclick="loadBugPick(this, event,90,150,'PRIORITY')">
-                                <i class="iconfont">&#xe80c;</i>
+                                <i class="iconfont mr5">&#xe80c;</i>
                                 <span id="priority-text">{{bugVO.priorityStr}}</span>
                                 <i class="iconfont fr">&#xe614;</i>
                             </button>
                         </td>
                         <td>严重程度</td>
                         <td>
-                            <button class="btn btn-sm bug-severity-{{bugVO.severity}} b1 w tl"
+                            <button class="btn btn-sm bug-severity-{{bugVO.severity}} b1 w tl" crap-name="severity"
                                     id="severity" crap-def="{{bugVO.severity}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-severity"
                                     onclick="loadBugPick(this, event,100,150,'SEVERITY')">
-                                <i class="iconfont">&#xe6b6;</i>
+                                <i class="iconfont mr5">&#xe6b6;</i>
                                 <span id="severity-text">{{bugVO.severityStr}}</span>
                                 <i class="iconfont fr">&#xe614;</i>
                             </button>
@@ -76,7 +86,7 @@
                         <td>跟踪类型</td>
                         <td>
                             <button class="btn btn-sm b1 w tl"
-                                    id="traceType" crap-def="{{bugVO.traceType}}" crap-id="{{bugVO.id}}"
+                                    id="traceType" crap-def="{{bugVO.traceType}}" crap-id="{{bugVO.id}}" crap-name="traceType"
                                     onclick="loadBugPick(this, event, 120,180,'TRACE_TYPE')">
                                 <span id="traceType-text">{{bugVO.traceTypeStr}}</span>
                                 <i class="iconfont fr">&#xe614;</i>

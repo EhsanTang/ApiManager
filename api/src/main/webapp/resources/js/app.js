@@ -169,11 +169,13 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
                 $rootScope.error = isSuccess.replace('[ERROR]', '');
             }else{
                 $rootScope.error = null;
-                $rootScope[dataKey] = result.data;
-                if (!$rootScope.page){
-                    $rootScope.page = {};
-                }
-                $rootScope.page[dataKey] = result.page;
+                if (dataKey && dataKey != null){
+                    $rootScope[dataKey] = result.data;
+                    if (!$rootScope.page){
+                        $rootScope.page = {};
+                    }
+                    $rootScope.page[dataKey] = result.page;
+				}
 
                 if (callBack){
                     callBack();

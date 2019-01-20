@@ -87,6 +87,7 @@ function createWangEditor(id, editorHtml, init, height) {
         editorHtml = "";
     }
     editor.txt.html(editorHtml);
+    return editor;
 }
 
 function initArticleEditor(editor) {

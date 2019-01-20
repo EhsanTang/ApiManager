@@ -27,11 +27,19 @@
     function changeBug($pickTag, $pickTagText, index) {
         var value = document.getElementsByName('cid')[index].value;
         var id = $pickTag.attr("crap-id");
-        var def = $pickTag.attr("crap-def");
-        var classPre = $pickTag.attr("crap-class-pre");
+        var name = $pickTag.attr("crap-name");
+
+        // 新增:详情页面才有bugVO
+        if (!id || id == null || id == 'null' || id == 'NULL'){
+            changeShow($pickTag, $pickTagText, index);
+            var rootScope = getRootScope();
+            rootScope.$apply(function () {
+                rootScope.bugVO[name] = value;
+            });
+            return;
+		}
 
         var params = 'value=' + value + '&type=' + type + '&id=' + id;
-
         $.ajax({
             type: 'GET',
             url: 'user/bug/changeBug.do',
@@ -43,15 +51,21 @@
                 if (data.success == 0){
                     showTipWithTime(data.error.message, 5)
                 } else {
-                    $pickTagText.html($(".cidName")[index].textContent);
-                    if (classPre) {
-                        $pickTag.removeClass(classPre + "-" + def);
-                        $pickTag.addClass(classPre + "-" + value);
-                    }
-                    $pickTag.attr("crap-def", value);
+                    changeShow($pickTag, $pickTagText, index);
                 }
             }
         });
+    }
+    function changeShow($pickTag, $pickTagText, index) {
+        var def = $pickTag.attr("crap-def");
+        var classPre = $pickTag.attr("crap-class-pre");
+        var value = document.getElementsByName('cid')[index].value;
+        $pickTagText.html($(".cidName")[index].textContent);
+        if (classPre) {
+            $pickTag.removeClass(classPre + "-" + def);
+            $pickTag.addClass(classPre + "-" + value);
+        }
+        $pickTag.attr("crap-def", value);
     }
 </script>
 <div id="pickContent">

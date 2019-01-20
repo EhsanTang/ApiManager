@@ -59,6 +59,10 @@ public class BugAdapter {
         bugDTO.setPriority(BugPriority.MIDDLE.getByteValue());
         bugDTO.setSeverity(BugSeverity.MAJOR.getByteValue());
         bugDTO.setStatus(BugStatus.NEW.getByteValue());
+        bugDTO.setStatusStr(BugStatus.getNameByValue(bugDTO.getStatus()));
+        bugDTO.setPriorityStr(BugPriority.getNameByValue(bugDTO.getPriority()));
+        bugDTO.setSeverityStr(BugSeverity.getNameByValue(bugDTO.getSeverity()));
+        bugDTO.setTraceTypeStr(BugTraceType.getNameByValue(bugDTO.getTraceType()));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getName()).orElse(null));
         return bugDTO;

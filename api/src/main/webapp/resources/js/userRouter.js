@@ -24,7 +24,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('userEditBug', {
-        url : '/user/bug/edit?id&' + commonUrlParam,
+        url : '/user/bug/edit?isAdd&id&' + commonUrlParam,
         views : {
             'subMenu' :{
                 templateUrl : function($stateParems){

@@ -178,6 +178,14 @@ public class DateFormartUtil {
 		String dateStr=daf.format(date);
 		return  dateStr;
 	}
+
+	public static String getDateByTimeMillis(Date date){
+		if (date == null){
+			return "";
+		}
+		return getDateByTimeMillis(date.getTime());
+	}
+
 	public static String getDateByTimeMillis(Long str){
 		if (str == null){
 			return "";

@@ -49,11 +49,6 @@
                         $pickTag.addClass(classPre + "-" + value);
                     }
                     $pickTag.attr("crap-def", value);
-                    var rootScope = getRootScope();
-                    rootScope.$apply(function () {
-                        rootScope.bugVO =  data.data;
-                        rootScope.bugVO.isEdit = false;
-                    });
                 }
             }
         });

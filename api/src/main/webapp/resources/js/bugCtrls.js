@@ -3,6 +3,7 @@
  */
 var bugModule = angular.module("bugModule", []);
 var VO_NAME = 'bugVO';
+var VO_LIST_NAME = 'bugVOList';
 // bug列表
 userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
     $scope.queryBugList = function (page, updateUrl) {
@@ -18,20 +19,21 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
         if (!page) {
             page = $stateParams.currentPage;
         }
-        $rootScope.getBaseDataToDataKey($scope, $http, params, page, "bugs");
+        $rootScope.getBaseDataToDataKey($scope, $http, params, page, VO_LIST_NAME);
     };
 
-    $scope.getBugDetail = function (isEdit) {
+    $scope.getBugDetail = function () {
         var params = "iUrl=user/bug/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id +
             "&moduleId=" + $stateParams.moduleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null, VO_NAME, function () {
-            // 存在 article-editor 则初始化
-            if (!isEdit) {
-                return;
-            }
             $rootScope[VO_NAME].oldName = $rootScope[VO_NAME].name;
             $rootScope[VO_NAME].isEdit = false;
+            if ($stateParams.isAdd && $stateParams.isAdd == 'true'){
+                $("#bug-name").focus();
+                $rootScope[VO_NAME].isEdit = true;
+            }
             createWangEditor("bug-editor", $rootScope[VO_NAME].content, initBugEditor, "300px");
+            return;
         });
     };
 
@@ -60,7 +62,7 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
 });
 
 
-function loadBugPick($this, $event, iwidth, iheight,type) {
+function loadBugPick($this, $event, iwidth, iheight, type) {
     /***********加载选择对话框********************/
     var obj = $($this);
     var tag = obj.attr('id');

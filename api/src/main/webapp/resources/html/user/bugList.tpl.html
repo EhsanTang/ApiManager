@@ -8,7 +8,7 @@
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
             <a type="button" class="btn btn-default btn-sm"
-               ng-href="#/user/bug/edit?id=NULL&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+               ng-href="#/user/bug/edit?isAdd=true&id=NULL&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增缺陷</i>
             </a>
             <!--<a type="button" class="btn btn-default btn-sm"
@@ -37,7 +37,7 @@
                 <input class="w30" type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
             </div> -->
 
-            <div ng-repeat="item in bugs" class="cursor bb1 p10 BGFFF f14">
+            <div ng-repeat="item in bugVOList" class="cursor bb1 p10 BGFFF f14">
                 <div>
                     <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
                     <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}"

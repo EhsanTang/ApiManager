@@ -1,11 +1,10 @@
 package cn.crap.dto;
 
-import cn.crap.enu.BugStatus;
-import cn.crap.model.Bug;
+import cn.crap.model.BugPO;
 
 import java.io.Serializable;
 
-public class BugDto extends Bug implements Serializable {
+public class BugDTO extends BugPO implements Serializable {
     private String statusStr;
     private String severityStr;
     private String priorityStr;

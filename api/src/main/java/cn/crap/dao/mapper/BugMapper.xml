@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.BugDao">
-    <resultMap id="resultMap" type="cn.crap.model.Bug">
+    <resultMap id="resultMap" type="cn.crap.model.BugPO">
         <id column="id" property="id"/>
         <result column="createTime" property="createTime"/>
         <result column="assignedTo" property="assignedTo"/>
@@ -43,7 +43,7 @@
     </sql>
 
     <!-- 新增 -->
-    <insert id="insert" parameterType="cn.crap.model.Bug">
+    <insert id="insert" parameterType="cn.crap.model.BugPO">
         insert into bug (id,createTime,assignedTo,priority,updateBy,name,content,severity,createdBy,updateTime,sequence,moduleId,attributes,tester,projectId,traceType,tracer,status,deadline)
         values (#{id},NOW(),#{assignedTo},#{priority},#{updateBy},#{name},#{content},#{severity},#{createdBy},NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{projectId},#{traceType},#{tracer},#{status},#{deadline})
    </insert>
@@ -55,7 +55,7 @@
 
 
     <!-- 更新 -->
-    <update id="update" parameterType="cn.crap.model.Bug">
+    <update id="update" parameterType="cn.crap.model.BugPO">
         update bug
         <set>
             <if test="assignedTo != null">

@@ -3,7 +3,7 @@ package cn.crap.service;
 import cn.crap.dao.mybatis.BugDao;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
-import cn.crap.model.Bug;
+import cn.crap.model.BugPO;
 import cn.crap.model.Module;
 import cn.crap.query.BugQuery;
 import cn.crap.service.tool.ModuleCache;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 
 @Service
-public class BugService extends NewBaseService<Bug, BugQuery> implements IConst {
+public class BugService extends NewBaseService<BugPO, BugQuery> implements IConst {
     private BugDao bugDao;
 
     @Autowired
@@ -41,7 +41,7 @@ public class BugService extends NewBaseService<Bug, BugQuery> implements IConst 
      * @return
      */
     @Override
-    public boolean insert(Bug bug){
+    public boolean insert(BugPO bug){
         Assert.notNull(bug);
         Assert.notNull(bug.getProjectId());
         if (bug == null) {
@@ -56,8 +56,8 @@ public class BugService extends NewBaseService<Bug, BugQuery> implements IConst 
         return super.insert(bug);
     }
 
-    public Bug getChangeBugPO(String id, String type, String value) throws Exception{
-        Bug bug = new Bug();
+    public BugPO getChangeBugPO(String id, String type, String value) throws Exception{
+        BugPO bug = new BugPO();
         bug.setId(id);
         if (PickCode.BUG_STATUS.getCode().equals(type)){
             BugStatus bugStatus = Optional.ofNullable(BugStatus.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "状态有误"));

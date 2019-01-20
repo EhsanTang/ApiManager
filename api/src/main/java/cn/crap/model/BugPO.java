@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Bug extends BasePo{
+public class BugPO extends BasePo{
 	private String assignedTo;
 	private Byte priority;
 	private String updateBy;

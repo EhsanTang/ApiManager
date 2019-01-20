@@ -47,6 +47,16 @@ public class BugAdapter {
         return dto;
     }
 
+    public static BugPO getPO(BugDTO bugDTO){
+        if (bugDTO == null){
+            return null;
+        }
+
+        BugPO bugPO = new BugPO();
+        BeanUtil.copyProperties(bugDTO, bugPO);
+        return bugPO;
+    }
+
 
     public static BugDTO getDTO(Project project, Module module){
         Assert.notNull(project, "project 不能为空");

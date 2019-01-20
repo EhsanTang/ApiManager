@@ -15,7 +15,7 @@
                         <i class="iconfont mt-3">&#xe614;</i>
             </span>
 
-            <button type="submit" class="btn btn-adorn btn-sm">
+            <button type="button" ng-click="addBug()" ng-class="{true: 'btn btn-adorn btn-sm', false:'none'}[bugVO.isAdd == true]">
                 <i class="iconfont f12 mt-3">&#xe747; 保存</i>
             </button>
         </div>
@@ -25,11 +25,11 @@
                 <div class="dashed-b mb10">
                     <input class="form-control f14 fb bug-border-fff pr0 pl0 mb10" id="bug-name" type="text" ng-model="bugVO.name" required ng-blur="updateBugName()">
                 </div>
-                <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[!bugVO.isEdit || bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑描述</button>
-                <button ng-class="{true: 'btn btn-xs btn-adorn fr', false:'none'}[bugVO.isEdit == true]" ng-click="updateBugContent();">保存</button>
-                <button ng-class="{true: 'btn btn-xs btn-default mr10 fr', false:'none'}[bugVO.isEdit == true]" ng-click="cancelBugContent();">取消编辑</button>
+                <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑描述</button>
+                <button ng-class="{true: 'btn btn-xs btn-adorn fr', false:'none'}[bugVO.isEdit == true && bugVO.isAdd == false]" type="button" ng-click="updateBugContent();">保存</button>
+                <button ng-class="{true: 'btn btn-xs btn-default mr10 fr', false:'none'}[bugVO.isEdit == true]" type="button" ng-click="cancelBugContent();">取消编辑</button>
                 <div class="cb"></div>
-                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[!bugVO.isEdit ||bugVO.isEdit == false]"></div>
+                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == false]"></div>
                 <div id="bug-editor" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == true]"></div>
             </div>
         </div>
@@ -80,11 +80,8 @@
 
 
                     <tr>
-                        <td>xxx</td>
-                        <td>
-                        </td>
-                        <td>跟踪类型</td>
-                        <td>
+                        <td>类型</td>
+                        <td colspan="3">
                             <button class="btn btn-sm b1 w tl"
                                     id="traceType" crap-def="{{bugVO.traceType}}" crap-id="{{bugVO.id}}" crap-name="traceType"
                                     onclick="loadBugPick(this, event, 120,180,'TRACE_TYPE')">
@@ -95,20 +92,14 @@
                         </td>
                     </tr>
 
-
-                    <tr>
-                        <td class="tc f14 fb C000">简介</td>
-                        <td class="tc" colspan="3">
-                            <textarea class="form-control no-resize" rows="3" ng-model="model.brief"></textarea></td>
-                    </tr>
                 </table>
             </div>
 
-            <div class="BGFFF p15 mt10" id="editor-div">
+            <!--<div class="BGFFF p15 mt10" id="editor-div">
                 <div class="col-xs-12 p15 mb10">
                 </div>
                 <div class="cb"></div>
-            </div>
+            </div>-->
         </div>
 </div>
 <div class="cb"></div>

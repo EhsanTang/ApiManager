@@ -10,6 +10,7 @@ import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.IAuthCode;
 import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
      * @return
      */
     @Override
-    public boolean insert(BugPO bug){
+    public boolean insert(BugPO bug) throws Exception{
         Assert.notNull(bug);
         Assert.notNull(bug.getProjectId());
         if (bug == null) {
@@ -51,6 +52,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         if (bug.getContent() == null){
             bug.setContent("");
         }
+        bug.setCreatedBy(LoginUserHelper.getUser().getId());
         bug.setStatus(BugStatus.NEW.getByteValue());
         bug.setSequence(getMaxSequence(bug, new BugQuery()));
         return super.insert(bug);

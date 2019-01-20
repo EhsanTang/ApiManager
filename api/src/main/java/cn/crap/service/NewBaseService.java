@@ -5,10 +5,7 @@ import cn.crap.enu.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.model.BasePo;
 import cn.crap.query.BaseQuery;
-import cn.crap.utils.AttributeUtils;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -42,14 +39,15 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         query.setSort(TableField.SORT.SEQUENCE_DESC);
         query.setProjectId(po.getProjectId());
 
-        List<PO> poList = this.select(query);
+        Page page = new Page(query);
+        List<PO> poList = this.select(query, page);
         if (poList.size() > 0){
             return poList.get(0).getSequence() + 1;
         }
         return 0;
     }
 
-    public boolean insert(PO po){
+    public boolean insert(PO po) throws Exception{
         Assert.notNull(po);
 
         if (MyString.isEmpty(po.getId())){
@@ -92,8 +90,11 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         return newBaseDao.count(query);
     }
 
-    public List<PO> select(Query query){
+    public List<PO> select(Query query, Page page){
         Assert.notNull(query, "query can't be null");
+        query.setStart(page.getStart());
+        query.setCurrentPage(page.getCurrentPage());
+        query.setPageSize(page.getSize());
         return newBaseDao.select(query);
     }
 

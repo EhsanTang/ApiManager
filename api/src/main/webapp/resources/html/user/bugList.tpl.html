@@ -8,7 +8,7 @@
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
             <a type="button" class="btn btn-default btn-sm"
-               ng-href="#/user/bug/edit?isAdd=true&id=NULL&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+               ng-href="#/user/bug/edit?id=NULL&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增缺陷</i>
             </a>
             <!--<a type="button" class="btn btn-default btn-sm"
@@ -84,7 +84,7 @@
                 </div>
             </div>
 
-            <div ui-view="page" ng-init="callBackMethod = 'queryBugList'; modelKey='bugs'"></div>
+            <div class="mt20" ui-view="page" ng-init="callBackMethod = 'queryBugList'; modelKey='bugVOList'"></div>
     </div>
 </div>
 <div class="cb"></div>

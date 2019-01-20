@@ -37,9 +37,6 @@
                 and moduleId=#{query.moduleId}
             </if>
         </where>
-        <if test="query.sort != null">
-            order by ${query.sort}
-        </if>
     </sql>
 
     <!-- 新增 -->
@@ -115,6 +112,10 @@
         <include refid="baseColumn"/>
         from bug
         <include refid="querySql"/>
+        <if test="query.sort != null">
+            order by ${query.sort}
+        </if>
+        limit ${query.start},${query.pageSize}
     </select>
 
     <!-- 查询 -->

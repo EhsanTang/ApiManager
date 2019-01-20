@@ -17,6 +17,7 @@ public abstract class BaseQuery<T> {
     private Integer pageSize;
     private String sort;
     private Byte status;
+    private Integer start;
 
     abstract T getQuery();
 
@@ -87,5 +88,13 @@ public abstract class BaseQuery<T> {
     public T setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return getQuery();
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
     }
 }

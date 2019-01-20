@@ -15,7 +15,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : function($stateParems){
                     return 'resources/html/user/bugList.tpl.html?v=v8.0.5';
                 }
-            }, 'page@userArticleList' : {
+            }, 'page@userBugList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
             },'subMenu' :{
                 templateUrl : function($stateParems){
@@ -24,7 +24,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
         }
     }).state('userEditBug', {
-        url : '/user/bug/edit?isAdd&id&' + commonUrlParam,
+        url : '/user/bug/edit?id&' + commonUrlParam,
         views : {
             'subMenu' :{
                 templateUrl : function($stateParems){

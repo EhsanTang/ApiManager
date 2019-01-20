@@ -3,6 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.BugAdapter;
 import cn.crap.dto.BugDTO;
 import cn.crap.enu.MyError;
+import cn.crap.enu.TableId;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -15,6 +16,7 @@ import cn.crap.service.BugService;
 import cn.crap.service.MenuService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -85,6 +87,19 @@ public class BugController extends BaseController{
         return new JsonResult(update).data(dto);
     }
 
+    @RequestMapping(value = "add.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult add(BugDTO dto) throws Exception{
+        throwExceptionWhenIsNull(dto.getProjectId(), "projectId 不能为空");
+
+        dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
+        checkPermission(dto.getProjectId(), READ);
+
+        bugService.insert(BugAdapter.getPO(dto));
+        return new JsonResult(true);
+    }
+
 
     /**
      * bug列表
@@ -97,9 +112,11 @@ public class BugController extends BaseController{
     public JsonResult list(@ModelAttribute BugQuery query) throws MyException {
         Project project = getProject(query);
         checkPermission(project, READ);
+        query.setPageSize(10);
+        query.setSort(TableField.SORT.SEQUENCE_DESC);
 
         Page page = new Page(query);
-        List<BugPO> bugPOList = bugService.select(query);
+        List<BugPO> bugPOList = bugService.select(query, page);
         page.setAllRow(bugService.count(query));
         List<BugDTO> dtoList = BugAdapter.getDto(bugPOList);
 
@@ -111,10 +128,11 @@ public class BugController extends BaseController{
     @AuthPassport
     public JsonResult detail(BugDTO dto) throws MyException {
         throwExceptionWhenIsNull(dto.getProjectId(), "projectId 不能为空");
-        checkPermission(dto.getProjectId(), READ);
 
         String id = dto.getId();
         dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
+        checkPermission(dto.getProjectId(), READ);
+
         Project project = projectCache.get(dto.getProjectId());
         Module module = moduleCache.get(dto.getModuleId());
 

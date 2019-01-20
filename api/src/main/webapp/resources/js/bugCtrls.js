@@ -6,6 +6,10 @@ var VO_NAME = 'bugVO';
 var VO_LIST_NAME = 'bugVOList';
 // bug列表
 userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    // 公用分页方法
+    $scope.pageMethod = function(callBackMethod, page, updateUrl) {
+        $scope[callBackMethod](page, updateUrl);
+    };
     /**
      * 列表
      * @param page
@@ -38,9 +42,12 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
             bugEdit = createWangEditor("bug-editor", $rootScope[VO_NAME].content, initBugEditor, "300px");
             $rootScope[VO_NAME].oldName = $rootScope[VO_NAME].name;
             $rootScope[VO_NAME].oldContent = $rootScope[VO_NAME].content;
-            if ($stateParams.isAdd && $stateParams.isAdd == 'true'){
+            $rootScope[VO_NAME].isEdit = false;
+            $rootScope[VO_NAME].isAdd = false;
+            if ($stateParams.id == 'NULL' || $stateParams.id == 'null'){
                 $("#bug-name").focus();
                 $rootScope[VO_NAME].isEdit = true;
+                $rootScope[VO_NAME].isAdd = true;
             }
             return;
         });
@@ -50,10 +57,14 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
      * 名称
      */
     $scope.updateBugName = function() {
+        var id = $rootScope[VO_NAME].id;
+        if (!id || id == null || id == 'null' || id == 'NULL'){
+            return;
+        }
         var name = $rootScope[VO_NAME].name;
         if ($rootScope[VO_NAME].oldName != name){
             var params = "iUrl=user/bug/changeBug.do|iLoading=FLOAT|iPost=POST|iParams=&type=name&value=" +name +
-            "&id=" +$rootScope[VO_NAME].id ;
+            "&id=" + id;
             $rootScope.getBaseDataToDataKey($scope,$http,params,null, null, function () {
                 $rootScope[VO_NAME].oldName = name;
             });
@@ -79,6 +90,13 @@ userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$loca
        $rootScope[VO_NAME].content = $rootScope[VO_NAME].oldContent;
        bugEdit.txt.html($rootScope[VO_NAME].content);
        $rootScope[VO_NAME].isEdit = false;
+    }
+
+    $scope.addBug = function() {
+        var params = "iUrl=user/bug/add.do|iLoading=FLOAT|iPost=POST|iParams=&" + $.param($rootScope[VO_NAME]);
+        $rootScope.getBaseDataToDataKey($scope, $http, params, null, null, function () {
+            goBack();
+        });
     }
 });
 

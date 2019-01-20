@@ -196,7 +196,7 @@
                     <a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
                 </li>
                 <li class="dis-in-tab mr20">
-                    <a target="_blank" href="https://git.oschina.net/CrapApi/CrapApi">码云</a>
+                    <a target="_blank" href="https://gitee.com/CrapApi/CrapApi">码云</a>
                 </li>
                 <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                     <c:if test="${menuDto.menu.type=='BOTTOM'}">

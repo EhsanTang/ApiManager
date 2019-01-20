@@ -14,7 +14,7 @@
 							</li>
 							<li  class="dis-in-tab pr20">
 								<a target="_blank"
-									href="https://git.oschina.net/CrapApi/CrapApi">源码:码云</a>
+									href="https://gitee.com/CrapApi/CrapApi">源码:码云</a>
 							</li>
 							<li  class="dis-in-tab pr20">
 								<a target="_blank"

@@ -18,7 +18,7 @@ import cn.crap.utils.Tools;
 public class OschinaService {
 
 	   public GitHubAccessToken getAccessToken(String code,String redirect_uri) throws Exception{
-			String oschinaAuthUrl = "https://git.oschina.net/oauth/token";
+			String oschinaAuthUrl = "https://gitee.com/oauth/token";
 
 	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", Config.oschinaClientID,
 	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri",Config.domain +"/oschina/login.ignore");
@@ -33,7 +33,7 @@ public class OschinaService {
 	    }
 
 	    public GitHubUser getUser(String accessToken) throws Exception{
-	        String url = "http://git.oschina.net/api/v5/user?access_token="+accessToken;
+	        String url = "http://gitee.com/api/v5/user?access_token="+accessToken;
 	        String rs = HttpPostGet.get(url, null, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);
 	        if(rs.contains("message"))

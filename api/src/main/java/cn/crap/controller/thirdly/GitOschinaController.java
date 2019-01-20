@@ -45,7 +45,7 @@ public class GitOschinaController extends BaseController {
      */
     @RequestMapping("/oschina/authorize.ignore")
     public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String authorizeUrl = "https://git.oschina.net/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
+        String authorizeUrl = "https://gitee.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
         response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, Config.domain + "/oschina/login.ignore"));
     }
 

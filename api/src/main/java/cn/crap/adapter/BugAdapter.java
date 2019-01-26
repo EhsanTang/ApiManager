@@ -35,7 +35,7 @@ public class BugAdapter {
         dto.setStatusStr(BugStatus.getNameByValue(model.getStatus()));
         dto.setPriorityStr(BugPriority.getNameByValue(model.getPriority()));
         dto.setSeverityStr(BugSeverity.getNameByValue(model.getSeverity()));
-        dto.setTraceStr(BugType.getNameByValue(model.getTrace()));
+        dto.setTypeStr(BugType.getNameByValue(model.getType()));
 
         if (module != null){
             dto.setModuleName(module.getName());
@@ -65,14 +65,14 @@ public class BugAdapter {
         bugDTO.setProjectName(project.getName());
         bugDTO.setName("【新建缺陷】");
         bugDTO.setContent("<p>[缺陷描述]:<br>[重现步骤]:<br>[期望结果]:<br>[原因定位]:<br>[建议修改]:<br></p>");
-        bugDTO.setTrace(BugType.FUNCTION.getByteValue());
+        bugDTO.setType(BugType.FUNCTION.getByteValue());
         bugDTO.setPriority(BugPriority.MIDDLE.getByteValue());
         bugDTO.setSeverity(BugSeverity.MAJOR.getByteValue());
         bugDTO.setStatus(BugStatus.NEW.getByteValue());
         bugDTO.setStatusStr(BugStatus.getNameByValue(bugDTO.getStatus()));
         bugDTO.setPriorityStr(BugPriority.getNameByValue(bugDTO.getPriority()));
         bugDTO.setSeverityStr(BugSeverity.getNameByValue(bugDTO.getSeverity()));
-        bugDTO.setTraceStr(BugType.getNameByValue(bugDTO.getTrace()));
+        bugDTO.setTypeStr(BugType.getNameByValue(bugDTO.getType()));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
         bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getName()).orElse(null));
         return bugDTO;

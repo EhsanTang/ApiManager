@@ -176,7 +176,7 @@ public class PickService implements IPickService{
                     picks.add(pick);
                 }
                 return picks;
-            case TRACE_TYPE:// 跟踪类型
+            case BUG_TYPE:// 跟踪类型
                 for (BugType type : BugType.values()) {
                     pick = new PickDto(type.name(), type.getValue(), type.getName());
                     picks.add(pick);

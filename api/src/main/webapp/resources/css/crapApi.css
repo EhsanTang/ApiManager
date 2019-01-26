@@ -326,6 +326,14 @@ blockquote{
 }
 
 /********** 颜色 ************/
+.bug-default{
+    color: #555555;
+}
+.bug-default:hover{
+    color: #555555!important;
+    border-color:#555555;
+    opacity: 0.8;
+}
 .bug-priority-1, .bug-severity-4{
     color: #999999;
 }

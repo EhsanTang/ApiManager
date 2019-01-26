@@ -25,7 +25,7 @@ public enum PickCode {
 	PRIORITY("PRIORITY", "优先级"),
 	SEVERITY("SEVERITY", "严重程度"),
 	BUG_STATUS("BUG_STATUS", "缺陷状态"),
-    TRACE_TYPE("TRACE_TYPE", "跟踪类型"),
+    BUG_TYPE("BUG_TYPE", "问题类型"),
 
 
 

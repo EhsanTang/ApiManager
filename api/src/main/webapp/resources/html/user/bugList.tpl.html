@@ -62,22 +62,23 @@
                             onclick="loadBugPick(this, event,90,150,'PRIORITY')">
                         <i class="iconfont">&#xe80c;</i>
                         <span id="priority-{{item.id}}-text">{{item.priorityStr}}</span>
-                        <i class="iconfont">&#xe614;</i>
+                        <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 
                     <button class="mr10 btn btn-xs bug-severity-{{item.severity}}"
                             id="severity-{{item.id}}" crap-def="{{item.severity}}" crap-id="{{item.id}}" crap-class-pre="bug-severity"
                             onclick="loadBugPick(this, event,100,150,'SEVERITY')">
-                        <i class="iconfont">&#xe6b6;</i>
+                        <i class="iconfont">&#xe82c;</i>
                         <span id="severity-{{item.id}}-text">{{item.severityStr}}</span>
-                        <i class="iconfont">&#xe614;</i>
+                        <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 
-                    <button class="mr10 btn btn-xs C999"
+                    <button class="mr10 btn btn-xs bug-default" readonly
                             id="type-{{item.id}}" crap-def="{{item.type}}" crap-id="{{item.id}}"
-                            onclick="loadBugPick(this, event,120,180,'TRACE_TYPE')">
+                            onclick="loadBugPick(this, event,120,180,'BUG_TYPE')">
+                        <i class="iconfont mr5">&#xe6b4;</i>
                         <span id="type-{{item.id}}-text">{{item.typeStr}}</span>
-                        <i class="iconfont">&#xe614;</i>
+                        <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 
                     <span class="CAAA mr10" ng-bind="item.updateTimeStr + ' 更新'"></span>

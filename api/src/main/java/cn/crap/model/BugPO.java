@@ -110,11 +110,11 @@ public class BugPO extends BasePo{
 		this.projectId = projectId;
 	}
 
-	public Byte getTrace() {
+	public Byte getType() {
 		return type;
 	}
 
-	public void setTrace(Byte type) {
+	public void setType(Byte type) {
 		this.type = type;
 	}
 

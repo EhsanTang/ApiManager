@@ -67,9 +67,9 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         } else if (PickCode.SEVERITY.getCode().equals(type)){
             BugSeverity bugSeverity = Optional.ofNullable(BugSeverity.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "严重程度有误"));
             bug.setSeverity(bugSeverity.getByteValue());
-        } else if (PickCode.TRACE_TYPE.getCode().equals(type)){
+        } else if (PickCode.BUG_TYPE.getCode().equals(type)){
             BugType bugType = Optional.ofNullable(BugType.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "跟踪类型有误"));
-            bug.setTrace(bugType.getByteValue());
+            bug.setType(bugType.getByteValue());
         } else if (PickCode.PRIORITY.getCode().equals(type)){
             BugPriority bugPriority = Optional.ofNullable(BugPriority.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "优先级有误"));
             bug.setPriority(bugPriority.getByteValue());

@@ -23,22 +23,6 @@ public class BugDTO extends BugPO implements Serializable {
         this.statusStr = statusStr;
     }
 
-    public String getCreateTimeStr() {
-        return createTimeStr;
-    }
-
-    public void setCreateTimeStr(String createTimeStr) {
-        this.createTimeStr = createTimeStr;
-    }
-
-    public String getUpdateTimeStr() {
-        return updateTimeStr;
-    }
-
-    public void setUpdateTimeStr(String updateTimeStr) {
-        this.updateTimeStr = updateTimeStr;
-    }
-
     public String getSeverityStr() {
         return severityStr;
     }
@@ -55,12 +39,28 @@ public class BugDTO extends BugPO implements Serializable {
         this.priorityStr = priorityStr;
     }
 
-    public String getTraceStr() {
+    public String getTypeStr() {
         return typeStr;
     }
 
-    public void setTraceStr(String typeStr) {
+    public void setTypeStr(String typeStr) {
         this.typeStr = typeStr;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
+
+    public String getUpdateTimeStr() {
+        return updateTimeStr;
+    }
+
+    public void setUpdateTimeStr(String updateTimeStr) {
+        this.updateTimeStr = updateTimeStr;
     }
 
     public String getModuleName() {

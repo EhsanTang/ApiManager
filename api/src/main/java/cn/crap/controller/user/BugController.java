@@ -43,14 +43,15 @@ public class BugController extends BaseController{
      * @param type
      * @param def
      * @param tag
+     * @param pickParam pick参数：项目ID等
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "pick.do")
     @AuthPassport
     public String pickUp(HttpServletRequest request, String type, String def,
-                          String tag) throws Exception {
-        String pickContent = customMenuService.pick("true", type, null, def, "true");
+                          String tag, String pickParam) throws Exception {
+        String pickContent = customMenuService.pick("true", type, pickParam, def, "true");
         request.setAttribute("tag", tag);
         request.setAttribute("pickContent", pickContent);
         request.setAttribute("type", type);

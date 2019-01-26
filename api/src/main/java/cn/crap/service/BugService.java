@@ -1,17 +1,16 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.BugDao;
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.BugPO;
 import cn.crap.model.Module;
+import cn.crap.model.User;
 import cn.crap.query.BugQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
-import cn.crap.utils.IAuthCode;
-import cn.crap.utils.IConst;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.PermissionUtil;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -29,6 +28,9 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
 
     @Autowired
     private ProjectCache projectCache;
+
+    @Autowired
+    private UserService userService;
 
     @Resource
     public void bugDao(BugDao bugDao) {
@@ -52,7 +54,9 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         if (bug.getContent() == null){
             bug.setContent("");
         }
-        bug.setCreator(LoginUserHelper.getUser().getId());
+        LoginInfoDto user = LoginUserHelper.getUser();
+        bug.setCreator(user.getId());
+        bug.setCreatorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         bug.setStatus(BugStatus.NEW.getByteValue());
         bug.setSequence(getMaxSequence(bug, new BugQuery()));
         return super.insert(bug);
@@ -79,6 +83,24 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bug.setModuleId(module.getId());
             bug.setProjectId(module.getProjectId());
             PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), IAuthCode.READ);
+        } else if (PickCode.EXECUTOR.getCode().equals(type)){
+            // TODO 用户是否是项目成员
+            User user = userService.getById(value);
+            Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
+            bug.setExecutor(user.getId());
+            bug.setExecutorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
+        } else if (PickCode.TESTER.getCode().equals(type)){
+            // TODO 用户是否是项目成员
+            User user = userService.getById(value);
+            Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
+            bug.setTester(user.getId());
+            bug.setTesterStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
+        } else if (PickCode.TRACER.getCode().equals(type)){
+            // TODO 用户是否是项目成员
+            User user = userService.getById(value);
+            Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
+            bug.setTracer(user.getId());
+            bug.setTracerStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         } else if ("NAME".equalsIgnoreCase(type)){
             bug.setName(value);
         } else if ("CONTENT".equalsIgnoreCase(type)){

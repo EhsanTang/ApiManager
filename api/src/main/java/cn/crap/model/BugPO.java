@@ -3,142 +3,179 @@ package cn.crap.model;
 import java.util.Date;
 
 public class BugPO extends BasePo{
-	private String assignedTo;
+	private String executor;
+	private String executorStr;
 	private Byte priority;
+	// 最后修改人
 	private String updateBy;
 	private String name;
 	private String content;
 	private Byte severity;
 	private String creator;
-	private String moduleId;
+    private String creatorStr;
+    private String moduleId;
 	private String attributes;
 	private String tester;
-	private String projectId;
+    private String testerStr;
+    private String projectId;
 	private Byte type;
 	private String tracer;
-	private Byte status;
+    private String tracerStr;
+    private Byte status;
 	private Date deadline;
 
-	public String getAssignedTo() {
-		return assignedTo;
-	}
+    public String getExecutor() {
+        return executor;
+    }
 
-	public void setAssignedTo(String assignedTo) {
-		this.assignedTo = assignedTo;
-	}
+    public void setExecutor(String executor) {
+        this.executor = executor;
+    }
 
-	public Byte getPriority() {
-		return priority;
-	}
+    public String getExecutorStr() {
+        return executorStr;
+    }
 
-	public void setPriority(Byte priority) {
-		this.priority = priority;
-	}
+    public void setExecutorStr(String executorStr) {
+        this.executorStr = executorStr;
+    }
 
-	public String getUpdateBy() {
-		return updateBy;
-	}
+    public Byte getPriority() {
+        return priority;
+    }
 
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
+    public void setPriority(Byte priority) {
+        this.priority = priority;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getUpdateBy() {
+        return updateBy;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Byte getSeverity() {
-		return severity;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setSeverity(Byte severity) {
-		this.severity = severity;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public Byte getSeverity() {
+        return severity;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public void setSeverity(Byte severity) {
+        this.severity = severity;
+    }
 
-	public String getModuleId() {
-		return moduleId;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	@Override
-	public String getAttributes() {
-		return attributes;
-	}
+    public String getCreatorStr() {
+        return creatorStr;
+    }
 
-	@Override
-	public void setAttributes(String attributes) {
-		this.attributes = attributes;
-	}
+    public void setCreatorStr(String creatorStr) {
+        this.creatorStr = creatorStr;
+    }
 
-	public String getTester() {
-		return tester;
-	}
+    public String getModuleId() {
+        return moduleId;
+    }
 
-	public void setTester(String tester) {
-		this.tester = tester;
-	}
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
 
-	@Override
-	public String getProjectId() {
-		return projectId;
-	}
+    @Override
+    public String getAttributes() {
+        return attributes;
+    }
 
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
+    @Override
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
+    }
 
-	public Byte getType() {
-		return type;
-	}
+    public String getTester() {
+        return tester;
+    }
 
-	public void setType(Byte type) {
-		this.type = type;
-	}
+    public void setTester(String tester) {
+        this.tester = tester;
+    }
 
-	public String getTracer() {
-		return tracer;
-	}
+    public String getTesterStr() {
+        return testerStr;
+    }
 
-	public void setTracer(String tracer) {
-		this.tracer = tracer;
-	}
+    public void setTesterStr(String testerStr) {
+        this.testerStr = testerStr;
+    }
 
-	public Byte getStatus() {
-		return status;
-	}
+    @Override
+    public String getProjectId() {
+        return projectId;
+    }
 
-	public void setStatus(Byte status) {
-		this.status = status;
-	}
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
-	public Date getDeadline() {
-		return deadline;
-	}
+    public Byte getType() {
+        return type;
+    }
 
-	public void setDeadline(Date deadline) {
-		this.deadline = deadline;
-	}
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
+    public String getTracer() {
+        return tracer;
+    }
+
+    public void setTracer(String tracer) {
+        this.tracer = tracer;
+    }
+
+    public String getTracerStr() {
+        return tracerStr;
+    }
+
+    public void setTracerStr(String tracerStr) {
+        this.tracerStr = tracerStr;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
 }

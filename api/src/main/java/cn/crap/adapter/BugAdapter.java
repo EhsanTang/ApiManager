@@ -10,6 +10,7 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
+import cn.crap.utils.MyString;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -36,13 +37,11 @@ public class BugAdapter {
         dto.setPriorityStr(BugPriority.getNameByValue(model.getPriority()));
         dto.setSeverityStr(BugSeverity.getNameByValue(model.getSeverity()));
         dto.setTypeStr(BugType.getNameByValue(model.getType()));
-
-        if (module != null){
-            dto.setModuleName(module.getName());
-        }
-        if (project != null){
-            dto.setProjectName(project.getName());
-        }
+        dto.setModuleName(Optional.ofNullable(module).map(m -> m.getName()).orElse("无"));
+        dto.setProjectName(Optional.ofNullable(project).map(p -> p.getName()).orElse("无"));
+        dto.setExecutorStr(Optional.ofNullable(dto.getExecutorStr()).orElse("无"));
+        dto.setTesterStr(Optional.ofNullable(dto.getTesterStr()).orElse("无"));
+        dto.setTracerStr(Optional.ofNullable(dto.getTracerStr()).orElse("无"));
 
         return dto;
     }
@@ -60,21 +59,17 @@ public class BugAdapter {
 
     public static BugDTO getDTO(Project project, Module module){
         Assert.notNull(project, "project 不能为空");
-        BugDTO bugDTO = new BugDTO();
-        bugDTO.setProjectId(project.getId());
-        bugDTO.setProjectName(project.getName());
+        BugPO bugPO = new BugPO();
+        bugPO.setType(BugType.FUNCTION.getByteValue());
+        bugPO.setPriority(BugPriority.MIDDLE.getByteValue());
+        bugPO.setSeverity(BugSeverity.MAJOR.getByteValue());
+        bugPO.setStatus(BugStatus.NEW.getByteValue());
+        bugPO.setProjectId(project.getId());
+        bugPO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
+
+        BugDTO bugDTO = getDto(bugPO, module, project);
         bugDTO.setName("【新建缺陷】");
-        bugDTO.setContent("<p>[缺陷描述]:<br>[重现步骤]:<br>[期望结果]:<br>[原因定位]:<br>[建议修改]:<br></p>");
-        bugDTO.setType(BugType.FUNCTION.getByteValue());
-        bugDTO.setPriority(BugPriority.MIDDLE.getByteValue());
-        bugDTO.setSeverity(BugSeverity.MAJOR.getByteValue());
-        bugDTO.setStatus(BugStatus.NEW.getByteValue());
-        bugDTO.setStatusStr(BugStatus.getNameByValue(bugDTO.getStatus()));
-        bugDTO.setPriorityStr(BugPriority.getNameByValue(bugDTO.getPriority()));
-        bugDTO.setSeverityStr(BugSeverity.getNameByValue(bugDTO.getSeverity()));
-        bugDTO.setTypeStr(BugType.getNameByValue(bugDTO.getType()));
-        bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
-        bugDTO.setModuleId(Optional.ofNullable(module).map(m -> m.getName()).orElse(null));
+        bugDTO.setContent("<p>[缺陷描述]：<br>[重现步骤]：<br>[期望结果]：<br>[原因定位]：<br>[建议修改]：<br></p>");
         return bugDTO;
     }
 

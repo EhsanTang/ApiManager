@@ -37,11 +37,11 @@
                 <input class="w30" type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
             </div> -->
 
-            <div ng-repeat="item in bugVOList" class="cursor bb1 p10 BGFFF f14">
+            <div ng-repeat="item in bugVOList" class="bb1 p10 BGFFF f14">
                 <div>
                     <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
-                    <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}"
-                          id="status-{{item.id}}" crap-def="{{item.status}}" crap-id="{{item.id}}" crap-class-pre="bug-status"
+                    <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}" crap-id="{{item.id}}"
+                          id="status-{{item.id}}" crap-def="{{item.status}}" crap-class-pre="bug-status"
                           onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
                         <span id="status-{{item.id}}-text">{{item.statusStr}}</span>
                         <i class="iconfont">&#xe614;</i>
@@ -51,33 +51,51 @@
                         {{item.name| cut:true:60:' ...'}}
                     </a>
                     <div class="fr f12">
-                        {{item.creator}} → {{item.assignedTo}}
+                        <button class="mr0 btn btn-xs bug-default">
+                            {{item.creatorStr}}
+                        </button>
+                        →
+                        <button class="mr10 btn btn-xs bug-default" crap-id="{{item.id}}"
+                                id="executor-{{item.id}}" crap-def="{{item.executor}}" crap-pick-param="{{item.projectId}}"
+                                onclick="loadBugPick(this, event,120,200,'EXECUTOR')">
+                            <span id="executor-{{item.id}}-text">{{item.executorStr}}</span>
+                            <i class="iconfont CCCC">&#xe614;</i>
+                        </button>
+
                         <span ng-bind="item.createTimeStr" class="C999 pl10"></span>
                     </div>
                 </div>
 
                 <div class="mt10 f12">
-                    <button class="mr10 btn btn-xs bug-priority-{{item.priority}}"
-                            id="priority-{{item.id}}" crap-def="{{item.priority}}" crap-id="{{item.id}}" crap-class-pre="bug-priority"
+                    <button class="mr10 btn btn-xs bug-priority-{{item.priority}}" crap-id="{{item.id}}"
+                            id="priority-{{item.id}}" crap-def="{{item.priority}}" crap-class-pre="bug-priority"
                             onclick="loadBugPick(this, event,90,150,'PRIORITY')">
                         <i class="iconfont">&#xe80c;</i>
                         <span id="priority-{{item.id}}-text">{{item.priorityStr}}</span>
                         <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 
-                    <button class="mr10 btn btn-xs bug-severity-{{item.severity}}"
-                            id="severity-{{item.id}}" crap-def="{{item.severity}}" crap-id="{{item.id}}" crap-class-pre="bug-severity"
+                    <button class="mr10 btn btn-xs bug-severity-{{item.severity}}" crap-id="{{item.id}}"
+                            id="severity-{{item.id}}" crap-def="{{item.severity}}" crap-class-pre="bug-severity"
                             onclick="loadBugPick(this, event,100,150,'SEVERITY')">
                         <i class="iconfont">&#xe82c;</i>
                         <span id="severity-{{item.id}}-text">{{item.severityStr}}</span>
                         <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 
-                    <button class="mr10 btn btn-xs bug-default" readonly
+                    <button class="mr10 btn btn-xs bug-default"
                             id="type-{{item.id}}" crap-def="{{item.type}}" crap-id="{{item.id}}"
                             onclick="loadBugPick(this, event,120,180,'BUG_TYPE')">
                         <i class="iconfont mr5">&#xe6b4;</i>
                         <span id="type-{{item.id}}-text">{{item.typeStr}}</span>
+                        <i class="iconfont CCCC">&#xe614;</i>
+                    </button>
+
+                    <button class="mr10 btn btn-xs bug-default" crap-id="{{item.id}}"
+                            id="tracer-{{item.id}}" crap-def="{{item.tracer}}" crap-pick-param="{{item.projectId}}"
+                            onclick="loadBugPick(this, event,120,180,'TRACER')">
+                        <i class="iconfont mr5">&#xe666;</i>
+                        <span id="tracer-{{item.id}}-text">{{item.tracerStr}}</span>
                         <i class="iconfont CCCC">&#xe614;</i>
                     </button>
 

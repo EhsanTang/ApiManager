@@ -40,6 +40,10 @@ public enum PickCode {
     CATEGORY("CATEGORY", "文章分类"),
     MY_MODULE("MY_MODULE", "我的所有模块"),
     PROJECT_MODULES("PROJECT_MODULES", "项目中的模块"),
+	PROJECT_USER("PROJECT_USER", "项目用户"),
+    EXECUTOR("EXECUTOR", "项目成员：缺陷执行人"),
+    TRACER("TRACER", "项目成员：缺陷跟踪人"),
+    TESTER("TESTER", "项目成员：缺陷测试人"),
     USER("USER", "用户列表"),
 	MENU_ICON("MENU_ICON", "菜单图标"),
     // 推荐项目...

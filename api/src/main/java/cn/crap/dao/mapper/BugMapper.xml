@@ -4,28 +4,33 @@
     <resultMap id="resultMap" type="cn.crap.model.BugPO">
         <id column="id" property="id"/>
         <result column="createTime" property="createTime"/>
-        <result column="assignedTo" property="assignedTo"/>
+        <result column="executor" property="executor"/>
+        <result column="executorStr" property="executorStr"/>
         <result column="priority" property="priority"/>
         <result column="name" property="name"/>
         <result column="content" property="content"/>
         <result column="severity" property="severity"/>
         <result column="creator" property="creator"/>
+        <result column="creatorStr" property="creatorStr"/>
         <result column="updateBy" property="updateBy"/>
         <result column="updateTime" property="updateTime"/>
         <result column="sequence" property="sequence"/>
         <result column="moduleId" property="moduleId"/>
         <result column="attributes" property="attributes"/>
         <result column="tester" property="tester"/>
+        <result column="testerStr" property="testerStr"/>
         <result column="projectId" property="projectId"/>
         <result column="type" property="type"/>
         <result column="tracer" property="tracer"/>
+        <result column="tracerStr" property="tracerStr"/>
         <result column="status" property="status"/>
         <result column="deadline" property="deadline"/>
     </resultMap>
 
     <!-- 基本的字段，供其他查询引用-->
     <sql id="baseColumn">
-        id,createTime,assignedTo,priority,updateBy,name,content,severity,creator,updateTime,sequence,moduleId,attributes,tester,projectId,type,tracer,status,deadline
+        id,createTime,executor,executorStr,priority,updateBy,name,content,severity,creator,creatorStr,updateTime,sequence,moduleId,
+        attributes,tester,testerStr,projectId,type,tracer,tracerStr,status,deadline
    </sql>
 
     <sql id="querySql">
@@ -41,8 +46,11 @@
 
     <!-- 新增 -->
     <insert id="insert" parameterType="cn.crap.model.BugPO">
-        insert into bug (id,createTime,assignedTo,priority,updateBy,name,content,severity,creator,updateTime,sequence,moduleId,attributes,tester,projectId,type,tracer,status,deadline)
-        values (#{id},NOW(),#{assignedTo},#{priority},#{updateBy},#{name},#{content},#{severity},#{creator},NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{projectId},#{type},#{tracer},#{status},#{deadline})
+        insert into bug (
+          <include refid="baseColumn"/>
+        )
+        values (#{id},NOW(),#{executor},#{executorStr},#{priority},#{updateBy},#{name},#{content},#{severity},#{creator},#{creatorStr},
+        NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{testerStr},#{projectId},#{type},#{tracer},#{tracerStr},#{status},#{deadline})
    </insert>
 
     <!-- 删除 -->
@@ -55,8 +63,11 @@
     <update id="update" parameterType="cn.crap.model.BugPO">
         update bug
         <set>
-            <if test="assignedTo != null">
-                assignedTo = #{assignedTo},
+            <if test="executor != null">
+                executor = #{executor},
+            </if>
+            <if test="executorStr != null">
+                executorStr = #{executorStr},
             </if>
             <if test="priority != null">
                 priority = #{priority},
@@ -88,11 +99,17 @@
             <if test="tester != null">
                 tester = #{tester},
             </if>
+            <if test="testerStr != null">
+                testerStr = #{testerStr},
+            </if>
             <if test="type != null">
                 type = #{type},
             </if>
             <if test="tracer != null">
                 tracer = #{tracer},
+            </if>
+            <if test="tracerStr != null">
+                tracerStr = #{tracerStr},
             </if>
             <if test="status != null">
                 status = #{status},

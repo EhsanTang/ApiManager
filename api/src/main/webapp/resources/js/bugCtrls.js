@@ -107,7 +107,7 @@ function loadBugPick($this, $event, iwidth, iheight, type) {
     var tag = obj.attr('id');
     $("#pickContent").html(loadText);
     callAjaxByName("iUrl=user/bug/pick.do|isHowMethod=updateDiv|iPost=POST|iParams=&type="+type+"&tag="+ tag +
-        "&def=" + obj.attr("crap-def"));
+        "&def=" + obj.attr("crap-def") + "&pickParam=" + obj.attr('crap-pick-param'));
     lookUp('lookUp', $event, iheight, iwidth, 5, tag);
     showMessage('lookUp','false',false,-1);
 }
@@ -121,12 +121,29 @@ function initBugEditor(editor) {
         'fontSize',  // 字号
         'fontName',  // 字体
         'italic',  // 斜体
+        'underline',
+        'strikeThrough',
         'foreColor',  // 文字颜色
         'backColor',  // 背景颜色
+        'link',
         'justify',  // 对齐方式
+        'quote',
         'undo',  // 撤销
-        'redo'  // 重复
+        'redo',  // 重复
+        'image',
+        'table'
     ];
+    editor.customConfig.uploadImgMaxLength = 1;
+    editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
+    editor.customConfig.uploadImgServer = 'user/file/upload.do';
+    editor.customConfig.uploadFileName = 'img';
+    editor.customConfig.zIndex = 999;
+    editor.customConfig.uploadImgHooks = {
+        fail: function (xhr, editor, result) {
+            $("#lookUpContent").html(err1 + "&nbsp; " + result.errorMessage + "" + err2);
+            showMessage('lookUp', 'false', false, 3);
+        }
+    }
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
         root[VO_NAME].content = html;

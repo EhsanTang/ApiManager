@@ -29,7 +29,7 @@
                 <button ng-class="{true: 'btn btn-xs btn-adorn fr', false:'none'}[bugVO.isEdit == true && bugVO.isAdd == false]" type="button" ng-click="updateBugContent();">保存</button>
                 <button ng-class="{true: 'btn btn-xs btn-default mr10 fr', false:'none'}[bugVO.isEdit == true]" type="button" ng-click="cancelBugContent();">取消编辑</button>
                 <div class="cb"></div>
-                <div ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == false]"></div>
+                <div id="bug-detail-div" ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == false]"></div>
                 <div id="bug-editor" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == true]"></div>
             </div>
         </div>
@@ -38,38 +38,46 @@
                 <div class="fb f14">属性</div>
                 <table class="table table-no-border f12 C555">
                     <tr>
-                        <td>项目</td>
+                        <td class="w60">项目</td>
                         <td colspan="3">
                             <div type="text" ng-bind="bugVO.projectName| cut:true:30:' ...'" readonly></div>
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="w60">模块</td>
-                        <td class="tl">
+                        <td>模块</td>
+                        <td class="tl" colspan="3">
                             <button class="btn btn-sm bug-default w b1 tl break-word" type="button" id="moduleId"
                                     crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}"
                                     onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
-                                <span id="moduleId-text">{{bugVO.moduleName|cut:true:7:' ..'}}</span>
+                                <span id="moduleId-text">{{bugVO.moduleName|cut:true:25:' ..'}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
                             </button>
                         </td>
-                        <td class="w60">类型</td>
+                    </tr>
+
+                    <tr>
+                        <td>类型</td>
                         <td>
                             <button class="btn btn-sm bug-default w b1 tl" type="button"
-                                    id="type" crap-def="{{bugVO.type}}" crap-id="{{bugVO.id}}" crap-name="type"
+                                    id="type" crap-def="{{bugVO.type}}" crap-name="type" crap-id="{{bugVO.id}}"
                                     onclick="loadBugPick(this, event, 120,180,'BUG_TYPE')">
                                 <span id="type-text">{{bugVO.typeStr}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
                             </button>
-
+                        </td>
+                        <td class="w60">作者</td>
+                        <td>
+                            <button class="btn btn-sm bug-default w b1 tl" type="button" ng-if="bugVO.isAdd == false">
+                                {{bugVO.creatorStr}}
+                            </button>
                         </td>
                     </tr>
                     <tr>
                         <td>优先级</td>
                         <td>
                             <button class="btn btn-sm bug-priority-{{bugVO.priority}} b1 w tl" crap-name="priority"
-                                    id="priority" crap-def="{{bugVO.priority}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-priority"
+                                    id="priority" crap-def="{{bugVO.priority}}" crap-class-pre="bug-priority" crap-id="{{bugVO.id}}"
                                     onclick="loadBugPick(this, event,90,150,'PRIORITY')">
                                 <span id="priority-text">{{bugVO.priorityStr}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
@@ -78,7 +86,7 @@
                         <td>程度</td>
                         <td>
                             <button class="btn btn-sm bug-severity-{{bugVO.severity}} b1 w tl" crap-name="severity"
-                                    id="severity" crap-def="{{bugVO.severity}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-severity"
+                                    id="severity" crap-def="{{bugVO.severity}}" crap-class-pre="bug-severity" crap-id="{{bugVO.id}}"
                                     onclick="loadBugPick(this, event,100,150,'SEVERITY')">
                                 <span id="severity-text">{{bugVO.severityStr}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
@@ -87,22 +95,33 @@
                     </tr>
 
                     <tr>
-                        <td>处理人</td>
+                        <td>执行人</td>
                         <td>
-                            <button class="btn btn-sm bug-default b1 w tl" crap-name="priority"
-                                    id="priority" crap-def="{{bugVO.priority}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-priority"
-                                    onclick="loadBugPick(this, event,90,150,'PRIORITY')">
-                                <i class="iconfont mr5">&#xe60b;</i>
-                                <span id="priority-text">{{bugVO.priorityStr}}</span>
+                            <button class="btn btn-sm bug-default b1 w tl" crap-name="executor"
+                                    id="executor" crap-def="{{bugVO.executor}}" crap-id="{{bugVO.id}}"
+                                    crap-pick-param="{{bugVO.projectId}}"
+                                    onclick="loadBugPick(this, event,120,200,'EXECUTOR')">
+                                <span id="executor-text">{{bugVO.executorStr}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
                             </button>
                         </td>
-                        <td>抄送人</td>
+                        <td>测试</td>
                         <td>
-                            <button class="btn btn-sm bug-default b1 w tl" crap-name="tracer"
-                                    id="tracer" crap-def="{{bugVO.tracer}}" crap-id="{{bugVO.id}}" crap-class-pre="bug-tracer"
-                                    onclick="loadBugPick(this, event,100,150,'TRACER')">
-                                <i class="iconfont mr5">&#xe666;</i>
+                            <button class="btn btn-sm bug-default b1 w tl" crap-name="tester"
+                                    id="tester" crap-def="{{bugVO.tester}}" crap-id="{{bugVO.id}}"
+                                    crap-pick-param="{{bugVO.projectId}}"
+                                    onclick="loadBugPick(this, event,120,200,'TESTER')">
+                                <span id="tester-text">{{bugVO.testerStr}}</span>
+                                <i class="iconfont fr CCCC">&#xe614;</i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>抄送人</td>
+                        <td colspan="3">
+                            <button class="btn btn-sm bug-default b1 w tl" crap-name="tracer" crap-id="{{bugVO.id}}"
+                                    id="tracer" crap-def="{{bugVO.tracer}}" crap-pick-param="{{bugVO.projectId}}"
+                                    onclick="loadBugPick(this, event,120,200,'TRACER')">
                                 <span id="tracer-text">{{bugVO.tracerStr}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
                             </button>
@@ -122,3 +141,4 @@
 </div>
 <div class="cb"></div>
 <script src="resources/framework/wang-editor-3.1.1/wangEditor.min.js" charset="utf-8" ></script>
+<!-- TODO 图片点击事件 -->

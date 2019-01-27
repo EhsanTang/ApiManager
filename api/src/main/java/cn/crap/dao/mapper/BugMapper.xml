@@ -117,7 +117,7 @@
             <if test="deadline != null">
                 deadline = #{deadline},
             </if>
-            updateTime = #{updateTime}
+            updateTime = NOW()
         </set>
         where id=#{id}
     </update>

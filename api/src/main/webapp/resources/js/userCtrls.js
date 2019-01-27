@@ -177,7 +177,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
     // 评论列表
     $scope.queryCommentList = function(page) {
-        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
+        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&targetId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
     };
 

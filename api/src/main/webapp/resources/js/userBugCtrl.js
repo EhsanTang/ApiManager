@@ -2,10 +2,10 @@
  * bug管理系统 controller
  */
 var bugModule = angular.module("bugModule", []);
-var VO_NAME = 'bugVO';
-var VO_LIST_NAME = 'bugVOList';
 // bug列表
-userModule.controller('bugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    var VO_NAME = 'bugVO';
+    var VO_LIST_NAME = 'bugVOList';
     // 公用分页方法
     $scope.pageMethod = function(callBackMethod, page, updateUrl) {
         $scope[callBackMethod](page, updateUrl);

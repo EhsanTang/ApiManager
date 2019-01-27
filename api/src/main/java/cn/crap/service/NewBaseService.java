@@ -3,6 +3,7 @@ package cn.crap.service;
 import cn.crap.dao.mybatis.NewBaseDao;
 import cn.crap.enu.TableId;
 import cn.crap.framework.IdGenerator;
+import cn.crap.framework.MyException;
 import cn.crap.model.BasePo;
 import cn.crap.query.BaseQuery;
 import cn.crap.utils.*;
@@ -30,7 +31,7 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         return newBaseDao.get(id);
     }
 
-    public int getMaxSequence(PO po, Query query){
+    public int getMaxSequence(PO po, Query query) throws MyException{
         if (po.getSequence() != null){
             return po.getSequence();
         }
@@ -90,11 +91,14 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         return newBaseDao.count(query);
     }
 
-    public List<PO> select(Query query, Page page){
+    public List<PO> select(Query query, Page page) throws MyException {
         Assert.notNull(query, "query can't be null");
         query.setStart(page.getStart());
         query.setCurrentPage(page.getCurrentPage());
         query.setPageSize(page.getSize());
+        if (query.getSort() == null){
+            query.setSort(TableField.SORT.SEQUENCE_DESC);
+        }
         return newBaseDao.select(query);
     }
 

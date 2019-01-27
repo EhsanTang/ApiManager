@@ -2,17 +2,16 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.BugAdapter;
 import cn.crap.dto.BugDTO;
+import cn.crap.dto.CommentDTO;
 import cn.crap.enu.MyError;
-import cn.crap.enu.TableId;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.BugPO;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.*;
 import cn.crap.query.BugQuery;
 import cn.crap.service.BugService;
+import cn.crap.service.CommentService;
 import cn.crap.service.MenuService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -31,7 +30,8 @@ import java.util.List;
 @RequestMapping("/user/bug")
 public class BugController extends BaseController{
     // TODO 权限目前只要项目成员即可操作
-
+    @Autowired
+    private CommentService commentService;
     @Autowired
     private BugService bugService;
     @Autowired
@@ -101,7 +101,28 @@ public class BugController extends BaseController{
         return new JsonResult(true);
     }
 
-
+    @RequestMapping("/addComment.do")
+    @ResponseBody
+    @AuthPassport
+    public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDto) throws MyException {
+//
+//        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
+//        checkPermission(article.getProjectId(), MOD_ARTICLE);
+//        Comment comment = CommentAdapter.getModel(commentDto);
+//        comment.setUpdateTime(new Date());
+//        commentService.update(comment);
+//
+//        // 发送邮件通知
+//        Comment dbComment = commentService.getById(commentDto.getId());
+//        if (MyString.isNotEmpty(dbComment.getUserId())){
+//            User user = userService.getById(dbComment.getUserId());
+//            if (MyString.isNotEmpty(user.getEmail())){
+//                String context = "问题【" + dbComment.getContent() + "】收到回复，【" + comment.getReply() + "】";
+//                emailService.sendMail(dbComment.getContent(), user.getEmail(), context);
+//            }
+//        }
+        return new JsonResult(1, null);
+    }
     /**
      * bug列表
      * @return
@@ -110,11 +131,10 @@ public class BugController extends BaseController{
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult list(@ModelAttribute BugQuery query) throws MyException {
+    public JsonResult list(@ModelAttribute BugQuery query) throws Exception {
         Project project = getProject(query);
         checkPermission(project, READ);
         query.setPageSize(10);
-        query.setSort(TableField.SORT.SEQUENCE_DESC);
 
         Page page = new Page(query);
         List<BugPO> bugPOList = bugService.select(query, page);

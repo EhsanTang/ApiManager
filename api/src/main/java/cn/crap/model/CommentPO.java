@@ -2,10 +2,10 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Comment extends BasePo{
+public class CommentPO extends BasePo{
     private String id;
 
-    private String articleId;
+    private String targetId;
 
     private String content;
 
@@ -14,6 +14,8 @@ public class Comment extends BasePo{
     private String parentId;
 
     private Byte status;
+
+    private String type;
 
     private Date createTime;
 
@@ -35,14 +37,6 @@ public class Comment extends BasePo{
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
-    }
-
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId == null ? null : articleId.trim();
     }
 
     public String getContent() {
@@ -123,5 +117,21 @@ public class Comment extends BasePo{
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

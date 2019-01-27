@@ -1,14 +1,13 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.CommentAdapter;
-import cn.crap.dto.CommentDto;
+import cn.crap.dto.CommentDTO;
 import cn.crap.enu.MyError;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.ArticleWithBLOBs;
-import cn.crap.model.Comment;
+import cn.crap.model.CommentPO;
 import cn.crap.model.User;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
@@ -17,14 +16,15 @@ import cn.crap.service.UserService;
 import cn.crap.service.tool.EmailService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -38,18 +38,23 @@ public class CommentController extends BaseController {
 	private UserService userService;
 	@Autowired
 	private EmailService emailService;
-
+	// TODO articleId 修改为 targetId
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute CommentQuery query) throws MyException {
-		checkPermission(articleService.getById(query.getArticleId()).getProjectId() , READ);
+		Assert.notNull(query.getTargetId());
+		Assert.notNull(query.getType());
 
-		Page page= new Page(query);
+		// TODO 权限校验
+		//checkPermission(articleService.getById(query.getTargetId()).getProjectId() , READ);
+		query.setPageSize(10);
+		query.setSort(TableField.SORT.SEQUENCE_DESC);
+
+		Page page = new Page(query);
 		page.setAllRow(commentService.count(query));
-
-		List<Comment> commentList = commentService.query(query);
+		List<CommentPO> commentList = commentService.select(query, page);
 		return new JsonResult(1, CommentAdapter.getDto(commentList), page);
 	}
 
@@ -57,25 +62,25 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id) throws MyException {
-		Comment dbComment = commentService.getById(id);
-        ArticleWithBLOBs article = articleService.getById(dbComment.getArticleId());
+		CommentPO dbComment = commentService.get(id);
 
-        checkPermission(article.getProjectId(), READ);
+		// TODO 权限校验
+        // ArticleWithBLOBs article = articleService.getById(dbComment.getTargetId());
+        // checkPermission(article.getProjectId(), READ);
 		return new JsonResult().data(dbComment);
 	}
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute CommentDto commentDto) throws MyException {
-        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
-        checkPermission(article.getProjectId(), MOD_ARTICLE);
-		Comment comment = CommentAdapter.getModel(commentDto);
-		comment.setUpdateTime(new Date());
+	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDto) throws MyException {
+//        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
+//        checkPermission(article.getProjectId(), MOD_ARTICLE);
+		CommentPO comment = CommentAdapter.getModel(commentDto);
 		commentService.update(comment);
 
 		// 发送邮件通知
-		Comment dbComment = commentService.getById(commentDto.getId());
+		CommentPO dbComment = commentService.get(commentDto.getId());
 		if (MyString.isNotEmpty(dbComment.getUserId())){
 			User user = userService.getById(dbComment.getUserId());
 			if (MyString.isNotEmpty(user.getEmail())){
@@ -101,9 +106,9 @@ public class CommentController extends BaseController {
 			if(MyString.isEmpty(tempId)){
 				continue;
 			}
-			Comment comment = commentService.getById(tempId);
-            ArticleWithBLOBs article = articleService.getById(comment.getArticleId());
-            checkPermission(article.getProjectId(), DEL_ARTICLE);
+			CommentPO comment = commentService.get(tempId);
+//            ArticleWithBLOBs article = articleService.getById(comment.getTargetId());
+//            checkPermission(article.getProjectId(), DEL_ARTICLE);
 			commentService.delete(tempId);
 		}
 		return new JsonResult(1, null);

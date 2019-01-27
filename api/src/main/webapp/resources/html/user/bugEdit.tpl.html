@@ -1,5 +1,5 @@
 <link href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css" />
-<div class="col-xs-12 p0 r0" ng-init="getBugDetail()" ng-controller="bugCtrl">
+<div class="col-xs-12 p0 r0" ng-init="getBugDetail()" ng-controller="userBugCtrl">
         <div class="col-xs-12 main-nav">
             <div class="btn-group btn-group-sm r3 fl mr10">
                 <button class="btn btn-default" ng-click="goBack()" type="button">
@@ -31,6 +31,9 @@
                 <div class="cb"></div>
                 <div id="bug-detail-div" ng-bind-html="bugVO.content|trustHtml" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == false]"></div>
                 <div id="bug-editor" ng-class="{true: 'mt10', false:'none'}[bugVO.isEdit == true]"></div>
+            </div>
+            <div class="BGFFF p20 mt20">
+                <div ui-view="addComment" class="f14"></div>
             </div>
         </div>
         <div class="col-xs-5 p20 pl0 mt60">

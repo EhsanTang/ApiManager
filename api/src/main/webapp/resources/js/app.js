@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'visitorModule', 'userInterModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule', 'userInterModule']);
 var userInterModule = angular.module("userInterModule", []);
 var visitorModule = angular.module("visitorModule", []);
 
@@ -95,6 +95,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
     }
 
     $rootScope.go = function (href) {
+        var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
         $location.url(href);
     }
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 

@@ -8,6 +8,8 @@ import cn.crap.model.Project;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
 
+import java.util.Optional;
+
 /**
  * @author Ehsan
  * @date 17/12/30 15:59
@@ -47,6 +49,25 @@ public class LoginUserHelper implements IConst{
             return null;
         }
         return user;
+    }
+
+    public static String getSecretName(LoginInfoDto loginInfoDto){
+        if (loginInfoDto == null){
+            return null;
+        }
+        String name = Optional.ofNullable(loginInfoDto.getTrueName()).orElse(loginInfoDto.getUserName());
+        if (MyString.isEmpty(name)) {
+            return null;
+        }
+        int length = name.length();
+        return name.substring(0, 1) + "**" + (length > 3 ? name.substring(3, length) : "");
+    }
+
+    public static String getName(LoginInfoDto loginInfoDto){
+        if (loginInfoDto == null){
+            return null;
+        }
+        return Optional.ofNullable(loginInfoDto.getTrueName()).orElse(loginInfoDto.getUserName());
     }
 
     /**

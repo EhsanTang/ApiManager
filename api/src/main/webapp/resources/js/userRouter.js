@@ -2,6 +2,7 @@
  * 配置路由。
  * 注意这里采用的是ui-router这个路由，而不是ng原生的路由。
  * ng原生的路由不能支持嵌套视图，所以这里必须使用ui-router。
+ * url : 中支持 currentPage时，修改currentPage ，调用$rootScope.go 才会有效
  * @param  {[type]} $stateProvider
  * @param  {[type]} $urlRouterProvider
  * @return {[type]}
@@ -12,28 +13,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url : '/user/bug/list?currentPage&' + commonUrlParam,
         views : {
             'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/bugList.tpl.html?v=v8.0.5';
-                }
+                templateUrl: 'resources/html/user/bugList.tpl.html?v=v8.0.5'
             }, 'page@userBugList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
             },'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
+                templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
             }
         }
     }).state('userEditBug', {
-        url : '/user/bug/edit?id&' + commonUrlParam,
+        url : '/user/bug/edit?id&type&' + commonUrlParam,
         views : {
             'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
+                templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
             }, 'main' : {
-                templateUrl : function($stateParems){
-                    return 'resources/html/user/bugEdit.tpl.html?v=v8.0.5';
-                }
+                templateUrl : 'resources/html/user/bugEdit.tpl.html?v=v8.0.5'
+            },'addComment@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/addComment.tpl.html?v=v8.0.5'
+            },'page@userEditBug' : {
+                templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
             }
         }
     });

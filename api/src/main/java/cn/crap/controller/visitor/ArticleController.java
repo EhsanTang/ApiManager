@@ -144,19 +144,6 @@ public class ArticleController extends BaseController {
             return new JsonResult().success().data(article).others(returnMap);
         }
 
-        // 初始化前端js评论对象
-        Comment comment = new Comment();
-        comment.setArticleId(id);
-        returnMap.put("comment", comment);
-
-        // 评论
-        CommentQuery commentQuery = new CommentQuery().setArticleId(id).setPageSize(10).setCurrentPage(currentPage);
-        Page page = new Page(commentQuery);
-        List<Comment> comments = commentService.query(commentQuery);
-        page.setAllRow(commentService.count(commentQuery));
-        returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", settingCache.get(S_COMMENTCODE).getValue());
-
         // 更新点击量
         articleService.updateClickById(id);
 
@@ -165,6 +152,6 @@ public class ArticleController extends BaseController {
                 .add(article.getName(), "void")
                 .getList();
         returnMap.put("crumbs", crumbDtos);
-        return new JsonResult(1,  ArticleAdapter.getDtoWithBLOBs(article, module, project), page, returnMap);
+        return new JsonResult(1,  ArticleAdapter.getDtoWithBLOBs(article, module, project), null, returnMap);
     }
 }

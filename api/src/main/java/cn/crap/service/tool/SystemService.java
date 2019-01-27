@@ -31,9 +31,10 @@ public class SystemService {
 
     private Logger log = Logger.getLogger(getClass());
 
+    // TODO 按文件夹合并
     private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "bug.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
-            "userCtrls.js", "bugCtrls.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js",
+            "userCtrls.js", "userBugCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js",
             "crapApi.js", "json.js", "editor.js"};
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
@@ -47,6 +48,8 @@ public class SystemService {
         CHANGE_SQL_MAP.put(4, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
         CHANGE_SQL_MAP.put(5, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
         CHANGE_SQL_MAP.put(6, "ALTER TABLE `article` ADD `attributes` VARCHAR(200)  NULL  DEFAULT ''  AFTER `projectId`");
+        CHANGE_SQL_MAP.put(7, "ALTER TABLE `comment` CHANGE `articleId` `targetId` VARCHAR(50)  NOT NULL  DEFAULT '' COMMENT '评论对象ID'");
+        CHANGE_SQL_MAP.put(8, "ALTER TABLE `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文章，BUG 缺陷'  AFTER `avatarUrl`");
     }
 
     /**

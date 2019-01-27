@@ -1,25 +1,26 @@
 package cn.crap.service;
 
 import cn.crap.dao.mybatis.CommentDao;
+import cn.crap.dto.LoginInfoDto;
+import cn.crap.enu.BugStatus;
 import cn.crap.enu.TableId;
-import cn.crap.framework.MyException;
-import cn.crap.model.Comment;
-import cn.crap.model.CommentCriteria;
+import cn.crap.model.CommentPO;
 import cn.crap.query.CommentQuery;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.IConst;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.Tools;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Optional;
 
 
 /**
  * @Auth crap.cn
  */
 @Service
-public class CommentService extends BaseService<Comment, CommentDao> {
+public class CommentService extends NewBaseService<CommentPO, CommentQuery> implements IConst {
     private CommentDao commentDao;
 
     @Resource
@@ -29,52 +30,29 @@ public class CommentService extends BaseService<Comment, CommentDao> {
     }
 
     @Override
-    public boolean insert(Comment model) throws MyException{
-        if (model == null) {
-            return false;
-        }
-        model.setSequence(0);
-        return super.insert(model);
+    public boolean insert(CommentPO commentPO) throws Exception{
+        Assert.notNull(commentPO, "commentPO 不能为空");
+        Assert.notNull(commentPO.getTargetId(), "targetId 不能为空");
+        Assert.notNull(commentPO.getType(), "type 不能为空");
+
+        commentPO.setId(null);
+        commentPO.setUserName("匿名");
+        commentPO.setAvatarUrl(Tools.getAvatar());
+        LoginInfoDto user = LoginUserHelper.tryGetUser();
+        Optional.ofNullable(user).ifPresent(u -> {
+            commentPO.setUserId(u.getId());
+            commentPO.setAvatarUrl(u.getAvatarUrl());
+            // bug
+            if (commentPO.getType().equals(C_BUG)){
+                commentPO.setUserName(LoginUserHelper.getName(u));
+            } else {
+                commentPO.setUserName(LoginUserHelper.getSecretName(u));
+            }
+        });
+
+        commentPO.setStatus(BugStatus.NEW.getByteValue());
+        commentPO.setReply("");
+        commentPO.setSequence(getMaxSequence(commentPO, new CommentQuery()));
+        return super.insert(commentPO);
     }
-
-    /**
-     * 查询评论
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public List<Comment> query(CommentQuery query) throws MyException {
-        Assert.notNull(query);
-
-        Page page = new Page(query);
-        CommentCriteria example = getCommentCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-        example.setOrderByClause(query.getSort() == null ? TableField.SORT.CREATE_TIME_DES : query.getSort());
-
-        return commentDao.selectByExample(example);
-    }
-
-    /**
-     * 查询评论数量
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public int count(CommentQuery query) throws MyException {
-        Assert.notNull(query);
-
-        CommentCriteria example = getCommentCriteria(query);
-        return commentDao.countByExample(example);
-    }
-
-    private CommentCriteria getCommentCriteria(CommentQuery query) throws MyException {
-        CommentCriteria example = new CommentCriteria();
-        CommentCriteria.Criteria criteria = example.createCriteria();
-        if (query.getArticleId() != null) {
-            criteria.andArticleIdEqualTo(query.getArticleId());
-        }
-        return example;
-    }
-
 }

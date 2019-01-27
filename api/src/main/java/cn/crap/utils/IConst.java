@@ -27,6 +27,7 @@ public interface IConst {
     String C_METHOD_POST = "POST";
     String C_METHOD_GET = "GET";
     String C_SEPARATOR = "C_SEPARATOR";
+    String C_BUG= "BUG";
 
 
     int ALL_PAGE_SIZE = -100; // 不分页

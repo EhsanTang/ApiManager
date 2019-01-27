@@ -27,8 +27,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
             }, 'main' : {
                 templateUrl : 'resources/html/user/bugEdit.tpl.html?v=v8.0.5'
-            },'addComment@userEditBug' : {
-                templateUrl : 'resources/html/subTpl/addComment.tpl.html?v=v8.0.5'
+            },'comment@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/bugComment.tpl.html?v=v8.0.5'
             },'page@userEditBug' : {
                 templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
             }

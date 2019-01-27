@@ -111,10 +111,6 @@ visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http,
 				 $rootScope.model = null;//初始化评论对象
 			 }else{
 				 $rootScope.article = result.data;
-				 $rootScope.page = result.page;
-				 $rootScope.model = result.others.comment;//初始化评论对象
-				 $rootScope.comments = result.others.comments;//评论列表
-				 $rootScope.commentCode = result.others.commentCode;//游客评论是否需要输入验证码
 				 $rootScope.others = result.others;//导航路径
 				 //如果是数据库表，则将内容转为json
 				 if($rootScope.article.content!=''&&$rootScope.article.type=="DICTIONARY"){

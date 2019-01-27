@@ -13,8 +13,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 					else
 						return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.5';
 				}
-			},'addComment@visitorArticleDetailOld' : {
-				templateUrl : 'resources/html/subTpl/addComment.tpl.html?v=v8.0.5'
+			},'comment@visitorArticleDetailOld' : {
+				templateUrl : 'resources/html/subTpl/comment.tpl.html?v=v8.0.5'
 			},'page@visitorArticleDetailOld' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
 			}
@@ -29,8 +29,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
                     else
                         return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.5';
                 }
-            },'addComment@visitorArticleDetail' : {
-                templateUrl : 'resources/html/subTpl/addComment.tpl.html?v=v8.0.5'
+            },'comment@visitorArticleDetail' : {
+                templateUrl : 'resources/html/subTpl/comment.tpl.html?v=v8.0.5'
             },'page@visitorArticleDetail' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
             }

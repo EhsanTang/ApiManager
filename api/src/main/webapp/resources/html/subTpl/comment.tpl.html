@@ -1,0 +1,33 @@
+<!-- 后端评论 -->
+<div ng-controller="commentCtrl">
+	<div class="mt10" ng-init="preAddComment()">
+		<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="commentVO.content"
+				rows="4" required placeholder="请输入评论内容">
+		</textarea>
+        <div class="input-wrapper bt0 fr w300 m0 h50">
+            <input ng-if="commentVO.needImgCode == true" id="comment-img-input" type="text" placeholder="图形验证码" required ng-model="commentVO.imgCode">
+            <div ng-if="commentVO.needImgCode == true" class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+                  data-toggle="tooltip" style="right:100px;">
+                <img id="comment-img-code" width="80" height="30" src="getImgCode.do"
+                     onclick="changeimg('comment-img-code','comment-img-input')">
+            </div>
+            <button type="button" ng-click="addComment()" class="btn btn-adorn btn-sm mt10 imgCode">发表评论</button>
+        </div>
+	</div>
+	<div class="cb"></div>
+    <div ng-init="queryCommentList()">
+        <div ng-repeat="item in commentVOList" class="p10 dashed-t mt10 lh20">
+            <div class="pl50">
+                <img ng-src="{{item.avatarUrl}}" class="avatar">
+                <div class="f12 text-primary">{{item.userName}}  <span class="c-time ftime">{{getDate(item.createTime)|date:'yyyy.MM.dd HH:mm'}}</span></div>
+                <div class="fn lh20 mt5 C555 f14">{{item.content}}</div>
+                <div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
+                    <span class="text-primary">回复</span>:  {{item.reply}}<br>
+                    <span class="c-time ftime">{{item.updateTimeStr}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt20" ui-view="page" ng-init="callBackMethod = 'queryCommentList'; modelKey='commentVOList'"></div>
+    </div>
+	<div class="cb"></div>
+</div>

@@ -15,6 +15,7 @@ import cn.crap.service.BugService;
 import cn.crap.service.CommentService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class CommentController extends BaseController {
 	private CommentService commentService;
 	@Autowired
     private BugService bugService;
-
+    // TODO 删除bug需要删除所有评论
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDTO) throws Exception {
@@ -85,6 +86,7 @@ public class CommentController extends BaseController {
         Assert.notNull(query.getType(), "type 不能为空");
         Assert.notNull(query.getTargetId(), "targetId 不能为空");
         query.setPageSize(10);
+        query.setSort(TableField.SORT.CREATE_TIME_DES);
         Page page = new Page(query);
         List<CommentPO> commentPOList = commentService.select(query, page);
         page.setAllRow(commentService.count(query));

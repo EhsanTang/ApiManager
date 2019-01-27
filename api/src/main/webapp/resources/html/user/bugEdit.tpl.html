@@ -130,16 +130,23 @@
                             </button>
                         </td>
                     </tr>
-
-
                 </table>
             </div>
 
-            <!--<div class="BGFFF p15 mt10" id="editor-div">
-                <div class="col-xs-12 p15 mb10">
+
+            <div class="BGFFF p15 mt10" ng-init="queryBugLogList()">
+                <div class="adorn-bl-3 f14 pl10 C999">操作日志</div>
+                <a type="button" class="btn btn-default none" id="refresh" ng-click="queryBugLogList()"><i
+                        class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+                <div ng-repeat="bugLog in bugLogVOList" class="dashed-t p10 BGFFF f12 C555">
+                    <span class="main-color">{{bugLog.operatorStr}}</span>
+                        将
+                    <span class="main-color">{{bugLog.typeStr}}</span> 从
+                    <span class="C999">{{bugLog.originalValue}}</span>
+                        修改为
+                    <span class="main-color">{{bugLog.newValue}}</span>
                 </div>
-                <div class="cb"></div>
-            </div>-->
+            </div>
         </div>
 </div>
 <div class="cb"></div>

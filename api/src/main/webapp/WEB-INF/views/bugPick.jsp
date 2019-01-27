@@ -66,6 +66,7 @@
             $pickTag.addClass(classPre + "-" + value);
         }
         $pickTag.attr("crap-def", value);
+        $("#refresh").click();
     }
 </script>
 <div id="pickContent">

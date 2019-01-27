@@ -11,7 +11,6 @@ public class BasePo implements Serializable{
     private Date updateTime;
     private String attributes;
 
-
     /**
      * 新增PO时需要，如果返回null，则排序默认值为系统最大值
      * @return

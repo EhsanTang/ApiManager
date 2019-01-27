@@ -52,7 +52,8 @@ public class CommentService extends NewBaseService<CommentPO, CommentQuery> impl
 
         commentPO.setStatus(BugStatus.NEW.getByteValue());
         commentPO.setReply("");
-        commentPO.setSequence(getMaxSequence(commentPO, new CommentQuery()));
+        // 根据时间排序
+        commentPO.setSequence(0);
         return super.insert(commentPO);
     }
 }

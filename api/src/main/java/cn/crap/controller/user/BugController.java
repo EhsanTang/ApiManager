@@ -8,14 +8,17 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.*;
+import cn.crap.model.BugLogPO;
+import cn.crap.model.BugPO;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.query.BugQuery;
+import cn.crap.service.BugLogService;
 import cn.crap.service.BugService;
 import cn.crap.service.CommentService;
 import cn.crap.service.MenuService;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +38,9 @@ public class BugController extends BaseController{
     @Autowired
     private BugService bugService;
     @Autowired
-    MenuService customMenuService;
+    private MenuService customMenuService;
+    @Autowired
+    private BugLogService bugLogService;
 
     /**
      * bug管理系统下拉选择框
@@ -77,12 +82,17 @@ public class BugController extends BaseController{
         BugPO dbBug = bugService.get(id);
         checkPermission(dbBug.getProjectId(), READ);
 
-        BugPO bug = bugService.getChangeBugPO(id, type, value);
+        BugLogPO bugLogPO = new BugLogPO();
+        BugPO bug = bugService.getChangeBugPO(id, type, value, bugLogPO, dbBug);
         boolean update = bugService.update(bug);
 
         dbBug = bugService.get(id);
         Module module = moduleCache.get(dbBug.getModuleId());
         Project project = projectCache.get(dbBug.getProjectId());
+
+        bugLogPO.setBugId(id);
+        bugLogPO.setProjectId(dbBug.getProjectId());
+        bugLogService.insert(bugLogPO);
 
         BugDTO dto = BugAdapter.getDto(dbBug, module, project);
         return new JsonResult(update).data(dto);

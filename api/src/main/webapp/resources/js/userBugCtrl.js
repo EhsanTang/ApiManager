@@ -6,6 +6,7 @@ var bugModule = angular.module("bugModule", []);
 bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
     var VO_NAME = 'bugVO';
     var VO_LIST_NAME = 'bugVOList';
+
     // 公用分页方法
     $scope.pageMethod = function(callBackMethod, page, updateUrl) {
         $scope[callBackMethod](page, updateUrl);
@@ -29,6 +30,13 @@ bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$l
             page = $stateParams.currentPage;
         }
         $rootScope.getBaseDataToDataKey($scope, $http, params, page, VO_LIST_NAME);
+    };
+
+    $scope.queryBugLogList = function () {
+        var params = "iUrl=user/bugLog/list.do|iLoading=FLOAT|iPost=POST|iParams="
+            + "&bugId=" + $stateParams.id
+            + "&projectId=" + $stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope, $http, params, 1, 'bugLogVOList');
     };
 
     /**
@@ -67,6 +75,7 @@ bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$l
             "&id=" + id;
             $rootScope.getBaseDataToDataKey($scope,$http,params,null, null, function () {
                 $rootScope[VO_NAME].oldName = name;
+                $scope.queryBugLogList();
             });
         }
     }
@@ -81,6 +90,7 @@ bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$l
         $rootScope.getBaseDataToDataKey($scope,$http,params,null, null, function () {
             $rootScope[VO_NAME].isEdit = false;
             $rootScope[VO_NAME].oldContent = $rootScope[VO_NAME].content;
+            $scope.queryBugLogList();
         });
     }
     /**
@@ -146,6 +156,6 @@ function initBugEditor(editor) {
     }
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        root[VO_NAME].content = html;
+        $rootScope[VO_NAME].content = html;
     }
 }

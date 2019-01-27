@@ -123,6 +123,7 @@ function loadBugPick($this, $event, iwidth, iheight, type) {
 }
 
 function initBugEditor(editor) {
+    var VO_NAME = 'bugVO';
     var root = getRootScope();
     // 配置菜单
     editor.customConfig.menus = [
@@ -156,6 +157,8 @@ function initBugEditor(editor) {
     }
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        $rootScope[VO_NAME].content = html;
+        root.$apply(function () {
+            root[VO_NAME].content = html;
+        });
     }
 }

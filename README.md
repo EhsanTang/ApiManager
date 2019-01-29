@@ -86,4 +86,4 @@ Nico将竭诚为你提供协助部署、升级帮助、问题解答等各种羞�
 最新消息：</br>
 [2016 年9月获得码云推荐]</br>
 [2016 年度码云新增热门开源软件排行榜 TOP 50——【CrapApi排名16】](http://www.oschina.net//news/81027/2016-oschina-git-new-software-top-50)
-
+[2018 码云年度数据报告 - 最有价值开源项目 GVP 之一](https://gitee.com/2018annual?from=timeline&isappinstalled=0)

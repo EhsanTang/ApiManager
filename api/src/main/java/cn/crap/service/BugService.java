@@ -71,8 +71,8 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bug.setStatus(bugStatus.getByteValue());
 
             bugLogPO.setType(BugLogType.STATUS.getByteType());
-            bugLogPO.setOriginalValue(BugPriority.getNameByValue(dbBug.getStatus()));
-            bugLogPO.setNewValue(BugPriority.getNameByValue(bugStatus.getByteValue()));
+            bugLogPO.setOriginalValue(BugStatus.getNameByValue(dbBug.getStatus()));
+            bugLogPO.setNewValue(BugStatus.getNameByValue(bugStatus.getByteValue()));
         } else if (PickCode.SEVERITY.getCode().equals(type)){
             BugSeverity bugSeverity = Optional.ofNullable(BugSeverity.getByValue(value)).orElseThrow(() -> new MyException(MyError.E000065, "严重程度有误"));
             bug.setSeverity(bugSeverity.getByteValue());

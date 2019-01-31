@@ -17,6 +17,7 @@ import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -69,7 +70,6 @@ public class CommentController extends BaseController {
     @ResponseBody
     public JsonResult detail(@ModelAttribute CommentDTO commentDTO) throws Exception {
         Assert.notNull(commentDTO.getType(), "type 不能为空");
-        Assert.notNull(commentDTO.getTargetId(), "targetId 不能为空");
         SettingDto anonymousComment = settingCache.get(S_ANONYMOUS_COMMENT);
         commentDTO.setNeedImgCode(false);
         if (commentDTO.getType().equals(C_BUG)){
@@ -83,8 +83,10 @@ public class CommentController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     public JsonResult list(@ModelAttribute CommentQuery query) throws Exception {
+        if (query.getTargetId() == null){
+            return new JsonResult().data(Lists.newArrayList()).page(new Page(query));
+        }
         Assert.notNull(query.getType(), "type 不能为空");
-        Assert.notNull(query.getTargetId(), "targetId 不能为空");
         query.setPageSize(10);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
         Page page = new Page(query);

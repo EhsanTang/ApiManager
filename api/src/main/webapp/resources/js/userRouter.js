@@ -29,6 +29,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl : 'resources/html/user/bugEdit.tpl.html?v=v8.0.5'
             },'comment@userEditBug' : {
                 templateUrl : 'resources/html/subTpl/bugComment.tpl.html?v=v8.0.5'
+            },'zoomImg@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/zoomImg.tpl.html?v=v8.0.5'
+            },'bugLog@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/bugLog.tpl.html?v=v8.0.5'
             },'page@userEditBug' : {
                 templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
             }

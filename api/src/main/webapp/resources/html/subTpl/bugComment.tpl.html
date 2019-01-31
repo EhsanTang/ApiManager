@@ -1,11 +1,13 @@
 <!-- 后端评论 -->
 <div ng-controller="commentCtrl">
 	<div class="mt10" ng-init="preAddComment()">
-		<textarea class="form-control no-resize ns BCEEE f14 C555" ng-model="commentVO.content"
+		<textarea class="form-control no-resize ns BCEEE f14 C555" maxlength="512" ng-model="commentVO.content"
 				rows="4" required placeholder="请输入评论内容">
 		</textarea>
-        <button type="button" ng-click="addComment()" class="btn btn-adorn btn-xs mt10 imgCode fr">发表评论</button>
-	</div>
+        <button type="button" ng-click="addComment()" class="btn btn-adorn btn-xs mt10 imgCode fr">提交</button>
+        <div class="fr mt15 C999 f10 mr10" ng-bind="'还能再输入' + (512 - commentVO.content.length) + '个字'"></div>
+
+    </div>
 	<div class="cb"></div>
     <div ng-init="queryCommentList()">
         <div ng-repeat="item in commentVOList" class="p10 dashed-t mt10 lh20">

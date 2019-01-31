@@ -12,6 +12,7 @@ import cn.crap.query.BugLogQuery;
 import cn.crap.service.BugLogService;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -38,7 +40,10 @@ public class BugLogController extends BaseController{
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute BugLogQuery query) throws Exception {
-        Assert.notNull(query.getBugId(), "bugId不能为空");
+        if (query.getBugId() == null){
+            return new JsonResult().data(Lists.newArrayList()).page(new Page(query));
+        }
+
         Project project = getProject(query);
         checkPermission(project, READ);
         query.setPageSize(100);
@@ -49,7 +54,6 @@ public class BugLogController extends BaseController{
         page.setAllRow(bugLogService.count(query));
 
         List<BugLogDTO> dtoList = BugLogAdapter.getDto(bugLogPOList);
-
         return new JsonResult().data(dtoList).page(page);
     }
 

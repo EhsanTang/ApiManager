@@ -68,7 +68,7 @@ public class BugAdapter {
         bugPO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
 
         BugDTO bugDTO = getDto(bugPO, module, project);
-        bugDTO.setName("【新建缺陷】");
+        bugDTO.setName("");
         bugDTO.setContent("<p>[缺陷描述]：<br>[重现步骤]：<br>[期望结果]：<br>[原因定位]：<br>[建议修改]：<br></p>");
         return bugDTO;
     }

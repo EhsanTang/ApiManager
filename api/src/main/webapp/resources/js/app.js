@@ -1,6 +1,10 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule', 'userInterModule']);
-var userInterModule = angular.module("userInterModule", []);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule']);
 var visitorModule = angular.module("visitorModule", []);
+var userModule = angular.module("userModule", []);
+var adminModule = angular.module("adminModule", []);
+var commentModule = angular.module("commentModule", []);
+var bugModule = angular.module("bugModule", []);
+
 
 var NEED_PASSWORD_CODE = "E000007";
 var NEED_LOGIN = "E000021";

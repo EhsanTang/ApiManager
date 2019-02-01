@@ -22,7 +22,6 @@ public class CommentAdapter {
 
         CommentDTO dto = new CommentDTO();
         BeanUtil.copyProperties(model, dto);
-
 		dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
         dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
 

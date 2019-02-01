@@ -1,7 +1,6 @@
 /**
  * bug管理系统 controller
  */
-var bugModule = angular.module("bugModule", []);
 // bug列表
 bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
     var VO_NAME = 'bugVO';

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class BeanUtil extends BeanUtils{
     private static Log logger = LogFactory.getLog(BeanUtil.class);
-    private static String[] defIgnoreProperties = new String[]{"password", "passwordSalt"};
+    private static String[] defIgnoreProperties = new String[]{"password", "passwordSalt", "createTime", "updateTime"};
     private static String[] canNotUpdateProperties = new String[]{"createTime", "password", "passwordSalt", "click",
             "projectId", "userId", "articleId"};
 

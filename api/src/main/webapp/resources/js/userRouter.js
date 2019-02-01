@@ -462,7 +462,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('commentList', {
-		url : '/user/comment/list?articleId&' + commonUrlParam,
+		url : '/user/comment/list?type&targetId&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/commentList.tpl.html?v=v8.0.5'

@@ -1,7 +1,10 @@
 /**
  * 评论 controller
  */
-var commentModule = angular.module("commentModule", []);
+
+/**
+ * 前端页面 controller
+ */
 commentModule.controller('commentCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
     var VO_NAME = 'commentVO';
     var VO_LIST_NAME = 'commentVOList';
@@ -41,5 +44,16 @@ commentModule.controller('commentCtrl', function($rootScope,$scope, $http, $stat
             $scope.queryCommentList(1,true);
         });
     }
+});
 
+/**
+ * 后端页面 controller
+ */
+userModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    $scope.queryUserCommentList = function(page) {
+        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&targetId="+$stateParams.targetId
+            + "&projectId=" + $stateParams.projectId
+            + "&type=" + $stateParams.type;
+        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
+    };
 });

@@ -67,7 +67,7 @@ public class CommentController extends BaseController {
 		// TODO 权限校验
         // ArticleWithBLOBs article = articleService.getById(dbComment.getTargetId());
         // checkPermission(article.getProjectId(), READ);
-		return new JsonResult().data(dbComment);
+		return new JsonResult().data(CommentAdapter.getDto(dbComment));
 	}
 	
 	@RequestMapping("/addOrUpdate.do")

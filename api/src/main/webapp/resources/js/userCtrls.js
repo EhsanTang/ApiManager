@@ -1,8 +1,6 @@
 /**
  * 后台controller
  */
-var userModule = angular.module("userModule", []);
-var adminModule = angular.module("adminModule", []);
 
 // 显示长度 wordwise：切字方式- 如果是 true，只切單字
 userModule.filter('cut', function () {
@@ -173,12 +171,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             page = $stateParams.currentPage;
         }
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "dictionaries");
-    };
-
-    // 评论列表
-    $scope.queryCommentList = function(page) {
-        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&targetId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
     };
 
     // 操作日志

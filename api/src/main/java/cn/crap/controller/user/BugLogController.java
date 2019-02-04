@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.BugLogAdapter;
 import cn.crap.dto.BugLogDTO;
+import cn.crap.enu.PremissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -45,7 +46,7 @@ public class BugLogController extends BaseController{
         }
 
         Project project = getProject(query);
-        checkPermission(project, READ);
+        checkPermission(project, PremissionEnum.READ);
         query.setPageSize(100);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
 

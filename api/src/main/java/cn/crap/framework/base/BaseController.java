@@ -3,13 +3,14 @@ package cn.crap.framework.base;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.InterfaceContentType;
 import cn.crap.enu.MyError;
+import cn.crap.enu.PremissionEnum;
 import cn.crap.enu.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.model.ProjectUser;
+import cn.crap.model.ProjectUserPO;
 import cn.crap.query.BaseQuery;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
@@ -27,7 +28,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 
-public abstract class BaseController implements IAuthCode, IConst, ISetting {
+public abstract class BaseController implements IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/result.jsp";
     protected final static int SIZE = 15;
     protected Logger log = Logger.getLogger(getClass());
@@ -191,19 +192,19 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
      * @throws MyException
      */
     protected void checkPermission(Project project) throws MyException {
-        PermissionUtil.checkPermission(project, MY_DATE);
+        PermissionUtil.checkPermission(project, PremissionEnum.MY_DATE);
     }
 
-    protected void checkPermission(Project project, int type) throws MyException {
+    protected void checkPermission(Project project, PremissionEnum type) throws MyException {
         PermissionUtil.checkPermission(project, type);
     }
 
-    protected void checkPermission(String projectId, int type) throws MyException {
+    protected void checkPermission(String projectId, PremissionEnum type) throws MyException {
         PermissionUtil.checkPermission(projectCache.get(projectId), type);
     }
 
     protected void checkPermission(String projectId) throws MyException {
-        PermissionUtil.checkPermission(projectCache.get(projectId), MY_DATE);
+        PermissionUtil.checkPermission(projectCache.get(projectId), PremissionEnum.MY_DATE);
     }
 
     /**
@@ -295,7 +296,7 @@ public abstract class BaseController implements IAuthCode, IConst, ISetting {
             }
 
             // 项目成员
-            ProjectUser pu = user.getProjects().get(project.getId());
+            ProjectUserPO pu = user.getProjects().get(project.getId());
             if (pu == null) {
                 throw new MyException(MyError.E000042);
             }

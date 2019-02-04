@@ -93,9 +93,11 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
 
     public List<PO> select(Query query, Page page) throws MyException {
         Assert.notNull(query, "query can't be null");
-        query.setStart(page.getStart());
-        query.setCurrentPage(page.getCurrentPage());
-        query.setPageSize(page.getSize());
+        if (page != null){
+            query.setStart(page.getStart());
+            query.setCurrentPage(page.getCurrentPage());
+            query.setPageSize(page.getSize());
+        }
         if (query.getSort() == null){
             query.setSort(TableField.SORT.SEQUENCE_DESC);
         }

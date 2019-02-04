@@ -5,6 +5,7 @@ import cn.crap.dto.CommentDTO;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.PremissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -58,7 +59,7 @@ public class CommentController extends BaseController {
 		// bug管理系统
 		if (commentDTO.getType().equals(C_BUG)){
             BugPO bugPO = bugService.get(commentDTO.getTargetId());
-            checkPermission(bugPO.getProjectId(), READ);
+            checkPermission(bugPO.getProjectId(), PremissionEnum.READ);
         }
 
 		CommentPO commentPO = CommentAdapter.getModel(commentDTO);

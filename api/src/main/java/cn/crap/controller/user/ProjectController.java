@@ -94,7 +94,7 @@ public class ProjectController extends BaseController {
     public JsonResult detail(String id) throws MyException {
         if (MyString.isNotEmpty(id)) {
             Project model = projectCache.get(id);
-            checkPermission(model, READ);
+            checkPermission(model, PremissionEnum.READ);
             ProjectDto dto = ProjectAdapter.getDto(model, null);
             dto.setInviteUrl(projectService.getInviteUrl(dto));
             return new JsonResult(1, dto);

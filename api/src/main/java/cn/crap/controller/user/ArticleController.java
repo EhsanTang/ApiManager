@@ -55,7 +55,7 @@ public class ArticleController extends BaseController{
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
 		Project project = getProject(query);
 		Module module = getModule(query);
-        checkPermission(project, READ);
+        checkPermission(project, PremissionEnum.READ);
 
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
@@ -86,7 +86,7 @@ public class ArticleController extends BaseController{
 			article.setProjectId(project.getId());
 		}
 
-		checkPermission(project, READ);
+		checkPermission(project, PremissionEnum.READ);
 		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
 	}
 	
@@ -113,8 +113,8 @@ public class ArticleController extends BaseController{
         // 修改
 		if(id != null){
             String oldProjectId = articleService.getById(article.getId()).getProjectId();
-            checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
-            checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? MOD_ARTICLE : MOD_DICT);
+            checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.MOD_ARTICLE : PremissionEnum.MOD_DICT);
+            checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.MOD_ARTICLE : PremissionEnum.MOD_DICT);
 
             // 只有项目拥有者可以修改是否可以删除属性
             if (!LoginUserHelper.isAdminOrProjectOwner(newProject)){
@@ -124,7 +124,7 @@ public class ArticleController extends BaseController{
 			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
 		} else{
             // 新增
-            checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? ADD_ARTICLE : ADD_DICT);
+            checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.ADD_ARTICLE : PremissionEnum.ADD_DICT);
             articleService.insert(article);
             id = article.getId();
         }
@@ -162,7 +162,7 @@ public class ArticleController extends BaseController{
 			}
 			Article model = articleService.getById(tempId);
 			Project project = projectCache.get(model.getProjectId());
-			checkPermission(project , model.getType().equals(ArticleType.ARTICLE.name())? DEL_ARTICLE : DEL_DICT);
+			checkPermission(project , model.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.DEL_ARTICLE : PremissionEnum.DEL_DICT);
 
 			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
 				throw new MyException(MyError.E000009);
@@ -195,7 +195,7 @@ public class ArticleController extends BaseController{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
 		Module module = moduleCache.get(moduleId);
-        checkPermission(projectCache.get(module.getProjectId()), READ);
+        checkPermission(projectCache.get(module.getProjectId()), PremissionEnum.READ);
 
 		article.setProjectId(module.getProjectId());
 		articleService.insert(article);

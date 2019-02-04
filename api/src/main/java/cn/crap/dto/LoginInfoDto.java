@@ -9,6 +9,7 @@ import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
 import cn.crap.service.RoleService;
 import cn.crap.utils.IConst;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 
 import java.io.Serializable;
@@ -27,7 +28,7 @@ public class LoginInfoDto implements Serializable{
 	private byte type;
 	private String email;
 	private String avatarUrl;
-	private Map<String, ProjectUser> projects = new HashMap<String, ProjectUser>();
+	private Map<String, ProjectUserPO> projects = new HashMap<>();
 
 	public LoginInfoDto(User user, RoleService roleService, ProjectService projectService,
 						ProjectUserService projectUserService) throws MyException{
@@ -66,7 +67,7 @@ public class LoginInfoDto implements Serializable{
 		}
 		
 		// 项目成员
-		for(ProjectUser p: projectUserService.query(new ProjectUserQuery().setUserId(id))){
+		for(ProjectUserPO p: projectUserService.select(new ProjectUserQuery().setUserId(id), null)){
 			projects.put(p.getProjectId(), p);
 			sb.append(IConst.C_AUTH_PROJECT + p.getProjectId()+",");
 		}
@@ -108,11 +109,11 @@ public class LoginInfoDto implements Serializable{
 		this.email = email;
 	}
 
-	public Map<String, ProjectUser> getProjects() {
+	public Map<String, ProjectUserPO> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(Map<String, ProjectUser> projects) {
+	public void setProjects(Map<String, ProjectUserPO> projects) {
 		this.projects = projects;
 	}
 

@@ -51,6 +51,55 @@ public class SystemService {
         CHANGE_SQL_MAP.put(7, "ALTER TABLE `comment` CHANGE `articleId` `targetId` VARCHAR(50)  NOT NULL  DEFAULT '' COMMENT '评论对象ID'");
         CHANGE_SQL_MAP.put(8, "ALTER TABLE `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文章，BUG 缺陷'  AFTER `avatarUrl`");
         CHANGE_SQL_MAP.put(9, "ALTER TABLE `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
+        CHANGE_SQL_MAP.put(10, "ALTER TABLE `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
+
+        CHANGE_SQL_MAP.put(11, "UPDATE project_user SET permission=concat(permission,'addModule,') WHERE addModule=1");
+        CHANGE_SQL_MAP.put(12, "UPDATE project_user SET permission=concat(permission,'delModule,') WHERE delModule=1");
+        CHANGE_SQL_MAP.put(13, "UPDATE project_user SET permission=concat(permission,'modModule,') WHERE modModule=1");
+
+        CHANGE_SQL_MAP.put(14, "UPDATE project_user SET permission=concat(permission,'addInter,') WHERE addInter=1");
+        CHANGE_SQL_MAP.put(15, "UPDATE project_user SET permission=concat(permission,'modInter,') WHERE modInter=1");
+        CHANGE_SQL_MAP.put(16, "UPDATE project_user SET permission=concat(permission,'delInter,') WHERE delInter=1");
+
+        CHANGE_SQL_MAP.put(17, "UPDATE project_user SET permission=concat(permission,'addArticle,') WHERE addArticle=1");
+        CHANGE_SQL_MAP.put(18, "UPDATE project_user SET permission=concat(permission,'delArticle,') WHERE delArticle=1");
+        CHANGE_SQL_MAP.put(19, "UPDATE project_user SET permission=concat(permission,'modArticle,') WHERE modArticle=1");
+
+        CHANGE_SQL_MAP.put(20, "UPDATE project_user SET permission=concat(permission,'addDict,') WHERE addDict=1");
+        CHANGE_SQL_MAP.put(21, "UPDATE project_user SET permission=concat(permission,'delDict,') WHERE delDict=1");
+        CHANGE_SQL_MAP.put(22, "UPDATE project_user SET permission=concat(permission,'modDict,') WHERE modDict=1");
+
+        CHANGE_SQL_MAP.put(23, "UPDATE project_user SET permission=concat(permission,'addSource,') WHERE addSource=1");
+        CHANGE_SQL_MAP.put(24, "UPDATE project_user SET permission=concat(permission,'delSource,') WHERE delSource=1");
+        CHANGE_SQL_MAP.put(25, "UPDATE project_user SET permission=concat(permission,'modSource,') WHERE modSource=1");
+
+        CHANGE_SQL_MAP.put(26, "UPDATE project_user SET permission=concat(permission,'addError,') WHERE addError=1");
+        CHANGE_SQL_MAP.put(27, "UPDATE project_user SET permission=concat(permission,'delError,') WHERE delError=1");
+        CHANGE_SQL_MAP.put(28, "UPDATE project_user SET permission=concat(permission,'modError,') WHERE modError=1");
+
+        CHANGE_SQL_MAP.put(29, "ALTER TABLE `project_user` DROP `addModule`");
+        CHANGE_SQL_MAP.put(30, "ALTER TABLE `project_user` DROP `delModule`");
+        CHANGE_SQL_MAP.put(31, "ALTER TABLE `project_user` DROP `modModule`");
+
+        CHANGE_SQL_MAP.put(32, "ALTER TABLE `project_user` DROP `addInter`");
+        CHANGE_SQL_MAP.put(33, "ALTER TABLE `project_user` DROP `modInter`");
+        CHANGE_SQL_MAP.put(34, "ALTER TABLE `project_user` DROP `delInter`");
+
+        CHANGE_SQL_MAP.put(35, "ALTER TABLE `project_user` DROP `addArticle`");
+        CHANGE_SQL_MAP.put(36, "ALTER TABLE `project_user` DROP `delArticle`");
+        CHANGE_SQL_MAP.put(37, "ALTER TABLE `project_user` DROP `modArticle`");
+
+        CHANGE_SQL_MAP.put(38, "ALTER TABLE `project_user` DROP `addDict`");
+        CHANGE_SQL_MAP.put(39, "ALTER TABLE `project_user` DROP `delDict`");
+        CHANGE_SQL_MAP.put(40, "ALTER TABLE `project_user` DROP `modDict`");
+
+        CHANGE_SQL_MAP.put(41, "ALTER TABLE `project_user` DROP `addSource`");
+        CHANGE_SQL_MAP.put(42, "ALTER TABLE `project_user` DROP `delSource`");
+        CHANGE_SQL_MAP.put(43, "ALTER TABLE `project_user` DROP `modSource`");
+
+        CHANGE_SQL_MAP.put(44, "ALTER TABLE `project_user` DROP `addError`");
+        CHANGE_SQL_MAP.put(45, "ALTER TABLE `project_user` DROP `delError`");
+        CHANGE_SQL_MAP.put(46  , "ALTER TABLE `project_user` DROP `modError`");
     }
 
     /**

@@ -33,7 +33,7 @@ public enum SettingEnum {
     IMAGE_CODE("IMAGE_CODE", SettingStatus.HIDDEN, SettingType.SELECT, false, 101, "Times New Roman", "图形验字体（部分系统显示有问题，可切换字体）",
             new String[]{"TimesNewRoman|Times New Roman"}),
     MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "项目下允许创建的最大模块数", null),
-    MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
+    MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "最大允许创建的项目数", null),
 	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "200", "项目下最大允许的错误码数量，最大不能超过1000", null),
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "crapApiKey", "秘钥，用于cookie加密等", null),
 	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开", null);

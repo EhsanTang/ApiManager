@@ -127,7 +127,7 @@ public class UserPickService implements IPickService{
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
                 // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
-                for (ProjectUser m : projectUserService.query(new ProjectUserQuery().setProjectId(key).setPageSize(100))) {
+                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key), null)) {
                     User projectUser = userService.getById(m.getUserId());
                     if (projectUser == null){
                         continue;

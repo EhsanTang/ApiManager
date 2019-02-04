@@ -4,6 +4,7 @@ import cn.crap.adapter.BugAdapter;
 import cn.crap.dto.BugDTO;
 import cn.crap.dto.CommentDTO;
 import cn.crap.enu.MyError;
+import cn.crap.enu.PremissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -80,7 +81,7 @@ public class BugController extends BaseController{
             return new JsonResult(true);
         }
         BugPO dbBug = bugService.get(id);
-        checkPermission(dbBug.getProjectId(), READ);
+        checkPermission(dbBug.getProjectId(), PremissionEnum.READ);
 
         BugLogPO bugLogPO = new BugLogPO();
         BugPO bug = bugService.getChangeBugPO(id, type, value, bugLogPO, dbBug);
@@ -105,7 +106,7 @@ public class BugController extends BaseController{
         throwExceptionWhenIsNull(dto.getProjectId(), "projectId 不能为空");
 
         dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
-        checkPermission(dto.getProjectId(), READ);
+        checkPermission(dto.getProjectId(), PremissionEnum.READ);
 
         bugService.insert(BugAdapter.getPO(dto));
         return new JsonResult(true);
@@ -143,7 +144,7 @@ public class BugController extends BaseController{
     @AuthPassport
     public JsonResult list(@ModelAttribute BugQuery query) throws Exception {
         Project project = getProject(query);
-        checkPermission(project, READ);
+        checkPermission(project, PremissionEnum.READ);
         query.setPageSize(10);
 
         Page page = new Page(query);
@@ -162,7 +163,7 @@ public class BugController extends BaseController{
 
         String id = dto.getId();
         dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
-        checkPermission(dto.getProjectId(), READ);
+        checkPermission(dto.getProjectId(), PremissionEnum.READ);
 
         Project project = projectCache.get(dto.getProjectId());
         Module module = moduleCache.get(dto.getModuleId());
@@ -187,7 +188,7 @@ public class BugController extends BaseController{
         if (bugPO == null) {
             throw new MyException(MyError.E000063);
         }
-        checkPermission(bugPO.getProjectId(), DEL_ERROR);
+        checkPermission(bugPO.getProjectId(), PremissionEnum.DEL_ERROR);
         bugService.delete(id);
         return new JsonResult(1, null);
     }

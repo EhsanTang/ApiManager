@@ -2,7 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.PermissionDTO;
 import cn.crap.dto.ProjectUserDto;
-import cn.crap.enu.PermissionEnum;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.utils.BeanUtil;
@@ -25,7 +25,7 @@ public class ProjectUserAdapter {
 		List<PermissionDTO> permissionLit = Lists.newArrayList();
 		StringBuilder permissionSb = new StringBuilder();
         dto.getCrShowPermissionSet().stream().forEach(value -> {
-            PermissionEnum permissionEnum = PermissionEnum.getByValue(value);
+            ProjectPermissionEnum permissionEnum = ProjectPermissionEnum.getByValue(value);
             if (permissionEnum != null){
                 permissionLit.add(new PermissionDTO(permissionEnum.getValue(), permissionEnum.getDesc()));
                 permissionSb.append(permissionEnum.getDesc() + ",");

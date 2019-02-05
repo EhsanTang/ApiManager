@@ -12,7 +12,7 @@ public interface IConst {
 	String NOT_NULL = "NOT_NULL";
 	String BLANK = "_BLANK"; 
 	String ALL = "_ALL"; 
-	String C_SUPER = "super";
+	String C_SUPER = "SUPER";
 	String C_AUTH_USER = "USER";
 	String C_HOT_SEARCH = "HOTS_EARCH";
 	String C_AUTH_MENU = "MENU";

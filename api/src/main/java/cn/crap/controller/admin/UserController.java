@@ -16,7 +16,6 @@ import cn.crap.model.UserCriteria;
 import cn.crap.query.UserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
-import cn.crap.service.RoleService;
 import cn.crap.service.UserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
-    @Autowired
-    private RoleService roleService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -99,12 +96,10 @@ public class UserController extends BaseController {
         }
 
         LoginInfoDto loginUser = LoginUserHelper.getUser();
-        // 如果不是最高管理员，不允许修改权限、角色、类型
-        if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
+        // 如果不是最高管理员，不允许修改权限、类型
+        if (!Tools.isSuperAdmin(loginUser.getAuthStr())) {
             user.setAuth("");
             user.setAuthName("");
-            user.setRoleId("");
-            user.setRoleName("");
             user.setType(UserType.USER.getType());// 普通用户
         }
         user.setStatus(UserStatus.INVALID.getType());
@@ -148,18 +143,16 @@ public class UserController extends BaseController {
         }
 
         // 普通管理员不能修改管理员信息
-        if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
+        if (!Tools.isSuperAdmin(loginUser.getAuthStr())) {
             if (!dbUser.getId().equals(loginUser.getId()) && dbUser.getType() == UserType.ADMIN.getType()) {
                 throw new MyException(MyError.E000054);
             }
         }
 
-        // 如果不是最高管理员，不允许修改权限、角色、类型
-        if (!Tools.isSuperAdmin(loginUser.getRoleId())) {
+        // 如果不是最高管理员，不允许修改权限、类型
+        if (!Tools.isSuperAdmin(loginUser.getAuthStr())) {
             user.setAuth(null);
             user.setAuthName(null);
-            user.setRoleId(null);
-            user.setRoleName(null);
             user.setType(null);
         }
 
@@ -168,7 +161,7 @@ public class UserController extends BaseController {
             user.setStatus(UserStatus.INVALID.getType());
             dbUser.setEmail(user.getEmail());
             dbUser.setStatus(UserStatus.INVALID.getType());
-            userCache.add(user.getId(), new LoginInfoDto(dbUser, roleService, projectService, projectUserService));
+            userCache.add(user.getId(), new LoginInfoDto(dbUser, projectService, projectUserService));
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登录类型设置为允许普通登录

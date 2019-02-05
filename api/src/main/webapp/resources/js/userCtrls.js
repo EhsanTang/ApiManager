@@ -352,7 +352,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
-				$rootScope.sessionAdminRoleIds = result.data.sessionAdminRoleIds;
 				$rootScope.sessionAdminId =result.data.sessionAdminId;
 				$rootScope.errorTips = result.data.errorTips;
 			}
@@ -363,11 +362,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 		var auth = $("#sessionAuth").val();
 		var hasAuth = false;
 		// 最高管理员
-		if( (","+auth+",").indexOf(",super,")>=0){
+		if( (","+auth+",").indexOf(",SUPER,")>=0){
 			hasAuth = true;
 		}
 		// 拥有权限的管理员
-		if( (","+auth+",").indexOf(",ADMIN,")>=0){
+		else if( (","+auth+",").indexOf(",ADMIN,")>=0){
 			if(needAuth){
 				if( (","+auth+",").indexOf(","+needAuth+",")>=0){
 					hasAuth = true;
@@ -376,6 +375,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 				hasAuth = true;
 			}
 		}
+
 		if(hasAuth){
 			if(id) {
                 $("#" + id).removeClass("ndis");
@@ -392,7 +392,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
     	var auth = $("#sessionAuth").val();
-    	if( (","+auth+",").indexOf(",super,")>=0){
+    	if( (","+auth+",").indexOf(",SUPER,")>=0){
 			if(id)
 				$("#"+id).removeClass("ndis");
 			return true;
@@ -490,14 +490,6 @@ userModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 				 $rootScope.model = result.data;
 			 }
 		});
-    };
-    $scope.getData();
-});
-/**************************角色列表****************************/
-userModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=admin/role/list.do|iLoading=FLOAT|iPost=true|iParams=&roleName=" + $("#roleName").val();;
-		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });

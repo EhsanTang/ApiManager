@@ -4,7 +4,7 @@ import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.PermissionEnum;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
 import com.google.common.base.Splitter;
@@ -24,7 +24,7 @@ public class PermissionUtil implements IConst{
      * @param project
      * @throws MyException
      */
-    public static void checkPermission(Project project, PermissionEnum needPermission) throws MyException {
+    public static void checkPermission(Project project, ProjectPermissionEnum needPermission) throws MyException {
         if (project == null || project.getId() == null){
             throw new MyException(MyError.E000022, "项目不能为空");
         }
@@ -33,7 +33,7 @@ public class PermissionUtil implements IConst{
          * 最高管理员修改项目
          * the supper admin can do anything
          */
-        if (("," + user.getRoleId()).indexOf("," + C_SUPER + ",") >= 0) {
+        if (Tools.isSuperAdmin(user.getAuthStr())) {
             return;
         }
 
@@ -48,7 +48,7 @@ public class PermissionUtil implements IConst{
         /**
          * 只有项目创建者才能查看
          */
-        if (needPermission == PermissionEnum.MY_DATE) {
+        if (needPermission == ProjectPermissionEnum.MY_DATE) {
             throw new MyException(MyError.E000022);
         }
 
@@ -61,7 +61,7 @@ public class PermissionUtil implements IConst{
         /**
          * 登录用户为项目成员即可查看
          */
-        if (needPermission == PermissionEnum.READ) {
+        if (needPermission == ProjectPermissionEnum.READ) {
             return;
         }
 

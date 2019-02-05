@@ -158,16 +158,6 @@ function checkText(obj, oldNavigateText, span, checkBox, length) {
 		}
 	}
 }
-/** *************选中显示菜单权限则回调隐藏模块*************** */
-// 待删除
-function needHiddenModule() {
-	if ($("#type").val() == "SHOWMENU" || $("#type").val() == "USER"
-			|| $("#type").val() == "MENU" || $("#type").val() == "ROLE") {
-		iClose("roleModuleId");
-	} else {
-		iShow("roleModuleId");
-	}
-}
 
 // 重建索引
 function rebuildIndex(obj){

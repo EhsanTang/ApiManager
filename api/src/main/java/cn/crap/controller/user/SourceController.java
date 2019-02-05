@@ -4,7 +4,7 @@ import cn.crap.adapter.SourceAdapter;
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.PermissionEnum;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -45,7 +45,7 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
         Project project = getProject(query);
-        checkPermission(project, PermissionEnum.READ);
+        checkPermission(project, ProjectPermissionEnum.READ);
 
 		Page page= new Page(query);
 		page.setAllRow(sourceService.count(query));
@@ -64,7 +64,7 @@ public class SourceController extends BaseController{
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
-			checkPermission( model.getProjectId(), PermissionEnum.READ);
+			checkPermission( model.getProjectId(), ProjectPermissionEnum.READ);
 		}else{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
@@ -124,10 +124,10 @@ public class SourceController extends BaseController{
                 source.setFilePath(oldSource.getFilePath());
             }
 
-            checkPermission(source.getProjectId(), PermissionEnum.MOD_SOURCE);
+            checkPermission(source.getProjectId(), ProjectPermissionEnum.MOD_SOURCE);
             sourceService.update(source, true);
         }else {
-            checkPermission(source.getProjectId(), PermissionEnum.ADD_SOURCE);
+            checkPermission(source.getProjectId(), ProjectPermissionEnum.ADD_SOURCE);
             sourceService.insert(source);
             id = source.getId();
         }
@@ -153,7 +153,7 @@ public class SourceController extends BaseController{
 				continue;
 			}
 			// 权限
-			checkPermission(sourceService.getById( tempId ).getProjectId(), PermissionEnum.DEL_SOURCE);
+			checkPermission(sourceService.getById( tempId ).getProjectId(), ProjectPermissionEnum.DEL_SOURCE);
 			Source source = new Source();
 			source.setId(tempId);
 			
@@ -170,8 +170,8 @@ public class SourceController extends BaseController{
 		Source change = sourceService.getById(changeId);
 		Source model = sourceService.getById(id);
 		// 权限
-		checkPermission(change.getModuleId(), PermissionEnum.MOD_SOURCE);
-		checkPermission(model.getModuleId(), PermissionEnum.MOD_SOURCE);
+		checkPermission(change.getModuleId(), ProjectPermissionEnum.MOD_SOURCE);
+		checkPermission(model.getModuleId(), ProjectPermissionEnum.MOD_SOURCE);
 				
 		int modelSequence = model.getSequence();
 		

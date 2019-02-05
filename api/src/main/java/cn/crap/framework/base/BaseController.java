@@ -1,10 +1,7 @@
 package cn.crap.framework.base;
 
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.enu.InterfaceContentType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.PermissionEnum;
-import cn.crap.enu.ProjectType;
+import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -192,19 +189,19 @@ public abstract class BaseController implements IConst, ISetting {
      * @throws MyException
      */
     protected void checkPermission(Project project) throws MyException {
-        PermissionUtil.checkPermission(project, PermissionEnum.MY_DATE);
+        PermissionUtil.checkPermission(project, ProjectPermissionEnum.MY_DATE);
     }
 
-    protected void checkPermission(Project project, PermissionEnum type) throws MyException {
+    protected void checkPermission(Project project, ProjectPermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(project, type);
     }
 
-    protected void checkPermission(String projectId, PermissionEnum type) throws MyException {
+    protected void checkPermission(String projectId, ProjectPermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(projectCache.get(projectId), type);
     }
 
     protected void checkPermission(String projectId) throws MyException {
-        PermissionUtil.checkPermission(projectCache.get(projectId), PermissionEnum.MY_DATE);
+        PermissionUtil.checkPermission(projectCache.get(projectId), ProjectPermissionEnum.MY_DATE);
     }
 
     /**
@@ -286,7 +283,7 @@ public abstract class BaseController implements IConst, ISetting {
             LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);
 
             // 最高管理员修改项目
-            if (user != null && ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") >= 0) {
+            if (user != null && ("," + user.getAuthStr()).indexOf("," + AdminPermissionEnum.SUPER.name() + ",") >= 0) {
                 return;
             }
 

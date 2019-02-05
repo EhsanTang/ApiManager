@@ -45,7 +45,7 @@
             <button type="button" class="ml5 mt1 btn btn-default btn-sm" onclick="tooltip('user-helf')"
                     data-placement="left" id="user-helf" data-toggle="tooltip"
                     title="1.admin账号为内置账号，不允许修改admin用户名    2.超级管理员账号不能修改其它超级管理员账号信息，但是用户名为admin的超级管理员能修改其他超级管理员的信息
-			3.普通管理员不能修改管理员信息，只能修改普通用户及自己的信息		4.如果不是最高管理员，不允许修改管理员权限、角色、类型		5.权限、角色仅对管理员有用">
+			3.普通管理员不能修改管理员信息，只能修改普通用户及自己的信息		4.如果不是最高管理员，不允许修改管理员权限、类型		5.权限仅对管理员有用">
                 <i class="iconfont">&#xe6a3;</i>&nbsp;帮助
             </button>
 
@@ -62,7 +62,6 @@
                     <th class="tc w100 b0">用户名</th>
                     <th class="tc w100 b0">真实名称/昵称</th>
                     <th class="tc b0">类型</th>
-                    <th class="tc b0">角色</th>
                     <th class="tc b0">权限</th>
                     <th class="tc w150 b0">创建时间</th>
                     <th class="w100 tc b0">操作</th>
@@ -73,7 +72,6 @@
                     <td class="tc w100">{{item.userName}}</td>
                     <td class="tc w100">{{item.trueName}}</td>
                     <td class="tc w100" ng-bind="item.type==100?'管理员':'普通用户'"></td>
-                    <td class="tc w100">{{item.roleName}}</td>
                     <td class="tc">{{item.authName}}</td>
                     <td class="tc">{{item.createTimeStr}}</td>
                     <td class="tc w200">

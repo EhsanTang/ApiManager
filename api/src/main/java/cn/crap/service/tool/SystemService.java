@@ -100,6 +100,9 @@ public class SystemService {
         CHANGE_SQL_MAP.put(44, "ALTER TABLE `project_user` DROP `addError`");
         CHANGE_SQL_MAP.put(45, "ALTER TABLE `project_user` DROP `delError`");
         CHANGE_SQL_MAP.put(46  , "ALTER TABLE `project_user` DROP `modError`");
+        // 废弃 role字段，但是不删除：mybatis需要修改
+        CHANGE_SQL_MAP.put(47, "UPDATE user SET auth=concat(auth,',SUPER,') WHERE roleId like '%super%'");
+        CHANGE_SQL_MAP.put(48, "DROP TABLE `role`");
     }
 
     /**

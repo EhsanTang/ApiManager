@@ -3,7 +3,7 @@ package cn.crap.enu;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 
-public enum PermissionEnum {
+public enum ProjectPermissionEnum {
 
 	 MY_DATE("myData", IConst.NULL),
 	 READ("read", IConst.NULL),
@@ -37,22 +37,22 @@ public enum PermissionEnum {
 	private final String separatorTitle;
 
 
-	PermissionEnum(String value, String desc, boolean separator, String separatorTitle){
+	ProjectPermissionEnum(String value, String desc, boolean separator, String separatorTitle){
 		this.value = value;
 		this.desc = desc;
 		this.separator = separator;
 		this.separatorTitle = separatorTitle;
 	}
 
-	PermissionEnum(String value, String desc){
+	ProjectPermissionEnum(String value, String desc){
 		this(value, desc, false, "");
 	}
 
-	public static PermissionEnum getByValue(String value){
+	public static ProjectPermissionEnum getByValue(String value){
 		if (MyString.isEmpty(value)){
 			return null;
 		}
-		for( PermissionEnum permissionEnum : PermissionEnum.values()){
+		for( ProjectPermissionEnum permissionEnum : ProjectPermissionEnum.values()){
 			if(permissionEnum.getValue().equals(value)){
 				return permissionEnum;
 			}

@@ -480,25 +480,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
 		}
-	}).state('roleList', {
-		url : '/admin/role/list?' + commonUrlParam,
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/admin/roleList.tpl.html?v=v8.0.5'
-			},
-			'page@roleList' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/admin/roleDetail.tpl.html?v=v8.0.5';
-				}
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
-                }
-            }
-		}
 	}).state('profile', {
 		url : '/profile?' + commonUrlParam,
 		views : {

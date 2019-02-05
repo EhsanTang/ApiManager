@@ -25,8 +25,7 @@ public class UserService extends BaseService<User, UserDao> {
     private ProjectService projectService;
     @Autowired
     private ProjectUserService projectUserService;
-    @Autowired
-    private RoleService roleService;
+
     private UserDao userDao;
 
     @Resource
@@ -111,7 +110,7 @@ public class UserService extends BaseService<User, UserDao> {
         String token  = Aes.encrypt(user.getId());
         MyCookie.addCookie(IConst.COOKIE_TOKEN, token);
         // 将用户信息存入缓存
-        userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
+        userCache.add(user.getId(), new LoginInfoDto(user, projectService, projectUserService));
         MyCookie.addCookie(IConst.C_COOKIE_USERID, user.getId());
         MyCookie.addCookie(IConst.COOKIE_USERNAME, loginDto.getUserName());
         MyCookie.addCookie(IConst.COOKIE_REMBER_PWD, loginDto.getRemberPwd());

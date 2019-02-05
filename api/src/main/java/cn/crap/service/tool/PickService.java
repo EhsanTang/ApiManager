@@ -184,7 +184,7 @@ public class PickService implements IPickService{
                 return picks;
 
             case PROJECT_PERMISSION:// 项目权限
-                for (PermissionEnum  permissionEnum : PermissionEnum.values()) {
+                for (ProjectPermissionEnum permissionEnum : ProjectPermissionEnum.values()) {
                     if (permissionEnum.getDesc().equals(IConst.NULL)){
                         continue;
                     }

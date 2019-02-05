@@ -14,7 +14,6 @@ import cn.crap.model.User;
 import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
-import cn.crap.service.RoleService;
 import cn.crap.service.UserService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Page;
@@ -41,9 +40,7 @@ public class ProjectUserController extends BaseController{
 	private UserService userService;
 	@Autowired
 	private ProjectUserService projectUserService;
-    @Autowired
-    private RoleService roleService;
-	
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
@@ -153,7 +150,7 @@ public class ProjectUserController extends BaseController{
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");
 
-        userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, projectService, projectUserService));
+        userCache.add(userId, new LoginInfoDto(userService.getById(userId), projectService, projectUserService));
         return ERROR_VIEW;
     }
 

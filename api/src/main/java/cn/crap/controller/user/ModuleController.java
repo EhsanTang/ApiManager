@@ -15,7 +15,10 @@ import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.*;
-import cn.crap.utils.*;
+import cn.crap.utils.ILogConst;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -30,8 +33,6 @@ import java.util.List;
 @RequestMapping("/user/module")
 public class ModuleController extends BaseController implements ILogConst{
 
-	@Autowired
-	private RoleService roleService;
 	@Autowired
 	private ArticleService articleService;
 	@Autowired
@@ -56,7 +57,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
 			Project project = projectCache.get(query.getProjectId());
-			checkPermission(project, PermissionEnum.READ);
+			checkPermission(project, ProjectPermissionEnum.READ);
 
             List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
             page.setAllRow(moduleService.count(query));
@@ -72,14 +73,14 @@ public class ModuleController extends BaseController implements ILogConst{
 		if(id != null){
 			module= moduleService.getById(id);
 			project = projectCache.get(module.getProjectId());
-			checkPermission(project, PermissionEnum.READ);
+			checkPermission(project, ProjectPermissionEnum.READ);
 
             if (module.getTemplateId() != null) {
                 templeteInterface = interfaceService.getById(module.getTemplateId());
             }
 		}else{
 		    project = projectCache.get(projectId);
-			checkPermission(project, PermissionEnum.READ);
+			checkPermission(project, ProjectPermissionEnum.READ);
 			module=new Module();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
@@ -110,7 +111,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
         Module module = ModuleAdapter.getModel(moduleDto);
 		if(id != null){
-			checkPermission(moduleDto.getProjectId(), PermissionEnum.MOD_MODULE);
+			checkPermission(moduleDto.getProjectId(), ProjectPermissionEnum.MOD_MODULE);
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
@@ -121,7 +122,7 @@ public class ModuleController extends BaseController implements ILogConst{
                 throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());
-			checkPermission(module.getProjectId(), PermissionEnum.ADD_MODULE);
+			checkPermission(module.getProjectId(), ProjectPermissionEnum.ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
 			module.setVersion(0);
 			moduleService.insert(module);
@@ -133,7 +134,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		 */
         user = LoginUserHelper.getUser();
 		// 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), roleService, projectService, projectUserService));
+		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), projectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	
@@ -149,7 +150,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
 		Module module = moduleService.getById(inter.getModuleId());
-		checkPermission(projectCache.get( inter.getProjectId() ), PermissionEnum.MOD_MODULE);
+		checkPermission(projectCache.get( inter.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		if (module == null){
 			throw new MyException(MyError.E000073);
 		}
@@ -179,7 +180,7 @@ public class ModuleController extends BaseController implements ILogConst{
         Module dbModule = moduleCache.get(module.getId());
         LoginInfoDto user = LoginUserHelper.getUser();
         checkCrapDebug(user.getId(), dbModule.getProjectId());
-		checkPermission(projectCache.get( dbModule.getProjectId() ), PermissionEnum.DEL_MODULE);
+		checkPermission(projectCache.get( dbModule.getProjectId() ), ProjectPermissionEnum.DEL_MODULE);
 		
 		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){
 			throw new MyException(MyError.E000024);
@@ -213,8 +214,8 @@ public class ModuleController extends BaseController implements ILogConst{
 		Module change = moduleService.getById(changeId);
 		Module model = moduleService.getById(id);
 		
-		checkPermission(projectCache.get( change.getProjectId() ), PermissionEnum.MOD_MODULE);
-		checkPermission(projectCache.get( model.getProjectId() ), PermissionEnum.MOD_MODULE);
+		checkPermission(projectCache.get( change.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
+		checkPermission(projectCache.get( model.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		
 		int modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());

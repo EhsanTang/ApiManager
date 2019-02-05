@@ -79,7 +79,7 @@ public class LoginUserHelper implements IConst{
     public static boolean checkAuthPassport(String authPassport) throws MyException {
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;//超级管理员
         }
 
@@ -104,7 +104,7 @@ public class LoginUserHelper implements IConst{
      */
     public static boolean isSuperAdmin() throws MyException {
         LoginInfoDto user = tryGetUser();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;
         }
         return false;
@@ -118,8 +118,7 @@ public class LoginUserHelper implements IConst{
     public static boolean isAdminOrProjectOwner(Project project) throws MyException {
         Assert.notNull(project);
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
-        String authority = user.getAuthStr();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;
         }
 

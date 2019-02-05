@@ -385,15 +385,14 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		}
 	}
 	$rootScope.showOperation = function(dataType,moduleId){
-		var userRole = $("#sessionRoleIds").val();
-		if((","+userRole+",").indexOf(",super,")>=0){
+		var sessionAuth = $("#sessionAuth").val();
+		if((","+sessionAuth+",").indexOf(",SUPPER,")>=0){
 			return true;
 		}
 		var needAuth = dataType;
 		if(moduleId) {
             needAuth = needAuth + "_" + moduleId;
         }
-		var sessionAuth = $("#sessionAuth").val();
 		if((","+sessionAuth+",").indexOf(","+needAuth+",")>=0){
 			return true;
 		}

@@ -3,7 +3,7 @@ package cn.crap.controller.user;
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.dto.ErrorDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.PermissionEnum;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -41,7 +41,7 @@ public class ErrorController extends BaseController{
     @AuthPassport
     public JsonResult list(@ModelAttribute ErrorQuery query) throws MyException {
         Project project = getProject(query);
-        checkPermission(project, PermissionEnum.READ);
+        checkPermission(project, ProjectPermissionEnum.READ);
 
         Page page = new Page(query);
         List<Error> models = errorService.query(query);
@@ -59,11 +59,11 @@ public class ErrorController extends BaseController{
         Error model;
         if (id != null) {
             model = errorService.getById(id);
-            checkPermission(projectCache.get(model.getProjectId()), PermissionEnum.READ);
+            checkPermission(projectCache.get(model.getProjectId()), ProjectPermissionEnum.READ);
         } else {
             model = new Error();
             model.setProjectId(projectId);
-            checkPermission(projectCache.get(projectId), PermissionEnum.READ);
+            checkPermission(projectCache.get(projectId), ProjectPermissionEnum.READ);
         }
         return new JsonResult(1, ErrorAdapter.getDto(model));
     }
@@ -86,7 +86,7 @@ public class ErrorController extends BaseController{
                     return new JsonResult(MyError.E000002);
                 }
             }
-            checkPermission(dbError.getProjectId(), PermissionEnum.MOD_ERROR);
+            checkPermission(dbError.getProjectId(), ProjectPermissionEnum.MOD_ERROR);
 
             Error newModel = ErrorAdapter.getModel(dto);
             newModel.setProjectId(null);
@@ -102,7 +102,7 @@ public class ErrorController extends BaseController{
             return new JsonResult(MyError.E000072);
         }
 
-        checkPermission(projectId, PermissionEnum.ADD_ERROR);
+        checkPermission(projectId, ProjectPermissionEnum.ADD_ERROR);
         errorService.insert(ErrorAdapter.getModel(dto));
         return new JsonResult(1, dto);
     }
@@ -116,7 +116,7 @@ public class ErrorController extends BaseController{
         if (model == null) {
             throw new MyException(MyError.E000063);
         }
-        checkPermission(model.getProjectId(), PermissionEnum.DEL_ERROR);
+        checkPermission(model.getProjectId(), ProjectPermissionEnum.DEL_ERROR);
 
         errorService.delete(id);
         return new JsonResult(1, null);

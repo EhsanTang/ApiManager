@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -378,12 +377,12 @@ public class Tools {
         return m.matches();
     }
 
-    public static boolean isSuperAdmin(String role) {
-        if (MyString.isEmpty(role)) {
+    public static boolean isSuperAdmin(String auth) {
+        if (MyString.isEmpty(auth)) {
             return false;
         }
 
-        if (("," + role + ",").indexOf("," + IConst.C_SUPER + ",") >= 0) {
+        if (("," + auth + ",").indexOf("," + IConst.C_SUPER + ",") >= 0) {
             return true;
         }
         return false;

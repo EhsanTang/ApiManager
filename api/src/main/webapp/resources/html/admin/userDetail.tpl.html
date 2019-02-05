@@ -57,14 +57,6 @@
                     </td>
 
                 </tr>
-                <tr ng-if="isSupperAdmin() && model.type==100">
-                    <td class="tc">角色</td>
-                    <td class="tc w200" colspan="3">
-                        <input class="form-control" readonly id="roleName" type="text" ng-model="model.roleName"
-                               placeholder="请点击选择角色"
-                               ng-click="loadPickByName('iwidth=300|iheight=460|radio=false|tagName=roleName|tag=roleId|code=ROLE|def='+model.roleId,$event)">
-                    </td>
-                </tr>
 
             </table>
             <button type="submit" class="btn btn-success fr">修改</button>

@@ -99,7 +99,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());
             bug.setProjectId(module.getProjectId());
-            PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), PermissionEnum.READ);
+            PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), ProjectPermissionEnum.READ);
 
             Module originalModule = moduleCache.get(dbBug.getModuleId());
             bugLogPO.setType(BugLogType.MODULE.getByteType());

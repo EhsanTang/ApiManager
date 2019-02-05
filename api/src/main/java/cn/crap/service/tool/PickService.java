@@ -182,6 +182,20 @@ public class PickService implements IPickService{
                     picks.add(pick);
                 }
                 return picks;
+
+            case PROJECT_PERMISSION:// 项目权限
+                for (PermissionEnum  permissionEnum : PermissionEnum.values()) {
+                    if (permissionEnum.getDesc().equals(IConst.NULL)){
+                        continue;
+                    }
+                    if (permissionEnum.isSeparator()){
+                        pick = new PickDto(IConst.C_SEPARATOR, permissionEnum.getSeparatorTitle());
+                        picks.add(pick);
+                    }
+                    pick = new PickDto(permissionEnum.getValue(), permissionEnum.getValue(), permissionEnum.getDesc());
+                    picks.add(pick);
+                }
+                return picks;
         }
 
         return userPickService.getPickList(code, key);

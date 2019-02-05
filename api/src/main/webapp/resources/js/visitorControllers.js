@@ -93,7 +93,7 @@ visitorModule.controller('fontArticleCtrl', function($rootScope,$scope, $http, $
     $scope.getData();
 });
 /**
- * article详情（数据库表，网站页面，文章）
+ * article详情（数据库表，网站页面，文档）
  */
 visitorModule.controller('articleDetailCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
 	$scope.getData = function(page,setPwd) {

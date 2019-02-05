@@ -91,12 +91,12 @@ public class ArticleController extends BaseController {
             Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                     .put("category", query.getCategory())
                     .put("categorys", categories)
-                    .put("crumbs", Tools.getCrumbs("模块:" + project.getName(), "#/module/list?projectId=" + project.getId(), "文章:" + module.getName(), "void"))
+                    .put("crumbs", Tools.getCrumbs("模块:" + project.getName(), "#/module/list?projectId=" + project.getId(), "文档:" + module.getName(), "void"))
                     .getMap();
             return new JsonResult().success().data(articleDtos).page(page).others(others);
         }
 
-        // 推荐的文章
+        // 推荐的文档
         List<String> categories = articleService.queryTop10RecommendCategory();
         query.setModuleId(null).setName(null).setProjectId(null);
         List<Article> articles = articleService.query(query);
@@ -106,7 +106,7 @@ public class ArticleController extends BaseController {
         Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                 .put("category", query.getCategory())
                 .put("categorys", categories)
-                .put("crumbs", Tools.getCrumbs( "推荐文章列表", "void"))
+                .put("crumbs", Tools.getCrumbs( "推荐文档列表", "void"))
                 .getMap();
 
         return new JsonResult().success().data(articleDtos).page(page).others(others);
@@ -148,7 +148,7 @@ public class ArticleController extends BaseController {
         articleService.updateClickById(id);
 
         List<CrumbDto> crumbDtos = MyCrumbDtoList.getList("模块:" + project.getName(), "#/module/list?projectId=" + project.getId())
-                .add("文章:" + module.getName(), "#/article/list?projectId=" + project.getId() +"&moduleId=" + module.getId() + "&type=ARTICLE")
+                .add("文档:" + module.getName(), "#/article/list?projectId=" + project.getId() +"&moduleId=" + module.getId() + "&type=ARTICLE")
                 .add(article.getName(), "void")
                 .getList();
         returnMap.put("crumbs", crumbDtos);

@@ -2,7 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.BugLogAdapter;
 import cn.crap.dto.BugLogDTO;
-import cn.crap.enu.PremissionEnum;
+import cn.crap.enu.PermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -16,12 +16,10 @@ import cn.crap.utils.TableField;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,7 +44,7 @@ public class BugLogController extends BaseController{
         }
 
         Project project = getProject(query);
-        checkPermission(project, PremissionEnum.READ);
+        checkPermission(project, PermissionEnum.READ);
         query.setPageSize(100);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
 

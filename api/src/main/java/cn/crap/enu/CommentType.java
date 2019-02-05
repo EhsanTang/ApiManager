@@ -1,7 +1,7 @@
 package cn.crap.enu;
 
 public enum CommentType {
-	ARTICLE("文章评论", "ARTICLE"), BUG("缺陷评论", "BUG");
+	ARTICLE("文档评论", "ARTICLE"), BUG("缺陷评论", "BUG");
 	private final String type;
 	private final String name;
 

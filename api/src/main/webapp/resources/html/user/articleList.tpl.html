@@ -9,10 +9,10 @@
 
             <a type="button" class="btn btn-default btn-sm"
                ng-href="#/user/article/edit?id=NULL&dataType=article&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
-                <i class="iconfont mt-3">&#xe604;&nbsp;新增文章</i>
+                <i class="iconfont mt-3">&#xe604;&nbsp;新增文档</i>
             </a>
             <a type="button" class="btn btn-default btn-sm"
-               ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文章？')">
+               ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文档？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
         </div>
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in articles" class="cursor"
-                    ng-click="go('user/article/detail?pageName=文章详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
+                    ng-click="go('user/article/detail?pageName=文档详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
                     <td>{{item.name| cut:true:30:' ...'}}</td>
@@ -74,7 +74,7 @@
                     <td class="f12">
                         <a class="mr5 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
-                           ng-href="#/user/article/edit?pageName=编辑文章&dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
+                           ng-href="#/user/article/edit?pageName=编辑文档&dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 cursor btn btn-xs btn-info" target="_blank"

@@ -100,6 +100,6 @@
 </div>
 <c:if test="${radio!='true'}">
 <div class="fr w border-t ml10 tr pt10 form-group">
-	<button type="button" class="btn btn-info form-control" onclick="setPick()">选择</button>
+	<button type="button" class="btn btn-main form-control" onclick="setPick()">确认</button>
 </div>
 </c:if>

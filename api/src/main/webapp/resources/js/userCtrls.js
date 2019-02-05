@@ -132,7 +132,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
     };
 
-    // 文章列表
+    // 文档列表
     $scope.queryArticleList = function(page, updateUrl) {
         var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
             + "&moduleId="+$stateParams.moduleId

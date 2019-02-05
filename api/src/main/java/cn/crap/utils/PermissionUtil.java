@@ -4,7 +4,7 @@ import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.PremissionEnum;
+import cn.crap.enu.PermissionEnum;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
 import com.google.common.base.Splitter;
@@ -24,7 +24,7 @@ public class PermissionUtil implements IConst{
      * @param project
      * @throws MyException
      */
-    public static void checkPermission(Project project, PremissionEnum needPermission) throws MyException {
+    public static void checkPermission(Project project, PermissionEnum needPermission) throws MyException {
         if (project == null || project.getId() == null){
             throw new MyException(MyError.E000022, "项目不能为空");
         }
@@ -48,7 +48,7 @@ public class PermissionUtil implements IConst{
         /**
          * 只有项目创建者才能查看
          */
-        if (needPermission == PremissionEnum.MY_DATE) {
+        if (needPermission == PermissionEnum.MY_DATE) {
             throw new MyException(MyError.E000022);
         }
 
@@ -61,11 +61,11 @@ public class PermissionUtil implements IConst{
         /**
          * 登录用户为项目成员即可查看
          */
-        if (needPermission == PremissionEnum.READ) {
+        if (needPermission == PermissionEnum.READ) {
             return;
         }
 
-        if (puDto.getPermissionSet().contains(needPermission)) {
+        if (puDto.getCrShowPermissionSet().contains(needPermission)) {
             return;
         }
 

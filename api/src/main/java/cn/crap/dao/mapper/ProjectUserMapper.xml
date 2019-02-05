@@ -62,14 +62,18 @@
 
   <!-- 查询 -->
   <select id="select" resultMap="resultMap">
-    select
-      <include refid="baseColumn"/>
+    select <include refid="baseColumn"/>
     from project_user
-      <include refid="querySql"/>
-      <if test="query.sort != null">
-        order by ${query.sort}
-      </if>
+    <include refid="querySql"/>
+    <if test="query.sort != null">
+      order by ${query.sort}
+    </if>
+    <if test="query.start != null and query.pageSize != null">
+      limit ${query.start},${query.pageSize}
+    </if>
   </select>
+
+
 
   <!-- 查询 -->
   <select id="get" resultMap="resultMap">

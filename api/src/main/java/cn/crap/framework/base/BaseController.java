@@ -3,7 +3,7 @@ package cn.crap.framework.base;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.InterfaceContentType;
 import cn.crap.enu.MyError;
-import cn.crap.enu.PremissionEnum;
+import cn.crap.enu.PermissionEnum;
 import cn.crap.enu.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -192,19 +192,19 @@ public abstract class BaseController implements IConst, ISetting {
      * @throws MyException
      */
     protected void checkPermission(Project project) throws MyException {
-        PermissionUtil.checkPermission(project, PremissionEnum.MY_DATE);
+        PermissionUtil.checkPermission(project, PermissionEnum.MY_DATE);
     }
 
-    protected void checkPermission(Project project, PremissionEnum type) throws MyException {
+    protected void checkPermission(Project project, PermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(project, type);
     }
 
-    protected void checkPermission(String projectId, PremissionEnum type) throws MyException {
+    protected void checkPermission(String projectId, PermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(projectCache.get(projectId), type);
     }
 
     protected void checkPermission(String projectId) throws MyException {
-        PermissionUtil.checkPermission(projectCache.get(projectId), PremissionEnum.MY_DATE);
+        PermissionUtil.checkPermission(projectCache.get(projectId), PermissionEnum.MY_DATE);
     }
 
     /**

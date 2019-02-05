@@ -102,7 +102,7 @@ blockquote{
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
 .container{min-width: 770px;}
-/********文章页面，图片居中显示********/
+/********文档页面，图片居中显示********/
 #fade{
     opacity: 0.5;
     position: fixed;

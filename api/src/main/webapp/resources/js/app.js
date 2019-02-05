@@ -406,7 +406,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
 	}
     /**
-	 * 发布文章评论回调
+	 * 发布文档评论回调
      */
     $rootScope.changeimg = function () {
         changeimg('imgCode2','verificationCode');

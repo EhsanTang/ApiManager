@@ -1,7 +1,6 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
 import cn.crap.enu.*;
@@ -94,7 +93,7 @@ public class ProjectController extends BaseController {
     public JsonResult detail(String id) throws MyException {
         if (MyString.isNotEmpty(id)) {
             Project model = projectCache.get(id);
-            checkPermission(model, PremissionEnum.READ);
+            checkPermission(model, PermissionEnum.READ);
             ProjectDto dto = ProjectAdapter.getDto(model, null);
             dto.setInviteUrl(projectService.getInviteUrl(dto));
             return new JsonResult(1, dto);

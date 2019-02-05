@@ -1,7 +1,7 @@
 package cn.crap.enu;
 
 public enum ArticleType {
-	DICTIONARY("项目数据库表"), ARTICLE("文章");
+	DICTIONARY("项目数据库表"), ARTICLE("文档");
 	private final String name;
 	
 	public static String getByEnumName(String enumName){

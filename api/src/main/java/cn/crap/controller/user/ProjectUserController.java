@@ -49,13 +49,13 @@ public class ProjectUserController extends BaseController{
 	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
 		Assert.notNull(query.getProjectId());
         Page page= new Page(query);
-
         checkPermission( projectCache.get(query.getProjectId()));
 
 		List<ProjectUserPO> projectUsers = projectUserService.select(query, page);
         page.setAllRow(projectUserService.count(query));
 
-        return new JsonResult(1, ProjectUserAdapter.getDto(projectUsers), page);
+        List<ProjectUserDto> dto = ProjectUserAdapter.getDto(projectUsers);
+        return new JsonResult(1, dto, page);
 	}	
 	
 	@RequestMapping("/detail.do")

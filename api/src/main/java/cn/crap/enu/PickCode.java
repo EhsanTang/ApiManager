@@ -16,9 +16,12 @@ public enum PickCode {
     MENU_TYPE("MENU_TYPE", "菜单类型"),
     FONT_FAMILY("FONT_FAMILY", "字体选择"),
 	ICONFONT("ICONFONT", "图标库地址"),
-    MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文章）"),
+    MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文档）"),
     INTERFACE_CONTENT_TYPE("INTERFACE_CONTENT_TYPE", "返回类型"),
 	IMAGE_CODE("IMAGE_CODE", "图形验证码风格"),
+	PROJECT_PERMISSION("PROJECT_PERMISSION", "项目权限"),
+
+
 	/**
 	 * bug系统
 	 */
@@ -37,7 +40,7 @@ public enum PickCode {
 	 * User code : 登录后可见，和用户信息绑定
 	 */
     ERROR_CODE("ERROR_CODE", "错误码"),
-    CATEGORY("CATEGORY", "文章分类"),
+    CATEGORY("CATEGORY", "文档分类"),
     MY_MODULE("MY_MODULE", "我的所有模块"),
     PROJECT_MODULES("PROJECT_MODULES", "项目中的模块"),
 	PROJECT_USER("PROJECT_USER", "项目用户"),
@@ -58,7 +61,7 @@ public enum PickCode {
     ROLE("ROLE", "角色"),
     AUTH("AUTH", "权限"),
     MENU_URL("MENU_URL", "菜单地址"),
-	ARTICLE_STATUS("ARTICLE_STATUS", "文章状态");
+	ARTICLE_STATUS("ARTICLE_STATUS", "文档状态");
 
 
 	private final String code;

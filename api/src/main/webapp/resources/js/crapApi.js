@@ -191,7 +191,7 @@ function flushDB(obj){
 
 //删除30天前的日志
 function cleanLog(obj){
-    if (myConfirm("确定删除30天的日志（文章、接口等日志，删除后无法恢复）？")) {
+    if (myConfirm("确定删除30天的日志（文档、接口等日志，删除后无法恢复）？")) {
         selectButton(obj,'menu_a');
         callAjaxByName('iUrl=admin/cleanLog.do|iLoading=TIPFLOAT删除中，请稍后...|ishowMethod=updateDivWithImg');
     }

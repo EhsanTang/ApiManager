@@ -49,7 +49,7 @@ public class SystemService {
         CHANGE_SQL_MAP.put(5, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
         CHANGE_SQL_MAP.put(6, "ALTER TABLE `article` ADD `attributes` VARCHAR(200)  NULL  DEFAULT ''  AFTER `projectId`");
         CHANGE_SQL_MAP.put(7, "ALTER TABLE `comment` CHANGE `articleId` `targetId` VARCHAR(50)  NOT NULL  DEFAULT '' COMMENT '评论对象ID'");
-        CHANGE_SQL_MAP.put(8, "ALTER TABLE `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文章，BUG 缺陷'  AFTER `avatarUrl`");
+        CHANGE_SQL_MAP.put(8, "ALTER TABLE `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文档，BUG 缺陷'  AFTER `avatarUrl`");
         CHANGE_SQL_MAP.put(9, "ALTER TABLE `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
         CHANGE_SQL_MAP.put(10, "ALTER TABLE `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
 

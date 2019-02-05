@@ -82,7 +82,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
     }
 
     /**
-     * 查询文章
+     * 查询文档
      * @param query
      * @return
      * @throws MyException
@@ -100,7 +100,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
     }
 
     /**
-     * 查询文章数量
+     * 查询文档数量
      * @param query
      * @return
      * @throws MyException
@@ -231,7 +231,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
 
     @Override
     public String getLuceneType() {
-        return "文章&数据库表";
+        return "文档&数据库表";
     }
 
     @Override

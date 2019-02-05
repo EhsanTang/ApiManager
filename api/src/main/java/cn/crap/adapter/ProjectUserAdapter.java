@@ -1,22 +1,17 @@
 package cn.crap.adapter;
 
+import cn.crap.dto.PermissionDTO;
 import cn.crap.dto.ProjectUserDto;
+import cn.crap.enu.PermissionEnum;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUserPO;
-import cn.crap.utils.AttributeUtils;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.PermissionUtil;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-/**
- * Automatic generation by tools
- * model adapter: convert model to dto
- * Avoid exposing sensitive data and modifying data that is not allowed to be modified
- */
 public class ProjectUserAdapter {
     public static ProjectUserDto getDto(ProjectUserPO model, Project project){
         if (model == null){
@@ -26,7 +21,18 @@ public class ProjectUserAdapter {
         ProjectUserDto dto = new ProjectUserDto();
 		BeanUtil.copyProperties(model, dto);
 		dto.setProjectName(project == null ? "" : project.getName());
-		dto.setPermissionSet(PermissionUtil.getSet(model.getPermission()));
+		dto.setCrShowPermissionSet(PermissionUtil.getSet(model.getPermission()));
+		List<PermissionDTO> permissionLit = Lists.newArrayList();
+		StringBuilder permissionSb = new StringBuilder();
+        dto.getCrShowPermissionSet().stream().forEach(value -> {
+            PermissionEnum permissionEnum = PermissionEnum.getByValue(value);
+            if (permissionEnum != null){
+                permissionLit.add(new PermissionDTO(permissionEnum.getValue(), permissionEnum.getDesc()));
+                permissionSb.append(permissionEnum.getDesc() + ",");
+            }
+        });
+        dto.setCrShowPermissionList(permissionLit);
+        dto.setPermissionStr(permissionSb.toString());
 		return dto;
     }
 

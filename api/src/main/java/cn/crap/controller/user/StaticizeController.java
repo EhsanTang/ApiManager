@@ -124,7 +124,7 @@ public class StaticizeController extends BaseController{
 
 	
 	/**
-	 * 静态化模块文章列表
+	 * 静态化模块文档列表
 	 */
 	@RequestMapping("/articleList.do")
 	public ModelAndView staticizeModule(HttpServletRequest req, @RequestParam String moduleId,@RequestParam String category,@RequestParam int currentPage,
@@ -143,7 +143,7 @@ public class StaticizeController extends BaseController{
 			throw new MyException(MyError.E000044);
 		}
 		
-		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文章");
+		Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文档");
 		
 		// 当前类目
 		if( category.equals(IConst.ALL) ){
@@ -159,10 +159,10 @@ public class StaticizeController extends BaseController{
 		
 		if(type.equals("ARTICLE")){
 			// 获取所有类目
-			// 静态化模块文章
+			// 静态化模块文档
 			List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
 			List<CategoryDto> categoryDtos = new ArrayList<CategoryDto>();
-			// 文章分类，按类目静态化
+			// 文档分类，按类目静态化
 			for(String c: categorys){
 				if(MyString.isEmpty(c)){
 					continue;
@@ -194,7 +194,7 @@ public class StaticizeController extends BaseController{
 
 
 	/**
-	 * 静态化文章
+	 * 静态化文档
 	 * @param req
 	 * @param articleId
 	 * @return
@@ -219,7 +219,7 @@ public class StaticizeController extends BaseController{
 			throw new MyException(MyError.E000044);
 		}
 		if(article.getType().equals(ArticleType.ARTICLE.name())){
-			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文章详情");
+			Map<String, Object> returnMap = getProjectModuleInfor(module, project, "-文档详情");
 			returnMap.put("article", article);
 			// 项目备注将静态化成网站的description
 			returnMap.put("description", article.getBrief());
@@ -392,9 +392,9 @@ public class StaticizeController extends BaseController{
 
 		for(Module module : moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE))){
 			if(needStaticizes.indexOf(",article,") >= 0){
-				// 静态化模块文章，分类
+				// 静态化模块文档，分类
 				List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
-				// 文章分类，按类目静态化
+				// 文档分类，按类目静态化
 				for(String category: categorys){
 					if( MyString.isEmpty( category )){
 						continue; // 空类目不静态化
@@ -416,7 +416,7 @@ public class StaticizeController extends BaseController{
 					}
 				}
 				
-				// 文章分类，不分类
+				// 文档分类，不分类
                 ArticleQuery articleQuery = new ArticleQuery();
                 articleQuery.setModuleId(module.getId()).setType(ArticleType.ARTICLE.name());
 				int articleSize = articleService.count(articleQuery);
@@ -433,7 +433,7 @@ public class StaticizeController extends BaseController{
 				}
 				
 				
-				// 静态化文章
+				// 静态化文档
                 articleQuery.setPageSize(ALL_PAGE_SIZE);
                 for(Article article: articleService.query(articleQuery)){
 					String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +

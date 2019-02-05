@@ -111,7 +111,7 @@
         </div>
         <div class="col-sm-9 col-xs-12">
             <div class="cb dashed-b p3 pl10 pr10 mr10 f16 fw600 mt10 mb10 adorn-bl-3">
-                推荐文章
+                推荐文档
                 <div class="fr f12"><a class="adorn-color fn" href="index.do#/article/list?type=ARTICLE&status=2">More...</a></div>
             </div>
             <c:forEach items="${articleList}" var="article" varStatus="id">

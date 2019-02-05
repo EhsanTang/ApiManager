@@ -39,7 +39,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
     });
 
-	// 文章
+	// 文档
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
         views : {

@@ -102,8 +102,8 @@ public class LogService extends BaseService<Log, LogDao> {
                 checkLog(inter.getProjectId());
                 interfaceService.update(inter);
                 break;
-            case "ARTICLEWITHBLOBS":// 恢复文章
-            case "ARTICLE":// 恢复文章
+            case "ARTICLEWITHBLOBS":// 恢复文档
+            case "ARTICLE":// 恢复文档
                 json = JSONObject.fromObject(log.getContent());
                 ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
                 checkModule(article.getModuleId());
@@ -147,8 +147,8 @@ public class LogService extends BaseService<Log, LogDao> {
                     JSONObject json = JSONObject.fromObject(log.getContent());
                     InterfaceWithBLOBs inter = (InterfaceWithBLOBs) JSONObject.toBean(json, InterfaceWithBLOBs.class);
                     return inter.getProjectId();
-                case "ARTICLEWITHBLOBS":// 恢复文章
-                case "ARTICLE":// 恢复文章
+                case "ARTICLEWITHBLOBS":// 恢复文档
+                case "ARTICLE":// 恢复文档
                     json = JSONObject.fromObject(log.getContent());
                     ArticleWithBLOBs article = (ArticleWithBLOBs) JSONObject.toBean(json, ArticleWithBLOBs.class);
                     return article.getProjectId();

@@ -1,7 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.LogAdapter;
-import cn.crap.enu.PremissionEnum;
+import cn.crap.enu.PermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -36,7 +36,7 @@ public class LogController extends BaseController {
         List<Log> logList = logService.query(query);
 
         if (logList.size() > 0){
-            checkPermission(logService.getProjectIdByLog(logList.get(0)), PremissionEnum.MY_DATE);
+            checkPermission(logService.getProjectIdByLog(logList.get(0)), PermissionEnum.MY_DATE);
         }
 
         return new JsonResult().success().data(LogAdapter.getDto(logList)).page(page);
@@ -48,7 +48,7 @@ public class LogController extends BaseController {
         Log model;
         if (!log.getId().equals(IConst.NULL_ID)) {
             model = logService.getById(log.getId());
-            checkPermission(logService.getProjectIdByLog(model), PremissionEnum.MY_DATE);
+            checkPermission(logService.getProjectIdByLog(model), PermissionEnum.MY_DATE);
         } else {
             model = new Log();
         }
@@ -59,7 +59,7 @@ public class LogController extends BaseController {
     @ResponseBody
     public JsonResult recover(@ModelAttribute Log log) throws MyException {
         log = logService.getById(log.getId());;
-        checkPermission(logService.getProjectIdByLog(log), PremissionEnum.MY_DATE);
+        checkPermission(logService.getProjectIdByLog(log), PermissionEnum.MY_DATE);
         logService.recover(log);
         return new JsonResult(1, null);
     }

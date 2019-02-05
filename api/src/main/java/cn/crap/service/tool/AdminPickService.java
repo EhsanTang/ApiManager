@@ -72,7 +72,7 @@ public class AdminPickService implements IPickService{
                 return picks;
 
             case MODEL_NAME:
-                pick = new PickDto("modelName_1", "文章", "文章");
+                pick = new PickDto("modelName_1", "文档", "文档");
                 picks.add(pick);
                 pick = new PickDto("modelName_2", "项目", "项目");
                 picks.add(pick);
@@ -97,10 +97,10 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文档、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文档列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
@@ -125,10 +125,10 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文档、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文档列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";

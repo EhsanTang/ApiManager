@@ -34,7 +34,7 @@ import java.util.List;
 
 // TODO 版本升级提供在线接口，调用接口直接检查数据库并升级
 // TODO setting 中记录版本ID（MD5（version））
-// TODO 最高管理员可以将文章置顶，将文章修改为站点页面
+// TODO 最高管理员可以将文档置顶，将文档修改为站点页面
 @Controller
 @RequestMapping("/user/article")
 public class ArticleController extends BaseController{
@@ -55,7 +55,7 @@ public class ArticleController extends BaseController{
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException{
 		Project project = getProject(query);
 		Module module = getModule(query);
-        checkPermission(project, PremissionEnum.READ);
+        checkPermission(project, PermissionEnum.READ);
 
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
@@ -86,7 +86,7 @@ public class ArticleController extends BaseController{
 			article.setProjectId(project.getId());
 		}
 
-		checkPermission(project, PremissionEnum.READ);
+		checkPermission(project, PermissionEnum.READ);
 		return new JsonResult(1, ArticleAdapter.getDtoWithBLOBs(article, module, project));
 	}
 	
@@ -113,8 +113,8 @@ public class ArticleController extends BaseController{
         // 修改
 		if(id != null){
             String oldProjectId = articleService.getById(article.getId()).getProjectId();
-            checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.MOD_ARTICLE : PremissionEnum.MOD_DICT);
-            checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.MOD_ARTICLE : PremissionEnum.MOD_DICT);
+            checkPermission(newProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PermissionEnum.MOD_ARTICLE : PermissionEnum.MOD_DICT);
+            checkPermission(oldProjectId, article.getType().equals(ArticleType.ARTICLE.name())? PermissionEnum.MOD_ARTICLE : PermissionEnum.MOD_DICT);
 
             // 只有项目拥有者可以修改是否可以删除属性
             if (!LoginUserHelper.isAdminOrProjectOwner(newProject)){
@@ -124,7 +124,7 @@ public class ArticleController extends BaseController{
 			articleService.update(article, ArticleType.getByEnumName(article.getType()), "");
 		} else{
             // 新增
-            checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.ADD_ARTICLE : PremissionEnum.ADD_DICT);
+            checkPermission(newProject, article.getType().equals(ArticleType.ARTICLE.name())? PermissionEnum.ADD_ARTICLE : PermissionEnum.ADD_DICT);
             articleService.insert(article);
             id = article.getId();
         }
@@ -162,7 +162,7 @@ public class ArticleController extends BaseController{
 			}
 			Article model = articleService.getById(tempId);
 			Project project = projectCache.get(model.getProjectId());
-			checkPermission(project , model.getType().equals(ArticleType.ARTICLE.name())? PremissionEnum.DEL_ARTICLE : PremissionEnum.DEL_DICT);
+			checkPermission(project , model.getType().equals(ArticleType.ARTICLE.name())? PermissionEnum.DEL_ARTICLE : PermissionEnum.DEL_DICT);
 
 			if(model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)){
 				throw new MyException(MyError.E000009);
@@ -195,7 +195,7 @@ public class ArticleController extends BaseController{
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
 		Module module = moduleCache.get(moduleId);
-        checkPermission(projectCache.get(module.getProjectId()), PremissionEnum.READ);
+        checkPermission(projectCache.get(module.getProjectId()), PermissionEnum.READ);
 
 		article.setProjectId(module.getProjectId());
 		articleService.insert(article);

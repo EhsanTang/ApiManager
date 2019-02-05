@@ -9,13 +9,16 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Project;
+import cn.crap.model.ProjectUserPO;
 import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,19 +92,36 @@ public class ProjectController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult detail(String id) throws MyException {
-        if (MyString.isNotEmpty(id)) {
-            Project model = projectCache.get(id);
-            checkPermission(model, ProjectPermissionEnum.READ);
-            ProjectDto dto = ProjectAdapter.getDto(model, null);
-            dto.setInviteUrl(projectService.getInviteUrl(dto));
+        if (MyString.isEmpty(id)) {
+            Project projectPO = new Project();
+            projectPO.setType(ProjectType.PRIVATE.getByteType());
+            projectPO.setStatus(ProjectStatus.COMMON.getStatus());
+            projectPO.setLuceneSearch(CommonEnum.FALSE.getByteValue());
+            return new JsonResult(1, ProjectAdapter.getDto(projectPO, null));
+        }
+
+        Project projectPO = projectCache.get(id);
+        ProjectDto dto = ProjectAdapter.getDto(projectPO, null);
+        dto.setInviteUrl(projectService.getInviteUrl(dto));
+
+        LoginInfoDto user = LoginUserHelper.getUser();
+        if (Tools.isSuperAdmin(user.getAuthStr())){
             return new JsonResult(1, dto);
         }
 
-        Project model = new Project();
-        model.setType(ProjectType.PRIVATE.getByteType());
-        model.setStatus(ProjectStatus.COMMON.getStatus());
-        model.setLuceneSearch(CommonEnum.FALSE.getByteValue());
-        return new JsonResult(1, ProjectAdapter.getDto(model, null));
+        if (user.getId().equals(projectPO.getUserId())){
+            dto.setProjectPermission(ProjectPermissionEnum.MY_DATE.getValue());
+            return new JsonResult(1, dto);
+        }
+
+        List<ProjectUserPO> projectUserPOList = projectUserService.select(
+                new ProjectUserQuery().setUserId(user.getId()).setProjectId(projectPO.getId()), null);
+        if (CollectionUtils.isEmpty(projectUserPOList)){
+            throw new MyException(MyError.E000022);
+        }
+
+        dto.setProjectPermission(projectUserPOList.get(0).getPermission());
+        return new JsonResult(1, dto);
     }
 
     @RequestMapping("/moreInfo.do")
@@ -174,9 +194,6 @@ public class ProjectController extends BaseController {
 
         // 清楚缓存
         projectCache.del(projectId);
-
-        // 刷新用户权限 将用户信息存入缓存
-        userCache.add(userId, new LoginInfoDto(userService.getById(userId), projectService, projectUserService));
         return new JsonResult(1, project);
     }
 

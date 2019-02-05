@@ -187,11 +187,16 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     /*********************************** 详情 *********************************/
     // 项目详情
     $scope.getProjectDetail = function() {
-        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail");
-
-        params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $scope.initProjectDetail();
+        var params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
+    };
+    // 后端项目页面初始化项目信息：权限等
+    $scope.initProjectDetail = function() {
+        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail", function () {
+            $("#projectPermission").val($rootScope.projectDetail.projectPermission);
+        });
     };
 
     // 接口详情
@@ -350,62 +355,59 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 			}else{
 				$rootScope.settings = result.data.settingMap;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
-				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
+				$rootScope.adminPermission = result.data.adminPermission;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminId =result.data.sessionAdminId;
 				$rootScope.errorTips = result.data.errorTips;
 			}
 		});
     };
-    // 判断是不是管理员
-    $scope.isAdmin = function (id, needAuth){
-		var auth = $("#sessionAuth").val();
-		var hasAuth = false;
-		// 最高管理员
-		if( (","+auth+",").indexOf(",SUPER,")>=0){
-			hasAuth = true;
-		}
-		// 拥有权限的管理员
-		else if( (","+auth+",").indexOf(",ADMIN,")>=0){
-			if(needAuth){
-				if( (","+auth+",").indexOf(","+needAuth+",")>=0){
-					hasAuth = true;
-				}
-			}else{
-				hasAuth = true;
-			}
-		}
 
-		if(hasAuth){
-			if(id) {
-                $("#" + id).removeClass("ndis");
-            }
-			return true;
-		}else{
-			if(id){
-				if(!$("#"+id).hasClass("ndis"))
-					$("#"+id).addClass("ndis");
-			}
-			return false;
-		}
+    $scope.isProjectUser = function (needAuth){
+        var hasPermission = $scope.isAdmin(null, "PROJECT");
+        if (hasPermission) return true;
+
+        hasPermission =  (","+ $("#projectPermission").val() +",").indexOf(",myData,")>=0;
+        if (hasPermission) return true;
+
+        hasPermission =  (","+ $("#projectPermission").val() +",").indexOf("," + needAuth + ",")>=0;
+        if (hasPermission) return true;
+
+        return false;
     }
+
+    // 判断是不是管理员
+    $scope.isAdmin = function (id){
+        var hasPermission = $scope.isSupperAdmin(id);
+        if (hasPermission) return true;
+
+        hasPermission =  (","+ $("#adminPermission").val() +",").indexOf(",ADMIN,")>=0;
+        $scope.checkPermission(id, hasPermission);
+        return hasPermission;
+    }
+
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
-    	var auth = $("#sessionAuth").val();
-    	if( (","+auth+",").indexOf(",SUPER,")>=0){
-			if(id)
-				$("#"+id).removeClass("ndis");
-			return true;
-		}
-    	else{
-			if(id){
-				if(!$("#"+id).hasClass("ndis"))
-    				$("#"+id).addClass("ndis");
-			}
-			return false;
-		}
+        var hasPermission = (","+ $("#adminPermission").val() +",").indexOf(",SUPER,")>=0;
+        $scope.checkPermission(id, hasPermission);
+
     }
-    
+    $scope.checkPermission= function(id, hasPermission){
+        if(hasPermission){
+            if(id) {
+                $("#" + id).removeClass("ndis");
+            }
+            return true;
+        } else{
+            if(id){
+                if(!$("#"+id).hasClass("ndis")) {
+                    $("#" + id).addClass("ndis");
+                }
+            }
+            return false;
+        }
+    }
+
 	$scope.profile = function(id){
 		var params = "iUrl=user/detail.do?id="+id+"|iLoading=FLOAT";
 		httpService.callHttpMethod($http,params).success(function(result) {

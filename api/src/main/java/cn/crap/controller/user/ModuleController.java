@@ -128,13 +128,6 @@ public class ModuleController extends BaseController implements ILogConst{
 			moduleService.insert(module);
 		}
 		moduleCache.del(module.getId());
-		
-		/**
-		 * 刷新用户权限
-		 */
-        user = LoginUserHelper.getUser();
-		// 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), projectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	

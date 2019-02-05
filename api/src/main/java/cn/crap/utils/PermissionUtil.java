@@ -7,10 +7,14 @@ import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
+import cn.crap.model.ProjectUserPO;
+import cn.crap.query.ProjectUserQuery;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,8 +57,10 @@ public class PermissionUtil implements IConst{
         }
 
         // 项目成员
-        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
-        if (puDto == null) {
+        List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
+                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()), null);
+
+        if (CollectionUtils.isEmpty(projectUserPOList)) {
             throw new MyException(MyError.E000022);
         }
 
@@ -65,7 +71,8 @@ public class PermissionUtil implements IConst{
             return;
         }
 
-        if (puDto.getCrShowPermissionSet().contains(needPermission)) {
+        ProjectUserDto dto = ProjectUserAdapter.getDto(projectUserPOList.get(0), null);
+        if (dto.getCrShowPermissionSet().contains(needPermission)) {
             return;
         }
 

@@ -28,6 +28,7 @@ public class ProjectDto {
      * 邀请链接
      */
     private String inviteUrl;
+    private String projectPermission;
 
 	public void setId(String id){
 		this.id=id;
@@ -154,4 +155,12 @@ public class ProjectDto {
     public void setInviteUrl(String inviteUrl) {
         this.inviteUrl = inviteUrl;
     }
+
+	public String getProjectPermission() {
+		return projectPermission;
+	}
+
+	public void setProjectPermission(String projectPermission) {
+		this.projectPermission = projectPermission;
+	}
 }

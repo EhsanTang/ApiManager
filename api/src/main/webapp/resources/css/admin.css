@@ -97,10 +97,9 @@ body{
     background-color: #f9fafc;
     border: 1px solid #eeeeee;
     color:#555555;
-    height: 60px;
     margin-top:-1px;
     margin-left:-1px;
-    line-height: 60px;
+    line-height: 40px;
     font-size: 14px;
     padding-left: 10px;
     overflow: hidden;

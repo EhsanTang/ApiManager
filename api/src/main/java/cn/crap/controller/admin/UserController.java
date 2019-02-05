@@ -161,7 +161,7 @@ public class UserController extends BaseController {
             user.setStatus(UserStatus.INVALID.getType());
             dbUser.setEmail(user.getEmail());
             dbUser.setStatus(UserStatus.INVALID.getType());
-            userCache.add(user.getId(), new LoginInfoDto(dbUser, projectService, projectUserService));
+            userCache.add(user.getId(), new LoginInfoDto(dbUser));
         }
 
         // 如果前端设置了密码，则修改密码，否者使用旧密码，登录类型设置为允许普通登录

@@ -6,6 +6,7 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryErrorList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addError')]"
                ng-click="detail('新增状态码',700,'user/error/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增状态码
             </a>
@@ -50,12 +51,13 @@
                     <td>{{item.errorMsg}}</td>
                     <td>{{item.projectName}}</td>
                     <td class="f12">
-                        <a class="mr5 btn btn-xs btn-default"
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modError')]"
                            ng-click="detail('编辑【'+item.errorCode+'】',700,'user/error/detail.do?id='+item.id)"
                            data-toggle="tooltip" data-placement="top"
                            data-original-title="编辑"> <i class="iconfont f12">&#xe69e;</i>
                         </a>
                         <a class="mr5 btn btn-xs btn-danger" title="删除"
+                           ng-class="{true: 'mr5 btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delError')]"
                            ng-click="del('user/error/delete.do?id='+item.id,item.errorCode)">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

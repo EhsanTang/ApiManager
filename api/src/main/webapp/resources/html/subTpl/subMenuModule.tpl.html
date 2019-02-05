@@ -1,4 +1,4 @@
-<div class="w200 fl h BGFFF f14 ofy-s pb100 fixed l50 main-bl-1">
+<div class="w200 fl h BGFFF f14 ofy-s pb100 fixed l50 main-bl-1" ng-init="initProjectDetail()">
     <div class="shadow">
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_main']"
             style="border-bottom: 1px solid #eeeeee; height: 50px; line-height: 50px; border-left: 1px solid #eeeeee;"
@@ -14,6 +14,7 @@
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_user']"
+           ng-if="isProjectUser('myData')"
            ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3 mr5">&#xe6b8;</i>
             <span class="f14">项目成员</span>

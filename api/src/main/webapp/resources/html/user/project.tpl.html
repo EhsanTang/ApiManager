@@ -3,7 +3,8 @@
 		<!-- 版本 -->
 		<div class="fb main-color fw500 f20" >
             <span ng-bind="projectDetail.name"></span>
-            <a class="cursor btn btn-adorn btn-xs r20" ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
+            <a ng-class="{true: 'cursor btn btn-adorn btn-xs r20', false:'cursor btn btn-adorn btn-xs r20 disabled'}[isProjectUser('myData')]"
+               ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
                 <i class="iconfont f12">&#xe69e;编辑</i>
             </a>
         </div>
@@ -51,7 +52,7 @@
                 <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>状态码<br>
                 <span class="f12 C999">状态码总数：{{projectMoreInfo.errorNum}}</span>
             </a>
-            <a class="project-menu lh20 p10"
+            <a class="project-menu lh20 p10" ng-if="isProjectUser('myData')"
                ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>项目成员<br>
                 <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
@@ -85,21 +86,21 @@
         <div class="fw500 cb f14 mt20">项目管理</div>
         <div class="C999 p0 mt10">
 
-			<a class="project-menu" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
+			<a class="project-menu btn" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
                 <i class="iconfont adorn-main mt-3">&#xe87b;&nbsp;</i>项目主页
             </a>
-			<a class="project-menu"
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
                ng-href="#/user/log/list?pageName=日志&dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
                 <i class="iconfont">&#xe6bb;&nbsp;</i>日志
             </a>
 
-            <a class="project-menu"
+            <a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
                ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
                 <i class="iconfont">&#xe640;静态化</i>
             </a>
 
-			<a class="project-menu"
-                 ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+               ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
 				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
 					<i class="iconfont">&#xe6aa;&nbsp;重建索引</i>
 				</span>
@@ -108,7 +109,7 @@
 				</span>
             </a>
 
-			<a class="project-menu"
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
 			   ng-click="del('user/project/delete.do?id='+projectDetail.id,projectDetail.name);">
 				<i class="iconfont text-danger">&#xe69d;&nbsp;删除项目</i>
 			</a>

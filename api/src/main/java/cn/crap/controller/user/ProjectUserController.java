@@ -149,8 +149,6 @@ public class ProjectUserController extends BaseController{
         projectUserService.insert(projectUser);
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");
-
-        userCache.add(userId, new LoginInfoDto(userService.getById(userId), projectService, projectUserService));
         return ERROR_VIEW;
     }
 

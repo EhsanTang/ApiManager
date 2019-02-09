@@ -440,7 +440,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/user/dictionaryImportFromSql.tpl.html?v=v8.0.5';
 				}
-			}
+			},'subMenu' :{
+                templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
+            }
 		}
 	}).state('userList', {
 		url : '/admin/user/list?' + commonUrlParam,
@@ -455,11 +457,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				templateUrl : function($stateParems){
 					return 'resources/html/admin/userDetail.tpl.html?v=v8.0.5';
 				}
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
-                }
-            }
+			}
 		}
 	}).state('commentList', {
 		url : '/user/comment/list?type&targetId&' + commonUrlParam,

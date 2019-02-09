@@ -63,7 +63,7 @@
                         <a ng-href="{{'my-project'|getUrl}}"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
                             <i class="iconfont f18 mr20 mt-3">&#xe6b4;</i>
-                            <span class="f14"> 我的项目</span>
+                            <span class="f14"> 项目管理</span>
                         </a>
 
                         <a ng-href="{{'profile'|getUrl}}"
@@ -73,12 +73,6 @@
                             <span class="f14"> 个人资料</span>
                         </a>
 
-						<a ng-href="{{'importFromSql'|getUrl}}"
-						   ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-import']">
-                            <i class="iconfont f18 mr20 mt-3">&#xe70c;</i>
-							<span class="f14"> 导入数据库表</span>
-						</a>
-
                         <!-- 管理员菜单 -->
                         <a href="#/admin/menu/list?parentId=0&menu_a=menu-menu&menuName=无&pageName=菜单管理"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-menu']"
@@ -86,9 +80,17 @@
                             <i class="iconfont f18 mr20 mt-3">&#xe699;</i>
                             <span class="f14"> 菜单管理</span>
                         </a>
+
+                        <a target="_self" href="#/admin/user/list?menu_a=menu_user&pageName=用户管理"
+                           ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_a == 'menu_user']"
+                           ng-if="isAdmin('','USER')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe60c;</i>
+                            <span class="f14"> 用户管理</span>
+                        </a>
+
                         <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting&pageName=系统管理"
 						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
-							ng-if="isSupperAdmin()">
+							ng-if="isAdmin()">
                             <i class="iconfont f18 mr20 mt-3">&#xe6ae;</i>
                             <span class="f14"> 系统管理</span>
                         </a>

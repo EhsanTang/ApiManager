@@ -11,6 +11,12 @@
                ng-href="#/user/dictionary/edit?pageName=新增数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&id=NULL&type={{$stateParams.type}}&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增数据库表</i>
             </a>
+
+            <a ng-href="#/user/article/dictionary/importFromSql?dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}"
+               class="btn btn-default btn-sm" type="button">
+                <i class="iconfont mt-3">&#xe70c;</i> &nbsp;导入数据库表
+            </a>
+
             <a type="button" class="btn btn-default btn-sm"
                ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的表？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除

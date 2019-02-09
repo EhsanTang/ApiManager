@@ -4,6 +4,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.framework.ThreadContext;
 import cn.crap.model.Project;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
@@ -86,7 +87,8 @@ public class LoginUserHelper implements IConst{
         // 管理员修改自己的资料
         if(authPassport.equals("USER")){
             // 如果session中的管理员id和参数中的id一致
-            if( MyString.isEquals(  user.getId(),  user.getId() )  ){
+            String modifyUserId  = ThreadContext.request().getParameter("id");
+            if( MyString.isEquals(  user.getId(), modifyUserId)  ){
                 return true;
             }
         }
@@ -94,7 +96,7 @@ public class LoginUserHelper implements IConst{
         if(authority.indexOf(","+authPassport+",")>=0){
             return true;
         }
-        return false;
+        throw new MyException(MyError.E000022);
     }
 
     /**

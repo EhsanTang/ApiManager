@@ -105,7 +105,7 @@ public class ArticleController extends BaseController{
 
         ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
         // key、status 只有最高管理员 以及 拥有ARTICLE权限的管理员才能修改
-        if (!LoginUserHelper.checkAuthPassport(AdminPermissionEnum.ARTICLE.name())){
+        if (!LoginUserHelper.checkAuthPassport(AdminPermissionEnum.PROJECT.name())){
             article.setMkey(null);
             article.setStatus(null);
         }

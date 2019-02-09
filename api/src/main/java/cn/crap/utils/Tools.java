@@ -391,7 +391,6 @@ public class Tools {
 
     public static HttpServletResponse getResponse() {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        ;
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         return response;

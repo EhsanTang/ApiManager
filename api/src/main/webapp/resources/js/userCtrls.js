@@ -377,11 +377,14 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     }
 
     // 判断是不是管理员
-    $scope.isAdmin = function (id){
+    $scope.isAdmin = function (id, needAuth){
         var hasPermission = $scope.isSupperAdmin(id);
         if (hasPermission) return true;
 
         hasPermission =  (","+ $("#adminPermission").val() +",").indexOf(",ADMIN,")>=0;
+        if (needAuth){
+            hasPermission = hasPermission && (","+ $("#adminPermission").val() +",").indexOf("," + needAuth + ",")>=0;
+        }
         $scope.checkPermission(id, hasPermission);
         return hasPermission;
     }
@@ -389,9 +392,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
         var hasPermission = (","+ $("#adminPermission").val() +",").indexOf(",SUPER,")>=0;
-        $scope.checkPermission(id, hasPermission);
-
+        return $scope.checkPermission(id, hasPermission);
     }
+
     $scope.checkPermission= function(id, hasPermission){
         if(hasPermission){
             if(id) {

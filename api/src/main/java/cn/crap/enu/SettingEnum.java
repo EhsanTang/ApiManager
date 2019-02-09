@@ -13,8 +13,8 @@ public enum SettingEnum {
     NAV_COLOR("NAV_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#a9a9a9", "前端顶部、导航字体颜色 #a9a9a9", null),
     MINI_LOGO("MINI_LOGO", SettingStatus.COMMON, SettingType.IMAGE, false, 101, "resources/images/logo.png", "网站小logo", null),
 
-    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_860205_19fn1rga6fl", "系统图标",
-            new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_860205_19fn1rga6fl"}),
+    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_860205_x2z735oj8um", "系统图标",
+            new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_860205_x2z735oj8um"}),
     MAX_WIDTH("MAX_WIDTH", SettingStatus.COMMON, SettingType.TEXT, true, 101, "1200", "前端显示最大宽度（数字，建议：900-1200）", null),
 
     FONT_FAMILY("FONT_FAMILY", SettingStatus.COMMON, SettingType.SEL_IN, false, 101,

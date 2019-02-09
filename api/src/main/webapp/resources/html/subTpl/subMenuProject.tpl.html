@@ -16,7 +16,7 @@
         我加入的项目
     </a>
 
-    <a  ng-if="isAdmin()"
+    <a  ng-if="isAdmin(null, 'PROJECT')"
         href="{{'all-project'|getUrl}}"
        ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_all_project']">所有用户项目</a>
 </div>

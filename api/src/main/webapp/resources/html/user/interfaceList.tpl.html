@@ -6,11 +6,12 @@
 
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryInterfaceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button" ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addInter')]"
                ng-href="#/user/interface/edit?dataType=interface&id=NULL&menu_a=menu-project&menu_b=menu_interface&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增接口
             </a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delInter')]"
                ng-click="del('user/interface/delete.do?ids='+deleteIds,'','确认批量删除选中的接口？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -72,9 +73,9 @@
                         <button class="btn btn-xs btn-default f12 p2 btn-{{item.method}}">{{item.method}}</button>
                     </td>
                     <td>{{item.updateTimeStr}}</td>
-                    <td>
-                        <a class="f12 cursor btn btn-xs btn-default"
-                           ng-click="stopPropagation($event);"
+                    <td class="f12">
+                        <a ng-click="stopPropagation($event);"
+                           ng-class="{true: 'cursor btn btn-xs btn-default', false:'btn btn-xs btn-default disabled'}[isProjectUser('modInter')]"
                            ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{item.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
@@ -90,7 +91,7 @@
                             调试
                         </a>-->
 
-                        <a class="f12 cursor btn-info btn btn-xs"
+                        <a class="f12 cursor btn-main btn btn-xs"
                            ng-click="stopPropagation($event);"
                            ng-href="index.do#/interface/detail?projectId={{item.projectId}}&id={{item.id}}"
                            target="_blank">
@@ -102,13 +103,18 @@
                             拷贝
                         </a>
 
-                        <a ng-class="{true: 'f12 cursor btn btn-xs btn-success cursor', false:'f12 cursor btn btn-xs btn-default cursor'}[item.template]"
+                        <a ng-if="item.template" ng-class="{true: 'cursor btn btn-xs btn-danger', false:'btn btn-xs btn-danger disabled'}[isProjectUser('modModule')]"
                            ng-click="sendRequest('user/module/setTemplate.do?id='+item.id);stopPropagation($event);">
-                            <span class="f12" ng-if="item.template">取消模板</span>
-                            <span class="f12" ng-if="!item.template">设为模板</span>
+                            <span class="f12">取消模板</span>
                         </a>
 
-                        <a class="f12 mr5 cursor btn btn-xs btn-danger" title="删除"
+                        <a ng-if="!item.template" ng-class="{true: 'cursor btn btn-xs btn-success', false:'btn btn-xs btn-success disabled'}[isProjectUser('modModule')]"
+                           ng-click="sendRequest('user/module/setTemplate.do?id='+item.id);stopPropagation($event);">
+                            <span class="f12">设为模板</span>
+                        </a>
+
+
+                        <a ng-class="{true: 'mr5 cursor btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delInter')]"
                            ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName);stopPropagation($event);">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

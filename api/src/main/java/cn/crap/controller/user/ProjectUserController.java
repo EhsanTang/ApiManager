@@ -4,6 +4,7 @@ import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.enu.ProjectUserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user/projectUser")
@@ -146,6 +148,13 @@ public class ProjectUserController extends BaseController{
         projectUser.setStatus(ProjectUserStatus.NORMAL.getStatus());
         projectUser.setUserEmail(loginInfoDto.getEmail());
         projectUser.setUserName(loginInfoDto.getUserName());
+        StringBuilder sb = new StringBuilder(",");
+        for(ProjectPermissionEnum permissionEnum : ProjectPermissionEnum.values()){
+            if (ProjectPermissionEnum.isDefaultPermission(permissionEnum)) {
+                sb.append(permissionEnum.getValue() + ",");
+            }
+        }
+        projectUser.setPermission(sb.toString());
         projectUserService.insert(projectUser);
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");

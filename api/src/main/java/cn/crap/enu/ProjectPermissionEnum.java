@@ -31,6 +31,18 @@ public enum ProjectPermissionEnum {
 	 ADD_ERROR("addError","添加状态码"),
 	 DEL_ERROR("delError","删除状态码");
 
+	 public static boolean isDefaultPermission(ProjectPermissionEnum permissionEnum){
+	 	if (permissionEnum == null){
+	 		return false;
+		}
+		if (permissionEnum == ProjectPermissionEnum.MY_DATE || permissionEnum == ProjectPermissionEnum.READ
+		|| permissionEnum == ProjectPermissionEnum.DEL_ERROR || permissionEnum == ProjectPermissionEnum.DEL_ARTICLE
+		|| permissionEnum == ProjectPermissionEnum.DEL_DICT || permissionEnum == ProjectPermissionEnum.DEL_INTER
+		|| permissionEnum == ProjectPermissionEnum.DEL_MODULE || permissionEnum == ProjectPermissionEnum.DEL_SOURCE){
+			return false;
+		}
+		return true;
+	 }
 	private final String value;
 	private final String desc;
 	private final boolean separator;

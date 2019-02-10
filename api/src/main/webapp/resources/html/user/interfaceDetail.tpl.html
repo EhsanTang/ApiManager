@@ -20,7 +20,8 @@
                 <i class="iconfont f12 mt-3">&#xe748;&nbsp;</i>调试
             </a>
 
-            <a class="btn btn-default btn-sm" type="button"
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('modInter')]"
                ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
             </a>

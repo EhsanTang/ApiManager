@@ -7,11 +7,11 @@
             <button class="btn btn-default" ng-click="goBack()" type="button">
                 <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
             </button>
-            <a class="btn btn-default btn-sm"
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('myData')]"
                ng-href="#/user/log/list?pageName=文档日志&dataType=article&menu_b=menu_article&menu_a=menu-project&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{model.id}}">
                 <i class="iconfont f12 mt-3">&#xe6bb;&nbsp;</i>日志
             </a>
-            <a class="btn btn-default btn-sm" type="button"
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('modArticle')]"
                ng-href="#/user/article/edit?dataType=article&id={{model.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
             <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
             </a>

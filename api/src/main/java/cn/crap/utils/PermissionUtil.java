@@ -62,7 +62,7 @@ public class PermissionUtil implements IConst{
          * 只有项目创建者才能查看
          */
         if (needPermission == ProjectPermissionEnum.MY_DATE) {
-            throw new MyException(MyError.E000022);
+            throw new MyException(MyError.E000022, needPermission.getDesc());
         }
 
         // 项目成员
@@ -70,7 +70,7 @@ public class PermissionUtil implements IConst{
                 new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()), null);
 
         if (CollectionUtils.isEmpty(projectUserPOList)) {
-            throw new MyException(MyError.E000022);
+            throw new MyException(MyError.E000022, needPermission.getDesc());
         }
 
         /**

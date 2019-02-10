@@ -5,7 +5,7 @@ import cn.crap.utils.MyString;
 
 public enum ProjectPermissionEnum {
 
-	 MY_DATE("myData", IConst.NULL),
+	 MY_DATE("myData", "只有项目创建人才能执行该操作"),
 	 READ("read", IConst.NULL),
 	 MOD_INTER("modInter","修改接口", true, "接口权限"),
 	 ADD_INTER("addInter","添加接口"),

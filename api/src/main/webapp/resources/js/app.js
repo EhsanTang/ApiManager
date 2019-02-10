@@ -385,7 +385,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		}
 	}
 	$rootScope.showOperation = function(dataType){
-		var adminPermission = $("#adminPermission").val();
+		var adminPermission = $rootScope.adminPermission
 		if((","+adminPermission+",").indexOf(",SUPER,")>=0){
 			return true;
 		}

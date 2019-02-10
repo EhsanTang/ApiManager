@@ -69,8 +69,15 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     /*********************************** 列表 *********************************/
 	// 左侧菜单，前50个模块
     $scope.queryTop50Module = function() {
-        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+$stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module");
+        var projectId = $stateParams.projectId;
+        // 缓存，如果已经加载过数据，第二次则不加载数据
+        if ($rootScope.queryTop50ModuleCacheKey == projectId){
+            return;
+        }
+        var params = "iUrl=user/module/list.do|iLoading=FLOAT|iPost=true|iParams=&pageSize=50&&projectId="+ projectId;
+        $rootScope.getBaseDataToDataKey($scope,$http,params,1,"top50Module", function () {
+            $rootScope.queryTop50ModuleCacheKey = projectId;
+        });
     };
     // 系统设置列表
     $scope.querySettingList = function(page) {
@@ -194,9 +201,14 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     };
     // 后端项目页面初始化项目信息：权限等
     $scope.initProjectDetail = function() {
-        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        var projectId = $stateParams.projectId;
+        if ($rootScope.projectPermissionCacheKey == projectId){
+            return;
+        }
+        var params = "iUrl=user/project/detail.do|iLoading=FLOAT|iPost=true|iParams=&id="+projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectDetail", function () {
-            $("#projectPermission").val($rootScope.projectDetail.projectPermission);
+            $rootScope.projectPermission=$rootScope.projectDetail.projectPermission;
+            $rootScope.projectPermissionCacheKey = projectId;
         });
     };
 
@@ -368,10 +380,10 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var hasPermission = $scope.isAdmin(null, "PROJECT");
         if (hasPermission) return true;
 
-        hasPermission =  (","+ $("#projectPermission").val() +",").indexOf(",myData,")>=0;
+        hasPermission =  (","+ $rootScope.projectPermission +",").indexOf(",myData,")>=0;
         if (hasPermission) return true;
 
-        hasPermission =  (","+ $("#projectPermission").val() +",").indexOf("," + needAuth + ",")>=0;
+        hasPermission =  (","+ $rootScope.projectPermission +",").indexOf("," + needAuth + ",")>=0;
         if (hasPermission) return true;
 
         return false;
@@ -382,9 +394,9 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var hasPermission = $scope.isSupperAdmin(id);
         if (hasPermission) return true;
 
-        hasPermission =  (","+ $("#adminPermission").val() +",").indexOf(",ADMIN,")>=0;
+        hasPermission =  (","+ $rootScope.adminPermission +",").indexOf(",ADMIN,")>=0;
         if (needAuth){
-            hasPermission = hasPermission && (","+ $("#adminPermission").val() +",").indexOf("," + needAuth + ",")>=0;
+            hasPermission = hasPermission && (","+ $rootScope.adminPermission +",").indexOf("," + needAuth + ",")>=0;
         }
         $scope.checkPermission(id, hasPermission);
         return hasPermission;
@@ -392,7 +404,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
-        var hasPermission = (","+ $("#adminPermission").val() +",").indexOf(",SUPER,")>=0;
+        var hasPermission = (","+ $rootScope.adminPermission +",").indexOf(",SUPER,")>=0;
         return $scope.checkPermission(id, hasPermission);
     }
 
@@ -441,7 +453,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 	$scope.loginOut = function(){
 		callAjaxByName("iUrl=user/loginOut.do|iLoading=false|ishowMethod=doNothing");
 	}
-    $scope.adminInit();
 });
 /*** 导入数据库表 ***/
 userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {

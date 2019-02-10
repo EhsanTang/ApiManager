@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app" ng-controller="userCtrl">
+<html lang="en" ng-app="app" ng-controller="userCtrl" ng-init="adminInit()">
 <head>
 	<meta charset="UTF-8">
 	<title ng-bind="settings.TITLE">CrapApi|应用接口管理系统</title>
@@ -15,10 +15,6 @@
 </head>
 <body>
 	<!-- Top -->
-	<input type="hidden" id="adminPermission" value="{{adminPermission}}">
-    <input type="hidden" id="projectPermission">
-    <input type="hidden" id="sessionAdminId" value="{{sessionAdminId}}">
-
     <!-- 是否安装了插件-->
     <input type="hidden" id="hasInstallPlug" value="false">
 	<nav class="h50 fixed w t0 BGFFF z100 nav admin-nav">
@@ -105,8 +101,7 @@
                         </a>
 
                         <a href="#/user/introduce?menu_a=menu-info&menu_b=menu-introduce&pageName=系统简介"
-						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-info']"
-							ng-if="isAdmin()">
+						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-info']">
                             <i class="iconfont f18 mr20 mt-3">&#xe6a4;</i>
                             <span class="f14"> 其他信息</span>
                         </a>

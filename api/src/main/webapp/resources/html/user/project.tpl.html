@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <div class="C999 lh26 p20 light-bg mt10 f14">
+        <div class="C999 lh26 p20 light-bg mt10 f12">
 				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
 					title="「普通项目/推荐项目：系统管理员可以将项目修改为推荐项目，推荐项目将出现在首页列表中，私有项目即使被设置为推荐项目，其他用户也无法查看项目内容」">
@@ -29,7 +29,8 @@
 				</span>
 				<br/>
 				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span><br>
-                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span><br>
+                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
+                创建人：<span class="C000 mr20" ng-bind="projectDetail.userName"></span><br>
                 <span ng-if="projectDetail.inviteUrl != null">
                     <span class="adorn-color">邀请加入：</span>邀请码2小时有效，邀请后将默认拥有除删除外的其他权限，可进入【项目成员】处修改权限<br/>
                     <span class="C999 pl50 f12" ng-bind="projectDetail.inviteUrl"></span>

@@ -13,7 +13,7 @@ public enum ProjectPermissionEnum {
 
 	 MOD_MODULE("modModule","修改模块", true, "模块权限"),
 	 ADD_MODULE("addModule","添加模块"),
-	 DEL_MODULE("delMODULE","删除模块"),
+	 DEL_MODULE("delModule","删除模块"),
 
 	 MOD_ARTICLE("modArticle","修改文档", true, "文档权限"),
 	 ADD_ARTICLE("addArticle","添加文档"),

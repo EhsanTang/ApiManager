@@ -100,8 +100,8 @@ public class ProjectController extends BaseController {
             return new JsonResult(1, ProjectAdapter.getDto(projectPO, null));
         }
 
-        Project projectPO = projectCache.get(id);
-        ProjectDto dto = ProjectAdapter.getDto(projectPO, null);
+        Project projectPO = projectService.getById(id);
+        ProjectDto dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();

@@ -3,7 +3,7 @@
 		<!-- 版本 -->
 		<div class="fb main-color fw500 f20" >
             <span ng-bind="projectDetail.name"></span>
-            <a ng-class="{true: 'cursor btn btn-adorn btn-xs r20', false:'cursor btn btn-adorn btn-xs r20 disabled'}[isProjectUser('myData')]"
+            <a ng-class="{true: 'cursor btn btn-adorn btn-xs r20', false:'btn btn-adorn btn-xs r20 disabled'}[isProjectUser('myData')]"
                ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
                 <i class="iconfont f12">&#xe69e;编辑</i>
             </a>

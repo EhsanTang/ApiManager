@@ -5,6 +5,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
+import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUserPO;
@@ -45,7 +46,7 @@ public class PermissionUtil implements IConst{
          * 拥有项目权限的管理员可以操作用户项目
          */
         String authority = user.getAuthStr();
-        if( authority != null && (","+authority).indexOf(","+ C_AUTH_PROJECT +",")>=0){
+        if(user.getType() == UserType.ADMIN.getType() && authority != null && (","+authority).indexOf(","+ C_AUTH_PROJECT +",")>=0){
             return;
         }
 
@@ -80,11 +81,11 @@ public class PermissionUtil implements IConst{
         }
 
         ProjectUserDto dto = ProjectUserAdapter.getDto(projectUserPOList.get(0), null);
-        if (dto.getCrShowPermissionSet().contains(needPermission)) {
+        if (dto.getCrShowPermissionSet().contains(needPermission.getValue())) {
             return;
         }
 
-        throw new MyException(MyError.E000022);
+        throw new MyException(MyError.E000022, needPermission.getDesc());
     }
 
     public static Set<String> getSet(String permissionsStr){

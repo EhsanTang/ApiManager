@@ -49,11 +49,13 @@
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
                         <a class="mr5 cursor btn btn-xs btn-default"
+                           ng-if="sessionAdminId == item.userId"
                            ng-click="detail('编辑【'+item.name+'】',700,'user/project/detail.do?id='+item.id);changeDisplay('editer-project','staticize-project');stopPropagation($event);">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
 
                         <a class="btn btn-xs btn-danger mr5 cursor" title="删除"
+                           ng-if="sessionAdminId == item.userId"
                            ng-click="del('user/project/delete.do?id='+item.id,item.name);stopPropagation($event);">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

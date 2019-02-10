@@ -188,7 +188,8 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 项目详情
     $scope.getProjectDetail = function() {
         $scope.initProjectDetail();
-        var params = "iUrl=user/project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
+        var params = "iUrl=user/" +
+            "project/moreInfo.do|iLoading=FLOAT|iPost=true|iParams=&id="+$stateParams.projectId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,1,"projectMoreInfo");
     };
     // 后端项目页面初始化项目信息：权限等
@@ -346,7 +347,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     $scope.clearDonwloadUrl = function(){
         $("#downloadUrl").html("");
     }
-	$scope.getData = function(page,setPwd) {
+	$scope.adminInit = function() {
 		var params = "iUrl=admin/init.do|iLoading=fase"; //  表示查询所有
 		httpService.callHttpMethod($http,params).success(function(result) {
 			var isSuccess = httpSuccess(result,'iLoading=false');
@@ -440,7 +441,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 	$scope.loginOut = function(){
 		callAjaxByName("iUrl=user/loginOut.do|iLoading=false|ishowMethod=doNothing");
 	}
-    $scope.getData();
+    $scope.adminInit();
 });
 /*** 导入数据库表 ***/
 userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {

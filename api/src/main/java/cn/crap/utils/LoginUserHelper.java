@@ -80,12 +80,12 @@ public class LoginUserHelper implements IConst{
     public static boolean checkAuthPassport(String authPassport) throws MyException {
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
-        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
+        if( authority != null && (","+authority).indexOf(","+ C_SUPER +",")>=0){
             return true;//超级管理员
         }
 
         // 管理员修改自己的资料
-        if(authPassport.equals("USER")){
+        if(authPassport.equals(IConst.C_AUTH_USER)){
             // 如果session中的管理员id和参数中的id一致
             String modifyUserId  = ThreadContext.request().getParameter("id");
             if( MyString.isEquals(  user.getId(), modifyUserId)  ){
@@ -96,7 +96,7 @@ public class LoginUserHelper implements IConst{
         if(authority.indexOf(","+authPassport+",")>=0){
             return true;
         }
-        throw new MyException(MyError.E000022);
+        return false;
     }
 
     /**

@@ -42,6 +42,14 @@ public class PermissionUtil implements IConst{
         }
 
         /**
+         * 拥有项目权限的管理员可以操作用户项目
+         */
+        String authority = user.getAuthStr();
+        if( authority != null && (","+authority).indexOf(","+ C_AUTH_PROJECT +",")>=0){
+            return;
+        }
+
+        /**
          * 修改自己的项目
          * myself project
          */

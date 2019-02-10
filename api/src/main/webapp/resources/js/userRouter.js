@@ -387,11 +387,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},
 			'page@settingList' : {
 				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
-                }
-            }
+			}
 		}
 	}).state('settingDetail', {
 		url : '/admin/setting/detail?type&id&' + commonUrlParam,
@@ -414,10 +410,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
             },
             'page@hotSearchList' : {
                 templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-            },'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
-                }
             }
         }
     }).state('configProperties', {
@@ -433,7 +425,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
 		}
-	}).state('dictionaryImoprtFromSql', {
+	}).state('introduce', {
+        url : '/user/introduce?' + commonUrlParam,
+        views : {
+            'main' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/introduce.html';
+                }
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    }).state('dictionaryImoprtFromSql', {
 		url : '/user/article/dictionary/importFromSql?' + commonUrlParam,
 		views : {
 			'main' :{

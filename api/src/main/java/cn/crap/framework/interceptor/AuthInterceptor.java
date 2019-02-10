@@ -85,7 +85,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             userCache.add(uid, user);
 
             if (!authPassport.authority().equals("")) {
-                LoginUserHelper.checkAuthPassport(authPassport.authority());
+                if (!LoginUserHelper.checkAuthPassport(authPassport.authority())){
+                    throw new MyException(MyError.E000022);
+                }
             }
 
             return true;

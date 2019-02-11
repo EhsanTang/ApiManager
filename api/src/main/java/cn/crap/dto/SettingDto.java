@@ -11,7 +11,7 @@ public class SettingDto{
     private Byte status;
     private String type;
     private Byte canDelete;
-    private Integer sequence;
+    private Long sequence;
 
     public String getId() {
         return id;
@@ -69,11 +69,11 @@ public class SettingDto{
         this.canDelete = canDelete;
     }
 
-    public Integer getSequence() {
+    public Long getSequence() {
         return sequence;
     }
 
-    public void setSequence(Integer sequence) {
+    public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
 

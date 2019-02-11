@@ -6,6 +6,7 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryModuleList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
             <a type="button" class="btn btn-default btn-sm"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addModule')]"
                ng-click="detail('新增模块',700,'user/module/detail.do?id=NULL&projectId='+$stateParams.projectId)">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增模块
             </a>
@@ -46,6 +47,7 @@
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
                         <a class="mr5 cursor btn btn-xs btn-default"
+                           ng-class="{true: 'mr5 cursor btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modModule')]"
                            ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id);stopPropagation($event);">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
@@ -66,7 +68,7 @@
                             <i class="iconfont f12">&#xe714; word</i>
                         </a>
 
-                        <a class="f12 btn btn-xs btn-danger mr5 cursor" title="删除"
+                        <a ng-class="{true: 'f12 btn btn-xs btn-danger mr5 cursor', false:'f12 btn btn-xs btn-danger mr5 disabled'}[isProjectUser('delModule')]"
                            ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

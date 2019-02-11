@@ -78,7 +78,7 @@
                         视频-用户版  <i class="iconfont f18">&#xe634;</i></a>
 
                     <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://gitee.com/CrapApi/ApiDebug" target="_blank">
-                        浏览器接口调试插件  <i class="iconfont f18">&#xe748;</i></a>
+                        浏览器接口调试插件  <i class="iconfont f18">&#xe613;</i></a>
 
                     <a class="btn btn-main btn-sm w f14 mt10 r20" href="https://v.youku.com/v_show/id_XMzYwMzA2MzUyNA==.html" target="_blank">
                         视频-管理员版  <i class="iconfont f18">&#xe6f5;</i></a>

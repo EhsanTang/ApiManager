@@ -43,11 +43,11 @@ public class BaseService<PO extends BasePo, DAO> {
         }
 
         if (po.getSequence() == null){
-            po.setSequence(0);
+            po.setSequence(System.currentTimeMillis());
         }
 
         if (po.getSequence() < 0){
-            po.setSequence(0);
+            po.setSequence(System.currentTimeMillis());
         }
         /**
          * 不能超过mysql最大限制

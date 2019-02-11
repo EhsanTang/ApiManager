@@ -1,17 +1,9 @@
 package cn.crap.model;
 
-import java.util.Date;
-
 public class Module extends BasePo{
-    private String id;
-
     private String name;
 
-    private Date createTime;
-
     private Byte status;
-
-    private Integer sequence;
 
     private String url;
 
@@ -31,14 +23,6 @@ public class Module extends BasePo{
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
     public String getName() {
         return name;
     }
@@ -47,28 +31,12 @@ public class Module extends BasePo{
         this.name = name == null ? null : name.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public Byte getStatus() {
         return status;
     }
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getUrl() {

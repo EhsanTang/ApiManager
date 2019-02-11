@@ -11,7 +11,7 @@ public class ErrorDto {
 	private String errorMsg;
 	private String projectId;
 	private Byte status;
-	private Integer sequence;
+	private Long sequence;
 
 	public void setId(String id){
 		this.id=id;
@@ -48,10 +48,10 @@ public class ErrorDto {
 		return status;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

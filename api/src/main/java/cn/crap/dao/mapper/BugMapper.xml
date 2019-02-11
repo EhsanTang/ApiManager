@@ -41,6 +41,21 @@
             <if test="query.moduleId != null">
                 and moduleId=#{query.moduleId}
             </if>
+            <if test="query.creator != null">
+                and creator=#{query.creator}
+            </if>
+            <if test="query.executor != null">
+                and executor=#{query.executor}
+            </if>
+            <if test="query.tracer != null">
+                and tracer=#{query.tracer}
+            </if>
+            <if test="query.tester != null">
+                and tester=#{query.tester}
+            </if>
+            <if test="query.name != null">
+                and name like concat(concat('%',#{query.name}),'%')
+            </if>
         </where>
     </sql>
 

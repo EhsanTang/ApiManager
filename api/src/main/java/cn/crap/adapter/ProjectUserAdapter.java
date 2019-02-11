@@ -33,7 +33,9 @@ public class ProjectUserAdapter {
         });
         dto.setCrShowPermissionList(permissionLit);
         dto.setPermissionStr(permissionSb.toString());
-		return dto;
+        dto.setSequence(System.currentTimeMillis());
+
+        return dto;
     }
 
     public static ProjectUserPO getModel(ProjectUserDto dto){

@@ -87,6 +87,7 @@ public class InterfaceController extends BaseController{
             model.setStatus(InterfaceStatus.ONLINE.getByteValue());
             model.setContentType(InterfaceContentType.JSON.getType());
             model.setParam(IConst.C_PARAM_FORM_PRE + "[]");
+			model.setSequence(System.currentTimeMillis());
 
             if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
@@ -140,7 +141,7 @@ public class InterfaceController extends BaseController{
         interFace.setInterfaceName(interfaceName);
         interFace.setModuleId(moduleId);
         interFace.setProjectId(project.getId());
-        interfaceService.insert(interFace);
+		interfaceService.insert(interFace);
 
         interFace.setId(interFace.getId());
 		luceneService.add(InterfaceAdapter.getSearchDto(interFace));
@@ -295,7 +296,7 @@ public class InterfaceController extends BaseController{
 		checkPermission(model.getProjectId(), ProjectPermissionEnum.MOD_INTER);
 		checkPermission(change.getProjectId(), ProjectPermissionEnum.MOD_INTER);
 		
-		int modelSequence = model.getSequence();
+		Long modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);

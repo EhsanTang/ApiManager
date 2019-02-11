@@ -69,7 +69,9 @@ public class SourceController extends BaseController{
 			model=new Source();
 			model.setModuleId(source.getModuleId());
             module = moduleCache.get(source.getModuleId());
-            if (module == null || module.getId() == null){
+			model.setSequence(System.currentTimeMillis());
+
+			if (module == null || module.getId() == null){
                 module = null;
                 project = projectCache.get(source.getProjectId());
                 model.setProjectId(project.getId());
@@ -173,7 +175,7 @@ public class SourceController extends BaseController{
 		checkPermission(change.getModuleId(), ProjectPermissionEnum.MOD_SOURCE);
 		checkPermission(model.getModuleId(), ProjectPermissionEnum.MOD_SOURCE);
 				
-		int modelSequence = model.getSequence();
+		long modelSequence = model.getSequence();
 		
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);

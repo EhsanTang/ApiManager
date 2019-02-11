@@ -4,6 +4,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
+import cn.crap.framework.ThreadContext;
 import cn.crap.model.Project;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
@@ -79,14 +80,15 @@ public class LoginUserHelper implements IConst{
     public static boolean checkAuthPassport(String authPassport) throws MyException {
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
-        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
+        if( authority != null && (","+authority).indexOf(","+ C_SUPER +",")>=0){
             return true;//超级管理员
         }
 
         // 管理员修改自己的资料
-        if(authPassport.equals("USER")){
+        if(authPassport.equals(IConst.C_AUTH_USER)){
             // 如果session中的管理员id和参数中的id一致
-            if( MyString.isEquals(  user.getId(),  user.getId() )  ){
+            String modifyUserId  = ThreadContext.request().getParameter("id");
+            if( MyString.isEquals(  user.getId(), modifyUserId)  ){
                 return true;
             }
         }

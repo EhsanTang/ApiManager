@@ -6,11 +6,12 @@
 
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryInterfaceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button" ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addInter')]"
                ng-href="#/user/interface/edit?dataType=interface&id=NULL&menu_a=menu-project&menu_b=menu_interface&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增接口
             </a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delInter')]"
                ng-click="del('user/interface/delete.do?ids='+deleteIds,'','确认批量删除选中的接口？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -46,35 +47,36 @@
                     <td class="w50">
                         <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',interfaces)">
                     </td>
-                    <td class="w200 tl">名称</td>
-                    <td class="w200">URL</td>
-                    <td class="w50">版本</td>
-                    <td class="w70">Method</td>
+                    <td class="tl">Method / 版本 / 名称 / URL</td>
                     <td class="w120">最后修改时间</td>
-                    <td class="w300">
+                    <td class="w250">
                         操作
                         <span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
                                 title="「模板:设置为模板后，新建接口时将根据该模板接口初始化接口内容」">
 					        <i class="iconfont adorn-color">&#xe6a3;</i>
                         </span>
-
                     </td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in interfaces" class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
+                <tr ng-repeat="item in interfaces">
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);"></td>
+                    <td class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
-                    <td ng-click="stopPropagation($event);"><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);"></td>
-                    <td>{{item.interfaceName}}</td>
-                    <td>{{item.fullUrl}}</td>
-                    <td>{{item.version}}</td>
-                    <td>
-                        <button class="btn btn-xs btn-default f12 p2 btn-{{item.method}}">{{item.method}}</button>
+
+                        <div class="C000 f14">
+                            <button class="badge f12 fn o5 pt2 pb2 btn-{{item.method}}">{{item.method}}</button>
+                            <span class="badge f12 fn main-bg o5">{{item.version}}</span>
+                            {{item.interfaceName| cut:true:40:' ...'}}
+                        </div>
+                        <div class="C999 f10 mt5">
+                            {{item.fullUrl}}
+                        </div>
                     </td>
                     <td>{{item.updateTimeStr}}</td>
-                    <td>
-                        <a class="f12 cursor btn btn-xs btn-default"
-                           ng-click="stopPropagation($event);"
+                    <td class="f12">
+                        <a ng-click="stopPropagation($event);"
+                           ng-class="{true: 'cursor btn btn-xs btn-default', false:'btn btn-xs btn-default disabled'}[isProjectUser('modInter')]"
                            ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{item.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
@@ -82,15 +84,15 @@
                        <!-- <a class="f12 text-primary mr10 cursor" ng-if="showOperation('PROJECT',$stateParams.projectId)"
                            ng-click="detail('编辑【'+item.interfaceName+'】',1100,'user/interface/detail.do?id='+item.id,'',initEditInterFace)">
                             <i class="iconfont f12">&#xe69e;修改</i>
-                        </a> -->
+                        </a> -
 
                         <a class="f12 cursor btn btn-xs btn-default"
                            ng-click="stopPropagation($event);"
                            ng-href="#/user/interface/debug?pageName=接口调试&dataType=interface&menu_b=menu_interface&menu_a=menu-project&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}&id={{item.id}}" class="f12 btn btn-default btn-xs">
                             调试
-                        </a>
+                        </a>-->
 
-                        <a class="f12 cursor btn-info btn btn-xs"
+                        <a class="f12 cursor btn-main btn btn-xs"
                            ng-click="stopPropagation($event);"
                            ng-href="index.do#/interface/detail?projectId={{item.projectId}}&id={{item.id}}"
                            target="_blank">
@@ -102,13 +104,18 @@
                             拷贝
                         </a>
 
-                        <a ng-class="{true: 'f12 cursor btn btn-xs btn-success cursor', false:'f12 cursor btn btn-xs btn-default cursor'}[item.template]"
+                        <a ng-if="item.template" ng-class="{true: 'cursor btn btn-xs btn-danger', false:'btn btn-xs btn-danger disabled'}[isProjectUser('modModule')]"
                            ng-click="sendRequest('user/module/setTemplate.do?id='+item.id);stopPropagation($event);">
-                            <span class="f12" ng-if="item.template">取消模板</span>
-                            <span class="f12" ng-if="!item.template">设为模板</span>
+                            <span class="f12">取消模板</span>
                         </a>
 
-                        <a class="f12 mr5 cursor btn btn-xs btn-danger" title="删除"
+                        <a ng-if="!item.template" ng-class="{true: 'cursor btn btn-xs btn-success', false:'btn btn-xs btn-success disabled'}[isProjectUser('modModule')]"
+                           ng-click="sendRequest('user/module/setTemplate.do?id='+item.id);stopPropagation($event);">
+                            <span class="f12">设为模板</span>
+                        </a>
+
+
+                        <a ng-class="{true: 'mr5 cursor btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delInter')]"
                            ng-click="del('user/interface/delete.do?id='+item.id,item.interfaceName);stopPropagation($event);">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

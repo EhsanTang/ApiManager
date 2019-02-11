@@ -7,11 +7,12 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryArticleList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button" ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addArticle')]"
                ng-href="#/user/article/edit?id=NULL&dataType=article&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增文档</i>
             </a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delArticle')]"
                ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文档？')">
                 <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -49,48 +50,42 @@
                     <td class="w50" ng-click="stopPropagation($event);">
                         <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
                     </td>
-                    <td class="min-w300">标题</td>
-                    <td ng-if="$stateParams.type=='PAGE'">key</td>
-                    <td ng-if="$stateParams.type=='PAGE'">是否可删除</td>
-                    <td ng-if="$stateParams.type=='ARTICLE'">类目</td>
-                    <td>状态</td>
-                    <td>可评论</td>
+                    <td class="min-w300"><span ng-if="isSupperAdmin(null)">状态 / </span>是否可评论 / 标题 / 简介</td>
                     <td>创建时间</td>
                     <td class="w200">操作</td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in articles" class="cursor"
-                    ng-click="go('user/article/detail?pageName=文档详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
-                        item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
+                <tr ng-repeat="item in articles">
                     <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"></td>
-                    <td>{{item.name| cut:true:30:' ...'}}</td>
-                    <td ng-if="$stateParams.type=='PAGE'">{{item.key}}</td>
-                    <td ng-if="$stateParams.type=='PAGE'">{{item.canDeleteName}}</td>
-                    <td ng-if="$stateParams.type=='ARTICLE'">{{item.category}}</td>
-                    <td>{{item.statusName}}</td>
-                    <td>{{item.canCommentName}}</td>
+                    <td class="cursor" ng-click="go('user/article/detail?pageName=文档详情&id=' +item.id+ '&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName=' +
+                        item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
+                        <div class="C000 f14">
+                            <span ng-if="isSupperAdmin(null)" ng-class="{true:'badge f12 fn adorn-bg o5', false:'badge f12 fn main-bg o5'}[item.status==2]">{{item.statusName}}</span>
+                            <span ng-class="{true:'badge f12 fn main-bg o5', false:'badge f12 fn BG555 o5'}[item.canComment==1]">{{item.canCommentName}}</span>
+                            {{item.name| cut:true:40:' ...'}}
+                        </div>
+                        <div class="C999 f10 mt5" ng-if="item.brief">
+                            {{item.brief| cut:true:60:' ...'}}
+                        </div>
+                    </td>
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
-                        <a class="mr5 cursor btn btn-xs btn-default"
-                           ng-click="stopPropagation($event);"
+                        <a ng-class="{true: 'mr5 cursor btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modArticle')]"
                            ng-href="#/user/article/edit?pageName=编辑文档&dataType=article&id={{item.id}}&menu_a=menu-project&menu_b=menu_article&projectName={{item.projectName}}&projectId={{item.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="mr5 cursor btn btn-xs btn-info" target="_blank"
-                           ng-click="stopPropagation($event);"
+                        <a class="mr5 cursor btn btn-xs btn-main" target="_blank"
                            ng-href="index.do#/article/detail?projectId={{item.projectId}}&moduleId={{item.moduleId}}&type={{item.type}}&id={{item.id}}">
                             <i class="iconfont f12">&#xe6e6;</i>
                         </a>
 
-
-                        <a class="mr10 cursor btn btn-xs btn-danger" title="删除"
-                           ng-click="del('user/article/delete.do?id='+item.id,item.name);stopPropagation($event);">
+                        <a ng-class="{true: 'mr10 cursor btn btn-xs btn-danger', false:'mr10 btn btn-xs btn-danger disabled'}[isProjectUser('delArticle')]"
+                           ng-click="del('user/article/delete.do?id='+item.id,item.name);">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>
 
                         <a class="main-color mr10 cursor"
-                           ng-click="stopPropagation($event);"
                            ng-href="#/user/comment/list?dataType=article&type=ARTICLE&menu_b=menu_article&projectId={{item.projectId}}&targetId={{item.id}}&menu_a=menu-project&moduleId={{item.moduleId}}">
                             评论列表
                         </a>

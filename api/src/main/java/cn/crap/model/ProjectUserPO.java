@@ -2,30 +2,18 @@ package cn.crap.model;
 
 public class ProjectUserPO extends BasePo{
     private String userName;
-    private Integer sequence;
     private String userEmail;
-    private String projectId;
     private String userId;
     private String permission;
     private Byte status;
+    private String projectId;
 
 
     public String getUserName() {
         return userName;
     }
-
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    @Override
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    @Override
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getUserEmail() {
@@ -34,15 +22,6 @@ public class ProjectUserPO extends BasePo{
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    @Override
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
     }
 
     public String getUserId() {
@@ -67,5 +46,14 @@ public class ProjectUserPO extends BasePo{
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    @Override
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 }

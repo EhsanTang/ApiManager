@@ -63,6 +63,8 @@ public class ErrorController extends BaseController{
         } else {
             model = new Error();
             model.setProjectId(projectId);
+            model.setSequence(System.currentTimeMillis());
+
             checkPermission(projectCache.get(projectId), ProjectPermissionEnum.READ);
         }
         return new JsonResult(1, ErrorAdapter.getDto(model));
@@ -77,7 +79,7 @@ public class ErrorController extends BaseController{
         Assert.notNull(projectId, "projectId can't be null");
         Assert.notNull(errorCode, "errorCode can't be null");
 
-        if (!MyString.isEmpty(dto.getId())) {
+        if (MyString.isNotEmpty(dto.getId())) {
             // 错误码重复及权限检查
             Error dbError = errorService.getById(dto.getId());
             if (!dbError.getErrorCode().equals(dto.getErrorCode())){

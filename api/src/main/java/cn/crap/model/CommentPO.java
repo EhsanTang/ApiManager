@@ -3,8 +3,6 @@ package cn.crap.model;
 import java.util.Date;
 
 public class CommentPO extends BasePo{
-    private String id;
-
     private String targetId;
 
     private String content;
@@ -19,8 +17,6 @@ public class CommentPO extends BasePo{
 
     private Date createTime;
 
-    private Integer sequence;
-
     private String reply;
 
     private Date updateTime;
@@ -30,14 +26,6 @@ public class CommentPO extends BasePo{
     private String avatarUrl;
 
     private static final long serialVersionUID = 1L;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     public String getContent() {
         return content;
@@ -77,14 +65,6 @@ public class CommentPO extends BasePo{
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getReply() {

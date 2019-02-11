@@ -384,16 +384,12 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			return false;
 		}
 	}
-	$rootScope.showOperation = function(dataType,moduleId){
-		var sessionAuth = $("#sessionAuth").val();
-		if((","+sessionAuth+",").indexOf(",SUPPER,")>=0){
+	$rootScope.showOperation = function(dataType){
+		var adminPermission = $rootScope.adminPermission
+		if((","+adminPermission+",").indexOf(",SUPER,")>=0){
 			return true;
 		}
-		var needAuth = dataType;
-		if(moduleId) {
-            needAuth = needAuth + "_" + moduleId;
-        }
-		if((","+sessionAuth+",").indexOf(","+needAuth+",")>=0){
+		if((","+adminPermission+",").indexOf(","+dataType+",")>=0){
 			return true;
 		}
 		return false;

@@ -1,7 +1,5 @@
 package cn.crap.dto;
 
-import java.util.Date;
-
 /**
  * Automatic generation by tools
  * dto: exchange data with view
@@ -10,7 +8,7 @@ public class ModuleDto {
 	private String id;
 	private String name;
 	private Byte status;
-	private Integer sequence;
+	private Long sequence;
 	private String url;
 	private Byte canDelete;
 	private String remark;
@@ -45,10 +43,10 @@ public class ModuleDto {
 		return status;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

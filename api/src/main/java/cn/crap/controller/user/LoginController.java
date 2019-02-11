@@ -115,7 +115,7 @@ public class LoginController extends BaseController{
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
-				userCache.add(user.getId(), new LoginInfoDto(user, projectService, projectUserService));
+				userCache.add(user.getId(), new LoginInfoDto(user));
 				request.setAttribute("title", "恭喜，操作成功！");
 				request.setAttribute("result", "验证通过！");
 			}else{

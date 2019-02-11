@@ -3,12 +3,13 @@
 		<!-- 版本 -->
 		<div class="fb main-color fw500 f20" >
             <span ng-bind="projectDetail.name"></span>
-            <a class="cursor btn btn-adorn btn-xs r20" ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
+            <a ng-class="{true: 'cursor btn btn-adorn btn-xs r20', false:'btn btn-adorn btn-xs r20 disabled'}[isProjectUser('myData')]"
+               ng-click="detail('编辑【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('editer-project','staticize-project');">
                 <i class="iconfont f12">&#xe69e;编辑</i>
             </a>
         </div>
 
-        <div class="C999 lh26 p20 light-bg mt10 f14">
+        <div class="C999 lh26 p20 light-bg mt10 f12">
 				项目类型：<span class="C000" ng-bind="projectDetail.statusName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
 					title="「普通项目/推荐项目：系统管理员可以将项目修改为推荐项目，推荐项目将出现在首页列表中，私有项目即使被设置为推荐项目，其他用户也无法查看项目内容」">
@@ -28,7 +29,8 @@
 				</span>
 				<br/>
 				访问方式：<span class="C000 mr20" ng-bind="projectDetail.visitWay"></span><br>
-                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span><br>
+                创建时间：<span class="C000 mr20" ng-bind="projectDetail.createTimeStr"></span>
+                创建人：<span class="C000 mr20" ng-bind="projectDetail.userName"></span><br>
                 <span ng-if="projectDetail.inviteUrl != null">
                     <span class="adorn-color">邀请加入：</span>邀请码2小时有效，邀请后将默认拥有除删除外的其他权限，可进入【项目成员】处修改权限<br/>
                     <span class="C999 pl50 f12" ng-bind="projectDetail.inviteUrl"></span>
@@ -51,7 +53,7 @@
                 <i class="iconfont mt-3">&#xe6b7;&nbsp;</i>状态码<br>
                 <span class="f12 C999">状态码总数：{{projectMoreInfo.errorNum}}</span>
             </a>
-            <a class="project-menu lh20 p10"
+            <a class="project-menu lh20 p10" ng-if="isProjectUser('myData')"
                ng-href="#/user/projectUser/list?pageName=项目成员&menu_a=menu-project&menu_b=menu_user&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>项目成员<br>
                 <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
@@ -85,21 +87,21 @@
         <div class="fw500 cb f14 mt20">项目管理</div>
         <div class="C999 p0 mt10">
 
-			<a class="project-menu" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
+			<a class="project-menu btn" target="_blank" ng-href="project.do#/module/list?projectId={{projectDetail.id}}">
                 <i class="iconfont adorn-main mt-3">&#xe87b;&nbsp;</i>项目主页
             </a>
-			<a class="project-menu"
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
                ng-href="#/user/log/list?pageName=日志&dataType=interface&menu_a=menu-project&menu_b=menu_main&identy={{projectDetail.id}}&projectId={{projectDetail.id}}&projectName={{projectDetail.name}}">
                 <i class="iconfont">&#xe6bb;&nbsp;</i>日志
             </a>
 
-            <a class="project-menu"
+            <a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
                ng-click="detail('【'+projectDetail.name+'】',700,'user/project/detail.do?id='+projectDetail.id);changeDisplay('staticize-project','editer-project');clearDonwloadUrl();">
                 <i class="iconfont">&#xe640;静态化</i>
             </a>
 
-			<a class="project-menu"
-                 ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
+               ng-click="sendRequest('user/project/rebuildIndex.do?projectId=' + projectDetail.id, 'PROPUPFLOAT重建索引中...')">
 				<span ng-if="projectDetail.type == 2 && projectDetail.luceneSearch == 1">
 					<i class="iconfont">&#xe6aa;&nbsp;重建索引</i>
 				</span>
@@ -108,7 +110,7 @@
 				</span>
             </a>
 
-			<a class="project-menu"
+			<a ng-class="{true: 'project-menu btn', false:'project-menu btn disabled'}[isProjectUser('myData')]"
 			   ng-click="del('user/project/delete.do?id='+projectDetail.id,projectDetail.name);">
 				<i class="iconfont text-danger">&#xe69d;&nbsp;删除项目</i>
 			</a>

@@ -11,7 +11,7 @@ public class DebugDto{
 	private String name;
 	private Date createTime;
 	private Byte status;
-	private Integer sequence;
+	private Long sequence;
 	private String interfaceId;
 	private String moduleId;
 	private String method;
@@ -50,10 +50,10 @@ public class DebugDto{
 		return status;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

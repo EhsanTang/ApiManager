@@ -31,23 +31,6 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         return newBaseDao.get(id);
     }
 
-    public int getMaxSequence(PO po, Query query) throws MyException{
-        if (po.getSequence() != null){
-            return po.getSequence();
-        }
-        query.setPageSize(1);
-        query.setCurrentPage(1);
-        query.setSort(TableField.SORT.SEQUENCE_DESC);
-        query.setProjectId(po.getProjectId());
-
-        Page page = new Page(query);
-        List<PO> poList = this.select(query, page);
-        if (poList.size() > 0){
-            return poList.get(0).getSequence() + 1;
-        }
-        return 0;
-    }
-
     public boolean insert(PO po) throws Exception{
         Assert.notNull(po);
 
@@ -56,11 +39,11 @@ public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
         }
 
         if (po.getSequence() == null){
-            po.setSequence(0);
+            po.setSequence(System.currentTimeMillis());
         }
 
         if (po.getSequence() < 0){
-            po.setSequence(0);
+            po.setSequence(System.currentTimeMillis());
         }
         /**
          * 不能超过mysql最大限制

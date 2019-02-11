@@ -7,39 +7,49 @@
             <a type="button" class="btn btn-default" id="refresh" ng-click="queryBugList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
 
-            <a type="button" class="btn btn-default btn-sm"
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addBug')]"
                ng-href="#/user/bug/edit?id=NULL&type=BUG&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
                 <i class="iconfont mt-3">&#xe604;&nbsp;新增缺陷</i>
             </a>
-            <!--<a type="button" class="btn btn-default btn-sm"
-               ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文档？')">
-                <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
-            </a>-->
         </div>
 
+        <input type="text" class="form-control input-sm dis-in-blo w100 fl mr10" placeholder="缺陷名称"
+               ng-model="$stateParams.name">
 
-        <div class="form-group w200 fl mr10 mb0">
-            <label class="sr-only">名称</label>
-            <div class="input-group btn-group-xs">
-                <div class="input-group-addon main-bg b0 CFFF f12">名称</div>
-                <input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" id="searchName"
-                       ng-value="$stateParams.name">
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryBugList(1, true);">
+        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryBugList(1);">
             <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
         </button>
     </div>
 
     <div class="col-xs-12 p20 mt60">
-            <!-- <div class="h30 lh30 mb20 BGFFF pl10">
-                <input class="w30" type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
-            </div> -->
+        <!-- 查询条件 -->
+        <div class="BGFFF p10 bug-filter h45">
+            <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.creator != null]">
+                <span ng-click="setFilter('creator', sessionAdminId)">我创建的 </span>
+                <i class="iconfont" ng-click="setFilter('creator', null)" ng-if="$stateParams.creator != null">&#xe69a;</i>
+            </div>
 
-            <div ng-repeat="item in bugVOList" class="bb1 p10 BGFFF f14">
+            <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.executor != null]">
+                <span ng-click="setFilter('executor', sessionAdminId)">我解决的 </span>
+                <i class="iconfont" ng-click="setFilter('executor', null)" ng-if="$stateParams.creator != null">&#xe69a;</i>
+            </div>
+
+            <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.tracer != null]">
+                <span ng-click="setFilter('tracer', sessionAdminId)">抄送给我的 </span>
+                <i class="iconfont" ng-click="setFilter('tracer', null)" ng-if="$stateParams.tracer != null">&#xe69a;</i>
+            </div>
+
+            <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.tester != null]">
+                <span ng-click="setFilter('tester', sessionAdminId)">我测试的 </span>
+                <i class="iconfont" ng-click="setFilter('tester', null)" ng-if="$stateParams.tester != null">&#xe69a;</i>
+            </div>
+        </div>
+        <div class="BGFFF min-h500 mt10">
+            <div ng-if="bugVOList.length == 0" class="p20 pt50 tc">
+                <i class="iconfont f20 mt-5 mr10">&#xe69c;</i>没有查到缺陷
+            </div>
+            <div ng-repeat="item in bugVOList" class="bb1 p10 f14">
                 <div>
-                    <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
                     <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}" crap-id="{{item.id}}"
                           id="status-{{item.id}}" crap-def="{{item.status}}" crap-class-pre="bug-status"
                           onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
@@ -103,7 +113,8 @@
                 </div>
             </div>
 
-            <div class="mt20" ui-view="page" ng-init="callBackMethod = 'queryBugList'; modelKey='bugVOList'"></div>
+            <div class="mt20 mr10" ui-view="page" ng-init="callBackMethod = 'queryBugList'; modelKey='bugVOList'"></div>
+        </div>
     </div>
 </div>
 <div class="cb"></div>

@@ -5,11 +5,11 @@
                     class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
             <a type="button" class="btn btn-default" id="refresh" ng-click="querySourceList(list.page.currentPage)"><i
                     class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addSource')]"
                ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId + '&projectId=' + $stateParams.projectId)">
                 <i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增文件
             </a>
-            <a type="button" class="btn btn-default btn-sm"
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delSource')]"
                ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的文件？')">
                 <i class="iconfont fb mt-3">&#xe69d;</i>&nbsp;批量删除
             </a>
@@ -51,21 +51,21 @@
                     <td>{{item.remark|cut:true:50:' ...'}}</td>
                     <td>{{item.updateTimeStr}}</td>
                     <td class="f12">
-                        <a class="mr5 btn btn-xs btn-default"
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modSource')]"
                            ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')">
                             <i class="iconfont f12">&#xe69e;</i>
                         </a>
-                        <a class="mr5 btn btn-xs btn-info" ng-href="index.do#/source/detail?id={{item.id}}"
+                        <a class="mr5 btn btn-xs btn-main" ng-href="index.do#/source/detail?id={{item.id}}"
                            target="_blank">
                             <i class="iconfont f12">&#xe6e6;</i>
                         </a>
 
-                        <a class="mr5 btn btn-xs btn-primary"
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-primary', false:'mr5 btn btn-xs btn-primary disabled'}[isProjectUser('myData')]"
                            ng-href="#/user/log/list?pageName=文件日志&identy={{item.id}}&dataType=source&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
                             <i class="iconfont">&#xe6bb;</i>
                         </a>
 
-                        <a class="mr5 btn btn-xs btn-danger" title="删除"
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delSource')]"
                            ng-click="del('user/source/delete.do?id='+item.id,item.name)">
                             <i class="iconfont f12">&#xe69d;</i>
                         </a>

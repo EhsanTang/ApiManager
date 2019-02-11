@@ -126,15 +126,21 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
+                User creator = userService.getById(projectService.getById(key).getUserId());
+                pick = new PickDto(creator.getId(), MyString.isEmpty(creator.getTrueName()) ? creator.getUserName() : creator.getTrueName());
+                picks.add(pick);
+
                 // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
                 for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key), null)) {
                     User projectUser = userService.getById(m.getUserId());
-                    if (projectUser == null){
+                    if (projectUser == null || projectUser.getId().equals(creator.getId())){
                         continue;
                     }
                     pick = new PickDto(projectUser.getId(), MyString.isEmpty(projectUser.getTrueName()) ? projectUser.getUserName() : projectUser.getTrueName());
                     picks.add(pick);
                 }
+
+
                 return picks;
             case USER:
                 if (MyString.isEmpty(key) || key.trim().length() < 6) {

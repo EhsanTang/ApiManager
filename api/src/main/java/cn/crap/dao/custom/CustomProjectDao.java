@@ -68,7 +68,7 @@ public class CustomProjectDao {
 				project.setUserId(rs.getString(5));
 				project.setCreateTime(rs.getTimestamp(6));
 				project.setCover(rs.getString(7));
-				project.setSequence(rs.getInt(8));
+				project.setSequence(rs.getLong(8));
 				project.setStatus(rs.getByte(9));
 				return project;
 			}

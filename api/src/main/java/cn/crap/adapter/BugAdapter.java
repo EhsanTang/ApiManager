@@ -66,6 +66,7 @@ public class BugAdapter {
         bugPO.setStatus(BugStatus.NEW.getByteValue());
         bugPO.setProjectId(project.getId());
         bugPO.setModuleId(Optional.ofNullable(module).map(m -> m.getId()).orElse(null));
+        bugPO.setSequence(System.currentTimeMillis());
 
         BugDTO bugDTO = getDto(bugPO, module, project);
         bugDTO.setName("");

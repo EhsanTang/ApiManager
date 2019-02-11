@@ -1,14 +1,12 @@
 package cn.crap.dto;
 
-import java.util.Date;
-
 /**
  * Automatic generation by tools
  * dto: exchange data with view
  */
 public class SourceDto{
 	private String id;
-	private Integer sequence;
+	private Long sequence;
 	private Byte status;
 	private String name;
 	private String moduleId;
@@ -26,10 +24,10 @@ public class SourceDto{
 		return id;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

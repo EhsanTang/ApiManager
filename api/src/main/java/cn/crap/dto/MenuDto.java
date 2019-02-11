@@ -10,7 +10,7 @@ public class MenuDto{
     private String type;
     private String typeName;
     private Byte status;
-    private Integer sequence;
+    private Long sequence;
 
     public String getId() {
         return id;
@@ -76,11 +76,11 @@ public class MenuDto{
         this.status = status;
     }
 
-    public Integer getSequence() {
+    public Long getSequence() {
         return sequence;
     }
 
-    public void setSequence(Integer sequence) {
+    public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app" ng-controller="userCtrl">
+<html lang="en" ng-app="app" ng-controller="userCtrl" ng-init="adminInit()">
 <head>
 	<meta charset="UTF-8">
 	<title ng-bind="settings.TITLE">CrapApi|应用接口管理系统</title>
@@ -11,11 +11,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<!-- <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" /> -->
-	<link href="resources/css/allCss.css?v=v8.0.6_1020" rel="stylesheet" type="text/css"/>
+	<link href="resources/css/allCss.css?v=v8.1.2_0211" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 	<!-- Top -->
-	<input type="hidden" id="sessionAuth" value="{{sessionAdminAuthor}}">
     <!-- 是否安装了插件-->
     <input type="hidden" id="hasInstallPlug" value="false">
 	<nav class="h50 fixed w t0 BGFFF z100 nav admin-nav">
@@ -62,7 +61,7 @@
                         <a ng-href="{{'my-project'|getUrl}}"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-project']">
                             <i class="iconfont f18 mr20 mt-3">&#xe6b4;</i>
-                            <span class="f14"> 我的项目</span>
+                            <span class="f14"> 项目管理</span>
                         </a>
 
                         <a ng-href="{{'profile'|getUrl}}"
@@ -72,41 +71,40 @@
                             <span class="f14"> 个人资料</span>
                         </a>
 
-						<a ng-href="{{'importFromSql'|getUrl}}"
-						   ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-import']">
-                            <i class="iconfont f18 mr20 mt-3">&#xe70c;</i>
-							<span class="f14"> 导入数据库表</span>
-						</a>
+                        <a target="_self" href="#/admin/user/list?menu_a=menu_user&pageName=用户管理"
+                           ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_a == 'menu_user']"
+                           ng-if="isAdmin(null,'USER')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe60c;</i>
+                            <span class="f14"> 用户管理</span>
+                        </a>
 
                         <!-- 管理员菜单 -->
                         <a href="#/admin/menu/list?parentId=0&menu_a=menu-menu&menuName=无&pageName=菜单管理"
                            ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-menu']"
-                           ng-if="isAdmin('','MENU')">
+                           ng-if="isAdmin(null,'MENU')">
                             <i class="iconfont f18 mr20 mt-3">&#xe699;</i>
                             <span class="f14"> 菜单管理</span>
                         </a>
-                        <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting&pageName=系统管理"
-						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
-							ng-if="isSupperAdmin()">
+
+                        <a href="#/admin/setting/list?menu_a=menu-setting&menu_b=menu-setting&pageName=系统设置"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-setting']"
+                           ng-if="isAdmin(null,'SETTING')">
                             <i class="iconfont f18 mr20 mt-3">&#xe6ae;</i>
-                            <span class="f14"> 系统管理</span>
-                        </a>
-                        <a class="hover-main" target="_blank"
-                            href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=153406311429601002715">
-                            <i class="iconfont f16 mr20 mt-3">&#xe7ce;</i>
-                            <span class="f14"> 捐赠作者</span>
-                        </a>
-                        <a class="hover-main" target="_blank"
-                           href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=02c16933-2823-458d-83a0-6d5b8b752a25">
-                            <i class="iconfont f18 mr20 mt-3">&#xe748;</i>
-                            <span class="f14"> bug反馈</span>
-                        </a>
-                        <a class="hover-main" target="_blank"
-                           href="http://api.crap.cn/index.do#/article/detail?projectId=web&moduleId=web&type=ARTICLE&id=ffff-1522587078634-1017019456-0002">
-                            <i class="iconfont f18 mr20 mt-3">&#xe69b;</i>
-                            <span class="f14"> 建议&留言</span>
+                            <span class="f14"> 系统设置</span>
                         </a>
 
+                        <a target="_self" href="#/admin/hotSearch/list?menu_a=menu_hot&pageName=热搜管理"
+                           ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu_hot']"
+                           ng-if="isAdmin(null,'HOT_SEARCH')">
+                            <i class="iconfont f18 mr20 mt-3">&#xe82c;</i>
+                            <span class="f14"> 热搜管理</span>
+                        </a>
+
+                        <a href="#/user/introduce?menu_a=menu-info&menu_b=menu-introduce&pageName=系统简介"
+						    ng-class="{true: 'hover-main active-main', false:'hover-main'}[$stateParams.menu_a == 'menu-info']">
+                            <i class="iconfont f18 mr20 mt-3">&#xe6a4;</i>
+                            <span class="f14"> 其他信息</span>
+                        </a>
                     </div>
 			</div>
 			<div ui-view="subMenu" class="h fixed"></div>
@@ -131,7 +129,7 @@
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
 	<!--<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script> -->
-    <script src="resources/js/allJs.js?v=v8.0.6_1020"></script>
+    <script src="resources/js/allJs.js?v=v8.1.2_0211"></script>
 
 
 	<!-- 提示窗口 -->

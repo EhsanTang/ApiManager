@@ -31,14 +31,6 @@ public class SettingService extends BaseService<Setting, SettingDao> {
         if (setting == null) {
             return false;
         }
-        if (setting.getSequence() == null){
-            List<Setting>  menus = this.query(new SettingQuery().setPageSize(1));
-            if (menus.size() > 0){
-                setting.setSequence(menus.get(0).getSequence() + 1);
-            }else{
-                setting.setSequence(0);
-            }
-        }
         return super.insert(setting);
     }
 

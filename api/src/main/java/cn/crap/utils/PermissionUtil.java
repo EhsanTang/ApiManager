@@ -5,12 +5,17 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
+import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.model.Project;
+import cn.crap.model.ProjectUserPO;
+import cn.crap.query.ProjectUserQuery;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,6 +43,14 @@ public class PermissionUtil implements IConst{
         }
 
         /**
+         * 拥有项目权限的管理员可以操作用户项目
+         */
+        String authority = user.getAuthStr();
+        if(user.getType() == UserType.ADMIN.getType() && authority != null && (","+authority).indexOf(","+ C_AUTH_PROJECT +",")>=0){
+            return;
+        }
+
+        /**
          * 修改自己的项目
          * myself project
          */
@@ -49,13 +62,15 @@ public class PermissionUtil implements IConst{
          * 只有项目创建者才能查看
          */
         if (needPermission == ProjectPermissionEnum.MY_DATE) {
-            throw new MyException(MyError.E000022);
+            throw new MyException(MyError.E000022, needPermission.getDesc());
         }
 
         // 项目成员
-        ProjectUserDto puDto = ProjectUserAdapter.getDto(user.getProjects().get(project.getId()), null);
-        if (puDto == null) {
-            throw new MyException(MyError.E000022);
+        List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
+                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()), null);
+
+        if (CollectionUtils.isEmpty(projectUserPOList)) {
+            throw new MyException(MyError.E000022, needPermission.getDesc());
         }
 
         /**
@@ -65,11 +80,12 @@ public class PermissionUtil implements IConst{
             return;
         }
 
-        if (puDto.getCrShowPermissionSet().contains(needPermission)) {
+        ProjectUserDto dto = ProjectUserAdapter.getDto(projectUserPOList.get(0), null);
+        if (dto.getCrShowPermissionSet().contains(needPermission.getValue())) {
             return;
         }
 
-        throw new MyException(MyError.E000022);
+        throw new MyException(MyError.E000022, needPermission.getDesc());
     }
 
     public static Set<String> getSet(String permissionsStr){

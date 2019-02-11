@@ -41,7 +41,7 @@ public class SystemService {
 
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
-        //	v8.0.5 修改，允许模块为空，2018-11-17
+        // v8.0.5 修改，允许模块为空，2018-11-17
         CHANGE_SQL_MAP.put(1, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
         CHANGE_SQL_MAP.put(2, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
         CHANGE_SQL_MAP.put(3, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
@@ -53,6 +53,7 @@ public class SystemService {
         CHANGE_SQL_MAP.put(9, "ALTER TABLE `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
         CHANGE_SQL_MAP.put(10, "ALTER TABLE `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
 
+        // 权限数据结构调整
         CHANGE_SQL_MAP.put(11, "UPDATE project_user SET permission=concat(permission,'addModule,') WHERE addModule=1");
         CHANGE_SQL_MAP.put(12, "UPDATE project_user SET permission=concat(permission,'delModule,') WHERE delModule=1");
         CHANGE_SQL_MAP.put(13, "UPDATE project_user SET permission=concat(permission,'modModule,') WHERE modModule=1");
@@ -100,9 +101,75 @@ public class SystemService {
         CHANGE_SQL_MAP.put(44, "ALTER TABLE `project_user` DROP `addError`");
         CHANGE_SQL_MAP.put(45, "ALTER TABLE `project_user` DROP `delError`");
         CHANGE_SQL_MAP.put(46  , "ALTER TABLE `project_user` DROP `modError`");
+
         // 废弃 role字段，但是不删除：mybatis需要修改
         CHANGE_SQL_MAP.put(47, "UPDATE user SET auth=concat(auth,',SUPER,') WHERE roleId like '%super%'");
         CHANGE_SQL_MAP.put(48, "DROP TABLE `role`");
+
+        CHANGE_SQL_MAP.put(49, "ALTER TABLE `article` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(52, "ALTER TABLE `comment` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(53, "ALTER TABLE `debug` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(54, "ALTER TABLE `error` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(55, "ALTER TABLE `interface` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(56, "ALTER TABLE `log` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(57, "ALTER TABLE `menu` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(58, "ALTER TABLE `module` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(59, "ALTER TABLE `project` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(60, "ALTER TABLE `project_user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(61, "ALTER TABLE `setting` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(62, "ALTER TABLE `source` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(63, "ALTER TABLE `user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+
+        CHANGE_SQL_MAP.put(64, "CREATE TABLE `bug` (\n" +
+                "  `id` varchar(50) NOT NULL,\n" +
+                "  `name` varchar(100) NOT NULL,\n" +
+                "  `content` text NOT NULL,\n" +
+                "  `status` tinyint(4) NOT NULL DEFAULT '1',\n" +
+                "  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  `moduleId` varchar(50) DEFAULT 'top',\n" +
+                "  `sequence` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '排序，越大越靠前',\n" +
+                "  `projectId` varchar(50) NOT NULL DEFAULT '',\n" +
+                "  `attributes` varchar(200) DEFAULT '',\n" +
+                "  `executor` varchar(50) DEFAULT NULL COMMENT '解决者',\n" +
+                "  `executorStr` varchar(50) DEFAULT NULL COMMENT '解决者名称',\n" +
+                "  `updateTime` timestamp NULL DEFAULT NULL COMMENT '最后更新时间',\n" +
+                "  `creator` varchar(50) NOT NULL DEFAULT '' COMMENT '创建者',\n" +
+                "  `creatorStr` varchar(50) DEFAULT NULL COMMENT '创建者名称',\n" +
+                "  `tester` varchar(50) DEFAULT NULL COMMENT '验证者',\n" +
+                "  `testerStr` varchar(50) DEFAULT NULL COMMENT '验证这名称',\n" +
+                "  `priority` tinyint(4) NOT NULL COMMENT '优先级',\n" +
+                "  `tracer` varchar(50) DEFAULT NULL COMMENT '抄送人',\n" +
+                "  `tracerStr` varchar(50) DEFAULT NULL COMMENT '抄送人名称',\n" +
+                "  `deadline` timestamp NULL DEFAULT NULL COMMENT '截止时间',\n" +
+                "  `type` tinyint(4) DEFAULT NULL COMMENT '问题类型',\n" +
+                "  `severity` tinyint(4) DEFAULT NULL COMMENT '严重程度',\n" +
+                "  `updateBy` varchar(50) DEFAULT NULL COMMENT '最后修改人',\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                "  KEY `idx_project_sequence` (`projectId`,`sequence`),\n" +
+                "  KEY `idx_project_creator` (`projectId`,`creator`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        CHANGE_SQL_MAP.put(65, "CREATE TABLE `bug_log` (\n" +
+                "  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',\n" +
+                "  `operator` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '操作人',\n" +
+                "  `operatorStr` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '操作人名',\n" +
+                "  `senior` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '原用户',\n" +
+                "  `type` tinyint(4) unsigned NOT NULL COMMENT '操作类型：1标题，2内容，3状态，4优先级，5严重程度，6问题类型，7模块，8执行人，9测试，10抄送人',\n" +
+                "  `junior` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '新用户',\n" +
+                "  `remark` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '备注',\n" +
+                "  `newValue` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '新值',\n" +
+                "  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  `sequence` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '排序，越大越靠前',\n" +
+                "  `projectId` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',\n" +
+                "  `status` int(11) DEFAULT NULL,\n" +
+                "  `bugId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '缺陷ID',\n" +
+                "  `originalValue` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '原始值',\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                "  KEY `idx_bug_sequence` (`bugId`,`sequence`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+
+        // sequence 修改为long
     }
 
     /**
@@ -206,7 +273,7 @@ public class SystemService {
             }
             cssContent = cssContent.replace("[" + s.getMkey() + "]", value);
         }
-        cssContent = cssContent.replace("[MAIN_COLOR_HOVER]",
+        cssContent = cssContent.replace("[MAIN_COLOR_OPACITY_1]",
                 Tools.getRgba(0.1f, settingService.getByKey(ISetting.S_MAIN_COLOR).getValue()));
 
         Tools.staticize(cssContent, cssPath + "/setting.css");

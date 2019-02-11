@@ -33,21 +33,6 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
         super.setBaseDao(sourceDao, TableId.SOURCE);
     }
 
-    public boolean insert(Source model) throws MyException {
-        if (model == null) {
-            return false;
-        }
-        if (model.getSequence() == null) {
-            List<Source> models = this.query(new SourceQuery().setModuleId(model.getModuleId()));
-            if (models.size() > 0) {
-                model.setSequence(models.get(0).getSequence() + 1);
-            } else {
-                model.setSequence(0);
-            }
-        }
-        return super.insert(model);
-    }
-
     public void update(Source model, boolean needAddLog) throws MyException{
         if (needAddLog) {
             Source dbModel = sourceDao.selectByPrimaryKey(model.getId());

@@ -59,7 +59,6 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         bug.setCreator(user.getId());
         bug.setCreatorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         bug.setStatus(BugStatus.NEW.getByteValue());
-        bug.setSequence(getMaxSequence(bug, new BugQuery().setProjectId(bug.getProjectId())));
         return super.insert(bug);
     }
 
@@ -94,7 +93,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bugLogPO.setType(BugLogType.PRIORITY.getByteType());
             bugLogPO.setOriginalValue(BugPriority.getNameByValue(dbBug.getPriority()));
             bugLogPO.setNewValue(BugPriority.getNameByValue(bugPriority.getByteValue()));
-        } else if (PickCode.MY_MODULE.getCode().equals(type)){
+        } else if (PickCode.MY_MODULE.getCode().equals(type) || PickCode.PROJECT_MODULES.getCode().equals(type)){
             Module module = moduleCache.get(value);
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());

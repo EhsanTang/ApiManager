@@ -84,6 +84,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			module=new Module();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
+			module.setSequence(System.currentTimeMillis());
 		}
 		return new JsonResult(1, ModuleAdapter.getDto(module, project, templeteInterface));
 	}
@@ -128,13 +129,6 @@ public class ModuleController extends BaseController implements ILogConst{
 			moduleService.insert(module);
 		}
 		moduleCache.del(module.getId());
-		
-		/**
-		 * 刷新用户权限
-		 */
-        user = LoginUserHelper.getUser();
-		// 将用户信息存入缓存
-		userCache.add(user.getId(), new LoginInfoDto(userService.getById(user.getId()), projectService, projectUserService));
 		return new JsonResult(1,module);
 	}
 	
@@ -217,7 +211,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		checkPermission(projectCache.get( change.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		checkPermission(projectCache.get( model.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		
-		int modelSequence = model.getSequence();
+		long modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);
 		

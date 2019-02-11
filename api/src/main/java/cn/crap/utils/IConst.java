@@ -4,7 +4,7 @@ package cn.crap.utils;
  * @author Ehsan
  */
 public interface IConst {
-	int  C_MAX_SEQUENCE = 2147483647;
+	Long C_MAX_SEQUENCE = 999999999999999999L;
 	String SEPARATOR = ":"; // 分割符
 	String NULL = "_NULL";
 	String C_TRUE = "true";

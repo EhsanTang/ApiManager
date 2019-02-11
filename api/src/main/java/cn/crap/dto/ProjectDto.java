@@ -8,7 +8,7 @@ public class ProjectDto {
 	private String id;
 	private String name;
 	private Byte status;
-	private Integer sequence;
+	private Long sequence;
 	private String remark;
 	private String userId;
 	private String userName;
@@ -28,6 +28,7 @@ public class ProjectDto {
      * 邀请链接
      */
     private String inviteUrl;
+    private String projectPermission;
 
 	public void setId(String id){
 		this.id=id;
@@ -50,10 +51,10 @@ public class ProjectDto {
 		return status;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 
@@ -154,4 +155,12 @@ public class ProjectDto {
     public void setInviteUrl(String inviteUrl) {
         this.inviteUrl = inviteUrl;
     }
+
+	public String getProjectPermission() {
+		return projectPermission;
+	}
+
+	public void setProjectPermission(String projectPermission) {
+		this.projectPermission = projectPermission;
+	}
 }

@@ -133,7 +133,7 @@ public class MainController extends BaseController {
         returnMap.put("settingMap", settingMap);
         LoginInfoDto user = LoginUserHelper.getUser();
         returnMap.put("sessionAdminName", user.getUserName());
-        returnMap.put("sessionAdminAuthor", user.getAuthStr());
+        returnMap.put("adminPermission", user.getAuthStr());
         returnMap.put("sessionAdminId", user.getId());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
 

@@ -55,8 +55,6 @@ public class BugLogService extends NewBaseService<BugLogPO, BugLogQuery> impleme
         bugLog.setOperator(user.getId());
         bugLog.setOperatorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         bugLog.setStatus(Byte.parseByte("1"));
-        // 根据时间排序
-        bugLog.setSequence(0);
         return super.insert(bugLog);
     }
 }

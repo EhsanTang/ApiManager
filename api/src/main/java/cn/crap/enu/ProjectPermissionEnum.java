@@ -15,6 +15,10 @@ public enum ProjectPermissionEnum {
 	 ADD_MODULE("addModule","添加模块"),
 	 DEL_MODULE("delModule","删除模块"),
 
+	MOD_ERROR("modError","修改状态码", true, "状态码权限"),
+	ADD_ERROR("addError","添加状态码"),
+	DEL_ERROR("delError","删除状态码"),
+
 	 MOD_ARTICLE("modArticle","修改文档", true, "文档权限"),
 	 ADD_ARTICLE("addArticle","添加文档"),
 	 DEL_ARTICLE("delArticle","删除文档"),
@@ -23,13 +27,16 @@ public enum ProjectPermissionEnum {
 	 ADD_DICT("addDict","添加数据库表"),
 	 DEL_DICT("delDict","删除数据库表"),
 
+	MOD_BUG("modBug","修改缺陷", true, "缺陷权限"),
+	ADD_BUG("addBug","添加缺陷"),
+	DEL_BUG("delBug","删除缺陷"),
+
 	 MOD_SOURCE("modSource","修改文件", true, "文件权限"),
 	 ADD_SOURCE("addSource","添加文件"),
-	 DEL_SOURCE("delSource","删除文件"),
+	 DEL_SOURCE("delSource","删除文件");
 
-	 MOD_ERROR("modError","修改状态码", true, "状态码权限"),
-	 ADD_ERROR("addError","添加状态码"),
-	 DEL_ERROR("delError","删除状态码");
+
+
 
 	 public static boolean isDefaultPermission(ProjectPermissionEnum permissionEnum){
 	 	if (permissionEnum == null){

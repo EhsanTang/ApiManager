@@ -2,7 +2,6 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.BugAdapter;
 import cn.crap.dto.BugDTO;
-import cn.crap.dto.CommentDTO;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
@@ -81,7 +80,7 @@ public class BugController extends BaseController{
             return new JsonResult(true);
         }
         BugPO dbBug = bugService.get(id);
-        checkPermission(dbBug.getProjectId(), ProjectPermissionEnum.READ);
+        checkPermission(dbBug.getProjectId(), ProjectPermissionEnum.MOD_BUG);
 
         BugLogPO bugLogPO = new BugLogPO();
         BugPO bug = bugService.getChangeBugPO(id, type, value, bugLogPO, dbBug);
@@ -106,34 +105,12 @@ public class BugController extends BaseController{
         throwExceptionWhenIsNull(dto.getProjectId(), "projectId 不能为空");
 
         dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
-        checkPermission(dto.getProjectId(), ProjectPermissionEnum.READ);
+        checkPermission(dto.getProjectId(), ProjectPermissionEnum.ADD_BUG);
 
         bugService.insert(BugAdapter.getPO(dto));
         return new JsonResult(true);
     }
 
-    @RequestMapping("/addComment.do")
-    @ResponseBody
-    @AuthPassport
-    public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDto) throws MyException {
-//
-//        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
-//        checkPermission(article.getProjectId(), MOD_ARTICLE);
-//        Comment comment = CommentAdapter.getModel(commentDto);
-//        comment.setUpdateTime(new Date());
-//        commentService.update(comment);
-//
-//        // 发送邮件通知
-//        Comment dbComment = commentService.getById(commentDto.getId());
-//        if (MyString.isNotEmpty(dbComment.getUserId())){
-//            User user = userService.getById(dbComment.getUserId());
-//            if (MyString.isNotEmpty(user.getEmail())){
-//                String context = "问题【" + dbComment.getContent() + "】收到回复，【" + comment.getReply() + "】";
-//                emailService.sendMail(dbComment.getContent(), user.getEmail(), context);
-//            }
-//        }
-        return new JsonResult(1, null);
-    }
     /**
      * bug列表
      * @return
@@ -188,7 +165,7 @@ public class BugController extends BaseController{
         if (bugPO == null) {
             throw new MyException(MyError.E000063);
         }
-        checkPermission(bugPO.getProjectId(), ProjectPermissionEnum.DEL_ERROR);
+        checkPermission(bugPO.getProjectId(), ProjectPermissionEnum.DEL_BUG);
         bugService.delete(id);
         return new JsonResult(1, null);
     }

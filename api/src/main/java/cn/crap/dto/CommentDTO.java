@@ -9,22 +9,11 @@ import java.io.Serializable;
  * dto: exchange data with view
  */
 public class CommentDTO extends CommentPO implements Serializable {
-	private String id;
 	private String createTimeStr;
     private String updateTimeStr;
 
     private String imgCode;
 	private boolean needImgCode = true;
-
-	@Override
-	public String getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getCreateTimeStr() {
 		return createTimeStr;

@@ -66,24 +66,31 @@ function createEditorMe(id, markdownContent) {
     });
 }
 
-function createWangEditor(id, modelField, init, height) {
-    var root = getRootScope();
+/**
+ * 初始化富文本编辑器
+ * @param id
+ * @param editorHtml
+ * @param init
+ * @param height
+ */
+function createWangEditor(id, editorHtml, init, height) {
     var E = window.wangEditor;
     var editor = new E(document.getElementById(id));
-    init(editor, modelField);
+    init(editor);
     editor.create();
     if (height) {
         $(".w-e-text-container").css("height", height);
     }
     $(".w-e-text-container").css("z-index", 98);
     $(".w-e-menu").css("z-index", 99);
-    if (root.model[modelField] == null) {
-        root.model[modelField] = "";
+    if (!editorHtml){
+        editorHtml = "";
     }
-    editor.txt.html(root.model[modelField]);
+    editor.txt.html(editorHtml);
+    return editor;
 }
 
-function initArticleEditor(editor, modelField) {
+function initArticleEditor(editor) {
     var root = getRootScope();
     editor.customConfig.uploadImgMaxLength = 1;
     editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
@@ -98,11 +105,11 @@ function initArticleEditor(editor, modelField) {
     }
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        root.model[modelField] = html;
+        root.model.content = html;
     }
 }
 
-function initInterfaceEditor(editor, modelField) {
+function initInterfaceEditor(editor) {
     var root = getRootScope();
     // 配置菜单
     editor.customConfig.menus = [
@@ -119,7 +126,7 @@ function initInterfaceEditor(editor, modelField) {
     ];
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        root.model[modelField] = html;
+        root.model.remark = html;
     }
 }
 

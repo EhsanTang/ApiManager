@@ -1,5 +1,6 @@
 package cn.crap.utils;
 
+import javax.management.ObjectName;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,9 +20,12 @@ public class DateFormartUtil {
 	public static String DDHH="ddHH";
 	public static String YYYY_MM_DD_HH_mm_ss="yyyy-MM-dd HH:mm:ss";
 	public static String YYYY_MM_DD_HH_mm="yyyy-MM-dd HH:mm";
+	public static String HH_mm="HH:mm";
+
 	public static String YYYYMMDDHHmmss="yyyyMMddHHmmss";
 	public static String HHmmss="HHmmss";
     public static String DDHHmmss="ddHHmmss";
+    public static long ONE_DAY = 24 * 60 * 60 * 1000L;
 
 
     public static boolean isWeekend(String date){
@@ -51,6 +55,7 @@ public class DateFormartUtil {
 		c.add(Calendar.HOUR, 1);
 		return getDateByFormat(c.getTime(),"DDHH");
 	}
+
 	public static String getDateByFormatAddOneDay(String date)
 	{
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat(YYYY_MM_DD);
@@ -79,19 +84,10 @@ public class DateFormartUtil {
 		
 		return c.getTimeInMillis();
 	}
+
 	public static long getCurrentTimeMillis(String date)
 	{
-		SimpleDateFormat dateFormat1 = new SimpleDateFormat(YYYY_MM_DD_HH_mm_ss);
-		Date myDate1=null;
-		try {
-			myDate1 = dateFormat1.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(myDate1);
-		
-		return c.getTimeInMillis();
+		return getCurrentTimeMillis(date, YYYY_MM_DD_HH_mm_ss);
 	}
 	
 	public static String getDateByFormat(String date,String fromat)
@@ -148,12 +144,14 @@ public class DateFormartUtil {
 		c.add(Calendar.DAY_OF_MONTH, -1);
 		return getDateByFormat(c.getTime(),YYYY_MM_DD);
 	}
+
 	public static String getChinaDate(String date){
 		date=date.substring(5,date.length());
 		date=date.replace("-", "月");
 		date=date+"日";
 		return date;
 	}
+
 	public static String getDateByTimeMillis(String str,String sformat){
 		try{
 		  SimpleDateFormat format = new SimpleDateFormat(sformat);
@@ -178,10 +176,36 @@ public class DateFormartUtil {
 		String dateStr=daf.format(date);
 		return  dateStr;
 	}
+
+	public static String getDateByTimeMillis(Date date){
+		if (date == null){
+			return "";
+		}
+		return getDateByTimeMillis(date.getTime());
+	}
+
+	public static Date getTodayStartTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
 	public static String getDateByTimeMillis(Long str){
 		if (str == null){
 			return "";
 		}
+		if (str > getTodayStartTime().getTime()){
+            return getDateByTimeMillis(str.toString(), HH_mm);
+		}
+        if (str > getTodayStartTime().getTime() - ONE_DAY){
+            return "昨天 " + getDateByTimeMillis(str.toString(), HH_mm);
+        }
+        if (str > getTodayStartTime().getTime() - ONE_DAY * 2){
+            return "前天 " + getDateByTimeMillis(str.toString(), HH_mm);
+        }
 		return getDateByTimeMillis(str.toString(),YYYY_MM_DD_HH_mm);
 	}
 }

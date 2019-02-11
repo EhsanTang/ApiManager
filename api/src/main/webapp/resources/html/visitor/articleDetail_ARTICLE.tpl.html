@@ -11,7 +11,7 @@
 
 		<div class="f14 mt-3 imgCenter" ng-bind-html="article.content|trustHtml"></div>
 
-		<div ui-view="addComment" class="f14" ng-if="article.canComment==1"></div>
+		<div ui-view="comment" class="f14" ng-if="article.canComment==1"></div>
 	</div>
 </div>
 <div class="cb"></div>

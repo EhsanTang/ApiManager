@@ -91,12 +91,12 @@ public class ArticleController extends BaseController {
             Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                     .put("category", query.getCategory())
                     .put("categorys", categories)
-                    .put("crumbs", Tools.getCrumbs("模块:" + project.getName(), "#/module/list?projectId=" + project.getId(), "文章:" + module.getName(), "void"))
+                    .put("crumbs", Tools.getCrumbs("模块:" + project.getName(), "#/module/list?projectId=" + project.getId(), "文档:" + module.getName(), "void"))
                     .getMap();
             return new JsonResult().success().data(articleDtos).page(page).others(others);
         }
 
-        // 推荐的文章
+        // 推荐的文档
         List<String> categories = articleService.queryTop10RecommendCategory();
         query.setModuleId(null).setName(null).setProjectId(null);
         List<Article> articles = articleService.query(query);
@@ -106,7 +106,7 @@ public class ArticleController extends BaseController {
         Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                 .put("category", query.getCategory())
                 .put("categorys", categories)
-                .put("crumbs", Tools.getCrumbs( "推荐文章列表", "void"))
+                .put("crumbs", Tools.getCrumbs( "推荐文档列表", "void"))
                 .getMap();
 
         return new JsonResult().success().data(articleDtos).page(page).others(others);
@@ -144,27 +144,14 @@ public class ArticleController extends BaseController {
             return new JsonResult().success().data(article).others(returnMap);
         }
 
-        // 初始化前端js评论对象
-        Comment comment = new Comment();
-        comment.setArticleId(id);
-        returnMap.put("comment", comment);
-
-        // 评论
-        CommentQuery commentQuery = new CommentQuery().setArticleId(id).setPageSize(10).setCurrentPage(currentPage);
-        Page page = new Page(commentQuery);
-        List<Comment> comments = commentService.query(commentQuery);
-        page.setAllRow(commentService.count(commentQuery));
-        returnMap.put("comments", CommentAdapter.getDto(comments));
-        returnMap.put("commentCode", settingCache.get(S_COMMENTCODE).getValue());
-
         // 更新点击量
         articleService.updateClickById(id);
 
         List<CrumbDto> crumbDtos = MyCrumbDtoList.getList("模块:" + project.getName(), "#/module/list?projectId=" + project.getId())
-                .add("文章:" + module.getName(), "#/article/list?projectId=" + project.getId() +"&moduleId=" + module.getId() + "&type=ARTICLE")
+                .add("文档:" + module.getName(), "#/article/list?projectId=" + project.getId() +"&moduleId=" + module.getId() + "&type=ARTICLE")
                 .add(article.getName(), "void")
                 .getList();
         returnMap.put("crumbs", crumbDtos);
-        return new JsonResult(1,  ArticleAdapter.getDtoWithBLOBs(article, module, project), page, returnMap);
+        return new JsonResult(1,  ArticleAdapter.getDtoWithBLOBs(article, module, project), null, returnMap);
     }
 }

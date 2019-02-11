@@ -1,6 +1,10 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule','visitorModule', 'userInterModule']);
-var userInterModule = angular.module("userInterModule", []);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule']);
 var visitorModule = angular.module("visitorModule", []);
+var userModule = angular.module("userModule", []);
+var adminModule = angular.module("adminModule", []);
+var commentModule = angular.module("commentModule", []);
+var bugModule = angular.module("bugModule", []);
+
 
 var NEED_PASSWORD_CODE = "E000007";
 var NEED_LOGIN = "E000021";
@@ -95,6 +99,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
     }
 
     $rootScope.go = function (href) {
+        var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
         $location.url(href);
     }
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
@@ -127,10 +132,11 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
 		callAjaxByName("iUrl="+iUrl+"|isHowMethod=updateDiv|iPost=POST|iParams=&type="
 				+type+"&radio="+radio+"&code="+code+"&tag="+tag+"&tagName="+tagName+"&def="+def+params,iCallBack,iCallBackParam);
-		if(tagName)
-			lookUp('lookUp', event, iheight, iwidth ,showType,tagName);
-		else
-			lookUp('lookUp', event, iheight, iwidth ,showType,tag);
+		if(tagName) {
+            lookUp('lookUp', event, iheight, iwidth, showType, tagName);
+        }else {
+            lookUp('lookUp', event, iheight, iwidth, showType, tag);
+        }
 		showMessage('lookUp','false',false,-1);
 	}
 	$rootScope.getBaseData = function($scope,$http,params,page) {
@@ -168,11 +174,13 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
                 $rootScope.error = isSuccess.replace('[ERROR]', '');
             }else{
                 $rootScope.error = null;
-                $rootScope[dataKey] = result.data;
-                if (!$rootScope.page){
-                    $rootScope.page = {};
-                }
-                $rootScope.page[dataKey] = result.page;
+                if (dataKey && dataKey != null){
+                    $rootScope[dataKey] = result.data;
+                    if (!$rootScope.page){
+                        $rootScope.page = {};
+                    }
+                    $rootScope.page[dataKey] = result.page;
+				}
 
                 if (callBack){
                     callBack();
@@ -377,15 +385,14 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 		}
 	}
 	$rootScope.showOperation = function(dataType,moduleId){
-		var userRole = $("#sessionRoleIds").val();
-		if((","+userRole+",").indexOf(",super,")>=0){
+		var sessionAuth = $("#sessionAuth").val();
+		if((","+sessionAuth+",").indexOf(",SUPPER,")>=0){
 			return true;
 		}
 		var needAuth = dataType;
 		if(moduleId) {
             needAuth = needAuth + "_" + moduleId;
         }
-		var sessionAuth = $("#sessionAuth").val();
 		if((","+sessionAuth+",").indexOf(","+needAuth+",")>=0){
 			return true;
 		}
@@ -398,7 +405,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
 	}
     /**
-	 * 发布文章评论回调
+	 * 发布文档评论回调
      */
     $rootScope.changeimg = function () {
         changeimg('imgCode2','verificationCode');

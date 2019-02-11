@@ -11,6 +11,7 @@ import cn.crap.model.Error;
 import cn.crap.model.*;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
+import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 采用责任链模式
@@ -36,6 +40,8 @@ public class UserPickService implements IPickService{
     private UserService userService;
     @Autowired
     private SettingCache settingCache;
+    @Autowired
+    private ProjectUserService projectUserService;
     @Autowired
     private ModuleService moduleService;
     @Resource(name = "adminPickService")
@@ -113,7 +119,23 @@ public class UserPickService implements IPickService{
                 }
                 return picks;
 
-
+            case PROJECT_USER:
+            case EXECUTOR:
+            case TRACER:
+            case TESTER:
+                if (MyString.isEmpty(key)) {
+                    throw new MyException(MyError.E000065, "key（项目ID）不能为空");
+                }
+                // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
+                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key), null)) {
+                    User projectUser = userService.getById(m.getUserId());
+                    if (projectUser == null){
+                        continue;
+                    }
+                    pick = new PickDto(projectUser.getId(), MyString.isEmpty(projectUser.getTrueName()) ? projectUser.getUserName() : projectUser.getTrueName());
+                    picks.add(pick);
+                }
+                return picks;
             case USER:
                 if (MyString.isEmpty(key) || key.trim().length() < 6) {
                     throw new MyException(MyError.E000065, "输入的搜索长度必须大于5");

@@ -4,9 +4,13 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
-import cn.crap.model.*;
+import cn.crap.model.Article;
+import cn.crap.model.Project;
 import cn.crap.query.ProjectQuery;
-import cn.crap.service.*;
+import cn.crap.service.ArticleService;
+import cn.crap.service.IPickService;
+import cn.crap.service.ModuleService;
+import cn.crap.service.ProjectService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +33,6 @@ public class AdminPickService implements IPickService{
     private ArticleService articleService;
     @Autowired
     private ModuleService moduleService;
-    @Autowired
-    private RoleService roleService;
 
     @Override
     public List<PickDto> getPickList(String code, String key) throws MyException {
@@ -48,31 +50,20 @@ public class AdminPickService implements IPickService{
         PickDto pick = null;
         String preUrl = "";
         ProjectQuery recommendProjectQuery = new ProjectQuery().setStatus(ProjectStatus.RECOMMEND.getStatus()).setCurrentPage(1).setPageSize(50);
-        ArticleCriteria articleCriteria = new ArticleCriteria();
         switch (pickCode) {
 
             case AUTH:
-                pick = new PickDto(IConst.C_SEPARATOR, "用户、菜单、角色、系统设置管理");
+                pick = new PickDto(IConst.C_SEPARATOR, "用户、菜单、系统设置管理");
                 picks.add(pick);
 
-                for (DataType dataType : DataType.values()) {
+                for (AdminPermissionEnum dataType : AdminPermissionEnum.values()) {
                     pick = new PickDto(dataType.name(), dataType.getName());
                     picks.add(pick);
                 }
 
                 return picks;
-
-            case ROLE:
-                pick = new PickDto(IConst.C_SUPER, "超级管理员");
-                picks.add(pick);
-                for (Role r : roleService.selectByExample(new RoleCriteria())) {
-                    pick = new PickDto(r.getId(), r.getRoleName());
-                    picks.add(pick);
-                }
-                return picks;
-
             case MODEL_NAME:
-                pick = new PickDto("modelName_1", "文章", "文章");
+                pick = new PickDto("modelName_1", "文档", "文档");
                 picks.add(pick);
                 pick = new PickDto("modelName_2", "项目", "项目");
                 picks.add(pick);
@@ -97,10 +88,10 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文档、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#/article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文档列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";
@@ -125,10 +116,10 @@ public class AdminPickService implements IPickService{
                     picks.add(pick);
                 }
 
-                pick = new PickDto(IConst.C_SEPARATOR, "推荐文章、站点页面");
+                pick = new PickDto(IConst.C_SEPARATOR, "推荐文档、站点页面");
                 picks.add(pick);
 
-                pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文章列表");
+                pick = new PickDto("recommend_article", "index.do#article/list?type=ARTICLE&status=" + ArticleStatus.RECOMMEND.getStatus(), "推荐文档列表");
                 picks.add(pick);
 
                 preUrl = "index.do#/NULL/article/detail/NULL/PAGE/";

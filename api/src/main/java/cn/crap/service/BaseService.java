@@ -5,6 +5,7 @@ import cn.crap.enu.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.BasePo;
+import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 
+@Deprecated
 @Service
 public class BaseService<PO extends BasePo, DAO> {
     protected Logger log = Logger.getLogger("service");
@@ -43,6 +45,17 @@ public class BaseService<PO extends BasePo, DAO> {
         if (po.getSequence() == null){
             po.setSequence(0);
         }
+
+        if (po.getSequence() < 0){
+            po.setSequence(0);
+        }
+        /**
+         * 不能超过mysql最大限制
+         */
+        if (po.getSequence() > IConst.C_MAX_SEQUENCE){
+            po.setSequence(IConst.C_MAX_SEQUENCE);
+        }
+
         po.setCreateTime(new Date());
         return baseDao.insertSelective(po) > 0;
     }

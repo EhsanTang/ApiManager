@@ -107,7 +107,9 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 						data = "[ERROR]尚未登录，请登录后再试！";
 					}
 					if(data.indexOf('"success":0') >= 0){
-						data = "[ERROR]"+ eval("(" + data + ")").error.message;
+						try{
+                            data = "[ERROR]"+ eval("(" + data + ")").error.message;
+						}catch (e) {}
 					}
 					if(data.indexOf('"success":1') >= 0){
 					    var json = eval("(" + data + ")");
@@ -257,14 +259,39 @@ function closeTip(data,iLoading,tipTime){
 		}
 	}
 	if(iLoading.toUpperCase().indexOf('TIP') >= 0){
-		// 需要先赋值才能获取浏览宽度
-		if(tipMessage!=""){
-			if(tipMessage!="false"&&tipMessage!=false)
-				$("#tip-div").html(tipMessage);
+		if(tipMessage!="" && tipMessage!="false" && tipMessage!=false){
+            if (tipMessage.length < 10){
+                $("#tip-div").width(100)
+            } else if (tipMessage.length < 20){
+                $("#tip-div").width(200)
+            } else if (tipMessage.length < 50){
+                $("#tip-div").width(400)
+            }else{
+                $("#tip-div").width(600)
+            }
 		}
-		$("#tip-div").css("left",  ($(window).width()/2 - $("#tip-div").width()/2) +"px");
-		showMessage("tip-div",tipMessage,false,tipTime);
+		// +50 padding宽度
+		$("#tip-div").css("left",  ($(window).width()/2 - $("#tip-div").width()/2 + 50) +"px");
+        showMessage("tip-div",tipMessage,false,tipTime);
 	}
+}
+function showTipWithTime(message, times) {
+    if (message == null || message == ''){
+        return;
+    }
+    if (message.length < 10){
+        $("#tip-div").width(100)
+    } else if (message.length < 20){
+        $("#tip-div").width(200)
+    } else if (message.length < 50){
+        $("#tip-div").width(400)
+    }else{
+        $("#tip-div").width(600)
+    }
+
+    $("#tip-div").html(message);
+    $("#tip-div").css("left",  ($(window).width()/2 - $("#tip-div").width()/2 + 50) +"px");
+    showMessage("tip-div", message, false, times);
 }
 /** *********************页面提示信息显示方法************************* */
 /**
@@ -273,17 +300,19 @@ function closeTip(data,iLoading,tipTime){
  */
 function showMessage(id,message,ishake,time){
 	if(message!=""){
-		if(message!="false"&&message!=false)
-			$("#"+id).html(message);
+		if(message!="false"&&message!=false) {
+            $("#" + id).html(message);
+        }
 		$("#"+id).fadeIn(300);
 		if(ishake){
 			shake(id);
 		}
 		if(time!=-1){
-			if(isNaN(time))
-				time=2000;
-			else if(time>0)
-				time = time * 1000;
+			if(isNaN(time)) {
+                time = 2000;
+            }else if(time>0) {
+                time = time * 1000;
+            }
 			setTimeout(function(){
 				if(time!=0){
 				   $("#"+id).fadeOut(500);

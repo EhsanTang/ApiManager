@@ -1,0 +1,110 @@
+<div class="col-xs-12 p0" ng-controller="userBugCtrl" ng-init="queryBugList(1)" >
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryBugList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+
+            <a type="button" class="btn btn-default btn-sm"
+               ng-href="#/user/bug/edit?id=NULL&type=BUG&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+                <i class="iconfont mt-3">&#xe604;&nbsp;新增缺陷</i>
+            </a>
+            <!--<a type="button" class="btn btn-default btn-sm"
+               ng-click="del('user/article/delete.do?ids='+deleteIds,'','确认批量删除选中的文档？')">
+                <i class="iconfont mt-3">&#xe69d;</i>&nbsp;批量删除
+            </a>-->
+        </div>
+
+
+        <div class="form-group w200 fl mr10 mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg b0 CFFF f12">名称</div>
+                <input type="text" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" id="searchName"
+                       ng-value="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl mr10" ng-click="queryBugList(1, true);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+            <!-- <div class="h30 lh30 mb20 BGFFF pl10">
+                <input class="w30" type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',articles);">
+            </div> -->
+
+            <div ng-repeat="item in bugVOList" class="bb1 p10 BGFFF f14">
+                <div>
+                    <!-- <input class="w30" type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id)"> -->
+                    <span class="mr10 mt-3 f12 btn btn-xs bug-status-{{item.status}}" crap-id="{{item.id}}"
+                          id="status-{{item.id}}" crap-def="{{item.status}}" crap-class-pre="bug-status"
+                          onclick="loadBugPick(this, event,120,290,'BUG_STATUS')">
+                        <span id="status-{{item.id}}-text">{{item.statusStr}}</span>
+                        <i class="iconfont">&#xe614;</i>
+                    </span>
+
+                    <a ng-href="#/user/bug/edit?id={{item.id}}&type=BUG&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+                        {{item.name| cut:true:60:' ...'}}
+                    </a>
+                    <div class="fr f12">
+                        <button class="mr0 btn btn-xs bug-default">
+                            {{item.creatorStr}}
+                        </button>
+                        →
+                        <button class="mr10 btn btn-xs bug-default" crap-id="{{item.id}}"
+                                id="executor-{{item.id}}" crap-def="{{item.executor}}" crap-pick-param="{{item.projectId}}"
+                                onclick="loadBugPick(this, event,120,200,'EXECUTOR')">
+                            <span id="executor-{{item.id}}-text">{{item.executorStr}}</span>
+                            <i class="iconfont CCCC">&#xe614;</i>
+                        </button>
+
+                        <span ng-bind="item.createTimeStr" class="C999 pl10"></span>
+                    </div>
+                </div>
+
+                <div class="mt10 f12">
+                    <button class="mr10 btn btn-xs bug-priority-{{item.priority}}" crap-id="{{item.id}}"
+                            id="priority-{{item.id}}" crap-def="{{item.priority}}" crap-class-pre="bug-priority"
+                            onclick="loadBugPick(this, event,90,150,'PRIORITY')">
+                        <i class="iconfont">&#xe80c;</i>
+                        <span id="priority-{{item.id}}-text">{{item.priorityStr}}</span>
+                        <i class="iconfont CCCC">&#xe614;</i>
+                    </button>
+
+                    <button class="mr10 btn btn-xs bug-severity-{{item.severity}}" crap-id="{{item.id}}"
+                            id="severity-{{item.id}}" crap-def="{{item.severity}}" crap-class-pre="bug-severity"
+                            onclick="loadBugPick(this, event,100,150,'SEVERITY')">
+                        <i class="iconfont">&#xe82c;</i>
+                        <span id="severity-{{item.id}}-text">{{item.severityStr}}</span>
+                        <i class="iconfont CCCC">&#xe614;</i>
+                    </button>
+
+                    <button class="mr10 btn btn-xs bug-default"
+                            id="type-{{item.id}}" crap-def="{{item.type}}" crap-id="{{item.id}}"
+                            onclick="loadBugPick(this, event,120,180,'BUG_TYPE')">
+                        <i class="iconfont mr5">&#xe6b4;</i>
+                        <span id="type-{{item.id}}-text">{{item.typeStr}}</span>
+                        <i class="iconfont CCCC">&#xe614;</i>
+                    </button>
+
+                    <button class="mr10 btn btn-xs bug-default" crap-id="{{item.id}}"
+                            id="tracer-{{item.id}}" crap-def="{{item.tracer}}" crap-pick-param="{{item.projectId}}"
+                            onclick="loadBugPick(this, event,120,180,'TRACER')">
+                        <i class="iconfont mr5">&#xe666;</i>
+                        <span id="tracer-{{item.id}}-text">{{item.tracerStr}}</span>
+                        <i class="iconfont CCCC">&#xe614;</i>
+                    </button>
+
+                    <span class="CAAA mr10" ng-bind="item.updateTimeStr + ' 更新'"></span>
+                </div>
+            </div>
+
+            <div class="mt20" ui-view="page" ng-init="callBackMethod = 'queryBugList'; modelKey='bugVOList'"></div>
+    </div>
+</div>
+<div class="cb"></div>
+

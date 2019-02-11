@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ParamFilter extends OncePerRequestFilter {
     private static String IGNORE_PARAM_PRE = "crShow";
 
-
     @Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
     	    try {
                 filterChain.doFilter(new HttpServletRequestWrapper(request) {
                     @Override

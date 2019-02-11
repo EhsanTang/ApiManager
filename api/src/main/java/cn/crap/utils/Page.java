@@ -22,7 +22,9 @@ public class Page implements Serializable{
 
 	public Page(Integer size, Integer currentPage){
 		currentPage = (currentPage == null ? 1 : currentPage);
-        size = (size == null ? 20 : size);
+		currentPage = (currentPage <= 0 ? 1 : currentPage);
+
+		size = (size == null ? 20 : size);
 		Assert.isTrue(size <= 1000, "pageSzie 不能大于1000");
 		Assert.notNull(currentPage > 0);
 

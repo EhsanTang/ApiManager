@@ -16,22 +16,37 @@ public enum PickCode {
     MENU_TYPE("MENU_TYPE", "菜单类型"),
     FONT_FAMILY("FONT_FAMILY", "字体选择"),
 	ICONFONT("ICONFONT", "图标库地址"),
-    MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文章）"),
+    MODEL_NAME("MODEL_NAME", "日志模块名称（接口、文档）"),
     INTERFACE_CONTENT_TYPE("INTERFACE_CONTENT_TYPE", "返回类型"),
 	IMAGE_CODE("IMAGE_CODE", "图形验证码风格"),
+	PROJECT_PERMISSION("PROJECT_PERMISSION", "项目权限"),
+
+
+	/**
+	 * bug系统
+	 */
+	PRIORITY("PRIORITY", "优先级"),
+	SEVERITY("SEVERITY", "严重程度"),
+	BUG_STATUS("BUG_STATUS", "缺陷状态"),
+    BUG_TYPE("BUG_TYPE", "问题类型"),
 
 
 
-    // 暂时不用
+
+	// 暂时不用
     MONITOR_TYPE("MONITOR_TYPE", "监控类型"),
 
 	/**
 	 * User code : 登录后可见，和用户信息绑定
 	 */
     ERROR_CODE("ERROR_CODE", "错误码"),
-    CATEGORY("CATEGORY", "文章分类"),
+    CATEGORY("CATEGORY", "文档分类"),
     MY_MODULE("MY_MODULE", "我的所有模块"),
     PROJECT_MODULES("PROJECT_MODULES", "项目中的模块"),
+	PROJECT_USER("PROJECT_USER", "项目用户"),
+    EXECUTOR("EXECUTOR", "项目成员：缺陷执行人"),
+    TRACER("TRACER", "项目成员：缺陷跟踪人"),
+    TESTER("TESTER", "项目成员：缺陷测试人"),
     USER("USER", "用户列表"),
 	MENU_ICON("MENU_ICON", "菜单图标"),
     // 推荐项目...
@@ -43,10 +58,9 @@ public enum PickCode {
 	 */
     USER_TYPE("USER_TYPE", "用户类型"),
     INDEX_PAGE("INDEX_PAGE", "首页地址"),
-    ROLE("ROLE", "角色"),
     AUTH("AUTH", "权限"),
     MENU_URL("MENU_URL", "菜单地址"),
-	ARTICLE_STATUS("ARTICLE_STATUS", "文章状态");
+	ARTICLE_STATUS("ARTICLE_STATUS", "文档状态");
 
 
 	private final String code;

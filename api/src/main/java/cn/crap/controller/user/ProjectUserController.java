@@ -9,12 +9,11 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.Project;
-import cn.crap.model.ProjectUser;
+import cn.crap.model.ProjectUserPO;
 import cn.crap.model.User;
 import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
-import cn.crap.service.RoleService;
 import cn.crap.service.UserService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Page;
@@ -41,32 +40,29 @@ public class ProjectUserController extends BaseController{
 	private UserService userService;
 	@Autowired
 	private ProjectUserService projectUserService;
-    @Autowired
-    private RoleService roleService;
-	
+
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
 		Assert.notNull(query.getProjectId());
         Page page= new Page(query);
-
         checkPermission( projectCache.get(query.getProjectId()));
 
-		List<ProjectUser> projectUsers = projectUserService.query(query);
+		List<ProjectUserPO> projectUsers = projectUserService.select(query, page);
         page.setAllRow(projectUserService.count(query));
 
-        return new JsonResult(1, ProjectUserAdapter.getDto(projectUsers), page);
+        List<ProjectUserDto> dto = ProjectUserAdapter.getDto(projectUsers);
+        return new JsonResult(1, dto, page);
 	}	
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
 	public JsonResult detail(String id) throws MyException{
 	    Assert.notNull(id);
-		ProjectUser projectUser = projectUserService.getById(id);
+		ProjectUserPO projectUser = projectUserService.get(id);
         Project project = projectCache.get(projectUser.getProjectId());
 		checkPermission(project);
         ProjectUserDto projectUserDto = ProjectUserAdapter.getDto(projectUser, project);
-        projectUserDto.setProjectAuth(null);
 		return new JsonResult(1, projectUserDto);
 	}
 	
@@ -74,14 +70,14 @@ public class ProjectUserController extends BaseController{
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute ProjectUserDto projectUser) throws Exception{
 	    Assert.notNull(projectUser.getId());
-        ProjectUser old = projectUserService.getById(projectUser.getId());
+        ProjectUserPO old = projectUserService.get(projectUser.getId());
         checkPermission(old.getProjectId());
 
         User user = userService.getById(old.getUserId());
         projectUser.setUserEmail(user.getEmail());
 		projectUser.setUserName(user.getUserName());
 
-        ProjectUser model = ProjectUserAdapter.getModel(projectUser);
+        ProjectUserPO model = ProjectUserAdapter.getModel(projectUser);
         /**
          * 禁止修改
          */
@@ -95,7 +91,7 @@ public class ProjectUserController extends BaseController{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public JsonResult delete(@RequestParam String id) throws Exception{
-		ProjectUser projectUser = projectUserService.getById(id);
+		ProjectUserPO projectUser = projectUserService.get(id);
 		checkPermission(projectCache.get( projectUser.getProjectId() ));
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
@@ -106,7 +102,7 @@ public class ProjectUserController extends BaseController{
     public String quit(@RequestParam String projectId, HttpServletRequest request) throws Exception{
         LoginInfoDto loginInfoDto = LoginUserHelper.getUser();
         String userId = loginInfoDto.getId();
-        List<ProjectUser> projectUser = projectUserService.query(new ProjectUserQuery().setUserId(userId).setProjectId(projectId));
+        List<ProjectUserPO> projectUser = projectUserService.select(new ProjectUserQuery().setUserId(userId).setProjectId(projectId), null);
         if (CollectionUtils.isEmpty(projectUser)){
             request.setAttribute("title", "操作成功");
             request.setAttribute("result", "退出成功");
@@ -144,7 +140,7 @@ public class ProjectUserController extends BaseController{
             return ERROR_VIEW;
         }
 
-        ProjectUser projectUser = new ProjectUser();
+        ProjectUserPO projectUser = new ProjectUserPO();
         projectUser.setProjectId(projectId);
         projectUser.setUserId(userId);
         projectUser.setStatus(ProjectUserStatus.NORMAL.getStatus());
@@ -154,7 +150,7 @@ public class ProjectUserController extends BaseController{
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");
 
-        userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, projectService, projectUserService));
+        userCache.add(userId, new LoginInfoDto(userService.getById(userId), projectService, projectUserService));
         return ERROR_VIEW;
     }
 

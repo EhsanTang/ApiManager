@@ -134,7 +134,6 @@ public class MainController extends BaseController {
         LoginInfoDto user = LoginUserHelper.getUser();
         returnMap.put("sessionAdminName", user.getUserName());
         returnMap.put("sessionAdminAuthor", user.getAuthStr());
-        returnMap.put("sessionAdminRoleIds", user.getRoleId());
         returnMap.put("sessionAdminId", user.getId());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
 

@@ -29,6 +29,7 @@ function callHttp($http, iUrl, iFormId, iPost, iLoading, iTarget, iParams) {
 			method : 'POST',
 			data : xParams + iParams,
 			url : iUrl,
+            async : true,
 			headers : {
 				'Content-Type' : 'application/x-www-form-urlencoded'
 			}

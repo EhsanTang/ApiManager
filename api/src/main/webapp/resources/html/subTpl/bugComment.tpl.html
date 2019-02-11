@@ -1,0 +1,29 @@
+<!-- 后端评论 -->
+<div ng-controller="commentCtrl">
+	<div class="mt10" ng-init="preAddComment()">
+		<textarea class="form-control no-resize ns BCEEE f14 C555" maxlength="512" ng-model="commentVO.content"
+				rows="4" required placeholder="请输入评论内容">
+		</textarea>
+        <button type="button" ng-click="addComment()" class="btn btn-adorn btn-xs mt10 imgCode fr">提交</button>
+        <div class="fr mt15 C999 f10 mr10" ng-bind="'还能再输入' + (512 - commentVO.content.length) + '个字'"></div>
+
+    </div>
+	<div class="cb"></div>
+    <div ng-init="queryCommentList()">
+        <div ng-repeat="item in commentVOList" class="p10 dashed-t mt10 lh20">
+            <div class="pl50">
+                <img ng-src="{{item.avatarUrl}}" class="avatar w30 h30">
+                <div class="f12 text-primary">{{item.userName}}
+                    <div class="c-time ftime fr">{{item.createTimeStr}}</div>
+                </div>
+                <div class="fn lh20 mt5 C555 f12">{{item.content}}</div>
+                <div class="f12 C999 mt10 pl10 bl3" ng-if="item.reply">
+                    <span class="text-primary">回复</span>:  {{item.reply}}<br>
+                    <span class="c-time ftime">{{item.updateTimeStr}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt20" ui-view="page" ng-init="callBackMethod = 'queryCommentList'; modelKey='commentVOList'"></div>
+    </div>
+	<div class="cb"></div>
+</div>

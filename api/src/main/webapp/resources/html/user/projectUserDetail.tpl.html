@@ -3,167 +3,33 @@
 		<form ng-submit="submitForm('user/projectUser/addOrUpdate.do')">
 			<table class="table table-bordered">
 				<tr>
-					<td class="tc">项目名</td>
-					<td colspan="4">
+					<td class="tc w200">项目名</td>
+					<td>
 						<input  class="form-control cursor-not BGF5"  type="text" ng-model="model.projectName" readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">用户名</td>
-					<td colspan="4">
+					<td>
 						<input  class="form-control cursor-not BGF5"  type="text" ng-model="model.userName" readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">用户邮箱</td>
-					<td colspan="4">
+					<td>
 						<input  class="form-control cursor-not BGF5" type="text" ng-model="model.userEmail" readonly>
 					</td>
 				</tr>
-				<tr class="fb">
-					<td class="tc"></td>
+				<tr>
 					<td class="tc">
-						修改
+						权限
 					</td>
-					<td class="tc">
-						添加
-					</td>
-					<td class="tc">
-						删除
+					<td>
+						<input class="form-control cursor" type="text" id="permissionStr" ng-model="model.permissionStr"
+							   readonly autocomplete="off"
+							   ng-click="loadPickByName('iwidth=220|iheight=250|radio=false|tagName=permissionStr|tag=permission|code=PROJECT_PERMISSION|def='+model.permission,$event)">
 					</td>
 				</tr>
-				<tr class="fb">
-					<td class="tc">模块权限</td>
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.modModule==true" ng-model="model.modModule"/>
-									&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.modModule==false" ng-model="model.modModule"/>
-									&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>	
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.addModule==true" ng-model="model.addModule"/>
-								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.addModule==false" ng-model="model.addModule"/>
-								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>	
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.delModule==true" ng-model="model.delModule"/>
-								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.delModule==false" ng-model="model.delModule"/>
-								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>
-				</tr>
-				<tr class="fb">
-					<td class="tc">接口权限</td>
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.modInter==true" ng-model="model.modInter"/>
-									&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.modInter==false" ng-model="model.modInter"/>
-									&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>	
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.addInter==true" ng-model="model.addInter"/>
-								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.addInter==false" ng-model="model.addInter"/>
-								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>	
-					<td class="tc">
-								<input type="radio" value="true" ng-checked="model.delInter==true" ng-model="model.delInter"/>
-								&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-								<input type="radio" value="false" ng-checked="model.delInter==false" ng-model="model.delInter"/>
-								&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-					</td>
-				</tr>
-				
-				<tr class="fb">
-					<td class="tc">文章权限</td>
-					<td class="tc">
-						<input type="radio" value="true" ng-checked="model.modArticle==true" ng-model="model.modArticle"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.modArticle==false" ng-model="model.modArticle"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.addArticle==true" ng-model="model.addArticle"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.addArticle==false" ng-model="model.addArticle"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.delArticle==true" ng-model="model.delArticle"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.delArticle==false" ng-model="model.delArticle"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-				</tr>
-				
-				<tr class="fb">
-					<td class="tc">数据库表权限</td>
-					<td class="tc">
-						<input type="radio" value="true" ng-checked="model.modDict==true" ng-model="model.modDict"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.modDict==false" ng-model="model.modDict"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.addDict==true" ng-model="model.addDict"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.addDict==false" ng-model="model.addDict"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.delDict==true" ng-model="model.delDict"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.delDict==false" ng-model="model.delDict"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-				</tr>
-				
-				
-				<tr class="fb">
-					<td class="tc">文件权限</td>
-					<td class="tc">
-						<input type="radio" value="true" ng-checked="model.modSource==true" ng-model="model.modSource"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.modSource==false" ng-model="model.modSource"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.addSource==true" ng-model="model.addSource"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.addSource==false" ng-model="model.addSource"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.delSource==true" ng-model="model.delSource"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.delSource==false" ng-model="model.delSource"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-				</tr>
-				
-				<tr class="fb">
-					<td class="tc">状态码权限</td>
-					<td class="tc">
-						<input type="radio" value="true" ng-checked="model.modError==true" ng-model="model.modError"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.modError==false" ng-model="model.modError"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.addError==true" ng-model="model.addError"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.addError==false" ng-model="model.addError"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-						<td class="tc">
-						<input type="radio" value="true" ng-checked="model.delError==true" ng-model="model.delError"/>
-						&nbsp;<span class="btn btn-xs r20 true-class f12">允许</span>&nbsp;
-						<input type="radio" value="false" ng-checked="model.delError==false" ng-model="model.delError"/>
-						&nbsp;<span class="btn btn-xs r20 false-class f12">不允许</span>&nbsp;
-						</td>
-				</tr>
-				
 			</table>
 			<button type="submit" class="btn btn-success fr">提交</button>
 		</form>

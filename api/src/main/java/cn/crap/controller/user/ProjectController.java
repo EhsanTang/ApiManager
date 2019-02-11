@@ -1,7 +1,6 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDto;
 import cn.crap.enu.*;
@@ -41,8 +40,6 @@ public class ProjectController extends BaseController {
     private ModuleService moduleService;
     @Autowired
     private ProjectUserService projectUserService;
-    @Autowired
-    private RoleService roleService;
     @Autowired
     private InterfaceService interfaceService;
     @Autowired
@@ -94,7 +91,7 @@ public class ProjectController extends BaseController {
     public JsonResult detail(String id) throws MyException {
         if (MyString.isNotEmpty(id)) {
             Project model = projectCache.get(id);
-            checkPermission(model, READ);
+            checkPermission(model, ProjectPermissionEnum.READ);
             ProjectDto dto = ProjectAdapter.getDto(model, null);
             dto.setInviteUrl(projectService.getInviteUrl(dto));
             return new JsonResult(1, dto);
@@ -179,7 +176,7 @@ public class ProjectController extends BaseController {
         projectCache.del(projectId);
 
         // 刷新用户权限 将用户信息存入缓存
-        userCache.add(userId, new LoginInfoDto(userService.getById(userId), roleService, projectService, projectUserService));
+        userCache.add(userId, new LoginInfoDto(userService.getById(userId), projectService, projectUserService));
         return new JsonResult(1, project);
     }
 

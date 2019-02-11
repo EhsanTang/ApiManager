@@ -1,0 +1,95 @@
+<div id="zoom-img-modal" class="zoom-img-modal">
+    <!-- 关闭按钮 -->
+    <span class="zoom-img-close" onclick="document.getElementById('zoom-img-modal').style.display='none'">&times;</span>
+    <!-- 弹窗内容 -->
+    <img class="zoom-img-content w" id="zoom-img-content-id">
+</div>
+<style type="text/css">
+    #bug-detail-div img{
+        cursor: pointer;
+    }
+    /* 弹窗背景 */
+    .zoom-img-modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1001; /* Sit on top */
+        padding-top: 0px; /* Location of the box */
+        left: 0px;
+        top: 50px;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* 图片 */
+    .zoom-img-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 90%;
+    }
+
+
+    /* 添加动画 */
+    .zoom-img-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+@-webkit-keyframes zoom {
+        from {-webkit-transform:scale(0)}
+        to {-webkit-transform:scale(1)}
+    }
+
+@keyframes zoom {
+        from {transform:scale(0)}
+        to {transform:scale(1)}
+    }
+
+    /* 关闭按钮 */
+    .zoom-img-close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .zoom-img-close:hover,
+    .zoom-img-close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 小屏幕中图片宽度为 100% */
+    @media only screen and (max-width: 600px){
+    .zoom-img-content {
+            width: 100%;
+        }
+    }
+</style>
+<script type="text/javascript">
+    $(function() {
+        $("#bug-detail-div").on("click", "img", function () {
+            // 获取弹窗
+            var modal = document.getElementById('zoom-img-modal');
+            modal.style.display = "block";
+            // 获取图片插入到弹窗
+            var modalImg = document.getElementById("zoom-img-content-id");
+            modalImg.src =  $(this).attr('src');
+            // 获取 <span> 元素，设置关闭按钮
+            var span = document.getElementsByClassName("zoom-img-close")[0];
+            // 当点击 (x), 关闭弹窗
+            span.onclick = function () {
+                modal.style.display = "none";
+            };
+        });
+    });
+</script>

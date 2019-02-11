@@ -31,15 +31,21 @@
             <span class="f13">接口</span>
         </a>
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_article']"
-           ng-href="#/user/article/list?pageName=文章&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+           ng-href="#/user/article/list?pageName=文档&dataType=article&menu_a=menu-project&menu_b=menu_article&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
             <i class="iconfont mt-3 mr5 C999 ml10">&#xe6a2;</i>
-            <span class="f13">文章</span>
+            <span class="f13">文档</span>
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_dictionary']"
            ng-href="#/user/dictionary/list?pageName=数据库表&dataType=dictionary&menu_a=menu-project&menu_b=menu_dictionary&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
             <i class="iconfont mt-3 mr5 C999 ml10">&#xe70c;</i>
             <span class="f13">数据库表</span>
+        </a>
+
+        <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_bug']"
+           ng-href="#/user/bug/list?pageName=缺陷管理&dataType=bug&menu_a=menu-project&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+            <i class="iconfont mt-3 mr5 C999 ml10">&#xe748;</i>
+            <span class="f13">缺陷管理</span>
         </a>
 
         <a ng-class="{true: 'menu_b hover-main active-main', false:'menu_b hover-main'}[$stateParams.menu_b == 'menu_source']"
@@ -51,7 +57,7 @@
 
 
     <div class="shadow" ng-init="queryTop50Module()"
-         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
+         ng-if="$stateParams.dataType == 'interface' || $stateParams.dataType == 'bug' || $stateParams.dataType == 'article' || $stateParams.dataType=='dictionary' || $stateParams.dataType == 'source'">
         <a class="menu_b lh40 fw500 h40 f14 pl10 BGF5 C555 mt-1 main-bb-1 C000 fw500" ng-if="top50Module.length>0"
            ng-href="#/user/{{$stateParams.dataType}}/list?pageName=所有模块&dataType={{$stateParams.dataType}}&menu_a=menu-project&menu_b=menu_{{$stateParams.dataType}}&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
             <i class="iconfont mt-3 main-color f16">&#xe83b;&nbsp;&nbsp;</i>所有模块</a>

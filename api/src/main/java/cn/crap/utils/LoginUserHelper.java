@@ -8,6 +8,8 @@ import cn.crap.model.Project;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
 
+import java.util.Optional;
+
 /**
  * @author Ehsan
  * @date 17/12/30 15:59
@@ -49,6 +51,25 @@ public class LoginUserHelper implements IConst{
         return user;
     }
 
+    public static String getSecretName(LoginInfoDto loginInfoDto){
+        if (loginInfoDto == null){
+            return null;
+        }
+        String name = Optional.ofNullable(loginInfoDto.getTrueName()).orElse(loginInfoDto.getUserName());
+        if (MyString.isEmpty(name)) {
+            return null;
+        }
+        int length = name.length();
+        return name.substring(0, 1) + "**" + (length > 3 ? name.substring(3, length) : "");
+    }
+
+    public static String getName(LoginInfoDto loginInfoDto){
+        if (loginInfoDto == null){
+            return null;
+        }
+        return Optional.ofNullable(loginInfoDto.getTrueName()).orElse(loginInfoDto.getUserName());
+    }
+
     /**
      * 检查登录用户是否有用需要的authPassport
      * @param authPassport
@@ -58,7 +79,7 @@ public class LoginUserHelper implements IConst{
     public static boolean checkAuthPassport(String authPassport) throws MyException {
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         String authority = user.getAuthStr();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;//超级管理员
         }
 
@@ -83,7 +104,7 @@ public class LoginUserHelper implements IConst{
      */
     public static boolean isSuperAdmin() throws MyException {
         LoginInfoDto user = tryGetUser();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;
         }
         return false;
@@ -97,8 +118,7 @@ public class LoginUserHelper implements IConst{
     public static boolean isAdminOrProjectOwner(Project project) throws MyException {
         Assert.notNull(project);
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
-        String authority = user.getAuthStr();
-        if( user != null && (","+user.getRoleId()).indexOf(","+ C_SUPER +",")>=0){
+        if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){
             return true;
         }
 

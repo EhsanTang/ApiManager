@@ -6,10 +6,7 @@ import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.InterfaceContentType;
-import cn.crap.enu.InterfaceStatus;
-import cn.crap.enu.MonitorType;
-import cn.crap.enu.MyError;
+import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -55,7 +52,7 @@ public class InterfaceController extends BaseController{
 	public JsonResult list(@ModelAttribute InterfaceQuery query, String url) throws MyException{
         Module module = getModule(query);
         Project project = getProject(query);
-        checkPermission(project, READ);
+        checkPermission(project, ProjectPermissionEnum.READ);
 
         InterfaceQuery interfaceQuery = query.setFullUrl(url);
 		Page page= new Page(interfaceQuery);
@@ -110,7 +107,7 @@ public class InterfaceController extends BaseController{
 				}
 			}
 		}
-        checkPermission(model.getProjectId(), READ);
+        checkPermission(model.getProjectId(), ProjectPermissionEnum.READ);
 		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
 	}
 	
@@ -125,11 +122,11 @@ public class InterfaceController extends BaseController{
 		InterfaceWithBLOBs interFace = interfaceService.getById(id);
 
 		//判断是否拥有原来项目的权限
-		checkPermission(interFace.getProjectId(), READ);
+		checkPermission(interFace.getProjectId(), ProjectPermissionEnum.READ);
         Project project = getProject(interFace.getProjectId(), moduleId);
         Module module = moduleCache.get(moduleId);
 		// 检查新项目的权限
-        checkPermission(project, ADD_INTER);
+        checkPermission(project, ProjectPermissionEnum.ADD_INTER);
 
 		if(!Config.canRepeatUrl){
 			if (interfaceService.count(new InterfaceQuery().setModuleId(moduleId).setEqualFullUrl(module.getUrl() + interFace.getUrl())) > 0){
@@ -182,8 +179,8 @@ public class InterfaceController extends BaseController{
         if (id != null) {
 			String oldProjectId = interfaceService.getById(interFace.getId()).getProjectId();
 			// 判断是否有修改模块的权限
-			checkPermission(oldProjectId, READ);
-            checkPermission(newProjectId, MOD_INTER);
+			checkPermission(oldProjectId, ProjectPermissionEnum.READ);
+            checkPermission(newProjectId, ProjectPermissionEnum.MOD_INTER);
 
 			//同一模块下不允许 url 重复
             InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl()).setExceptId(interFace.getId());
@@ -193,7 +190,7 @@ public class InterfaceController extends BaseController{
 			
 			interfaceService.update(interFace, "接口", modifyRemark);
 		} else {
-			checkPermission(interFace.getProjectId(), ADD_INTER);
+			checkPermission(interFace.getProjectId(), ProjectPermissionEnum.ADD_INTER);
             InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl());
 			if(!Config.canRepeatUrl && interfaceService.count(interfaceQuery)>0){
 				return new JsonResult(MyError.E000004);
@@ -282,7 +279,7 @@ public class InterfaceController extends BaseController{
 				continue;
 			}
 			InterfaceWithBLOBs interFace = interfaceService.getById( tempId );
-			checkPermission(interFace.getProjectId(), DEL_INTER);
+			checkPermission(interFace.getProjectId(), ProjectPermissionEnum.DEL_INTER);
 
             luceneService.delete(new SearchDto(interFace.getId()));
 			interfaceService.delete(interFace.getId(), "接口", "");
@@ -295,8 +292,8 @@ public class InterfaceController extends BaseController{
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
 		InterfaceWithBLOBs change = interfaceService.getById(changeId);
 		InterfaceWithBLOBs model = interfaceService.getById(id);
-		checkPermission(model.getProjectId(), MOD_INTER);
-		checkPermission(change.getProjectId(), MOD_INTER);
+		checkPermission(model.getProjectId(), ProjectPermissionEnum.MOD_INTER);
+		checkPermission(change.getProjectId(), ProjectPermissionEnum.MOD_INTER);
 		
 		int modelSequence = model.getSequence();
 		

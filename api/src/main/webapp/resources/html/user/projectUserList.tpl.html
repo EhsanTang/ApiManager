@@ -19,12 +19,7 @@
                 <tr class="f14 C000 fw500">
                     <td>用户名</td>
                     <td>用户邮箱</td>
-                    <td>模块权限</td>
-                    <td>接口权限</td>
-                    <td>文章权限</td>
-                    <td>数据库表权限</td>
-                    <td>文件权限</td>
-                    <td>状态码</td>
+                    <td>权限</td>
                     <td class="w100 tl">操作</td>
                 </tr>
                 </thead>
@@ -34,41 +29,8 @@
                     <td>{{item.userEmail}}</td>
 
                     <td>
-                        <span class="{{item.modModule}}-class r20 mt5 btn btn-xs">修改：{{item.modModule}}</span><br/>
-                        <span class="{{item.addModule}}-class r20 mt5 btn btn-xs">添加：{{item.addModule}}</span><br/>
-                        <span class="{{item.delModule}}-class r20 mt5 btn btn-xs">删除：{{item.delModule}}</span><br/>
+                        <span ng-repeat="permission in item.crShowPermissionList" class="r20 mr10 mt5 btn btn-xs btn-adorn">{{permission.desc}}</span><br/>
                     </td>
-
-                    <td>
-                        <span class="{{item.modInter}}-class r20 mt5 btn btn-xs">修改：{{item.modInter}}</span><br/>
-                        <span class="{{item.addInter}}-class r20 mt5 btn btn-xs">添加：{{item.addInter}}</span><br/>
-                        <span class="{{item.delInter}}-class r20 mt5 btn btn-xs">删除：{{item.delInter}}</span><br/>
-                    </td>
-
-                    <td>
-                        <span class="{{item.modArticle}}-class r20 mt5 btn btn-xs">修改：{{item.modArticle}}</span><br/>
-                        <span class="{{item.addArticle}}-class r20 mt5 btn btn-xs">添加：{{item.addArticle}}</span><br/>
-                        <span class="{{item.delArticle}}-class r20 mt5 btn btn-xs">删除：{{item.delArticle}}</span><br/>
-                    </td>
-
-                    <td>
-                        <span class="{{item.modDict}}-class r20 mt5 btn btn-xs">修改：{{item.modDict}}</span><br/>
-                        <span class="{{item.addDict}}-class r20 mt5 btn btn-xs">添加：{{item.addDict}}</span><br/>
-                        <span class="{{item.delDict}}-class r20 mt5 btn btn-xs">删除：{{item.delDict}}</span><br/>
-                    </td>
-
-                    <td>
-                        <span class="{{item.modSource}}-class r20 mt5 btn btn-xs">修改：{{item.modSource}}</span><br/>
-                        <span class="{{item.addSource}}-class r20 mt5 btn btn-xs">添加：{{item.addSource}}</span><br/>
-                        <span class="{{item.delSource}}-class r20 mt5 btn btn-xs">删除：{{item.delSource}}</span><br/>
-                    </td>
-
-                    <td>
-                        <span class="{{item.modError}}-class r20 mt5 btn btn-xs">修改：{{item.modError}}</span><br/>
-                        <span class="{{item.addError}}-class r20 mt5 btn btn-xs">添加：{{item.addError}}</span><br/>
-                        <span class="{{item.delError}}-class r20 mt5 btn btn-xs">删除：{{item.delError}}</span><br/>
-                    </td>
-
 
                     <td class="f12">
                         <a class="mr5 btn btn-xs btn-default"

@@ -102,7 +102,7 @@ blockquote{
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
 .container{min-width: 770px;}
-/********文章页面，图片居中显示********/
+/********文档页面，图片居中显示********/
 #fade{
     opacity: 0.5;
     position: fixed;
@@ -265,32 +265,105 @@ blockquote{
     max-width:100%;
 }
 
-.btn-GET, .btn-inter-1{ color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;  }
-.btn-GET:hover, .btn-inter-1:hover{  color: #ffffff; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;}
+/************状态按钮***********/
+.bug-status-0, .bug-status--1, .bug-status--2, .bug-status--3, .bug-status--4{
+    color: #555555; border-color: #999999; background-color: #eeeeee;
+}
+.bug-status-0:hover, .bug-status--1:hover, .bug-status--2:hover, .bug-status--3:hover, .bug-status--4:hover{
+    color: #555555!important; border-color: #999999; background-color: #eeeeee; opacity: 0.8;
+}
 
+.btn-GET, .btn-inter-1,
+.bug-status-10, .bug-status-11, .bug-status-12{
+    color: #ffffff; border-color: #5cb85c; background-color: #5cb85c;
+}
+.btn-GET:hover, .btn-inter-1:hover,
+.bug-status-10:hover, .bug-status-11:hover, .bug-status-12:hover{
+    color: #ffffff!important; border-color: #5cb85c; background-color: #5cb85c; opacity: 0.8;
+}
 
-.btn-inter-2{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;  }
-.btn-inter-2:hover{  color: #ffffff; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;}
+.btn-inter-2, .bug-status-20{
+    color: #ffffff; border-color: #5bc0de; background-color: #5bc0de;
+}
+.btn-inter-2:hover,
+.bug-status-20:hover{
+    color: #ffffff!important; border-color: #5bc0de; background-color: #5bc0de; opacity: 0.8;
+}
 
-.btn-POST, .btn-inter-3{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;  }
-.btn-POST:hover, .btn-inter-3:hover{  color: #ffffff; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;}
+.bug-status-21, .bug-status-22{
+    color: #ffffff; border-color: #eea236; background-color: #f0ad4e;
+}
+.bug-status-21:hover, .bug-status-22:hover{
+    color: #ffffff!important; border-color: #eea236; background-color: #f0ad4e; opacity: 0.8;
+}
 
-.btn-purple {
+.btn-POST, .btn-inter-3, .bug-status-23{
+    color: #ffffff; border-color: #f82c1d; background-color: #f82c1d;
+}
+.btn-POST:hover, .btn-inter-3:hover, .bug-status-23:hover{
+    color: #ffffff!important; border-color: #f82c1d; background-color: #f82c1d; opacity: 0.8;
+}
+
+.btn-purple, .bug-status-30, .bug-status-31{
     color: #ffffff;
     background-color:#6f5499;
 }
-.btn-purple:hover{
-    color: #ffffff;
+.btn-purple:hover,
+.bug-status-30:hover, .bug-status-31:hover{
+    color: #ffffff!important;
     background-color: #563d7c;
     opacity: 0.8;
 }
+
 .btn-blue {
     color: #ffffff;
     background-color:#1b809e;
 }
 .btn-blue:hover{
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #137491;
+    opacity: 0.8;
+}
+
+/********** 颜色 ************/
+.bug-default{
+    color: #555555;
+}
+.bug-default:hover{
+    color: #555555!important;
+    border-color:#555555;
+    opacity: 0.8;
+}
+.bug-priority-1, .bug-severity-4{
+    color: #999999;
+}
+.bug-priority-1:hover, .bug-severity-4:hover{
+    color: #999999!important;
+    border-color:#999999;
+    opacity: 0.8;
+}
+.bug-priority-2, .bug-severity-3{
+    color: #5bc0de;
+}
+.bug-priority-2:hover, .bug-severity-3:hover{
+    color: #5bc0de!important;
+    border-color: #5bc0de;
+    opacity: 0.8;
+}
+.bug-priority-3, .bug-severity-2{
+    color: #eea236;
+}
+.bug-priority-3:hover, .bug-severity-2:hover{
+    color: #eea236!important;
+    border-color: #eea236;
+    opacity: 0.8;
+}
+.bug-priority-4, .bug-severity-1{
+    color: #f82c1d;
+}
+.bug-priority-4:hover, .bug-severity-1:hover{
+    color: #f82c1d!important;
+    border-color: #f82c1d;
     opacity: 0.8;
 }
 
@@ -408,8 +481,8 @@ blockquote{
 }
 .look-up .i-close {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 8px;
+    right: 10px;
     font-size: 14px;
     cursor: pointer;
     color:#999;

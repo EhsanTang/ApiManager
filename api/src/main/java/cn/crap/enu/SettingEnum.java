@@ -13,8 +13,8 @@ public enum SettingEnum {
     NAV_COLOR("NAV_COLOR", SettingStatus.COMMON, SettingType.COLOR, false, 100, "#a9a9a9", "前端顶部、导航字体颜色 #a9a9a9", null),
     MINI_LOGO("MINI_LOGO", SettingStatus.COMMON, SettingType.IMAGE, false, 101, "resources/images/logo.png", "网站小logo", null),
 
-    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_860205_mty2sxmdeye", "系统图标",
-            new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_860205_mty2sxmdeye"}),
+    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, false, 101, "//at.alicdn.com/t/font_860205_19fn1rga6fl", "系统图标",
+            new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_860205_19fn1rga6fl"}),
     MAX_WIDTH("MAX_WIDTH", SettingStatus.COMMON, SettingType.TEXT, true, 101, "1200", "前端显示最大宽度（数字，建议：900-1200）", null),
 
     FONT_FAMILY("FONT_FAMILY", SettingStatus.COMMON, SettingType.SEL_IN, false, 101,
@@ -33,7 +33,7 @@ public enum SettingEnum {
     IMAGE_CODE("IMAGE_CODE", SettingStatus.HIDDEN, SettingType.SELECT, false, 101, "Times New Roman", "图形验字体（部分系统显示有问题，可切换字体）",
             new String[]{"TimesNewRoman|Times New Roman"}),
     MAX_MODULE("MAX_MODULE", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "项目下允许创建的最大模块数", null),
-    MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "15", "最大允许创建的项目数", null),
+    MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "50", "最大允许创建的项目数", null),
 	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, true, 101, "200", "项目下最大允许的错误码数量，最大不能超过1000", null),
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "crapApiKey", "秘钥，用于cookie加密等", null),
 	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, false, 101, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开", null);

@@ -12,7 +12,6 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.model.Project;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.ModuleService;
-import cn.crap.utils.IConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
@@ -63,7 +62,7 @@ public class ModuleController extends BaseController{
 
 			// 最高管理员修改项目
 			// 自己的项目
-			if ( ("," + user.getRoleId()).indexOf("," + IConst.C_SUPER + ",") < 0 && !user.getId().equals(project.getUserId())
+			if (!Tools.isSuperAdmin(user.getAuthStr()) && !user.getId().equals(project.getUserId())
 					&& user.getProjects().get(project.getId()) == null) {
 				throw new MyException(MyError.E000042);
 			}

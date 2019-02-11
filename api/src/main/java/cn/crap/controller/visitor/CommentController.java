@@ -1,16 +1,24 @@
 package cn.crap.controller.visitor;
 
+import cn.crap.adapter.CommentAdapter;
+import cn.crap.dto.CommentDTO;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.Comment;
+import cn.crap.model.BugPO;
+import cn.crap.model.CommentPO;
+import cn.crap.query.CommentQuery;
+import cn.crap.service.BugService;
 import cn.crap.service.CommentService;
 import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.TableField;
 import cn.crap.utils.Tools;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -18,46 +26,73 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Controller("visitorCommentController")
-@RequestMapping("/visitor/comment")
+@RequestMapping("/comment")
 public class CommentController extends BaseController {
 	@Autowired
 	private CommentService commentService;
-
+	@Autowired
+    private BugService bugService;
+    // TODO 删除bug需要删除所有评论
 	@RequestMapping("/add.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute Comment comment) throws MyException {
-		Assert.notNull(comment.getArticleId(), "articleId 不能为空");
-		
-		if (settingCache.get(S_COMMENTCODE).getValue().equals("true")) {
-			if (!comment.getId().equals(Tools.getImgCode())) {
+	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDTO) throws Exception {
+		Assert.notNull(commentDTO.getTargetId(), "targetId 不能为空");
+        Assert.notNull(commentDTO.getType(), "type 不能为空");
+
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
+		// 图形验证码校验，防止恶意评论
+		if (user == null && settingCache.get(S_COMMENTCODE).getValue().equals("true")) {
+			if (commentDTO.getImgCode() == null || !commentDTO.getImgCode().equals(Tools.getImgCode())) {
 				throw new MyException(MyError.E000010);
 			}
 		}
 
-		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		SettingDto anonymousComment = settingCache.get(S_ANONYMOUS_COMMENT);
 		if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
-			if (user == null){
-				throw new MyException(MyError.E000060);
-			}
+            Optional.ofNullable(user).orElseThrow(()-> new MyException(MyError.E000060));
 		}
-		
-		comment.setUserName("匿名");
-		comment.setAvatarUrl(Tools.getAvatar());
-		if(user != null){
-			comment.setUserId(user.getId());
-			if (!MyString.isEmpty(user.getAvatarUrl())){
-				comment.setAvatarUrl(user.getAvatarUrl());
-			}
-			comment.setUserName(user.getUserName());
-		}
-		
-		comment.setId(null);
-		comment.setUpdateTime(new Date());
-		commentService.insert(comment);
+
+		// bug管理系统
+		if (commentDTO.getType().equals(C_BUG)){
+            BugPO bugPO = bugService.get(commentDTO.getTargetId());
+            checkPermission(bugPO.getProjectId(), ProjectPermissionEnum.READ);
+        }
+
+		CommentPO commentPO = CommentAdapter.getModel(commentDTO);
+		commentService.insert(commentPO);
 		return new JsonResult(1, null);
 	}
+
+    @RequestMapping("/preAdd.do")
+    @ResponseBody
+    public JsonResult detail(@ModelAttribute CommentDTO commentDTO) throws Exception {
+        Assert.notNull(commentDTO.getType(), "type 不能为空");
+        SettingDto anonymousComment = settingCache.get(S_ANONYMOUS_COMMENT);
+        commentDTO.setNeedImgCode(false);
+        if (commentDTO.getType().equals(C_BUG)){
+            commentDTO.setNeedImgCode(false);
+        } else if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
+            commentDTO.setNeedImgCode(true);
+        }
+        return new JsonResult(1, commentDTO);
+    }
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public JsonResult list(@ModelAttribute CommentQuery query) throws Exception {
+        if (query.getTargetId() == null){
+            return new JsonResult().data(Lists.newArrayList()).page(new Page(query));
+        }
+        Assert.notNull(query.getType(), "type 不能为空");
+        query.setPageSize(10);
+        query.setSort(TableField.SORT.CREATE_TIME_DES);
+        Page page = new Page(query);
+        List<CommentPO> commentPOList = commentService.select(query, page);
+        page.setAllRow(commentService.count(query));
+        return new JsonResult().success().data(CommentAdapter.getDto(commentPOList)).page(page);
+    }
 }

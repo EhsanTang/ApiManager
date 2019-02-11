@@ -2,13 +2,44 @@
  * 配置路由。
  * 注意这里采用的是ui-router这个路由，而不是ng原生的路由。
  * ng原生的路由不能支持嵌套视图，所以这里必须使用ui-router。
+ * url : 中支持 currentPage时，修改currentPage ，调用$rootScope.go 才会有效
  * @param  {[type]} $stateProvider
  * @param  {[type]} $urlRouterProvider
  * @return {[type]}
  */
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType&pageName';
 app.config(function($stateProvider, $urlRouterProvider) {
-	// 文章
+    $stateProvider.state('userBugList', {
+        url : '/user/bug/list?currentPage&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl: 'resources/html/user/bugList.tpl.html?v=v8.0.5'
+            }, 'page@userBugList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
+            }
+        }
+    }).state('userEditBug', {
+        url : '/user/bug/edit?id&type&' + commonUrlParam,
+        views : {
+            'subMenu' :{
+                templateUrl : 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5'
+            }, 'main' : {
+                templateUrl : 'resources/html/user/bugEdit.tpl.html?v=v8.0.5'
+            },'comment@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/bugComment.tpl.html?v=v8.0.5'
+            },'zoomImg@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/zoomImg.tpl.html?v=v8.0.5'
+            },'bugLog@userEditBug' : {
+                templateUrl : 'resources/html/subTpl/bugLog.tpl.html?v=v8.0.5'
+            },'page@userEditBug' : {
+                templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
+            }
+        }
+    });
+
+	// 文档
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,
         views : {
@@ -431,7 +462,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
 		}
 	}).state('commentList', {
-		url : '/user/comment/list?articleId&' + commonUrlParam,
+		url : '/user/comment/list?type&targetId&' + commonUrlParam,
 		views : {
 			'main' : {
 				templateUrl : 'resources/html/user/commentList.tpl.html?v=v8.0.5'
@@ -446,25 +477,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			},'subMenu' :{
                 templateUrl : function($stateParems){
                     return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
-                }
-            }
-		}
-	}).state('roleList', {
-		url : '/admin/role/list?' + commonUrlParam,
-		views : {
-			'main' : {
-				templateUrl : 'resources/html/admin/roleList.tpl.html?v=v8.0.5'
-			},
-			'page@roleList' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
-			},
-			'detail' : {
-				templateUrl : function($stateParems){
-					return 'resources/html/admin/roleDetail.tpl.html?v=v8.0.5';
-				}
-			},'subMenu' :{
-                templateUrl : function($stateParems){
-                    return 'resources/html/subTpl/subMenuSetting.tpl.html?v=v8.0.5';
                 }
             }
 		}

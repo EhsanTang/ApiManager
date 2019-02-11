@@ -339,11 +339,11 @@ input:focus{border-color: #3275e4!important;!important;}
 /***remote iconfont*****/
 @font-face {
     font-family: 'iconfont';  /* project id 860205 */
-    src: url('//at.alicdn.com/t/font_860205_snow4lov0zf.eot');
-    src: url('//at.alicdn.com/t/font_860205_snow4lov0zf.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_860205_snow4lov0zf.woff') format('woff'),
-    url('//at.alicdn.com/t/font_860205_snow4lov0zf.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_860205_snow4lov0zf.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_860205_19fn1rga6fl.eot');
+    src: url('//at.alicdn.com/t/font_860205_19fn1rga6fl.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_860205_19fn1rga6fl.woff') format('woff'),
+    url('//at.alicdn.com/t/font_860205_19fn1rga6fl.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_860205_19fn1rga6fl.svg#iconfont') format('svg');
 }
 body{
     font-size:12px;
@@ -449,7 +449,7 @@ blockquote{
 .container-fluid{min-width: 770px;}
 .navbar-inverse{min-width: 770px;border:0px!important;}
 .container{min-width: 770px;}
-/********文章页面，图片居中显示********/
+/********文档页面，图片居中显示********/
 #fade{
     opacity: 0.5;
     position: fixed;

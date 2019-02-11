@@ -1,6 +1,6 @@
 package cn.crap.dto;
 
-import cn.crap.enu.DataType;
+import cn.crap.enu.AdminPermissionEnum;
 import cn.crap.utils.Tools;
 import org.apache.commons.lang.StringUtils;
 
@@ -33,7 +33,7 @@ public class PickDto implements Serializable{
 		this.value=id;
 		this.name=name;
 	}
-	public PickDto(DataType dateType){
+	public PickDto(AdminPermissionEnum dateType){
         this.id = handleId(name);
 		this.value=dateType.name();
 		this.name=dateType.getName();

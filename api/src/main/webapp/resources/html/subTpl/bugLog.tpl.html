@@ -1,0 +1,18 @@
+<div class="BGFFF p15 mt10" ng-init="queryBugLogList()">
+    <div class="adorn-bl-3 f14 pl10 C999">操作日志</div>
+    <a type="button" class="btn btn-default none" id="refresh" ng-click="queryBugLogList()"><i
+            class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+    <div ng-repeat="bugLog in bugLogVOList" class="dashed-t p10 BGFFF f12 C555 bl1">
+        <div class="mr10 ml-15 BGFFF mb5">
+            <i class="iconfont ml-1">&#xe80c;</i>
+            <span class="main-color f10">{{bugLog.operatorStr}}</span>
+            <span class="C999 f10 ml10" ng-bind="bugLog.createTimeStr"></span>
+        </div>
+
+        将
+        <span class="main-color">{{bugLog.typeStr}}</span> 从
+        <span class="C999">{{bugLog.originalValue}}</span>
+        修改为
+        <span class="main-color">{{bugLog.newValue}}</span>
+    </div>
+</div>

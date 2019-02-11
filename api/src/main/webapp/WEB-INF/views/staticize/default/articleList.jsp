@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="BGFFF min-h500 p20">
 					<c:if test="${categoryDtos!=null}">
 						<div class="col-xs-12 f14 pl0 mb10 pb5" id="article-content">
-							<div class="fl mt2">文章筛选：</div>
+							<div class="fl mt2">文档筛选：</div>
 							<c:forEach var="f" items="${categoryDtos}" varStatus="status"> 
 								<a class="dis fl b1 p3 pl10 pr10 r12 mr10 f12 fn no_unl cursor C999 C${f.md5Category}" href="${module.id}-articleList-${f.md5Category}-1.html">${f.category}</a>
 							</c:forEach>

@@ -1,8 +1,6 @@
 /**
  * 后台controller
  */
-var userModule = angular.module("userModule", []);
-var adminModule = angular.module("adminModule", []);
 
 // 显示长度 wordwise：切字方式- 如果是 true，只切單字
 userModule.filter('cut', function () {
@@ -134,7 +132,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "interfaces");
     };
 
-    // 文章列表
+    // 文档列表
     $scope.queryArticleList = function(page, updateUrl) {
         var params = "iUrl=user/article/list.do|iLoading=FLOAT|iPost=POST|iParams=&type=ARTICLE"
             + "&moduleId="+$stateParams.moduleId
@@ -175,12 +173,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         $rootScope.getBaseDataToDataKey($scope,$http,params, page, "dictionaries");
     };
 
-    // 评论列表
-    $scope.queryCommentList = function(page) {
-        var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&articleId="+$stateParams.articleId + "&projectId=" + $stateParams.projectId;
-        $rootScope.getBaseDataToDataKey($scope,$http,params, page, "comments");
-    };
-
     // 操作日志
     $scope.queryLogList = function(page) {
         var params = "iUrl=user/log/list.do|iLoading=FLOAT|iPost=true|iParams=&modelName="+$("#modelName").val()+"&identy="+$stateParams.identy;
@@ -209,7 +201,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
         var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
-                createWangEditor("interface-editor", "remark", initInterfaceEditor, 150);
+                createWangEditor("interface-editor", $rootScope.model.remark, initInterfaceEditor, 150);
             }
             $rootScope.errors = eval("("+$rootScope.model.errors+")")
             $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
@@ -281,13 +273,13 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
             }
             markdownEditor = null;
             if ($rootScope.model.useMarkdown){
-                createEditorMe('markdown-editor', getRootScope().model.markdown);
+                createEditorMe('markdown-editor', $rootScope.model.markdown);
             }
-            createWangEditor("article-editor", "content", initArticleEditor, "500px");
+            createWangEditor("article-editor", $rootScope.model.content, initArticleEditor, "500px");
         });
     };
     $scope.createEditorMe = function () {
-        createEditorMe('markdown-editor', getRootScope().model.markdown);
+        createEditorMe('markdown-editor', $rootScope.model.markdown);
     };
     $scope.getDictionaryDetail = function (isEdit) {
         var params = "iUrl=user/article/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&type=DICTIONARY" +
@@ -360,7 +352,6 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
 				$rootScope.sessionAdminAuthor = result.data.sessionAdminAuthor;
 				$rootScope.sessionAdminName = result.data.sessionAdminName;
-				$rootScope.sessionAdminRoleIds = result.data.sessionAdminRoleIds;
 				$rootScope.sessionAdminId =result.data.sessionAdminId;
 				$rootScope.errorTips = result.data.errorTips;
 			}
@@ -371,11 +362,11 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 		var auth = $("#sessionAuth").val();
 		var hasAuth = false;
 		// 最高管理员
-		if( (","+auth+",").indexOf(",super,")>=0){
+		if( (","+auth+",").indexOf(",SUPER,")>=0){
 			hasAuth = true;
 		}
 		// 拥有权限的管理员
-		if( (","+auth+",").indexOf(",ADMIN,")>=0){
+		else if( (","+auth+",").indexOf(",ADMIN,")>=0){
 			if(needAuth){
 				if( (","+auth+",").indexOf(","+needAuth+",")>=0){
 					hasAuth = true;
@@ -384,6 +375,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 				hasAuth = true;
 			}
 		}
+
 		if(hasAuth){
 			if(id) {
                 $("#" + id).removeClass("ndis");
@@ -400,7 +392,7 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     // 判断是否是最高管理员
     $scope.isSupperAdmin = function (id){
     	var auth = $("#sessionAuth").val();
-    	if( (","+auth+",").indexOf(",super,")>=0){
+    	if( (","+auth+",").indexOf(",SUPER,")>=0){
 			if(id)
 				$("#"+id).removeClass("ndis");
 			return true;
@@ -498,14 +490,6 @@ userModule.controller('settingDetailCtrl', function($rootScope,$scope, $http, $s
 				 $rootScope.model = result.data;
 			 }
 		});
-    };
-    $scope.getData();
-});
-/**************************角色列表****************************/
-userModule.controller('roleCtrl', function($rootScope,$scope, $http, $state, $stateParams ,httpService) {
-	$scope.getData = function(page) {
-		var params = "iUrl=admin/role/list.do|iLoading=FLOAT|iPost=true|iParams=&roleName=" + $("#roleName").val();;
-		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();
 });

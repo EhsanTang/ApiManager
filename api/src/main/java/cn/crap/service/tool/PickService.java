@@ -145,6 +145,57 @@ public class PickService implements IPickService{
                     picks.add(pick);
                 }
                 return picks;
+            case PRIORITY:// 优先级
+                for (BugPriority priority : BugPriority.values()) {
+                    pick = new PickDto(priority.name(), priority.getValue(), priority.getName());
+                    picks.add(pick);
+                }
+                return picks;
+            case BUG_STATUS:// bug状态
+                for (BugStatus status : BugStatus.values()) {
+                    if (status.getByteValue() == 0){
+                        pick = new PickDto(IConst.C_SEPARATOR, "完结");
+                        picks.add(pick);
+                    }else if (status.getByteValue() == 10){
+                        pick = new PickDto(IConst.C_SEPARATOR, "激活");
+                        picks.add(pick);
+                    }else if (status.getByteValue() == 20){
+                        pick = new PickDto(IConst.C_SEPARATOR, "解决");
+                        picks.add(pick);
+                    }else if (status.getByteValue() == 30){
+                        pick = new PickDto(IConst.C_SEPARATOR, "测试");
+                        picks.add(pick);
+                    }
+                    pick = new PickDto(status.name(), status.getValue(), status.getName());
+                    picks.add(pick);
+                }
+                return picks;
+            case SEVERITY:// bug严重程度
+                for (BugSeverity severity : BugSeverity.values()) {
+                    pick = new PickDto(severity.name(), severity.getValue(), severity.getName());
+                    picks.add(pick);
+                }
+                return picks;
+            case BUG_TYPE:// 跟踪类型
+                for (BugType type : BugType.values()) {
+                    pick = new PickDto(type.name(), type.getValue(), type.getName());
+                    picks.add(pick);
+                }
+                return picks;
+
+            case PROJECT_PERMISSION:// 项目权限
+                for (ProjectPermissionEnum permissionEnum : ProjectPermissionEnum.values()) {
+                    if (permissionEnum.getDesc().equals(IConst.NULL)){
+                        continue;
+                    }
+                    if (permissionEnum.isSeparator()){
+                        pick = new PickDto(IConst.C_SEPARATOR, permissionEnum.getSeparatorTitle());
+                        picks.add(pick);
+                    }
+                    pick = new PickDto(permissionEnum.getValue(), permissionEnum.getValue(), permissionEnum.getDesc());
+                    picks.add(pick);
+                }
+                return picks;
         }
 
         return userPickService.getPickList(code, key);

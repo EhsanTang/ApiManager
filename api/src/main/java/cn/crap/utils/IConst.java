@@ -4,6 +4,7 @@ package cn.crap.utils;
  * @author Ehsan
  */
 public interface IConst {
+	int  C_MAX_SEQUENCE = 2147483647;
 	String SEPARATOR = ":"; // 分割符
 	String NULL = "_NULL";
 	String C_TRUE = "true";
@@ -11,7 +12,7 @@ public interface IConst {
 	String NOT_NULL = "NOT_NULL";
 	String BLANK = "_BLANK"; 
 	String ALL = "_ALL"; 
-	String C_SUPER = "super";
+	String C_SUPER = "SUPER";
 	String C_AUTH_USER = "USER";
 	String C_HOT_SEARCH = "HOTS_EARCH";
 	String C_AUTH_MENU = "MENU";
@@ -26,6 +27,7 @@ public interface IConst {
     String C_METHOD_POST = "POST";
     String C_METHOD_GET = "GET";
     String C_SEPARATOR = "C_SEPARATOR";
+    String C_BUG= "BUG";
 
 
     int ALL_PAGE_SIZE = -100; // 不分页

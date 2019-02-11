@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceDao> implements ILuceneService, IConst {
@@ -58,6 +59,9 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             }else{
                 model.setSequence(0);
             }
+        }
+        if (model.getIsTemplate() == null){
+            model.setIsTemplate(false);
         }
         model.setUpdateTime(new Date());
         return super.insert(model);

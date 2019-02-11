@@ -15,7 +15,10 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.User;
 import cn.crap.query.UserQuery;
-import cn.crap.service.*;
+import cn.crap.service.IEmailService;
+import cn.crap.service.ProjectService;
+import cn.crap.service.ProjectUserService;
+import cn.crap.service.UserService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,9 +49,7 @@ public class LoginController extends BaseController{
 	private ProjectService projectService;
 	@Autowired
 	private ProjectUserService projectUserService;
-	@Autowired
-	private RoleService roleService;
-	
+
 	/**
 	 * 退出登录
 	 */
@@ -102,7 +103,7 @@ public class LoginController extends BaseController{
 	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/validateEmail.do")
-	public String validateEmail(@RequestParam String i) throws UnsupportedEncodingException, MessagingException, MyException {
+	public String validateEmail(@RequestParam String i) throws MyException {
 		HttpServletRequest request = ThreadContext.request();
 		String id =  Aes.desEncrypt(i);
 		String code = stringCache.get(i);
@@ -114,7 +115,7 @@ public class LoginController extends BaseController{
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
-				userCache.add(user.getId(), new LoginInfoDto(user, roleService, projectService, projectUserService));
+				userCache.add(user.getId(), new LoginInfoDto(user, projectService, projectUserService));
 				request.setAttribute("title", "恭喜，操作成功！");
 				request.setAttribute("result", "验证通过！");
 			}else{

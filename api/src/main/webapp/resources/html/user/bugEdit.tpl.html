@@ -52,8 +52,8 @@
                         <td>模块</td>
                         <td class="tl" colspan="3">
                             <button class="btn btn-sm bug-default w b1 tl break-word" type="button" id="moduleId"
-                                    crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}"
-                                    onclick="loadBugPick(this, event,150,250,'MY_MODULE')">
+                                    crap-name="moduleId" crap-def="{{bugVO.moduleId}}" crap-id="{{bugVO.id}}" crap-pick-param="{{$stateParams.projectId}}"
+                                    onclick="loadBugPick(this, event,150,250,'PROJECT_MODULES')">
                                 <span id="moduleId-text">{{bugVO.moduleName|cut:true:25:' ..'}}</span>
                                 <i class="iconfont fr CCCC">&#xe614;</i>
                             </button>

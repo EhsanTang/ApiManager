@@ -15,10 +15,20 @@ bugModule.controller('userBugCtrl', function($rootScope,$scope, $http, $state,$l
      * @param page
      * @param updateUrl
      */
+    $scope.setFilter= function (name, value) {
+        $stateParams[name] = value;
+        $scope.queryBugList(1);
+    }
+
     $scope.queryBugList = function (page, updateUrl) {
         var params = "iUrl=user/bug/list.do|iLoading=FLOAT|iPost=POST|iParams="
             + "&moduleId=" + $stateParams.moduleId
-            + "&projectId=" + $stateParams.projectId;
+            + "&projectId=" + $stateParams.projectId
+            + "&name=" + $stateParams.name
+            + "&creator=" + $stateParams.creator
+            + "&executor=" + $stateParams.executor
+            + "&tracer=" + $stateParams.tracer
+            + "&tester=" + $stateParams.tester;
         if (updateUrl) {
             var url = replaceParamFromUrl($location.url(), 'currentPage', page);
             url = url.substr(1, url.length - 1);

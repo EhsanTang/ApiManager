@@ -30,9 +30,6 @@ public enum PickCode {
 	BUG_STATUS("BUG_STATUS", "缺陷状态"),
     BUG_TYPE("BUG_TYPE", "问题类型"),
 
-
-
-
 	// 暂时不用
     MONITOR_TYPE("MONITOR_TYPE", "监控类型"),
 

@@ -36,7 +36,7 @@ public class CommentController extends BaseController {
 	private CommentService commentService;
 	@Autowired
     private BugService bugService;
-    // TODO 删除bug需要删除所有评论
+    // TODO 删除bug需要删除所有评论，bug暂不允许删除
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDTO) throws Exception {
@@ -59,7 +59,7 @@ public class CommentController extends BaseController {
 		// bug管理系统
 		if (commentDTO.getType().equals(C_BUG)){
             BugPO bugPO = bugService.get(commentDTO.getTargetId());
-            checkPermission(bugPO.getProjectId(), ProjectPermissionEnum.READ);
+            checkPermission(bugPO.getProjectId(), ProjectPermissionEnum.ADD_BUG);
         }
 
 		CommentPO commentPO = CommentAdapter.getModel(commentDTO);

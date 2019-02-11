@@ -30,7 +30,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 .btn-main:hover{color: #ffffff;background-color: [MAIN_COLOR];opacity: 0.8;}
 
 .main-bg {background-color: [MAIN_COLOR]!important;}
-.main-color {color: [MAIN_COLOR]}
+.main-bg-opacity-1{background-color: [MAIN_COLOR_OPACITY_1]!important;}
 .main-bb-1{ border-bottom:1px solid [MAIN_COLOR]!important}
 .main-br-1{ border-right:1px solid  [MAIN_COLOR]}
 .main-bl-3{ border-left:3px solid [MAIN_COLOR]}
@@ -41,7 +41,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 .bl-5 {border-left: 5px solid[MAIN_COLOR]}
 
 .hover-adorn:hover,.active-adorn{background-color: [ADORN_COLOR]!important;color:#ffffff!important;}
-.hover-main:hover,.active-main{background-color: [MAIN_COLOR_HOVER]!important;color:[MAIN_COLOR]!important;}
+.hover-main:hover,.active-main{background-color: [MAIN_COLOR_OPACITY_1]!important;color:[MAIN_COLOR]!important;}
 
 .adorn-color {color: [ADORN_COLOR]}
 .adorn-bl-3{ border-left:3px solid [ADORN_COLOR]}

@@ -93,7 +93,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bugLogPO.setType(BugLogType.PRIORITY.getByteType());
             bugLogPO.setOriginalValue(BugPriority.getNameByValue(dbBug.getPriority()));
             bugLogPO.setNewValue(BugPriority.getNameByValue(bugPriority.getByteValue()));
-        } else if (PickCode.MY_MODULE.getCode().equals(type)){
+        } else if (PickCode.MY_MODULE.getCode().equals(type) || PickCode.PROJECT_MODULES.getCode().equals(type)){
             Module module = moduleCache.get(value);
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());

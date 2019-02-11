@@ -10,7 +10,7 @@
 var commonUrlParam = 'projectId&projectName&moduleId&moduleName&menu_a&menu_b&dataType&pageName';
 app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('userBugList', {
-        url : '/user/bug/list?currentPage&' + commonUrlParam,
+        url : '/user/bug/list?currentPage&name&creator&executor&tracer&tester&' + commonUrlParam,
         views : {
             'main' : {
                 templateUrl: 'resources/html/user/bugList.tpl.html?v=v8.0.5'

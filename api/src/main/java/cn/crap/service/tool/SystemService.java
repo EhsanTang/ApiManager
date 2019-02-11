@@ -168,6 +168,8 @@ public class SystemService {
                 "  PRIMARY KEY (`id`),\n" +
                 "  KEY `idx_bug_sequence` (`bugId`,`sequence`)\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+        CHANGE_SQL_MAP.put(66, "ALTER TABLE `project_user` DROP INDEX `project_user`");
+        CHANGE_SQL_MAP.put(67, "ALTER TABLE `project_user` ADD INDEX `idx_project_seq` (`projectId`, `sequence`)");
 
         // sequence 修改为long
     }

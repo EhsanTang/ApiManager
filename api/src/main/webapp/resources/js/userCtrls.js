@@ -458,6 +458,8 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 userModule.controller('dictionaryInportFromSqlCtrl', function($rootScope,$scope, $http, $state, $stateParams,httpService) {
     $rootScope.model = {};
     $rootScope.model.isMysql="true";
+    $rootScope.model.moduleId = $stateParams.moduleId;
+    $rootScope.model.moduleName = $stateParams.moduleId;
     $rootScope.error = null;
 });
 

@@ -42,6 +42,8 @@ public class CommentController extends BaseController {
 	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDTO) throws Exception {
 		Assert.notNull(commentDTO.getTargetId(), "targetId 不能为空");
         Assert.notNull(commentDTO.getType(), "type 不能为空");
+        Assert.notNull(commentDTO.getContent(), "评论不能为空");
+        Assert.isTrue(commentDTO.getContent().length() > 5, "评论长度必须大于5");
 
 		LoginInfoDto user = LoginUserHelper.tryGetUser();
 		// 图形验证码校验，防止恶意评论

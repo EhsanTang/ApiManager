@@ -84,6 +84,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			module=new Module();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
+			module.setSequence(System.currentTimeMillis());
 		}
 		return new JsonResult(1, ModuleAdapter.getDto(module, project, templeteInterface));
 	}
@@ -210,7 +211,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		checkPermission(projectCache.get( change.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		checkPermission(projectCache.get( model.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		
-		int modelSequence = model.getSequence();
+		long modelSequence = model.getSequence();
 		model.setSequence(change.getSequence());
 		change.setSequence(modelSequence);
 		

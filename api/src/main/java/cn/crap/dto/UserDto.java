@@ -21,7 +21,7 @@ public class UserDto implements Serializable{
 	private Integer loginType;
 	private String thirdlyId;
 	private Byte status;
-	private Integer sequence;
+	private Long sequence;
 	private String createTimeStr;
 
 
@@ -129,11 +129,11 @@ public class UserDto implements Serializable{
 		this.status = status;
 	}
 
-	public Integer getSequence() {
+	public Long getSequence() {
 		return sequence;
 	}
 
-	public void setSequence(Integer sequence) {
+	public void setSequence(Long sequence) {
 		this.sequence = sequence;
 	}
 

@@ -41,7 +41,7 @@ public class SystemService {
 
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
-        //	v8.0.5 修改，允许模块为空，2018-11-17
+        // v8.0.5 修改，允许模块为空，2018-11-17
         CHANGE_SQL_MAP.put(1, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
         CHANGE_SQL_MAP.put(2, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
         CHANGE_SQL_MAP.put(3, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
@@ -53,6 +53,7 @@ public class SystemService {
         CHANGE_SQL_MAP.put(9, "ALTER TABLE `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
         CHANGE_SQL_MAP.put(10, "ALTER TABLE `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
 
+        // 权限数据结构调整
         CHANGE_SQL_MAP.put(11, "UPDATE project_user SET permission=concat(permission,'addModule,') WHERE addModule=1");
         CHANGE_SQL_MAP.put(12, "UPDATE project_user SET permission=concat(permission,'delModule,') WHERE delModule=1");
         CHANGE_SQL_MAP.put(13, "UPDATE project_user SET permission=concat(permission,'modModule,') WHERE modModule=1");
@@ -100,9 +101,29 @@ public class SystemService {
         CHANGE_SQL_MAP.put(44, "ALTER TABLE `project_user` DROP `addError`");
         CHANGE_SQL_MAP.put(45, "ALTER TABLE `project_user` DROP `delError`");
         CHANGE_SQL_MAP.put(46  , "ALTER TABLE `project_user` DROP `modError`");
+
         // 废弃 role字段，但是不删除：mybatis需要修改
         CHANGE_SQL_MAP.put(47, "UPDATE user SET auth=concat(auth,',SUPER,') WHERE roleId like '%super%'");
         CHANGE_SQL_MAP.put(48, "DROP TABLE `role`");
+
+        CHANGE_SQL_MAP.put(49, "ALTER TABLE `article` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(50, "ALTER TABLE `bug` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(51, "ALTER TABLE `bug_log` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(52, "ALTER TABLE `comment` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(53, "ALTER TABLE `debug` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(54, "ALTER TABLE `error` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(55, "ALTER TABLE `interface` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(56, "ALTER TABLE `log` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(57, "ALTER TABLE `menu` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(58, "ALTER TABLE `module` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(59, "ALTER TABLE `project` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(60, "ALTER TABLE `project_user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(61, "ALTER TABLE `setting` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(62, "ALTER TABLE `source` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(63, "ALTER TABLE `user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+
+
+        // sequence 修改为long
     }
 
     /**

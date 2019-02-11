@@ -32,7 +32,7 @@ public class InterfaceDto{
     private String createTimeStr;
     private String updateTimeStr;
 	private String version;
-	private Integer sequence;
+	private Long sequence;
 	private String header;
 	private String fullUrl;
 	private Integer monitorType;
@@ -173,10 +173,10 @@ public class InterfaceDto{
 		return version;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

@@ -114,7 +114,7 @@ public class SettingController extends BaseController {
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) {
         Setting change = settingService.getById(changeId);
         Setting model = settingService.getById(id);
-        int modelSequence = model.getSequence();
+        long modelSequence = model.getSequence();
 
         model.setSequence(change.getSequence());
         change.setSequence(modelSequence);

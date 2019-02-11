@@ -47,30 +47,31 @@
                     <td class="w50">
                         <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',interfaces)">
                     </td>
-                    <td class="w200 tl">名称</td>
-                    <td class="w200">URL</td>
-                    <td class="w50">版本</td>
-                    <td class="w70">Method</td>
+                    <td class="tl">Method / 版本 / 名称 / URL</td>
                     <td class="w120">最后修改时间</td>
-                    <td class="w200">
+                    <td class="w250">
                         操作
                         <span class="p0 f14 cursor mr20" onclick="tooltip('status-tip')" id="status-tip" data-toggle="tooltip" data-placement="right"
                                 title="「模板:设置为模板后，新建接口时将根据该模板接口初始化接口内容」">
 					        <i class="iconfont adorn-color">&#xe6a3;</i>
                         </span>
-
                     </td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in interfaces" class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
+                <tr ng-repeat="item in interfaces">
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);"></td>
+                    <td class="cursor" ng-click="go('user/interface/detail?id=' +item.id+ '&pageName=接口详情&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
                         item.projectName + '&projectId=' + item.projectId + '&moduleId=' + $stateParams.moduleId)">
-                    <td ng-click="stopPropagation($event);"><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);"></td>
-                    <td>{{item.interfaceName}}</td>
-                    <td>{{item.fullUrl}}</td>
-                    <td>{{item.version}}</td>
-                    <td>
-                        <button class="btn btn-xs btn-default f12 p2 btn-{{item.method}}">{{item.method}}</button>
+
+                        <div class="C000 f14">
+                            <button class="badge f12 fn o5 pt2 pb2 btn-{{item.method}}">{{item.method}}</button>
+                            <span class="badge f12 fn main-bg o5">{{item.version}}</span>
+                            {{item.interfaceName| cut:true:40:' ...'}}
+                        </div>
+                        <div class="C999 f10 mt5">
+                            {{item.fullUrl}}
+                        </div>
                     </td>
                     <td>{{item.updateTimeStr}}</td>
                     <td class="f12">

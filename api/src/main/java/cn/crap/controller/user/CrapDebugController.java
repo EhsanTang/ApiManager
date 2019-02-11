@@ -131,7 +131,7 @@ public class CrapDebugController extends BaseController {
     }
 
     private void addDebug(LoginInfoDto user, DebugInterfaceParamDto d, int totalNum) {
-        int debugSequence = 0;
+        long debugSequence = 0;
         for (DebugDto debug : d.getDebugs()) {
             debugSequence = debugSequence + 1;
             debug.setSequence(debugSequence);
@@ -203,7 +203,7 @@ public class CrapDebugController extends BaseController {
         }
     }
 
-    private void handelModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d, String moduleId) throws Exception{
+    private void handelModule(LoginInfoDto user, Project project, long moduleSequence, DebugInterfaceParamDto d, String moduleId) throws Exception{
         d.setModuleId(moduleId);
         Module module = moduleService.getById(moduleId);
 
@@ -230,7 +230,7 @@ public class CrapDebugController extends BaseController {
         }
     }
 
-    private Module buildModule(LoginInfoDto user, Project project, int moduleSequence, DebugInterfaceParamDto d) {
+    private Module buildModule(LoginInfoDto user, Project project, long moduleSequence, DebugInterfaceParamDto d) {
         Module module = new Module();
         module.setId(d.getModuleId());
         module.setName(d.getModuleName());
@@ -252,7 +252,7 @@ public class CrapDebugController extends BaseController {
         project.setLuceneSearch(Byte.valueOf("0"));
         project.setName("默认调试项目");
         project.setStatus(Byte.valueOf("-1"));
-        project.setSequence(0);
+        project.setSequence(System.currentTimeMillis());
         project.setType(Byte.valueOf("1"));
         project.setUserId(user.getId());
         project.setCreateTime(new Date());

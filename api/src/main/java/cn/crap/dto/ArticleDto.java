@@ -25,7 +25,7 @@ public class ArticleDto implements Serializable {
 	private Byte canComment;
 	private String canCommentName;
 	private Integer commentCount;
-	private Integer sequence;
+	private Long sequence;
 	private String markdown;
 	private String projectId;
 	private String createTimeStr;
@@ -127,10 +127,10 @@ public class ArticleDto implements Serializable {
 		return commentCount;
 	}
 
-	public void setSequence(Integer sequence){
+	public void setSequence(Long sequence){
 		this.sequence=sequence;
 	}
-	public Integer getSequence(){
+	public Long getSequence(){
 		return sequence;
 	}
 

@@ -49,7 +49,7 @@ public enum SettingEnum {
 	// 只有当type 为SELECT，SEL_IN 是才有效，option: name|value
 	private String[] options;
 
-	private Integer sequence;
+	private Long sequence;
 	public static SettingEnum getByKey(String key){
 		if (MyString.isEmpty(key)){
 			return null;
@@ -70,7 +70,7 @@ public enum SettingEnum {
 		this.type = type.getValue();
 		this.canDelete = CanDeleteEnum.CAN_NOT.getCanDelete();
 		this.remark = remark;
-		this.sequence = sequence;
+		this.sequence = sequence.longValue();
 		this.mustBeInt = mustBeInt;
 		this.options = options;
 	}
@@ -136,11 +136,11 @@ public enum SettingEnum {
 		this.canDelete = canDelete;
 	}
 
-	public Integer getSequence() {
+	public Long getSequence() {
 		return sequence;
 	}
 
-	public void setSequence(Integer sequence) {
+	public void setSequence(Long sequence) {
 		this.sequence = sequence;
 	}
 

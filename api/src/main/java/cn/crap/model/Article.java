@@ -29,8 +29,6 @@ public class Article extends BasePo{
 
     private Integer commentCount;
 
-    private Integer sequence;
-
     private String projectId;
 
     private String attributes;
@@ -139,14 +137,6 @@ public class Article extends BasePo{
 
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getProjectId() {

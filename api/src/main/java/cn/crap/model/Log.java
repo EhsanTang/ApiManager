@@ -3,13 +3,10 @@ package cn.crap.model;
 import java.util.Date;
 
 public class Log extends BasePo{
-    private String id;
 
     private Byte status;
 
     private Date createTime;
-
-    private Integer sequence;
 
     private String modelClass;
 
@@ -27,14 +24,6 @@ public class Log extends BasePo{
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -49,14 +38,6 @@ public class Log extends BasePo{
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getModelClass() {

@@ -29,23 +29,6 @@ public class DebugService extends BaseService<Debug, DebugDao> {
         super.setBaseDao(debugDao, TableId.DEBUG);
     }
 
-    @Override
-    public boolean insert(Debug model) throws MyException{
-        if (model == null) {
-            return false;
-        }
-
-        if (model.getSequence() == null){
-            List<Debug> models = this.query(new DebugQuery().setPageSize(1).setModuleId(model.getModuleId()));
-            if (models.size() > 0){
-                model.setSequence(models.get(0).getSequence() + 1);
-            }else{
-                model.setSequence(0);
-            }
-        }
-        return super.insert(model);
-    }
-
     /**
      * 查询调试
      * @param query

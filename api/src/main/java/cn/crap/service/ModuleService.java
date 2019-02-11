@@ -31,27 +31,6 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
     }
 
     /**
-     * 新增
-     * @param model
-     * @return
-     * @throws MyException
-     */
-    public boolean insert(Module model) throws MyException{
-        if (model == null) {
-            return false;
-        }
-        if (model.getSequence() == null){
-            List<Module> models = this.query(new ModuleQuery().setPageSize(1).setProjectId(model.getProjectId()));
-            if (models.size() > 0){
-                model.setSequence(models.get(0).getSequence() + 1);
-            }else{
-                model.setSequence(0);
-            }
-        }
-        return super.insert(model);
-    }
-
-    /**
      * 更新模块
      * @param model
      * @param needAddLog 是否需要添加日志

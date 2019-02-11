@@ -37,22 +37,6 @@ public class MenuService extends BaseService<Menu, MenuDao> {
         super.setBaseDao(menuDao, TableId.MENU);
     }
 
-    @Override
-    public boolean insert(Menu menu) throws MyException{
-        if (menu == null) {
-            return false;
-        }
-        if (menu.getSequence() == null){
-            List<Menu>  menus = this.query(new MenuQuery().setPageSize(1).setParentId(menu.getParentId()));
-            if (menus.size() > 0){
-                menu.setSequence(menus.get(0).getSequence() + 1);
-            }else{
-                menu.setSequence(0);
-            }
-        }
-        return super.insert(menu);
-    }
-
     /**
      * 查询菜单
      *

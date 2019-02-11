@@ -2,7 +2,9 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.CommentAdapter;
 import cn.crap.dto.CommentDTO;
+import cn.crap.enu.CommentType;
 import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -11,6 +13,7 @@ import cn.crap.model.CommentPO;
 import cn.crap.model.User;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
+import cn.crap.service.BugService;
 import cn.crap.service.CommentService;
 import cn.crap.service.UserService;
 import cn.crap.service.tool.EmailService;
@@ -24,7 +27,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -38,6 +40,8 @@ public class CommentController extends BaseController {
 	private UserService userService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+    private BugService bugService;
 	// TODO articleId 修改为 targetId
 
 	@RequestMapping("/list.do")
@@ -47,8 +51,14 @@ public class CommentController extends BaseController {
 		Assert.notNull(query.getTargetId());
 		Assert.notNull(query.getType());
 
-		// TODO 权限校验
-		//checkPermission(articleService.getById(query.getTargetId()).getProjectId() , READ);
+        String projectId;
+        if (query.getType().equals(CommentType.ARTICLE.getType())){
+            projectId = articleService.getById(query.getTargetId()).getProjectId();
+        } else {
+            projectId = bugService.get(query.getTargetId()).getProjectId();
+        }
+
+		checkPermission(projectId, ProjectPermissionEnum.READ);
 		query.setPageSize(10);
 		query.setSort(TableField.SORT.SEQUENCE_DESC);
 
@@ -64,9 +74,13 @@ public class CommentController extends BaseController {
 	public JsonResult detail(String id) throws MyException {
 		CommentPO dbComment = commentService.get(id);
 
-		// TODO 权限校验
-        // ArticleWithBLOBs article = articleService.getById(dbComment.getTargetId());
-        // checkPermission(article.getProjectId(), READ);
+        String projectId;
+        if (dbComment.getType().equals(CommentType.ARTICLE.getType())){
+            projectId = articleService.getById(dbComment.getTargetId()).getProjectId();
+        } else {
+            projectId = bugService.get(dbComment.getTargetId()).getProjectId();
+        }
+        checkPermission(projectId, ProjectPermissionEnum.READ);
 		return new JsonResult().data(CommentAdapter.getDto(dbComment));
 	}
 	
@@ -74,8 +88,14 @@ public class CommentController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute CommentDTO commentDto) throws MyException {
-//        ArticleWithBLOBs article = articleService.getById(commentDto.getArticleId());
-//        checkPermission(article.getProjectId(), MOD_ARTICLE);
+        String projectId;
+        if (commentDto.getType().equals(CommentType.ARTICLE.getType())){
+            projectId = articleService.getById(commentDto.getTargetId()).getProjectId();
+        } else {
+            projectId = bugService.get(commentDto.getTargetId()).getProjectId();
+        }
+        checkPermission(projectId, ProjectPermissionEnum.READ);
+
 		CommentPO comment = CommentAdapter.getModel(commentDto);
 		commentService.update(comment);
 
@@ -94,7 +114,7 @@ public class CommentController extends BaseController {
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult delete(String id, String ids) throws MyException, IOException{
+	public JsonResult delete(String id, String ids) throws MyException{
 		if( MyString.isEmpty(id) && MyString.isEmpty(ids)){
 			throw new MyException(MyError.E000029);
 		}
@@ -107,8 +127,13 @@ public class CommentController extends BaseController {
 				continue;
 			}
 			CommentPO comment = commentService.get(tempId);
-//            ArticleWithBLOBs article = articleService.getById(comment.getTargetId());
-//            checkPermission(article.getProjectId(), DEL_ARTICLE);
+            String projectId;
+            if (comment.getType().equals(CommentType.ARTICLE.getType())){
+                projectId = articleService.getById(comment.getTargetId()).getProjectId();
+            } else {
+                projectId = bugService.get(comment.getTargetId()).getProjectId();
+            }
+            checkPermission(projectId, ProjectPermissionEnum.READ);
 			commentService.delete(tempId);
 		}
 		return new JsonResult(1, null);

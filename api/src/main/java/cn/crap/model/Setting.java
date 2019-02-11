@@ -19,8 +19,6 @@ public class Setting extends BasePo{
 
     private Byte canDelete;
 
-    private Integer sequence;
-
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -85,13 +83,5 @@ public class Setting extends BasePo{
 
     public void setCanDelete(Byte canDelete) {
         this.canDelete = canDelete;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 }

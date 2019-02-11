@@ -59,7 +59,6 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         bug.setCreator(user.getId());
         bug.setCreatorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         bug.setStatus(BugStatus.NEW.getByteValue());
-        bug.setSequence(getMaxSequence(bug, new BugQuery().setProjectId(bug.getProjectId())));
         return super.insert(bug);
     }
 

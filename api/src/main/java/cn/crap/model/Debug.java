@@ -11,8 +11,6 @@ public class Debug extends BasePo{
 
     private Byte status;
 
-    private Integer sequence;
-
     private String interfaceId;
 
     private String moduleId;
@@ -63,14 +61,6 @@ public class Debug extends BasePo{
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getInterfaceId() {

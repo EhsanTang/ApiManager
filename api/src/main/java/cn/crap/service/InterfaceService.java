@@ -27,7 +27,6 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceDao> implements ILuceneService, IConst {
@@ -52,14 +51,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (model == null) {
             return false;
         }
-        if (model.getSequence() == null){
-            List<InterfaceWithBLOBs>  models = this.queryAll(new InterfaceQuery().setProjectId(model.getProjectId()).setPageSize(1));
-            if (models.size() > 0){
-                model.setSequence(models.get(0).getSequence() + 1);
-            }else{
-                model.setSequence(0);
-            }
-        }
+
         if (model.getIsTemplate() == null){
             model.setIsTemplate(false);
         }

@@ -3,8 +3,6 @@ package cn.crap.model;
 import java.util.Date;
 
 public class Menu extends BasePo{
-    private String id;
-
     private String menuName;
 
     private String menuUrl;
@@ -21,17 +19,7 @@ public class Menu extends BasePo{
 
     private Byte status;
 
-    private Integer sequence;
-
     private static final long serialVersionUID = 1L;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     public String getMenuName() {
         return menuName;
@@ -97,11 +85,4 @@ public class Menu extends BasePo{
         this.status = status;
     }
 
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
 }

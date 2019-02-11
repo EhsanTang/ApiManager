@@ -97,6 +97,7 @@ public class ProjectController extends BaseController {
             projectPO.setType(ProjectType.PRIVATE.getByteType());
             projectPO.setStatus(ProjectStatus.COMMON.getStatus());
             projectPO.setLuceneSearch(CommonEnum.FALSE.getByteValue());
+            projectPO.setSequence(System.currentTimeMillis());
             return new JsonResult(1, ProjectAdapter.getDto(projectPO, null));
         }
 
@@ -241,7 +242,7 @@ public class ProjectController extends BaseController {
         checkPermission(change);
         checkPermission(model);
 
-        int modelSequence = model.getSequence();
+        long modelSequence = model.getSequence();
         model.setSequence(change.getSequence());
         change.setSequence(modelSequence);
 

@@ -3,8 +3,6 @@ package cn.crap.model;
 import java.util.Date;
 
 public class Interface extends BasePo{
-    private String id;
-
     private String url;
 
     private String method;
@@ -23,8 +21,6 @@ public class Interface extends BasePo{
 
     private String version;
 
-    private Integer sequence;
-
     private String fullUrl;
 
     private Integer monitorType;
@@ -41,13 +37,6 @@ public class Interface extends BasePo{
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     public String getUrl() {
         return url;
@@ -119,14 +108,6 @@ public class Interface extends BasePo{
 
     public void setVersion(String version) {
         this.version = version == null ? null : version.trim();
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     public String getFullUrl() {

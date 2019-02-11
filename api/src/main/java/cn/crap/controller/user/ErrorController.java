@@ -63,6 +63,8 @@ public class ErrorController extends BaseController{
         } else {
             model = new Error();
             model.setProjectId(projectId);
+            model.setSequence(System.currentTimeMillis());
+
             checkPermission(projectCache.get(projectId), ProjectPermissionEnum.READ);
         }
         return new JsonResult(1, ErrorAdapter.getDto(model));

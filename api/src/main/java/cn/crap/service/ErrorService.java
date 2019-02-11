@@ -24,22 +24,6 @@ public class ErrorService extends BaseService<Error, ErrorDao> {
         super.setBaseDao(errorDao, TableId.ERROR);
     }
 
-    @Override
-    public boolean insert(Error model) throws MyException{
-        if (model == null) {
-            return false;
-        }
-        if (model.getSequence() == null){
-            List<Error>  models = query(new ErrorQuery().setPageSize(1).setProjectId(model.getProjectId()));
-            if (models.size() > 0){
-                model.setSequence(models.get(0).getSequence() + 1);
-            }else{
-                model.setSequence(0);
-            }
-        }
-        return super.insert(model);
-    }
-
     /**
      * 查询错误码
      * @param query

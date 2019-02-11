@@ -70,14 +70,6 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
         if (!ArticleStatus.PAGE.getStatus().equals(model.getStatus())) {
             model.setMkey(null);
         }
-        if (model.getSequence() == null){
-            List<Article>  models = this.query(new ArticleQuery().setPageSize(1).setProjectId(model.getProjectId()));
-            if (models.size() > 0){
-                model.setSequence(models.get(0).getSequence() + 1);
-            }else{
-                model.setSequence(0);
-            }
-        }
         return super.insert(model);
     }
 

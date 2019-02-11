@@ -31,7 +31,7 @@
 
             <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.executor != null]">
                 <span ng-click="setFilter('executor', sessionAdminId)">我解决的 </span>
-                <i class="iconfont" ng-click="setFilter('executor', null)" ng-if="$stateParams.creator != null">&#xe69a;</i>
+                <i class="iconfont" ng-click="setFilter('executor', null)" ng-if="$stateParams.executor != null">&#xe69a;</i>
             </div>
 
             <div ng-class="{true:'main-bg-opacity-1',false:'BGEEE'}[$stateParams.tracer != null]">

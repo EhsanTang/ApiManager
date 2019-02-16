@@ -57,7 +57,7 @@ public class CrapDebugController extends BaseController {
             projectService.insert(project);
         }
 
-        int moduleSequence = 0;
+        long moduleSequence = System.currentTimeMillis();
         for (DebugInterfaceParamDto d : list) {
             String moduleId = d.getModuleId();
             if (d == null || MyString.isEmpty(moduleId)) {
@@ -69,7 +69,7 @@ public class CrapDebugController extends BaseController {
                 moduleId = Tools.handleId(user, moduleId);
                 // 处理模块：删除、更新、添加，处理异常
                 handelModule(user, project, moduleSequence, d, moduleId);
-                moduleSequence = moduleSequence + 1;
+                moduleSequence = moduleSequence - 1;
 
                 // 处理模块ID、用户ID，避免多个用户混乱问题
                 handelModuleIdAndDubugId(user, d, moduleId);
@@ -131,9 +131,9 @@ public class CrapDebugController extends BaseController {
     }
 
     private void addDebug(LoginInfoDto user, DebugInterfaceParamDto d, int totalNum) {
-        long debugSequence = 0;
+        long debugSequence = System.currentTimeMillis();
         for (DebugDto debug : d.getDebugs()) {
-            debugSequence = debugSequence + 1;
+            debugSequence = debugSequence - 1;
             debug.setSequence(debugSequence);
             try {
                 if (MyString.isEmpty(debug.getId())) {

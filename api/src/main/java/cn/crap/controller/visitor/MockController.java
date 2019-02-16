@@ -4,6 +4,7 @@ import cn.crap.enu.InterfaceContentType;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.service.InterfaceService;
+import cn.crap.service.tool.StringCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +17,50 @@ public class MockController extends BaseController{
 
 	@Autowired
 	private InterfaceService interfaceService;
-	
+	@Autowired
+	private StringCache stringCache;
+
+	private static final String MOCK_KEY_PRE = "inter:mock:";
+
 	@RequestMapping("/trueExam.do")
 	@ResponseBody
-	public void trueExam(@RequestParam String id) throws Exception {
-		InterfaceWithBLOBs interfaceWithBLOBs = interfaceService.getById(id);
-		printMsg(interfaceWithBLOBs.getTrueExam(), InterfaceContentType.getByType(interfaceWithBLOBs.getContentType()));
-	}
-	
-	@RequestMapping("/falseExam.do")
+	public void trueExam(@RequestParam String id, @RequestParam(defaultValue = "false") Boolean cache){
+        getExam(id, true, cache);
+    }
+
+    @RequestMapping("/falseExam.do")
 	@ResponseBody
-	public void falseExam(@RequestParam String id) throws Exception {
-		InterfaceWithBLOBs interfaceWithBLOBs = interfaceService.getById(id);
-		printMsg(interfaceWithBLOBs.getFalseExam(), InterfaceContentType.getByType(interfaceWithBLOBs.getContentType()));
+	public void falseExam(@RequestParam String id, @RequestParam(defaultValue = "false") Boolean cache){
+        getExam(id, false, cache);
+	}
+
+
+    private void getExam(String id, boolean isTrueExam, boolean cache) {
+        String mockKey = getMockKey(id, isTrueExam);
+        String contentTypeKey = getMockKey(id, null);
+
+        if (cache){
+            String contentType = stringCache.get(contentTypeKey);
+            String mockResult = stringCache.get(mockKey);
+            if (contentType != null && mockResult != null){
+                printMsg(mockResult, InterfaceContentType.getByType(contentType));
+                return;
+            }
+        }
+
+        InterfaceWithBLOBs interfaceWithBLOBs = interfaceService.getById(id);
+        String mockResult = isTrueExam ? interfaceWithBLOBs.getTrueExam() : interfaceWithBLOBs.getFalseExam();
+        if (cache){
+            stringCache.add(mockKey, mockResult);
+            stringCache.add(contentTypeKey, interfaceWithBLOBs.getContentType());
+        }
+        printMsg(mockResult, InterfaceContentType.getByType(interfaceWithBLOBs.getContentType()));
+    }
+
+	public static String getMockKey(String id, Boolean isTrueExam){
+	    if (isTrueExam == null){
+            return MOCK_KEY_PRE + "contentType:" + id;
+        }
+		return MOCK_KEY_PRE + (isTrueExam ? "true:" : "false:")+ id;
 	}
 }

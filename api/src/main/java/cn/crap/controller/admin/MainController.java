@@ -72,7 +72,7 @@ public class MainController extends BaseController {
         // 从crapApi获取版本信息
         try {
             String crapApiInfo =
-                    HttpPostGet.get("http://api.crap.cn/mock/trueExam.do?id=c107b205-c365-4050-8fa9-dbb7a38b3d11", null, null);
+                    HttpPostGet.get("http://api.crap.cn/mock/trueExam.do?id=c107b205-c365-4050-8fa9-dbb7a38b3d11&cache=true", null, null);
             JSONObject json = JSONObject.fromObject(crapApiInfo);
             if (json.getInt("success") == 1) {
                 json = json.getJSONObject("data");

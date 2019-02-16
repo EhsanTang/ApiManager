@@ -2,6 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.beans.Config;
+import cn.crap.controller.visitor.MockController;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ParamDto;
@@ -190,6 +191,9 @@ public class InterfaceController extends BaseController{
 			}
 			
 			interfaceService.update(interFace, "接口", modifyRemark);
+			stringCache.del(MockController.getMockKey(id, true));
+			stringCache.del(MockController.getMockKey(id, false));
+			stringCache.del(MockController.getMockKey(id, null));
 		} else {
 			checkPermission(interFace.getProjectId(), ProjectPermissionEnum.ADD_INTER);
             InterfaceQuery interfaceQuery = new InterfaceQuery().setProjectId(newProjectId).setFullUrl(interFace.getFullUrl());

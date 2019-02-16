@@ -46,7 +46,7 @@ public class ExampleController extends BaseController{
 	@RequestMapping("/visitor/example/error.do")
 	@ResponseBody
 	public JsonResult error(@RequestParam(defaultValue = "200") Integer errorCode, HttpServletResponse response){
-		response.setStatus(302);
+		response.setStatus(errorCode);
 		return new JsonResult(1, errorCode);
 	}
 

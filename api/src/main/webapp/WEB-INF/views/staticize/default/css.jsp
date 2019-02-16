@@ -7,12 +7,10 @@
 	<link href="${settings.ICON}" rel="shortcut icon" type="image/x-icon" />
 	<link href="${settings.ICON}" rel="icon" type="image/x-icon" />
 	<link href="${settings.ICON}" rel="shortcut" type="image/x-icon" />
-	<link href="<%=basePath %>resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="<%=basePath %>resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+	<link href="../../resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="../../resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 	<!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
-	<link href="<%=basePath %>resources/css/base.css" rel="stylesheet" type="text/css" />
-	<link href="<%=basePath %>resources/css/crapApi.css" rel="stylesheet" type="text/css" />
-	<link href="<%=basePath %>resources/css/setting.css" rel="stylesheet" type="text/css" />
+	<link href="../../resources/css/allCss.css" rel="stylesheet" type="text/css" />
 	<title>${title}</title>
 <!-- TODO 样式提取到setting.css中-->
 <style type="text/css"> 

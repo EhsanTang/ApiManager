@@ -203,7 +203,6 @@ public class SystemService {
                 sql = CHANGE_SQL_MAP.get(sqlIndex);
 
                 if (sqlIndex <= lastSqIndex) {
-                    log.warn("检查数据库更新，序号:" + sqlIndex + "，sql已经执行过，跳过sql:" + sql);
                     continue;
                 }
 

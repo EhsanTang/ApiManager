@@ -31,23 +31,39 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
-    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean handleText4Word){
+    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean escape){
         if (model == null){
             return null;
         }
 
-		InterfaceDto dto = getDto(model, module, project, handleText4Word);
-		dto.setParam(handleText4Word(model.getParam(), handleText4Word));
-		dto.setParamRemark(handleText4Word(model.getParamRemark(), handleText4Word));
-		dto.setRequestExam(handleText4Word(model.getRequestExam(), handleText4Word));
-		dto.setResponseParam(handleText4Word(model.getResponseParam(), handleText4Word));
-		dto.setErrorList(handleText4Word(model.getErrorList(), handleText4Word));
-		dto.setTrueExam(handleText4Word(model.getTrueExam(), handleText4Word));
-		dto.setFalseExam(handleText4Word(model.getFalseExam(), handleText4Word));
-		dto.setRemark(handleText4Word(model.getRemark(), handleText4Word));
-		dto.setErrors(handleText4Word(model.getErrors(), handleText4Word));
-		dto.setHeader(handleText4Word(model.getHeader(), handleText4Word));
+		InterfaceDto dto = getDto(model, module, project, escape);
+
+		dto.setParam(model.getParam());
+		dto.setParamRemark(model.getParamRemark());
+		dto.setRequestExam(model.getRequestExam());
+		dto.setResponseParam(model.getResponseParam());
+		dto.setErrorList(model.getErrorList());
+		dto.setTrueExam(model.getTrueExam());
+		dto.setFalseExam(model.getFalseExam());
+		dto.setRemark(model.getRemark());
+		dto.setErrors(model.getErrors());
+		dto.setHeader(model.getHeader());
 		dto.setRemarkNoHtml(Tools.removeHtml(model.getRemark()));
+
+        if (escape){
+			dto.setParamRemark(Tools.escapeHtml(model.getParamRemark()));
+			dto.setRequestExam(Tools.escapeHtml(model.getRequestExam()));
+			dto.setResponseParam(Tools.escapeHtml(model.getResponseParam()));
+			dto.setErrorList(Tools.escapeHtml(model.getErrorList()));
+			dto.setErrors(Tools.escapeHtml(model.getErrors()));
+			dto.setHeader(Tools.escapeHtml(model.getHeader()));
+
+			dto.setFalseExam(Tools.escapeHtmlExceptBr(model.getFalseExam()));
+			dto.setTrueExam(Tools.escapeHtmlExceptBr(model.getTrueExam()));
+			dto.setParam(Tools.escapeHtmlExceptBr(model.getParam()));
+
+			dto.setRemark(removeHtmlExceptBr(model.getRemark()));
+		}
 
 		// 参数排序，一级->二级
 		List<ParamDto> responseParamList = JSONArray.parseArray(model.getResponseParam() == null ? "[]" : model.getResponseParam(), ParamDto.class);
@@ -67,50 +83,42 @@ public class InterfaceAdapter {
         return dto;
     }
 
-	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean handleText4Word){
+	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean escape){
 		if (model == null){
 			return null;
 		}
 
 		InterfaceDto dto = new InterfaceDto();
-		dto.setId(model.getId());
-		dto.setUrl(handleText4Word(model.getUrl(), handleText4Word));
-		dto.setMethod(model.getMethod());
-
-		dto.setStatus(model.getStatus());
-		dto.setModuleId(model.getModuleId());
-		dto.setInterfaceName(handleText4Word(model.getInterfaceName(), handleText4Word));
-		dto.setUpdateBy(handleText4Word(model.getUpdateBy(), handleText4Word));
-		dto.setVersion(handleText4Word(model.getVersion(), handleText4Word));
-		dto.setSequence(model.getSequence());
-		dto.setFullUrl(handleText4Word(model.getFullUrl(), handleText4Word));
-		dto.setMonitorType(model.getMonitorType());
-		dto.setMonitorText(handleText4Word(model.getMonitorText(), handleText4Word));
-		dto.setMonitorEmails(model.getMonitorEmails());
-		dto.setIsTemplate(model.getIsTemplate());
-		dto.setProjectId(model.getProjectId());
-		dto.setContentType(model.getContentType());
+		BeanUtil.copyProperties(model, dto);
 		dto.setContentTypeName(InterfaceContentType.getNameByType(model.getContentType()));
-
 		if (model.getCreateTime() != null) {
 			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
 		}
 		if (model.getUpdateTime() != null) {
 			dto.setUpdateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getUpdateTime().getTime()));
 		}
-
 		if (model.getStatus() != null){
 			dto.setStatusName(InterfaceStatus.getNameByValue(model.getStatus()));
 		}
 
 		if (module != null){
-			dto.setModuleName(handleText4Word(module.getName(), handleText4Word));
-			dto.setModuleUrl(handleText4Word(module.getUrl(), handleText4Word));
+			dto.setModuleName(module.getName());
+			dto.setModuleUrl(module.getUrl());
 		}
 		if (project != null){
 			dto.setProjectName(project.getName());
 		}
 
+		if (escape){
+			dto.setUrl(Tools.escapeHtml(dto.getUrl()));
+			dto.setInterfaceName(Tools.escapeHtml(dto.getInterfaceName()));
+			dto.setUpdateBy(Tools.escapeHtml(dto.getUpdateBy()));
+			dto.setVersion(Tools.escapeHtml(dto.getVersion()));
+			dto.setFullUrl(Tools.escapeHtml(dto.getFullUrl()));
+			dto.setMonitorText(Tools.escapeHtml(dto.getMonitorText()));
+			dto.setModuleName(Tools.escapeHtml(dto.getModuleName()));
+			dto.setModuleUrl(Tools.escapeHtml(dto.getModuleUrl()));
+		}
 		return dto;
 	}
 
@@ -118,24 +126,22 @@ public class InterfaceAdapter {
      * html 转word 保留换行
 	 * 转义 < >
      * @param str
-     * @param handleText4Word
      * @return
      */
-    private static String handleText4Word(String str, boolean handleText4Word){
+    private static String removeHtmlExceptBr(String str){
         if (MyString.isEmpty(str)){
             return "";
         }
-    	if (handleText4Word){
-    		str = str.replaceAll("</div>", "_CARP_BR_");
-            str = str.replaceAll("</span>", "_CARP_BR_");
-            str = str.replaceAll("<br/>", "_CARP_BR_");
-            str = str.replaceAll("<br>", "_CARP_BR_");
-            str = str.replaceAll("</p>", "_CARP_BR_");
-            str = str.replaceAll("\r\n", "_CARP_BR_");
-            str = str.replaceAll("\n", "_CARP_BR_");
-            str = Tools.removeHtml(str);
-            str = str.replaceAll("_CARP_BR_", "<w:br/>");
-		}
+		str = str.replaceAll("</div>", "_CARP_BR_");
+		str = str.replaceAll("</span>", "_CARP_BR_");
+		str = str.replaceAll("<br/>", "_CARP_BR_");
+		str = str.replaceAll("<br>", "_CARP_BR_");
+		str = str.replaceAll("</p>", "_CARP_BR_");
+		str = str.replaceAll("\r\n", "_CARP_BR_");
+		str = str.replaceAll("\n", "_CARP_BR_");
+		str = Tools.removeHtml(str);
+		str = Tools.escapeHtml(str);
+		str = str.replaceAll("_CARP_BR_", "<w:br/>");
 		return str;
 	}
 

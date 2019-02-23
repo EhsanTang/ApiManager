@@ -1,18 +1,15 @@
 package cn.crap.utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.crap.beans.Config;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-import cn.crap.beans.Config;
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 public class Html2Pdf {
 	/**

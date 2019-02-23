@@ -7,6 +7,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Project;
 import cn.crap.service.tool.StringCache;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -423,12 +424,24 @@ public class Tools {
             return "";
         }
         inputStr = inputStr.replaceAll("<[a-zA-Z|//]+[1-9]?[^><]*>", "");
-        inputStr = inputStr.replaceAll("&nbsp;", "");
+        inputStr = inputStr.replaceAll("&nbsp;", " ");
         inputStr = inputStr.replaceAll("<", "&lt;");
         inputStr = inputStr.replaceAll(">", "&gt;");
         return inputStr;
     }
 
+    public static String escapeHtml(String inputStr){
+        return StringEscapeUtils.escapeHtml(inputStr);
+    }
+
+    public static String escapeHtmlExceptBr(String str){
+        str = str.replaceAll("<br/>", "_CARP_BR_");
+        str = str.replaceAll("<br>", "_CARP_BR_");
+        str = str.replaceAll("\r\n", "_CARP_BR_");
+        str = str.replaceAll("\n", "_CARP_BR_");
+        str = escapeHtml(str);
+        return str.replaceAll("_CARP_BR_", "<w:br/>");
+    }
     public static String subString(String str, int length, String suffix) {
         if (MyString.isEmpty(str)) {
             return "";

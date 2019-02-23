@@ -5,10 +5,7 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dao.mybatis.InterfaceDao;
-import cn.crap.dto.ErrorDto;
-import cn.crap.dto.InterfacePDFDto;
-import cn.crap.dto.ParamDto;
-import cn.crap.dto.SearchDto;
+import cn.crap.dto.*;
 import cn.crap.enu.LogType;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
@@ -137,24 +134,32 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      *
      * @param interFace
      * @param module
-     * @param handleText4Word 是否需要处理字符内容
+     * @param escape 是否需要处理字符内容
      * @return
      */
-    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, Module module, boolean handleText4Word) {
+    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, Module module, boolean escape, boolean isPdf) {
         InterfacePDFDto interDto = new InterfacePDFDto();
-        interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, handleText4Word));
-
+        interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, escape));
 
         if(interFace.getParam().startsWith("form=")){
             List<ParamDto> paramList = JSONArray.parseArray(interFace.getParam() == null ? "[]" : interFace.getParam().substring(5, interFace.getParam().length()), ParamDto.class);
             interDto.setFormParams(InterfaceAdapter.sortParam(null, paramList, null));
         }else{
             interDto.setCustom(true);
-            interDto.setCustomParams( interFace.getParam());
+            interDto.setCustomParams(interDto.getModel().getParam());
         }
+
+        // 如果是pdf，需要将 <w:br/> 转成<br/>
+        if (escape && isPdf){
+            InterfaceDto interfaceDTO = interDto.getModel();
+            interfaceDTO.setFalseExam(interfaceDTO.getFalseExam().replaceAll("<w:br/>", "<br/>"));
+            interfaceDTO.setTrueExam(interfaceDTO.getTrueExam().replaceAll("<w:br/>", "<br/>"));
+            interfaceDTO.setParam(interfaceDTO.getParam().replaceAll("<w:br/>", "<br/>"));
+            interfaceDTO.setRemark(interfaceDTO.getRemark().replaceAll("<w:br/>", "<br/>"));
+        }
+
         interDto.setTrueMockUrl(Config.domain+"/mock/trueExam.do?id="+interFace.getId());
         interDto.setFalseMockUrl(Config.domain+"/mock/falseExam.do?id="+interFace.getId());
-
         List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
 

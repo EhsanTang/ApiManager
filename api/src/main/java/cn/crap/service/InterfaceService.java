@@ -52,6 +52,9 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (model.getIsTemplate() == null){
             model.setIsTemplate(false);
         }
+        if(model.getParam() == null){
+            model.setParam("");
+        }
         model.setUpdateTime(new Date());
         return super.insert(model);
     }
@@ -141,7 +144,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, escape));
 
-        if(interFace.getParam().startsWith("form=")){
+        if(interFace.getParam() != null && interFace.getParam().startsWith("form=")){
             List<ParamDto> paramList = JSONArray.parseArray(interFace.getParam() == null ? "[]" : interFace.getParam().substring(5, interFace.getParam().length()), ParamDto.class);
             interDto.setFormParams(InterfaceAdapter.sortParam(null, paramList, null));
         }else{

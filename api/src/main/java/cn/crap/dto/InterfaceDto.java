@@ -1,6 +1,5 @@
 package cn.crap.dto;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,10 +41,17 @@ public class InterfaceDto{
 	private String projectId;
 	private String projectName;
 	private String remarkNoHtml;
+	/**
+	 * 返回类型
+	 */
 	private String contentType;
     private String contentTypeName;
+	/**
+	 * 请求类型
+	 */
+	private String reqContentType;
 
-    /**
+	/**
      * crShow开头的参数仅用于显示，请求中crShow开头的参数将被过滤
      */
     private List<ParamDto> crShowResponseParamList;
@@ -340,4 +346,12 @@ public class InterfaceDto{
     public void setCrShowParamList(List<ParamDto> crShowParamList) {
         this.crShowParamList = crShowParamList;
     }
+
+	public String getReqContentType() {
+		return reqContentType;
+	}
+
+	public void setReqContentType(String reqContentType) {
+		this.reqContentType = reqContentType;
+	}
 }

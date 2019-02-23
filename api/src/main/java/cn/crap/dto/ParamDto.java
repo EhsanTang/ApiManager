@@ -17,7 +17,14 @@ public class ParamDto implements Serializable{
 	private String inUrl = "";
 	private Integer deep = 0;
 
-
+	public ParamDto(){}
+	public ParamDto(String name, String necessary, String type, String def, String remark){
+		this.name = name;
+		this.necessary = necessary;
+		this.type = type;
+		this.def = def;
+		this.remark = remark;
+	}
 	public String getName() {
 		return name;
 	}

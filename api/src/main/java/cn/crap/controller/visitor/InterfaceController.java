@@ -110,6 +110,7 @@ public class InterfaceController extends BaseController {
             request.setAttribute("moduleName", module.getName());
             return "/WEB-INF/views/interFacePdf.jsp";
         } catch (Exception e) {
+            log.error("接口下载数据有误,id:" + id + ",moduleId:" + moduleId, e);
             request.setAttribute("result", "接口数据有误，请修改接口后再试，错误信息：" + e.getMessage());
             return ERROR_VIEW;
         }

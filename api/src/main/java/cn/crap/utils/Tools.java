@@ -435,6 +435,9 @@ public class Tools {
     }
 
     public static String escapeHtmlExceptBr(String str){
+        if (str == null){
+            return "";
+        }
         str = str.replaceAll("<br/>", "_CARP_BR_");
         str = str.replaceAll("<br>", "_CARP_BR_");
         str = str.replaceAll("\r\n", "_CARP_BR_");

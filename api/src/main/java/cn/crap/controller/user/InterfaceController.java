@@ -22,7 +22,9 @@ import cn.crap.service.ErrorService;
 import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
 import cn.crap.utils.*;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user/interface")
@@ -75,37 +78,16 @@ public class InterfaceController extends BaseController{
 		if(id != null){
 			model= interfaceService.getById(id);
 			module = moduleCache.get(model.getModuleId());
-		}else{
-			model = new InterfaceWithBLOBs();
+		} else{
+			model = InterfaceAdapter.getInit();
 			module = moduleCache.get(moduleId);
 			model.setModuleId( moduleId);
 			model.setProjectId(module.getProjectId() == null ? projectId : module.getProjectId());
-			model.setResponseParam("[]");
-			model.setHeader("[]");
-			model.setParamRemark("[]");
-            model.setErrors("[]");
-            model.setMethod(IConst.C_METHOD_GET);
-            model.setStatus(InterfaceStatus.ONLINE.getByteValue());
-            model.setContentType(InterfaceContentType.JSON.getType());
-            model.setParam(IConst.C_PARAM_FORM_PRE + "[]");
-			model.setSequence(System.currentTimeMillis());
-
+            // 根据模板初始化接口
             if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
-				// 根据模板初始化接口
 				if(template != null){
-					model.setHeader(template.getHeader());
-					model.setParam(template.getParam());
-					model.setMethod(template.getMethod());
-					model.setVersion(template.getVersion());
-					model.setParamRemark(template.getParamRemark());
-					model.setResponseParam(template.getResponseParam());
-					model.setErrorList(template.getErrorList());
-					model.setErrors(template.getErrors());
-					model.setFalseExam(template.getFalseExam());
-					model.setTrueExam(template.getTrueExam());
-					model.setStatus(template.getStatus());
-					model.setContentType(template.getContentType());
+				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url", "fulUrl", "sequence");
 				}
 			}
 		}
@@ -163,9 +145,30 @@ public class InterfaceController extends BaseController{
 		dto.setUrl(dto.getUrl().trim());
         dto.setFullUrl(module.getUrl() + dto.getUrl());
 
+
+        List<ParamDto> headerList =JSONArray.parseArray(dto.getHeader() == null ? "[]" : dto.getHeader(), ParamDto.class);
+        ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()
+                .filter(tempHeader -> tempHeader.getName() != null && tempHeader.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
         if (C_PARAM_FORM.equals(dto.getParamType())){
 		    dto.setParam(C_PARAM_FORM_PRE + dto.getParam());
+            if (contentTypeDto != null){
+                headerList.remove(contentTypeDto);
+            }
         }
+        /**
+         * 自定义参数，下拉添加Content-Type
+         */
+        else {
+            String reqContentType = Optional.ofNullable(dto.getReqContentType()).orElse(InterfaceContentType.JSON.getType());
+            if (contentTypeDto == null){
+                ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, "指定参数类型为" + reqContentType);
+                headerList.add(0, paramDto);
+            } else{
+                contentTypeDto.setDef(reqContentType);
+                contentTypeDto.setRemark("指定参数类型为" + reqContentType);
+            }
+		}
+        dto.setHeader(JSON.toJSONString(headerList));
 		
 		/**
 		 * 根据选着的错误码id，组装json字符串
@@ -289,24 +292,6 @@ public class InterfaceController extends BaseController{
             luceneService.delete(new SearchDto(interFace.getId()));
 			interfaceService.delete(interFace.getId(), "接口", "");
 		}
-		return new JsonResult(1, null);
-	}
-
-	@RequestMapping("/changeSequence.do")
-	@ResponseBody
-	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		InterfaceWithBLOBs change = interfaceService.getById(changeId);
-		InterfaceWithBLOBs model = interfaceService.getById(id);
-		checkPermission(model.getProjectId(), ProjectPermissionEnum.MOD_INTER);
-		checkPermission(change.getProjectId(), ProjectPermissionEnum.MOD_INTER);
-		
-		Long modelSequence = model.getSequence();
-		
-		model.setSequence(change.getSequence());
-		change.setSequence(modelSequence);
-
-		interfaceService.update(model);
-		interfaceService.update(change);
 		return new JsonResult(1, null);
 	}
 }

@@ -28,9 +28,12 @@ public interface IConst {
     String C_METHOD_GET = "GET";
     String C_SEPARATOR = "C_SEPARATOR";
     String C_BUG= "BUG";
+    String C_CONTENT_TYPE = "Content-Type";
+	String C_STRING = "string";
 
 
-    int ALL_PAGE_SIZE = -100; // 不分页
+
+	int ALL_PAGE_SIZE = -100; // 不分页
     long ONE_DAY = 24 * 60 * 60 * 1000;
     long TWO_HOUR = 2 * 60 * 60 * 1000;
 

@@ -90,11 +90,13 @@
         iClose('lookUp');
     }
 	</script>
+<c:if test="${radio!='true'}">
 <div class="form-group">
 	<blockquote>
 		<p class="f12 fb pl10 tl C999">回车即可快速确认</p>
 	</blockquote>
 </div>
+</c:if>
 <div id="pickContent">
 	${pickContent}
 </div>

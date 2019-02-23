@@ -15,34 +15,39 @@
         </button>
         <button ng-class="{true: 'btn btn-main btn-sm param-type', false:'btn btn-default btn-sm param-type'}[model.paramType == 'RAW']"
                 type="button" ng-click="model.paramType = 'RAW'">
-            自定义[Row]
+            自定义「Json、Xml选我」
         </button>
     </div>
 
-    <button type="button" onclick="addOneInterParamTr()" class="btn btn-sm btn-main active-main fr mr10 mt5">
+    <!-- 自定义参数下拉选项 -->
+    <input class="form-control input-sm active-main w150 fl mt5" readonly type="text" id="reqContentType" ng-model="model.reqContentType" ng-if="model.paramType == 'RAW'"
+           ng-click="loadPickByName('iwidth=160|iheight=180|tag=reqContentType|code=INTERFACE_CONTENT_TYPE|def='+model.reqContentType, $event)">
+
+
+    <button type="button" onclick="addOneInterParamTr()" class="btn btn-sm btn-main active-main fr mr10 mt5" ng-if="model.paramType == 'FORM'">
         添加一行
     </button>
-    <button type="button" class="btn btn-sm btn-main active-main fr mr10 mt5" ng-click="openInterfaceDialog('param', '导入参数', 500);">
+    <button type="button" class="btn btn-sm btn-main active-main fr mr10 mt5" ng-click="openInterfaceDialog('param', '导入参数', 500);" ng-if="model.paramType == 'FORM'">
         导入请求参数
     </button>
 </div>
 
 
 <input type="hidden" name="paramType" ng-model="model.paramType">
-	<table ng-class="{true: 'table-bordered tl editor-table input-no-border mb0 w', false:'table-bordered tl editor-table input-no-border mb0 w none'}[model.paramType == 'FORM']" id="editParamTable">
-        <thead>
-            <tr class="BGF5 fw500 f14 C000">
-                <td class="p10">名称</td>
-                <td class="p10 w60">必填</td>
-                <td class="p10 w100">位置</td>
-                <td class="p10 w100">类型</td>
-                <td class="p10 w100">默认值</td>
-                <td class="p10 w100">备注</td>
-                <td class="w100 tc p10">操作</td>
-            </tr>
-        </thead>
-        <tbody></tbody>
-	</table>
+<table ng-class="{true: 'table-bordered tl editor-table input-no-border mb0 w', false:'table-bordered tl editor-table input-no-border mb0 w none'}[model.paramType == 'FORM']" id="editParamTable">
+    <thead>
+        <tr class="BGF5 fw500 f14 C000">
+            <td class="p10">名称</td>
+            <td class="p10 w60">必填</td>
+            <td class="p10 w100">位置</td>
+            <td class="p10 w100">类型</td>
+            <td class="p10 w100">默认值</td>
+            <td class="p10 w100">备注</td>
+            <td class="w100 tc p10">操作</td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 <div ng-class="{true: 'p0', false:'p0 none'}[model.paramType == 'RAW']">
     <textarea  class="form-control no-resize r0 b0" rows="8" ng-model="model.param"></textarea>
 </div>

@@ -16,13 +16,14 @@ import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 
 /**
@@ -31,6 +32,19 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class InterfaceAdapter {
+    public static InterfaceWithBLOBs getInit(){
+        InterfaceWithBLOBs model = new InterfaceWithBLOBs();
+        model.setResponseParam("[]");
+        model.setHeader("[]");
+        model.setParamRemark("[]");
+        model.setErrors("[]");
+        model.setMethod(IConst.C_METHOD_GET);
+        model.setStatus(InterfaceStatus.ONLINE.getByteValue());
+        model.setContentType(InterfaceContentType.JSON.getType());
+        model.setParam(IConst.C_PARAM_FORM_PRE + "[]");
+        model.setSequence(System.currentTimeMillis());
+        return model;
+    }
     public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean escape){
         if (model == null){
             return null;
@@ -71,6 +85,11 @@ public class InterfaceAdapter {
 
         List<ParamDto> headerList =JSONArray.parseArray(model.getHeader() == null ? "[]" : model.getHeader(), ParamDto.class);
         dto.setCrShowHeaderList(sortParam(null, headerList, null));
+        Optional.ofNullable(headerList).orElse(Lists.newArrayList()).forEach(tempHeader ->{
+            if (tempHeader.getName() != null && tempHeader.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE) && tempHeader.getDef() != null){
+                dto.setReqContentType(tempHeader.getDef());
+            }
+        });
 
         dto.setParamType((model.getParam() == null || model.getParam().startsWith(IConst.C_PARAM_FORM_PRE)) ?
 				IConst.C_PARAM_FORM : IConst.C_PARAM_RAW);
@@ -91,6 +110,7 @@ public class InterfaceAdapter {
 		InterfaceDto dto = new InterfaceDto();
 		BeanUtil.copyProperties(model, dto);
 		dto.setContentTypeName(InterfaceContentType.getNameByType(model.getContentType()));
+		dto.setReqContentType(InterfaceContentType.JSON.getType());
 		if (model.getCreateTime() != null) {
 			dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(model.getCreateTime().getTime()));
 		}

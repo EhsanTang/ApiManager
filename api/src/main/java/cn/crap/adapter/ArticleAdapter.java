@@ -2,17 +2,11 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ArticleDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.ArticleStatus;
-import cn.crap.enu.ArticleType;
-import cn.crap.enu.LuceneSearchType;
-import cn.crap.enu.ProjectType;
-import cn.crap.framework.SpringContextHolder;
+import cn.crap.enu.*;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.service.tool.ModuleCache;
-import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.*;
 
 import java.util.ArrayList;
@@ -118,31 +112,18 @@ public class ArticleAdapter {
 	}
 
 	public static SearchDto getSearchDto(ArticleWithBLOBs model){
-        ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
-        ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
-        Project project = projectCache.get(model.getProjectId());
-        SearchDto dto = new SearchDto();
-		String modelId = model.getId();
-		dto.setId(modelId);
-		dto.setCreateTime(model.getCreateTime());
-		dto.setContent(MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()));
-		dto.setModuleName(moduleCache.get(modelId).getName());
-		dto.setTitle(model.getName());
-		dto.setType("Article");
-		String articleUrl = "#/article/detail?projectId=%s&modelId=%s&type=%s&id=%s";
-		dto.setUrl(String.format(articleUrl, model.getProjectId(), model.getModuleId(), model.getType(), modelId));
-		dto.setVersion("");
-		dto.setProjectId(model.getProjectId());
-
-		dto.setNeedCreateIndex(false);
-        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
-            dto.setNeedCreateIndex(true);
-        }
+		Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+		boolean open = false;
+		if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+			open = true;
+		}
 
 		// 私有项目不能建立索引
 		if(project.getType() == ProjectType.PRIVATE.getType()){
-			dto.setNeedCreateIndex(false);
+			open = false;
 		}
-		return dto;
+
+		return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.ARTICLE,
+				MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()), null,  open, model.getCreateTime());
 	}
 }

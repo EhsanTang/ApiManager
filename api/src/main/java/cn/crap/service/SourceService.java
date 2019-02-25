@@ -105,19 +105,19 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
         return example;
     }
 
-    public List<SearchDto> getAll() {
+    @Override
+    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         SourceCriteria example = new SourceCriteria();
+        SourceCriteria.Criteria criteria = example.createCriteria();
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        example.setMaxResults(pageSize);
+        if (id != null){
+            criteria.andIdGreaterThan(id);
+        }
+        example.setOrderByClause(TableField.SORT.ID_ASC);
         return SourceAdapter.getSearchDto(sourceDao.selectByExample(example));
     }
-
-    public List<SearchDto> getAllByProjectId(String projectId) {
-        SourceCriteria example = new SourceCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
-        return SourceAdapter.getSearchDto(sourceDao.selectByExample(example));
-    }
-
-    public String getLuceneType() {
-        return "资源";
-    }
-
 }

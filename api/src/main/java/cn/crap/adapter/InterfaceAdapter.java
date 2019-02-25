@@ -3,21 +3,14 @@ package cn.crap.adapter;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.InterfaceContentType;
-import cn.crap.enu.InterfaceStatus;
-import cn.crap.enu.LuceneSearchType;
-import cn.crap.enu.ProjectType;
-import cn.crap.framework.SpringContextHolder;
+import cn.crap.enu.*;
 import cn.crap.model.Interface;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.service.tool.ModuleCache;
-import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -224,39 +217,23 @@ public class InterfaceAdapter {
 		return dtos;
 	}
 
-	public static SearchDto getSearchDto(InterfaceWithBLOBs model) {
-		Assert.notNull(model);
-		Assert.notNull(model.getProjectId());
+	public static SearchDto getSearchDto(InterfaceWithBLOBs model){
+		Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+		boolean open = false;
+		if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+			open = true;
+		}
 
-		ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
-		ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
+		// 私有项目不能建立索引
+		if(project.getType() == ProjectType.PRIVATE.getType()){
+			open = false;
+		}
 
-		Module module = moduleCache.get(model.getModuleId());
-		Project project = projectCache.get(model.getProjectId());
-
-		SearchDto dto = new SearchDto();
-		dto.setId(model.getId());
-		dto.setCreateTime(model.getCreateTime());
-		dto.setContent(MyString.getStr(model.getRemark()) + MyString.getStr(model.getResponseParam()) + MyString.getStr(model.getParam()));
-		dto.setModuleName(module.getName());
-		dto.setTitle(model.getInterfaceName());
-		dto.setType(Interface.class.getSimpleName());
-		dto.setUrl("#/interface/detail?projectId=" + model.getProjectId() + "&id=" + model.getId());
-		dto.setVersion(model.getVersion());
-		dto.setHref(model.getFullUrl());
-		dto.setProjectId(model.getProjectId());
-
-		dto.setNeedCreateIndex(false);
-        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
-            dto.setNeedCreateIndex(true);
-        }
-        // 私有项目不能建立索引
-        if(project.getType() == ProjectType.PRIVATE.getType()){
-            dto.setNeedCreateIndex(false);
-        }
-		return dto;
-
+		return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getInterfaceName(), TableId.INTERFACE,
+				MyString.getStr(model.getRemark()) + MyString.getStr(model.getResponseParam()) + MyString.getStr(model.getParam()),
+                model.getFullUrl(),  open, model.getCreateTime());
 	}
+
 
 	private static final String PARAM_SEPARATOR = "->";
     /**

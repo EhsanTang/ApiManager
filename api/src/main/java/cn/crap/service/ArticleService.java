@@ -217,19 +217,19 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
         logService.insert(log);
     }
 
-    public List<SearchDto> getAll() {
-        return ArticleAdapter.getSearchDto(articleDao.selectByExampleWithBLOBs(new ArticleCriteria()));
-    }
-
     @Override
-    public String getLuceneType() {
-        return "文档&数据库表";
-    }
-
-    @Override
-    public List<SearchDto> getAllByProjectId(String projectId) {
+    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         ArticleCriteria example = new ArticleCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        ArticleCriteria.Criteria criteria = example.createCriteria();
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        example.setMaxResults(pageSize);
+        if (id != null){
+            criteria.andIdGreaterThan(id);
+        }
+        example.setOrderByClause(TableField.SORT.ID_ASC);
         return ArticleAdapter.getSearchDto(articleDao.selectByExampleWithBLOBs(example));
     }
 

@@ -50,7 +50,7 @@ visitorModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http,
 	$scope.getData = function(page) {
 		if(!$stateParams.keyword)
 			$stateParams.keyword ="";
-		params = "iUrl=visitorSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		params = "iUrl=search.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

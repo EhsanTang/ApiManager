@@ -18,6 +18,7 @@ public abstract class BaseQuery<T> {
     private String sort;
     private Byte status;
     private Integer start;
+    private boolean needStart = true;
 
     abstract T getQuery();
 
@@ -96,5 +97,14 @@ public abstract class BaseQuery<T> {
 
     public void setStart(Integer start) {
         this.start = start;
+    }
+
+    public boolean isNeedStart() {
+        return needStart;
+    }
+
+    public T setNeedStart(boolean needStart) {
+        this.needStart = needStart;
+        return getQuery();
     }
 }

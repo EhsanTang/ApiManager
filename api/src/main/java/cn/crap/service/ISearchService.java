@@ -15,7 +15,8 @@ public interface ISearchService{
 	 * @return
 	 * @throws Exception 
 	 */
-	List<SearchDto> search(String keyword, Page page) throws Exception;
+	List<SearchDto> search(String projectId, boolean open, String keyword, Page page) throws Exception;
+
 
 	/**
 	 * 删除索引文件

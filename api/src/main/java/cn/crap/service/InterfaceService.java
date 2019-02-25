@@ -76,7 +76,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
     public List<Interface> query(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
-
+        Assert.notNull(query.getProjectId());
         Page page = new Page(query);
         InterfaceCriteria example = getInterfaceCriteria(query);
         if (page.getSize() != ALL_PAGE_SIZE) {
@@ -212,11 +212,6 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         interFace.setRequestExam(interFace.getRequestExam()+strHeaders.toString()+strParams.toString());
     }**/
 
-
-    public String getLuceneType() {
-        return "接口";
-    }
-
     /**
      * update article and add update log
      * @param model
@@ -267,14 +262,19 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
     }
 
-    public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()));
-    }
-
     @Override
-    public List<SearchDto> getAllByProjectId(String projectId) {
+    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         InterfaceCriteria example = new InterfaceCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(example));
+        InterfaceCriteria.Criteria criteria = example.createCriteria();
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        example.setMaxResults(pageSize);
+        if (id != null){
+            criteria.andIdGreaterThan(id);
+        }
+        example.setOrderByClause(TableField.SORT.ID_ASC);
+        return InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(example));
     }
 }

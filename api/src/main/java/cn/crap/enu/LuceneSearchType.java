@@ -3,8 +3,8 @@ package cn.crap.enu;
 public enum LuceneSearchType {
 	
 	
-	No("不建立索引",new Byte("0")),
-	Yes("建立索引",new Byte("1"));
+	No("不开放搜索",new Byte("0")),
+	Yes("开放搜索",new Byte("1"));
 	
 	private String name;
 	private byte value;

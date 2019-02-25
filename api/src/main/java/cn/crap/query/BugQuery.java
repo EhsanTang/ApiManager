@@ -10,6 +10,7 @@ public class BugQuery extends BaseQuery<BugQuery>{
     private String executor;
     private String tracer;
     private String tester;
+    private String greatThenId;
 
     @Override
     public BugQuery getQuery(){
@@ -58,6 +59,15 @@ public class BugQuery extends BaseQuery<BugQuery>{
 
     public BugQuery setTester(String tester) {
         this.tester = tester;
+        return this;
+    }
+
+    public String getGreatThenId() {
+        return greatThenId;
+    }
+
+    public BugQuery setGreatThenId(String greatThenId) {
+        this.greatThenId = greatThenId;
         return this;
     }
 }

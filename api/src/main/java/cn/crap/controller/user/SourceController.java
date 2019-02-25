@@ -15,6 +15,7 @@ import cn.crap.model.Source;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.SourceService;
+import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,6 @@ public class SourceController extends BaseController{
         String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         dto.setProjectId(newProjectId);
         Source source = SourceAdapter.getModel(dto);
-
         // 判断版本号是否正确 .CAV.文件标识.版本号
         if( !source.getFilePath().contains(".CAV.") ){
             throw new MyException(MyError.E000017);
@@ -109,7 +109,12 @@ public class SourceController extends BaseController{
             throw new MyException(MyError.E000017);
         }
 
-        if(id != null){
+		String docContent = GetTextFromFile.getText(source.getFilePath());
+        if (MyString.isEmpty(source.getRemark())){
+        	source.setRemark(docContent.length() > 2500 ? docContent.substring(0, 2500) : docContent);
+		}
+
+		if(id != null){
             Source oldSource = sourceService.getById(source.getId());
             String oldVsesions[]  = oldSource.getFilePath().split("\\.");
             if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){

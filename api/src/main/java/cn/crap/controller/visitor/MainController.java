@@ -219,11 +219,11 @@ public class MainController extends BaseController{
 	}
 	
 
-	@RequestMapping("/visitorSearch.do")
+	@RequestMapping("/search.do")
 	@ResponseBody
-	public JsonResult visitorSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
+	public JsonResult search(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
 		if(Config.luceneSearchNeedLogin){
-			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
+			LoginUserHelper.getUser(MyError.E000043);
 		}
 		keyword = keyword.trim();
         if (keyword.length() > 200){
@@ -231,10 +231,9 @@ public class MainController extends BaseController{
         }
 
 		Page page= new Page(currentPage);
-		List<SearchDto> searchResults = luceneService.search(keyword, page);
+		List<SearchDto> searchResults = luceneService.search(null, true, keyword, page);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
-
 
 		// 将搜索的内容记入数据库
 		if(MyString.isNotEmpty(keyword)){

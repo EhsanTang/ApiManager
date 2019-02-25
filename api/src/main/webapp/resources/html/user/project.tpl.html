@@ -18,13 +18,13 @@
 
 				是否公开：<span class="C000" ng-bind="projectDetail.typeName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
-					  title="「私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
+					  title="「私有项目不开放搜索，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
 					<i class="iconfont adorn-color">&#xe6a3;</i>
 				</span>
 
-				是否建立索引：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
+				是否开放搜索：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('lucene-tip')" id="lucene-tip" data-toggle="tooltip" data-placement="right"
-					  title="「私有项目不会创建索引，公开项目且设置为创建索引才会创建索引」">
+					  title="「私有项目不会开放搜索，只能登录后在项目下进行搜索，公开项目且设置为开放搜索才能通过站内搜索查询项目」">
 					<i class="iconfont adorn-color">&#xe6a3;</i>
 				</span>
 				<br/>

@@ -1,16 +1,15 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.BugDTO;
-import cn.crap.enu.BugPriority;
-import cn.crap.enu.BugSeverity;
-import cn.crap.enu.BugStatus;
-import cn.crap.enu.BugType;
+import cn.crap.dto.SearchDto;
+import cn.crap.enu.*;
 import cn.crap.model.BugPO;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
+import cn.crap.utils.ServiceFactory;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -93,5 +92,36 @@ public class BugAdapter {
             dtos.add(getDto(model, null, null));
         }
         return dtos;
+    }
+
+    public static List<SearchDto> getSearchDto(List<BugPO> models){
+        if (models == null){
+            return new ArrayList<>();
+        }
+        List<SearchDto> dtos = new ArrayList<>();
+        for (BugPO model : models){
+            try {
+                dtos.add(getSearchDto(model));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return dtos;
+    }
+
+    public static SearchDto getSearchDto(BugPO model){
+        Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+        boolean open = false;
+        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+            open = true;
+        }
+
+        // 私有项目不能建立索引
+        if(project.getType() == ProjectType.PRIVATE.getType()){
+            open = false;
+        }
+
+        return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.BUG,
+                 MyString.getStr(model.getContent()), null,  open, model.getCreateTime());
     }
 }

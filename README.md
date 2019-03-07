@@ -1,3 +1,6 @@
+#
+[官网在线使用地址 http://www.bishi.org.cn/](http://www.bishi.org.cn/)
+
 # CrapApi
 [官网在线使用地址crap.cn](http://crap.cn)
 [官网在线使用地址api.crap.cn](http://api.crap.cn)

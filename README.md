@@ -1,4 +1,4 @@
-#
+# 域名临时切换为 http://www.bishi.org.cn/！！！！
 [官网在线使用地址 http://www.bishi.org.cn/](http://www.bishi.org.cn/)
 
 # CrapApi

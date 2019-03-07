@@ -1,5 +1,5 @@
-# 域名临时切换为 http://www.bishi.org.cn/  ！！！！
-[官网在线使用地址 http://www.bishi.org.cn/](http://www.bishi.org.cn/)
+# 域名临时切换为 http://123.56.41.127/  ！！！！
+[官网在线使用地址 http://123.56.41.127/](http://123.56.41.127/)
 
 # CrapApi
 [官网在线使用地址crap.cn](http://crap.cn)

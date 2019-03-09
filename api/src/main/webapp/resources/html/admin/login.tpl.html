@@ -5,15 +5,15 @@
 <input type="hidden" value="[ERROR][LOGINPAGE]" />
 <form class="form-horizontal p15 mt10" ng-submit="loginOrRegister('user/login.do', loginSuccess, true)" ng-controller="loginOrRegisterCtrl" ng-init="loginOrRegister('user/preLogin.do')">
     <div class="input-wrapper">
-		<input type="text" ng-model="model.userName" placeholder="用户名（6-20位）" autocomplete="off" required name="userName"/>
+		<input type="text" autocomplete="off" ng-model="model.userName" placeholder="用户名（6-20位）" required name="userName"/>
 	</div>
 	<div class="input-wrapper">
-		<input type="password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" autocomplete="off" required/>
+		<input type="text" autocomplete="off" onfocus="this.type='password'" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
 	</div>
 	<div class="input-wrapper"
 		ng-if="settings.VERIFICATIONCODE=='true'">
-		<input type="text" ng-model="model.verificationCode" name="verificationCode"
-			autocomplete="off" placeholder="图形验证码" required>
+		<input type="text" autocomplete="off" ng-model="model.verificationCode" name="verificationCode"
+			placeholder="图形验证码" required>
 
 		<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
 			data-toggle="tooltip">
@@ -65,3 +65,8 @@
 </form>
 
 <div class="text-error mb15 mt10" id="main-error" ng-if="hasError(error,'main-error')" ng-bind="error"></div>
+<script type="text/javascript">
+    $(function(){
+        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off');
+    });
+</script>

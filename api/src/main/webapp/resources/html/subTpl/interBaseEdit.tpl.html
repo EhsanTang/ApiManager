@@ -6,14 +6,14 @@
         <tr>
             <td class="tc w100">接口名称 <span class="adorn-color fb">*</span></td>
             <td class="tc w400">
-                <input class="form-control" type="text" required maxlength="50" id="interfaceName"
+                <input class="form-control" type="text" autocomplete="off" required maxlength="50" id="interfaceName"
                        ng-model="model.interfaceName" placeholder="示例：获取订单列表接口">
             </td>
             <td class="tc w120">
                 模块名
             </td>
             <td>
-                <input class="form-control cursor" type="text"  id="moduleName" autocomplete="off" readonly ng-model="model.moduleName"
+                <input class="form-control cursor" type="text" autocomplete="off"  id="moduleName" readonly ng-model="model.moduleName"
                        placeholder="点击选择模块"
                        ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 
@@ -24,7 +24,7 @@
             <td class="tc" colspan="3">
                 <div ng-class="{true: 'input-group w', false: 'w'}[model.moduleUrl!='']">
                     <div class="input-group-addon" ng-bind="model.moduleUrl" ng-if="model.moduleUrl"></div>
-                    <input type="text" class="form-control" ng-model="model.url" required maxlength="200"
+                    <input type="text" autocomplete="off" class="form-control" ng-model="model.url" required maxlength="200"
                            placeholder="示例：http://api.crap.cn/CustomerOrder/{id}">
                 </div>
             </td>
@@ -32,19 +32,19 @@
         <tr>
             <td class="tc">请求方式</td>
             <td class="tc">
-                <input class="form-control cursor" type="text" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
+                <input class="form-control cursor" type="text" autocomplete="off" readonly  id="method" placeholder="请点击输入框选择" required ng-model="model.method"
                        ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
             </td>
             <td class="tc">状态 <span class="adorn-color fb">*</span></td>
             <td>
-                <input class="form-control" readonly type="text" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
+                <input class="form-control" readonly type="text" autocomplete="off" id="statusName" ng-model="model.statusName" required placeholder="请点击输入框选择"
                        ng-click="loadPickByName('iwidth=220|iheight=220|tagName=statusName|tag=status|code=INTERFACE_STATUS|def='+model.status, $event)">
             </td>
         </tr>
         <tr>
             <td class="tc">版本号</td>
             <td class="tc">
-                <input class="form-control" type="text" ng-model="model.version">
+                <input class="form-control" type="text" autocomplete="off" ng-model="model.version">
             </td>
             <td class="tc">排序</td>
             <td class="tc">
@@ -53,7 +53,7 @@
         <tr>
             <td class="tc">返回类型</td>
             <td class="tc">
-                <input class="form-control" readonly type="text" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
+                <input class="form-control" readonly type="text" autocomplete="off" id="contentTypeName" ng-model="model.contentTypeName" required placeholder="请点击输入框选择"
                        ng-click="loadPickByName('iwidth=160|iheight=180|tagName=contentTypeName|tag=contentType|code=INTERFACE_CONTENT_TYPE|def='+model.contentType, $event)">
             </td>
             <td class="tc">错误列表</td>

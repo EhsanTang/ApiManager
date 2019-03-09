@@ -5,7 +5,7 @@
                   rows="4" required placeholder="请输入评论内容">
 		</textarea>
         <div class="input-wrapper bt0 fr w300 m0 h50">
-            <input ng-if="commentVO.needImgCode == true" id="comment-img-input" type="text" placeholder="图形验证码" required ng-model="commentVO.imgCode">
+            <input ng-if="commentVO.needImgCode == true" id="comment-img-input" type="text" autocomplete="off" placeholder="图形验证码" required ng-model="commentVO.imgCode">
             <div ng-if="commentVO.needImgCode == true" class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
                   data-toggle="tooltip" style="right:100px;">
                 <img id="comment-img-code" width="80" height="30" src="getImgCode.do"

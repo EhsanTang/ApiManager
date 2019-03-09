@@ -8,7 +8,7 @@
 		<input type="text" autocomplete="off" ng-model="model.userName" placeholder="用户名（6-20位）" required name="userName"/>
 	</div>
 	<div class="input-wrapper">
-		<input type="text" autocomplete="off" onfocus="this.type='password'" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
+		<input type="text" autocomplete="off" id="login-password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
 	</div>
 	<div class="input-wrapper"
 		ng-if="settings.VERIFICATIONCODE=='true'">
@@ -65,8 +65,9 @@
 </form>
 
 <div class="text-error mb15 mt10" id="main-error" ng-if="hasError(error,'main-error')" ng-bind="error"></div>
+<!-- 防止浏览器记住密码，同时防止记住密码是明文显示问题 -->
 <script type="text/javascript">
     $(function(){
-        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off');
+        $("#login-password").attr("type","password");
     });
 </script>

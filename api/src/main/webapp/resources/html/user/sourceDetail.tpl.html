@@ -3,13 +3,13 @@
 			<table class="table table-bordered">
 				<tr>
 					<td class="tc w200">标题</td>
-					<td class="tc"><input class="form-control" type="text" placeholder="文件名" required ng-model="model.name"></td>
+					<td class="tc"><input class="form-control" type="text" autocomplete="off" placeholder="文件名" required ng-model="model.name"></td>
 				</tr>
 				<tr>
 					<td class="tc">模块</td>
 					<td>
 						点击选择模块
-						<input class="form-control" type="text"  id="moduleName" readonly ng-model="model.moduleName"
+						<input class="form-control" type="text" autocomplete="off"  id="moduleName" readonly ng-model="model.moduleName"
 							ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
 					</td>
 				</tr>

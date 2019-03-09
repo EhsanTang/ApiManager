@@ -4,6 +4,7 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
@@ -136,7 +137,7 @@ public class InterfaceController extends BaseController {
         checkFrontPermission("", "", project);
         if (pdf) {
             String secretKey = settingCache.get(S_SECRETKEY).getValue();
-            String fileName = Html2Pdf.createPdf(req, id, moduleId, secretKey);
+            String fileName = Html2Pdf.createPdf(req, settingCache.getDomain(), id, moduleId, secretKey);
             DownloadUtils.downloadWord(response, new File(fileName), downloadName, true);
         }else{
             Map<String, Object> map = new HashMap<>();

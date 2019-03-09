@@ -7,11 +7,13 @@ import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enu.LogType;
+import cn.crap.enu.SettingEnum;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.tool.ModuleCache;
+import cn.crap.service.tool.SettingCache;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
@@ -32,6 +34,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     private ModuleCache moduleCache;
     @Autowired
     private ModuleService moduleService;
+    @Autowired
+    private SettingCache settingCache;
     @Autowired
     private LogService logService;
     @Autowired
@@ -161,8 +165,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             interfaceDTO.setRemark(interfaceDTO.getRemark().replaceAll("<w:br/>", "<br/>"));
         }
 
-        interDto.setTrueMockUrl(Config.domain+"/mock/trueExam.do?id="+interFace.getId());
-        interDto.setFalseMockUrl(Config.domain+"/mock/falseExam.do?id="+interFace.getId());
+        interDto.setTrueMockUrl(settingCache.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
+        interDto.setFalseMockUrl(settingCache.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
         List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
 

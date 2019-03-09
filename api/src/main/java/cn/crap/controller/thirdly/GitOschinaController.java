@@ -4,6 +4,7 @@ import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enu.LoginType;
+import cn.crap.enu.SettingEnum;
 import cn.crap.enu.UserStatus;
 import cn.crap.enu.UserType;
 import cn.crap.framework.ThreadContext;
@@ -46,13 +47,13 @@ public class GitOschinaController extends BaseController {
     @RequestMapping("/oschina/authorize.ignore")
     public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authorizeUrl = "https://gitee.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
-        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, Config.domain + "/oschina/login.ignore"));
+        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, settingCache.getDomain() + "/oschina/login.ignore"));
     }
 
     @RequestMapping("/oschina/login.ignore")
     public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = null;
-        GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, Config.domain).getAccess_token());
+        GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
 
         List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
         if (users.size() == 0) {

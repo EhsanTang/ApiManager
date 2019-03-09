@@ -191,7 +191,6 @@ public class MainController extends BaseController{
 			}
 			settingMap.put(setting.getKey(), setting.getValue());
 		}
-		settingMap.put(IConst.DOMAIN, Config.domain);
 		settingMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
 		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
 

@@ -3,6 +3,9 @@ package cn.crap.service.thirdly;
 import java.util.Map;
 
 import cn.crap.enu.MyError;
+import cn.crap.enu.SettingEnum;
+import cn.crap.service.tool.SettingCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -17,11 +20,14 @@ import cn.crap.utils.Tools;
 @Service
 public class OschinaService {
 
+	@Autowired
+	private SettingCache settingCache;
+
 	   public GitHubAccessToken getAccessToken(String code,String redirect_uri) throws Exception{
 			String oschinaAuthUrl = "https://gitee.com/oauth/token";
 
 	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", Config.oschinaClientID,
-	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri",Config.domain +"/oschina/login.ignore");
+	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri", settingCache.getDomain() +"/oschina/login.ignore");
 	        
 	        String rs = HttpPostGet.post(oschinaAuthUrl, params, Tools.getStrMap("Accept","application/json"));
 	        System.out.println(rs);

@@ -28,6 +28,8 @@ public class SystemService {
     private SettingService settingService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private SettingCache settingCache;
 
     private Logger log = Logger.getLogger(getClass());
 
@@ -269,7 +271,7 @@ public class SystemService {
             String value = s.getValue();
             if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
                 if (!value.startsWith("http://") && !value.startsWith("https://")) {
-                    value = Config.domain + "/" + value;
+                    value = settingCache.getDomain() + "/" + value;
                 }
             }
             cssContent = cssContent.replace("[" + s.getMkey() + "]", value);

@@ -23,7 +23,7 @@
         <div class="col-xs-7 p20 mt60">
             <div class="BGFFF p20">
                 <div class="dashed-b mb10">
-                    <input class="form-control f14 fb bug-border-fff pr0 pl5 mb10" id="bug-name" type="text" ng-model="bugVO.name"
+                    <input class="form-control f14 fb bug-border-fff pr0 pl5 mb10" id="bug-name" type="text" autocomplete="off" ng-model="bugVO.name"
                            required ng-blur="updateBugName()" placeholder="请输入缺陷标题" maxlength="100">
                 </div>
                 <button ng-class="{true: 'btn btn-xs bug-priority-2 fr', false:'none'}[bugVO.isEdit == false]" ng-click="bugVO.isEdit = true">编辑描述</button>
@@ -44,7 +44,7 @@
                     <tr>
                         <td class="w60">项目</td>
                         <td colspan="3">
-                            <div type="text" ng-bind="bugVO.projectName| cut:true:30:' ...'" readonly></div>
+                            <div type="text" autocomplete="off" ng-bind="bugVO.projectName| cut:true:30:' ...'" readonly></div>
                         </td>
                     </tr>
 

@@ -5,19 +5,19 @@
 				<tr>
 					<td class="tc w200">项目名</td>
 					<td>
-						<input  class="form-control cursor-not BGF5"  type="text" ng-model="model.projectName" readonly>
+						<input  class="form-control cursor-not BGF5"  type="text" autocomplete="off" ng-model="model.projectName" readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">用户名</td>
 					<td>
-						<input  class="form-control cursor-not BGF5"  type="text" ng-model="model.userName" readonly>
+						<input  class="form-control cursor-not BGF5"  type="text" autocomplete="off" ng-model="model.userName" readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">用户邮箱</td>
 					<td>
-						<input  class="form-control cursor-not BGF5" type="text" ng-model="model.userEmail" readonly>
+						<input  class="form-control cursor-not BGF5" type="text" autocomplete="off" ng-model="model.userEmail" readonly>
 					</td>
 				</tr>
 				<tr>
@@ -25,7 +25,7 @@
 						权限
 					</td>
 					<td>
-						<input class="form-control cursor" type="text" id="permissionStr" ng-model="model.permissionStr"
+						<input class="form-control cursor" type="text" autocomplete="off" id="permissionStr" ng-model="model.permissionStr"
 							   readonly autocomplete="off"
 							   ng-click="loadPickByName('iwidth=220|iheight=250|radio=false|tagName=permissionStr|tag=permission|code=PROJECT_PERMISSION|def='+model.permission,$event)">
 					</td>

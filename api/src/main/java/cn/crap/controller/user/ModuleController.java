@@ -117,7 +117,7 @@ public class ModuleController extends BaseController implements ILogConst{
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
 		}else{
-			Integer maxModule = settingCache.getInteger(SettingEnum.MAX_MODULE);
+			Integer maxModule = settingCache.getInt(SettingEnum.MAX_MODULE);
 			Integer totalModuleNum = moduleService.count(new ModuleQuery().setProjectId(moduleDto.getProjectId()));
 			if (totalModuleNum > maxModule){
                 throw new MyException(MyError.E000071, maxModule + "");

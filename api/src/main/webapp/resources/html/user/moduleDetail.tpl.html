@@ -5,20 +5,20 @@
 <tr>
 					<td class="tc">名称</td>
 					<td class="tc" colspan="3">
-						<input  class="form-control"  type="text" ng-model="model.name" required placeholder="模块名">
+						<input  class="form-control"  type="text" autocomplete="off" ng-model="model.name" required placeholder="模块名">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">项目</td>
 					<td class="tc" colspan="3">
-						<input  class="form-control cursor-not BGF5" type="text" ng-model="model.projectName" required readonly>
+						<input  class="form-control cursor-not BGF5" type="text" autocomplete="off" ng-model="model.projectName" required readonly>
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">Url</td>
 					<td class="tc" colspan="3">
 						<div class="input-group w">
-							<input  class="form-control" type="text" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
+							<input  class="form-control" type="text" autocomplete="off" ng-model="model.url" placeholder="可选，接口地址=模块url+接口url">
 							<div class="btn input-group-addon adorn-color p0 f30" onclick="tooltip('url-helf')" id="url-helf" data-toggle="tooltip" 
 								 title="该URL设置只对当前模块下的所有接口有效"><i class="pl10 pr10 pb5 f12 iconfont">&#xe6a3;</i></div>
 						</div>

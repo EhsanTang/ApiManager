@@ -2,7 +2,7 @@
 	<button type="button" class="ndis" id="refresh" ng-click="getData(1,true);"></button>
 	<div class="col-xs-6 fl p3 pl10 pr10 f14 fb mt10 mb20 adorn-bl-3">数据库表列表</div>
 	<div class="col-xs-6 pt5 p0 pb10 tr">
-			<input type="text" class="form-control input-xs dis-in-blo w200 r20 no-b-s" onkeypress="if(event.keyCode==13) {refresh.click();}"
+			<input type="text" autocomplete="off" class="form-control input-xs dis-in-blo w200 r20 no-b-s" onkeypress="if(event.keyCode==13) {refresh.click();}"
 						placeholder="搜索|回车确认" id="searchName" ng-model="$stateParams.search">
 	</div>
 	<div ng-if="list.length==0" class="col-xs-12 tc mt10 mb10 C999">

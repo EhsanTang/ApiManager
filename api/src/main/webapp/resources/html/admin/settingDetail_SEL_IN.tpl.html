@@ -9,15 +9,15 @@
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="text" ng-model="model.key" required ng-if="model.id==null">
-						<input class="form-control cursor-not" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
+						<input class="form-control" type="text" autocomplete="off" ng-model="model.key" required ng-if="model.id==null">
+						<input class="form-control cursor-not" type="text" autocomplete="off" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">值：点击按钮选择或手动输入</td>
 					<td class="tc">
 					 <div class="input-group">
-							<input class="form-control" type="text" id="value" required
+							<input class="form-control" type="text" autocomplete="off" id="value" required
 								ng-model="model.value"  placeholder="点击“选择”按钮选择，或输入字体">
 							<div class="input-group-addon cursor btn-adorn"
 								ng-click="loadPick($event,250,300,'true','value', model.key, '', model.value);">
@@ -29,7 +29,7 @@
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc">
-						<input  class="form-control cursor-not"  id="typeName" type="text" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
+						<input  class="form-control cursor-not"  id="typeName" type="text" autocomplete="off" ng-model="model.typeName" placeholder="点击输入框选择类型" readonly>
 					</td>
 				</tr>
 				<tr>

@@ -64,7 +64,7 @@ public class UserPickService implements IPickService{
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
 
-                for (Error error : errorService.query(new ErrorQuery().setProjectId(key).setPageSize(settingCache.getInteger(SettingEnum.MAX_ERROR)))) {
+                for (Error error : errorService.query(new ErrorQuery().setProjectId(key).setPageSize(settingCache.getInt(SettingEnum.MAX_ERROR)))) {
                     pick = new PickDto(error.getErrorCode(), error.getErrorCode() + "--" + error.getErrorMsg());
                     picks.add(pick);
                 }

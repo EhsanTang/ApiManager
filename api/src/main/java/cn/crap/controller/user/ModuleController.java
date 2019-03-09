@@ -53,6 +53,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult list(@ModelAttribute ModuleQuery query) throws MyException{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
@@ -66,6 +67,7 @@ public class ModuleController extends BaseController implements ILogConst{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult detail(String id, String projectId) throws MyException{
 		Module module;
         Project project;
@@ -97,6 +99,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	 */
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
 		LoginInfoDto user = LoginUserHelper.getUser();
@@ -140,6 +143,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	 */
 	@RequestMapping("/setTemplate.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult setTemplate(String id) throws Exception{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
@@ -165,6 +169,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
+	@AuthPassport
 	public JsonResult delete(@ModelAttribute Module module) throws Exception{
 		// 系统数据，不允许删除
 		if(module.getId().equals("web")) {

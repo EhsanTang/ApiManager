@@ -31,7 +31,7 @@ public class PermissionUtil implements IConst{
      */
     public static void checkPermission(Project project, ProjectPermissionEnum needPermission) throws MyException {
         if (project == null || project.getId() == null){
-            throw new MyException(MyError.E000022, "项目不能为空");
+            throw new MyException(MyError.E000022, "项目有误，没有查询到该项目");
         }
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000021);
         /**

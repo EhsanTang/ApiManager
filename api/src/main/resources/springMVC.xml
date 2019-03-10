@@ -81,9 +81,9 @@
         <property name="host"><value>${mail.host}</value></property>  
         <property name="javaMailProperties">  
             <props>  
-                <prop key="mail.smtp.auth">${mail.auth}</prop>  
-                <prop key="mail.smtp.timeout">${mail.timeout}</prop>
-				<prop key="mail.smtp.connectiontimeout">${mail.connectiontimeout}</prop>
+                <prop key="mail.smtp.auth">false</prop>
+                <prop key="mail.smtp.timeout">3000</prop>
+				<prop key="mail.smtp.connectiontimeout">3000</prop>
             </props>  
         </property>  
 	</bean> 

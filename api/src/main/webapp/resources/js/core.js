@@ -96,6 +96,7 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 				type : aPost,
 				url : iUrl,
 				async : aAsync,
+				timeout: 3000,
 				data : xParams + iParams,
 				complete : function(data) {
 					data = data.responseText;

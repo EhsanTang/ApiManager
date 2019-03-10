@@ -7,6 +7,7 @@ import cn.crap.dto.*;
 import cn.crap.enu.ArticleType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectType;
+import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -381,7 +382,7 @@ public class StaticizeController extends BaseController{
 				totalPage = 1;
 			}
 			for(int i=1 ; i<= totalPage; i++){
-				String html = HttpPostGet.get(Config.domain+ "/user/staticize/errorList.do?projectId="+projectId
+				String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/errorList.do?projectId="+projectId
 						+"&currentPage="+i + "&needStaticizes=" + needStaticizes + "&secretKey=" + secretKey, null, null, 10 * 1000);
 				// list-类目摘要-页码
 				Tools.staticize(html, path + "/errorList-" + i + ".html");
@@ -409,7 +410,7 @@ public class StaticizeController extends BaseController{
 						totalPage = 1;
 					}
 					for(int i=1 ; i<= totalPage; i++){
-						String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleList.do?moduleId="+ module.getId()+"&category="+
+						String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/articleList.do?moduleId="+ module.getId()+"&category="+
 								category+"&currentPage="+i + "&needStaticizes="+needStaticizes + "&secretKey=" + secretKey, null, null, 10 * 1000);
 						// list-类目摘要-页码
 						Tools.staticize(html, path + "/" + module.getId() +"-articleList-"+ MD5.encrytMD5(category, "").substring(0, 10) + "-" + i + ".html");
@@ -426,7 +427,7 @@ public class StaticizeController extends BaseController{
 					totalPage = 1;
 				}
 				for(int i=1 ; i<= totalPage; i++){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleList.do?moduleId="+ module.getId()+
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/articleList.do?moduleId="+ module.getId()+
 							"&category="+ IConst.ALL+"&currentPage="+i + "&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					// list-类目摘要-页码
 					Tools.staticize(html, path + "/" +  module.getId() +"-articleList--" + i + ".html");
@@ -436,7 +437,7 @@ public class StaticizeController extends BaseController{
 				// 静态化文档
                 articleQuery.setPageSize(ALL_PAGE_SIZE);
                 for(Article article: articleService.query(articleQuery)){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/articleDetail.do?articleId="+ article.getId() +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");
 				}
@@ -454,7 +455,7 @@ public class StaticizeController extends BaseController{
 					totalPage = 1;
 				}
 				for(int i=1 ; i<= totalPage; i++){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleList.do?moduleId="+ module.getId()+
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/articleList.do?moduleId="+ module.getId()+
 							"&category="+ IConst.ALL+"&currentPage="+i+"&type=DICTIONARY" + "&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					// list-类目摘要-页码
 					Tools.staticize(html, path + "/" +  module.getId() +"-dictionaryList-" + i + ".html");
@@ -463,7 +464,7 @@ public class StaticizeController extends BaseController{
 				// 静态化数据库表详情
                 articleQuery.setPageSize(ALL_PAGE_SIZE);
 				for(Article article: articleService.query(articleQuery)){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/articleDetail.do?articleId="+ article.getId() +
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/articleDetail.do?articleId="+ article.getId() +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + article.getId()+".html");
 				}
@@ -478,7 +479,7 @@ public class StaticizeController extends BaseController{
 					totalPage = 1;
 				}
 				for(int i=1 ; i<= totalPage; i++){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/interfaceList.do?moduleId="+ module.getId()+"&currentPage="+i +
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/interfaceList.do?moduleId="+ module.getId()+"&currentPage="+i +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					// list-类目摘要-页码
 					Tools.staticize(html, path + "/" +  module.getId() +"-interfaceList-" + i + ".html");
@@ -488,7 +489,7 @@ public class StaticizeController extends BaseController{
 				// 静态化接口详情
                 interfaceQuery.setPageSize(ALL_PAGE_SIZE);
 				for(Interface inter: interfaceService.query(interfaceQuery)){
-					String html = HttpPostGet.get(Config.domain+ "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() +
+					String html = HttpPostGet.get(settingCache.getDomain() + "/user/staticize/interfaceDetail.do?interfaceId="+ inter.getId() +
 							"&needStaticizes="+needStaticizes+ "&secretKey=" + secretKey, null, null, 10 * 1000);
 					Tools.staticize(html, path + "/" + inter.getId()+".html");
 				}
@@ -496,7 +497,7 @@ public class StaticizeController extends BaseController{
 			// 推送给百度
 //			try{
 //				if( !config.getBaidu().equals("") )
-//					HttpPostGet.postBody(config.getBaidu(), Config.domain+"/resources/html/staticize/"+project.getId()+"/"+module.getId()+"/list.html", null);
+//					HttpPostGet.postBody(config.getBaidu(), settingCache.getDomain() +"/resources/html/staticize/"+project.getId()+"/"+module.getId()+"/list.html", null);
 //			}catch(Exception e){
 //				e.printStackTrace();
 //			}
@@ -513,11 +514,11 @@ public class StaticizeController extends BaseController{
 		}
 		if(!MyString.isEmpty(project.getCover())){
 			if(!project.getCover().startsWith("http:") &&  !project.getCover().startsWith("https:") ){
-				project.setCover(Config.domain +"/"+ project.getCover());
+				project.setCover(settingCache.getDomain()  +"/"+ project.getCover());
 			}
 		}
 		
-		settingMap.put(IConst.DOMAIN, Config.domain);
+		settingMap.put(ISetting.S_DOMAIN, settingCache.getDomain() );
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("settings", settingMap);
 		returnMap.put("project", project);

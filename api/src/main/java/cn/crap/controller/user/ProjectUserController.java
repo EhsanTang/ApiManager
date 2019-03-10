@@ -9,6 +9,7 @@ import cn.crap.enu.ProjectUserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.model.User;
@@ -45,6 +46,7 @@ public class ProjectUserController extends BaseController{
 
 	@RequestMapping("/list.do")
 	@ResponseBody
+    @AuthPassport
 	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
 		Assert.notNull(query.getProjectId());
         Page page= new Page(query);
@@ -59,6 +61,7 @@ public class ProjectUserController extends BaseController{
 	
 	@RequestMapping("/detail.do")
 	@ResponseBody
+    @AuthPassport
 	public JsonResult detail(String id) throws MyException{
 	    Assert.notNull(id);
 		ProjectUserPO projectUser = projectUserService.get(id);
@@ -70,6 +73,7 @@ public class ProjectUserController extends BaseController{
 	
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
+    @AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute ProjectUserDto projectUser) throws Exception{
 	    Assert.notNull(projectUser.getId());
         ProjectUserPO old = projectUserService.get(projectUser.getId());
@@ -92,6 +96,7 @@ public class ProjectUserController extends BaseController{
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
+    @AuthPassport
 	public JsonResult delete(@RequestParam String id) throws Exception{
 		ProjectUserPO projectUser = projectUserService.get(id);
 		checkPermission(projectCache.get( projectUser.getProjectId() ));

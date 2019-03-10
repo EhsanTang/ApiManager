@@ -16,7 +16,7 @@ public class Html2Pdf {
 	 * 如果interFaceId不为空则单个下载，否则按模块下载
 	 * @throws Exception
 	 */
-	public static String createPdf(HttpServletRequest request, String interFaceId , String moduleId, String secretKey) throws Exception {
+	public static String createPdf(HttpServletRequest request, String domain, String interFaceId , String moduleId, String secretKey) throws Exception {
 		Document document = null;
 		PdfWriter writer = null;
 		try {
@@ -29,7 +29,7 @@ public class Html2Pdf {
 			
 			InputStream pdfText = null;
 			try{
-				pdfText = HttpPostGet.getInputStream(Config.domain+ "/visitor/interface/detail/pdf.do?id=" + interFaceId + "&moduleId="+moduleId+"&secretKey="+secretKey);
+				pdfText = HttpPostGet.getInputStream(domain+ "/visitor/interface/detail/pdf.do?id=" + interFaceId + "&moduleId="+moduleId+"&secretKey="+secretKey);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -37,7 +37,7 @@ public class Html2Pdf {
 			if(pdfText == null){
 				pdfText = HttpPostGet.getInputStream("http://api.crap.cn/result.do?result=" +
 						URLEncoder.encode("地址有误，生成pdf失败，请确认配置文件config.properties中的网站域名配置是否正确！"
-                                + "当前配置的域名为：" + Config.domain,"utf-8"));
+                                + "当前配置的域名为：" + domain,"utf-8"));
 			}
 
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document, pdfText,

@@ -60,7 +60,6 @@ public interface IConst {
 	String REGISTER = "register";
 	String GITHUB = "gitHub:";
 	String OSCHINA = "oschina:";
-	String DOMAIN = "DOMAIN";
 	String ADMIN = "admin";
 	// url
 	String FRONT_PROJECT_URL = "project.do#/module/list?projectId=%s";

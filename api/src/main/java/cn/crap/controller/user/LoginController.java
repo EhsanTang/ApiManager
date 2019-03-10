@@ -247,7 +247,7 @@ public class LoginController extends BaseController{
 			emailService.sendRegisterEmail(user.getEmail(), user.getId());
 		}catch(Exception e){
             log.error("注册验证邮件发送失败:" + user.getUserName(), e);
-            throw new MyException(MyError.E000065, "注册验证邮件发送失败");
+            // throw new MyException(MyError.E000065, "注册验证邮件发送失败");
 		}
 		loginDto.setId(user.getId());
 		return new JsonResult(1, loginDto);

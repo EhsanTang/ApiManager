@@ -72,9 +72,18 @@ public class UserController extends BaseController {
         if (MyString.isNotEmpty(password)){
             user.setPassword(password);
         }
+
+        UserQuery query = new UserQuery().setEqualEmail(userDto.getEmail().toLowerCase());
         if (MyString.isEmpty(userDto.getId())){
+            if(userService.count(query) > 0){
+                throw new MyException(MyError.E000065, "邮箱已经注册");
+            }
             return addUser(user);
         }else{
+            User dbUser = userService.getById(user.getId());
+            if(!dbUser.getEmail().equalsIgnoreCase(userDto.getEmail()) && userService.count(query) > 0){
+                throw new MyException(MyError.E000065, "邮箱已经注册");
+            }
             return updateUser(user);
         }
     }

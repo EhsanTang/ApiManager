@@ -1,11 +1,11 @@
 package cn.crap.service.tool;
 
 import cn.crap.adapter.SettingAdapter;
+import cn.crap.beans.Config;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
-import cn.crap.beans.Config;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,12 @@ public class SettingCache{
         }
         return cache;
 	}
-	
-	public Integer getInteger(SettingEnum settingEnum){
+
+	public String getDomain(){
+		return getStr(SettingEnum.DOMAIN);
+	}
+
+	public Integer getInt(SettingEnum settingEnum){
 		try {
 			return Integer.parseInt(get(settingEnum.getKey()).getValue());
 		}catch (Exception e){
@@ -43,6 +47,9 @@ public class SettingCache{
 		}
 	}
 
+	public String getStr(SettingEnum settingEnum){
+		return get(settingEnum.getKey()).getValue();
+	}
 	
 	public SettingDto get(String key){
 		Assert.notNull(key);

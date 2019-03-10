@@ -12,7 +12,6 @@ public class Config{
 	public static String clientSecret;
     public static String oschinaClientID;
 	public static String oschinaClientSecret;
-    public static String domain;
     public static int cacheTime;
     public static int loginInforTime;
     public static int fileSize;
@@ -40,7 +39,6 @@ public class Config{
             Config.clientSecret = properties.getProperty(Config.getConfigClientSecret());
             Config.oschinaClientID = properties.getProperty(Config.getConfigOschinaClientID());
             Config.oschinaClientSecret = properties.getProperty(Config.getConfigOschinaClientSecret());
-            Config.domain = properties.getProperty(Config.getConfigDomain());
             Config.cacheTime = MyInteger.getInt(properties.getProperty(Config.getConfigCacheTime()), 3600);
             Config.loginInforTime = MyInteger.getInt(properties.getProperty(Config.getConfigLoginInforTime()), 3600);
             Config.fileSize = MyInteger.getInt(properties.getProperty(Config.getConfigFileSize()), 2);

@@ -10,17 +10,17 @@
 				<tr>
 					<td class="tc w200">key</td>
 					<td class="tc">
-					<input class="form-control" type="text" ng-model="model.key" ng-if="model.id==null" required> 
-					<input class="form-control cursor-not" type="text" ng-model="model.key" readonly ng-if="model.id!=null"></td>
+					<input class="form-control" type="text" autocomplete="off" ng-model="model.key" ng-if="model.id==null" required>
+					<input class="form-control cursor-not" type="text" autocomplete="off" ng-model="model.key" readonly ng-if="model.id!=null"></td>
 				</tr>
 				<tr>
 					<td class="tc">value</td>
-					<td class="tc"><input class="form-control" type="text" required ng-model="model.value" id="imgUrl"></td>
+					<td class="tc"><input class="form-control" type="text" autocomplete="off" required ng-model="model.value" id="imgUrl"></td>
 				</tr>
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc"><input class="form-control cursor-not" id="typeName"
-						type="text" ng-model="model.typeName" placeholder="点击输入框选择类型"
+						type="text" autocomplete="off" ng-model="model.typeName" placeholder="点击输入框选择类型"
 						readonly></td>
 				</tr>
 				<tr>

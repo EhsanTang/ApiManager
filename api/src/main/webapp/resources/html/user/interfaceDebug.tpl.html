@@ -32,13 +32,13 @@
             <table class="w mt20">
                 <tr>
                 <td class="w100">
-                        <input class="form-control cursor w100 btn-group" type="text" readonly id="method"
+                        <input class="form-control cursor w100 btn-group" type="text" autocomplete="off" readonly id="method"
                                placeholder="请点击输入框选择" required ng-model="model.method"
                                ng-focus="loadPickByName('iwidth=220|radio=true|iheight=250|tag=method|code=REQUEST_METHOD|def='+model.method,$event)">
                     </td>
                     <td class="pl10">
                         <div class="input-group">
-                            <input type="text" class="form-control btn-group" placeholder="请输入url" id="crap-debug-url" ng-model="model.fullUrl">
+                            <input type="text" autocomplete="off" class="form-control btn-group" placeholder="请输入url" id="crap-debug-url" ng-model="model.fullUrl">
                             <span class="input-group-addon cursor btn-main" ng-click="debugInterface();" id="crap-debug-send">
                                 <i class="iconfont">&#xe634;</i>发送
                             </span>

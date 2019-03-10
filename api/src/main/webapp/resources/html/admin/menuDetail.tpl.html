@@ -4,17 +4,17 @@
 		<table class="table table-bordered">
 			 <tr>
 				<td class="tc w150">名称</td>
-				<td class="tc"><input  class="form-control"  type="text" required ng-model="model.menuName"></td>
+				<td class="tc"><input  class="form-control"  type="text" autocomplete="off" required ng-model="model.menuName"></td>
 			</tr>
 			<tr>
 				<td class="tc w150">类型</td>
 				<!-- 二级菜单不需要选着类型 -->
 				<td class="tc" ng-if="model.parentId=='0'">
-					<input  class="form-control"  id="typeName" type="text" readonly ng-model="model.typeName" placeholder="点击输入框选着类型" required
+					<input  class="form-control"  id="typeName" type="text" autocomplete="off" readonly ng-model="model.typeName" placeholder="点击输入框选着类型" required
 					ng-focus="loadPickByName('iwidth=220|iheight=200|tagName=typeName|tag=type|code=MENU_TYPE|def='+model.type,$event)">
 				</td>
 				<td class="tc" ng-if="model.parentId!='0'">
-					<input  class="form-control" type="text" ng-model="model.typeName" readonly>
+					<input  class="form-control" type="text" autocomplete="off" ng-model="model.typeName" readonly>
 				</td>
 			</tr>
 			<tr ng-if="!(model.parentId=='0' && model.type=='FRONT')">

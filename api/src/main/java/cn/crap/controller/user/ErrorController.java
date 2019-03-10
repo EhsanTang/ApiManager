@@ -100,7 +100,7 @@ public class ErrorController extends BaseController{
         if (existSameErrorCode) {
             return new JsonResult(MyError.E000002);
         }
-        if (errorService.count(new ErrorQuery().setProjectId(projectId)) > settingCache.getInteger(SettingEnum.MAX_ERROR)){
+        if (errorService.count(new ErrorQuery().setProjectId(projectId)) > settingCache.getInt(SettingEnum.MAX_ERROR)){
             return new JsonResult(MyError.E000072);
         }
 

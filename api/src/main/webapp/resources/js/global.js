@@ -40,7 +40,9 @@ function replaceParamFromUrl(url, name, value) {
     var oldValue = getParamFromUrl(url, name);
     if (oldValue){
     	url = replaceAll(url, name + "=" + oldValue, name + "=" + value);
-	}else {
+	} else if (url.indexOf('?') <=0 ){
+        url = url + "?" + name + "=" + value;
+    } else {
         url = url + "&" + name + "=" + value;
     }
     return url;

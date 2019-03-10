@@ -24,7 +24,7 @@
 				type="hidden" name="deep" value="{{item.deep}}" ng-model="item.deep">
 			</td>
 			<td class="p5"><input class="form-control b0 no-b-s"
-				style="padding-left: {{item.deep*10+ 'px'}}" type="text" name="name"
+				style="padding-left: {{item.deep*10+ 'px'}}" type="text" autocomplete="off" name="name"
 				ng-model="item.name" value="{{item.name}}" placeholder="参数名：必填">
 			</td>
 			<td class="w120 p5"><select name="type"
@@ -49,7 +49,7 @@
 					<option value="true" ng-selected="item.necessary=='true'">true</option>
 					<option value="false" ng-selected="item.necessary=='false'">false</option>
 			</select></td>
-			<td class="p5"><input class="form-control b0 no-b-s" type="text"
+			<td class="p5"><input class="form-control b0 no-b-s" type="text" autocomplete="off"
 				name="remark" ng-model="item.remark" value="{{item.remark}}"
 				placeholder="备注"></td>
 			<td class="cursor text-danger p5"><i class="iconfont"

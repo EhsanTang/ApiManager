@@ -7,12 +7,14 @@ import cn.crap.dao.mybatis.ProjectDao;
 import cn.crap.dto.ProjectDto;
 import cn.crap.enu.LogType;
 import cn.crap.enu.MyError;
+import cn.crap.enu.SettingEnum;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectCriteria;
 import cn.crap.query.ProjectQuery;
+import cn.crap.service.tool.SettingCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
     private LogService logService;
     @Autowired
     private CustomProjectDao customMapper;
+    @Autowired
+    private SettingCache settingCache;
 
     private ProjectDao projectDao;
     @Resource
@@ -166,7 +170,7 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
     public String getInviteUrl(ProjectDto projectDto) throws MyException {
         Assert.notNull(projectDto);
         if (LoginUserHelper.getUser().getId().equals(projectDto.getUserId())) {
-            return Config.domain + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());
+            return settingCache.getDomain() + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());
         }
         return null;
     }

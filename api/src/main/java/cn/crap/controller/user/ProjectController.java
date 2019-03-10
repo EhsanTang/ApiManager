@@ -145,6 +145,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
+    @AuthPassport
     public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception {
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
@@ -178,7 +179,7 @@ public class ProjectController extends BaseController {
         // 新增
         else {
             int totalProjectNum = projectService.count(new ProjectQuery().setUserId(userId));
-            Integer maxProject = settingCache.getInteger(SettingEnum.MAX_PROJECT);
+            Integer maxProject = settingCache.getInt(SettingEnum.MAX_PROJECT);
             if (totalProjectNum > maxProject) {
                 throw new MyException(MyError.E000068, maxProject + "");
             }
@@ -201,6 +202,7 @@ public class ProjectController extends BaseController {
 
     @RequestMapping("/delete.do")
     @ResponseBody
+    @AuthPassport
     public JsonResult delete(@ModelAttribute Project project) throws Exception {
         // 系统数据，不允许删除
         if (project.getId().equals("web")) {

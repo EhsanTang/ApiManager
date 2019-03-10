@@ -20,7 +20,7 @@
     </div>
 
     <!-- 自定义参数下拉选项 -->
-    <input class="form-control input-sm active-main w150 fl mt5" readonly type="text" id="reqContentType" ng-model="model.reqContentType" ng-if="model.paramType == 'RAW'"
+    <input class="form-control input-sm active-main w150 fl mt5" readonly type="text" autocomplete="off" id="reqContentType" ng-model="model.reqContentType" ng-if="model.paramType == 'RAW'"
            ng-click="loadPickByName('iwidth=160|iheight=180|tag=reqContentType|code=INTERFACE_CONTENT_TYPE|def='+model.reqContentType, $event)">
 
 

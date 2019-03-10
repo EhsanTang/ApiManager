@@ -10,20 +10,20 @@
 				<tr>
 					<td class="tc w80">key</td>
 					<td class="tc w200">
-						<input class="form-control" type="text" ng-model="model.key" required ng-if="model.id==null">
-						<input class="form-control cursor-not" type="text" ng-model="model.key" readonly ng-if="model.id!=null">
+						<input class="form-control" type="text" autocomplete="off" ng-model="model.key" required ng-if="model.id==null">
+						<input class="form-control cursor-not" type="text" autocomplete="off" ng-model="model.key" readonly ng-if="model.id!=null">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">value</td>
 					<td class="tc">
-						<input class="form-control" type="text" required ng-model="model.value">
+						<input class="form-control" type="text" autocomplete="off" required ng-model="model.value">
 					</td>
 				</tr>
 				<tr>
 					<td class="tc">类型</td>
 					<td class="tc">
-						<input  class="form-control cursor-not"  id="typeName" type="text" ng-model="model.typeName" readonly>
+						<input  class="form-control cursor-not"  id="typeName" type="text" autocomplete="off" ng-model="model.typeName" readonly>
 						<!-- ng-focus="loadPickByName('iwidth=200|iheight=250|radio=true|tagName=typeName|tag=type|code=SETTING_TYPE|def='+model.type,$event)" -->
 					</td>
 				</tr>

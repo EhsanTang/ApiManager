@@ -3,16 +3,14 @@ package cn.crap.controller.admin;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SettingDto;
+import cn.crap.enu.SettingEnum;
 import cn.crap.enu.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
-import cn.crap.utils.HttpPostGet;
-import cn.crap.utils.IConst;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +53,7 @@ public class MainController extends BaseController {
     public JsonResult property() throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
         Map<String, Object> properties = new HashMap<>();
-        properties.put("domain", Config.domain);
+        properties.put("domain", settingCache.getDomain());
         properties.put("openRegister", Config.openRegister);
         properties.put("luceneSearchNeedLogin", Config.luceneSearchNeedLogin);
         properties.put("openRegister", Config.openRegister);
@@ -127,7 +125,6 @@ public class MainController extends BaseController {
                 settingMap.put(setting.getKey(), setting.getValue());
             }
         }
-        settingMap.put(IConst.DOMAIN, Config.domain);
 
         Map<String, Object> returnMap = new HashMap<String, Object>();
         returnMap.put("settingMap", settingMap);

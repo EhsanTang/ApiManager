@@ -26,8 +26,8 @@ public enum SettingEnum {
                     "知乎字体|\"Helvetica Neue\",Helvetica,Arial,sans-serif;"
 
             }),
-
-    // 后端
+	DOMAIN("DOMAIN", SettingStatus.COMMON, SettingType.TEXT, null, "http://localhost:8080", "系统访问地址/域名/IP"),
+	// 后端
 	DATABASE_CHANGE_LOG("DATABASE_CHANGE_LOG", SettingStatus.HIDDEN, SettingType.TEXT, 0, null, "数据库自动更新记录：记录最后一条sql的序号，更新版本后系统会自动修改，请勿修改"),
 	NO_NEED_LOGIN_USER("NO_NEED_LOGIN_USER", SettingStatus.HIDDEN, SettingType.TEXT, null, "0", "不需要登录直接模拟的用户，快速试用，0表示不开放试用功能"),
     IMAGE_CODE("IMAGE_CODE", SettingStatus.HIDDEN, SettingType.SELECT, null, "Times New Roman", "图形验字体（部分系统显示有问题，可切换字体）",
@@ -36,9 +36,7 @@ public enum SettingEnum {
     MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, 50, null, "最大允许创建的项目数"),
 	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, 200, null, "项目下最大允许的错误码数量，最大不能超过1000"),
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, null, "crapApiKey", "秘钥，用于cookie加密等"),
-	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, null, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开"),
-
-	DOMAIN("DOMAIN", SettingStatus.HIDDEN, SettingType.TEXT, null, "http://localhost:8080", "系统访问地址/域名/IP");
+	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, null, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开");
 
 
     private String key;

@@ -1,5 +1,4 @@
-# 域名临时切换为 http://123.56.41.127/  ！！！！
-[官网在线使用地址 http://123.56.41.127/](http://123.56.41.127/)
+[官网在线使用地址 http://api.crap.cn](http://api.crap.cn)
 
 # CrapApi
 [官网在线使用地址crap.cn](http://crap.cn)

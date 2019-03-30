@@ -241,7 +241,7 @@ public class Tools {
         if (params.length == 0 || params.length % 2 != 0) {
             return null;
         }
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         for (int i = 0; i < params.length; i = i + 2) {
             if (!MyString.isEmpty(params[i + 1]))
                 map.put(params[i].toString(), params[i + 1]);

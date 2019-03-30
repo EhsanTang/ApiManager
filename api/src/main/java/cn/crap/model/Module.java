@@ -1,6 +1,6 @@
 package cn.crap.model;
 
-public class Module extends BasePo{
+public class Module extends BasePO {
     private String name;
 
     private Byte status;

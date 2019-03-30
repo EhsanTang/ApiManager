@@ -4,7 +4,7 @@ import cn.crap.dao.mybatis.BaseDao;
 import cn.crap.enu.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
-import cn.crap.model.BasePo;
+import cn.crap.model.BasePO;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import org.apache.log4j.Logger;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Deprecated
 @Service
-public class BaseService<PO extends BasePo, DAO> {
+public class BaseService<PO extends BasePO, DAO> {
     protected Logger log = Logger.getLogger("service");
 
     private BaseDao<PO> baseDao;

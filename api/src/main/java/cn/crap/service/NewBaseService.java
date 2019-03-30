@@ -4,7 +4,7 @@ import cn.crap.dao.mybatis.NewBaseDao;
 import cn.crap.enu.TableId;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
-import cn.crap.model.BasePo;
+import cn.crap.model.BasePO;
 import cn.crap.query.BaseQuery;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class NewBaseService<PO extends BasePo, Query extends BaseQuery> {
+public class NewBaseService<PO extends BasePO, Query extends BaseQuery> {
     protected Logger log = Logger.getLogger("service");
 
     private NewBaseDao<PO, Query> newBaseDao;

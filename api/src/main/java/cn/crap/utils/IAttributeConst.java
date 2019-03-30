@@ -7,4 +7,8 @@ package cn.crap.utils;
 public interface IAttributeConst {
     String TRUE = "1";
     String MARK_DOWN = "markdown";
+    /**
+     * 项目环境
+     */
+    String ENV_URL = "envUrl";
 }

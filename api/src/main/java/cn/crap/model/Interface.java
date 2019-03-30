@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Interface extends BasePo{
+public class Interface extends BasePO {
     private String url;
 
     private String method;

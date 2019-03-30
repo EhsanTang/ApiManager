@@ -1,6 +1,6 @@
 package cn.crap.model;
 
-public class User extends BasePo{
+public class User extends BasePO {
     private String userName;
 
     private String password;

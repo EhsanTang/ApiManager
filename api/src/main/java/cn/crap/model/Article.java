@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Article extends BasePo{
+public class Article extends BasePO {
     private String id;
 
     private String name;

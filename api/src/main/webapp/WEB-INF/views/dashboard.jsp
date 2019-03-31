@@ -149,8 +149,18 @@
             <div class="bc w150 fw500 f20 bb1 mb50 tc p10 adorn-color">开发者宣言</div>
             <table>
                 <td class="tl">
-                    各位好，我是Nico，一名年纪轻轻就秃了头的程序猿<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好人有好报，求各位打赏，帮我集资买瓶生发水吧!<br/>
+                    各位好，我是Nick，CrapApi的开发者<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源于2015年一个项目提议，这几年间，很多个周末<br/>
+                    我一直在补贴CrapApi这个项目，未来它要怎么健康持续的运营下去，我还没想好
+                    但可以肯定的是，CrapApi是个永久免费的非盈利程序，旨在帮助
+                    截止2019年3月，已经有3000位同行在gitee或github上给我点赞支持，感谢你们！
+                    如果你愿意给我一些鼓励，打赏一杯咖啡钱，我将不胜感激！
+                    我还组织了一个程序员VIP群，打赏100元，我将邀你入群，为你提供协助部署、升级帮助等各种问题解答，与群里的小伙伴一起学习、讨论、进步，
+
+                    最后，希望你可以在gitee或github上为我点个赞，这也是我这些年能持续投入开发的动力支持，谢谢！
+                    Best Wish！
+                    ————Nick
+
                     打赏10元，你的程序从此告别bug；打赏50元，你的头发茂盛得像亚马逊丛林；<br/>
                     打赏100元，加入"穿着特步相亲也能轻松俘获女神的VIP QQ群（263949884），Nico将竭诚为你提供协助部署、升级帮助、问题解答等各种羞羞的服务...<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者<br/>

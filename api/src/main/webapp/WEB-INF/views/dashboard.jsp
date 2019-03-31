@@ -146,33 +146,21 @@
         <!-- 求赞赏 -->
         <div class="cb"></div>
         <div class="lh26 f12 p30">
-            <div class="bc w150 fw500 f20 bb1 mb50 tc p10 adorn-color">开发者宣言</div>
-            <table>
+            <!-- <div class="bc w150 fw500 f20 bb1 mb50 tc p10 adorn-color">开发者宣言</div> -->
+            <table class="w">
                 <td class="tl">
                     各位好，我是Nick<br/>
-                    CRAP是个永久免费开源的项目，理想很远大，现实很骨感，未来还有非常多的功能有待开发，<br/>
+                    CRAP是个永久免费开源的项目，理想很远大，现实很骨感，未来还有非常多的功能有待开发<br/>
                     感谢大家愿意与CRAP一起成长<br/>
-                    语雀会持续努力，为你奉上精心打磨、值得信赖的产品。如果你觉得语雀好用，请推荐给你的同事、朋友。
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源于2015年一个项目提议，这几年间，很多个周末<br/>
-                    我一直在补贴CrapApi这个项目，未来它要怎么健康持续的运营下去，我还没想好
-                    但可以肯定的是，，旨在帮助
-                    截止2019年3月，已经有3000位同行在gitee或github上给我点赞支持，感谢你们！
-                    如果你愿意给我一些鼓励，打赏一杯咖啡钱，我将不胜感激！
-                    我还组织了一个程序员VIP群，打赏100元，我将邀你入群，为你提供协助部署、升级帮助等各种问题解答，与群里的小伙伴一起学习、讨论、进步，
-
-                    最后，希望你可以在gitee或github上为我点个赞，这也是我这些年能持续投入开发的动力支持，谢谢！
-                    Best Wish！
-                    ————Nick
-
-                    打赏10元，你的程序从此告别bug；打赏50元，你的头发茂盛得像亚马逊丛林；<br/>
-                    打赏100元，加入"穿着特步相亲也能轻松俘获女神的VIP QQ群（263949884），Nico将竭诚为你提供协助部署、升级帮助、问题解答等各种羞羞的服务...<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者<br/>
-                    如果你宁愿情人节独自在办公室加班修bug，也不给我买生发水<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至少帮我在 <a href='https://gitee.com/CrapApi/CrapApi' target="_blank">Gitee</a>
+                    未来将持续努力，为你奉上精心打磨、好用管理工具。如果你觉得不错，请推荐给你的同事、朋友<br/>
+                    或者打赏下<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打赏100元，加入"穿着特步相亲也能轻松俘获女神的VIP QQ群（263949884）...<br/>
+                    或者<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 <a href='https://gitee.com/CrapApi/CrapApi' target="_blank">Gitee</a>
                     或
-                    <a target="_blank" href="https://github.com/EhsanTang/ApiManager">GitHub</a> 上点个赞好不好？<br/>
-                    :)
+                    <a target="_blank" href="https://github.com/EhsanTang/ApiManager">GitHub</a> 上点个赞也好 :)
+                    <br/>
+                    ps: <a href="https://item.taobao.com/item.htm?id=590684998824" target="_blank">视频教程正在众筹中，感兴趣就来看下吧。。。</a>
                 </td>
                 <td class="w200 tc h">
                     <div class="bl1 pl30 ml30">

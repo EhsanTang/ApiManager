@@ -143,7 +143,7 @@
     function loadEnvPick($this, e) {
         var obj = $($this);
         var config = {async: true, url:'newPick.do', type:'POST', timeout: 3000, loading:'PROP_UP', loadingText: '加载中...',
-            tipTime:3, width:100, height:200, position: 5, tag: 'change-env'};
+            tipTime:3, width:150, height:200, position: 5, tag: 'change-env'};
         showTipNew(config, e);
         callAjaxNew(config, {
             tag: 'change-env',

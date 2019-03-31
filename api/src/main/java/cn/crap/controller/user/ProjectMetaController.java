@@ -46,7 +46,7 @@ public class ProjectMetaController extends BaseController{
 	public JsonResult list(@ModelAttribute ProjectMetaQuery query) throws MyException{
 		Assert.notNull(query.getProjectId());
         Page page= new Page(query);
-        checkPermission( projectCache.get(query.getProjectId()));
+        checkPermission( projectCache.get(query.getProjectId()), ProjectPermissionEnum.READ);
 
 		List<ProjectMetaPO> projectMetas = projectMetaService.select(query, page);
         page.setAllRow(projectMetaService.count(query));

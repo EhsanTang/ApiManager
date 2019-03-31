@@ -1,16 +1,16 @@
 package cn.crap.service.tool;
 
+import cn.crap.adapter.ProjectMetaAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enu.IconfontCode;
-import cn.crap.enu.MyError;
-import cn.crap.enu.PickCode;
-import cn.crap.enu.SettingEnum;
+import cn.crap.dto.ProjectMetaDTO;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Error;
 import cn.crap.model.*;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.ModuleQuery;
+import cn.crap.query.ProjectMetaQuery;
 import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.*;
 import cn.crap.utils.*;
@@ -46,6 +46,8 @@ public class UserPickService implements IPickService{
     private ModuleService moduleService;
     @Resource(name = "adminPickService")
     private IPickService adminPickService;
+    @Resource
+    private ProjectMetaService projectMetaService;
 
     @Override
     public List<PickDto> getPickList(String code, String key) throws MyException {
@@ -108,7 +110,14 @@ public class UserPickService implements IPickService{
                     }
                 }
                 return picks;
-
+            case PROJECT_ENV:
+                List<ProjectMetaPO> envList = projectMetaService.select(new ProjectMetaQuery().setType(ProjectMetaType.ENV.getType()).setProjectId(key), null);
+                for (ProjectMetaPO envPO : envList) {
+                    ProjectMetaDTO envDTO = ProjectMetaAdapter.getDto(envPO, null);
+                    pick = new PickDto(envDTO.getId(), envDTO.getProjectId(), envDTO.getName());
+                    picks.add(pick);
+                }
+                return picks;
             case PROJECT_MODULES:
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");

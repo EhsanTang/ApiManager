@@ -363,7 +363,7 @@ function lookUp(id, e, lHeight, lWidth ,onMouse, positionId) {
 	    }
 	    
 	    //如果传入了event
-	    if(e.clientY&&onMouse&&onMouse!=0){
+	    if(e && e.clientY && onMouse&&onMouse!=0){
 	    	lTop = e.clientY;
 	    	lLeft = e.clientX;
 	    	if(onMouse==1){

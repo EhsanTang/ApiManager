@@ -342,6 +342,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         }
+    }).state('projectMetaList', {
+        url : '/user/projectMeta/list?type&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : 'resources/html/user/projectMetaList.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@projectMetaList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },
+            'detail' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/projectMetaEdit.tpl.html?v=v8.0.5';
+                }
+            }
+        }
     }).state('logList', {
         url : '/user/log/list?identy&' + commonUrlParam,
         views : {

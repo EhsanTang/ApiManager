@@ -36,7 +36,7 @@ public class SystemService {
     // TODO 按文件夹合并
     private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "bug.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
-            "userCtrls.js", "userBugCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js",
+            "userCtrls.js", "userBugCtrl.js", "userProjectMetaCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "coreNew.js", "global.js", "validateAndRefresh.js",
             "crapApi.js", "json.js", "editor.js"};
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
@@ -172,6 +172,22 @@ public class SystemService {
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
         CHANGE_SQL_MAP.put(66, "ALTER TABLE `project_user` DROP INDEX `project_user`");
         CHANGE_SQL_MAP.put(67, "ALTER TABLE `project_user` ADD INDEX `idx_project_seq` (`projectId`, `sequence`)");
+
+        CHANGE_SQL_MAP.put(68, "CREATE TABLE `project_meta` (\n" +
+                "  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '主键',\n" +
+                "  `projectId` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '项目ID',\n" +
+                "  `moduleId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '模块ID',\n" +
+                "  `attributes` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '属性，使用;:分割',\n" +
+                "  `sequence` bigint(20) DEFAULT NULL,\n" +
+                "  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n" +
+                "  `status` tinyint(11) NOT NULL DEFAULT '0' COMMENT '状态，1:正常',\n" +
+                "  `type` tinyint(4) NOT NULL COMMENT '数据类型，0:环境',\n" +
+                "  `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '名称',\n" +
+                "  `value` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '值',\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                "  KEY `idx_project_type` (`projectId`,`type`),\n" +
+                "  KEY `idx_project_module_type` (`projectId`,`moduleId`,`type`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
 
         // sequence 修改为long
     }

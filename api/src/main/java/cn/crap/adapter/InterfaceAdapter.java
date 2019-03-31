@@ -120,10 +120,10 @@ public class InterfaceAdapter {
 		if (model.getStatus() != null){
 			dto.setStatusName(InterfaceStatus.getNameByValue(model.getStatus()));
 		}
-
 		if (module != null){
 			dto.setModuleName(module.getName());
 			dto.setModuleUrl(module.getUrl());
+			dto.setFullUrl(module.getUrl() == null ? "" : module.getUrl() + dto.getUrl());
 		}
 		if (project != null){
 			dto.setProjectName(project.getName());

@@ -160,7 +160,7 @@
                     或
                     <a target="_blank" href="https://github.com/EhsanTang/ApiManager">GitHub</a> 上点个赞也好 :)
                     <br/>
-                    ps: <a href="https://item.taobao.com/item.htm?id=590684998824" target="_blank">视频教程正在众筹中，感兴趣就来看下吧。。。</a>
+                    PS: <a href="https://item.taobao.com/item.htm?id=590684998824" target="_blank">视频教程正在众筹中，感兴趣就来看下吧。。。</a>
                 </td>
                 <td class="w200 tc h">
                     <div class="bl1 pl30 ml30">

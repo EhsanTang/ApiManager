@@ -86,7 +86,8 @@ public class InterfaceController extends BaseController{
             if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
 				if(template != null){
-				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url", "fulUrl", "sequence");
+				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url",
+                            "fulUrl", "sequence", "isTemplate");
 				}
 			}
 		}

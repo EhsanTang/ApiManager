@@ -1,26 +1,23 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.adapter.ProjectMetaAdapter;
 import cn.crap.beans.Config;
 import cn.crap.controller.visitor.MockController;
-import cn.crap.dto.InterfaceDto;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ParamDto;
-import cn.crap.dto.SearchDto;
+import cn.crap.dto.*;
 import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.model.*;
 import cn.crap.model.Error;
-import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.ErrorService;
 import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
+import cn.crap.service.ProjectMetaService;
 import cn.crap.utils.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -49,6 +46,8 @@ public class InterfaceController extends BaseController{
 	private ISearchService luceneService;
 	@Autowired
 	private ErrorService errorService;
+	@Autowired
+	private ProjectMetaService projectMetaService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -72,7 +71,7 @@ public class InterfaceController extends BaseController{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(String id, String moduleId, String projectId) throws MyException {
+	public JsonResult detail(String id, String moduleId, String projectId, String envId) throws MyException {
 		InterfaceWithBLOBs model;
 		Module module;
 		if(id != null){
@@ -87,12 +86,22 @@ public class InterfaceController extends BaseController{
             if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
 				if(template != null){
-				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url", "fulUrl", "sequence");
+				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url",
+                            "fulUrl", "sequence", "isTemplate");
 				}
 			}
 		}
         checkPermission(model.getProjectId(), ProjectPermissionEnum.READ);
-		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
+		InterfaceDto interfaceDto = InterfaceAdapter.getDtoWithBLOBs(model, module, null, false);
+
+		// debug页面环境切换
+		if (envId != null){
+			ProjectMetaDTO dto = ProjectMetaAdapter.getDto(projectMetaService.get(envId), null);
+			if (dto != null && MyString.isNotEmpty(dto.getEnvUrl())){
+				interfaceDto.setFullUrl(interfaceDto.getFullUrl().replaceFirst(dto.getEnvUrl(), dto.getValue()));
+			}
+		}
+		return new JsonResult(1, interfaceDto);
 	}
 	
 	/**
@@ -144,7 +153,6 @@ public class InterfaceController extends BaseController{
         dto.setProjectId(newProjectId);
 		dto.setUrl(dto.getUrl().trim());
         dto.setFullUrl(module.getUrl() + dto.getUrl());
-
 
         List<ParamDto> headerList =JSONArray.parseArray(dto.getHeader() == null ? "[]" : dto.getHeader(), ParamDto.class);
         ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()

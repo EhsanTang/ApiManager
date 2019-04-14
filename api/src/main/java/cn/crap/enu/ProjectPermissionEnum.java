@@ -33,7 +33,11 @@ public enum ProjectPermissionEnum {
 
 	 MOD_SOURCE("modSource","修改文件", true, "文件权限"),
 	 ADD_SOURCE("addSource","添加文件"),
-	 DEL_SOURCE("delSource","删除文件");
+	 DEL_SOURCE("delSource","删除文件"),
+
+	MOD_ENV("modEnv","修改项目环境", true, "项目环境权限"),
+	ADD_ENV("addEnv","添加项目环境"),
+	DEL_ENV("delEnv","删除项目环境");
 
 
 

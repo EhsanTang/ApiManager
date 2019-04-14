@@ -1,6 +1,6 @@
 package cn.crap.model;
 
-public class BugLogPO extends BasePo{
+public class BugLogPO extends BasePO {
     private String senior;
     private String operatorStr;
     private Byte status;

@@ -3,6 +3,7 @@ package cn.crap.controller;
 import cn.crap.enu.SettingEnum;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
+import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.service.MenuService;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,26 +26,20 @@ import java.io.IOException;
 public class IndexController extends BaseController {
 	@Autowired
 	MenuService customMenuService;
-	
+
 	/**
-	 * 
-	 * @param code
-	 *            需要显示的pick code
-	 * @param key
-	 *            可选参数：根据具体情况定义，如当为模块是，key代表父id
-	 * @param radio
-	 *            是否为单选
-	 * @param def
-	 *            默认值
-	 * @param tag
-	 *            保存选中结果的id
-	 * @param tagName
-	 *            显示名称的输入框id
-	 * @param notNull
-	 *            是否可以为空：当为单选，且notNull=false是，则可以选着为空
+	 * 废弃，请使用newPick.do
+	 * @param code 需要显示的pick code
+	 * @param key 可选参数：根据具体情况定义，如当为模块是，key代表父id
+	 * @param radio 是否为单选
+	 * @param def 默认值
+	 * @param tag 保存选中结果的id
+	 * @param tagName 显示名称的输入框id
+	 * @param notNull 是否可以为空：当为单选，且notNull=false是，则可以选着为空
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	@RequestMapping(value = "pick.do")
 	public String pickOut(String code,@RequestParam(defaultValue = "")  String key, @RequestParam(defaultValue = "true") String radio, String def,
 			String tag, String tagName, String notNull) throws Exception {
@@ -61,6 +56,38 @@ public class IndexController extends BaseController {
 		request.setAttribute("tagName", tagName);
 		request.setAttribute("pickContent", pickContent);
 		return "WEB-INF/views/pick.jsp";
+	}
+
+	/**
+	 * @param code 需要显示的pick code
+	 * @param key 可选参数：根据具体情况定义，如当为模块是，key代表父id
+	 * @param radio 是否为单选
+	 * @param def 默认值
+	 * @param tag 保存选中结果的id
+	 * @param tagName 显示名称的输入框id
+	 * @param notNull 是否可以为空：当为单选，且notNull=false是，则可以选着为空
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "newPick.do")
+	@AuthPassport
+	public String newPick(String code,
+						  @RequestParam(defaultValue = "")  String key,
+						  @RequestParam(defaultValue = "true") String radio,
+						  String def,
+						  String tag,
+						  String tagName,
+						  String notNull) throws Exception {
+		String pickContent = customMenuService.pick(radio, code, key, def, notNull);
+		HttpServletRequest request = ThreadContext.request();
+		request.setAttribute("radio", radio);
+		request.setAttribute("tag", tag);
+		request.setAttribute("def", def);
+		request.setAttribute("iCallBack", getParam("iCallBack", "voidFunction"));
+		request.setAttribute("iCallBackParam", getParam("iCallBackParam", ""));
+		request.setAttribute("tagName", tagName);
+		request.setAttribute("pickContent", pickContent);
+		return "WEB-INF/views/newPick.jsp";
 	}
 
 	@RequestMapping("getImgCode.do")

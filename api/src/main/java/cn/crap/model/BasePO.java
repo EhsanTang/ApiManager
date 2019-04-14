@@ -1,9 +1,12 @@
 package cn.crap.model;
 
+import cn.crap.utils.NotNullFieldStringStyle;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class BasePo implements Serializable{
+public class BasePO implements Serializable{
     private static final long serialVersionUID = 1L;
     private String id;
     private Long sequence;
@@ -58,4 +61,10 @@ public class BasePo implements Serializable{
     public void setAttributes(String attributes) {
         this.attributes = attributes;
     }
+
+    @Override
+    public String toString(){
+        return ToStringBuilder.reflectionToString(this, new NotNullFieldStringStyle());
+    }
+
 }

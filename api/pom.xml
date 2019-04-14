@@ -24,7 +24,7 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <!-- 25.1-android 兼容1.7 25.1-jre 1.8及以上-->
-            <version>25.1-android</version>
+            <version>27.1-jre</version>
         </dependency>
 
 		<!-- aliyun oss -->
@@ -273,7 +273,7 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<version>1.5.0-b01</version>
 		</dependency>
 		<!-- fastjson-->
 		<dependency>

@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Setting extends BasePo{
+public class Setting extends BasePO {
     private String id;
 
     private String mkey;

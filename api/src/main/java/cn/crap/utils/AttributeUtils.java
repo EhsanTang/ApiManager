@@ -14,6 +14,12 @@ import java.util.Map;
  * @date 2018/12/16 12:04
  */
 public class AttributeUtils {
+    private static final String ESCAPE_SPLITTER  = "_CA_S_";
+    private static final String ESCAPE_KEY_SPLITTER = "_CA_K_S_";
+
+    private static final String SPLITTER  = ";";
+    private static final String KEY_SPLITTER  = ":";
+
     /**
      * 根据字符串获取所有的map
      * @param attributesStr
@@ -25,11 +31,13 @@ public class AttributeUtils {
         }
 
         Map<String, String> attributeMap = Maps.newHashMap();
-        attributeMap.putAll(Splitter.on(";")
+        attributeMap.putAll(Splitter.on(SPLITTER)
                 .omitEmptyStrings()
-                .withKeyValueSeparator(":")
-                .split(StringEscapeUtils
-                .unescapeHtml(attributesStr)));
+                .withKeyValueSeparator(KEY_SPLITTER)
+                .split(StringEscapeUtils.unescapeHtml(attributesStr)));
+        for(Map.Entry<String, String> entry: attributeMap.entrySet()) {
+            entry.setValue(entry.getValue().replaceAll(ESCAPE_KEY_SPLITTER, KEY_SPLITTER).replaceAll(ESCAPE_SPLITTER, SPLITTER));
+        }
         return attributeMap;
     }
 
@@ -42,10 +50,14 @@ public class AttributeUtils {
         if (MapUtils.isEmpty(attributeMap)){
             return StringUtils.EMPTY;
         }
-        return Joiner.on(";")
-                .withKeyValueSeparator(":")
-                .appendTo(new StringBuilder(";"), attributeMap)
-                .append(";")
+        for(Map.Entry<String, String> entry: attributeMap.entrySet()) {
+            entry.setValue(entry.getValue().replaceAll( KEY_SPLITTER, ESCAPE_KEY_SPLITTER).replaceAll(SPLITTER, ESCAPE_SPLITTER));
+        }
+        return Joiner.on(SPLITTER)
+                .withKeyValueSeparator(KEY_SPLITTER)
+                .useForNull("")
+                .appendTo(new StringBuilder(SPLITTER), attributeMap)
+                .append(SPLITTER)
                 .toString();
     }
 }

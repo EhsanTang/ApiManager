@@ -186,8 +186,11 @@ public class ArticleController extends BaseController {
 	@RequestMapping("/dictionary/importFromSql.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue = "") String brief, @RequestParam String moduleId, String name,
+	public JsonResult importFromSql(String sql, @RequestParam(defaultValue = "") String brief, String moduleId, String name,
 									@RequestParam(defaultValue = "") boolean isMysql) throws MyException {
+		throwExceptionWhenIsNull(moduleId, "模块不能为空");
+		throwExceptionWhenIsNull(sql, "SQL不能为空");
+
 		ArticleWithBLOBs article = null;
 		if (isMysql) {
 			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);

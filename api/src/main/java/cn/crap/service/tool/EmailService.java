@@ -38,7 +38,7 @@ public class EmailService implements IEmailService {
 		messageHelper.setFrom(mailSenderService.getUsername(), fromName); 
 		messageHelper.setSubject(mailBean.getSubject());  
 		messageHelper.setTo(mailBean.getToEmail());  
-		messageHelper.setText(mailBean.getContext(), true);// html: true  
+		messageHelper.setText(mailBean.getContext(), true);// html: true
 		mailSenderService.send(mimeMessage);
 	}
 	

@@ -50,6 +50,11 @@ commentModule.controller('commentCtrl', function($rootScope,$scope, $http, $stat
  * 后端页面 controller
  */
 userModule.controller('userCommentCtrl', function($rootScope,$scope, $http, $state,$location,$stateParams,httpService) {
+    // 公用分页方法
+    $scope.pageMethod = function(callBackMethod, page, updateUrl) {
+        $scope[callBackMethod](page, updateUrl);
+    };
+
     $scope.queryUserCommentList = function(page) {
         var params = "iUrl=user/comment/list.do|iLoading=FLOAT|iPost=POST|iParams=&targetId="+$stateParams.targetId
             + "&projectId=" + $stateParams.projectId

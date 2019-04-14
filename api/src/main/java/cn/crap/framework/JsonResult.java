@@ -18,6 +18,10 @@ public class JsonResult implements Serializable {
 	//传递至前端的其他参数
 	private Object others;
 
+	public static JsonResult of(){
+		return new JsonResult();
+	}
+
 	public JsonResult(){
 		this.success = 1;
 	}

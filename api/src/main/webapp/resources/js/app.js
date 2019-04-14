@@ -1,9 +1,10 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'projectMetaModule', 'commentModule', 'visitorModule']);
 var visitorModule = angular.module("visitorModule", []);
 var userModule = angular.module("userModule", []);
 var adminModule = angular.module("adminModule", []);
 var commentModule = angular.module("commentModule", []);
 var bugModule = angular.module("bugModule", []);
+var projectMetaModule = angular.module("projectMetaModule", []);
 
 
 var NEED_PASSWORD_CODE = "E000007";
@@ -102,6 +103,15 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
         $location.url(href);
     }
+
+    /***
+	 * 废弃，采用对象
+	 * @deprecated
+     * @param params
+     * @param event
+     * @param iCallBack
+     * @param iCallBackParam
+     */
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
 		var iwidth = getValue(params,'iwidth');
 		var iheight = getValue(params,'iheight');
@@ -118,15 +128,19 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	}
 	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName,iUrl) { 
 		/***********加载选择对话框********************/
-		if(!iUrl)
-			iUrl = "pick.do";
-		if(!params)
-			params='';
-		if(!tagName)
-			tagName='';
+		if(!iUrl) {
+            iUrl = "pick.do";
+        }
+		if(!params) {
+            params = '';
+        }
+		if(!tagName) {
+            tagName = '';
+        }
 		if(showType!='0'){
-			if(!showType||showType=='')
-				showType=5;
+			if(!showType||showType=='') {
+                showType = 5;
+            }
 		}
 		$("#pickContent").html(loadText);
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数

@@ -69,7 +69,7 @@
       order by ${query.sort}
     </if>
     <if test="query.start != null and query.pageSize != null">
-      limit ${query.start},${query.pageSize}
+      limit #{query.start},#{query.pageSize}
     </if>
   </select>
 

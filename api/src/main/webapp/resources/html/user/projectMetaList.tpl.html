@@ -1,0 +1,68 @@
+<div class="p0 col-xs-12" ng-controller="userProjectMetaCtrl" ng-init="queryProjectMetaList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryProjectMetaList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <a type="button" ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addEnv')]"
+               ng-click="detail('新增项目环境',700,'user/projectMeta/detail.do?id=NULL&type=1&projectId=' + $stateParams.projectId);">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增
+            </a>
+        </div>
+
+        <!--<div class="form-group w200 fl mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">名称</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称" ng-model="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="queryProjectMetaList(1);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button> -->
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped f13">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td class="min-w300">类型 / 标题 / 内容  <span class="f12 C999">（用于在项目调试时快速切换环境）</span></td>
+                    <td>创建时间</td>
+                    <td class="w100">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in projectMetaVOList">
+                    <td>
+                        <div class="C000 f14">
+                            <span class="badge f12 fn main-bg o5">{{item.typeStr}}</span>
+                            {{item.name| cut:true:40:' ...'}}
+                        </div>
+                        <div class="f10 mt5 C999" ng-if="item.type==1">
+                            URL <span class="C555">{{item.envUrl}}</span> 替换为  <span class="main-color">{{item.value}}</span>
+                        </div>
+                    </td>
+                    <td>{{item.createTimeStr}}</td>
+                    <td class="f12">
+                        <a ng-class="{true: 'mr10 cursor btn btn-xs btn-default', false:'mr10 btn btn-xs btn-default disabled'}[isProjectUser('modEnv')]"
+                           ng-click="detail('编辑环境【'+item.name+'】',700,'user/projectMeta/detail.do?type=1&id='+item.id);">
+                            <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+
+                        <a ng-class="{true: 'mr10 cursor btn btn-xs btn-danger', false:'mr10 btn btn-xs btn-danger disabled'}[isProjectUser('delEnv')]"
+                           ng-click="del('user/projectMeta/delete.do?id='+item.id,item.name)">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryProjectMetaList'; modelKey='projectMetaVOList'; "></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

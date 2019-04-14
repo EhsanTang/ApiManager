@@ -18,7 +18,7 @@ public class JavaPOGenerateUtil extends BaseGenerateUtil {
     private static String PO_GET_SET = "CA_PO_GET_SET";
 
     private static String FIELD = "\n\tprivate %s %s;";
-    private static String GET_SET = "\n\tpublic %s get%s(){\n\t\treturn %s\n\t}" + "\n\tpublic void set%s(%s %s){\n\t\tthis.%s = %s;\n\t}\n";
+    private static String GET_SET = "\n\tpublic %s get%s(){\n\t\treturn %s;\n\t}" + "\n\tpublic void set%s(%s %s){\n\t\tthis.%s = %s;\n\t}\n";
 
     public boolean canExecute(String type){
         if (GenerateType.JAVA_PO.name().equals(type)) {

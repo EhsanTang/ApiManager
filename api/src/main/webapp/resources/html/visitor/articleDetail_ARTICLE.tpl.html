@@ -11,6 +11,11 @@
 
 		<div class="f14 mt-3 imgCenter" ng-bind-html="article.content|trustHtml"></div>
 
+		<div class="col-xs-12 f16 fb pl0 pt10 pb0 mb5 BGFFF r5"
+			 ng-if="error">
+			<button type="button" class="btn btn-danger btn-xs break-word"
+					onclick="propUpPasswordDiv(this)" ng-bind="error"></button>
+		</div>
 		<div ui-view="comment" class="f14" ng-if="article.canComment==1"></div>
 	</div>
 </div>

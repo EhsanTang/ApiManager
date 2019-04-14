@@ -46,6 +46,7 @@ public enum PickCode {
     TESTER("TESTER", "项目成员：缺陷测试人"),
     USER("USER", "用户列表"),
 	MENU_ICON("MENU_ICON", "菜单图标"),
+	PROJECT_ENV("PROJECT_ENV", "项目环境"),
     // 推荐项目...
     PROJECT_STATUE("PROJECT_STATUE", "项目状态"),
 

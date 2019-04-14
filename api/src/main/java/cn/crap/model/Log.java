@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Log extends BasePo{
+public class Log extends BasePO {
 
     private Byte status;
 

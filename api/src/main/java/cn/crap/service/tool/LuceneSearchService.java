@@ -172,9 +172,9 @@ public class LuceneSearchService implements ISearchService {
 		dto.setProjectId(doc.get(PROJECT_ID));
 		dto.setModuleId(doc.get(MODULE_ID));
 		dto.setOpen(Boolean.parseBoolean(doc.get(OPEN)));
-		// TODO
+		// TODO 根据数据类型转换
         dto.setHref("");
-        // TODO
+        // TODO 根据数据类型转换
         dto.setUserHref("");
         dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(dto.getCreateTime()));
 		return dto;

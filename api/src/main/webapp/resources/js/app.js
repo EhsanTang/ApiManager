@@ -339,26 +339,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			 
 		});
 	}
-	$rootScope.changeSequence = function(url,id,changeId){
-		var params = "iUrl="+url+"|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-			 }else if(result.success==1){
-				 $rootScope.error = null;
-				 //关闭编辑对话框
-				 $timeout(function() {
-					 $("#refresh").click();
-                 })
-			 }
-		}).error(function(result) {
-			lookUp('lookUp','',100,300,3);
-			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
-			$rootScope.error = result;
-			 
-		});
-	}
+
 	/**
 	 * 发送请求工具方法
 	 */

@@ -321,17 +321,17 @@ public class LuceneSearchService implements ISearchService {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("\\/", "CA_FXG").replaceAll("\\+", "CA_ADD").replaceAll("\\-", "CA_DES").replaceAll("\\&", "CA_AND")
-				.replaceAll("\\|", "CA_HZ").replaceAll("\\{", "CA_DKHS").replaceAll("\\}", "CA_DKHE").replaceAll("\\?", "CA_WH")
-				.replaceAll("\\*", "CA_XH").replaceAll("\\#", "CA_JH").replaceAll("\\:", "CA_MH").replaceAll("\\.", "CA_DH");
+		return href.replaceAll("\\/", "#FXG").replaceAll("\\+", "#ADD").replaceAll("\\-", "#DES").replaceAll("\\&", "#AND")
+				.replaceAll("\\|", "#HZ").replaceAll("\\{", "#DKHS").replaceAll("\\}", "#DKHE").replaceAll("\\?", "#WH")
+				.replaceAll("\\*", "#XH").replaceAll("\\#", "#JH").replaceAll("\\:", "#MH").replaceAll("\\.", "#DH");
 	}
 	public static String unHandleHref(String href){
 		if(href == null) {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("CA_FXG", "\\/").replaceAll( "CA_ADD","\\+").replaceAll( "CA_DES", "\\-").replaceAll( "CA_AND","\\&")
-				.replaceAll("CA_HZ", "\\|").replaceAll("CA_DKHS", "\\{").replaceAll("CA_DKHE","\\}").replaceAll( "CA_WH","\\?")
-				.replaceAll("CA_XH", "\\*").replaceAll("CA_JH", "\\#").replaceAll("CA_MH", "\\:").replaceAll("CA_DH", "\\.");
+		return href.replaceAll("#FXG", "\\/").replaceAll( "#ADD","\\+").replaceAll( "#DES", "\\-").replaceAll( "#AND","\\&")
+				.replaceAll("#HZ", "\\|").replaceAll("#DKHS", "\\{").replaceAll("#DKHE","\\}").replaceAll( "#WH","\\?")
+				.replaceAll("#XH", "\\*").replaceAll("#JH", "\\#").replaceAll("#MH", "\\:").replaceAll("#DH", "\\.");
 	}
 }

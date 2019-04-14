@@ -4,18 +4,18 @@
 visitorModule.filter("encodeURL",function($sce){
 	 return function (input){ 
 		 if(input){
-		 input = replaceAll(input,"\\/", "CA_FXG");
-		 input = replaceAll(input,"\\+", "CA_ADD");
-		 input = replaceAll(input,"\\-", "CA_DES");
-		 input = replaceAll(input,"\\&", "CA_AND");
-		 input = replaceAll(input,"\\|", "CA_HZ");
-		 input = replaceAll(input,"\\{", "CA_DKHS");
-		 input = replaceAll(input,"\\}", "CA_DKHE");
-		 input = replaceAll(input,"\\?", "CA_WH");
-		 input = replaceAll(input,"\\*", "CA_XH");
-		 input = replaceAll(input,"\\#", "CA_JH");
-		 input = replaceAll(input,"\\:", "CA_MH");
-		 input = replaceAll(input,"\\.", "CA_DH");
+		 input = replaceAll(input,"\\/", "#FXG");
+		 input = replaceAll(input,"\\+", "#ADD");
+		 input = replaceAll(input,"\\-", "#DES");
+		 input = replaceAll(input,"\\&", "#AND");
+		 input = replaceAll(input,"\\|", "#HZ");
+		 input = replaceAll(input,"\\{", "#DKHS");
+		 input = replaceAll(input,"\\}", "#DKHE");
+		 input = replaceAll(input,"\\?", "#WH");
+		 input = replaceAll(input,"\\*", "#XH");
+		 input = replaceAll(input,"\\#", "#JH");
+		 input = replaceAll(input,"\\:", "#MH");
+		 input = replaceAll(input,"\\.", "#DH");
 		 }
 		 return input;
 	} ;
@@ -23,18 +23,18 @@ visitorModule.filter("encodeURL",function($sce){
 visitorModule.filter("decodeURL",function($sce){
 		 return function (input){
 			 if(input){
-			 input = replaceAll(input, "CA_FXG","\/");
-			 input = replaceAll(input, "CA_ADD","\+");
-			 input = replaceAll(input, "CA_DES","\-");
-			 input = replaceAll(input, "CA_AND","\&");
-			 input = replaceAll(input, "CA_HZ","\|");
-			 input = replaceAll(input, "CA_DKHS","\{");
-			 input = replaceAll(input, "CA_DKHE","\}");
-			 input = replaceAll(input, "CA_WH","\?");
-			 input = replaceAll(input, "CA_XH","\*");
-			 input = replaceAll(input, "CA_JH","\#");
-			 input = replaceAll(input, "CA_MH","\:");
-			 input = replaceAll(input, "CA_DH","\.");
+			 input = replaceAll(input, "#FXG","\/");
+			 input = replaceAll(input, "#ADD","\+");
+			 input = replaceAll(input, "#DES","\-");
+			 input = replaceAll(input, "#AND","\&");
+			 input = replaceAll(input, "#HZ","\|");
+			 input = replaceAll(input, "#DKHS","\{");
+			 input = replaceAll(input, "#DKHE","\}");
+			 input = replaceAll(input, "#WH","\?");
+			 input = replaceAll(input, "#XH","\*");
+			 input = replaceAll(input, "#JH","\#");
+			 input = replaceAll(input, "#MH","\:");
+			 input = replaceAll(input, "#DH","\.");
 			}
 		 return input;
 	 } ;

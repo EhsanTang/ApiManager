@@ -115,8 +115,7 @@ public class ProjectController extends BaseController {
             return new JsonResult(1, dto);
         }
 
-        List<ProjectUserPO> projectUserPOList = projectUserService.select(
-                new ProjectUserQuery().setUserId(user.getId()).setProjectId(projectPO.getId()), null);
+        List<ProjectUserPO> projectUserPOList = projectUserService.select(new ProjectUserQuery().setUserId(user.getId()).setProjectId(projectPO.getId()));
         if (CollectionUtils.isEmpty(projectUserPOList)){
             throw new MyException(MyError.E000022);
         }

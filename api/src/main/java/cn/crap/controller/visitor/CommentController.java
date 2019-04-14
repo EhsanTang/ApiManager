@@ -105,8 +105,9 @@ public class CommentController extends BaseController {
         Assert.notNull(query.getType(), "type 不能为空");
         query.setPageSize(10);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
+
+        List<CommentPO> commentPOList = commentService.select(query);
         Page page = new Page(query);
-        List<CommentPO> commentPOList = commentService.select(query, page);
         page.setAllRow(commentService.count(query));
         return new JsonResult().success().data(CommentAdapter.getDto(commentPOList)).page(page);
     }

@@ -62,9 +62,11 @@ public class CommentController extends BaseController {
 		query.setPageSize(10);
 		query.setSort(TableField.SORT.SEQUENCE_DESC);
 
+
+		List<CommentPO> commentList = commentService.select(query);
 		Page page = new Page(query);
 		page.setAllRow(commentService.count(query));
-		List<CommentPO> commentList = commentService.select(query, page);
+
 		return new JsonResult(1, CommentAdapter.getDto(commentList), page);
 	}
 

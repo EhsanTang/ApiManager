@@ -68,7 +68,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
     @Override
     public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
         Assert.isTrue(pageSize > 0 && pageSize <= 1000);
-        BugQuery bugQuery = new BugQuery().setProjectId(projectId).setPageSize(pageSize).setNeedStart(false).setGreatThenId(id).setSort(TableField.SORT.ID_ASC);
+        BugQuery bugQuery = new BugQuery().setProjectId(projectId).setPageSize(pageSize).setIdGreatThen(id).setSort(TableField.SORT.ID_ASC);
         return BugAdapter.getSearchDto(bugDao.select(bugQuery));
     }
 

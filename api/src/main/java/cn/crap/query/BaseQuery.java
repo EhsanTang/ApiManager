@@ -2,6 +2,7 @@ package cn.crap.query;
 
 import cn.crap.framework.MyException;
 import cn.crap.utils.SafetyUtil;
+import lombok.Getter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -10,15 +11,20 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @date 2018/6/30 14:17
  */
 public abstract class BaseQuery<T> {
+    @Getter
     private String id;
+    @Getter
     private String projectId;
+    @Getter
     private String moduleId;
-    private Integer currentPage;
-    private Integer pageSize;
-    private String sort;
+    @Getter
     private Byte status;
-    private Integer start;
-    private boolean needStart = true;
+    private String sort;
+    private int pageSize;
+    private int currentPage;
+
+
+
 
     abstract T getQuery();
 
@@ -27,26 +33,14 @@ public abstract class BaseQuery<T> {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public String getId() {
-        return id;
-    }
-
     public T setId(String id) {
         this.id = id;
         return getQuery();
     }
 
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
     public T setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
         return getQuery();
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
     }
 
     public T setPageSize(Integer pageSize) {
@@ -64,17 +58,9 @@ public abstract class BaseQuery<T> {
         return getQuery();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
     public T setStatus(Byte status) {
         this.status = status;
         return getQuery();
-    }
-
-    public String getProjectId() {
-        return projectId;
     }
 
     public T setProjectId(String projectId) {
@@ -82,29 +68,32 @@ public abstract class BaseQuery<T> {
         return getQuery();
     }
 
-    public String getModuleId() {
-        return moduleId;
-    }
-
     public T setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return getQuery();
     }
 
-    public Integer getStart() {
-        return start;
+
+    /*************** GET ****************/
+    public int getCurrentPage() {
+        return (currentPage <= 0 ? 1 : currentPage);
     }
 
-    public void setStart(Integer start) {
-        this.start = start;
+    /**
+     * 一次查询不能超过100
+     * @return
+     */
+    public int getPageSize() {
+        if (pageSize > 100){
+            return 100;
+        }
+        return (pageSize <= 0 ? 20 : pageSize);
     }
 
-    public boolean isNeedStart() {
-        return needStart;
-    }
-
-    public T setNeedStart(boolean needStart) {
-        this.needStart = needStart;
-        return getQuery();
+    /**
+     * 起始位置
+     */
+    public int getStart(){
+        return  this.getPageSize() * (this.getCurrentPage() - 1);
     }
 }

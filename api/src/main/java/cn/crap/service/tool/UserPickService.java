@@ -111,7 +111,7 @@ public class UserPickService implements IPickService{
                 }
                 return picks;
             case PROJECT_ENV:
-                List<ProjectMetaPO> envList = projectMetaService.select(new ProjectMetaQuery().setType(ProjectMetaType.ENV.getType()).setProjectId(key), null);
+                List<ProjectMetaPO> envList = projectMetaService.select(new ProjectMetaQuery().setType(ProjectMetaType.ENV.getType()).setProjectId(key));
                 for (ProjectMetaPO envPO : envList) {
                     ProjectMetaDTO envDTO = ProjectMetaAdapter.getDto(envPO, null);
                     pick = new PickDto(envDTO.getId(), envDTO.getProjectId(), envDTO.getName());
@@ -140,7 +140,7 @@ public class UserPickService implements IPickService{
                 picks.add(pick);
 
                 // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
-                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key), null)) {
+                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key))) {
                     User projectUser = userService.getById(m.getUserId());
                     if (projectUser == null || projectUser.getId().equals(creator.getId())){
                         continue;

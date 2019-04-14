@@ -56,8 +56,8 @@
             <if test="query.name != null">
                 and name like concat(concat('%',#{query.name}),'%')
             </if>
-            <if test="query.greatThenId != null">
-                and id > #{query.greatThenId}
+            <if test="query.idGreatThen != null">
+                and id > #{query.idGreatThen}
             </if>
 
         </where>
@@ -151,12 +151,7 @@
         <if test="query.sort != null">
             order by ${query.sort}
         </if>
-        <if test="query.needStart">
-            limit ${query.start},${query.pageSize}
-        </if>
-        <if test="query.needStart == false">
-            limit ${query.pageSize}
-        </if>
+        limit ${query.start},${query.pageSize}
     </select>
 
     <!-- 查询 -->

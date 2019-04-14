@@ -6,7 +6,10 @@ import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.BasePO;
 import cn.crap.query.BaseQuery;
-import cn.crap.utils.*;
+import cn.crap.utils.AttributeUtils;
+import cn.crap.utils.IConst;
+import cn.crap.utils.MyString;
+import cn.crap.utils.TableField;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -74,13 +77,8 @@ public class NewBaseService<PO extends BasePO, Query extends BaseQuery> {
         return newBaseDao.count(query);
     }
 
-    public List<PO> select(Query query, Page page) throws MyException {
+    public List<PO> select(Query query) throws MyException {
         Assert.notNull(query, "query can't be null");
-        if (page != null){
-            query.setStart(page.getStart());
-            query.setCurrentPage(page.getCurrentPage());
-            query.setPageSize(page.getSize());
-        }
         if (query.getSort() == null){
             query.setSort(TableField.SORT.SEQUENCE_DESC);
         }

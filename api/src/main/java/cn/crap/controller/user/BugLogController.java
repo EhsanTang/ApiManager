@@ -48,8 +48,8 @@ public class BugLogController extends BaseController{
         query.setPageSize(100);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
 
+        List<BugLogPO> bugLogPOList = bugLogService.select(query);
         Page page = new Page(query);
-        List<BugLogPO> bugLogPOList = bugLogService.select(query, page);
         page.setAllRow(bugLogService.count(query));
 
         List<BugLogDTO> dtoList = BugLogAdapter.getDto(bugLogPOList);

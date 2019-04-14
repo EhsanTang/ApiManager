@@ -67,7 +67,7 @@ public class PermissionUtil implements IConst{
 
         // 项目成员
         List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
-                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()), null);
+                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()));
 
         if (CollectionUtils.isEmpty(projectUserPOList)) {
             throw new MyException(MyError.E000022, needPermission.getDesc());

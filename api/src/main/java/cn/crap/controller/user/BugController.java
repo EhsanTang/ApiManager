@@ -124,8 +124,8 @@ public class BugController extends BaseController{
         checkPermission(project, ProjectPermissionEnum.READ);
         query.setPageSize(10);
 
+        List<BugPO> bugPOList = bugService.select(query);
         Page page = new Page(query);
-        List<BugPO> bugPOList = bugService.select(query, page);
         page.setAllRow(bugService.count(query));
         List<BugDTO> dtoList = BugAdapter.getDto(bugPOList);
 

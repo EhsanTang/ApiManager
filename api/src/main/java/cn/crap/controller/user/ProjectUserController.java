@@ -49,10 +49,10 @@ public class ProjectUserController extends BaseController{
     @AuthPassport
 	public JsonResult list(@ModelAttribute ProjectUserQuery query) throws MyException{
 		Assert.notNull(query.getProjectId());
-        Page page= new Page(query);
         checkPermission( projectCache.get(query.getProjectId()));
 
-		List<ProjectUserPO> projectUsers = projectUserService.select(query, page);
+		List<ProjectUserPO> projectUsers = projectUserService.select(query);
+        Page page= new Page(query);
         page.setAllRow(projectUserService.count(query));
 
         List<ProjectUserDto> dto = ProjectUserAdapter.getDto(projectUsers);
@@ -109,7 +109,7 @@ public class ProjectUserController extends BaseController{
     public String quit(@RequestParam String projectId, HttpServletRequest request) throws Exception{
         LoginInfoDto loginInfoDto = LoginUserHelper.getUser();
         String userId = loginInfoDto.getId();
-        List<ProjectUserPO> projectUser = projectUserService.select(new ProjectUserQuery().setUserId(userId).setProjectId(projectId), null);
+        List<ProjectUserPO> projectUser = projectUserService.select(new ProjectUserQuery().setUserId(userId).setProjectId(projectId));
         if (CollectionUtils.isEmpty(projectUser)){
             request.setAttribute("title", "操作成功");
             request.setAttribute("result", "退出成功");

@@ -4,18 +4,17 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.crap.dto.SearchDto;
+import cn.crap.query.SearchQuery;
 import cn.crap.utils.Page;
 
 public interface ISearchService{
 
 	/**
 	 * 根据关键词、分页信息查询
-	 * @param keyword
-	 * @param page
 	 * @return
 	 * @throws Exception 
 	 */
-	List<SearchDto> search(String projectId, boolean open, String keyword, Page page) throws Exception;
+	List<SearchDto> search(SearchQuery query) throws Exception;
 
 
 	/**

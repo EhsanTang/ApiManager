@@ -1,6 +1,8 @@
 package cn.crap.service.tool;
 
 import cn.crap.dto.SearchDto;
+import cn.crap.enu.TableId;
+import cn.crap.query.SearchQuery;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
 import cn.crap.utils.*;
@@ -65,11 +67,12 @@ public class LuceneSearchService implements ISearchService {
 	private final int PAGE_SIZE = 2;
 
 	@Override
-	public List<SearchDto> search(String projectId, boolean open, String keyword, Page page) throws Exception {
-		keyword = handleHref(keyword);
+	public List<SearchDto> search(SearchQuery searchQuery) throws Exception {
+		String keyword = handleHref(searchQuery.getKeyword());
 		if (MyString.isEmpty(keyword)) {
 			return new ArrayList<>();
 		}
+
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader.open(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())));
@@ -88,12 +91,17 @@ public class LuceneSearchService implements ISearchService {
             BooleanClause keywordClause = new BooleanClause(keywordQuery, BooleanClause.Occur.MUST);
             BooleanQuery.Builder boolBuilder = new BooleanQuery.Builder().add(keywordClause);
 
-            if (open){
-                boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, "true")), BooleanClause.Occur.MUST));
+			/**
+			 * null : 表示查询全部
+			 * true : 表示只能查询开放搜索的项目
+			 * false : 代码只能查询不开放的项目
+			 */
+			if (searchQuery.getOpen() != null){
+                boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, searchQuery.getOpen()+"")), BooleanClause.Occur.MUST));
             }
 
-            if (projectId != null){
-                boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, projectId)), BooleanClause.Occur.MUST));
+            if (searchQuery.getProjectId() != null){
+                boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
             }
 
             BooleanQuery query = boolBuilder.build();
@@ -110,13 +118,13 @@ public class LuceneSearchService implements ISearchService {
 			highlighter.setTextFragmenter(fragmenter);
 
 			// 取出当前页的数据
-			page.setAllRow(topDocs.totalHits);
-			if (page.getCurrentPage() > page.getTotalPage()){
+			searchQuery.setAllRow(topDocs.totalHits);
+			if (searchQuery.getCurrentPage() > searchQuery.getTotalPage()){
 			    return new ArrayList<>();
             }
 
-			int end = Math.min(page.getStart() + page.getSize(), topDocs.totalHits);
-			for (int i = page.getStart(); i < end; i++) {
+			int end = Math.min(searchQuery.getStart() + searchQuery.getPageSize(), topDocs.totalHits);
+			for (int i = searchQuery.getStart(); i < end; i++) {
 				ScoreDoc scoreDoc = topDocs.scoreDocs[i];
 				float relativeScore = scoreDoc.score;
 				int docSn = scoreDoc.doc; // 文档内部编号
@@ -211,14 +219,15 @@ public class LuceneSearchService implements ISearchService {
 	 * @throws Exception
 	 */
 	private static void addHighLightField(Highlighter highlighter, Document doc, String fieldName) throws Exception {
-		String hc = doc.get(fieldName);
-		if (hc != null)
-			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName, doc.get(fieldName));
+		String fieldValue = doc.get(fieldName);
+		String hc = null;
+		if (fieldValue != null) {
+			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName, fieldValue.substring(0, Math.min(200, fieldValue.length())) + "...");
+		}
 
 		if (hc == null) {
-			String content = doc.get(fieldName);
-			if (content != null) {
-				hc = content.substring(0, Math.min(50, content.length()));
+			if (fieldValue != null) {
+				hc = fieldValue.substring(0, Math.min(50, fieldValue.length()));
 			} else {
 				hc = "";
 			}

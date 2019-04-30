@@ -9,6 +9,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.HotSearch;
 import cn.crap.query.ArticleQuery;
+import cn.crap.query.SearchQuery;
 import cn.crap.schedule.OpenSourceInfoTask;
 import cn.crap.schedule.TaskUtil;
 import cn.crap.service.*;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -220,17 +222,16 @@ public class MainController extends BaseController{
 
 	@RequestMapping("/search.do")
 	@ResponseBody
-	public JsonResult search(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
+	public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
 		if(Config.luceneSearchNeedLogin){
 			LoginUserHelper.getUser(MyError.E000043);
 		}
-		keyword = keyword.trim();
-        if (keyword.length() > 200){
-            keyword = keyword.substring(0, 200);
-        }
 
-		Page page= new Page(currentPage);
-		List<SearchDto> searchResults = luceneService.search(null, true, keyword, page);
+		String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+		query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
+		keyword = query.getKeyword();
+
+		List<SearchDto> searchResults = luceneService.search(query);
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		returnMap.put("searchResults", searchResults);
 
@@ -256,8 +257,9 @@ public class MainController extends BaseController{
                 hotSearchService.update(hotSearch);
             }
         }
-		
+
+        Page page = new Page(query);
 		return new JsonResult(1, returnMap, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+ keyword,"void")));
 	}
 }

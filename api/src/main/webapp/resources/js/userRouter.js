@@ -39,6 +39,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
     });
 
+    // 搜索
+    $stateProvider.state('userSearchList', {
+        url : '/user/search/list?keyword&currentPage&' + commonUrlParam,
+        views : {
+            'main' : {
+                templateUrl : function($stateParems){
+                    return 'resources/html/user/searchList.tpl.html?v=v8.0.5';
+                }
+            },
+            'page@userSearchList' : {
+                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+            },'subMenu' :{
+                templateUrl : function($stateParems){
+                    return 'resources/html/subTpl/subMenuModule.tpl.html?v=v8.0.5';
+                }
+            }
+        }
+    });
+
 	// 文档
     $stateProvider.state('userArticleList', {
         url : '/user/article/list?currentPage&name&category&' + commonUrlParam,

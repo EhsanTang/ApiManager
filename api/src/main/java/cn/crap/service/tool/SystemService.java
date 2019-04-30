@@ -36,7 +36,7 @@ public class SystemService {
     // TODO 按文件夹合并
     private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "bug.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
-            "userCtrls.js", "userBugCtrl.js", "userProjectMetaCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "coreNew.js", "global.js", "validateAndRefresh.js",
+            "userCtrls.js", "userBugCtrl.js", "userProjectMetaCtrl.js", "userCommonCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "coreNew.js", "global.js", "validateAndRefresh.js",
             "crapApi.js", "json.js", "editor.js"};
     private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
     private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";

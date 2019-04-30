@@ -22,7 +22,7 @@ public abstract class BaseQuery<T> {
     private String sort;
     private int pageSize;
     private int currentPage;
-
+    private int allRow;
 
 
 
@@ -73,6 +73,10 @@ public abstract class BaseQuery<T> {
         return getQuery();
     }
 
+    public T setAllRow(int allRow) {
+        this.allRow = allRow;
+        return getQuery();
+    }
 
     /*************** GET ****************/
     public int getCurrentPage() {
@@ -95,5 +99,13 @@ public abstract class BaseQuery<T> {
      */
     public int getStart(){
         return  this.getPageSize() * (this.getCurrentPage() - 1);
+    }
+
+    public int getAllRow() {
+        return (allRow < 0 ? 0 : allRow);
+    }
+
+    public int getTotalPage(){
+        return (this.getAllRow() + this.getPageSize() -1) / this.getPageSize();
     }
 }

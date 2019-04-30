@@ -1,6 +1,7 @@
 package cn.crap.dto;
 
 import cn.crap.enu.TableId;
+import cn.crap.utils.TableField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -92,4 +93,11 @@ public class SearchDto implements Serializable{
 	public String getCustom() {
         return (custom == null ? "" : custom);
 	}
+
+	public String getTypeStr(){
+        if (type == null){
+            return "未知类型";
+        }
+        return TableId.getNameByValue(type);
+    }
 }

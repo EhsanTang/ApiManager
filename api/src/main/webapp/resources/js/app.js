@@ -1,10 +1,11 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'projectMetaModule', 'commentModule', 'visitorModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'projectMetaModule', 'commonModule', 'commentModule', 'visitorModule']);
 var visitorModule = angular.module("visitorModule", []);
 var userModule = angular.module("userModule", []);
 var adminModule = angular.module("adminModule", []);
 var commentModule = angular.module("commentModule", []);
 var bugModule = angular.module("bugModule", []);
 var projectMetaModule = angular.module("projectMetaModule", []);
+var commonModule = angular.module("commonModule", []);
 
 
 var NEED_PASSWORD_CODE = "E000007";
@@ -153,6 +154,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
 		showMessage('lookUp','false',false,-1);
 	}
+
 	$rootScope.getBaseData = function($scope,$http,params,page) {
 		if(page) {
             params += "&currentPage=" + page;
@@ -177,6 +179,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 
 		});;
     };
+
     $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey,callBack) {
         if(!page) {
             page = 1;

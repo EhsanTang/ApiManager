@@ -18,6 +18,7 @@ public class Page implements Serializable{
 
 	public Page(BaseQuery baseQuery){
 		this(baseQuery.getPageSize(), baseQuery.getCurrentPage());
+		this.setAllRow(baseQuery.getAllRow());
 	}
 
 	public Page(Integer size, Integer currentPage){

@@ -2,23 +2,27 @@ package cn.crap.controller.admin;
 
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.SettingEnum;
 import cn.crap.enu.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.query.SearchQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
 import cn.crap.utils.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -181,5 +185,17 @@ public class MainController extends BaseController {
         return new JsonResult().success();
     }
 
+    /**
+     * 搜索
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/user/search.do")
+    @AuthPassport
+    public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
+        List<SearchDto> search = luceneService.search(query);
+        return new JsonResult().success().data(search);
+    }
 
 }

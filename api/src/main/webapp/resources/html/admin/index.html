@@ -23,10 +23,10 @@
 				</a>
 
                 <div class="fl h50 lh50 pl20 pr20 C555 f14" >
-                    <span ng-if="$stateParams.projectName">
+                    <span ng-if="$stateParams.projectName && $stateParams.projectName!='' && $stateParams.projectName!='undefined'">
                         项目【<span ng-bind="$stateParams.projectName"></span> 】
                     </span>
-                    <span ng-if="!$stateParams.projectName" ng-bind="settings.TITLE"></span>
+                    <span ng-if="!$stateParams.projectName || $stateParams.projectName=='' || $stateParams.projectName=='undefined'" ng-bind="settings.TITLE"></span>
                     <span ng-if="$stateParams.pageName">
                         <i class="iconfont">&#xe6a7;</i>
                         <span ng-bind="$stateParams.pageName"></span>

@@ -1,6 +1,6 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ArticleDto;
+import cn.crap.dto.ArticleDTO;
 import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.model.Article;
@@ -19,12 +19,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ArticleAdapter {
-    public static ArticleDto getDto(Article model, Module module, Project project){
+    public static ArticleDTO getDto(Article model, Module module, Project project){
         if (model == null){
             return null;
         }
 
-		ArticleDto dto = new ArticleDto();
+		ArticleDTO dto = new ArticleDTO();
 		BeanUtil.copyProperties(model, dto);
 
 		dto.setCanCommentName(new Byte("1").equals(model.getCanComment()) ? "是" : "否");
@@ -43,11 +43,11 @@ public class ArticleAdapter {
 		return dto;
     }
 
-	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model, Module module, Project project) {
+	public static ArticleDTO getDtoWithBLOBs(ArticleWithBLOBs model, Module module, Project project) {
 		if (model == null) {
 			return null;
 		}
-		ArticleDto dto = getDto(model, module, project);
+		ArticleDTO dto = getDto(model, module, project);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
         dto.setUseMarkdown(false);
@@ -63,7 +63,7 @@ public class ArticleAdapter {
      * @param dto
      * @return
      */
-    public static ArticleWithBLOBs getModel(ArticleDto dto){
+    public static ArticleWithBLOBs getModel(ArticleDTO dto){
         if (dto == null){
             return null;
         }
@@ -74,22 +74,22 @@ public class ArticleAdapter {
         return model;
     }
 
-    public static List<ArticleDto> getDtoWithBLOBs(List<ArticleWithBLOBs> models, Module module){
+    public static List<ArticleDTO> getDtoWithBLOBs(List<ArticleWithBLOBs> models, Module module){
         if (models == null){
             return new ArrayList<>();
         }
-        List<ArticleDto> dtos = new ArrayList<>();
+        List<ArticleDTO> dtos = new ArrayList<>();
         for (ArticleWithBLOBs model : models){
             dtos.add(getDtoWithBLOBs(model, module, null));
         }
         return dtos;
     }
 
-	public static List<ArticleDto> getDto(List<Article> models, Module module, Project project){
+	public static List<ArticleDTO> getDto(List<Article> models, Module module, Project project){
 		if (models == null){
 			return new ArrayList<>();
 		}
-		List<ArticleDto> dtos = new ArrayList<>();
+		List<ArticleDTO> dtos = new ArrayList<>();
 		for (Article model : models){
 			dtos.add(getDto(model, module, project));
 		}

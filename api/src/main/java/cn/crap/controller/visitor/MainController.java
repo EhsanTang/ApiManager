@@ -21,7 +21,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
@@ -97,7 +96,7 @@ public class MainController extends BaseController{
         modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
 
-        List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
+        List<ArticleDTO> articleList = (List<ArticleDTO>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
         	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
 					.setPageSize(5);

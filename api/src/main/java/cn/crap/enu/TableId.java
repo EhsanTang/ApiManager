@@ -1,40 +1,48 @@
 package cn.crap.enu;
 
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 public enum TableId {
 	/**
 	 * TABLE：数据库表，没有用到，但是创建索引时需要使用，区分数据类型
 	 */
-	TABLE("00", "数据字典"), ARTICLE("01", "文章"), SETTING("02"), ERROR("03", "状态码"), COMMENT("04", "评论"),
+	TABLE("00", "数据字典", "dictionary"), ARTICLE("01", "文章", "article"), SETTING("02"), ERROR("03", "状态码", "error"), COMMENT("04"),
 	MENU("05"), USER("06"),PROJECT("07"), LOG("08"), MODULE("09"),PROJECT_USER("10"),ROLE("11"),
-	INTERFACE("12", "接口"),SOURCE("13", "文档"), DEBUG("14"), HOT_SEARCH("15"), BUG("16", "缺陷"),
+	INTERFACE("12", "接口", "interface"),SOURCE("13", "文档", "article"), DEBUG("14"), HOT_SEARCH("15"), BUG("16", "缺陷", "debug"),
 	BUG_LOG("17"),PROJECT_META("18");
 
 	@Getter
-	private final String tableId;
+	private final String id;
 	@Getter
 	private final String tableName;
+	@Getter
+	private final String tableEnName;
 
-	TableId(String tableId){
-		this.tableId = tableId;
+	TableId(String id){
+		this.id = id;
 		this.tableName = "";
+		this.tableEnName = "";
 	}
 
-	TableId(String tableId, String tableName){
-		this.tableId = tableId;
+	TableId(String id, String tableName, String tableEnName){
+		this.id = id;
 		this.tableName = tableName;
+		this.tableEnName = tableEnName;
 	}
+
+    public static TableId getByValue(String value){
+        Assert.notNull(value);
+        for(TableId tableId : TableId.values()){
+            if(tableId.getId().equals(value)){
+                return tableId;
+            }
+        }
+        return null;
+    }
 
 	public static String getNameByValue(String value){
-		if (value == null){
-			return "";
-		}
-		for( TableId tableId : TableId.values()){
-			if(tableId.getTableId().equals(value)){
-				return tableId.getTableName();
-			}
-		}
-		return "";
+        Assert.notNull(value);
+        return getByValue(value).getTableName();
 	}
 }

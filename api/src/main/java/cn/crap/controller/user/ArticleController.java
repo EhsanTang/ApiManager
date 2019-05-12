@@ -1,7 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ArticleAdapter;
-import cn.crap.dto.ArticleDto;
+import cn.crap.dto.ArticleDTO;
 import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
@@ -59,7 +59,7 @@ public class ArticleController extends BaseController {
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
 		List<Article> models = articleService.query(query);
-		List<ArticleDto> dtos = ArticleAdapter.getDto(models, module, project);
+		List<ArticleDTO> dtos = ArticleAdapter.getDto(models, module, project);
 
 		return new JsonResult().success().data(dtos).page(page)
 				.others(Tools.getMap("type", ArticleType.getByEnumName(query.getType()), "category", query.getCategory()));
@@ -92,7 +92,7 @@ public class ArticleController extends BaseController {
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception {
+	public JsonResult addOrUpdate(@ModelAttribute ArticleDTO dto) throws Exception {
 		Assert.notNull(dto.getProjectId(), "projectId can't be null");
 		if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())) {
 			throw new MyException(MyError.E000066);

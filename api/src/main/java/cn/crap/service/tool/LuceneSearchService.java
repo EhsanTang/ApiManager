@@ -1,7 +1,7 @@
 package cn.crap.service.tool;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.TableId;
 import cn.crap.query.SearchQuery;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
@@ -40,6 +40,8 @@ public class LuceneSearchService implements ISearchService {
 	private SettingCache settingCache;
 	@Autowired
 	private StringCache stringCache;
+	@Autowired
+    private ProjectCache projectCache;
 	/**
 	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个
 	 * @Autowired(required = false)，这等于告诉 Spring：在找不到匹配 Bean 时也不报错
@@ -51,7 +53,7 @@ public class LuceneSearchService implements ISearchService {
 	private final static String PROJECT_ID = "projectId";
 	private final static String MODULE_ID = "moduleId";
 	private final static String ID = "id";
-	private final static String TYPE = "type";
+	private final static String TABLE_ID = "tableID";
 	private final static String CONTENT = "content";
 	private final static String OPEN = "open";
 	private final static String CUSTOM = "custom";
@@ -92,17 +94,28 @@ public class LuceneSearchService implements ISearchService {
             BooleanQuery.Builder boolBuilder = new BooleanQuery.Builder().add(keywordClause);
 
 			/**
-			 * null : 表示查询全部
+             * null: 代表查询有所有开放的，或有权限的
 			 * true : 表示只能查询开放搜索的项目
-			 * false : 代码只能查询不开放的项目
+			 * false : 代表查询有所有有权限的
 			 */
-			if (searchQuery.getOpen() != null){
-                boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, searchQuery.getOpen()+"")), BooleanClause.Occur.MUST));
+            Boolean open = searchQuery.getOpen();
+            // 查询全部、或有权限的数据，同时项目ID为空，则必须校验权限
+            if ( (open == null || !open) && searchQuery.getProjectId() == null){
+                LoginInfoDto user = LoginUserHelper.getUser();
+                // TODO 用户ID，用户登录权限
+                boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
+
             }
 
-            if (searchQuery.getProjectId() != null){
-                boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
+            else {
+                if (open != null){
+                    boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
+                }
+                if (searchQuery.getProjectId() != null){
+                    boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
+                }
             }
+
 
             BooleanQuery query = boolBuilder.build();
             TopDocs topDocs = searcher.search(query, 1000);
@@ -167,7 +180,8 @@ public class LuceneSearchService implements ISearchService {
 	}
 
 
-	private static SearchDto docToDto(Document doc) {
+
+	private SearchDto docToDto(Document doc) {
 		SearchDto dto = new SearchDto();
 		// 高亮处理的搜索结果
 		dto.setContent(doc.get(H_CONTENT));
@@ -176,14 +190,14 @@ public class LuceneSearchService implements ISearchService {
 		dto.setCustom(unHandleHref(doc.get(CUSTOM)));
 		dto.setId(doc.get(ID));
 		dto.setTitle(doc.get(H_TITLE));
-		dto.setType(doc.get(TYPE));
+		dto.setTableId(doc.get(TABLE_ID));
 		dto.setProjectId(doc.get(PROJECT_ID));
 		dto.setModuleId(doc.get(MODULE_ID));
 		dto.setOpen(Boolean.parseBoolean(doc.get(OPEN)));
-		// TODO 根据数据类型转换
+		// TODO
         dto.setHref("");
-        // TODO 根据数据类型转换
-        dto.setUserHref("");
+        dto.setProjectName(projectCache.getName(dto.getProjectId()));
+        dto.setUseDetailHref(UseHrefUtil.getUseDetailHref(dto));
         dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(dto.getCreateTime()));
 		return dto;
 	}
@@ -200,7 +214,7 @@ public class LuceneSearchService implements ISearchService {
 		doc.add(new StringField(CREATE_TIME, dto.getCreateTime() == null ? System.currentTimeMillis() + "" : dto.getCreateTime().getTime() + "", Field.Store.YES));
 		doc.add(new StringField(PROJECT_ID, dto.getProjectId(), Field.Store.YES));
 		doc.add(new StringField(MODULE_ID, dto.getModuleId(), Field.Store.YES));
-		doc.add(new StringField(TYPE, dto.getType(), Field.Store.YES));
+		doc.add(new StringField(TABLE_ID, dto.getTableId(), Field.Store.YES));
 		doc.add(new StringField((OPEN), dto.isOpen() + "", Field.Store.YES));
 		doc.add(new TextField(CONTENT, Tools.removeHtml(dto.getContent()), Field.Store.YES));
 		doc.add(new TextField(TITLE, dto.getTitle(), Field.Store.YES));

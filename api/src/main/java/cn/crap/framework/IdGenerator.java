@@ -45,7 +45,7 @@ public class IdGenerator{
 		if(id >= 100000){
 			idNum.compareAndSet(id + 1, 1);
 		}
-		return System.currentTimeMillis() + ip + tableId.getTableId() + String.format("%06d", id);
+		return System.currentTimeMillis() + ip + tableId.getId() + String.format("%06d", id);
 	}
 
 }

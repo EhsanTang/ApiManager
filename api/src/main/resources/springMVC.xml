@@ -75,20 +75,32 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
     
     <!-- 邮件类 -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+    <bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="username"><value>${mail.username}</value></property>  
         <property name="password"><value>${mail.password}</value></property>  
         <property name="host"><value>${mail.host}</value></property>
 		<property name="port"><value>465</value></property>
+
+		<!-- TODO mail.transport.protocol smtp-->
         <property name="javaMailProperties">  
             <props>  
                 <prop key="mail.smtp.auth">false</prop>
-                <prop key="mail.smtp.timeout">3000</prop>
+				<prop key="mail.smtp.writetimeout">3000</prop>
+				<prop key="mail.smtp.timeout">3000</prop>
 				<prop key="mail.smtp.connectiontimeout">3000</prop>
 				<prop key="mail.smtp.port">465</prop>
 				<prop key="mail.smtp.socketFactory.port">465</prop>
 				<prop key="mail.smtp.socketFactory.fallback">false</prop>
 				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+
+				<prop key="mail.pop3.writetimeout">3000</prop>
+				<prop key="mail.pop3.timeout">3000</prop>
+				<prop key="mail.pop3.connectiontimeout">3000</prop>
+
+				<prop key="mail.imap.writetimeout">3000</prop>
+				<prop key="mail.imap.timeout">3000</prop>
+				<prop key="mail.imap.connectiontimeout">3000</prop>
+
             </props>  
         </property>  
 	</bean> 

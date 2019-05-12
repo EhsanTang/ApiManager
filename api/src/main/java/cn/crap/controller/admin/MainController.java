@@ -168,7 +168,11 @@ public class MainController extends BaseController {
     @RequestMapping("/admin/compress.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult compress() throws Exception{
-        systemService.compressSource();
+        try {
+            systemService.compressSource();
+        } catch (Throwable e){
+            log.error("压缩js、css文件异常", e);
+        }
         systemService.mergeSource();
         return new JsonResult().success();
     }

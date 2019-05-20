@@ -39,7 +39,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
             Log log = Adapter.getLog(dbModel.getId(), L_SOURCE_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
             logService.insert(log);
         }
-        sourceDao.updateByPrimaryKey(model);
+        sourceDao.updateByPrimaryKeySelective(model);
     }
 
     @Override

@@ -84,7 +84,6 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute SourceDto dto) throws Exception{
-        Assert.notNull(dto.getProjectId(), "projectId can't be null");
         Assert.notNull(dto.getFilePath(), MyError.E000016.getMessage());
 
         String id = dto.getId();

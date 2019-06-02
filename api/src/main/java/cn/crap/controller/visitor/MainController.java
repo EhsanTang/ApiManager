@@ -227,11 +227,12 @@ public class MainController extends BaseController{
 		}
 
 		String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+		query.setOpen(true);
 		query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
 		keyword = query.getKeyword();
 
 		List<SearchDto> searchResults = luceneService.search(query);
-		Map<String,Object> returnMap = new HashMap<String,Object>();
+		Map<String,Object> returnMap = new HashMap<>();
 		returnMap.put("searchResults", searchResults);
 
 		// 将搜索的内容记入数据库

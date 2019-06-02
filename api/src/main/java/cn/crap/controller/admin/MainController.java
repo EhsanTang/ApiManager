@@ -4,15 +4,19 @@ import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
 import cn.crap.dto.SettingDto;
-import cn.crap.enu.SettingEnum;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.enu.SettingStatus;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.query.SearchQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
-import cn.crap.utils.*;
+import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -194,6 +198,16 @@ public class MainController extends BaseController {
     @RequestMapping("/user/search.do")
     @AuthPassport
     public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
+        if (query.getOpen() == null || query.getOpen() == false){
+            if (query.getProjectId() == null){
+                throw new MyException(MyError.E000056);
+            }
+            checkPermission(query.getProjectId(), ProjectPermissionEnum.READ);
+        }
+
+        String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+        query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
+        
         List<SearchDto> search = luceneService.search(query);
         return new JsonResult().success().data(search);
     }

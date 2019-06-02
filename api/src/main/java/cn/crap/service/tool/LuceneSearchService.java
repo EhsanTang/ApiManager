@@ -1,7 +1,8 @@
 package cn.crap.service.tool;
 
-import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
+import cn.crap.enu.MyError;
+import cn.crap.framework.MyException;
 import cn.crap.query.SearchQuery;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
@@ -94,28 +95,23 @@ public class LuceneSearchService implements ISearchService {
             BooleanQuery.Builder boolBuilder = new BooleanQuery.Builder().add(keywordClause);
 
 			/**
-             * null: 代表查询有所有开放的，或有权限的
+			 * TODO 一期暂时只能支持项目下、或公开项目搜索
+             * null: 代表查询有所有开放的，或有权限的：暂不支持
 			 * true : 表示只能查询开放搜索的项目
 			 * false : 代表查询有所有有权限的
 			 */
             Boolean open = searchQuery.getOpen();
             // 查询全部、或有权限的数据，同时项目ID为空，则必须校验权限
             if ( (open == null || !open) && searchQuery.getProjectId() == null){
-                LoginInfoDto user = LoginUserHelper.getUser();
-                // TODO 用户ID，用户登录权限
-                boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
-
+				throw new MyException(MyError.E000056);
             }
 
-            else {
-                if (open != null){
-                    boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
-                }
-                if (searchQuery.getProjectId() != null){
-                    boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
-                }
-            }
-
+			if (open != null){
+				boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
+			}
+			if (searchQuery.getProjectId() != null){
+				boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
+			}
 
             BooleanQuery query = boolBuilder.build();
             TopDocs topDocs = searcher.search(query, 1000);

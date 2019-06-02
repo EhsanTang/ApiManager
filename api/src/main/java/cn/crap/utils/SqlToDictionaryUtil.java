@@ -243,7 +243,7 @@ public class SqlToDictionaryUtil {
 	
 //  sqlservice test
 //	public static void main(String args[]) throws MyException{
-//		String sql = "CREATE TABLE [dbo].[addr_city] ("+
+//		String sql = "CREATE DICTIONARY [dbo].[addr_city] ("+
 //				"[ADDR_ID] varchar(12) NOT NULL ,"+
 //				"[ADDR_NAME] varchar(48) NOT NULL ,"+
 //				"[FATHER_ID] varchar(12) NOT NULL ,"+
@@ -269,16 +269,16 @@ public class SqlToDictionaryUtil {
 //				"\nGO\n"+
 //				"IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', "+
 //				"'SCHEMA', N'dbo', "+
-//				"'TABLE', N'customer_order_base', "+
+//				"'DICTIONARY', N'customer_order_base', "+
 //				"'COLUMN', N'order_id')) > 0) "+
 //				"EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'订单编号'"+
 //				", @level0type = 'SCHEMA', @level0name = N'dbo'"+
-//				", @level1type = 'TABLE', @level1name = N'customer_order_base'"+
+//				", @level1type = 'DICTIONARY', @level1name = N'customer_order_base'"+
 //				", @level2type = 'COLUMN', @level2name = N'order_id'"+
 //				"ELSE"+
 //				"EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'订单编号'"+
 //				", @level0type = 'SCHEMA', @level0name = N'dbo'"+
-//				", @level1type = 'TABLE', @level1name = N'customer_order_base'"+
+//				", @level1type = 'DICTIONARY', @level1name = N'customer_order_base'"+
 //				", @level2type = 'COLUMN', @level2name = N'test_order'"+
 //				"GO;";
 //		Article table  = sqlserviceToDictionary(sql,"","","");

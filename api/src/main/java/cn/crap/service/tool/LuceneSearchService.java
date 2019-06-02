@@ -190,10 +190,9 @@ public class LuceneSearchService implements ISearchService {
 		dto.setProjectId(doc.get(PROJECT_ID));
 		dto.setModuleId(doc.get(MODULE_ID));
 		dto.setOpen(Boolean.parseBoolean(doc.get(OPEN)));
-		// TODO
-        dto.setHref("");
+        dto.setHref(UseHrefUtil.getHref(dto));
         dto.setProjectName(projectCache.getName(dto.getProjectId()));
-        dto.setUseDetailHref(UseHrefUtil.getUseDetailHref(dto));
+        dto.setUserHref(UseHrefUtil.getUserHref(dto));
         dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(dto.getCreateTime()));
 		return dto;
 	}
@@ -340,17 +339,23 @@ public class LuceneSearchService implements ISearchService {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("\\/", "#FXG").replaceAll("\\+", "#ADD").replaceAll("\\-", "#DES").replaceAll("\\&", "#AND")
-				.replaceAll("\\|", "#HZ").replaceAll("\\{", "#DKHS").replaceAll("\\}", "#DKHE").replaceAll("\\?", "#WH")
-				.replaceAll("\\*", "#XH").replaceAll("\\#", "#JH").replaceAll("\\:", "#MH").replaceAll("\\.", "#DH");
+		return href.replaceAll("\\/", "ca_xg").replaceAll("\\+", "ca_add")
+                .replaceAll("\\-", "ca_des").replaceAll("\\&", "ca_and")
+				.replaceAll("\\|", "ca_xhx").replaceAll("\\{", "ca_dkhs")
+                .replaceAll("\\}", "ca_dkhe").replaceAll("\\?", "ca_wh")
+				.replaceAll("\\*", "ca_xh").replaceAll("\\@", "ca_at")
+                .replaceAll("\\:", "ca_mh").replaceAll("\\.", "ca_dh");
 	}
 	public static String unHandleHref(String href){
 		if(href == null) {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("#FXG", "\\/").replaceAll( "#ADD","\\+").replaceAll( "#DES", "\\-").replaceAll( "#AND","\\&")
-				.replaceAll("#HZ", "\\|").replaceAll("#DKHS", "\\{").replaceAll("#DKHE","\\}").replaceAll( "#WH","\\?")
-				.replaceAll("#XH", "\\*").replaceAll("#JH", "\\#").replaceAll("#MH", "\\:").replaceAll("#DH", "\\.");
+		return href.replaceAll("ca_xg", "\\/").replaceAll( "ca_add","\\+")
+                .replaceAll( "ca_des", "\\-").replaceAll( "ca_and","\\&")
+				.replaceAll("ca_xhx", "\\|").replaceAll("ca_dkhs", "\\{")
+                .replaceAll("ca_dkhe","\\}").replaceAll( "ca_wh","\\?")
+				.replaceAll("ca_xh", "\\*").replaceAll("ca_at", "\\@")
+                .replaceAll("ca_mh", "\\:").replaceAll("ca_dh", "\\.");
 	}
 }

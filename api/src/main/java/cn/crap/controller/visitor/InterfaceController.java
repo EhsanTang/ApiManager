@@ -194,7 +194,7 @@ public class InterfaceController extends BaseController {
              * 查询相同模块下，相同接口名的其它版本号
              */
             InterfaceQuery query = new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualInterfaceName(interFace.getInterfaceName())
-                    .setExceptVersion(interFace.getVersion()).setPageSize(ALL_PAGE_SIZE);
+                    .setExceptVersion(interFace.getVersion()).setPageSize(ALL_PAGE_SIZE).setProjectId(interFace.getProjectId());
             List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module, null);
 
             return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, false), null,

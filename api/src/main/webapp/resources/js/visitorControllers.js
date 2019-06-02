@@ -1,45 +1,6 @@
 /**
  * 前端controller
  */
-visitorModule.filter("encodeURL",function($sce){
-	 return function (input){ 
-		 if(input){
-		 input = replaceAll(input,"\\/", "#FXG");
-		 input = replaceAll(input,"\\+", "#ADD");
-		 input = replaceAll(input,"\\-", "#DES");
-		 input = replaceAll(input,"\\&", "#AND");
-		 input = replaceAll(input,"\\|", "#HZ");
-		 input = replaceAll(input,"\\{", "#DKHS");
-		 input = replaceAll(input,"\\}", "#DKHE");
-		 input = replaceAll(input,"\\?", "#WH");
-		 input = replaceAll(input,"\\*", "#XH");
-		 input = replaceAll(input,"\\#", "#JH");
-		 input = replaceAll(input,"\\:", "#MH");
-		 input = replaceAll(input,"\\.", "#DH");
-		 }
-		 return input;
-	} ;
-});
-visitorModule.filter("decodeURL",function($sce){
-		 return function (input){
-			 if(input){
-			 input = replaceAll(input, "#FXG","\/");
-			 input = replaceAll(input, "#ADD","\+");
-			 input = replaceAll(input, "#DES","\-");
-			 input = replaceAll(input, "#AND","\&");
-			 input = replaceAll(input, "#HZ","\|");
-			 input = replaceAll(input, "#DKHS","\{");
-			 input = replaceAll(input, "#DKHE","\}");
-			 input = replaceAll(input, "#WH","\?");
-			 input = replaceAll(input, "#XH","\*");
-			 input = replaceAll(input, "#JH","\#");
-			 input = replaceAll(input, "#MH","\:");
-			 input = replaceAll(input, "#DH","\.");
-			}
-		 return input;
-	 } ;
-});
-
 /***
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据

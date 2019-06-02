@@ -123,7 +123,8 @@ public class ArticleAdapter {
 			open = false;
 		}
 
-		return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.ARTICLE,
+		return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(),
+                model.getType().equals(ArticleType.ARTICLE.name()) ? TableId.ARTICLE : TableId.DICTIONARY,
 				MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()), null,  open, model.getCreateTime());
 	}
 }

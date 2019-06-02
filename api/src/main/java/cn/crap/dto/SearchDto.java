@@ -6,7 +6,20 @@ import lombok.Setter;
 
 import java.util.Date;
 
-public class SearchDto extends BaseDTO{
+public class SearchDto{
+
+    @Getter
+    @Setter
+    private String id;
+
+    @Getter
+    @Setter
+    private String moduleId;
+
+    @Getter
+    @Setter
+    private String projectId;
+
 	@Setter
 	private String title; // 标题，参与分词
 
@@ -24,12 +37,24 @@ public class SearchDto extends BaseDTO{
     @Setter
     private Date createTime;// 时间，不参与分词搜索
 
+    // 数据类型 接口，文档等，不参与分词
+    @Getter
+    @Setter
+    private String tableId;
+
 	/**
 	 * 不存储至索引文件中
      * href: 前端页面地址
-     * useHref: 用户登陆后的后端地址
+     * userHref: 用户登陆后的后端地址
 	 * createTimeStr: 时间
+     * projectName: 项目名称
 	 */
+
+    @Getter
+    @Setter
+    private String projectName;
+
+
     @Getter
     @Setter
 	private String href;
@@ -40,16 +65,15 @@ public class SearchDto extends BaseDTO{
 
     @Getter
     @Setter
-	private String useDetailHref;
+	private String userHref;
 
     public SearchDto(){}
 	public SearchDto(String projectId, String moduleId, String id, String title, TableId tableId,
                      String content, String custom, boolean open, Date createTime){
-        setId(id);
-        setProjectId(projectId);
-        setModuleId(moduleId);
-        setTableId(tableId.getId());
-
+        this.id = id;
+        this.projectId = projectId;
+        this.moduleId = moduleId;
+        this.tableId = tableId.getId();
         this.title = title;
         this.content = content;
         this.createTime = createTime;
@@ -57,7 +81,7 @@ public class SearchDto extends BaseDTO{
         this.open = open;
 	}
 	public SearchDto(String id){
-        setId(id);
+        this.id = id;
 	}
 	
 	public String getTitle() {
@@ -68,9 +92,8 @@ public class SearchDto extends BaseDTO{
         return (content == null ? "" : content);
     }
 
-    @Override
 	public String getModuleId() {
-        return (super.getModuleId() == null ? "" : super.getModuleId());
+        return (moduleId == null ? "" : moduleId);
 	}
 
 	public String getCustom() {

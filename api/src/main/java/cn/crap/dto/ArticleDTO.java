@@ -1,11 +1,16 @@
 package cn.crap.dto;
 
+import cn.crap.model.ArticleWithBLOBs;
 import lombok.Data;
 
 /**
  */
 @Data
-public class ArticleDTO extends BaseDTO {
+public class ArticleDTO extends ArticleWithBLOBs {
+	private String id;
+	private String moduleId;
+	private String projectId;
+	private String projectName;
 	private String name;
 	private String brief;
 	private String content;

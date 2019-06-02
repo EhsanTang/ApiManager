@@ -2,12 +2,7 @@ package cn.crap.dto;
 
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
- * Automatic generation by tools
- * dto: exchange data with READ
  */
 @Data
 public class ArticleDTO extends BaseDTO {

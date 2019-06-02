@@ -5,13 +5,18 @@ import cn.crap.adapter.ProjectMetaAdapter;
 import cn.crap.beans.Config;
 import cn.crap.controller.visitor.MockController;
 import cn.crap.dto.*;
-import cn.crap.enu.*;
+import cn.crap.enu.InterfaceContentType;
+import cn.crap.enu.MonitorType;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.*;
 import cn.crap.model.Error;
+import cn.crap.model.InterfaceWithBLOBs;
+import cn.crap.model.Module;
+import cn.crap.model.Project;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.ErrorService;
@@ -159,7 +164,10 @@ public class InterfaceController extends BaseController{
                 .filter(tempHeader -> tempHeader.getName() != null && tempHeader.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
         if (C_PARAM_FORM.equals(dto.getParamType())){
 		    dto.setParam(C_PARAM_FORM_PRE + dto.getParam());
-            if (contentTypeDto != null){
+			/**
+			 * 普通表单模式不支持content-type设置
+			 */
+			if (contentTypeDto != null){
                 headerList.remove(contentTypeDto);
             }
         }

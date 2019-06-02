@@ -98,8 +98,14 @@ function callAjax(iUrl, iFormId, iPost, isHowMethod, iLoading, iTarget,
 				async : aAsync,
 				timeout: 3000,
 				data : xParams + iParams,
-				complete : function(data) {
-					data = data.responseText;
+				complete : function(responseData, textStatus) {
+					var data = responseData.responseText;
+					if (textStatus == "timeout") {
+                        data = "[ERROR]抱歉，网络异常，请稍后再试！Status:" + responseData.status + "，StatusText:" + responseData.statusText;
+					}
+					if (textStatus == "error" || data == null){
+                    	data = "[ERROR]抱歉，系统繁忙，请稍后再试！Status:" + responseData.status + "，StatusText:" + responseData.statusText;
+                    }
 					/*************未登录或发生未知错误********************/
 					if(data.indexOf('[ERRORPAGE]') >= 0){
 						data = "[ERROR]抱歉，系统繁忙，请稍后再试！";

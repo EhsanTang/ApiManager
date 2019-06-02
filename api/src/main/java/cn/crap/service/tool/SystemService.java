@@ -299,11 +299,18 @@ public class SystemService {
     }
 
     private String compress(String compressUrl, String baseFileUrl, String fileUrl) throws Exception {
-        String cssSource = Tools.readFile(baseFileUrl + fileUrl);
-        String compressText = HttpPostGet.postBody(compressUrl, cssSource, null);
-        JSONObject jsonObject = JSONObject.fromObject(compressText);
-        String compressResult = jsonObject.getString("result");
-        Tools.staticize(compressResult, baseFileUrl + fileUrl);
+        String compressText = null;
+        String compressResult = null;
+        try {
+            String cssSource = Tools.readFile(baseFileUrl + fileUrl);
+            compressText = HttpPostGet.postBody(compressUrl, cssSource, null);
+            JSONObject jsonObject = JSONObject.fromObject(compressText);
+            compressResult = jsonObject.getString("result");
+            Tools.staticize(compressResult, baseFileUrl + fileUrl);
+        } catch (Throwable e){
+            log.error("压缩js、css异常,compressText:" + compressText,  e);
+            throw e;
+        }
         return compressResult;
     }
 }

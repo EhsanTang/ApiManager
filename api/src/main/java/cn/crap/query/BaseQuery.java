@@ -20,9 +20,13 @@ public abstract class BaseQuery<T> {
     @Getter
     private Byte status;
     private String sort;
-    private int pageSize;
-    private int currentPage;
-    private int allRow;
+
+    /**
+     * 一下不能修改为int，否则在springMVC参数自动注入的时候会出现异常
+     */
+    private Integer pageSize;
+    private Integer currentPage;
+    private Integer allRow;
 
 
 
@@ -80,7 +84,7 @@ public abstract class BaseQuery<T> {
 
     /*************** GET ****************/
     public int getCurrentPage() {
-        return (currentPage <= 0 ? 1 : currentPage);
+        return (currentPage == null || currentPage <= 0) ? 1 : currentPage;
     }
 
     /**
@@ -88,6 +92,9 @@ public abstract class BaseQuery<T> {
      * @return
      */
     public int getPageSize() {
+        if (pageSize == null){
+            return 20;
+        }
         if (pageSize > 100){
             return 100;
         }
@@ -102,7 +109,7 @@ public abstract class BaseQuery<T> {
     }
 
     public int getAllRow() {
-        return (allRow < 0 ? 0 : allRow);
+        return (allRow == null ||allRow < 0) ? 0 : allRow;
     }
 
     public int getTotalPage(){

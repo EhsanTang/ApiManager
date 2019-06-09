@@ -265,7 +265,7 @@ blockquote{
     max-width:100%;
 }
 
-/************状态按钮***********/
+/************bug状态按钮***********/
 .bug-status-0, .bug-status--1, .bug-status--2, .bug-status--3, .bug-status--4{
     color: #555555; border-color: #999999; background-color: #eeeeee;
 }

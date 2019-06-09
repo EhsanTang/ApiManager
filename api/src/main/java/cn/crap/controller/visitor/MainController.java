@@ -227,6 +227,9 @@ public class MainController extends BaseController{
 		}
 
 		String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+		/**
+		 * 前端搜索只能搜索公开的项目
+		 */
 		query.setOpen(true);
 		query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
 		keyword = query.getKeyword();

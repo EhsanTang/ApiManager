@@ -2,12 +2,10 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enu.LogType;
-import cn.crap.enu.SettingEnum;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
@@ -80,7 +78,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
     public List<Interface> query(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
-        Assert.notNull(query.getProjectId());
+        Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId、moduleId不能同时为空");
         Page page = new Page(query);
         InterfaceCriteria example = getInterfaceCriteria(query);
         if (page.getSize() != ALL_PAGE_SIZE) {

@@ -194,6 +194,8 @@ public class MainController extends BaseController {
     }
 
     /**
+     * 搜索目前只支持项目下搜索
+     * 跨项目涉及到用户、成员权限问题，暂不实现
      * 搜索
      * @return
      * @throws Exception
@@ -202,12 +204,10 @@ public class MainController extends BaseController {
     @RequestMapping("/user/search.do")
     @AuthPassport
     public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
-        if (query.getOpen() == null || query.getOpen() == false){
-            if (query.getProjectId() == null){
-                throw new MyException(MyError.E000056);
-            }
-            checkPermission(query.getProjectId(), ProjectPermissionEnum.READ);
+        if (query.getProjectId() == null){
+            throw new MyException(MyError.E000056);
         }
+        checkPermission(query.getProjectId(), ProjectPermissionEnum.READ);
 
         String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
         query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());

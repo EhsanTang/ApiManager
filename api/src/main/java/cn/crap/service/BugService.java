@@ -1,9 +1,7 @@
 package cn.crap.service;
 
-import cn.crap.adapter.BugAdapter;
 import cn.crap.dao.mybatis.BugDao;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.BugLogPO;
@@ -19,12 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * 暂时不支持搜索
+ * ILuceneService
+ */
 @Service
-public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuceneService, IConst {
+public class BugService extends NewBaseService<BugPO, BugQuery> implements IConst {
     private BugDao bugDao;
 
     @Autowired
@@ -65,12 +66,12 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
         return super.insert(bug);
     }
 
-    @Override
-    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
-        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
-        BugQuery bugQuery = new BugQuery().setProjectId(projectId).setPageSize(pageSize).setIdGreatThen(id).setSort(TableField.SORT.ID_ASC);
-        return BugAdapter.getSearchDto(bugDao.select(bugQuery));
-    }
+//    @Override
+//    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+//        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
+//        BugQuery bugQuery = new BugQuery().setProjectId(projectId).setPageSize(pageSize).setIdGreatThen(id).setSort(TableField.SORT.ID_ASC);
+//        return BugAdapter.getSearchDto(bugDao.select(bugQuery));
+//    }
 
     public BugPO getChangeBugPO(String id, String type, String value, BugLogPO bugLogPO, BugPO dbBug) throws Exception{
         BugPO bug = new BugPO();

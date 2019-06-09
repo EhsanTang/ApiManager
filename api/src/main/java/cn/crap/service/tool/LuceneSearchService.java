@@ -33,6 +33,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * TODO 待解决的问题
+ * debug 前端搜索没有展示页
+ * 搜索地址尚未调试
+ */
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
 	protected Logger log = Logger.getLogger(getClass());
@@ -231,7 +236,7 @@ public class LuceneSearchService implements ISearchService {
 		String fieldValue = doc.get(fieldName);
 		String hc = null;
 		if (fieldValue != null) {
-			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName, fieldValue.substring(0, Math.min(200, fieldValue.length())) + "...");
+			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName,  fieldValue.length() > 200 ? fieldValue.substring(0, 200) + "..." : fieldValue);
 		}
 
 		if (hc == null) {

@@ -22,7 +22,7 @@
                     <td class="cursor" ng-click="go(item.userHref)">
                         <div class="C000 f14">
                             <span class="badge f12 fn main-bg o5">{{item.projectName}}</span>
-                            <span class="badge f12 fn main-bg o5">{{item.tableName}}</span>
+                            <span class="badge f12 fn o5 bg-{{item.tableId}}">{{item.tableName}}</span>
                             <span ng-bind-html="item.title|trustHtml"></span>
                         </div>
                         <div class="C999 f10 mt5" ng-if="item.content">

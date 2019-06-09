@@ -210,7 +210,6 @@ public class LuceneSearchService implements ISearchService {
 		// the field into separate words and don't index term frequency
 		// or positional information:
 		doc.add(new StringField(ID, dto.getId(), Field.Store.YES));
-		doc.add(new StringField(CUSTOM, handleHref(dto.getCustom()), Field.Store.YES));
 		doc.add(new StringField(CREATE_TIME, dto.getCreateTime() == null ? System.currentTimeMillis() + "" : dto.getCreateTime().getTime() + "", Field.Store.YES));
 		doc.add(new StringField(PROJECT_ID, dto.getProjectId(), Field.Store.YES));
 		doc.add(new StringField(MODULE_ID, dto.getModuleId(), Field.Store.YES));
@@ -218,6 +217,9 @@ public class LuceneSearchService implements ISearchService {
 		doc.add(new StringField((OPEN), dto.isOpen() + "", Field.Store.YES));
 		doc.add(new TextField(CONTENT, Tools.removeHtml(dto.getContent()), Field.Store.YES));
 		doc.add(new TextField(TITLE, dto.getTitle(), Field.Store.YES));
+		// doc.add(new StringField(CUSTOM, handleHref(dto.getCustom()), Field.Store.YES));
+		doc.add(new TextField(CUSTOM, dto.getCustom(), Field.Store.YES));
+
 		return doc;
 	}
 
@@ -344,23 +346,25 @@ public class LuceneSearchService implements ISearchService {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("\\/", "ca_xg").replaceAll("\\+", "ca_add")
-                .replaceAll("\\-", "ca_des").replaceAll("\\&", "ca_and")
-				.replaceAll("\\|", "ca_xhx").replaceAll("\\{", "ca_dkhs")
-                .replaceAll("\\}", "ca_dkhe").replaceAll("\\?", "ca_wh")
-				.replaceAll("\\*", "ca_xh").replaceAll("\\@", "ca_at")
-                .replaceAll("\\:", "ca_mh").replaceAll("\\.", "ca_dh");
+//		return href.replaceAll("\\/", "ca_xg").replaceAll("\\+", "ca_add")
+//                .replaceAll("\\-", "ca_des").replaceAll("\\&", "ca_and")
+//				.replaceAll("\\|", "ca_xhx").replaceAll("\\{", "ca_dkhs")
+//                .replaceAll("\\}", "ca_dkhe").replaceAll("\\?", "ca_wh")
+//				.replaceAll("\\*", "ca_xh").replaceAll("\\@", "ca_at")
+//                .replaceAll("\\:", "ca_mh").replaceAll("\\.", "ca_dh");
+        return href;
 	}
 	public static String unHandleHref(String href){
 		if(href == null) {
 			return "";
 		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("ca_xg", "\\/").replaceAll( "ca_add","\\+")
-                .replaceAll( "ca_des", "\\-").replaceAll( "ca_and","\\&")
-				.replaceAll("ca_xhx", "\\|").replaceAll("ca_dkhs", "\\{")
-                .replaceAll("ca_dkhe","\\}").replaceAll( "ca_wh","\\?")
-				.replaceAll("ca_xh", "\\*").replaceAll("ca_at", "\\@")
-                .replaceAll("ca_mh", "\\:").replaceAll("ca_dh", "\\.");
+//		return href.replaceAll("ca_xg", "\\/").replaceAll( "ca_add","\\+")
+//                .replaceAll( "ca_des", "\\-").replaceAll( "ca_and","\\&")
+//				.replaceAll("ca_xhx", "\\|").replaceAll("ca_dkhs", "\\{")
+//                .replaceAll("ca_dkhe","\\}").replaceAll( "ca_wh","\\?")
+//				.replaceAll("ca_xh", "\\*").replaceAll("ca_at", "\\@")
+//                .replaceAll("ca_mh", "\\:").replaceAll("ca_dh", "\\.");
+        return href;
 	}
 }

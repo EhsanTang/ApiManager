@@ -9,7 +9,7 @@ public enum TableId {
 	 */
 	DICTIONARY("00", "数据字典", "dictionary"), ARTICLE("01", "文章", "article"), SETTING("02"), ERROR("03", "状态码", "error"), COMMENT("04"),
 	MENU("05"), USER("06"),PROJECT("07"), LOG("08"), MODULE("09"),PROJECT_USER("10"),ROLE("11"),
-	INTERFACE("12", "接口", "interface"),SOURCE("13", "文档", "article"), DEBUG("14"), HOT_SEARCH("15"), BUG("16", "缺陷", "debug"),
+	INTERFACE("12", "接口", "interface"),SOURCE("13", "文档", "source"), DEBUG("14"), HOT_SEARCH("15"), BUG("16", "缺陷", "bug"),
 	BUG_LOG("17"),PROJECT_META("18");
 
 	@Getter

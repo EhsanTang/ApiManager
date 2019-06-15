@@ -218,7 +218,7 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
     }
 
     @Override
-    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
         Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         ArticleCriteria example = new ArticleCriteria();
         ArticleCriteria.Criteria criteria = example.createCriteria();

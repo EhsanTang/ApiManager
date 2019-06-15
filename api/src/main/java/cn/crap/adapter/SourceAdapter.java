@@ -5,12 +5,9 @@ import cn.crap.dto.SourceDto;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectType;
 import cn.crap.enu.TableId;
-import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.Source;
-import cn.crap.service.tool.ProjectCache;
 import cn.crap.utils.*;
 
 import java.util.ArrayList;
@@ -95,7 +92,7 @@ public class SourceAdapter {
             open = false;
         }
 
-        SearchDto searchDto = new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.INTERFACE,
+        SearchDto searchDto = new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.SOURCE,
                 model.getRemark(), model.getFilePath(), open, model.getCreateTime());
 
         //索引内容 = 备注内容 + 文档内容

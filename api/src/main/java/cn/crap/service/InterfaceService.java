@@ -265,7 +265,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     }
 
     @Override
-    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
         Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         InterfaceCriteria example = new InterfaceCriteria();
         InterfaceCriteria.Criteria criteria = example.createCriteria();

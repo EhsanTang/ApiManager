@@ -106,7 +106,7 @@ public class SourceService extends BaseService<Source, SourceDao> implements ILo
     }
 
     @Override
-    public List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize){
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
         Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         SourceCriteria example = new SourceCriteria();
         SourceCriteria.Criteria criteria = example.createCriteria();

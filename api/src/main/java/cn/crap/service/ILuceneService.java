@@ -11,5 +11,5 @@ public interface ILuceneService{
 	 * @param id 可选
 	 * @return
 	 */
-	List<SearchDto> selectAllOrderById(String projectId, String id, int pageSize);
+	List<SearchDto> selectOrderById(String projectId, String id, int pageSize);
 }

@@ -195,9 +195,9 @@ public class LuceneSearchService implements ISearchService {
 		dto.setProjectId(doc.get(PROJECT_ID));
 		dto.setModuleId(doc.get(MODULE_ID));
 		dto.setOpen(Boolean.parseBoolean(doc.get(OPEN)));
-        dto.setHref(UseHrefUtil.getHref(dto));
         dto.setProjectName(projectCache.getName(dto.getProjectId()));
         dto.setUserHref(UseHrefUtil.getUserHref(dto));
+        dto.setHref(UseHrefUtil.getHref(dto));
         dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(dto.getCreateTime()));
 		return dto;
 	}
@@ -305,7 +305,7 @@ public class LuceneSearchService implements ISearchService {
 			    	String id = null;
 
 			    	while (true){
-                        List<SearchDto> dtos= service.selectAllOrderById(projectId, id, PAGE_SIZE);
+                        List<SearchDto> dtos= service.selectOrderById(projectId, id, PAGE_SIZE);
                         for (SearchDto dto : dtos) {
                             i++;
                             stringCache.add(IConst.C_CACHE_ERROR_TIP, "当前正在创建第"+i+"条记录");

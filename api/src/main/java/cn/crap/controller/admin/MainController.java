@@ -16,6 +16,7 @@ import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
 import cn.crap.utils.HttpPostGet;
 import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.Page;
 import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,7 +214,8 @@ public class MainController extends BaseController {
         query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
         
         List<SearchDto> search = luceneService.search(query);
-        return new JsonResult().success().data(search);
+        Page page = new Page(query);
+        return new JsonResult().success().data(search).page(page);
     }
 
 }

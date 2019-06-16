@@ -7,7 +7,7 @@ commonModule.controller('userCommonCtrl', function($rootScope,$scope, $http, $st
 
     // 公用分页方法
     $scope.pageMethod = function(callBackMethod, page, updateUrl) {
-        $scope[callBackMethod](page, updateUrl);
+        $scope[callBackMethod](null, page, updateUrl);
     };
 
     $scope.search = function (event, page, updateUrl) {
@@ -17,8 +17,7 @@ commonModule.controller('userCommonCtrl', function($rootScope,$scope, $http, $st
         var params ="moduleId=" + $stateParams.moduleId
             + "&projectId=" + $stateParams.projectId
             + "&keyword=" + $stateParams.keyword
-            + "&projectName=" + $stateParams.projectName
-            + "&dataType=" + $stateParams.dataType;
+            + "&projectName=" + $stateParams.projectName;
         if ($location.url().indexOf(BASE_URL) < 0){
             $rootScope.go(BASE_URL + "?" +  params);
             return;

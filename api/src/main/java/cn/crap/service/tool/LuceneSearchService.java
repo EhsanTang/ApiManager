@@ -118,6 +118,7 @@ public class LuceneSearchService implements ISearchService {
 				boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
 			}
 
+
             BooleanQuery query = boolBuilder.build();
             TopDocs topDocs = searcher.search(query, 1000);
 			List<SearchDto> searchDtos = new ArrayList<>();

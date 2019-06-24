@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.mapper.mybatis.BugDao">
+    <resultMap id="resultMap" type="cn.crap.model.BugPO">
+        <id column="id" property="id"/>
+        <result column="createTime" property="createTime"/>
+        <result column="executor" property="executor"/>
+        <result column="executorStr" property="executorStr"/>
+        <result column="priority" property="priority"/>
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="severity" property="severity"/>
+        <result column="creator" property="creator"/>
+        <result column="creatorStr" property="creatorStr"/>
+        <result column="updateBy" property="updateBy"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="sequence" property="sequence"/>
+        <result column="moduleId" property="moduleId"/>
+        <result column="attributes" property="attributes"/>
+        <result column="tester" property="tester"/>
+        <result column="testerStr" property="testerStr"/>
+        <result column="projectId" property="projectId"/>
+        <result column="type" property="type"/>
+        <result column="tracer" property="tracer"/>
+        <result column="tracerStr" property="tracerStr"/>
+        <result column="status" property="status"/>
+        <result column="deadline" property="deadline"/>
+    </resultMap>
+
+    <!-- 基本的字段，供其他查询引用-->
+    <sql id="baseColumn">
+        id,createTime,executor,executorStr,priority,updateBy,name,content,severity,creator,creatorStr,updateTime,sequence,moduleId,
+        attributes,tester,testerStr,projectId,type,tracer,tracerStr,status,deadline
+   </sql>
+
+    <sql id="querySql">
+        <where>
+            <if test="query.projectId != null">
+                and projectId=#{query.projectId}
+            </if>
+            <if test="query.moduleId != null">
+                and moduleId=#{query.moduleId}
+            </if>
+            <if test="query.creator != null">
+                and creator=#{query.creator}
+            </if>
+            <if test="query.executor != null">
+                and executor=#{query.executor}
+            </if>
+            <if test="query.tracer != null">
+                and tracer=#{query.tracer}
+            </if>
+            <if test="query.tester != null">
+                and tester=#{query.tester}
+            </if>
+            <if test="query.name != null">
+                and name like concat(concat('%',#{query.name}),'%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.crap.model.BugPO">
+        insert into bug (
+          <include refid="baseColumn"/>
+        )
+        values (#{id},NOW(),#{executor},#{executorStr},#{priority},#{updateBy},#{name},#{content},#{severity},#{creator},#{creatorStr},
+        NOW(),#{sequence},#{moduleId},#{attributes},#{tester},#{testerStr},#{projectId},#{type},#{tracer},#{tracerStr},#{status},#{deadline})
+   </insert>
+
+    <!-- 删除 -->
+    <delete id="delete">
+        delete from bug where id=#{id}
+    </delete>
+
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.crap.model.BugPO">
+        update bug
+        <set>
+            <if test="executor != null">
+                executor = #{executor},
+            </if>
+            <if test="executorStr != null">
+                executorStr = #{executorStr},
+            </if>
+            <if test="priority != null">
+                priority = #{priority},
+            </if>
+            <if test="updateBy != null">
+                updateBy = #{updateBy},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="severity != null">
+                severity = #{severity},
+            </if>
+            <if test="sequence != null">
+                sequence = #{sequence},
+            </if>
+            <if test="moduleId != null">
+                moduleId = #{moduleId},
+            </if>
+            <if test="projectId != null">
+                projectId = #{projectId},
+            </if>
+            <if test="attributes != null">
+                attributes = #{attributes},
+            </if>
+            <if test="tester != null">
+                tester = #{tester},
+            </if>
+            <if test="testerStr != null">
+                testerStr = #{testerStr},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="tracer != null">
+                tracer = #{tracer},
+            </if>
+            <if test="tracerStr != null">
+                tracerStr = #{tracerStr},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline},
+            </if>
+            updateTime = NOW()
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <!-- 查询 -->
+    <select id="select" resultMap="resultMap">
+        select
+        <include refid="baseColumn"/>
+        from bug
+        <include refid="querySql"/>
+        <if test="query.sort != null">
+            order by ${query.sort}
+        </if>
+        limit ${query.start},${query.pageSize}
+    </select>
+
+    <!-- 查询 -->
+    <select id="get" resultMap="resultMap">
+        select
+        <include refid="baseColumn"/>
+        from bug
+        where id=#{id}
+    </select>
+
+
+    <!-- 查询总数 -->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from bug
+        <include refid="querySql"/>
+    </select>
+
+</mapper>

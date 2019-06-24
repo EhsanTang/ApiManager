@@ -1,0 +1,29 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+<div class="col-xs-12 p0 mt10">
+	<form ng-submit="submitForm('user/error/addOrUpdate.do')">
+		<table class="table table-bordered">
+			<tr>
+				<td class="tc w80">Code</td>
+				<td class="tc w200">
+						<input  class="form-control" type="text" autocomplete="off" ng-model="model.errorCode" required>
+				</td>
+				
+			</tr>
+			<tr>
+				<td class="tc">Msg</td>
+				<td class="tc"><input  class="form-control"  type="text" autocomplete="off" ng-model="model.errorMsg" required></td>
+			</tr>
+			<tr>
+				<td class="tc">项目</td>
+				<td class="tc">
+					<input  class="form-control" type="text" autocomplete="off" ng-model="model.projectName" required readonly>
+				</td>
+			</tr>
+	</table>
+	<button type="submit" class="btn btn-success fr">提交</button>
+	</form>
+	
+</div>
+</div>
+<div class="cb"></div>
+

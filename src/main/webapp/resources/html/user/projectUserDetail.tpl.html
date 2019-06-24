@@ -1,0 +1,41 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+	<div class="col-xs-12 p0">
+		<form ng-submit="submitForm('user/projectUser/addOrUpdate.do')">
+			<table class="table table-bordered">
+				<tr>
+					<td class="tc w200">项目名</td>
+					<td>
+						<input  class="form-control cursor-not BGF5"  type="text" autocomplete="off" ng-model="model.projectName" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">用户名</td>
+					<td>
+						<input  class="form-control cursor-not BGF5"  type="text" autocomplete="off" ng-model="model.userName" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">用户邮箱</td>
+					<td>
+						<input  class="form-control cursor-not BGF5" type="text" autocomplete="off" ng-model="model.userEmail" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td class="tc">
+						权限
+					</td>
+					<td>
+						<input class="form-control cursor" type="text" autocomplete="off" id="permissionStr" ng-model="model.permissionStr"
+							   readonly
+							   ng-click="loadPickByName('iwidth=220|iheight=250|radio=false|tagName=permissionStr|tag=permission|code=PROJECT_PERMISSION|def='+model.permission,$event)">
+					</td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-success fr">提交</button>
+		</form>
+
+		
+	</div>
+</div>
+<div class="cb"></div>
+

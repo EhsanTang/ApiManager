@@ -1,0 +1,83 @@
+<div class="r0 p0 col-xs-12" ng-init="querySourceList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="querySourceList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addSource')]"
+               ng-click="detail('新增文件',800,'user/source/detail.do?id=NULL','&moduleId='+$stateParams.moduleId + '&projectId=' + $stateParams.projectId)">
+                <i class="iconfont fb mt-3">&#xe604;</i>&nbsp;新增文件
+            </a>
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('delSource')]"
+               ng-click="del('user/source/delete.do?ids='+deleteIds,'','确认批量删除选中的文件？')">
+                <i class="iconfont fb mt-3">&#xe69d;</i>&nbsp;批量删除
+            </a>
+        </div>
+
+        <div class="form-group w200 fl mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">名称</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="名称"
+                       ng-model="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="getData(1);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button>
+        <div class="cb"></div>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <th class="w60">
+                        <input type="checkbox" id="select-all" ng-click="selectAll('select-all','deleteIds',sources)">&nbsp;全选
+                    </th>
+                    <th class="min-w200">名称</th>
+                    <th class="min-w300">摘要</th>
+                    <th class="min-w100">最后修改时间</th>
+                    <th class="w200 tl">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in sources">
+                    <td><input type="checkbox" name="deleteIds" ng-click="checkboxSelect('deleteIds',item.id);stopPropagation($event);"></td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.remark|cut:true:50:' ...'}}</td>
+                    <td>{{item.updateTimeStr}}</td>
+                    <td class="f12">
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modSource')]"
+                           ng-click="detail('编辑【'+item.name+'】',800,'user/source/detail.do?id='+item.id,'')">
+                            <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+                        <a class="mr5 btn btn-xs btn-main" ng-href="index.do#/source/detail?id={{item.id}}"
+                           target="_blank">
+                            <i class="iconfont f12">&#xe6e6;</i>
+                        </a>
+
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-primary', false:'mr5 btn btn-xs btn-primary disabled'}[isProjectUser('myData')]"
+                           ng-href="#/user/log/list?pageName=文件日志&identy={{item.id}}&dataType=source&menu_b=menu_source&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}">
+                            <i class="iconfont">&#xe6bb;</i>
+                        </a>
+
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delSource')]"
+                           ng-click="del('user/source/delete.do?id='+item.id,item.name)">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'querySourceList'; modelKey='sources'"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

@@ -1,0 +1,74 @@
+<div class="r0 p0 col-xs-12"  ng-init="queryErrorList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryErrorList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addError')]"
+               ng-click="detail('新增状态码',700,'user/error/detail.do?id=NULL','&projectId='+$stateParams.projectId);">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增状态码
+            </a>
+        </div>
+
+        <div class="form-group w200 fl mb0">
+            <label class="sr-only">Code</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">Msg</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="msg"
+                       ng-model="$stateParams.errorMsg">
+            </div>
+        </div>
+        <div class="form-group w200 fl mb0 ml10">
+            <label class="sr-only">Code</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">Code</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="code"
+                       ng-model="$stateParams.errorCode">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="queryErrorList(1);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td>Code</td>
+                    <td>Msg</td>
+                    <td>项目</td>
+                    <td class="w100">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in errors">
+                    <td>{{item.errorCode}}</td>
+                    <td>{{item.errorMsg}}</td>
+                    <td>{{item.projectName}}</td>
+                    <td class="f12">
+                        <a ng-class="{true: 'mr5 btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modError')]"
+                           ng-click="detail('编辑【'+item.errorCode+'】',700,'user/error/detail.do?id='+item.id)"
+                           data-toggle="tooltip" data-placement="top"
+                           data-original-title="编辑"> <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+                        <a class="mr5 btn btn-xs btn-danger" title="删除"
+                           ng-class="{true: 'mr5 btn btn-xs btn-danger', false:'mr5 btn btn-xs btn-danger disabled'}[isProjectUser('delError')]"
+                           ng-click="del('user/error/delete.do?id='+item.id,item.errorCode)">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryErrorList'; modelKey='errors'"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

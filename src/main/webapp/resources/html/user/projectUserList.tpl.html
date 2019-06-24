@@ -1,0 +1,54 @@
+<div class="r0 p0 col-xs-12"  ng-init="queryProjectUserList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryProjectUserList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm"
+               ng-href="#/user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;邀请成员
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td>用户名</td>
+                    <td>用户邮箱</td>
+                    <td>权限</td>
+                    <td class="w100 tl">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in projectUsers">
+                    <td>{{item.userName}}</td>
+                    <td>{{item.userEmail}}</td>
+
+                    <td>
+                        <span ng-repeat="permission in item.crShowPermissionList" class="r20 mr10 mt5 btn btn-xs btn-adorn">{{permission.desc}}</span><br/>
+                    </td>
+
+                    <td class="f12">
+                        <a class="mr5 btn btn-xs btn-default"
+                           ng-click="detail('编辑【'+item.userName+'】',800,'user/projectUser/detail.do?id='+item.id+'&projectId='+item.projectId,'')">
+                            <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+                        <a class="mr5 btn btn-xs btn-danger" title="删除"
+                           ng-click="del('user/projectUser/delete.do?id='+item.id,item.userName)">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryProjectUserList'; modelKey='projectUsers'"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

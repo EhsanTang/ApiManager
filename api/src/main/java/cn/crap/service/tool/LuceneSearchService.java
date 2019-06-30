@@ -314,7 +314,9 @@ public class LuceneSearchService implements ISearchService {
                         List<SearchDto> dtos= service.selectOrderById(projectId, id, PAGE_SIZE);
                         for (SearchDto dto : dtos) {
                             i++;
-                            stringCache.add(IConst.C_CACHE_ERROR_TIP, service.getClass() + "当前正在创建第"+i+"条记录");
+                            if (projectId == null){
+                                stringCache.add(IConst.C_CACHE_ERROR_TIP, service.getClass() + "当前正在创建第"+i+"条记录");
+                            }
                             // 避免占用太大的系统资源
                             try {
                                 Thread.sleep(50);
@@ -330,7 +332,9 @@ public class LuceneSearchService implements ISearchService {
                     }
                     log.error("建索引创建完成-----------" + service.getClass());
 			    }
-			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
+                if (projectId == null) {
+                    stringCache.add(IConst.C_CACHE_ERROR_TIP, "重建索引成功！");
+                }
 			}catch(Throwable e){
 				log.error("建索引创建异常----------", e);
 				e.printStackTrace();

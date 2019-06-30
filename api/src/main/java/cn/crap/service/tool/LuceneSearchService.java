@@ -72,7 +72,7 @@ public class LuceneSearchService implements ISearchService {
 	private final static String H_CONTENT = HIGH_LIGHT_PRE + CONTENT;
 	private final static String H_TITLE = HIGH_LIGHT_PRE + TITLE;
 
-	private final int PAGE_SIZE = 2;
+	private final int PAGE_SIZE = 200;
 
 	@Override
 	public List<SearchDto> search(SearchQuery searchQuery) throws Exception {
@@ -309,10 +309,10 @@ public class LuceneSearchService implements ISearchService {
                         List<SearchDto> dtos= service.selectOrderById(projectId, id, PAGE_SIZE);
                         for (SearchDto dto : dtos) {
                             i++;
-                            stringCache.add(IConst.C_CACHE_ERROR_TIP, "当前正在创建第"+i+"条记录");
+                            stringCache.add(IConst.C_CACHE_ERROR_TIP, service.getClass() + "当前正在创建第"+i+"条记录");
                             // 避免占用太大的系统资源
                             try {
-                                Thread.sleep(100);
+                                Thread.sleep(50);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -326,7 +326,8 @@ public class LuceneSearchService implements ISearchService {
                     log.error("建索引创建完成-----------" + service.getClass());
 			    }
 			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
-			}catch(Exception e){
+			}catch(Throwable e){
+				log.error("建索引创建异常----------", e);
 				e.printStackTrace();
 			}finally{
 				isRebuild = false;

@@ -100,9 +100,18 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         location.reload();
     }
 
+    /**
+     * 带前缀的跳转会失败，如：index.do#/user....
+     * @param href
+     */
     $rootScope.go = function (href) {
         var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
         $location.url(href);
+    }
+
+    $rootScope.goAbsoluteUrl = function (href) {
+        var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
+        location.href=href
     }
 
     /***

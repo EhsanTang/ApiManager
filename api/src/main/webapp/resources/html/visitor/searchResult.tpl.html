@@ -20,7 +20,7 @@
 				</thead>
 				<tbody>
 				<tr ng-repeat="item in list.searchResults">
-					<td class="cursor" ng-click="go(item.href)">
+					<td class="cursor" ng-click="goAbsoluteUrl(item.href)">
 						<div class="C000 f14">
 							<span class="badge f12 fn main-bg o5">{{item.projectName}}</span>
 							<span class="badge f12 fn o5 bg-{{item.tableId}}">{{item.tableName}}</span>

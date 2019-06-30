@@ -1,8 +1,6 @@
 <div class="p0 col-xs-12" ng-init="getInterfaceDetail(false, true);">
     <div id="check-crap-debug-plug"></div>
     <div class="main-nav">
-        <a type="button" class="btn btn-default" id="refresh" ng-click="getInterfaceDetail(false, true);"><i
-                class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
         <div class="btn-group btn-group-sm r3 fl mr10">
             <button class="btn btn-default" ng-click="goBack()" type="button">
                 <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
@@ -11,6 +9,11 @@
             <a class="btn btn-default btn-sm" type="button"
                ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
+            </a>
+
+            <a class="btn btn-default btn-sm" type="button" id="refresh"
+               ng-click="getInterfaceDetail(false, true);">
+                <i class="iconfont mt-3">&#xe6aa;&nbsp; 刷新</i>
             </a>
         </div>
         <div class="fr mr10 btn btn-sm bug-priority-4 maw400" id="change-env"
@@ -31,7 +34,7 @@
             </div>
 
             <div class="text-success b0 mb20 tl pl10 none" id="has-plug">
-                检测到已安装调试插件，将采用直接调试模式。小提示：通过插件页面调试接口，能获取更多调试信息
+                检测到已安装调试插件，将采用直接调试模式。小提示：点击右上角插件调试接口，能获取更多调试信息
             </div>
 
 
@@ -129,7 +132,8 @@
             </div>
         </div>
         <div class="code BGFFF mt20 p20 shadow none" id="crap-debug-result-div">
-            <pre id="crap-debug-result"></pre>
+            <pre id="crap-debug-headers"></pre>
+            <textarea id="crap-debug-result" class="form-control no-resize" rows="20" readonly></textarea>
         </div>
         <div class="code BGFFF mt20 p20 shadow" ng-if="debugResult">
             <pre>{{debugResult}}</pre>

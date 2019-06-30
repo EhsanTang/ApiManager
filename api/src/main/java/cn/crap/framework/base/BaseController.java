@@ -9,11 +9,13 @@ import cn.crap.model.Module;
 import cn.crap.model.Project;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.BaseQuery;
+import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.List;
 
 public abstract class BaseController implements IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/result.jsp";
@@ -293,10 +296,12 @@ public abstract class BaseController implements IConst, ISetting {
             }
 
             // 项目成员
-            ProjectUserPO pu = user.getProjects().get(project.getId());
-            if (pu == null) {
+            List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
+                    new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()));
+            if (CollectionUtils.isEmpty(projectUserPOList)) {
                 throw new MyException(MyError.E000042);
             }
+
         } else {
             String projectPassword = project.getPassword();
             verifyPassword(project.getId(), projectPassword, inputPassword, visitCode);

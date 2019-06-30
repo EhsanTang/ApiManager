@@ -1,12 +1,9 @@
 package cn.crap.dto;
 
 import cn.crap.enu.UserType;
-import cn.crap.model.ProjectUserPO;
 import cn.crap.model.User;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginInfoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -18,7 +15,6 @@ public class LoginInfoDto implements Serializable{
 	private byte type;
 	private String email;
 	private String avatarUrl;
-	private Map<String, ProjectUserPO> projects = new HashMap<>();
 
 	public LoginInfoDto(User user){
 		this.userName = user.getUserName();
@@ -34,7 +30,7 @@ public class LoginInfoDto implements Serializable{
 			sb.append(authStr+",ADMIN,");
 		}
 		this.authStr = sb.toString();
-	}
+    }
 
 	public String getUserName() {
 		return userName;
@@ -64,14 +60,6 @@ public class LoginInfoDto implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Map<String, ProjectUserPO> getProjects() {
-		return projects;
-	}
-
-	public void setProjects(Map<String, ProjectUserPO> projects) {
-		this.projects = projects;
 	}
 
 	public String getAvatarUrl() {

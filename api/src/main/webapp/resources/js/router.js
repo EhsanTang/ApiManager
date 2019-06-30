@@ -9,14 +9,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					if($stateParems.type != 'DICTIONARY')
-						return 'resources/html/visitor/articleDetail_ARTICLE.tpl.html?v=v8.0.5';
+						return 'resources/html/visitor/articleDetail_ARTICLE.tpl.html?v=V8.2.0_0630';
 					else
-						return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.5';
+						return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=V8.2.0_0630';
 				}
 			},'comment@visitorArticleDetailOld' : {
-				templateUrl : 'resources/html/subTpl/comment.tpl.html?v=v8.0.5'
+				templateUrl : 'resources/html/subTpl/comment.tpl.html?v=V8.2.0_0630'
 			},'page@visitorArticleDetailOld' : {
-				templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+				templateUrl : 'resources/html/admin/page.tpl.html?v=V8.2.0_0630'
 			}
 		}
 	}).state('visitorArticleDetail', {
@@ -25,14 +25,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
             'main' :{
                 templateUrl : function($stateParems){
                     if($stateParems.type != 'DICTIONARY')
-                        return 'resources/html/visitor/articleDetail_ARTICLE.tpl.html?v=v8.0.5';
+                        return 'resources/html/visitor/articleDetail_ARTICLE.tpl.html?v=V8.2.0_0630';
                     else
-                        return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=v8.0.5';
+                        return 'resources/html/visitor/articleDetail_'+$stateParems.type+'.tpl.html?v=V8.2.0_0630';
                 }
             },'comment@visitorArticleDetail' : {
-                templateUrl : 'resources/html/subTpl/comment.tpl.html?v=v8.0.5'
+                templateUrl : 'resources/html/subTpl/comment.tpl.html?v=V8.2.0_0630'
             },'page@visitorArticleDetail' : {
-                templateUrl : 'resources/html/admin/page.tpl.html?v=v8.0.5'
+                templateUrl : 'resources/html/admin/page.tpl.html?v=V8.2.0_0630'
             }
         }
     }).state('visitorArticleListOld', {
@@ -41,12 +41,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
             'main' :{
                 templateUrl : function($stateParems){
                     if($stateParems.type != "DICTIONARY")
-                        return 'resources/html/visitor/articleList_ARTICLE.tpl.html?v=v8.0.5';
+                        return 'resources/html/visitor/articleList_ARTICLE.tpl.html?v=V8.2.0_0630';
                     else
-                        return 'resources/html/visitor/articleList_'+$stateParems.type+'.tpl.html?v=v8.0.5';
+                        return 'resources/html/visitor/articleList_'+$stateParems.type+'.tpl.html?v=V8.2.0_0630';
                 }
             },'page@visitorArticleList' : {
-                templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
+                templateUrl : 'resources/html/visitor/page.tpl.html?v=V8.2.0_0630'
             }
         }
     }).state('visitorArticleList', {
@@ -55,12 +55,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					if($stateParems.type != "DICTIONARY")
-						return 'resources/html/visitor/articleList_ARTICLE.tpl.html?v=v8.0.5';
+						return 'resources/html/visitor/articleList_ARTICLE.tpl.html?v=V8.2.0_0630';
 					else
-						return 'resources/html/visitor/articleList_'+$stateParems.type+'.tpl.html?v=v8.0.5';
+						return 'resources/html/visitor/articleList_'+$stateParems.type+'.tpl.html?v=V8.2.0_0630';
 				}
 			},'page@visitorArticleList' : {
-				templateUrl : 'resources/html/visitor/page.tpl.html?v=v8.0.5'
+				templateUrl : 'resources/html/visitor/page.tpl.html?v=V8.2.0_0630'
 			}
 		}
 	}).state('visitorSourceDetail', {
@@ -69,7 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			'main' :{
 				templateUrl : function($stateParems){
 					return 'resources/html/visitor/sourceDetail' +
-						'.tpl.html?v=v8.0.5';
+						'.tpl.html?v=V8.2.0_0630';
 				}
 			}
 		}

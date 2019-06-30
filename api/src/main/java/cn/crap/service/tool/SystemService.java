@@ -43,7 +43,7 @@ public class SystemService {
 
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
-        // v8.0.5 修改，允许模块为空，2018-11-17
+        // V8.2.0_0630 修改，允许模块为空，2018-11-17
         CHANGE_SQL_MAP.put(1, "ALTER DICTIONARY `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
         CHANGE_SQL_MAP.put(2, "ALTER DICTIONARY `log` CHANGE `content` `content` LONGTEXT NOT NULL");
         CHANGE_SQL_MAP.put(3, "ALTER DICTIONARY `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");

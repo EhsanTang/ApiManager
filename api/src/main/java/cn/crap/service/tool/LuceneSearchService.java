@@ -294,11 +294,16 @@ public class LuceneSearchService implements ISearchService {
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
-				File[] tempList = file.listFiles();
-			    for (int i = 0; i < tempList.length; i++) {
-			    	tempList[i].delete();
-			    }
+                /**
+                 * 全部重建时需要删除原来的索引文件
+                 */
+				if (projectId == null){
+                    File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
+                    File[] tempList = file.listFiles();
+                    for (int i = 0; i < tempList.length; i++) {
+                        tempList[i].delete();
+                    }
+                }
 
 			    for(ILuceneService service:luceneServices){
 					log.error("正在创建索引--------------" + service.getClass());

@@ -111,7 +111,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 
     $rootScope.goAbsoluteUrl = function (href) {
         var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
-        location.href=href
+        location.href=href;
     }
 
     /***

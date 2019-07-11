@@ -44,16 +44,16 @@ public class SystemService {
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
         // V8.2.0_0630 修改，允许模块为空，2018-11-17
-        CHANGE_SQL_MAP.put(1, "ALTER DICTIONARY `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
-        CHANGE_SQL_MAP.put(2, "ALTER DICTIONARY `log` CHANGE `content` `content` LONGTEXT NOT NULL");
-        CHANGE_SQL_MAP.put(3, "ALTER DICTIONARY `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
-        CHANGE_SQL_MAP.put(4, "ALTER DICTIONARY `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
-        CHANGE_SQL_MAP.put(5, "ALTER DICTIONARY `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
-        CHANGE_SQL_MAP.put(6, "ALTER DICTIONARY `article` ADD `attributes` VARCHAR(200)  NULL  DEFAULT ''  AFTER `projectId`");
-        CHANGE_SQL_MAP.put(7, "ALTER DICTIONARY `comment` CHANGE `articleId` `targetId` VARCHAR(50)  NOT NULL  DEFAULT '' COMMENT '评论对象ID'");
-        CHANGE_SQL_MAP.put(8, "ALTER DICTIONARY `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文档，BUG 缺陷'  AFTER `avatarUrl`");
-        CHANGE_SQL_MAP.put(9, "ALTER DICTIONARY `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
-        CHANGE_SQL_MAP.put(10, "ALTER DICTIONARY `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
+        CHANGE_SQL_MAP.put(1, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
+        CHANGE_SQL_MAP.put(2, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
+        CHANGE_SQL_MAP.put(3, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
+        CHANGE_SQL_MAP.put(4, "ALTER TABLE `article` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT 'top'");
+        CHANGE_SQL_MAP.put(5, "ALTER TABLE `source` CHANGE `moduleId` `moduleId` VARCHAR(50)  NULL  DEFAULT '0'  COMMENT '模块ID'");
+        CHANGE_SQL_MAP.put(6, "ALTER TABLE `article` ADD `attributes` VARCHAR(200)  NULL  DEFAULT ''  AFTER `projectId`");
+        CHANGE_SQL_MAP.put(7, "ALTER TABLE `comment` CHANGE `articleId` `targetId` VARCHAR(50)  NOT NULL  DEFAULT '' COMMENT '评论对象ID'");
+        CHANGE_SQL_MAP.put(8, "ALTER TABLE `comment` ADD `type` VARCHAR(32)  NOT NULL  DEFAULT 'ARTICLE'  COMMENT '评论类型：ARTICLE 文档，BUG 缺陷'  AFTER `avatarUrl`");
+        CHANGE_SQL_MAP.put(9, "ALTER TABLE `comment` CHANGE `content` `content` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
+        CHANGE_SQL_MAP.put(10, "ALTER TABLE `project_user` ADD `permission` VARCHAR(500)  NULL  DEFAULT ',' COMMENT '权限'");
 
         // 权限数据结构调整
         CHANGE_SQL_MAP.put(11, "UPDATE project_user SET permission=concat(permission,'addModule,') WHERE addModule=1");
@@ -80,49 +80,49 @@ public class SystemService {
         CHANGE_SQL_MAP.put(27, "UPDATE project_user SET permission=concat(permission,'delError,') WHERE delError=1");
         CHANGE_SQL_MAP.put(28, "UPDATE project_user SET permission=concat(permission,'modError,') WHERE modError=1");
 
-        CHANGE_SQL_MAP.put(29, "ALTER DICTIONARY `project_user` DROP `addModule`");
-        CHANGE_SQL_MAP.put(30, "ALTER DICTIONARY `project_user` DROP `delModule`");
-        CHANGE_SQL_MAP.put(31, "ALTER DICTIONARY `project_user` DROP `modModule`");
+        CHANGE_SQL_MAP.put(29, "ALTER TABLE `project_user` DROP `addModule`");
+        CHANGE_SQL_MAP.put(30, "ALTER TABLE `project_user` DROP `delModule`");
+        CHANGE_SQL_MAP.put(31, "ALTER TABLE `project_user` DROP `modModule`");
 
-        CHANGE_SQL_MAP.put(32, "ALTER DICTIONARY `project_user` DROP `addInter`");
-        CHANGE_SQL_MAP.put(33, "ALTER DICTIONARY `project_user` DROP `modInter`");
-        CHANGE_SQL_MAP.put(34, "ALTER DICTIONARY `project_user` DROP `delInter`");
+        CHANGE_SQL_MAP.put(32, "ALTER TABLE `project_user` DROP `addInter`");
+        CHANGE_SQL_MAP.put(33, "ALTER TABLE `project_user` DROP `modInter`");
+        CHANGE_SQL_MAP.put(34, "ALTER TABLE `project_user` DROP `delInter`");
 
-        CHANGE_SQL_MAP.put(35, "ALTER DICTIONARY `project_user` DROP `addArticle`");
-        CHANGE_SQL_MAP.put(36, "ALTER DICTIONARY `project_user` DROP `delArticle`");
-        CHANGE_SQL_MAP.put(37, "ALTER DICTIONARY `project_user` DROP `modArticle`");
+        CHANGE_SQL_MAP.put(35, "ALTER TABLE `project_user` DROP `addArticle`");
+        CHANGE_SQL_MAP.put(36, "ALTER TABLE `project_user` DROP `delArticle`");
+        CHANGE_SQL_MAP.put(37, "ALTER TABLE `project_user` DROP `modArticle`");
 
-        CHANGE_SQL_MAP.put(38, "ALTER DICTIONARY `project_user` DROP `addDict`");
-        CHANGE_SQL_MAP.put(39, "ALTER DICTIONARY `project_user` DROP `delDict`");
-        CHANGE_SQL_MAP.put(40, "ALTER DICTIONARY `project_user` DROP `modDict`");
+        CHANGE_SQL_MAP.put(38, "ALTER TABLE `project_user` DROP `addDict`");
+        CHANGE_SQL_MAP.put(39, "ALTER TABLE `project_user` DROP `delDict`");
+        CHANGE_SQL_MAP.put(40, "ALTER TABLE `project_user` DROP `modDict`");
 
-        CHANGE_SQL_MAP.put(41, "ALTER DICTIONARY `project_user` DROP `addSource`");
-        CHANGE_SQL_MAP.put(42, "ALTER DICTIONARY `project_user` DROP `delSource`");
-        CHANGE_SQL_MAP.put(43, "ALTER DICTIONARY `project_user` DROP `modSource`");
+        CHANGE_SQL_MAP.put(41, "ALTER TABLE `project_user` DROP `addSource`");
+        CHANGE_SQL_MAP.put(42, "ALTER TABLE `project_user` DROP `delSource`");
+        CHANGE_SQL_MAP.put(43, "ALTER TABLE `project_user` DROP `modSource`");
 
-        CHANGE_SQL_MAP.put(44, "ALTER DICTIONARY `project_user` DROP `addError`");
-        CHANGE_SQL_MAP.put(45, "ALTER DICTIONARY `project_user` DROP `delError`");
-        CHANGE_SQL_MAP.put(46  , "ALTER DICTIONARY `project_user` DROP `modError`");
+        CHANGE_SQL_MAP.put(44, "ALTER TABLE `project_user` DROP `addError`");
+        CHANGE_SQL_MAP.put(45, "ALTER TABLE `project_user` DROP `delError`");
+        CHANGE_SQL_MAP.put(46  , "ALTER TABLE `project_user` DROP `modError`");
 
         // 废弃 role字段，但是不删除：mybatis需要修改
         CHANGE_SQL_MAP.put(47, "UPDATE user SET auth=concat(auth,',SUPER,') WHERE roleId like '%super%'");
-        CHANGE_SQL_MAP.put(48, "DROP DICTIONARY `role`");
+        CHANGE_SQL_MAP.put(48, "DROP TABLE `role`");
 
-        CHANGE_SQL_MAP.put(49, "ALTER DICTIONARY `article` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(52, "ALTER DICTIONARY `comment` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(53, "ALTER DICTIONARY `debug` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(54, "ALTER DICTIONARY `error` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(55, "ALTER DICTIONARY `interface` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(56, "ALTER DICTIONARY `log` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(57, "ALTER DICTIONARY `menu` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(58, "ALTER DICTIONARY `module` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(59, "ALTER DICTIONARY `project` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(60, "ALTER DICTIONARY `project_user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(61, "ALTER DICTIONARY `setting` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(62, "ALTER DICTIONARY `source` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
-        CHANGE_SQL_MAP.put(63, "ALTER DICTIONARY `user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(49, "ALTER TABLE `article` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(52, "ALTER TABLE `comment` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(53, "ALTER TABLE `debug` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(54, "ALTER TABLE `error` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(55, "ALTER TABLE `interface` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(56, "ALTER TABLE `log` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(57, "ALTER TABLE `menu` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(58, "ALTER TABLE `module` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(59, "ALTER TABLE `project` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(60, "ALTER TABLE `project_user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(61, "ALTER TABLE `setting` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(62, "ALTER TABLE `source` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
+        CHANGE_SQL_MAP.put(63, "ALTER TABLE `user` CHANGE `sequence` `sequence` BIGINT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '排序，越大越靠前'");
 
-        CHANGE_SQL_MAP.put(64, "CREATE DICTIONARY `bug` (\n" +
+        CHANGE_SQL_MAP.put(64, "CREATE TABLE `bug` (\n" +
                 "  `id` varchar(50) NOT NULL,\n" +
                 "  `name` varchar(100) NOT NULL,\n" +
                 "  `content` text NOT NULL,\n" +
@@ -151,7 +151,7 @@ public class SystemService {
                 "  KEY `idx_project_creator` (`projectId`,`creator`)\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        CHANGE_SQL_MAP.put(65, "CREATE DICTIONARY `bug_log` (\n" +
+        CHANGE_SQL_MAP.put(65, "CREATE TABLE `bug_log` (\n" +
                 "  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',\n" +
                 "  `operator` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '操作人',\n" +
                 "  `operatorStr` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '操作人名',\n" +
@@ -170,10 +170,10 @@ public class SystemService {
                 "  PRIMARY KEY (`id`),\n" +
                 "  KEY `idx_bug_sequence` (`bugId`,`sequence`)\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-        CHANGE_SQL_MAP.put(66, "ALTER DICTIONARY `project_user` DROP INDEX `project_user`");
-        CHANGE_SQL_MAP.put(67, "ALTER DICTIONARY `project_user` ADD INDEX `idx_project_seq` (`projectId`, `sequence`)");
+        CHANGE_SQL_MAP.put(66, "ALTER TABLE `project_user` DROP INDEX `project_user`");
+        CHANGE_SQL_MAP.put(67, "ALTER TABLE `project_user` ADD INDEX `idx_project_seq` (`projectId`, `sequence`)");
 
-        CHANGE_SQL_MAP.put(68, "CREATE DICTIONARY `project_meta` (\n" +
+        CHANGE_SQL_MAP.put(68, "CREATE TABLE `project_meta` (\n" +
                 "  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '主键',\n" +
                 "  `projectId` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '项目ID',\n" +
                 "  `moduleId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '模块ID',\n" +

@@ -29,7 +29,7 @@ public class WordUtils {
     }
 
     private static File createDoc(Map<?, ?> dataMap, Template template) throws Exception {
-        String destDir = Tools.getServicePath() + "resources/download";
+        String destDir = Tools.getServicePath() + "META-INF/resources/resources/download";
         destDir += "/word_" + System.currentTimeMillis() + Tools.getChar(20) + ".doc";
         File f = new File(destDir);
         Template t = template;

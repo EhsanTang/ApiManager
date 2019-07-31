@@ -20,7 +20,7 @@ public class Html2Pdf {
         Document document = null;
         PdfWriter writer = null;
         try {
-            String destDir = Tools.getServicePath() + "resources/download";
+            String destDir = Tools.getServicePath() + "META-INF/resources/resources/download";
             destDir += "/pdf_" + System.currentTimeMillis() + Tools.getChar(20) + ".pdf";
 
             document = new Document();

@@ -95,6 +95,11 @@ public class MainController extends BaseController{
         modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
         modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+		modelMap.addAttribute("imgPrefix", "");
+
+		if (settingCache.equalse(SettingEnum.OPEN_ALIYUN, "true")) {
+			modelMap.addAttribute("imgPrefix", MyString.isNotEmpty(Config.imgPrefix) ? Config.imgPrefix : "");
+		}
 
         List<ArticleDTO> articleList = (List<ArticleDTO>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){

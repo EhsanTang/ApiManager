@@ -111,7 +111,8 @@
                 </div>
             </div>
             <div class="col-xs-8">
-                <img src="resources/images/transparent.png" id="example-pic1" imgSrc="resources/images/example1.png" class="w shadow mb20">
+                <img src="resources/images/transparent.png" id="example-pic1"
+                     imgSrc="${imgPrefix}resources/images/example1.jpg" class="w shadow mb20">
             </div>
         </div>
     </div>
@@ -122,13 +123,14 @@
     <div class="container p0">
         <div class="row p0">
             <div class="col-xs-8">
-                <img src="resources/images/transparent.png" id="example-pic2" imgSrc="resources/images/example2.png" class="w shadow mb20">
+                <img src="resources/images/transparent.png" id="example-pic2"
+                     imgSrc="${imgPrefix}resources/images/example1.jpg" class="w shadow mb20">
             </div>
             <div class="col-xs-4">
                 <div class="tc f20 mb20 mt30 fw400 adorn-color">接口调试插件</div>
                 <div class="tc mt30 f12 C555 lh30">
-                    接口、文档、错误码、缺陷一站式管理<br/>
-                    支持团队协作，永久免费
+                    谷歌浏览器调试插件，支持post、get、put、自定义json调试<br/>
+                    支持调试数据保存，支持历史记录查看
                 </div>
             </div>
         </div>

@@ -111,7 +111,7 @@
                 </div>
             </div>
             <div class="col-xs-8">
-                <img src="resources/images/transparent.png" id="example-pic1"
+                <img src="${imgPrefix}resources/images/transparent.png" id="example-pic1"
                      imgSrc="${imgPrefix}resources/images/example1.jpg" class="w shadow mb20">
             </div>
         </div>
@@ -123,7 +123,7 @@
     <div class="container p0">
         <div class="row p0">
             <div class="col-xs-8">
-                <img src="resources/images/transparent.png" id="example-pic2"
+                <img src="${imgPrefix}resources/images/transparent.png" id="example-pic2"
                      imgSrc="${imgPrefix}resources/images/example1.jpg" class="w shadow mb20">
             </div>
             <div class="col-xs-4">

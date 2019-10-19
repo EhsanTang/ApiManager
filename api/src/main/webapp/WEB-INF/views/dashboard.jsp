@@ -36,7 +36,6 @@
                 </div>
 
                 <div class="f16 tl mt30 fr CFFF fw200">
-
                     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                         <c:if test="${menuDto.menu.type=='TOP'}">
                             <a class="no_unl CFFF adorn-hover-color pl20" href="${menuDto.menu.menuUrl}" target="_blank">
@@ -46,8 +45,6 @@
                         </c:if>
                     </c:forEach>
                 </div>
-
-
 
                 <div class="cb"></div>
                 <div class=" f30 mt100 tc fw200">完全开源、免费的API协作管理系统</div>
@@ -83,6 +80,20 @@
         </div>
 </div>
 <!-- End: top-->
+
+<div class="container">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- 首页广告 -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2085270222106815"
+         data-ad-slot="6227354044"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
 
 <div class="cb"></div>
 <div class="fun-introduce container p0 mt50">

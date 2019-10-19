@@ -24,15 +24,13 @@
         </button>
     </div>
 
-    <div class="col-xs-12 p20 mt60">
+    <div class="col-xs-9 p20 mt60">
         <div class="BGFFF p15">
             <table class="table table-hover table-striped f13">
                 <thead>
                 <tr class="f14 C000 fw500">
                     <td class="w50">封面</td>
                     <td>名称</td>
-                    <td class="w100">类型</td>
-                    <td class="w100">状态</td>
                     <td class="w100">创建者</td>
                     <td class="w150">创建时间</td>
                     <td class="w100">操作</td>
@@ -43,8 +41,6 @@
                     ng-click="go('user/project?pageName=项目详情&dataType=interface&menu_a=menu-project&menu_b=menu_main&projectName=' + item.name + '&projectId=' + item.id)">
                     <td class="pt5"><img ng-src="{{item.cover}}" class="h25 w25 r50P shadow" ></td>
                     <td>{{item.name}}</td>
-                    <td>{{item.typeName}}</td>
-                    <td>{{item.statusName}}</td>
                     <td>{{item.userName}}</td>
                     <td>{{item.createTimeStr}}</td>
                     <td class="f12">
@@ -65,6 +61,23 @@
             </table>
             <div ui-view="page" ng-init="callBackMethod = 'queryProjectList'; modelKey='projects'; "></div>
         </div>
+    </div>
+
+    <div class="col-xs-3 pt20 pl0 mt60">
+        <h4>为什么会有广告？</h4>
+        系统为完全免费开源使用，你的每一次点击都是在为系统完善做贡献，赶紧点击下吧...
+        <br/><br/>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- 项目列表 -->
+        <ins class="adsbygoogle BGFFF"
+             style="display:block"
+             data-ad-client="ca-pub-2085270222106815"
+             data-ad-slot="4953639128"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 </div>
 <div class="cb"></div>

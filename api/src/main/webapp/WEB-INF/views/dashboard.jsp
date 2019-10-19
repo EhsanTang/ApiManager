@@ -17,30 +17,36 @@
     <title>${title}</title>
 </head>
 <body class="BGFFF">
+<div class="circular circular-1"></div>
+<div class="circular circular-2"></div>
+<div class="circular circular-3"></div>
+<div class="circular circular-4"></div>
+<div class="circular circular-5"></div>
 
-<div class="login-bg mb10 w p0" style="height: 600px">
+
+<div class="main-bg mb10 w p0" style="height: 600px">
         <div class="container p0">
             <div class="row p0 m0 CFFF">
                 <div class="mt100 tc">
                         <a href="/">
-                            <img class="h100 w100" src="${logo}"/>
+                            <i class="iconfont adorn-color f60">&#xe612;</i>
                         </a>
 
                 </div>
-                <div class="f60 tc mt30">CRAP-Api</div>
+                <div class="f30 tc mt30">CRAP-API</div>
 
-                <div class="f18 mt30 tc">完全开源、免费的API协作管理系统</div>
+                <div class="f30 mt30 tc fw200">完全开源、免费的API协作管理系统</div>
 
-                <div class="f16 mt10 mb20 tc">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
+                <div class="f16 mt10 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
                 <div class="tc mt50">
                     <c:if test="${login}">
-                        <a class="btn btn-main r5 w150 f14 ml10" href="admin.do" target="_blank">管理项目</a>
-                        <a class="btn btn-adorn r5 w150 f14 ml10" href="index.do#/project/list?projectShowType=3" target="_blank">查看项目</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="admin.do" target="_blank">管理项目</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="index.do#/project/list?projectShowType=3" target="_blank">查看项目</a>
                     </c:if>
                     <c:if test="${login == false}">
-                        <a class="btn btn-main r5 w150 f14 ml10" href="loginOrRegister.do#/login" target="_blank">登录</a>
-                        <a class="btn btn-adorn r5 w150 f14 ml10" href="user/mock.do" target="_blank">免登录试用</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="loginOrRegister.do#/login" target="_blank">登录</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="user/mock.do" target="_blank">免登录试用</a>
                     </c:if>
                 </div>
 
@@ -93,7 +99,7 @@
 <div class="cb"></div>
 
 <div class="fun-introduce container p0 bl1 br1 bb1 mt50">
-    <div class="mt-15 bc BGFFF w400 f30 z10 rel tc fw500 adorn-color">开源免费在线管理平台</div>
+    <div class="mt-15 bc BGFFF w400 f30 z10 rel tc adorn-color fw200">开源免费在线管理平台</div>
     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
         <c:if test="${menuDto.menu.type=='FUNCTION'}">
             <div class="col-xs-3 tc h200 f20 mt10">

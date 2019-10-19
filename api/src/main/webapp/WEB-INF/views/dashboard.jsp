@@ -39,9 +39,9 @@
 
                     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                         <c:if test="${menuDto.menu.type=='TOP'}">
-                            <a class="no_unl CFFF adorn-hover-color" href="${menuDto.menu.menuUrl}" target="_blank">
-                                <div class="mt-1 fl pr10">${menuDto.menu.iconRemark}</div>
-                                    ${menuDto.menu.menuName}
+                            <a class="no_unl CFFF adorn-hover-color pl20" href="${menuDto.menu.menuUrl}" target="_blank">
+                                <div class="fr pl10">${menuDto.menu.menuName}</div>
+                                <div class="mt-1 fr pl20">${menuDto.menu.iconRemark}</div>
                             </a>
                         </c:if>
                     </c:forEach>

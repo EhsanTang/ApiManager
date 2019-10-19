@@ -202,7 +202,7 @@
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b4a454e8f7114e487f10d7852f0c55c8";
+        hm.src = "https://hm.baidu.com/hm.js?e91941b2793b690aacf3167a833a9089";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();

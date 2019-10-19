@@ -74,9 +74,9 @@ public class FileController extends BaseController{
         }else{
             //检查扩展名
             if( Config.imageType.indexOf(suffix)>=0 ){
-                saveUrl +="resources/upload/images";
+                saveUrl +="/resources/upload/images";
             }else{
-                saveUrl +="resources/upload/files";
+                saveUrl +="/resources/upload/files";
             }
             saveUrl +="/"+ DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM)+"/";
             String version = ".CAV."+Tools.getChar(6)+".1";

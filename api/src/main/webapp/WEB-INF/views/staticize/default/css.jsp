@@ -75,9 +75,4 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	font-family: ${settings.FONT_FAMILY};}
 }
 </style>
-<div class="circular circular-1"></div>
-<div class="circular circular-2"></div>
-<div class="circular circular-3"></div>
-<div class="circular circular-4"></div>
-<div class="circular circular-5"></div>
-<div class="circular circular-6"></div>
+

@@ -189,7 +189,8 @@ public class SystemService {
                 "  KEY `idx_project_module_type` (`projectId`,`moduleId`,`type`)\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
 
-        // sequence 修改为long
+
+        CHANGE_SQL_MAP.put(69, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '登陆背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'LOGINBG';");
     }
 
     /**

@@ -22,20 +22,21 @@
 <div class="circular circular-3"></div>
 <div class="circular circular-4"></div>
 <div class="circular circular-5"></div>
+<div class="circular circular-6"></div>
 
 
-<div class="main-bg mb10 w p0" style="height: 600px">
+<div class="login-bg main-bg mb10 w p0" style="height: 500px">
         <div class="container p0">
             <div class="row p0 m0 CFFF">
-                <div class="mt100 tc">
-                        <a href="/">
-                            <i class="iconfont adorn-color f60">&#xe612;</i>
-                        </a>
-
+                <div class="f30 tl mt30 fl">
+                    <a href="/" class="no_unl">
+                        <i class="iconfont adorn-color f40">&#xe612;</i>
+                        <span class="CFFF " style="font-family: Times New Roman">CRAP-API</span>
+                    </a>
                 </div>
-                <div class="f30 tc mt30">CRAP-API</div>
 
-                <div class="f30 mt30 tc fw200">完全开源、免费的API协作管理系统</div>
+                <div class="cb"></div>
+                <div class=" f30 mt100 tc fw200">完全开源、免费的API协作管理系统</div>
 
                 <div class="f16 mt10 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
@@ -51,20 +52,19 @@
                 </div>
 
 
-                    <div class="tr mt50">
-                        <div class="fr ml20">
-                            <a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank" class="CFFF">
-                                ${starNum} Stars (GitHub & Gitee)
-                            </a>
-                        </div>
-                        <div class="fr ml20">
-                            <a href='https://gitee.com/CrapApi/CrapApi/members' target="_blank" class="CFFF">
-                                ${forkNum} Forks
-                            </a>
-                        </div>
-                        <div class="fr ml20">10k+ Users</div>
+                <div class="tr mt50 fw200">
+                    <div class="fr ml20">
+                        <a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank" class="CFFF">
+                            ${starNum} Stars (GitHub & Gitee)
+                        </a>
                     </div>
-
+                    <div class="fr ml20">
+                        <a href='https://gitee.com/CrapApi/CrapApi/members' target="_blank" class="CFFF">
+                            ${forkNum} Forks
+                        </a>
+                    </div>
+                    <div class="fr ml20">10k+ Users</div>
+                </div>
             </div>
         </div>
 </div>

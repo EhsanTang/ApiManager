@@ -218,6 +218,19 @@
         s.parentNode.insertBefore(hm, s);
     })();
 
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+
     // 加载图片的函数，就是把自定义属性data-src 存储的真正的图片地址，赋值给src
     function loadImg(id){
         var $img=document.getElementById(id);

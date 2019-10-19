@@ -16,7 +16,7 @@ a:hover{color: [ADORN_COLOR];text-decoration: none;}
 input:focus{border-color: [MAIN_COLOR]!important;}
 
 .s-bg-color {background-color: [BG_COLOR]}
-.s-nav-bg-color {background-color: [NAV_BG_COLOR]}
+.s-nav-bg-color {background-color: [NAV_BG_COLOR]!important}
 .s-nav-color {color: [NAV_COLOR]}
 .s-nav-color a {color: [NAV_COLOR]}
 

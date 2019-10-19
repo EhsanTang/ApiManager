@@ -16,7 +16,7 @@ a:hover{color: #f82c1d;text-decoration: none;}
 input:focus{border-color: #4CAF56!important;}
 
 .s-bg-color {background-color: #f7f7f7}
-.s-nav-bg-color {background-color: #233050}
+.s-nav-bg-color {background-color: #233050!important;}
 .s-nav-color {color: #a9a9a9}
 .s-nav-color a {color: #a9a9a9}
 

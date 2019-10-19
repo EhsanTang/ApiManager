@@ -26,7 +26,7 @@ pre { white-space: normal;}
 .C${module.id}{color:${settings.ADORN_COLOR}!important;font-weight:bold;}
 .C${activePage}{color:${settings.ADORN_COLOR}!important;font-weight:bold;}
 .s-bg-color {background-color: ${settings.BG_COLOR}}
-.s-nav-bg-color {background-color: ${settings.NAV_BG_COLOR}}
+.s-nav-bg-color {background-color: ${settings.NAV_BG_COLOR}!important}
 .s-nav-color {color: ${settings.NAV_COLOR}}
 .s-nav-color a {color: ${settings.NAV_COLOR}}
 /* 默认主色:#B768A5*/
@@ -75,3 +75,9 @@ body, h1, h2, h3, h4, h5, h6, hr, blockquote, dl, dt, dd, ul, ol, li,
 	font-family: ${settings.FONT_FAMILY};}
 }
 </style>
+<div class="circular circular-1"></div>
+<div class="circular circular-2"></div>
+<div class="circular circular-3"></div>
+<div class="circular circular-4"></div>
+<div class="circular circular-5"></div>
+<div class="circular circular-6"></div>

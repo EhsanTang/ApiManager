@@ -138,9 +138,18 @@ public class HttpPostGet {
     }
 
     public static String postBody(String url, String body, Map<String, String> headers) throws Exception {
+       return postBody(url, body, headers, 3000);
+    }
+
+
+    public static String postBody(String url, String body, Map<String, String> headers, int timeout) throws Exception {
         HttpClient client = buildHttpClient(url);
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("charset", "utf-8");
+
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).setStaleConnectionCheckEnabled(true).build();
+        httppost.setConfig(requestConfig);
         buildHeader(headers, httppost);
 
         BasicHttpEntity requestBody = new BasicHttpEntity();

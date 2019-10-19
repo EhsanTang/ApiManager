@@ -25,7 +25,7 @@
 <div class="circular circular-6"></div>
 
 
-<div class="login-bg main-bg mb10 w p0" style="height: 500px">
+<div class="login-bg s-nav-bg-color mb10 w p0" style="height: 500px">
         <div class="container p0">
             <div class="row p0 m0 CFFF">
                 <div class="f30 tl mt30 fl">
@@ -35,24 +35,38 @@
                     </a>
                 </div>
 
+                <div class="f16 tl mt30 fr CFFF fw200">
+
+                    <c:forEach items="${menuList}" var="menuDto" varStatus="id">
+                        <c:if test="${menuDto.menu.type=='TOP'}">
+                            <a class="no_unl CFFF adorn-hover-color" href="${menuDto.menu.menuUrl}" target="_blank">
+                                <div class="mt-1 fl pr10">${menuDto.menu.iconRemark}</div>
+                                    ${menuDto.menu.menuName}
+                            </a>
+                        </c:if>
+                    </c:forEach>
+                </div>
+
+
+
                 <div class="cb"></div>
                 <div class=" f30 mt100 tc fw200">完全开源、免费的API协作管理系统</div>
 
-                <div class="f16 mt10 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
+                <div class="f16 mt20 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
                 <div class="tc mt50">
                     <c:if test="${login}">
-                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="admin.do" target="_blank">管理项目</a>
+                        <a class="btn btn-main r5 w150 f14 ml10 fw200" href="admin.do" target="_blank">管理项目</a>
                         <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="index.do#/project/list?projectShowType=3" target="_blank">查看项目</a>
                     </c:if>
                     <c:if test="${login == false}">
-                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="loginOrRegister.do#/login" target="_blank">登录</a>
+                        <a class="btn btn-main r5 w150 f14 ml10 fw200" href="loginOrRegister.do#/login" target="_blank">登录</a>
                         <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="user/mock.do" target="_blank">免登录试用</a>
                     </c:if>
                 </div>
 
 
-                <div class="tr mt50 fw200">
+                <div class="tr mt100 fw200">
                     <div class="fr ml20">
                         <a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank" class="CFFF">
                             ${starNum} Stars (GitHub & Gitee)
@@ -70,62 +84,59 @@
 </div>
 <!-- End: top-->
 
-<!-- 功能点介绍 -->
-<div class="index-top-menu">
-    <div class="container p0">
-        <!--<c:if test="${login}">
-            <img class="main-bg fl w40 h40 r50P mt-5" src="${avatarUrl}"/>
-        </c:if>
-        <c:if test="${!login}">
-            <div class="main-bg fl w40 h40 r50P mt-5 tc pt5 CFFF">
-                Hi
-            </div>
-        </c:if>
-        <c:if test="${login}">
-            <div class="BGFFF fr ml50 pl15 pr15">
-                <a class="C555 adorn-hover-color" href="index.do#/project/list?projectShowType=3"
-                   target="_blank">浏览项目</a>
-            </div>
-        </c:if>-->
-        <c:forEach items="${menuList}" var="menuDto" varStatus="id">
-            <c:if test="${menuDto.menu.type=='TOP'}">
-                <div class="BGFFF fr ml50 pl15 pr15">
-                    <a class="C555 adorn-hover-color" href="${menuDto.menu.menuUrl}"
-                       target="_blank">${menuDto.menu.menuName}</a></div>
-            </c:if>
-        </c:forEach>
-    </div>
-</div>
 <div class="cb"></div>
-
-<div class="fun-introduce container p0 bl1 br1 bb1 mt50">
-    <div class="mt-15 bc BGFFF w400 f30 z10 rel tc adorn-color fw200">开源免费在线管理平台</div>
+<div class="fun-introduce container p0 mt50">
+    <div class="mt-15 bc BGFFF w400 f22 z10 rel tc adorn-color">开源免费在线管理平台</div>
     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
         <c:if test="${menuDto.menu.type=='FUNCTION'}">
             <div class="col-xs-3 tc h200 f20 mt10">
-                <div class="h80 lh80 C999 f30">${menuDto.menu.iconRemark}</div>
+                <div class="h80 lh80 C555 f30 adorn-color">${menuDto.menu.iconRemark}</div>
                 <!--href="${menuDto.menu.menuUrl}"-->
-                <span class="f13 C555 lh26 p15 tc break-word" >${menuDto.menu.menuName}</span>
+                <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
             </div>
         </c:if>
     </c:forEach>
     <div class="cb"></div>
 </div>
 
-<div class="BGF9 pt20 mt50">
-    <div class="container p0">
-        <div class="tc f30 fw400 mb10 mt50">项目主页</div>
-        <div class="w50 adorn-bt-3 bc mb20"> </div>
-        <img src="resources/images/admin_project.jpg" class="w shadow mb20">
 
-        <div class="tc f30 fw400 mb10 mt50">接口调试插件</div>
-        <div class="w50 adorn-bt-3 bc mb20"> </div>
-        <img src="resources/images/chrome_debug.jpg" class="w shadow mb50">
+<div class="BGF5 pt50 mt30 pb50">
+    <div class="container p0">
+        <div class="row p0">
+            <div class="col-xs-4">
+                <div class="tc f20 mb20 mt30 fw400 adorn-color">项目主页</div>
+                <div class="tc mt30 f12 C555 lh30">
+                    接口、文档、错误码、缺陷一站式管理<br/>
+                    支持团队协作，永久免费
+                </div>
+            </div>
+            <div class="col-xs-8">
+                <img src="resources/images/transparent.png" id="example-pic1" imgSrc="resources/images/example1.png" class="w shadow mb20">
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="BGF9 pt20 pb50">
-    <div class="container BGFFF pt20 pb20 shadow">
+
+<div class="BGFFF pt50 pb50">
+    <div class="container p0">
+        <div class="row p0">
+            <div class="col-xs-8">
+                <img src="resources/images/transparent.png" id="example-pic2" imgSrc="resources/images/example2.png" class="w shadow mb20">
+            </div>
+            <div class="col-xs-4">
+                <div class="tc f20 mb20 mt30 fw400 adorn-color">接口调试插件</div>
+                <div class="tc mt30 f12 C555 lh30">
+                    接口、文档、错误码、缺陷一站式管理<br/>
+                    支持团队协作，永久免费
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="BGF5 pt50 pb50">
+    <div class="container pt20 pb20">
         <table>
             <tr>
                 <td class="tc w100 f20 fw500 adorn-color">使<br>用<br>指<br>南</td>
@@ -138,7 +149,7 @@
                         </div>
                     </c:forEach>
                     <div class="tc">
-                        <a class="mt20 btn btn-sm btn-default w600 BGFFF C999 b0" href="index.do#/article/list?type=ARTICLE&status=2">
+                        <a class="mt20 btn btn-sm btn-default adorn-color w600 C999 b0" href="index.do#/article/list?type=ARTICLE&status=2">
                             MORE
                         </a>
                     </div>
@@ -148,67 +159,36 @@
     </div>
 </div>
 
-<div class="container p0">
-        <!-- 求赞赏 -->
-        <div class="cb"></div>
-        <div class="lh26 f12 p30">
-            <!-- <div class="bc w150 fw500 f20 bb1 mb50 tc p10 adorn-color">开发者宣言</div> -->
-            <table class="w">
-                <td class="tl">
-                    各位好，我是Nick<br/>
-                    CRAP是个永久免费开源的项目，理想很远大，现实很骨感，未来还有非常多的功能有待开发<br/>
-                    感谢大家愿意与CRAP一起成长<br/>
-                    未来将持续努力，为你奉上精心打磨、好用管理工具。如果你觉得不错，请推荐给你的同事、朋友<br/>
-                    或者打赏下<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打赏100元，加入"穿着特步相亲也能轻松俘获女神的VIP QQ群（263949884）...<br/>
-                    或者<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 <a href='https://gitee.com/CrapApi/CrapApi' target="_blank">Gitee</a>
-                    或
-                    <a target="_blank" href="https://github.com/EhsanTang/ApiManager">GitHub</a> 上点个赞也好 :)
-                    <br/>
-                    PS: <a href="https://item.taobao.com/item.htm?id=590684998824" target="_blank">视频教程正在众筹中，感兴趣就来看下吧。。。</a>
-                </td>
-                <td class="w200 tc h">
-                    <div class="bl1 pl30 ml30">
-                        <img class="w100" src="resources/images/alipay.jpg"><br><br>
-                        <img class="w100" src="resources/images/wepay.jpg">
-                    </div>
-                </td>
-            </table>
-        </div>
-</div>
-
 
 <!-- footer navbar -->
-<div class="m0 w lh26">
-        <div class="container mt20 r5 r20 p5 h26 tr">
-                    友情链接：
-                    <ul class="dis-in-tab p0 m0">
-                        <li class="dis-in-tab mr20"><a target="_blank" href="http://api.crap.cn">CrapApi官网</a> <span
-                                class="bg_line"></span></li>
-                        <c:forEach items="${menuList}" var="menuDto" varStatus="id">
-                            <c:if test="${menuDto.menu.type=='FRIEND'}">
-                                <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
-                            </c:if>
-                        </c:forEach>
-                    </ul>
+<div class="m0 w lh26 s-nav-bg-color shadow fw200 pt20 pb20">
+        <div class="container pt20 r5 r20 p5 h26 tr CFFF">
+                友情链接：
+                <ul class="dis-in-tab p0 m0">
+                    <li class="dis-in-tab mr20 CFFF"><a target="_blank" class="CFFF" href="http://api.crap.cn">CrapApi官网</a> <span class="bg_line"></span></li>
+                    <c:forEach items="${menuList}" var="menuDto" varStatus="id">
+                        <c:if test="${menuDto.menu.type=='FRIEND'}">
+                            <a target="_blank" class="mr20 CFFF" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
+                        </c:if>
+                    </c:forEach>
+                </ul>
         </div>
 
-        <div class="container h26  r20 p0 pl20 tc b1 mb20">
-            ©<a href="http://crap.cn" target="_blank">crap.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本号 [V8.1.5-bate]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="container h26  p0 pl20 tc pb20 CFFF">
+            ©<a href="http://crap.cn" target="_blank" class="CFFF">crap.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;版本号 [V8.1.5-bate]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <ul class="dis-in-tab p0 m0">
                 <li class="dis-in-tab mr20">
-                    <a target="_blank" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>
+                    <a target="_blank" class="CFFF" href="http://api.crap.cn/static/help/help-articleList--1.html">帮助文档</a>
                 </li>
                 <li class="dis-in-tab mr20">
-                    <a target="_blank" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
+                    <a target="_blank" class="CFFF" href="https://github.com/EhsanTang/CrapApi">GitHub</a>
                 </li>
                 <li class="dis-in-tab mr20">
-                    <a target="_blank" href="https://gitee.com/CrapApi/CrapApi">码云</a>
+                    <a target="_blank" class="CFFF" href="https://gitee.com/CrapApi/CrapApi">码云</a>
                 </li>
                 <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                     <c:if test="${menuDto.menu.type=='BOTTOM'}">
-                        <a target="_blank" class="mr20" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
+                        <a target="_blank" class="mr20 CFFF" href="${menuDto.menu.menuUrl}">${menuDto.menu.menuName}</a>
                     </c:if>
                 </c:forEach>
             </ul>
@@ -216,6 +196,9 @@
 </div>
 
 <script>
+    loadImg('example-pic1');
+    loadImg('example-pic2');
+
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
@@ -223,6 +206,15 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
+
+    // 加载图片的函数，就是把自定义属性data-src 存储的真正的图片地址，赋值给src
+    function loadImg(id){
+        var $img=document.getElementById(id);
+        if ($img == null){
+            return;
+        }
+        $img.setAttribute("src",$img.attributes['imgSrc'].value);
+    }
 </script>
 </body>
 </html>

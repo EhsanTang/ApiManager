@@ -654,7 +654,7 @@ blockquote{
 .circular-6{
     width: 90px;
     height: 90px;
-    right: -23px;
+    right: 0px;
     top: 95px;
     background: linear-gradient(-90deg,#271e5b,#0d76ef);
 }

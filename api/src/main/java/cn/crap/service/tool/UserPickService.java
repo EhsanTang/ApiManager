@@ -75,7 +75,7 @@ public class UserPickService implements IPickService{
                 pick = new PickDto("icon_null", IConst.NULL, "不使用图标");
                 picks.add(pick);
                 for (IconfontCode iconfontCode : IconfontCode.values()) {
-                    pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
+                    pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont fw200\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
                     picks.add(pick);
                 }
                 return picks;

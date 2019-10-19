@@ -191,6 +191,7 @@ public class SystemService {
 
 
         CHANGE_SQL_MAP.put(69, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '登陆背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'LOGINBG';");
+        CHANGE_SQL_MAP.put(70, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '头部标题搜索背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'TITLEBG';");
     }
 
     /**
@@ -304,7 +305,7 @@ public class SystemService {
         String compressResult = null;
         try {
             String cssSource = Tools.readFile(baseFileUrl + fileUrl);
-            compressText = HttpPostGet.postBody(compressUrl, cssSource, null);
+            compressText = HttpPostGet.postBody(compressUrl, cssSource, null, 5000);
             JSONObject jsonObject = JSONObject.fromObject(compressText);
             compressResult = jsonObject.getString("result");
             Tools.staticize(compressResult, baseFileUrl + fileUrl);

@@ -58,7 +58,9 @@
                     </c:if>
                     <c:if test="${login == false}">
                         <a class="btn btn-main r5 w150 f14 ml10 fw200" href="loginOrRegister.do#/login" target="_blank">登录</a>
-                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="user/mock.do" target="_blank">免登录试用</a>
+                        <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="/loginOrRegister.do#/register" target="_blank">注册</a>
+
+                        <a class="f12 ml10 fw200 CFFF cursor" href="user/mock.do" target="_blank">免登录试用</a>
                     </c:if>
                 </div>
 

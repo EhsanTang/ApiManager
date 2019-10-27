@@ -84,6 +84,37 @@ public class MainController extends BaseController{
 		return "resources/html/visitor/indexNew.html";
 	}
 
+	/**
+	 * 插件首页
+	 * @param modelMap
+	 * @return
+	 * @throws MyException
+	 */
+	@RequestMapping(value = "plugDashboard.htm")
+	public String plugDashboard(ModelMap modelMap) throws MyException{
+		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+		modelMap.addAttribute("login", loginInfoDto != null);
+		modelMap.addAttribute("avatarUrl", loginInfoDto != null ? loginInfoDto.getAvatarUrl() : "resources/images/logo_new.png");
+		modelMap.addAttribute("title", settingCache.get(S_TITLE).getValue());
+		modelMap.addAttribute("keywords", settingCache.get(S_KEYWORDS).getValue());
+		modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
+		modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
+		modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+
+		// 从缓存中获取菜单
+		List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);
+		if(menuList == null){
+			menuList = customMenuService.getMenu();
+			objectCache.add(C_CACHE_MENU, menuList);
+		}
+		modelMap.addAttribute("menuList", menuList);
+
+		// fork & star 数量
+		modelMap.addAttribute(FORK_NUM, OpenSourceInfoTask.forNumStr);
+		modelMap.addAttribute(STAR_NUM, OpenSourceInfoTask.starNumStr);
+		return "WEB-INF/views/plugDashboard.jsp";
+	}
+
 	@RequestMapping(value = "dashboard.htm")
 	public String dashboard(ModelMap modelMap) throws MyException{
 

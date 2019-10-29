@@ -1,0 +1,27 @@
+version: "2"
+
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./mysql:/var/lib/mysql"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "../../api/2019-10-26.V8.1.5.sql:/docker-entrypoint-initdb.d/init.sql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "uck_eg#up"
+      MYSQL_DATABASE: "apidev"
+      MYSQL_USER: "apidev"
+      MYSQL_PASSWORD: "apidev"
+  
+  crapapi:
+    image: kayuii/crapapi:v8.1.5
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./config.properties:/usr/local/tomcat/webapps//ROOT/WEB-INF/classes/config.properties"
+    depends_on: 
+      - mysql
+
+

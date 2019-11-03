@@ -121,7 +121,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         }
         if (query.getModuleId() != null ) {
             if (IConst.NULL.equals(query.getModuleId())){
-                criteria.andModuleIdIsNull();
+                criteria.andModuleIdEqualTo("");
             } else {
                 criteria.andModuleIdEqualTo(query.getModuleId());
             }

@@ -39,8 +39,8 @@ public class ExampleController extends BaseController{
 	
 	@RequestMapping("/visitor/example/post.do")
 	@ResponseBody
-	public JsonResult post(@RequestBody String json){
-		return new JsonResult(1, json);
+	public JsonResult post(String param){
+		return new JsonResult(1, param);
 	}
 
 	@RequestMapping("/visitor/example/error.do")

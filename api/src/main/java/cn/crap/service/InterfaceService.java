@@ -115,8 +115,12 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (query.getEqualInterfaceName() != null) {
             criteria.andInterfaceNameEqualTo(query.getEqualInterfaceName());
         }
-        if (query.getModuleId() != null) {
-            criteria.andModuleIdEqualTo(query.getModuleId());
+        if (query.getModuleId() != null ) {
+            if (IConst.NULL.equals(query.getModuleId())){
+                criteria.andModuleIdIsNull();
+            } else {
+                criteria.andModuleIdEqualTo(query.getModuleId());
+            }
         }
         if (query.getProjectId() != null) {
             criteria.andProjectIdEqualTo(query.getProjectId());
@@ -133,6 +137,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (query.getExceptVersion() != null) {
             criteria.andVersionNotEqualTo(query.getExceptVersion());
         }
+
         return example;
     }
     /**

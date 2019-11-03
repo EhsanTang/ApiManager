@@ -16,29 +16,27 @@
     <link href="resources/css/allCss.css?v=V8.2.0_0630" rel="stylesheet" type="text/css"/>
     <title>${title}</title>
 </head>
-<body class="BGFFF">
-<div class="circular circular-1"></div>
-<div class="circular circular-2"></div>
-<div class="circular circular-3"></div>
-<div class="circular circular-4"></div>
-<div class="circular circular-5"></div>
-<div class="circular circular-6"></div>
+<body>
 
-
-<div class="login-bg s-nav-bg-color mb10 w p0" style="height: 360px">
-    <div class="container p0">
+<div class="container p20 login-bg s-nav-bg-color"  style="height: 230px">
+    <div class="circular circular-1"></div>
+    <div class="circular circular-2"></div>
+    <div class="circular circular-3"></div>
+    <div class="circular circular-4"></div>
+    <div class="circular circular-5"></div>
+    <div class="circular circular-6"></div>
         <div class="row p0 m0 CFFF">
-            <div class="f30 tl mt20 fl">
+            <div class="f30 tl col-xs-4 mt-10">
                 <a href="/" class="no_unl">
                     <i class="iconfont adorn-color f40">&#xe612;</i>
                     <span class="CFFF " style="font-family: Times New Roman">CRAP-API</span>
                 </a>
             </div>
 
-            <div class="f16 tl mt20 fr CFFF fw200">
+            <div class="f16 tl CFFF fw200 col-xs-8">
                 <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                     <c:if test="${menuDto.menu.type=='TOP'}">
-                        <a class="no_unl CFFF adorn-hover-color pl20" href="${menuDto.menu.menuUrl}" target="_blank">
+                        <a class="no_unl CFFF adorn-hover-color pl20 fr" href="${menuDto.menu.menuUrl}" target="_blank">
                             <div class="fr pl10">${menuDto.menu.menuName}</div>
                             <div class="mt-1 fr pl20">${menuDto.menu.iconRemark}</div>
                         </a>
@@ -47,11 +45,11 @@
             </div>
 
             <div class="cb"></div>
-            <div class="f30 mt30 tc fw200">完全开源、免费的API协作管理系统</div>
+            <div class="f22 tc fw200">完全开源、免费的API协作管理系统</div>
 
-            <div class="f16 mt20 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
+            <div class="f14 mt10 mb20 tc fw200">协作开发、在线测试、文档管理、导出接口、个性化功能定制...</div>
 
-            <div class="tc mt50">
+            <div class="tc mt15">
                 <c:if test="${login}">
                     <a class="btn btn-main r5 w150 f14 ml10 fw200" href="admin.do" target="_blank">管理项目</a>
                     <a class="btn btn-adorn r5 w150 f14 ml10 fw200" href="index.do#/project/list?projectShowType=3" target="_blank">查看项目</a>
@@ -65,7 +63,7 @@
             </div>
 
 
-            <div class="tr mt50 fw200">
+            <div class="tr mt20 fw200">
                 <div class="fr ml20">
                     <a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank" class="CFFF">
                         ${starNum} Stars (GitHub & Gitee)
@@ -79,11 +77,24 @@
                 <div class="fr ml20">10k+ Users</div>
             </div>
         </div>
-    </div>
 </div>
 <!-- End: top-->
 
-<div class="container">
+
+<div class="fun-introduce container p0 BGFFF">
+    <c:forEach items="${menuList}" var="menuDto" varStatus="id">
+        <c:if test="${menuDto.menu.type=='FUNCTION'}">
+            <div class="col-xs-3 tc h100 f20">
+                <div class="h30 lh30 C555 f22 adorn-color">${menuDto.menu.iconRemark}</div>
+                <!--href="${menuDto.menu.menuUrl}"-->
+                <span class="f12 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
+            </div>
+        </c:if>
+    </c:forEach>
+    <div class="cb"></div>
+</div>
+
+<div class="container BGFFF mb100 pb20">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- 首页广告 -->
     <ins class="adsbygoogle"
@@ -98,19 +109,6 @@
 </div>
 
 <div class="cb"></div>
-<div class="fun-introduce container p0 mt50">
-    <div class="mt-15 bc BGFFF w400 f22 z10 rel tc adorn-color">开源免费在线管理平台</div>
-    <c:forEach items="${menuList}" var="menuDto" varStatus="id">
-        <c:if test="${menuDto.menu.type=='FUNCTION'}">
-            <div class="col-xs-3 tc h200 f20 mt10">
-                <div class="h80 lh80 C555 f30 adorn-color">${menuDto.menu.iconRemark}</div>
-                <!--href="${menuDto.menu.menuUrl}"-->
-                <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
-            </div>
-        </c:if>
-    </c:forEach>
-    <div class="cb"></div>
-</div>
 
 </body>
 </html>

@@ -39,7 +39,10 @@ public class ExampleController extends BaseController{
 	
 	@RequestMapping("/visitor/example/post.do")
 	@ResponseBody
-	public JsonResult post(String param){
+	public JsonResult post(String param, Integer sleepTimes) throws Exception{
+		if (sleepTimes != null && sleepTimes > 0 && sleepTimes < 5){
+			Thread.sleep(sleepTimes * 1000);
+		}
 		return new JsonResult(1, param);
 	}
 

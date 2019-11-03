@@ -28,23 +28,26 @@
 <div class="login-bg s-nav-bg-color mb10 w p0" style="height: 500px">
         <div class="container p0">
             <div class="row p0 m0 CFFF">
-                <div class="f30 tl mt30 fl">
+                <div class="f30 tl fl col-xs-4 mt20">
                     <a href="/" class="no_unl">
                         <i class="iconfont adorn-color f40">&#xe612;</i>
                         <span class="CFFF " style="font-family: Times New Roman">CRAP-API</span>
                     </a>
                 </div>
 
-                <div class="f16 tl mt30 fr CFFF fw200">
+                <div class="f16 tl fr CFFF fw200 col-xs-8 mt30">
+
                     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
                         <c:if test="${menuDto.menu.type=='TOP'}">
-                            <a class="no_unl CFFF adorn-hover-color pl20" href="${menuDto.menu.menuUrl}" target="_blank">
+                            <a class="no_unl CFFF adorn-hover-color pl20 fr" href="${menuDto.menu.menuUrl}" target="_blank">
                                 <div class="fr pl10">${menuDto.menu.menuName}</div>
                                 <div class="mt-1 fr pl20">${menuDto.menu.iconRemark}</div>
                             </a>
                         </c:if>
                     </c:forEach>
                 </div>
+
+
 
                 <div class="cb"></div>
                 <div class=" f30 mt100 tc fw200">完全开源、免费的API协作管理系统</div>

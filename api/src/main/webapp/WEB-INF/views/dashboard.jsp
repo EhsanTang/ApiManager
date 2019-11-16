@@ -143,7 +143,9 @@
                      imgSrc="${imgPrefix}resources/images/example2.jpg" class="w shadow mb20">
             </div>
             <div class="col-xs-4">
-                <div class="tc f20 mb20 mt30 fw400 adorn-color">接口调试插件</div>
+                <div class="tc f20 mb20 mt30 fw400">
+                    <a class="adorn-color" target="_blank" href="http://api.crap.cn/index.do#/article/detail?projectId=help&moduleId=155032424248009000006&type=ARTICLE&id=155037947655301000051">接口调试插件</a>
+                </div>
                 <div class="tc mt30 f12 C555 lh30">
                     谷歌浏览器调试插件，支持post、get、put、自定义json调试<br/>
                     支持调试数据保存，支持历史记录查看

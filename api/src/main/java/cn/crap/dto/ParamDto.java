@@ -16,7 +16,6 @@ public class ParamDto implements Serializable{
 	private String def = "";
 	private String inUrl = "";
 	private Integer deep = 0;
-	private String sysRemark = "";
 
 	public ParamDto(){}
 	public ParamDto(String name, String necessary, String type, String def, String remark){
@@ -80,15 +79,7 @@ public class ParamDto implements Serializable{
         this.realName = realName;
     }
 
-	public String getSysRemark() {
-		return sysRemark;
-	}
-
-	public void setSysRemark(String sysRemark) {
-		this.sysRemark = sysRemark;
-	}
-
-	public String getParamPosition(){
+    public String getParamPosition(){
 		if ("true".equals(inUrl)){
 			return "请求URL";
 		}else{

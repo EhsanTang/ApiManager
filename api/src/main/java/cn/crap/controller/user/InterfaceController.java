@@ -168,7 +168,7 @@ public class InterfaceController extends BaseController{
 			/**
 			 * 普通表单模式不支持content-type设置：除非用户自定义，否者删除
 			 */
-			if (contentTypeDto != null && contentTypeDto.getSysRemark() != null && contentTypeDto.getSysRemark().contains(IAttributeConst.SYS_CONTENT_TYPE)){
+			if (contentTypeDto != null && contentTypeDto.getRemark() != null && contentTypeDto.getRemark().contains(IConst.C_CONTENT_TYPE_TIP)){
                 headerList.remove(contentTypeDto);
             }
         }
@@ -180,13 +180,10 @@ public class InterfaceController extends BaseController{
             String reqContentType = Optional.ofNullable(dto.getReqContentType()).orElse(InterfaceContentType.JSON.getType());
             if (contentTypeDto == null){
                 ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, IConst.C_CONTENT_TYPE_TIP + reqContentType);
-				paramDto.setSysRemark(IAttributeConst.SYS_CONTENT_TYPE);
                 headerList.add(0, paramDto);
             } else{
-            	if (contentTypeDto.getSysRemark() != null && contentTypeDto.getSysRemark().contains(IAttributeConst.SYS_CONTENT_TYPE)) {
-					contentTypeDto.setDef(reqContentType);
-					contentTypeDto.setRemark(IConst.C_CONTENT_TYPE_TIP + reqContentType);
-				}
+				contentTypeDto.setDef(reqContentType);
+				contentTypeDto.setRemark(IConst.C_CONTENT_TYPE_TIP + reqContentType);
             }
 		}
         dto.setHeader(JSON.toJSONString(headerList));

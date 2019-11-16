@@ -78,7 +78,9 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
     public List<Interface> query(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
-        Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId、moduleId不能同时为空");
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
+
         Page page = new Page(query);
         InterfaceCriteria example = getInterfaceCriteria(query);
         if (page.getSize() != ALL_PAGE_SIZE) {
@@ -98,6 +100,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      */
     public int count(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
         InterfaceCriteria example = getInterfaceCriteria(query);
         return interfaceDao.countByExample(example);
@@ -117,7 +121,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         }
         if (query.getModuleId() != null ) {
             if (IConst.NULL.equals(query.getModuleId())){
-                criteria.andModuleIdIsNull();
+                criteria.andModuleIdEqualTo("");
             } else {
                 criteria.andModuleIdEqualTo(query.getModuleId());
             }

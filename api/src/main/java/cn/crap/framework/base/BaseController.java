@@ -47,9 +47,10 @@ public abstract class BaseController implements IConst, ISetting {
     protected ObjectCache objectCache;
 
     protected Project getProject(BaseQuery query){
-        Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId & moduleId 不能同时为空");
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
-        if (query.getModuleId() != null){
+        if (MyString.isNotEmptyOrNUll(query.getModuleId())){
             Module module = moduleCache.get(query.getModuleId());
             return projectCache.get(module.getProjectId());
         }
@@ -61,8 +62,10 @@ public abstract class BaseController implements IConst, ISetting {
     }
 
     protected String getProjectId(String projectId, String moduleId){
-        Assert.isTrue(projectId != null || moduleId != null, "projectId & moduleId 不能同时为空");
-        if (moduleId != null){
+        Assert.isTrue(MyString.isNotEmptyOrNUll(projectId)
+                || MyString.isNotEmptyOrNUll(moduleId), "projectId、moduleId不能同时为空");
+
+        if (MyString.isNotEmptyOrNUll(moduleId)){
             String moduleProjectId = moduleCache.get(moduleId).getProjectId();
             return moduleProjectId == null ? projectId : moduleProjectId;
         }
@@ -70,8 +73,10 @@ public abstract class BaseController implements IConst, ISetting {
     }
 
     protected Project getProject(String projectId, String moduleId){
-        Assert.isTrue(projectId != null || moduleId != null, "projectId & moduleId 不能同时为空");
-        if (moduleId != null){
+        Assert.isTrue(MyString.isNotEmptyOrNUll(projectId)
+                || MyString.isNotEmptyOrNUll(moduleId), "projectId、moduleId不能同时为空");
+
+        if (MyString.isNotEmptyOrNUll(moduleId)){
             projectId = moduleCache.get(moduleId).getProjectId();
         }
         return projectCache.get(projectId);

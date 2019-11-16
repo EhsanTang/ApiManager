@@ -162,26 +162,28 @@ public class InterfaceController extends BaseController{
         List<ParamDto> headerList =JSONArray.parseArray(dto.getHeader() == null ? "[]" : dto.getHeader(), ParamDto.class);
         ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()
                 .filter(tempHeader -> tempHeader.getName() != null && tempHeader.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
+
         if (C_PARAM_FORM.equals(dto.getParamType())){
 		    dto.setParam(C_PARAM_FORM_PRE + dto.getParam());
 			/**
-			 * 普通表单模式不支持content-type设置
+			 * 普通表单模式不支持content-type设置：除非用户自定义，否者删除
 			 */
-			if (contentTypeDto != null){
+			if (contentTypeDto != null && contentTypeDto.getRemark() != null && contentTypeDto.getRemark().contains(IConst.C_CONTENT_TYPE_TIP)){
                 headerList.remove(contentTypeDto);
             }
         }
+
         /**
          * 自定义参数，下拉添加Content-Type
          */
         else {
             String reqContentType = Optional.ofNullable(dto.getReqContentType()).orElse(InterfaceContentType.JSON.getType());
             if (contentTypeDto == null){
-                ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, "指定参数类型为" + reqContentType);
+                ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, IConst.C_CONTENT_TYPE_TIP + reqContentType);
                 headerList.add(0, paramDto);
             } else{
-                contentTypeDto.setDef(reqContentType);
-                contentTypeDto.setRemark("指定参数类型为" + reqContentType);
+				contentTypeDto.setDef(reqContentType);
+				contentTypeDto.setRemark(IConst.C_CONTENT_TYPE_TIP + reqContentType);
             }
 		}
         dto.setHeader(JSON.toJSONString(headerList));

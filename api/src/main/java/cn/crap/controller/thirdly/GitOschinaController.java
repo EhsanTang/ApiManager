@@ -17,6 +17,7 @@ import cn.crap.service.thirdly.OschinaService;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.SocketTimeoutException;
 import java.util.List;
 
 /**
@@ -58,7 +58,7 @@ public class GitOschinaController extends BaseController {
         GitHubUser oschinaUser = null;
         try {
             oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
-        } catch (SocketTimeoutException e){
+        } catch (ConnectTimeoutException e){
             throw new MyException(MyError.E000075);
         }
 

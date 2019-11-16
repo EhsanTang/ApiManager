@@ -11,4 +11,6 @@ public interface IAttributeConst {
      * 项目环境
      */
     String ENV_URL = "envUrl";
+
+    String SYS_CONTENT_TYPE = "sysContentType";
 }

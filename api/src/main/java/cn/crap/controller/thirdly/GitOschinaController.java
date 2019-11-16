@@ -4,9 +4,10 @@ import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
 import cn.crap.enu.LoginType;
-import cn.crap.enu.SettingEnum;
+import cn.crap.enu.MyError;
 import cn.crap.enu.UserStatus;
 import cn.crap.enu.UserType;
+import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.User;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 /**
@@ -53,7 +55,12 @@ public class GitOschinaController extends BaseController {
     @RequestMapping("/oschina/login.ignore")
     public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = null;
-        GitHubUser oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
+        GitHubUser oschinaUser = null;
+        try {
+            oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
+        } catch (SocketTimeoutException e){
+            throw new MyException(MyError.E000075);
+        }
 
         List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
         if (users.size() == 0) {

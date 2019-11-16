@@ -123,10 +123,10 @@ public class HttpPostGet {
         return getResponse(method, headers);
     }
 
-    public static String post(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+    public static String post(String path, Map<String, String> params, Map<String, String> headers, int timeout) throws Exception {
         HttpPost method = new HttpPost(path);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(3000).setConnectTimeout(3000)
-                .setConnectionRequestTimeout(3000).setStaleConnectionCheckEnabled(true).build();
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).setStaleConnectionCheckEnabled(true).build();
         // 请求的参数信息传递
         List<NameValuePair> pairs = buildPairs(params);
         if (pairs.size() > 0) {
@@ -135,6 +135,10 @@ public class HttpPostGet {
         }
         method.setConfig(requestConfig);
         return getResponse(method, headers);
+    }
+
+    public static String post(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+        return post(path, params, headers, 3000);
     }
 
     public static String postBody(String url, String body, Map<String, String> headers) throws Exception {

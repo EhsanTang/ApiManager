@@ -22,8 +22,10 @@ import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import com.alibaba.fastjson.JSON;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/user/crapDebug")
 public class CrapDebugController extends BaseController {
+    protected Logger log = Logger.getLogger(getClass());
+
     @Autowired
     private DebugService debugService;
     @Autowired
@@ -45,12 +49,13 @@ public class CrapDebugController extends BaseController {
     @RequestMapping("/synch.do")
     @ResponseBody
     @AuthPassport
+    @Transactional
     public JsonResult synch(@RequestBody String body) throws MyException {
         List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
         LoginInfoDto user = LoginUserHelper.getUser();
 
         // 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
-        String projectId = MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
+        String projectId = generateProjectId(user);
         Project project = projectService.getById(projectId);
         if (project == null) {
             project = buildProject(user, projectId);
@@ -58,23 +63,29 @@ public class CrapDebugController extends BaseController {
         }
 
         long moduleSequence = System.currentTimeMillis();
-        for (DebugInterfaceParamDto d : list) {
-            String moduleId = d.getModuleId();
-            if (d == null || MyString.isEmpty(moduleId)) {
+        for (DebugInterfaceParamDto moduleDTO : list) {
+            String moduleId = moduleDTO.getModuleId();
+            if (moduleDTO == null || MyString.isEmpty(moduleId)) {
+                log.error("sync moduleId is null:" + user.getId() + ",moduleName:" + moduleDTO.getModuleName());
                 continue;
             }
 
             try {
                 // id = id + 用户ID MD5
                 moduleId = Tools.handleId(user, moduleId);
+                moduleDTO.setModuleId(moduleId);
+
+                log.error("sync moduleId:" + moduleId);
                 // 处理模块：删除、更新、添加，处理异常
-                handelModule(user, project, moduleSequence, d, moduleId);
+                handelModule(user, project, moduleSequence, moduleDTO);
+
                 moduleSequence = moduleSequence - 1;
 
                 // 处理模块ID、用户ID，避免多个用户混乱问题
-                handelModuleIdAndDubugId(user, d, moduleId);
+                handelModuleIdAndDebugId(user, moduleDTO);
+
                 // 先删除需要删除的接口
-                deleteDebug(user, d, moduleId);
+                deleteDebug(moduleDTO);
 
                 // 每个用户的最大接口数量不能超过100
                 int totalNum = debugService.count(new DebugQuery().setUserId(user.getId()));
@@ -83,7 +94,7 @@ public class CrapDebugController extends BaseController {
                 }
 
                 // 更新接口
-                addDebug(user, d, totalNum);
+                addDebug(user, moduleDTO, totalNum);
             }catch (Exception e){
                 e.printStackTrace();
                 continue;
@@ -121,7 +132,7 @@ public class CrapDebugController extends BaseController {
                 debugDto.setModuleName(m.getName());
                 debugDto.setVersion(m.getVersion());
                 debugDto.setStatus(m.getStatus());
-                debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<DebugDto>() : mapDebugs.get(m.getId()));
+                debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<>() : mapDebugs.get(m.getId()));
                 returnlist.add(debugDto);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,31 +141,41 @@ public class CrapDebugController extends BaseController {
         return new JsonResult(1, returnlist);
     }
 
-    private void addDebug(LoginInfoDto user, DebugInterfaceParamDto d, int totalNum) {
+    private String generateProjectId(LoginInfoDto user) {
+        return MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
+    }
+
+    private void addDebug(LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
+
         long debugSequence = System.currentTimeMillis();
-        for (DebugDto debug : d.getDebugs()) {
+        for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
             debug.setSequence(debugSequence);
             try {
                 if (MyString.isEmpty(debug.getId())) {
+                    log.error("addDebug debugId is null, moduleName:" + moduleDTO.getModuleName());
                     continue;
                 }
+
                 if (debug.getStatus() == -1) {
                     continue;
                 }
 
                 // 更新接口
+                log.error("addDebug name:" + debug.getName());
                 Debug old = debugService.getById(debug.getId());
                 if (old != null){
-                    if (old.getVersion() > debug.getVersion()){
+                    if (old.getVersion() >= debug.getVersion()){
+                        log.error("addDebug ignore error name:" + debug.getName());
                         continue;
                     }
                     debug.setCreateTime(old.getCreateTime());
-                    if (old.getModuleId().equals(debug.getModuleId())) {
-                        debug.setStatus(old.getStatus());
-                        debug.setUid(user.getId());
-                        debugService.update(DebugAdapter.getModel(debug));
-                    }
+                    debug.setStatus(old.getStatus());
+                    debug.setUid(user.getId());
+                    debugService.update(DebugAdapter.getModel(debug));
                     continue;
                 }
                 debug.setUid(user.getId());
@@ -162,20 +183,21 @@ public class CrapDebugController extends BaseController {
                 debugService.insert(DebugAdapter.getModel(debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
+                e.printStackTrace();
+                continue;
             }
         }
     }
 
-    private void handelModuleIdAndDubugId(LoginInfoDto user, DebugInterfaceParamDto d, String moduleId) {
-        for (DebugDto debug : d.getDebugs()) {
+    private void handelModuleIdAndDebugId(LoginInfoDto user, DebugInterfaceParamDto moduleDTO) {
+        for (DebugDto debug : moduleDTO.getDebugs()) {
             try {
                 if (MyString.isEmpty(debug.getId())) {
+                    log.error("handelModuleIdAndDebugId error debugId is null:" + debug.getName());
                     continue;
                 }
                 debug.setId(Tools.handleId(user, debug.getId()));
-                debug.setModuleId(moduleId);
+                debug.setModuleId(moduleDTO.getModuleId());
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -183,17 +205,19 @@ public class CrapDebugController extends BaseController {
         }
     }
 
-    private void deleteDebug(LoginInfoDto user, DebugInterfaceParamDto d, String moduleId) {
-        for (DebugDto debug : d.getDebugs()) {
+    private void deleteDebug(DebugInterfaceParamDto moduleDTO) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
+        for (DebugDto debug : moduleDTO.getDebugs()) {
             try {
                 if (MyString.isEmpty(debug.getId())) {
+                    log.error("deleteDebug error debugId is null:" + debug.getName());
                     continue;
                 }
-                Debug old = debugService.getById(debug.getId());
-                if (old == null || !old.getModuleId().equals(moduleId)){
-                    continue;
-                }
+
                 if (debug.getStatus() == -1) {
+                    log.error("deleteDebug debugName:" + debug.getName());
                     debugService.delete(debug.getId());
                 }
             } catch (Exception e) {
@@ -203,18 +227,18 @@ public class CrapDebugController extends BaseController {
         }
     }
 
-    private void handelModule(LoginInfoDto user, Project project, long moduleSequence, DebugInterfaceParamDto d, String moduleId) throws Exception{
-        d.setModuleId(moduleId);
+    private void handelModule(LoginInfoDto user, Project project, long moduleSequence, DebugInterfaceParamDto moduleDTO) throws Exception{
+        String moduleId = moduleDTO.getModuleId();
         Module module = moduleService.getById(moduleId);
 
         // 新增模块
-        if (module == null && d.getStatus() != -1) {
-            module = buildModule(user, project, moduleSequence, d);
+        if (module == null && moduleDTO.getStatus() != -1) {
+            module = buildModule(user, project, moduleSequence, moduleDTO);
             moduleService.insert(module);
         }
 
         // 删除模块
-        else if (d.getStatus() != null && d.getStatus() == -1) {
+        else if (moduleDTO != null && moduleDTO.getStatus() != null && moduleDTO.getStatus() == -1) {
             Module delete = new Module();
             delete.setId(moduleId);
             moduleService.delete(delete.getId());
@@ -222,9 +246,9 @@ public class CrapDebugController extends BaseController {
         }
 
         // 更新模块
-        else if (d.getVersion() == null || module.getVersion() <= d.getVersion()) {
-            module.setVersion(d.getVersion() == null ? 0 : d.getVersion());
-            module.setName(d.getModuleName());
+        else if (moduleDTO != null && (moduleDTO.getVersion() == null || module.getVersion() <= moduleDTO.getVersion())) {
+            module.setVersion(moduleDTO.getVersion() == null ? 0 : moduleDTO.getVersion());
+            module.setName(moduleDTO.getModuleName());
             module.setSequence(moduleSequence);
             moduleService.update(module);
         }

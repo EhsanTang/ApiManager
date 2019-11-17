@@ -146,6 +146,10 @@ public class CrapDebugController extends BaseController {
     }
 
     private void addDebug(LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
+
         long debugSequence = System.currentTimeMillis();
         for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
@@ -202,6 +206,9 @@ public class CrapDebugController extends BaseController {
     }
 
     private void deleteDebug(DebugInterfaceParamDto moduleDTO) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
         for (DebugDto debug : moduleDTO.getDebugs()) {
             try {
                 if (MyString.isEmpty(debug.getId())) {

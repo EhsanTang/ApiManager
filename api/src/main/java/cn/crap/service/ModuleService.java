@@ -73,7 +73,7 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
 
         Page page = new Page(query);
         ModuleCriteria example = getModuleCriteria(query);
-        if (page.getSize() != ALL_PAGE_SIZE) {
+        if (query.getPageSize() != ALL_PAGE_SIZE) {
             example.setLimitStart(page.getStart());
             example.setMaxResults(page.getSize());
         }

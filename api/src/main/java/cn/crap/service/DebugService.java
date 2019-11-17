@@ -42,7 +42,7 @@ public class DebugService extends BaseService<Debug, DebugDao> {
         Page page = new Page(query);
         DebugCriteria example = getDebugCriteria(query);
 
-        if (page.getSize() != IConst.ALL_PAGE_SIZE) {
+        if (query.getPageSize() != IConst.ALL_PAGE_SIZE) {
             example.setLimitStart(page.getStart());
             example.setMaxResults(page.getSize());
         }

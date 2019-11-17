@@ -100,13 +100,13 @@ public class CrapDebugController extends BaseController {
 
 
         // 组装返回数据
-        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE));
+        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(100));
         List<String> moduleIds = new ArrayList<>();
         for (Module m : modules) {
             moduleIds.add(m.getId());
         }
 
-        List<Debug> debugs = debugService.query(new DebugQuery().setModuleIds(moduleIds).setPageSize(IConst.ALL_PAGE_SIZE));
+        List<Debug> debugs = debugService.query(new DebugQuery().setModuleIds(moduleIds));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
         for (Debug d : debugs) {
             try {

@@ -17,10 +17,7 @@ import cn.crap.query.ModuleQuery;
 import cn.crap.service.DebugService;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MD5;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,13 +100,13 @@ public class CrapDebugController extends BaseController {
 
 
         // 组装返回数据
-        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId));
+        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE));
         List<String> moduleIds = new ArrayList<>();
         for (Module m : modules) {
             moduleIds.add(m.getId());
         }
 
-        List<Debug> debugs = debugService.query(new DebugQuery().setModuleIds(moduleIds));
+        List<Debug> debugs = debugService.query(new DebugQuery().setModuleIds(moduleIds).setPageSize(IConst.ALL_PAGE_SIZE));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
         for (Debug d : debugs) {
             try {

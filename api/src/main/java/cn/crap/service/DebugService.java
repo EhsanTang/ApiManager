@@ -7,6 +7,7 @@ import cn.crap.framework.MyException;
 import cn.crap.model.Debug;
 import cn.crap.model.DebugCriteria;
 import cn.crap.query.DebugQuery;
+import cn.crap.utils.IConst;
 import cn.crap.utils.Page;
 import cn.crap.utils.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,11 @@ public class DebugService extends BaseService<Debug, DebugDao> {
 
         Page page = new Page(query);
         DebugCriteria example = getDebugCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
+
+        if (page.getSize() != IConst.ALL_PAGE_SIZE) {
+            example.setLimitStart(page.getStart());
+            example.setMaxResults(page.getSize());
+        }
         example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
 
         return debugDao.selectByExample(example);

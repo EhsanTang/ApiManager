@@ -17,7 +17,7 @@ public class CustomDebugDao {
 
 	public void deleteByModuleId(String moduleId){
         Assert.notNull(moduleId);
-        jdbcTemplate.update("delete from Debug where moduleId=?", moduleId);
+        jdbcTemplate.update("delete from debug where moduleId=?", moduleId);
 	}
 
 }

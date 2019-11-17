@@ -146,6 +146,10 @@ public class CrapDebugController extends BaseController {
     }
 
     private void addDebug(LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
+
         long debugSequence = System.currentTimeMillis();
         for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
@@ -164,8 +168,8 @@ public class CrapDebugController extends BaseController {
                 log.error("addDebug name:" + debug.getName());
                 Debug old = debugService.getById(debug.getId());
                 if (old != null){
-                    if (old.getVersion() > debug.getVersion()){
-                        log.error("addDebug version error name:" + debug.getName());
+                    if (old.getVersion() >= debug.getVersion()){
+                        log.error("addDebug ignore error name:" + debug.getName());
                         continue;
                     }
                     debug.setCreateTime(old.getCreateTime());
@@ -179,8 +183,8 @@ public class CrapDebugController extends BaseController {
                 debugService.insert(DebugAdapter.getModel(debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
+                e.printStackTrace();
+                continue;
             }
         }
     }
@@ -202,6 +206,9 @@ public class CrapDebugController extends BaseController {
     }
 
     private void deleteDebug(DebugInterfaceParamDto moduleDTO) {
+        if (moduleDTO.getStatus() == -1) {
+            return;
+        }
         for (DebugDto debug : moduleDTO.getDebugs()) {
             try {
                 if (MyString.isEmpty(debug.getId())) {

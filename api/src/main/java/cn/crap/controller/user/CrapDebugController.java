@@ -168,8 +168,8 @@ public class CrapDebugController extends BaseController {
                 log.error("addDebug name:" + debug.getName());
                 Debug old = debugService.getById(debug.getId());
                 if (old != null){
-                    if (old.getVersion() > debug.getVersion()){
-                        log.error("addDebug version error name:" + debug.getName());
+                    if (old.getVersion() >= debug.getVersion()){
+                        log.error("addDebug ignore error name:" + debug.getName());
                         continue;
                     }
                     debug.setCreateTime(old.getCreateTime());

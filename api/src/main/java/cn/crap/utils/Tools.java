@@ -378,6 +378,8 @@ public class Tools {
         str = str.replaceAll("\r\n", "_CARP_BR_");
         str = str.replaceAll("\n", "_CARP_BR_");
         str = escapeHtml(str);
+        // &nbsp; word不支持
+        str = str.replaceAll("&nbsp;", " ");
         return str.replaceAll("_CARP_BR_", "<w:br/>");
     }
     public static String subString(String str, int length, String suffix) {

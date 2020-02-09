@@ -62,8 +62,6 @@ public class DebugAdapter {
         dto.setHeaders(headerSb.toString());
         dto.setUrl(model.getFullUrl());
         dto.setVersion(model.getVersionNum());
-        dto.setId(Tools.unhandleId(model.getId()));
-        dto.setModuleId(Tools.unhandleId(model.getModuleId()));
         dto.setName(model.getInterfaceName());
         return dto;
     }
@@ -125,10 +123,6 @@ public class DebugAdapter {
 
         DebugDto dto = new DebugDto();
         BeanUtil.copyProperties(model, dto);
-
-        dto.setId(Tools.unhandleId(model.getId()));
-		dto.setModuleId(Tools.unhandleId(model.getModuleId()));
-
         return dto;
     }
 

@@ -281,6 +281,12 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         customInterfaceMapper.deleteByModuleId(moduleId);
     }
 
+    public void  deleteByModuleId(String moduleId, String id){
+        Assert.notNull(moduleId);
+        Assert.notNull(id);
+        customInterfaceMapper.deleteByModuleId(moduleId, id);
+    }
+
     @Override
     public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
         Assert.isTrue(pageSize > 0 && pageSize <= 1000);

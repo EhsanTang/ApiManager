@@ -8,7 +8,6 @@ import cn.crap.framework.SpringContextHolder;
 import cn.crap.model.Project;
 import cn.crap.service.tool.StringCache;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.util.Assert;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -439,23 +437,30 @@ public class Tools {
     }
 
     // 相同ID，不同用户在数据库存储的id与浏览器中存储的不一致，解决项目导出给其他人id一致的问题
-    public static String handleId(LoginInfoDto user, String id) {
+    public static String addUserInfoForId(LoginInfoDto user, String id) {
         if (MyString.isEmpty(id)) {
             return null;
         }
 
-        id = id + "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
-        return id;
+        String userIdMD5 = getUserIdMD5(user);
+        if (id.endsWith(userIdMD5)){
+            return id;
+        }
+
+        // 删除id中其他人的用户MD5信息
+        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).contains("CAU")){
+            id = id.substring(0, id.lastIndexOf("-"));
+        }
+
+        return id + userIdMD5;
     }
 
-    public static String unhandleId(String id) {
-        Assert.notNull(id);
-        Assert.isTrue(id.lastIndexOf("-") > 0);
-
-        id = id.substring(0, id.lastIndexOf("-"));
-        return id;
+    public static String getUserIdMD5(LoginInfoDto user){
+        if (user == null){
+            return "";
+        }
+        return "-CAU" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
     }
-
     public static String getRgba(float opacity, String colorStr) {
 
         try {

@@ -72,7 +72,7 @@
 //
 //            try {
 //                // id = id + 用户ID MD5
-//                moduleId = Tools.handleId(user, moduleId);
+//                moduleId = Tools.addUserInfoForId(user, moduleId);
 //                moduleDTO.setModuleId(moduleId);
 //
 //                log.error("sync moduleId:" + moduleId);
@@ -196,7 +196,7 @@
 //                    log.error("handelModuleIdAndDebugId error debugId is null:" + debug.getName());
 //                    continue;
 //                }
-//                debug.setId(Tools.handleId(user, debug.getId()));
+//                debug.setId(Tools.addUserInfoForId(user, debug.getId()));
 //                debug.setModuleId(moduleDTO.getModuleId());
 //            } catch (Exception e) {
 //                e.printStackTrace();

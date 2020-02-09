@@ -1,6 +1,9 @@
 package cn.crap.framework;
 
+import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.TableId;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MD5;
 
 import java.net.InetAddress;
 import java.util.Random;
@@ -45,7 +48,12 @@ public class IdGenerator{
 		if(id >= 100000){
 			idNum.compareAndSet(id + 1, 1);
 		}
-		return System.currentTimeMillis() + ip + tableId.getId() + String.format("%06d", id);
+		LoginInfoDto user = LoginUserHelper.tryGetUser();
+		String userIdMD5 = "";
+		if (user != null){
+			userIdMD5 = "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
+		}
+		return System.currentTimeMillis() + ip + tableId.getId() + String.format("%06d", id) + userIdMD5;
 	}
 
 }

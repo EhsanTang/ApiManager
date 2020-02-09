@@ -6,6 +6,8 @@ import cn.crap.dto.DebugDto;
 import cn.crap.dto.DebugInterfaceParamDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectStatus;
+import cn.crap.enu.ProjectType;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -53,6 +55,7 @@ public class CrapDebugController extends BaseController {
         List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
         LoginInfoDto user = LoginUserHelper.getUser();
 
+        // TODO 后续要支持多项目切换
         // 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
         String projectId = generateProjectId(user);
         Project project = projectService.getById(projectId);
@@ -231,7 +234,7 @@ public class CrapDebugController extends BaseController {
         }
 
         // 删除模块
-        else if (moduleDTO != null && moduleDTO.getStatus() != null && moduleDTO.getStatus() == -1) {
+        else if (moduleDTO != null && moduleDTO.getStatus() == -1) {
             Module delete = new Module();
             delete.setId(moduleId);
             try {
@@ -269,15 +272,15 @@ public class CrapDebugController extends BaseController {
         Project project;
         project = new Project();
         project.setId(projectId);
-        project.setCover("/resources/images/cover.png");
+        project.setCover("/resources/images/logo_new.png");
         project.setLuceneSearch(Byte.valueOf("0"));
         project.setName("默认调试项目");
-        project.setStatus(Byte.valueOf("-1"));
+        project.setStatus(ProjectStatus.COMMON.getStatus());
         project.setSequence(System.currentTimeMillis());
-        project.setType(Byte.valueOf("1"));
+        project.setType(ProjectType.PRIVATE.getByteType());
         project.setUserId(user.getId());
         project.setCreateTime(new Date());
-        project.setRemark("该项目是系统自动创建的apiDebug插件接口，请勿删除！！！！");
+        project.setRemark("该项目是系统自动创建的PostWoman/ApiDebug插件项目，请勿删除！！！！");
         return project;
     }
 

@@ -8,6 +8,7 @@ public class DebugInterfaceParamDto {
 	private String moduleName;
 	private Integer version;
 	private Byte status;
+	private String projectId;
 	
 	public List<DebugDto> getDebugs() {
 		return debugs;
@@ -39,5 +40,12 @@ public class DebugInterfaceParamDto {
 	public void setStatus(Byte status) {
 		this.status = status;
 	}
-	
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
 }

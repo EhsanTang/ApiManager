@@ -145,6 +145,8 @@ public class CrapDebugController extends BaseController {
         }
 
         long debugSequence = System.currentTimeMillis();
+        String moduleId = moduleDTO.getModuleId();
+        Module module = moduleService.getById(moduleId);
         for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
             debug.setSequence(debugSequence);
@@ -168,7 +170,7 @@ public class CrapDebugController extends BaseController {
                     }
                     debug.setStatus(old.getStatus());
                     debug.setUid(user.getId());
-                    interfaceService.update(DebugAdapter.getInterfaceByDebug(old, debug));
+                    interfaceService.update(DebugAdapter.getInterfaceByDebug(module, old, debug));
                     continue;
                 }
                 debug.setUid(user.getId());
@@ -176,7 +178,7 @@ public class CrapDebugController extends BaseController {
 
                 InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
                 interfaceWithBLOBs.setProjectId(projectId);
-                interfaceService.insert(DebugAdapter.getInterfaceByDebug(interfaceWithBLOBs, debug));
+                interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {
                 e.printStackTrace();

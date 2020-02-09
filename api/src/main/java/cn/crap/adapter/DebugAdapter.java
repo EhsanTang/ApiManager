@@ -4,8 +4,10 @@ import cn.crap.dto.DebugDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.model.Debug;
 import cn.crap.model.InterfaceWithBLOBs;
+import cn.crap.model.Module;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.IConst;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Tools;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -66,7 +68,7 @@ public class DebugAdapter {
         return dto;
     }
 
-    public static InterfaceWithBLOBs getInterfaceByDebug(InterfaceWithBLOBs model, DebugDto dto){
+    public static InterfaceWithBLOBs getInterfaceByDebug(Module module, InterfaceWithBLOBs model, DebugDto dto){
         if (dto == null){
             return null;
         }
@@ -77,8 +79,11 @@ public class DebugAdapter {
         model.setModuleId(dto.getModuleId());
         model.setMethod(dto.getMethod());
         model.setFullUrl(dto.getUrl());
-        if (model.getUrl() == null){
-            model.setUrl(dto.getUrl());
+        model.setUrl(dto.getUrl());
+
+        // 替换项目前缀
+        if (MyString.isNotEmptyOrNUll(module.getUrl())){
+            model.setUrl(dto.getUrl().replaceFirst(module.getUrl(), ""));
         }
         if (model.getParam() != null && dto.getParamType().equals(IConst.C_FORM_DATA_TYPE)){
             model.setParam(IConst.C_FORM_DATA_TYPE + JSON.toJSONString(getJson(model.getParam(), dto.getParams())));

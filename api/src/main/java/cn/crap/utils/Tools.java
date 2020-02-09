@@ -448,7 +448,7 @@ public class Tools {
         }
 
         // 删除id中其他人的用户MD5信息
-        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).contains("CAU")){
+        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).startsWith("CAU")){
             id = id.substring(0, id.lastIndexOf("-"));
         }
 

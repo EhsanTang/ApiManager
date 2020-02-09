@@ -75,7 +75,8 @@ public enum MyError {
 	E000072("超过项目允许的最大错误码数量"),
 	E000073("接口尚未选择模块，不允许设置为模板"),
 	E000074("码云登陆超时，请稍后再试"),
-	E000075("GitHub登陆超时，请稍后再试");
+	E000075("GitHub登陆超时，请稍后再试"),
+	E000076("缺陷数量大于0，不允许删除该模块");
 
 	private final String message;
 	private final String enMessage;

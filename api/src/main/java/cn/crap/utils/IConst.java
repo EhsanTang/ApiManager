@@ -31,6 +31,7 @@ public interface IConst {
     String C_CONTENT_TYPE = "Content-Type";
 	String C_STRING = "string";
 	String C_CONTENT_TYPE_TIP = "指定参数类型为";
+	String C_FORM_DATA_TYPE= "x-www-form-urlencoded;charset=UTF-8";
 
 
 

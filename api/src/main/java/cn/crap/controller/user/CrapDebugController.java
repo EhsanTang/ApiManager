@@ -1,6 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.DebugAdapter;
+import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.DebugDto;
 import cn.crap.dto.DebugInterfaceParamDto;
 import cn.crap.dto.LoginInfoDto;
@@ -9,15 +10,18 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Debug;
+import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.Module;
 import cn.crap.model.Project;
-import cn.crap.query.DebugQuery;
+import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.service.DebugService;
+import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
-import cn.crap.utils.*;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MD5;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Tools;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +39,7 @@ public class CrapDebugController extends BaseController {
     protected Logger log = Logger.getLogger(getClass());
 
     @Autowired
-    private DebugService debugService;
-    @Autowired
-    private DebugService customDebugService;
+    private InterfaceService interfaceService;
     @Autowired
     private ProjectService projectService;
     @Autowired
@@ -85,13 +87,13 @@ public class CrapDebugController extends BaseController {
                 deleteDebug(moduleDTO);
 
                 // 每个用户的最大接口数量不能超过100
-                int totalNum = debugService.count(new DebugQuery().setUserId(user.getId()));
+                int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
                 if (totalNum > 100) {
                     return new JsonResult(MyError.E000058);
                 }
 
                 // 更新接口
-                addDebug(user, moduleDTO, totalNum);
+                addDebug(projectId, user, moduleDTO, totalNum);
             }catch (Exception e){
                 e.printStackTrace();
                 continue;
@@ -106,16 +108,16 @@ public class CrapDebugController extends BaseController {
             moduleIds.add(m.getId());
         }
 
-        List<Debug> debugs = debugService.query(new DebugQuery().setModuleIds(moduleIds));
+        List<InterfaceWithBLOBs> debugs = interfaceService.queryAll(new InterfaceQuery().setProjectId(projectId));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
-        for (Debug d : debugs) {
+        for (InterfaceWithBLOBs d : debugs) {
             try {
                 List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
                 if (moduleDebugs == null) {
                     moduleDebugs = new ArrayList<>();
                     mapDebugs.put(d.getModuleId(), moduleDebugs);
                 }
-                moduleDebugs.add(DebugAdapter.getDto(d));
+                moduleDebugs.add(DebugAdapter.getDtoFromInterface(d));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -142,7 +144,8 @@ public class CrapDebugController extends BaseController {
         return MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
     }
 
-    private void addDebug(LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+    // TODO 模块url前缀
+    private void addDebug(String projectId, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
         if (moduleDTO.getStatus() == -1) {
             return;
         }
@@ -163,21 +166,23 @@ public class CrapDebugController extends BaseController {
 
                 // 更新接口
                 log.error("addDebug name:" + debug.getName());
-                Debug old = debugService.getById(debug.getId());
+                InterfaceWithBLOBs old = interfaceService.getById(debug.getId());
                 if (old != null){
-                    if (old.getVersion() >= debug.getVersion()){
+                    if (old.getVersionNum() >= debug.getVersion()){
                         log.error("addDebug ignore error name:" + debug.getName());
                         continue;
                     }
-                    debug.setCreateTime(old.getCreateTime());
                     debug.setStatus(old.getStatus());
                     debug.setUid(user.getId());
-                    debugService.update(DebugAdapter.getModel(debug));
+                    interfaceService.update(DebugAdapter.getInterfaceByDebug(old, debug));
                     continue;
                 }
                 debug.setUid(user.getId());
                 debug.setCreateTime(new Date());
-                debugService.insert(DebugAdapter.getModel(debug));
+
+                InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
+                interfaceWithBLOBs.setProjectId(projectId);
+                interfaceService.insert(DebugAdapter.getInterfaceByDebug(interfaceWithBLOBs, debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -215,7 +220,7 @@ public class CrapDebugController extends BaseController {
 
                 if (debug.getStatus() == -1) {
                     log.error("deleteDebug debugName:" + debug.getName());
-                    debugService.delete(debug.getId());
+                    interfaceService.delete(debug.getId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -238,8 +243,11 @@ public class CrapDebugController extends BaseController {
         else if (moduleDTO != null && moduleDTO.getStatus() != null && moduleDTO.getStatus() == -1) {
             Module delete = new Module();
             delete.setId(moduleId);
-            moduleService.delete(delete.getId());
-            customDebugService.deleteByModelId(moduleId);
+            try {
+                moduleService.delete(delete.getId());
+            } catch (MyException e){
+                log.error("crapDebugController delete module fail:" + e.getErrorCode());
+            }
         }
 
         // 更新模块

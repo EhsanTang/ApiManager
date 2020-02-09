@@ -2,13 +2,15 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.dao.mybatis.ModuleDao;
+import cn.crap.enu.ArticleType;
 import cn.crap.enu.LogType;
+import cn.crap.enu.MyError;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
 import cn.crap.model.Module;
 import cn.crap.model.ModuleCriteria;
-import cn.crap.query.ModuleQuery;
+import cn.crap.query.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,16 @@ import java.util.List;
 public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst, IConst{
     @Autowired
     private LogService logService;
+    @Autowired
+    private SourceService sourceService;
+    @Autowired
+    private InterfaceService interfaceService;
+    @Autowired
+    private BugService bugService;
+    @Autowired
+    private ArticleService articleService;
+
+
     private ModuleDao moduleDao;
     @Resource
     public void ModuleDao(ModuleDao moduleDao) {
@@ -55,6 +67,26 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
 
     public boolean delete(String id) throws MyException{
         Assert.notNull(id, "id can't be null");
+
+        if(interfaceService.count(new InterfaceQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000024);
+        }
+
+        if(articleService.count(new ArticleQuery().setModuleId(id).setType(ArticleType.ARTICLE.name())) >0 ){
+            throw new MyException(MyError.E000034);
+        }
+
+        if(sourceService.count(new SourceQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000035);
+        }
+
+        if(articleService.count(new ArticleQuery().setModuleId(id).setType(ArticleType.DICTIONARY.name())) >0 ){
+            throw new MyException(MyError.E000036);
+        }
+
+        if(bugService.count(new BugQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000076);
+        }
 
         Module dbModule = getById(id);
         Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);

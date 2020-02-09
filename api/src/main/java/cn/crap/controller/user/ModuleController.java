@@ -4,17 +4,19 @@ import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ModuleDto;
-import cn.crap.enu.*;
+import cn.crap.enu.LogType;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
+import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.*;
-import cn.crap.query.ArticleQuery;
-import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.query.SourceQuery;
-import cn.crap.service.*;
+import cn.crap.service.InterfaceService;
+import cn.crap.service.LogService;
+import cn.crap.service.ModuleService;
 import cn.crap.utils.ILogConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
@@ -34,22 +36,12 @@ import java.util.List;
 public class ModuleController extends BaseController implements ILogConst{
 
 	@Autowired
-	private ArticleService articleService;
-	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private ProjectUserService projectUserService;
-	@Autowired
-	private SourceService sourceService;
-	@Autowired
-	private UserService userService;
-	@Autowired
 	private ModuleService moduleService;
 	@Autowired
 	private LogService logService;
 	@Autowired
 	private InterfaceService interfaceService;
-	
+
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -180,28 +172,13 @@ public class ModuleController extends BaseController implements ILogConst{
         LoginInfoDto user = LoginUserHelper.getUser();
         checkCrapDebug(user.getId(), dbModule.getProjectId());
 		checkPermission(projectCache.get( dbModule.getProjectId() ), ProjectPermissionEnum.DEL_MODULE);
-		
-		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){
-			throw new MyException(MyError.E000024);
-		}
-		
-		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.ARTICLE.name())) >0 ){
-			throw new MyException(MyError.E000034);
-		}
-		
-		if(sourceService.count(new SourceQuery().setModuleId(dbModule.getId())) >0 ){
-			throw new MyException(MyError.E000035);
-		}
-		
-		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.DICTIONARY.name())) >0 ){
-			throw new MyException(MyError.E000036);
-		}
 
-        Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
-        logService.insert(log);
 
-		moduleCache.del(module.getId());
 		moduleService.delete(module.getId());
+		moduleCache.del(module.getId());
+		Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
+		logService.insert(log);
+
 
 		return new JsonResult(1,null);
 	}

@@ -51,6 +51,10 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             return false;
         }
 
+        // TODO 提取到公共内
+        if (model.getVersionNum() == null){
+            model.setVersionNum(0);
+        }
         if (model.getIsTemplate() == null){
             model.setIsTemplate(false);
         }

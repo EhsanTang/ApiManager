@@ -1324,6 +1324,66 @@ public class InterfaceCriteria {
             addCriterion("contentType not between", value1, value2, "contentType");
             return (Criteria) this;
         }
+
+        public Criteria andVersionNumIsNull() {
+            addCriterion("versionNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumIsNotNull() {
+            addCriterion("versionNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumEqualTo(Integer value) {
+            addCriterion("versionNum =", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumNotEqualTo(Integer value) {
+            addCriterion("versionNum <>", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumGreaterThan(Integer value) {
+            addCriterion("versionNum >", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("versionNum >=", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumLessThan(Integer value) {
+            addCriterion("versionNum <", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumLessThanOrEqualTo(Integer value) {
+            addCriterion("versionNum <=", value, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumIn(List<Integer> values) {
+            addCriterion("versionNum in", values, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumNotIn(List<Integer> values) {
+            addCriterion("versionNum not in", values, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumBetween(Integer value1, Integer value2) {
+            addCriterion("versionNum between", value1, value2, "versionNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("versionNum not between", value1, value2, "versionNum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

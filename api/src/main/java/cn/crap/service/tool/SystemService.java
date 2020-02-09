@@ -194,6 +194,7 @@ public class SystemService {
         CHANGE_SQL_MAP.put(70, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '头部标题搜索背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'TITLEBG';");
         CHANGE_SQL_MAP.put(71, "ALTER TABLE `interface` ADD INDEX `index_pro` (`projectId`)");
         CHANGE_SQL_MAP.put(72, "ALTER TABLE `article` ADD INDEX `index_pro` (`projectId`)");
+        CHANGE_SQL_MAP.put(73, "ALTER TABLE `interface` ADD `versionNum` INT  UNSIGNED  NOT NULL  COMMENT '版本'  AFTER `contentType`");
     }
 
     /**

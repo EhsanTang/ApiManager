@@ -35,6 +35,8 @@ public class Interface extends BasePO {
 
     private String contentType;
 
+    private Integer versionNum;
+
     private static final long serialVersionUID = 1L;
 
 
@@ -164,5 +166,13 @@ public class Interface extends BasePO {
 
     public void setContentType(String contentType) {
         this.contentType = contentType == null ? null : contentType.trim();
+    }
+
+    public Integer getVersionNum() {
+        return versionNum;
+    }
+
+    public void setVersionNum(Integer versionNum) {
+        this.versionNum = versionNum;
     }
 }

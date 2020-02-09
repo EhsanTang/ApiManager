@@ -448,7 +448,7 @@ public class Tools {
         }
 
         // 删除id中其他人的用户MD5信息
-        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).startsWith("CAU")){
+        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).length() == 5){
             id = id.substring(0, id.lastIndexOf("-"));
         }
 
@@ -459,7 +459,7 @@ public class Tools {
         if (user == null){
             return "";
         }
-        return "-CAU" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
+        return "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
     }
     public static String getRgba(float opacity, String colorStr) {
 

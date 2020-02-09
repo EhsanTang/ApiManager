@@ -33,14 +33,13 @@ public class DebugAdapter {
         BeanUtil.copyProperties(model, dto);
         dto.setMethod("GET");
         String[] methods = Optional.of(model.getMethod()).orElse("").split(",");
-        if (methods.length > 0 && methods[1] != null && !"".equals(methods[1].trim())){
-            dto.setMethod(methods[1]);
+        if (methods.length > 0 && methods[0] != null && !"".equals(methods[0].trim())){
+            dto.setMethod(methods[0]);
         }
 
         List<ParamDto> headerList = JSONArray.parseArray(model.getHeader() == null ? "[]" : model.getHeader(), ParamDto.class);
-        ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()
-                .filter(header -> header.getName() != null && header.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
-        dto.setParamType(contentTypeDto.getDef());
+        ParamDto contentTypeDto = headerList.stream().filter(header -> header.getName() != null && header.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
+        dto.setParamType(contentTypeDto == null ? IConst.C_FORM_DATA_TYPE : contentTypeDto.getDef());
 
         dto.setParams(model.getParam());
 
@@ -78,20 +77,26 @@ public class DebugAdapter {
         model.setModuleId(dto.getModuleId());
         model.setMethod(dto.getMethod());
         model.setFullUrl(dto.getUrl());
-
+        if (model.getUrl() == null){
+            model.setUrl(dto.getUrl());
+        }
         if (model.getParam() != null && dto.getParamType().equals(IConst.C_FORM_DATA_TYPE)){
-            model.setHeader(IConst.C_FORM_DATA_TYPE + getJson(model.getParam(), dto.getParams()));
+            model.setParam(IConst.C_FORM_DATA_TYPE + JSON.toJSONString(getJson(model.getParam(), dto.getParams())));
         } else {
             model.setParam(dto.getParams());
         }
 
-        model.setHeader(getJson(model.getHeader(), dto.getHeaders()));
+        List<ParamDto> headerList = getJson(model.getHeader(), dto.getHeaders());
+        ParamDto paramDto = new ParamDto(IConst.C_CONTENT_TYPE, IConst.C_TRUE, IConst.C_STRING, dto.getParamType(), IConst.C_CONTENT_TYPE_TIP + dto.getParamType());
+        headerList.add(paramDto);
+
+        model.setHeader(JSON.toJSONString(headerList));
         model.setVersionNum(dto.getVersion());
         return model;
     }
 
     // key:value转json
-    private static String getJson(String jsonStr, String keyValueStr){
+    private static List<ParamDto> getJson(String jsonStr, String keyValueStr){
         // 请求头转换
         Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr == null ? "[]" :jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
         List<ParamDto> listDTO  = Lists.newArrayList();
@@ -100,12 +105,12 @@ public class DebugAdapter {
             if (split.length !=2 || split[0] == null || split[0].trim().equals("")){
                 continue;
             }
-            ParamDto DTO = Optional.of(paramMap.get(split[0].trim())).orElse(new ParamDto());
+            ParamDto DTO = paramMap.get(split[0].trim()) == null ? new ParamDto() : paramMap.get(split[0].trim());
             DTO.setName(split[0]);
             DTO.setDef(split[1]);
             listDTO.add(DTO);
         }
-        return JSON.toJSONString(listDTO);
+        return listDTO;
     }
 
     public static DebugDto getDto(Debug model){

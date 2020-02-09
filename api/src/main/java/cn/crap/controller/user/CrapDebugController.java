@@ -49,7 +49,7 @@ public class CrapDebugController extends BaseController {
     @ResponseBody
     @AuthPassport
     @Transactional
-    public JsonResult synch(@RequestBody String body) throws MyException {
+    public JsonResult synch(@RequestBody String body) throws Exception {
         List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
         LoginInfoDto user = LoginUserHelper.getUser();
 
@@ -69,35 +69,30 @@ public class CrapDebugController extends BaseController {
                 continue;
             }
 
-            try {
-                // id = id + 用户ID MD5
-                moduleId = Tools.handleId(user, moduleId);
-                moduleDTO.setModuleId(moduleId);
+            // id = id + 用户ID MD5
+            moduleId = Tools.handleId(user, moduleId);
+            moduleDTO.setModuleId(moduleId);
 
-                log.error("sync moduleId:" + moduleId);
-                // 处理模块：删除、更新、添加，处理异常
-                handelModule(user, project, moduleSequence, moduleDTO);
+            log.error("sync moduleId:" + moduleId);
+            // 处理模块：删除、更新、添加，处理异常
+            handelModule(user, project, moduleSequence, moduleDTO);
 
-                moduleSequence = moduleSequence - 1;
+            moduleSequence = moduleSequence - 1;
 
-                // 处理模块ID、用户ID，避免多个用户混乱问题
-                handelModuleIdAndDebugId(user, moduleDTO);
+            // 处理模块ID、用户ID，避免多个用户混乱问题
+            handelModuleIdAndDebugId(user, moduleDTO);
 
-                // 先删除需要删除的接口
-                deleteDebug(moduleDTO);
+            // 先删除需要删除的接口
+            deleteDebug(moduleDTO);
 
-                // 每个用户的最大接口数量不能超过100
-                int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
-                if (totalNum > 100) {
-                    return new JsonResult(MyError.E000058);
-                }
-
-                // 更新接口
-                addDebug(projectId, user, moduleDTO, totalNum);
-            }catch (Exception e){
-                e.printStackTrace();
-                continue;
+            // 每个用户的最大接口数量不能超过100
+            int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
+            if (totalNum > 100) {
+                return new JsonResult(MyError.E000058);
             }
+
+            // 更新接口
+            addDebug(projectId, user, moduleDTO, totalNum);
         }
 
 
@@ -111,16 +106,12 @@ public class CrapDebugController extends BaseController {
         List<InterfaceWithBLOBs> debugs = interfaceService.queryAll(new InterfaceQuery().setProjectId(projectId));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
         for (InterfaceWithBLOBs d : debugs) {
-            try {
-                List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
-                if (moduleDebugs == null) {
-                    moduleDebugs = new ArrayList<>();
-                    mapDebugs.put(d.getModuleId(), moduleDebugs);
-                }
-                moduleDebugs.add(DebugAdapter.getDtoFromInterface(d));
-            }catch (Exception e){
-                e.printStackTrace();
+            List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
+            if (moduleDebugs == null) {
+                moduleDebugs = new ArrayList<>();
+                mapDebugs.put(d.getModuleId(), moduleDebugs);
             }
+            moduleDebugs.add(DebugAdapter.getDtoFromInterface(d));
         }
 
         List<DebugInterfaceParamDto> returnlist = new ArrayList<DebugInterfaceParamDto>();
@@ -165,7 +156,7 @@ public class CrapDebugController extends BaseController {
                 }
 
                 // 更新接口
-                log.error("addDebug name:" + debug.getName());
+                log.error("addDebug name:" + debug.getName() + ",id" + debug.getId());
                 InterfaceWithBLOBs old = interfaceService.getById(debug.getId());
                 if (old != null){
                     if (old.getVersionNum() >= debug.getVersion()){

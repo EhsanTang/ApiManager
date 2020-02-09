@@ -150,8 +150,6 @@ public class ProjectController extends BaseController {
         String userId = user.getId();
         String projectId = project.getId();
 
-        checkCrapDebug(userId, projectId);
-
         // 私有项目不能建立索引
         if (project.getType() == ProjectType.PRIVATE.getType()) {
             project.setLuceneSearch(LuceneSearchType.No.getByteValue());
@@ -207,7 +205,6 @@ public class ProjectController extends BaseController {
         if (project.getId().equals("web")) {
             throw new MyException(MyError.E000009);
         }
-        checkCrapDebug(LoginUserHelper.getUser().getId(), project.getId());
 
         Project model = projectCache.get(project.getId());
         checkPermission(model);

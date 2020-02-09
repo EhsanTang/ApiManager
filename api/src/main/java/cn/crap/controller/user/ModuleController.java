@@ -94,10 +94,6 @@ public class ModuleController extends BaseController implements ILogConst{
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
-		LoginInfoDto user = LoginUserHelper.getUser();
-
-		checkCrapDebug(user.getId(), moduleDto.getProjectId());
-
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
 
@@ -169,10 +165,7 @@ public class ModuleController extends BaseController implements ILogConst{
         }
 
         Module dbModule = moduleCache.get(module.getId());
-        LoginInfoDto user = LoginUserHelper.getUser();
-        checkCrapDebug(user.getId(), dbModule.getProjectId());
 		checkPermission(projectCache.get( dbModule.getProjectId() ), ProjectPermissionEnum.DEL_MODULE);
-
 
 		moduleService.delete(module.getId());
 		moduleCache.del(module.getId());

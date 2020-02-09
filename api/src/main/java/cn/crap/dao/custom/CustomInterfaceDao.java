@@ -23,5 +23,9 @@ public class CustomInterfaceDao {
 		jdbcTemplate.update("update interface set isTemplate=0 where moduleId =?", moduleId);
 	}
 
+	public void deleteByModuleId(String moduleId){
+		Assert.notNull(moduleId);
+		jdbcTemplate.update("delete from interface where moduleId=?", moduleId);
+	}
 
 }

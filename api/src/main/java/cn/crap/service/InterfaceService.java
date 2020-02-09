@@ -274,7 +274,11 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     public void  deleteTemplateByModuleId(String moduleId){
         Assert.notNull(moduleId);
         customInterfaceMapper.deleteTemplateByModuleId(moduleId);
+    }
 
+    public void  deleteByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteByModuleId(moduleId);
     }
 
     @Override

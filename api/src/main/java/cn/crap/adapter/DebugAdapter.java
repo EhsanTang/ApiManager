@@ -80,7 +80,7 @@ public class DebugAdapter {
         model.setUrl(dto.getUrl());
 
         // 替换项目前缀
-        if (MyString.isNotEmptyOrNUll(module.getUrl())){
+        if (module != null && MyString.isNotEmptyOrNUll(module.getUrl())){
             model.setUrl(dto.getUrl().replaceFirst(module.getUrl(), ""));
         }
         if (model.getParam() != null && dto.getParamType().equals(IConst.C_FORM_DATA_TYPE)){

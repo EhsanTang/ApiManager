@@ -196,6 +196,7 @@ public class CrapDebugController extends BaseController {
 
                 InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
                 interfaceWithBLOBs.setProjectId(projectId);
+                interfaceWithBLOBs.setModuleId(moduleId);
                 interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {

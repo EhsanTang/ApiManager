@@ -94,7 +94,7 @@ public class DebugAdapter {
             model.setUrl(dto.getUrl().replaceFirst(module.getUrl(), ""));
         }
 
-        if (dto.getParamType().equalsIgnoreCase(IConst.C_FORM_DATA_TYPE)){
+        if (MyString.isEmpty(dto.getParamType()) || dto.getParamType().equalsIgnoreCase(IConst.C_FORM_DATA_TYPE)){
             model.setParam(IConst.C_PARAM_FORM_PRE + JSON.toJSONString(getJson(model.getParam(), dto.getParams())));
         } else {
             model.setParam(dto.getParams());

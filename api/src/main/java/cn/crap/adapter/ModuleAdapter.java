@@ -1,6 +1,6 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ModuleDTO2;
+import cn.crap.dto.ModuleDTO;
 import cn.crap.model.Interface;
 import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectPO;
@@ -20,12 +20,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ModuleAdapter {
-    public static ModuleDTO2 getDto(ModulePO model, ProjectPO project, Interface templeteInterface){
+    public static ModuleDTO getDto(ModulePO model, ProjectPO project, Interface templeteInterface){
         if (model == null){
             return null;
         }
 
-        ModuleDTO2 dto = new ModuleDTO2();
+        ModuleDTO dto = new ModuleDTO();
         BeanUtil.copyProperties(model, dto);
 
         if (model.getCreateTime() != null) {
@@ -46,7 +46,7 @@ public class ModuleAdapter {
         return dto;
     }
 
-    public static ModulePO getModel(ModuleDTO2 dto){
+    public static ModulePO getModel(ModuleDTO dto){
         if (dto == null){
             return null;
         }
@@ -61,11 +61,11 @@ public class ModuleAdapter {
         return model;
     }
 
-    public static List<ModuleDTO2> getDto(List<ModulePO> models, ProjectPO project){
+    public static List<ModuleDTO> getDto(List<ModulePO> models, ProjectPO project){
         if (CollectionUtils.isEmpty(models)){
             return new ArrayList<>();
         }
-        List<ModuleDTO2> dtos = new ArrayList<>();
+        List<ModuleDTO> dtos = new ArrayList<>();
         for (ModulePO model : models){
             dtos.add(getDto(model, project, null));
         }

@@ -2,7 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ProjectDTO2;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
@@ -102,7 +102,7 @@ public class ProjectController extends BaseController {
         }
 
         ProjectPO projectPO = projectService.get(id);
-        ProjectDTO2 dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
+        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();
@@ -145,7 +145,7 @@ public class ProjectController extends BaseController {
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult addOrUpdate(@ModelAttribute ProjectDTO2 project) throws Exception {
+    public JsonResult addOrUpdate(@ModelAttribute ProjectDTO project) throws Exception {
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
         String projectId = project.getId();

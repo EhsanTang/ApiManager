@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectDTO2 {
+public class ProjectDTO {
 	private String id;
 	private String name;
 	private Byte status;

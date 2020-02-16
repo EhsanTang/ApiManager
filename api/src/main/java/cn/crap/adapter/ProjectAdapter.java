@@ -1,6 +1,6 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ProjectDTO2;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectStatus;
 import cn.crap.enu.ProjectType;
@@ -21,12 +21,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDTO2 getDto(ProjectPO model, User user){
+    public static ProjectDTO getDto(ProjectPO model, User user){
         if (model == null){
             return null;
         }
 
-        ProjectDTO2 dto = new ProjectDTO2();
+        ProjectDTO dto = new ProjectDTO();
         BeanUtil.copyProperties(model, dto);
 
         if (model.getCreateTime() != null) {
@@ -52,7 +52,7 @@ public class ProjectAdapter {
         return dto;
     }
 
-    public static ProjectPO getModel(ProjectDTO2 dto){
+    public static ProjectPO getModel(ProjectDTO dto){
         if (dto == null){
             return null;
         }
@@ -70,11 +70,11 @@ public class ProjectAdapter {
         return model;
     }
 
-    public static List<ProjectDTO2> getDto(List<ProjectPO> models, UserService userService){
+    public static List<ProjectDTO> getDto(List<ProjectPO> models, UserService userService){
         if (models == null){
             return new ArrayList<>();
         }
-        List<ProjectDTO2> dtos = new ArrayList<>();
+        List<ProjectDTO> dtos = new ArrayList<>();
         for (ProjectPO model : models){
             dtos.add(getDto(model, userService == null? null : userService.getById(model.getUserId())));
         }

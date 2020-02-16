@@ -2,7 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
-import cn.crap.dto.ModuleDTO2;
+import cn.crap.dto.ModuleDTO;
 import cn.crap.enu.LogType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
@@ -51,7 +51,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			ProjectPO project = projectCache.get(query.getProjectId());
 			checkPermission(project, ProjectPermissionEnum.READ);
 
-            List<ModuleDTO2> moduleDtos = ModuleAdapter.getDto(moduleService.select(query), project);
+            List<ModuleDTO> moduleDtos = ModuleAdapter.getDto(moduleService.select(query), project);
             page.setAllRow(moduleService.count(query));
             return new JsonResult().data(moduleDtos).page(page);
 		}
@@ -91,7 +91,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute ModuleDTO2 moduleDto) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ModuleDTO moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();

@@ -45,22 +45,26 @@ public class DebugAdapter {
 
         dto.setParams(model.getParam());
 
+        boolean needHuanHang = false;
         if (model.getParam().startsWith(IConst.C_PARAM_FORM_PRE)) {
             List<ParamDto> paramList = JSONArray.parseArray(model.getParam() == null ? "[]" : model.getParam().substring(5), ParamDto.class);
             StringBuilder paramSb = new StringBuilder();
 
             for (ParamDto paramDto : paramList){
-                paramSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\n");
+                paramSb.append((needHuanHang ? "\n" : "") + paramDto.getName() + ":" + paramDto.getDef());
+                needHuanHang = true;
             }
             dto.setParams(paramSb.toString());
         }
 
+        needHuanHang = false;
         StringBuilder headerSb = new StringBuilder();
         for (ParamDto paramDto : headerList){
             if (paramDto.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)){
                 continue;
             }
-            headerSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\n");
+            headerSb.append((needHuanHang ? "\n" : "") + paramDto.getName() + ":" + paramDto.getDef());
+            needHuanHang = true;
         }
         dto.setHeaders(headerSb.toString());
         dto.setUrl(model.getFullUrl());

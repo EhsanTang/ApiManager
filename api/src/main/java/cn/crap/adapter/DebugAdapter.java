@@ -112,7 +112,10 @@ public class DebugAdapter {
     // key:value转json
     private static List<ParamDto> getJson(String jsonStr, String keyValueStr){
         // 请求头转换
-        Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr == null ? "[]" :jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
+        jsonStr = (MyString.isEmpty(jsonStr) ? "[]" :jsonStr);
+        jsonStr = jsonStr.startsWith(IConst.C_PARAM_FORM_PRE) ? jsonStr.substring(5) : jsonStr;
+
+        Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
         List<ParamDto> listDTO  = Lists.newArrayList();
         for (String param : Optional.ofNullable(keyValueStr.split("\n")).orElse(new String[]{})){
             String[] split = param.split(":");

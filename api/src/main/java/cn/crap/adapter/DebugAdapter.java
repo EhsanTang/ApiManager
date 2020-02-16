@@ -50,14 +50,17 @@ public class DebugAdapter {
             StringBuilder paramSb = new StringBuilder();
 
             for (ParamDto paramDto : paramList){
-                paramSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\r\\n");
+                paramSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\n");
             }
             dto.setParams(paramSb.toString());
         }
 
         StringBuilder headerSb = new StringBuilder();
         for (ParamDto paramDto : headerList){
-            headerSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\r\\n");
+            if (paramDto.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)){
+                continue;
+            }
+            headerSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\n");
         }
         dto.setHeaders(headerSb.toString());
         dto.setUrl(model.getFullUrl());
@@ -105,7 +108,7 @@ public class DebugAdapter {
         // 请求头转换
         Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr == null ? "[]" :jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
         List<ParamDto> listDTO  = Lists.newArrayList();
-        for (String param : Optional.ofNullable(keyValueStr.split("\n|\r")).orElse(new String[]{})){
+        for (String param : Optional.ofNullable(keyValueStr.split("\\n")).orElse(new String[]{})){
             String[] split = param.split(":");
             if (split.length !=2 || split[0] == null || split[0].trim().equals("")){
                 continue;

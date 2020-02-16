@@ -76,7 +76,6 @@ public class DebugAdapter {
         model.setInterfaceName(dto.getName());
         model.setStatus(dto.getStatus());
         model.setSequence(dto.getSequence());
-        model.setModuleId(dto.getModuleId());
         model.setMethod(dto.getMethod());
         model.setFullUrl(dto.getUrl());
         model.setUrl(dto.getUrl());

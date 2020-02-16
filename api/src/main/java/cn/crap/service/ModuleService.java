@@ -2,10 +2,7 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.dao.mybatis.ModuleDao;
-import cn.crap.enu.ArticleType;
-import cn.crap.enu.LogType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.TableId;
+import cn.crap.enu.*;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
@@ -62,6 +59,19 @@ public class ModuleService extends NewBaseService<ModulePO, ModuleQuery>  implem
         if (po.getVersionNum() == null){
             po.setVersionNum(0);
         }
+
+        if (po.getCanDelete() == null){
+            po.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+        }
+
+        if (po.getCategory() == null){
+            po.setCategory("");
+        }
+
+        if (po.getStatus() == null){
+            po.setStatus(Byte.valueOf("1"));
+        }
+
         return super.insert(po);
     }
 

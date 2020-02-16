@@ -21,6 +21,9 @@
     <result column="projectId" property="projectId" jdbcType="VARCHAR" />
     <result column="contentType" property="contentType" jdbcType="VARCHAR" />
     <result column="versionNum" jdbcType="INTEGER" property="versionNum" />
+    <result column="uniKey" jdbcType="VARCHAR" property="uniKey" />
+
+
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.InterfaceWithBLOBs" extends="BaseResultMap" >
     <result column="param" property="param" jdbcType="LONGVARCHAR" />
@@ -95,7 +98,7 @@
   <sql id="Base_Column_List" >
     id, url, method, status, moduleId, interfaceName, updateBy, updateTime, createTime,
     version, sequence, fullUrl, monitorType, monitorText, monitorEmails, isTemplate,
-    projectId, contentType, versionNum
+    projectId, contentType, versionNum, uniKey
   </sql>
   <sql id="Blob_Column_List" >
     param, paramRemark, requestExam, responseParam, errorList, trueExam, falseExam, remark,
@@ -178,7 +181,7 @@
     param, paramRemark, requestExam,
     responseParam, errorList, trueExam,
     falseExam, remark, errors,
-    header, versionNum)
+    header, versionNum, uniKey)
     values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
     #{status,jdbcType=TINYINT}, #{moduleId,jdbcType=VARCHAR}, #{interfaceName,jdbcType=VARCHAR},
     #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
@@ -188,7 +191,7 @@
     #{param,jdbcType=LONGVARCHAR}, #{paramRemark,jdbcType=LONGVARCHAR}, #{requestExam,jdbcType=LONGVARCHAR},
     #{responseParam,jdbcType=LONGVARCHAR}, #{errorList,jdbcType=LONGVARCHAR}, #{trueExam,jdbcType=LONGVARCHAR},
     #{falseExam,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{errors,jdbcType=LONGVARCHAR},
-    #{header,jdbcType=LONGVARCHAR}, #{versionNum,jdbcType=INTEGER})
+    #{header,jdbcType=LONGVARCHAR}, #{versionNum,jdbcType=INTEGER}, #{uniKey,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.InterfaceWithBLOBs" >
 
@@ -281,6 +284,9 @@
       <if test="versionNum != null" >
         versionNum,
       </if>
+      <if test="uniKey != null" >
+        uniKey,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{id,jdbcType=VARCHAR},
@@ -368,7 +374,9 @@
       <if test="versionNum != null" >
         #{versionNum,jdbcType=INTEGER},
       </if>
-
+      <if test="uniKey != null" >
+        #{uniKey,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="cn.crap.model.InterfaceCriteria" resultType="java.lang.Integer" >
@@ -466,6 +474,9 @@
       </if>
       <if test="record.versionNum != null" >
         versionNum = #{record.versionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniKey != null" >
+        uniKey = #{record.uniKey,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >

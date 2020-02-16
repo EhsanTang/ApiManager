@@ -192,13 +192,12 @@ public class CrapDebugController extends BaseController {
                     interfaceService.update(DebugAdapter.getInterfaceByDebug(module, old, debug));
                     continue;
                 }
-                debug.setUid(user.getId());
-                debug.setCreateTime(new Date());
-                debug.setModuleId(moduleId);
+                old = InterfaceAdapter.getInit();
+                old.setProjectId(projectId);
+                old.setModuleId(moduleId);
+                old.setUniKey(uniKey);
 
-                InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
-                interfaceWithBLOBs.setProjectId(projectId);
-                interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debug));
+                interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, old, debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -214,9 +213,10 @@ public class CrapDebugController extends BaseController {
             return;
         }
 
+        String moduleId = module.getId();
         List<String> uniKeyList = Lists.newArrayList();
         for (DebugDto debug : moduleDTO.getDebugs()) {
-            if (MyString.isEmpty(debug.getId())) {
+            if (MyString.isEmpty(debug.getId()) && MyString.isEmpty(debug.getUniKey())) {
                 log.error("deleteDebug error debugId is null:" + debug.getName());
                 continue;
             }
@@ -225,7 +225,7 @@ public class CrapDebugController extends BaseController {
                 uniKeyList.add(debug.getUniKey() == null ? debug.getId() : debug.getUniKey());
             }
         }
-        interfaceService.deleteByModuleId(module.getId(), uniKeyList);
+        interfaceService.deleteByModuleId(moduleId, uniKeyList);
     }
 
     private ModulePO handelModule(LoginInfoDto user, ProjectPO project, ModulePO module, long moduleSequence, DebugInterfaceParamDto moduleDTO) throws Exception{

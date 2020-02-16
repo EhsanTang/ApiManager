@@ -410,6 +410,11 @@ public class InterfaceCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andUniKeyEqualTo(String value) {
+            addCriterion("uniKey =", value, "uniKey");
+            return (Criteria) this;
+        }
+
         public Criteria andModuleIdNotEqualTo(String value) {
             addCriterion("moduleId <>", value, "moduleId");
             return (Criteria) this;

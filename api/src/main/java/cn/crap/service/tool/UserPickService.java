@@ -95,16 +95,16 @@ public class UserPickService implements IPickService{
              * 拷贝接口时使用
              */
             case MY_MODULE:
-                for (Project p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
+                for (ProjectPO p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
                     pick = new PickDto(IConst.C_SEPARATOR, p.getName());
                     picks.add(pick);
-                    List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
+                    List<ModulePO> moduleList = moduleService.select(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
                     if (CollectionUtils.isEmpty(moduleList)){
                         pick = new PickDto(System.currentTimeMillis() + Tools.getChar(20), null,"项目下尚未创建模块");
                         picks.add(pick);
                         continue;
                     }
-                    for (Module m : moduleList) {
+                    for (ModulePO m : moduleList) {
                         pick = new PickDto(m.getId(), m.getName());
                         picks.add(pick);
                     }
@@ -122,7 +122,7 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                for (Module m : moduleService.query(new ModuleQuery().setProjectId(key).setPageSize(100))) {
+                for (ModulePO m : moduleService.select(new ModuleQuery().setProjectId(key).setPageSize(100))) {
                     pick = new PickDto(m.getId(), m.getName());
                     picks.add(pick);
                 }
@@ -135,7 +135,7 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                User creator = userService.getById(projectService.getById(key).getUserId());
+                User creator = userService.getById(projectService.get(key).getUserId());
                 pick = new PickDto(creator.getId(), MyString.isEmpty(creator.getTrueName()) ? creator.getUserName() : creator.getTrueName());
                 picks.add(pick);
 

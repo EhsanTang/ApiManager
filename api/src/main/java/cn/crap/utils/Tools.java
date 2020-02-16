@@ -5,7 +5,7 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.service.tool.StringCache;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.web.context.ContextLoader;
@@ -279,7 +279,7 @@ public class Tools {
 
     }
 
-    public static String getStaticPath(Project project) {
+    public static String getStaticPath(ProjectPO project) {
         if (project == null){
             return null;
         }

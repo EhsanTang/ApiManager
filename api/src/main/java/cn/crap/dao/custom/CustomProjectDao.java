@@ -1,6 +1,6 @@
 package cn.crap.dao.custom;
 
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +35,7 @@ public class CustomProjectDao {
 	}
 
 
-	public List<Project> queryProjectByUserId(String userId, boolean onlyJoin, String name, final Page page){
+	public List<ProjectPO> queryProjectByUserId(String userId, boolean onlyJoin, String name, final Page page){
 		Assert.notNull(userId);
 		Assert.notNull(page);
 
@@ -57,10 +57,10 @@ public class CustomProjectDao {
 		sb.append(" order by sequence desc");
 		sb.append(" limit " + page.getStart() + "," + page.getSize());
 
-		return jdbcTemplate.query(sb.toString(), params.toArray(), new RowMapper<Project>() {
+		return jdbcTemplate.query(sb.toString(), params.toArray(), new RowMapper<ProjectPO>() {
 			@Override
-			public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Project project = new Project();
+			public ProjectPO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectPO project = new ProjectPO();
 				project.setId(rs.getString(1));
 				project.setName(rs.getString(2));
 				project.setType(rs.getByte(3));

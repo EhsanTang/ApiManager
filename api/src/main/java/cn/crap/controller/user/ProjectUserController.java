@@ -10,7 +10,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.model.User;
 import cn.crap.query.ProjectUserQuery;
@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/user/projectUser")
@@ -65,7 +64,7 @@ public class ProjectUserController extends BaseController{
 	public JsonResult detail(String id) throws MyException{
 	    Assert.notNull(id);
 		ProjectUserPO projectUser = projectUserService.get(id);
-        Project project = projectCache.get(projectUser.getProjectId());
+        ProjectPO project = projectCache.get(projectUser.getProjectId());
 		checkPermission(project);
         ProjectUserDto projectUserDto = ProjectUserAdapter.getDto(projectUser, project);
 		return new JsonResult(1, projectUserDto);
@@ -124,7 +123,7 @@ public class ProjectUserController extends BaseController{
     @RequestMapping("/invite.do")
     public String invite(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception{
         String projectId = projectService.getProjectIdFromInviteCode(code);
-        Project project = projectService.getById(projectId);
+        ProjectPO project = projectService.get(projectId);
         if (project == null){
             request.setAttribute("result", "抱歉，来得太晚了，项目已经被删除了");
             return ERROR_VIEW;

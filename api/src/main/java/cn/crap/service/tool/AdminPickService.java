@@ -5,7 +5,7 @@ import cn.crap.dto.PickDto;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Article;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ArticleService;
 import cn.crap.service.IPickService;
@@ -83,7 +83,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.C_SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
-                for (Project project : projectService.query(recommendProjectQuery)) {
+                for (ProjectPO project : projectService.select(recommendProjectQuery)) {
                     pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }
@@ -111,7 +111,7 @@ public class AdminPickService implements IPickService{
                 pick = new PickDto(IConst.C_SEPARATOR, "项目主页【推荐项目】");
                 picks.add(pick);
 
-                for (Project project : projectService.query(recommendProjectQuery)) {
+                for (ProjectPO project : projectService.select(recommendProjectQuery)) {
                     pick = new PickDto(project.getId(), String.format(IConst.FRONT_PROJECT_URL, project.getId()), project.getName());
                     picks.add(pick);
                 }

@@ -13,8 +13,8 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.InterfaceService;
@@ -23,17 +23,19 @@ import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * TODO 待解决问题：路径参数问题
@@ -61,11 +63,12 @@ public class CrapDebugController extends BaseController {
 
         /**
          * 1. 处理项目
+         * 项目根据用户ID生成，所以一定是该用户的
          * TODO 后续要支持多项目切换：如果项目ID存在，且用户为当前用户则可直接使用，否者新建项目（使用当前项目名称）
          * 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
          */
         String projectId = generateProjectId(user);
-        Project project = projectService.getById(projectId);
+        ProjectPO project = projectService.get(projectId);
         if (project == null) {
             project = buildProject(user, projectId);
             projectService.insert(project);
@@ -75,33 +78,29 @@ public class CrapDebugController extends BaseController {
          * 2.处理模块+接口
          */
         long moduleSequence = System.currentTimeMillis();
-        for (DebugInterfaceParamDto moduleDTO : list) {
+        for (DebugInterfaceParamDto debutModuleDTO : list) {
 
             /**
              * 2.1 模块处理
              */
-            String moduleId = moduleDTO.getModuleId();
-            if (moduleDTO == null || MyString.isEmpty(moduleId)) {
-                log.error("sync moduleId is null:" + userId + ",moduleName:" + moduleDTO.getModuleName());
+            String moduleUniKey = debutModuleDTO.getModuleUniKey() == null ? debutModuleDTO.getModuleId() : debutModuleDTO.getModuleUniKey();
+            if (debutModuleDTO == null || MyString.isEmpty(moduleUniKey)) {
+                log.error("sync moduleUniKey is null:" + userId + ",moduleName:" + debutModuleDTO.getModuleName());
                 continue;
             }
 
-            // 兼容历史数据，ID中没有携带用户信息
-            Module module = moduleService.getById(moduleId);
-            if  (module == null || !module.getUserId().equals(userId)){
-                moduleId = Tools.addUserInfoForId(user, moduleId);
-                moduleDTO.setModuleId(moduleId);
-                module = moduleService.getById(moduleId);
+            ModulePO module = moduleService.getByUniKey(projectId, moduleUniKey);
+            log.error("sync moduleUniKey:" + moduleUniKey);
+
+            // 处理模块：删除、更新、添加，处理异常
+            module = handelModule(user, project, module, moduleSequence, debutModuleDTO);
+            moduleSequence = moduleSequence - 1;
+            if (module == null){
+                continue;
             }
 
-            log.error("sync moduleId:" + moduleId);
-            // 处理模块：删除、更新、添加，处理异常
-            handelModule(user, project, module, moduleSequence, moduleDTO);
-
-            moduleSequence = moduleSequence - 1;
-
             // 先删除需要删除的接口
-            deleteDebug(user, moduleDTO);
+            deleteDebug(module, debutModuleDTO);
 
             // 每个用户的最大接口数量不能超过100
             int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
@@ -110,16 +109,16 @@ public class CrapDebugController extends BaseController {
             }
 
             // 更新接口
-            addDebug(projectId, module, user, moduleDTO, totalNum);
+            addDebug(projectId, module, user, debutModuleDTO, totalNum);
         }
 
 
-        // 组装返回数据
-        List<Module> modules = moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(100));
-        List<String> moduleIds = new ArrayList<>();
-        for (Module m : modules) {
-            moduleIds.add(m.getId());
-        }
+        /**
+         *  组装返回数据
+         *  id 全部使用uniKey替代
+         */
+        List<ModulePO> modules = moduleService.select(new ModuleQuery().setProjectId(projectId).setPageSize(100));
+        Map<String, ModulePO> moduleMap = modules.stream().collect(Collectors.toMap(ModulePO::getId, a -> a,(k1, k2)->k1));
 
         List<InterfaceWithBLOBs> debugs = interfaceService.queryAll(new InterfaceQuery().setProjectId(projectId));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
@@ -129,16 +128,20 @@ public class CrapDebugController extends BaseController {
                 moduleDebugs = new ArrayList<>();
                 mapDebugs.put(d.getModuleId(), moduleDebugs);
             }
-            moduleDebugs.add(DebugAdapter.getDtoFromInterface(d));
+            DebugDto dtoFromInterface = DebugAdapter.getDtoFromInterface(project, moduleMap, d);
+            if (dtoFromInterface == null){
+                continue;
+            }
+            moduleDebugs.add(dtoFromInterface);
         }
 
         List<DebugInterfaceParamDto> returnlist = new ArrayList<DebugInterfaceParamDto>();
-        for (Module m : modules) {
+        for (ModulePO m : modules) {
             try {
                 DebugInterfaceParamDto debugDto = new DebugInterfaceParamDto();
                 debugDto.setModuleId(m.getId());
                 debugDto.setModuleName(m.getName());
-                debugDto.setVersion(m.getVersion());
+                debugDto.setVersion(m.getVersionNum());
                 debugDto.setStatus(m.getStatus());
                 debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<>() : mapDebugs.get(m.getId()));
                 returnlist.add(debugDto);
@@ -153,19 +156,20 @@ public class CrapDebugController extends BaseController {
         return MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
     }
 
-    private void addDebug(String projectId, Module module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+    private void addDebug(String projectId, ModulePO module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+        Assert.notNull(module, "deleteDebug module is null");
         if (moduleDTO.getStatus() == -1) {
             return;
         }
 
+        String moduleId = module.getId();
         long debugSequence = System.currentTimeMillis();
         for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
             debug.setSequence(debugSequence);
-            String moduleId = moduleDTO.getModuleId();
             try {
                 if (MyString.isEmpty(debug.getId())) {
-                    log.error("addDebug debugId is null, moduleName:" + moduleDTO.getModuleName());
+                    log.error("addDebug debugId is null, moduleId:" + module.getId());
                     continue;
                 }
 
@@ -173,19 +177,16 @@ public class CrapDebugController extends BaseController {
                     continue;
                 }
 
-                // 更新接口，兼容历史数据，部分接口没有用户MD5信息
-                log.error("addDebug name:" + debug.getName() + ",id" + debug.getId());
-                InterfaceWithBLOBs old = interfaceService.getById(debug.getId());
-                if (old == null || !old.getModuleId().equals(moduleId)){
-                    debug.setId(Tools.addUserInfoForId(user, debug.getId()));
-                    old = interfaceService.getById(debug.getId());
-                }
+                String uniKey = debug.getUniKey() == null ? debug.getId() : debug.getUniKey();
+                log.error("addDebug name:" + debug.getName() + ",uniKey" + uniKey);
 
+                InterfaceWithBLOBs old = interfaceService.getByUniKey(moduleId, uniKey);
                 if (old != null){
                     if (old.getVersionNum() >= debug.getVersion()){
                         log.error("addDebug ignore error name:" + debug.getName());
                         continue;
                     }
+
                     debug.setStatus(old.getStatus());
                     debug.setUid(user.getId());
                     interfaceService.update(DebugAdapter.getInterfaceByDebug(module, old, debug));
@@ -207,33 +208,27 @@ public class CrapDebugController extends BaseController {
     }
 
 
-    private void deleteDebug(LoginInfoDto user, DebugInterfaceParamDto moduleDTO) {
+    private void deleteDebug(ModulePO module, DebugInterfaceParamDto moduleDTO) {
+        Assert.notNull(module, "deleteDebug module is null");
         if (moduleDTO.getStatus() == -1) {
             return;
         }
 
+        List<String> uniKeyList = Lists.newArrayList();
         for (DebugDto debug : moduleDTO.getDebugs()) {
-            try {
-                if (MyString.isEmpty(debug.getId())) {
-                    log.error("deleteDebug error debugId is null:" + debug.getName());
-                    continue;
-                }
-
-                if (debug.getStatus() == -1) {
-                    log.error("deleteDebug debugName:" + debug.getName());
-                    // 兼容历史数据，历史数据中不包含用户信息
-                    interfaceService.deleteByModuleId(moduleDTO.getModuleId(), debug.getId());
-                    interfaceService.deleteByModuleId(moduleDTO.getModuleId(), Tools.addUserInfoForId(user, debug.getId()));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (MyString.isEmpty(debug.getId())) {
+                log.error("deleteDebug error debugId is null:" + debug.getName());
                 continue;
             }
+
+            if (debug.getStatus() == -1) {
+                uniKeyList.add(debug.getUniKey() == null ? debug.getId() : debug.getUniKey());
+            }
         }
+        interfaceService.deleteByModuleId(module.getId(), uniKeyList);
     }
 
-    private void handelModule(LoginInfoDto user, Project project, Module module, long moduleSequence, DebugInterfaceParamDto moduleDTO) throws Exception{
-        String moduleId = moduleDTO.getModuleId();
+    private ModulePO handelModule(LoginInfoDto user, ProjectPO project, ModulePO module, long moduleSequence, DebugInterfaceParamDto moduleDTO) throws Exception{
 
         // 新增模块
         if (module == null && moduleDTO.getStatus() != -1) {
@@ -244,25 +239,26 @@ public class CrapDebugController extends BaseController {
         // 删除模块
         else if (moduleDTO.getStatus() == -1 && module != null) {
             try {
-                interfaceService.deleteByModuleId(moduleId);
-                moduleService.delete(moduleId);
+                interfaceService.deleteByModuleId(module.getId());
+                moduleService.delete(module.getId());
             } catch (MyException e){
                 log.error("crapDebugController delete module fail:" + e.getErrorCode());
             }
         }
 
         // 更新模块
-        else if (module != null && (moduleDTO.getVersion() == null || module.getVersion() <= moduleDTO.getVersion())) {
-            module.setVersion(moduleDTO.getVersion() == null ? 0 : moduleDTO.getVersion());
+        else if (module != null && (moduleDTO.getVersion() == null || module.getVersionNum() <= moduleDTO.getVersion())) {
+            module.setVersionNum(moduleDTO.getVersion() == null ? 0 : moduleDTO.getVersion());
             module.setName(moduleDTO.getModuleName());
             module.setSequence(moduleSequence);
             moduleService.update(module);
         }
+
+        return module;
     }
 
-    private Module buildModule(LoginInfoDto user, Project project, long moduleSequence, DebugInterfaceParamDto d) {
-        Module module = new Module();
-        module.setId(d.getModuleId());
+    private ModulePO buildModule(LoginInfoDto user, ProjectPO project, long moduleSequence, DebugInterfaceParamDto d) {
+        ModulePO module = new ModulePO();
         module.setName(d.getModuleName());
         module.setCreateTime(new Date());
         module.setSequence(moduleSequence);
@@ -270,13 +266,15 @@ public class CrapDebugController extends BaseController {
         module.setUserId(user.getId());
         module.setRemark("");
         module.setUrl("");
-        module.setVersion(d.getVersion() == null ? 0 : d.getVersion());
+        module.setCategory("");
+        module.setUniKey(d.getModuleUniKey() == null ? d.getModuleId() : d.getModuleUniKey());
+        module.setVersionNum(d.getVersion() == null ? 0 : d.getVersion());
         return module;
     }
 
-    private Project buildProject(LoginInfoDto user, String projectId) {
-        Project project;
-        project = new Project();
+    private ProjectPO buildProject(LoginInfoDto user, String projectId) {
+        ProjectPO project;
+        project = new ProjectPO();
         project.setId(projectId);
         project.setCover("/resources/images/logo_new.png");
         project.setLuceneSearch(Byte.valueOf("0"));

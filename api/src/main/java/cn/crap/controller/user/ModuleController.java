@@ -2,8 +2,7 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ModuleDto;
+import cn.crap.dto.ModuleDTO;
 import cn.crap.enu.LogType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
@@ -49,10 +48,10 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult list(@ModelAttribute ModuleQuery query) throws MyException{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
-			Project project = projectCache.get(query.getProjectId());
+			ProjectPO project = projectCache.get(query.getProjectId());
 			checkPermission(project, ProjectPermissionEnum.READ);
 
-            List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
+            List<ModuleDTO> moduleDtos = ModuleAdapter.getDto(moduleService.select(query), project);
             page.setAllRow(moduleService.count(query));
             return new JsonResult().data(moduleDtos).page(page);
 		}
@@ -61,11 +60,11 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, String projectId) throws MyException{
-		Module module;
-        Project project;
+		ModulePO module;
+        ProjectPO project;
 		Interface templeteInterface = null;
 		if(id != null){
-			module= moduleService.getById(id);
+			module= moduleService.get(id);
 			project = projectCache.get(module.getProjectId());
 			checkPermission(project, ProjectPermissionEnum.READ);
 
@@ -75,7 +74,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		}else{
 		    project = projectCache.get(projectId);
 			checkPermission(project, ProjectPermissionEnum.READ);
-			module=new Module();
+			module=new ModulePO();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
 			module.setSequence(System.currentTimeMillis());
@@ -92,7 +91,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ModuleDTO moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
@@ -101,7 +100,7 @@ public class ModuleController extends BaseController implements ILogConst{
             moduleDto.setCategory("默认分类");
 		}
 
-        Module module = ModuleAdapter.getModel(moduleDto);
+        ModulePO module = ModuleAdapter.getModel(moduleDto);
 		if(id != null){
 			checkPermission(moduleDto.getProjectId(), ProjectPermissionEnum.MOD_MODULE);
             moduleService.update(module, true);
@@ -116,7 +115,7 @@ public class ModuleController extends BaseController implements ILogConst{
 			module.setProjectId(moduleDto.getProjectId());
 			checkPermission(module.getProjectId(), ProjectPermissionEnum.ADD_MODULE);
 			module.setUserId(LoginUserHelper.getUser().getId());
-			module.setVersion(0);
+			module.setVersionNum(0);
 			moduleService.insert(module);
 		}
 		moduleCache.del(module.getId());
@@ -135,7 +134,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult setTemplate(String id) throws Exception{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
-		Module module = moduleService.getById(inter.getModuleId());
+		ModulePO module = moduleService.get(inter.getModuleId());
 		checkPermission(projectCache.get( inter.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		if (module == null){
 			throw new MyException(MyError.E000073);
@@ -158,13 +157,13 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult delete(@ModelAttribute Module module) throws Exception{
+	public JsonResult delete(@ModelAttribute ModulePO module) throws Exception{
 		// 系统数据，不允许删除
 		if(module.getId().equals("web")) {
             throw new MyException(MyError.E000009);
         }
 
-        Module dbModule = moduleCache.get(module.getId());
+        ModulePO dbModule = moduleCache.get(module.getId());
 		checkPermission(projectCache.get( dbModule.getProjectId() ), ProjectPermissionEnum.DEL_MODULE);
 
 		moduleService.delete(module.getId());
@@ -180,8 +179,8 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Module change = moduleService.getById(changeId);
-		Module model = moduleService.getById(id);
+		ModulePO change = moduleService.get(changeId);
+		ModulePO model = moduleService.get(id);
 		
 		checkPermission(projectCache.get( change.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		checkPermission(projectCache.get( model.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);

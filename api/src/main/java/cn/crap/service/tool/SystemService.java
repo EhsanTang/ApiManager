@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import cn.crap.beans.Config;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
@@ -195,6 +194,20 @@ public class SystemService {
         CHANGE_SQL_MAP.put(71, "ALTER TABLE `interface` ADD INDEX `index_pro` (`projectId`)");
         CHANGE_SQL_MAP.put(72, "ALTER TABLE `article` ADD INDEX `index_pro` (`projectId`)");
         CHANGE_SQL_MAP.put(73, "ALTER TABLE `interface` ADD `versionNum` INT  UNSIGNED  NOT NULL  COMMENT '版本'  AFTER `contentType`");
+
+        CHANGE_SQL_MAP.put(74, "ALTER TABLE `project` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(75, "update project set uniKey=id");
+        CHANGE_SQL_MAP.put(76, "ALTER TABLE `project` ADD UNIQUE INDEX `uk_user_key` (`userId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(77, "ALTER TABLE `module` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(78, "update module set uniKey=id");
+        CHANGE_SQL_MAP.put(79, "ALTER TABLE `module` ADD UNIQUE INDEX `uk_project_key` (`projectId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(80, "ALTER TABLE `interface` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(81, "update interface set uniKey=id");
+        CHANGE_SQL_MAP.put(82, "ALTER TABLE `interface` ADD UNIQUE INDEX `uk_module_key` (`moduleId`, `uniKey`)");
+        CHANGE_SQL_MAP.put(84, "ALTER TABLE `module` CHANGE `version` `versionNum` INT(11)  NOT NULL  DEFAULT '0'");
+
     }
 
     /**

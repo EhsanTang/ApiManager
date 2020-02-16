@@ -67,7 +67,7 @@ public class NewBaseService<PO extends BasePO, Query extends BaseQuery> {
         return newBaseDao.update(po) > 0 ? true : false;
     }
 
-    public boolean delete(String id){
+    public boolean delete(String id) throws MyException{
         Assert.notNull(id, "id can't be null");
         return newBaseDao.delete(id) > 0 ? true : false;
     }

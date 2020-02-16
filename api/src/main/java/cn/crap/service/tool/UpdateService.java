@@ -5,7 +5,7 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.DebugDto;
 import cn.crap.model.Debug;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
+import cn.crap.model.ModulePO;
 import cn.crap.query.DebugQuery;
 import cn.crap.service.DebugService;
 import cn.crap.service.InterfaceService;
@@ -40,7 +40,7 @@ public class UpdateService{
             }
 
             for (Debug d : debugs) {
-                Module module = moduleService.getById(d.getModuleId());
+                ModulePO module = moduleService.get(d.getModuleId());
                 InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
                 interfaceWithBLOBs.setProjectId(d.getProjectId());
                 DebugDto debugDto = new DebugDto();

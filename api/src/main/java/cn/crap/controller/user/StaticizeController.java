@@ -2,12 +2,10 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.ErrorAdapter;
 import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dto.*;
 import cn.crap.enu.ArticleType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectType;
-import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -60,7 +58,7 @@ public class StaticizeController extends BaseController{
 		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}
-		Project project = projectCache.get(projectId);
+		ProjectPO project = projectCache.get(projectId);
 		String path = Tools.getStaticPath(project);
 		if(project.getType() != ProjectType.PUBLIC.getType()){
 			Tools.deleteFile(path);
@@ -98,8 +96,8 @@ public class StaticizeController extends BaseController{
 			throw new MyException(MyError.E000056);
 		}
 		
-		Module module = moduleCache.get(moduleId);
-		Project project = projectCache.get(module.getProjectId());
+		ModulePO module = moduleCache.get(moduleId);
+		ProjectPO project = projectCache.get(module.getProjectId());
 		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -134,8 +132,8 @@ public class StaticizeController extends BaseController{
 		if( !settingCache.get(S_SECRETKEY).getValue().equals(secretKey) ){
 			throw new MyException(MyError.E000056);
 		}
-		Module module = moduleCache.get(moduleId);
-		Project project = projectCache.get(module.getProjectId());
+		ModulePO module = moduleCache.get(moduleId);
+		ProjectPO project = projectCache.get(module.getProjectId());
 		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -210,8 +208,8 @@ public class StaticizeController extends BaseController{
 		}		
 		
 		ArticleWithBLOBs article = articleService.getById(articleId);
-		Module module = moduleCache.get(article.getModuleId());
-		Project project = projectCache.get(module.getProjectId());
+		ModulePO module = moduleCache.get(article.getModuleId());
+		ProjectPO project = projectCache.get(module.getProjectId());
 		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -255,8 +253,8 @@ public class StaticizeController extends BaseController{
 		}		
 				
 		InterfaceWithBLOBs interFace = interfaceService.getById(interfaceId);
-		Module module = moduleCache.get(interFace.getModuleId());
-		Project project = projectCache.get(module.getProjectId());
+		ModulePO module = moduleCache.get(interFace.getModuleId());
+		ProjectPO project = projectCache.get(module.getProjectId());
 		String path = Tools.getStaticPath(project);
 
 		if(project.getType() != ProjectType.PUBLIC.getType()){
@@ -283,7 +281,7 @@ public class StaticizeController extends BaseController{
 	@RequestMapping("/delStaticize.do")
 	@ResponseBody
 	public JsonResult delStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
-		Project project = projectCache.get(projectId);
+		ProjectPO project = projectCache.get(projectId);
 		checkPermission(project);
 		String path = Tools.getStaticPath(project);
 		Tools.deleteFile(path);
@@ -298,7 +296,7 @@ public class StaticizeController extends BaseController{
 	@RequestMapping("/downloadStaticize.do")
 	@ResponseBody
 	public JsonResult downloadStaticize(HttpServletRequest req, @RequestParam String projectId, String needStaticizes) throws UnsupportedEncodingException, Exception {
-		Project project = projectCache.get(projectId);
+		ProjectPO project = projectCache.get(projectId);
 		checkPermission(project);
 		String path = Tools.getStaticPath(project);
 		File file = new File(path);
@@ -360,7 +358,7 @@ public class StaticizeController extends BaseController{
 		}
 		
 		String secretKey = settingCache.get(S_SECRETKEY).getValue();
-		Project project = projectCache.get(projectId);
+		ProjectPO project = projectCache.get(projectId);
 		
 		checkPermission(project);
 		
@@ -391,7 +389,7 @@ public class StaticizeController extends BaseController{
 		
 		Map<String, Object> map = new HashMap<>();
 
-		for(Module module : moduleService.query(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE))){
+		for(ModulePO module : moduleService.select(new ModuleQuery().setProjectId(projectId).setPageSize(IConst.ALL_PAGE_SIZE))){
 			if(needStaticizes.indexOf(",article,") >= 0){
 				// 静态化模块文档，分类
 				List<String> categorys = moduleService.queryCategoryByModuleId(module.getId());
@@ -506,7 +504,7 @@ public class StaticizeController extends BaseController{
 	}
 	
 	
-	private Map<String, Object> getProjectModuleInfor(Module module, Project project, String typeName) throws MyException{
+	private Map<String, Object> getProjectModuleInfor(ModulePO module, ProjectPO project, String typeName) throws MyException{
 		// 静态化
 		Map<String, String> settingMap = new HashMap<>();
 		for (SettingDto setting : settingCache.getAll()) {
@@ -524,10 +522,10 @@ public class StaticizeController extends BaseController{
 		returnMap.put("project", project);
 		returnMap.put("module", module);
 		// 将选中的模块放到第一位
-		List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(project.getId()).setPageSize(ALL_PAGE_SIZE));
+		List<ModulePO> moduleList = moduleService.select(new ModuleQuery().setProjectId(project.getId()).setPageSize(ALL_PAGE_SIZE));
 
 		if(module != null){
-			for(Module m:moduleList){
+			for(ModulePO m:moduleList){
 				if(m.getId().equals(module.getId())){
 					moduleList.remove(m);
 					break;

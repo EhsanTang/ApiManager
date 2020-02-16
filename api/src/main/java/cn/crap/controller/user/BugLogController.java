@@ -8,7 +8,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.BugLogPO;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.BugLogQuery;
 import cn.crap.service.BugLogService;
 import cn.crap.utils.Page;
@@ -43,7 +43,7 @@ public class BugLogController extends BaseController{
             return new JsonResult().data(Lists.newArrayList()).page(new Page(query));
         }
 
-        Project project = getProject(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
         query.setPageSize(100);
         query.setSort(TableField.SORT.CREATE_TIME_DES);

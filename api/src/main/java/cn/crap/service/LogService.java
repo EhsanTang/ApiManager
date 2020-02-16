@@ -118,14 +118,14 @@ public class LogService extends BaseService<Log, LogDao> {
             case "MODULEWITHBLOBS"://恢复模块
             case "MODULE"://恢复模块
                 json = JSONObject.fromObject(log.getContent());
-                Module module = (Module) JSONObject.toBean(json, Module.class);
+                ModulePO module = (ModulePO) JSONObject.toBean(json, ModulePO.class);
                 checkLog(module.getProjectId());
                 moduleService.update(module);
                 break;
             case "PROJECTWITHBLOBS":
             case "PROJECT"://恢复日志
                 json = JSONObject.fromObject(log.getContent());
-                Project project = (Project) JSONObject.toBean(json, Log.class);
+                ProjectPO project = (ProjectPO) JSONObject.toBean(json, Log.class);
                 projectService.update(project);
                 break;
             case "SOURCEWITHBLOBS":
@@ -155,7 +155,7 @@ public class LogService extends BaseService<Log, LogDao> {
                 case "MODULEWITHBLOBS"://恢复模块
                 case "MODULE"://恢复模块
                     json = JSONObject.fromObject(log.getContent());
-                    Module module = (Module) JSONObject.toBean(json, Module.class);
+                    ModulePO module = (ModulePO) JSONObject.toBean(json, ModulePO.class);
                     return module.getProjectId();
                 case "PROJECTWITHBLOBS":
                 case "PROJECT"://恢复日志
@@ -176,7 +176,7 @@ public class LogService extends BaseService<Log, LogDao> {
             return;
         }
         Assert.notNull(moduleId);
-        Module module = moduleService.getById(moduleId);
+        ModulePO module = moduleService.get(moduleId);
         if (module == null) {
             throw new MyException(MyError.E000048);
         }
@@ -184,7 +184,7 @@ public class LogService extends BaseService<Log, LogDao> {
 
     private void checkLog(String projectId) throws MyException {
         Assert.notNull(projectId);
-        Project project = projectService.getById(projectId);
+        ProjectPO project = projectService.get(projectId);
         if (project == null) {
             throw new MyException(MyError.E000049);
         }

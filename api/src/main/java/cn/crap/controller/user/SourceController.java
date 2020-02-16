@@ -9,8 +9,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.Source;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.ISearchService;
@@ -45,7 +45,7 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
-        Project project = getProject(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
 
 		Page page= new Page(query);
@@ -60,8 +60,8 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
-        Module module;
-        Project project;
+        ModulePO module;
+        ProjectPO project;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());

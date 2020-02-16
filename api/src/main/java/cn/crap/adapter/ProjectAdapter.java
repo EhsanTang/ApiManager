@@ -1,10 +1,10 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ProjectDto;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectStatus;
 import cn.crap.enu.ProjectType;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.User;
 import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
@@ -21,12 +21,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDto getDto(Project model, User user){
+    public static ProjectDTO getDto(ProjectPO model, User user){
         if (model == null){
             return null;
         }
 
-        ProjectDto dto = new ProjectDto();
+        ProjectDTO dto = new ProjectDTO();
         BeanUtil.copyProperties(model, dto);
 
         if (model.getCreateTime() != null) {
@@ -52,11 +52,11 @@ public class ProjectAdapter {
         return dto;
     }
 
-    public static Project getModel(ProjectDto dto){
+    public static ProjectPO getModel(ProjectDTO dto){
         if (dto == null){
             return null;
         }
-        Project model = new Project();
+        ProjectPO model = new ProjectPO();
         model.setId(dto.getId());
 		model.setName(dto.getName());
 		model.setStatus(dto.getStatus());
@@ -70,12 +70,12 @@ public class ProjectAdapter {
         return model;
     }
 
-    public static List<ProjectDto> getDto(List<Project> models, UserService userService){
+    public static List<ProjectDTO> getDto(List<ProjectPO> models, UserService userService){
         if (models == null){
             return new ArrayList<>();
         }
-        List<ProjectDto> dtos = new ArrayList<>();
-        for (Project model : models){
+        List<ProjectDTO> dtos = new ArrayList<>();
+        for (ProjectPO model : models){
             dtos.add(getDto(model, userService == null? null : userService.getById(model.getUserId())));
         }
         return dtos;

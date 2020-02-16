@@ -8,7 +8,7 @@ import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.BugLogPO;
 import cn.crap.model.BugPO;
-import cn.crap.model.Module;
+import cn.crap.model.ModulePO;
 import cn.crap.model.User;
 import cn.crap.query.BugQuery;
 import cn.crap.service.tool.ModuleCache;
@@ -108,13 +108,13 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
             bugLogPO.setOriginalValue(BugPriority.getNameByValue(dbBug.getPriority()));
             bugLogPO.setNewValue(BugPriority.getNameByValue(bugPriority.getByteValue()));
         } else if (PickCode.MY_MODULE.getCode().equals(type) || PickCode.PROJECT_MODULES.getCode().equals(type)){
-            Module module = moduleCache.get(value);
+            ModulePO module = moduleCache.get(value);
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());
             bug.setProjectId(module.getProjectId());
             PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), ProjectPermissionEnum.READ);
 
-            Module originalModule = moduleCache.get(dbBug.getModuleId());
+            ModulePO originalModule = moduleCache.get(dbBug.getModuleId());
             bugLogPO.setType(BugLogType.MODULE.getByteType());
             bugLogPO.setOriginalValue(originalModule.getName());
             bugLogPO.setNewValue(module.getName());

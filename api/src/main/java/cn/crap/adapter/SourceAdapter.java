@@ -5,8 +5,8 @@ import cn.crap.dto.SourceDto;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectType;
 import cn.crap.enu.TableId;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.Source;
 import cn.crap.utils.*;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class SourceAdapter {
-    public static SourceDto getDto(Source model, Module module){
+    public static SourceDto getDto(Source model, ModulePO module){
         if (model == null){
             return null;
         }
@@ -81,7 +81,7 @@ public class SourceAdapter {
     }
 
     public static SearchDto getSearchDto(Source model){
-        Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+        ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
         boolean open = false;
         if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
             open = true;

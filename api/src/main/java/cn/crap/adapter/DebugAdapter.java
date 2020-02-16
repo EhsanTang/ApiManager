@@ -4,11 +4,11 @@ import cn.crap.dto.DebugDto;
 import cn.crap.dto.ParamDto;
 import cn.crap.model.Debug;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.IConst;
 import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class DebugAdapter {
-    public static DebugDto getDtoFromInterface(InterfaceWithBLOBs model){
-        if (model == null){
+    public static DebugDto getDtoFromInterface(ProjectPO project, Map<String, ModulePO> moduleMap, InterfaceWithBLOBs model){
+        if (model == null || moduleMap.get(model.getModuleId()) == null){
             return null;
         }
 
@@ -63,14 +63,16 @@ public class DebugAdapter {
         dto.setUrl(model.getFullUrl());
         dto.setVersion(model.getVersionNum());
         dto.setName(model.getInterfaceName());
+        dto.setId(model.getUniKey());
+        dto.setModuleId(moduleMap.get(model.getModuleId()).getUniKey());
+        dto.setProjectUniKey(project.getUniKey());
         return dto;
     }
 
-    public static InterfaceWithBLOBs getInterfaceByDebug(Module module, InterfaceWithBLOBs model, DebugDto dto){
+    public static InterfaceWithBLOBs getInterfaceByDebug(ModulePO module, InterfaceWithBLOBs model, DebugDto dto){
         if (dto == null){
             return null;
         }
-        model.setId(dto.getId());
         model.setInterfaceName(dto.getName());
         model.setStatus(dto.getStatus());
         model.setSequence(dto.getSequence());

@@ -52,8 +52,8 @@ public class ArticleController extends BaseController {
                            String visitCode) throws MyException {
 
         query.setType(ArticleType.DICTIONARY.name());
-        Module module = moduleCache.get(query.getModuleId());
-        Project project = projectCache.get(module.getProjectId());
+        ModulePO module = moduleCache.get(query.getModuleId());
+        ProjectPO project = projectCache.get(module.getProjectId());
 
         checkFrontPermission(password, visitCode, project);
 
@@ -74,8 +74,8 @@ public class ArticleController extends BaseController {
                            String visitCode) throws MyException {
         Page page = new Page(query);
         if (query.getStatus() == null || !query.getStatus().equals(ArticleStatus.RECOMMEND.getStatus())){
-            Module module = moduleCache.get(query.getModuleId());
-            Project project = projectCache.get(module.getProjectId());
+            ModulePO module = moduleCache.get(query.getModuleId());
+            ProjectPO project = projectCache.get(module.getProjectId());
 
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             checkFrontPermission(password, visitCode, project);
@@ -132,8 +132,8 @@ public class ArticleController extends BaseController {
         }
         id = article.getId();
 
-        Module module = moduleCache.get(article.getModuleId());
-        Project project = projectCache.get(getProjectId(article.getProjectId(), module.getId()));
+        ModulePO module = moduleCache.get(article.getModuleId());
+        ProjectPO project = projectCache.get(getProjectId(article.getProjectId(), module.getId()));
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);

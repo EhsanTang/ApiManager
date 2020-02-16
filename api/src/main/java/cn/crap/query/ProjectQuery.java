@@ -10,6 +10,7 @@ import cn.crap.utils.SafetyUtil;
 public class ProjectQuery extends BaseQuery<ProjectQuery>{
     private String name;
     private String userId;
+    private String uniKey;
 
     @Override
     public ProjectQuery getQuery(){
@@ -32,6 +33,15 @@ public class ProjectQuery extends BaseQuery<ProjectQuery>{
 
     public ProjectQuery setUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    public String getUniKey() {
+        return uniKey;
+    }
+
+    public ProjectQuery setUniKey(String uniKey) {
+        this.uniKey = uniKey;
         return this;
     }
 }

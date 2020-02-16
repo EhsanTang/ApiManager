@@ -6,7 +6,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.Error;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ErrorQuery;
 import cn.crap.service.ErrorService;
 import cn.crap.utils.Page;
@@ -34,7 +34,7 @@ public class ErrorController extends BaseController{
 	@RequestMapping("/list.do")
 	@ResponseBody
 	public JsonResult list(@ModelAttribute ErrorQuery query, String password, String visitCode) throws MyException{
-		Project project = projectCache.get(query.getProjectId());
+		ProjectPO project = projectCache.get(query.getProjectId());
 
 		checkFrontPermission(password, visitCode, project);
 		

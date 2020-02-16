@@ -5,8 +5,8 @@ import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.*;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ArticleAdapter {
-    public static ArticleDTO getDto(Article model, Module module, Project project){
+    public static ArticleDTO getDto(Article model, ModulePO module, ProjectPO project){
         if (model == null){
             return null;
         }
@@ -43,7 +43,7 @@ public class ArticleAdapter {
 		return dto;
     }
 
-	public static ArticleDTO getDtoWithBLOBs(ArticleWithBLOBs model, Module module, Project project) {
+	public static ArticleDTO getDtoWithBLOBs(ArticleWithBLOBs model, ModulePO module, ProjectPO project) {
 		if (model == null) {
 			return null;
 		}
@@ -74,7 +74,7 @@ public class ArticleAdapter {
         return model;
     }
 
-    public static List<ArticleDTO> getDtoWithBLOBs(List<ArticleWithBLOBs> models, Module module){
+    public static List<ArticleDTO> getDtoWithBLOBs(List<ArticleWithBLOBs> models, ModulePO module){
         if (models == null){
             return new ArrayList<>();
         }
@@ -85,7 +85,7 @@ public class ArticleAdapter {
         return dtos;
     }
 
-	public static List<ArticleDTO> getDto(List<Article> models, Module module, Project project){
+	public static List<ArticleDTO> getDto(List<Article> models, ModulePO module, ProjectPO project){
 		if (models == null){
 			return new ArrayList<>();
 		}
@@ -112,7 +112,7 @@ public class ArticleAdapter {
 	}
 
 	public static SearchDto getSearchDto(ArticleWithBLOBs model){
-		Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+		ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
 		boolean open = false;
 		if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
 			open = true;

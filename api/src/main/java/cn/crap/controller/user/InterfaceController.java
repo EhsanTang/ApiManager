@@ -15,8 +15,8 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Error;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.ErrorService;
@@ -58,8 +58,8 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute InterfaceQuery query, String url) throws MyException{
-        Module module = getModule(query);
-        Project project = getProject(query);
+        ModulePO module = getModule(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
 
         InterfaceQuery interfaceQuery = query.setFullUrl(url);
@@ -78,7 +78,7 @@ public class InterfaceController extends BaseController{
 	@ResponseBody
 	public JsonResult detail(String id, String moduleId, String projectId, String envId) throws MyException {
 		InterfaceWithBLOBs model;
-		Module module;
+		ModulePO module;
 		if(id != null){
 			model= interfaceService.getById(id);
 			module = moduleCache.get(model.getModuleId());
@@ -121,8 +121,8 @@ public class InterfaceController extends BaseController{
 
 		//判断是否拥有原来项目的权限
 		checkPermission(interFace.getProjectId(), ProjectPermissionEnum.READ);
-        Project project = getProject(interFace.getProjectId(), moduleId);
-        Module module = moduleCache.get(moduleId);
+        ProjectPO project = getProject(interFace.getProjectId(), moduleId);
+        ModulePO module = moduleCache.get(moduleId);
 		// 检查新项目的权限
         checkPermission(project, ProjectPermissionEnum.ADD_INTER);
 
@@ -153,7 +153,7 @@ public class InterfaceController extends BaseController{
         Assert.notNull(dto.getUrl(), "url can't be null");
 
         String id = dto.getId();
-        Module module = moduleCache.get(dto.getModuleId());
+        ModulePO module = moduleCache.get(dto.getModuleId());
         String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         dto.setProjectId(newProjectId);
 		dto.setUrl(dto.getUrl().trim());

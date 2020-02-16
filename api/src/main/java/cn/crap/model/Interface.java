@@ -1,5 +1,8 @@
 package cn.crap.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 public class Interface extends BasePO {
@@ -36,6 +39,10 @@ public class Interface extends BasePO {
     private String contentType;
 
     private Integer versionNum;
+
+    @Getter
+    @Setter
+    private String uniKey;
 
     private static final long serialVersionUID = 1L;
 

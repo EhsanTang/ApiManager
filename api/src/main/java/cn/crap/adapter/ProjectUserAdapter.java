@@ -3,7 +3,7 @@ package cn.crap.adapter;
 import cn.crap.dto.PermissionDTO;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.ProjectPermissionEnum;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.PermissionUtil;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectUserAdapter {
-    public static ProjectUserDto getDto(ProjectUserPO model, Project project){
+    public static ProjectUserDto getDto(ProjectUserPO model, ProjectPO project){
         if (model == null){
             return null;
         }

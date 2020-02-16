@@ -50,7 +50,7 @@ public class DebugAdapter {
             StringBuilder paramSb = new StringBuilder();
 
             for (ParamDto paramDto : paramList){
-                paramSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\n");
+                paramSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\n");
             }
             dto.setParams(paramSb.toString());
         }
@@ -60,7 +60,7 @@ public class DebugAdapter {
             if (paramDto.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)){
                 continue;
             }
-            headerSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\\n");
+            headerSb.append(paramDto.getName() + ":" + paramDto.getDef() + "\n");
         }
         dto.setHeaders(headerSb.toString());
         dto.setUrl(model.getFullUrl());
@@ -70,6 +70,7 @@ public class DebugAdapter {
         dto.setModuleId(moduleMap.get(model.getModuleId()).getUniKey());
         dto.setModuleUniKey(moduleMap.get(model.getModuleId()).getUniKey());
         dto.setProjectUniKey(project.getUniKey());
+        dto.setUid(project.getUserId());
         return dto;
     }
 
@@ -88,7 +89,8 @@ public class DebugAdapter {
         if (module != null && MyString.isNotEmptyOrNUll(module.getUrl())){
             model.setUrl(dto.getUrl().replaceFirst(module.getUrl(), ""));
         }
-        if (model.getParam() != null && dto.getParamType().equals(IConst.C_FORM_DATA_TYPE)){
+
+        if (dto.getParamType().equalsIgnoreCase(IConst.C_FORM_DATA_TYPE)){
             model.setParam(IConst.C_PARAM_FORM_PRE + JSON.toJSONString(getJson(model.getParam(), dto.getParams())));
         } else {
             model.setParam(dto.getParams());
@@ -108,7 +110,7 @@ public class DebugAdapter {
         // 请求头转换
         Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr == null ? "[]" :jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
         List<ParamDto> listDTO  = Lists.newArrayList();
-        for (String param : Optional.ofNullable(keyValueStr.split("\\n")).orElse(new String[]{})){
+        for (String param : Optional.ofNullable(keyValueStr.split("\n")).orElse(new String[]{})){
             String[] split = param.split(":");
             if (split.length !=2 || split[0] == null || split[0].trim().equals("")){
                 continue;

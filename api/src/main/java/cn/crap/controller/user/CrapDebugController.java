@@ -146,6 +146,7 @@ public class CrapDebugController extends BaseController {
                 debugDto.setVersion(m.getVersionNum());
                 debugDto.setStatus(m.getStatus());
                 debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<>() : mapDebugs.get(m.getId()));
+                debugDto.setProjectUniKey(project.getUniKey());
                 returnlist.add(debugDto);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -15,7 +15,6 @@ public class DebugInterfaceParamDto {
 	private String moduleName;
 	private Integer version;
 	private Byte status;
-	private String projectId;
 	private String projectUniKey;
 
 }

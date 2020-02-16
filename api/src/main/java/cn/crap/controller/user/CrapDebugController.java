@@ -123,10 +123,11 @@ public class CrapDebugController extends BaseController {
         List<InterfaceWithBLOBs> debugs = interfaceService.queryAll(new InterfaceQuery().setProjectId(projectId));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
         for (InterfaceWithBLOBs d : debugs) {
-            List<DebugDto> moduleDebugs = mapDebugs.get(d.getModuleId());
+            String moduleId = d.getModuleId();
+            List<DebugDto> moduleDebugs = mapDebugs.get(moduleId);
             if (moduleDebugs == null) {
                 moduleDebugs = new ArrayList<>();
-                mapDebugs.put(d.getModuleId(), moduleDebugs);
+                mapDebugs.put(moduleId, moduleDebugs);
             }
             DebugDto dtoFromInterface = DebugAdapter.getDtoFromInterface(project, moduleMap, d);
             if (dtoFromInterface == null){
@@ -139,7 +140,8 @@ public class CrapDebugController extends BaseController {
         for (ModulePO m : modules) {
             try {
                 DebugInterfaceParamDto debugDto = new DebugInterfaceParamDto();
-                debugDto.setModuleId(m.getId());
+                debugDto.setModuleId(m.getUniKey());
+                debugDto.setModuleUniKey(m.getUniKey());
                 debugDto.setModuleName(m.getName());
                 debugDto.setVersion(m.getVersionNum());
                 debugDto.setStatus(m.getStatus());

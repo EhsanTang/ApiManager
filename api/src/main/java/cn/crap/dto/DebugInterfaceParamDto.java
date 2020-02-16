@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 public class DebugInterfaceParamDto {
 	private List<DebugDto> debugs;
+	@Deprecated
 	private String moduleId;
 	private String moduleUniKey;
 	private String moduleName;

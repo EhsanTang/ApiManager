@@ -65,6 +65,7 @@ public class DebugAdapter {
         dto.setName(model.getInterfaceName());
         dto.setId(model.getUniKey());
         dto.setModuleId(moduleMap.get(model.getModuleId()).getUniKey());
+        dto.setModuleUniKey(moduleMap.get(model.getModuleId()).getUniKey());
         dto.setProjectUniKey(project.getUniKey());
         return dto;
     }

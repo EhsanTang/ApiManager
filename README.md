@@ -28,6 +28,11 @@ CrapApi是完全免费开源项目，源码在GitHub、码云上可以获取，�
 ```
 <img width = "100%" height="200" src="http://api.crap.cn/resources/upload/images/2018-11/30125847sFDcfL.CAV.5gLaDc.1.png?ddd"/>
 
+[CrapApi用户]
+```
+阿里巴巴
+拉勾
+```
 
 [CrapApi能做什么？]
 ```

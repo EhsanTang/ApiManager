@@ -1,7 +1,7 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ProjectAdapter;
-import cn.crap.dto.ProjectDTO;
+import cn.crap.dto.ProjectDTO2;
 import cn.crap.enu.ProjectShowType;
 import cn.crap.model.ProjectPO;
 import cn.crap.query.ProjectQuery;
@@ -47,7 +47,7 @@ public class ProjectController extends BaseController{
 			models = projectService.query(userId, true, query.getName(), page);
 		}
 
-        List<ProjectDTO> projectDtos = ProjectAdapter.getDto(models, null);
+        List<ProjectDTO2> projectDtos = ProjectAdapter.getDto(models, null);
         page.setAllRow(projectService.count(query));
 
         return new JsonResult().data(projectDtos).page(page);

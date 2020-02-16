@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ModuleDTO {
+public class ModuleDTO2 {
 	private String id;
 	private String name;
 	private Byte status;

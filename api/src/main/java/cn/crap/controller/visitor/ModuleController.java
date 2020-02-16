@@ -3,7 +3,7 @@ package cn.crap.controller.visitor;
 import cn.crap.adapter.ModuleAdapter;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ModuleDTO;
+import cn.crap.dto.ModuleDTO2;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectType;
 import cn.crap.framework.JsonResult;
@@ -49,7 +49,7 @@ public class ModuleController extends BaseController{
         Page page= new Page(query);
 		page.setAllRow(moduleService.count(query));
 
-		List<ModuleDTO> moduleDtoList = ModuleAdapter.getDto( moduleService.select(query), null);
+		List<ModuleDTO2> moduleDtoList = ModuleAdapter.getDto( moduleService.select(query), null);
 
 		return new JsonResult().data(moduleDtoList).page(page).others(
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),
@@ -78,7 +78,7 @@ public class ModuleController extends BaseController{
 			}
 		}
 
-		List<ModuleDTO> moduleDtoList = ModuleAdapter.getDto(moduleService.select(new ModuleQuery().setProjectId(projectId).setPageSize(10)), null);
+		List<ModuleDTO2> moduleDtoList = ModuleAdapter.getDto(moduleService.select(new ModuleQuery().setProjectId(projectId).setPageSize(10)), null);
 		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
 	}	
 }

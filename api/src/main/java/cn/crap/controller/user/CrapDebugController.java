@@ -25,6 +25,7 @@ import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -78,6 +79,7 @@ public class CrapDebugController extends BaseController {
          * 2.处理模块+接口
          */
         long moduleSequence = System.currentTimeMillis();
+        Map<String, ModulePO> modulePOMap = Maps.newHashMap();
         for (DebugInterfaceParamDto debutModuleDTO : list) {
 
             /**
@@ -98,20 +100,24 @@ public class CrapDebugController extends BaseController {
             if (module == null){
                 continue;
             }
+            modulePOMap.put(moduleUniKey, module);
 
             // 先删除需要删除的接口
             deleteDebug(module, debutModuleDTO);
+        }
 
-            // 每个用户的最大接口数量不能超过100
-            int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
+        // 每个用户的最大接口数量不能超过100
+        int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
+
+        for (DebugInterfaceParamDto debutModuleDTO : list) {
+            String moduleUniKey = debutModuleDTO.getModuleUniKey() == null ? debutModuleDTO.getModuleId() : debutModuleDTO.getModuleUniKey();
+
+            // 更新接口
+            totalNum = addDebug(projectId, modulePOMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
             if (totalNum > 100) {
                 return new JsonResult(MyError.E000058);
             }
-
-            // 更新接口
-            addDebug(projectId, module, user, debutModuleDTO, totalNum);
         }
-
 
         /**
          *  组装返回数据
@@ -159,10 +165,13 @@ public class CrapDebugController extends BaseController {
         return MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
     }
 
-    private void addDebug(String projectId, ModulePO module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
-        Assert.notNull(module, "deleteDebug module is null");
+    private int addDebug(String projectId, ModulePO module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+        if (module == null){
+            return totalNum;
+        }
+
         if (moduleDTO.getStatus() == -1) {
-            return;
+            return totalNum;
         }
 
         String moduleId = module.getId();
@@ -207,6 +216,7 @@ public class CrapDebugController extends BaseController {
                 continue;
             }
         }
+        return totalNum;
     }
 
 

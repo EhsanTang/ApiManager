@@ -3,7 +3,7 @@ package cn.crap.service;
 import cn.crap.adapter.Adapter;
 import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.dao.mybatis.ProjectDao;
-import cn.crap.dto.ProjectDTO;
+import cn.crap.dto.ProjectDTO2;
 import cn.crap.enu.LogType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.TableId;
@@ -116,7 +116,7 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
      * @param projectDto
      * @return
      */
-    public String getInviteUrl(ProjectDTO projectDto) throws MyException {
+    public String getInviteUrl(ProjectDTO2 projectDto) throws MyException {
         Assert.notNull(projectDto);
         if (LoginUserHelper.getUser().getId().equals(projectDto.getUserId())) {
             return settingCache.getDomain() + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());

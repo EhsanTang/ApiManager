@@ -208,6 +208,11 @@ public class SystemService {
         CHANGE_SQL_MAP.put(82, "ALTER TABLE `interface` ADD UNIQUE INDEX `uk_module_key` (`moduleId`, `uniKey`)");
         CHANGE_SQL_MAP.put(84, "ALTER TABLE `module` CHANGE `version` `versionNum` INT(11)  NOT NULL  DEFAULT '0'");
 
+        CHANGE_SQL_MAP.put(85, "ALTER TABLE `project_user` ADD `type` TINYINT  NOT NULL  DEFAULT '2'  COMMENT '1管理员or创建人，2成员'");
+        CHANGE_SQL_MAP.put(86, "ALTER TABLE `project_user` ADD INDEX `idx_uid_type_seq` (`userId`, `type`, `sequence`)");
+        CHANGE_SQL_MAP.put(87, "ALTER TABLE `project_user` DROP INDEX `index_uid_seq_time`");
+        CHANGE_SQL_MAP.put(88, "ALTER TABLE `project_user` ADD INDEX `idx_uid_seq` (`userId`, `sequence`)");
+
     }
 
     /**

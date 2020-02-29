@@ -1,5 +1,6 @@
 package cn.crap.controller.user;
 
+import cn.crap.ability.ProjectAbility;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectDTO;
@@ -12,10 +13,7 @@ import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.*;
 import cn.crap.service.*;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -49,6 +47,8 @@ public class ProjectController extends BaseController {
     private ArticleService articleService;
     @Autowired
     private SourceService sourceService;
+    @Autowired
+    private ProjectAbility projectAbility;
 
     @RequestMapping("/list.do")
     @ResponseBody
@@ -61,6 +61,7 @@ public class ProjectController extends BaseController {
         List<ProjectPO> models;
 
         // 我创建 & 加入的项目
+        query.setSort(TableField.SORT.SEQUENCE_DESC);
         if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
             page.setAllRow(projectService.count(userId, false, query.getName()));
             models = projectService.query(userId, false, query.getName(), page);
@@ -185,10 +186,10 @@ public class ProjectController extends BaseController {
             model.setUserId(userId);
             model.setPassword(project.getPassword());
             // 普通用户不能推荐项目
-            if (LoginUserHelper.getUser().getType() == UserType.USER.getType()) {
+            if (user.getType() == UserType.USER.getType()) {
                 project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus() + ""));
             }
-            projectService.insert(model);
+            projectAbility.addProject(model, user);
         }
 
         // 清楚缓存

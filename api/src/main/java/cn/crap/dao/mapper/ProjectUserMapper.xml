@@ -11,11 +11,12 @@
       <result column="userId" property="userId"/>
       <result column="permission" property="permission"/>
       <result column="status" property="status"/>
+      <result column="type" property="type"/>
   </resultMap>
 
   <!-- 基本的字段，供其他查询引用-->
   <sql id="baseColumn">
-        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status
+        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type
   </sql>
   <sql id="querySql">
     <where>
@@ -25,6 +26,9 @@
       <if test="query.userId != null">
         and userId=#{query.userId}
       </if>
+      <if test="query.type != null">
+        and type=#{query.type}
+      </if>
     </where>
   </sql>
 
@@ -33,7 +37,7 @@
     insert into project_user (
       <include refid="baseColumn"/>
     )
-    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status})
+    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type})
   </insert>
 
   <!-- 删除 -->
@@ -65,9 +69,7 @@
     select <include refid="baseColumn"/>
     from project_user
     <include refid="querySql"/>
-    <if test="query.sort != null">
-      order by ${query.sort}
-    </if>
+    order by sequence desc
     <if test="query.start != null and query.pageSize != null">
       limit #{query.start},#{query.pageSize}
     </if>

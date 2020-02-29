@@ -1,4 +1,4 @@
-package cn.crap.service.tool;
+package cn.crap.service.ops;
 
 import cn.crap.adapter.DebugAdapter;
 import cn.crap.adapter.InterfaceAdapter;
@@ -42,7 +42,7 @@ public class UpdateService{
             for (Debug d : debugs) {
                 ModulePO module = moduleService.get(d.getModuleId());
                 InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
-                interfaceWithBLOBs.setProjectId(d.getProjectId());
+                interfaceWithBLOBs.setProjectId(module.getProjectId());
                 DebugDto debugDto = new DebugDto();
                 BeanUtils.copyProperties(d, debugDto);
                 if (interfaceService.getById(d.getId()) == null) {

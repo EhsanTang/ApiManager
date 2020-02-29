@@ -4,8 +4,6 @@ import cn.crap.adapter.ProjectUserAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.ProjectUserDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.ProjectPermissionEnum;
-import cn.crap.enu.ProjectUserStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -146,25 +144,12 @@ public class ProjectUserController extends BaseController{
             return ERROR_VIEW;
         }
 
-        ProjectUserPO projectUser = new ProjectUserPO();
-        projectUser.setProjectId(projectId);
-        projectUser.setUserId(userId);
-        projectUser.setStatus(ProjectUserStatus.NORMAL.getStatus());
-        projectUser.setUserEmail(loginInfoDto.getEmail());
-        projectUser.setUserName(loginInfoDto.getUserName());
-        StringBuilder sb = new StringBuilder(",");
-        for(ProjectPermissionEnum permissionEnum : ProjectPermissionEnum.values()){
-            if (ProjectPermissionEnum.isDefaultPermission(permissionEnum)) {
-                sb.append(permissionEnum.getValue() + ",");
-            }
-        }
-        projectUser.setPermission(sb.toString());
+        ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(projectId, loginInfoDto);
         projectUserService.insert(projectUser);
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");
         return ERROR_VIEW;
     }
-
 
 
 

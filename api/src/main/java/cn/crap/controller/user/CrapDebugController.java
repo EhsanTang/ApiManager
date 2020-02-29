@@ -1,5 +1,6 @@
 package cn.crap.controller.user;
 
+import cn.crap.ability.ProjectAbility;
 import cn.crap.adapter.DebugAdapter;
 import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.DebugDto;
@@ -52,6 +53,8 @@ public class CrapDebugController extends BaseController {
     private ProjectService projectService;
     @Autowired
     private ModuleService moduleService;
+    @Autowired
+    private ProjectAbility projectAbility;
 
     @RequestMapping("/synch.do")
     @ResponseBody
@@ -72,7 +75,7 @@ public class CrapDebugController extends BaseController {
         ProjectPO project = projectService.get(projectId);
         if (project == null) {
             project = buildProject(user, projectId);
-            projectService.insert(project);
+            projectAbility.addProject(project, user);
         }
 
         /**

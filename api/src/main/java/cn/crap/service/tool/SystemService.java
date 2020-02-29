@@ -212,6 +212,8 @@ public class SystemService {
         CHANGE_SQL_MAP.put(86, "ALTER TABLE `project_user` ADD INDEX `idx_uid_type_seq` (`userId`, `type`, `sequence`)");
         CHANGE_SQL_MAP.put(87, "ALTER TABLE `project_user` DROP INDEX `index_uid_seq_time`");
         CHANGE_SQL_MAP.put(88, "ALTER TABLE `project_user` ADD INDEX `idx_uid_seq` (`userId`, `sequence`)");
+        CHANGE_SQL_MAP.put(89, "ALTER TABLE `project_user` ADD UNIQUE INDEX `uk_pro_uid` (`projectId`, `userId`)");
+
 
     }
 

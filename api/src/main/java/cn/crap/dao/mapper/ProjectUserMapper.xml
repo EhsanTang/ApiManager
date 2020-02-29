@@ -59,6 +59,9 @@
       <if test="userEmail != null">
         userEmail = #{userEmail},
       </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
     </set>
     where id=#{id}
   </update>

@@ -41,12 +41,11 @@ public class CustomProjectDao {
 
 		List <Object> params = new ArrayList<>();
         params.add(userId);
-        params.add(userId);
 		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where");
 		if (onlyJoin){
-			sb.append(" id in (select projectId from project_user where userId=? and type=2 order by sequence desc limit " + page.getStart() + "," + page.getSize() + ")");
+			sb.append(" id in (select projectId from project_user where userId=? and type=2)");
 		} else {
-			sb.append(" id in (select projectId from project_user where userId=? order by sequence desc limit " + page.getStart() + "," + page.getSize() + ")");
+			sb.append(" id in (select projectId from project_user where userId=?)");
 		}
 
 		if (name != null){
@@ -79,7 +78,6 @@ public class CustomProjectDao {
 		Assert.notNull(userId);
 
 		List <Object> params = new ArrayList<>();
-        params.add(userId);
         params.add(userId);
         StringBuilder sb = new StringBuilder("select count(0) from project where ");
         if (onlyJoin){

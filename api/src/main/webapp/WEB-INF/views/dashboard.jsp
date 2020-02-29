@@ -92,9 +92,19 @@
     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
         <c:if test="${menuDto.menu.type=='FUNCTION'}">
             <div class="col-xs-3 tc h200 f20 mt10">
-                <div class="h80 lh80 C555 f30 adorn-color">${menuDto.menu.iconRemark}</div>
-                <!--href="${menuDto.menu.menuUrl}"-->
-                <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
+                <c:if test="${menuDto.menu.menuUrl!=null && menuDto.menu.menuUrl !=''}">
+                    <div class="h80 lh80 C555 f30 adorn-color">
+                        <a class="adorn-color" href="${menuDto.menu.menuUrl}">${menuDto.menu.iconRemark}</a>
+                    </div>
+                    <a href="${menuDto.menu.menuUrl}" class="f14 C000 lh26 p15 tc break-word fw200">${menuDto.menu.menuName}</a>
+                </c:if>
+
+                <c:if test="${menuDto.menu.menuUrl==null || menuDto.menu.menuUrl ==''}">
+                    <div class="h80 lh80 C555 f30 adorn-color">
+                        ${menuDto.menu.iconRemark}
+                    </div>
+                    <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>

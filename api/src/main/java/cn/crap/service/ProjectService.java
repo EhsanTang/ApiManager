@@ -4,9 +4,7 @@ import cn.crap.adapter.Adapter;
 import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.dao.mybatis.ProjectDao;
 import cn.crap.dto.ProjectDTO;
-import cn.crap.enu.LogType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.TableId;
+import cn.crap.enu.*;
 import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
@@ -50,6 +48,14 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
         }
         if (MyString.isNotEmpty(project.getPassword())) {
             project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
+        }
+
+        if (project.getStatus() == null){
+            project.setStatus(ProjectStatus.COMMON.getStatus());
+        }
+
+        if (project.getType() == null){
+            project.setType(ProjectType.PRIVATE.getByteType());
         }
 
         if (project.getUniKey() == null){

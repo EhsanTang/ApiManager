@@ -60,6 +60,10 @@ public class ModuleService extends NewBaseService<ModulePO, ModuleQuery>  implem
             po.setVersionNum(0);
         }
 
+        if (po.getUrl() == null){
+            po.setUrl("");
+        }
+
         if (po.getCanDelete() == null){
             po.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
         }

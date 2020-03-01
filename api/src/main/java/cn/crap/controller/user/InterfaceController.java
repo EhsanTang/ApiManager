@@ -157,7 +157,7 @@ public class InterfaceController extends BaseController{
         String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         dto.setProjectId(newProjectId);
 		dto.setUrl(dto.getUrl().trim());
-        dto.setFullUrl(module.getUrl() + dto.getUrl());
+        dto.setFullUrl(MyString.getStr(module.getUrl()) + dto.getUrl());
 
         List<ParamDto> headerList =JSONArray.parseArray(dto.getHeader() == null ? "[]" : dto.getHeader(), ParamDto.class);
         ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()

@@ -9,7 +9,7 @@ function createEditorMe(id, markdownContent) {
         return;
     }
     markdownEditor = editormd(id, {
-        path: "./resources/framework/editormd-1.5.0/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
+        path: "https://api-crap-cn.oss-cn-beijing.aliyuncs.com/resources/framework/editormd-1.5.0/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
         width: "100%",
         height: 500,
         theme: "default", // "default | dark"

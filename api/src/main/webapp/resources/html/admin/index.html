@@ -41,9 +41,9 @@
                         <span onclick="propUpPasswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
                     </button>
                 </div>
-                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="isSupperAdmin() && hasError(errorTips,'tip-error')">
                     <button type="button" class="btn btn-danger btn-xs break-word" ng-bind="errorTips"></button>
-                    <button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">删除提示</button>
+                    <button type="button" class="btn btn-default btn-xs" ng-click="closeErrorTips()">删除提示</button>
                 </div>
 
 				<div class="m0 f14 fr">

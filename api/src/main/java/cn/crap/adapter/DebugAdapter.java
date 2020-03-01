@@ -86,7 +86,7 @@ public class DebugAdapter {
         model.setStatus(dto.getStatus());
         model.setSequence(dto.getSequence());
         model.setMethod(dto.getMethod());
-        // TODO 测试 大于500，可能参数过长，去除参数
+        // 大于500，可能参数过长，去除参数
         String url = (dto.getUrl() != null && dto.getUrl().length() > 500 ? dto.getUrl().split("\\?")[0] : dto.getUrl());
         model.setFullUrl(url);
         model.setUrl(url);
@@ -120,15 +120,37 @@ public class DebugAdapter {
 
         Map<String, ParamDto> paramMap = JSONArray.parseArray(jsonStr, ParamDto.class).stream().collect(Collectors.toMap(ParamDto::getName, a -> a,(k1, k2)->k1));
         List<ParamDto> listDTO  = Lists.newArrayList();
+
+        // 合并：支持pc端修改 与 插件修改
         for (String param : Optional.ofNullable(keyValueStr.split("\n")).orElse(new String[]{})){
-            String[] split = param.split(":");
-            if (split.length !=2 || split[0] == null || split[0].trim().equals("")){
+            // 无效数据
+            if (param.indexOf(":") == 0){
                 continue;
             }
-            ParamDto DTO = paramMap.get(split[0].trim()) == null ? new ParamDto() : paramMap.get(split[0].trim());
-            DTO.setName(split[0]);
-            DTO.setDef(split[1]);
+
+            String key;
+            String value = "";
+            if (param.indexOf(":") < 0){
+                key = param.trim();
+            } else {
+                key = param.substring(0, param.indexOf(":")).trim();
+                value = param.substring(param.indexOf(":") + 1).trim();
+            }
+
+            if (key.trim().equals("")){
+                continue;
+            }
+
+            ParamDto DTO = paramMap.get(key.trim()) == null ? new ParamDto() : paramMap.get(key.trim());
+            paramMap.remove(key.trim());
+
+            DTO.setName(key);
+            DTO.setDef(value);
             listDTO.add(DTO);
+        }
+
+        for (String key : paramMap.keySet()){
+            listDTO.add(paramMap.get(key));
         }
         return listDTO;
     }

@@ -35,7 +35,7 @@
 		class="cursor">
 		<i class="iconfont f20" style="color: #FFF;">&#xe617;</i>
 	</div>
-	<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/twitter-bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="https://api-crap-cn.oss-cn-beijing.aliyuncs.com/resources/framework/jquery-1.9.1.min.js"></script>
+	<script src="https://api-crap-cn.oss-cn-beijing.aliyuncs.com/resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
 	<script src="../../resources/js/global.js"></script>
 	<script src="../../resources/js/crapApi.js"></script>

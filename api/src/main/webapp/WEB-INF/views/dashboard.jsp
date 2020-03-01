@@ -11,7 +11,7 @@
     <link href="${icon}" rel="shortcut icon" type="image/x-icon"/>
     <link href="${icon}" rel="icon" type="image/x-icon"/>
     <link href="${icon}" rel="shortcut" type="image/x-icon"/>
-    <link href="resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- base-min.css,admin.css应该发在bootstrap之后,覆盖部分bootstrap样式 -->
     <link href="resources/css/allCss.css?v=V8.2.0_0630" rel="stylesheet" type="text/css"/>
     <title>${title}</title>

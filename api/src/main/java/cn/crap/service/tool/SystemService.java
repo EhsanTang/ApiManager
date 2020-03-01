@@ -213,6 +213,10 @@ public class SystemService {
         CHANGE_SQL_MAP.put(87, "ALTER TABLE `project_user` DROP INDEX `index_uid_seq_time`");
         CHANGE_SQL_MAP.put(88, "ALTER TABLE `project_user` ADD INDEX `idx_uid_seq` (`userId`, `sequence`)");
         CHANGE_SQL_MAP.put(89, "ALTER TABLE `project_user` ADD UNIQUE INDEX `uk_pro_uid` (`projectId`, `userId`)");
+        CHANGE_SQL_MAP.put(90, "INSERT INTO project_user(id,status,sequence,createTime,projectId,userId,userEmail,userName,permission,type) " +
+                " SELECT p.id,1,unix_timestamp(now())*1000,now(),p.id,p.userId,u.email,u.userName,',modInter,addInter,modModule,addModule,modError,addError,modArticle,addArticle,modDict,addDict,modBug,addBug,delBug,modSource,addSource,modEnv,addEnv,delEnv,',1 " +
+                " FROM project p join user u on p.userId=u.id ON DUPLICATE KEY UPDATE type=1");
+
 
 
     }

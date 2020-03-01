@@ -222,7 +222,11 @@ public class SystemService {
         CHANGE_SQL_MAP.put(91, "ALTER TABLE `interface` CHANGE `url` `url` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT 'api链接'");
         CHANGE_SQL_MAP.put(92, "ALTER TABLE `interface` DROP INDEX `Index_fullUrl`");
         CHANGE_SQL_MAP.put(93, "ALTER TABLE `interface` CHANGE `fullUrl` `fullUrl` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
+        CHANGE_SQL_MAP.put(94, "ALTER TABLE `project` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
 
+        CHANGE_SQL_MAP.put(95, "ALTER TABLE `module` CHANGE `url` `url` VARCHAR(100)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '模块地址'");
+        CHANGE_SQL_MAP.put(96, "ALTER TABLE `module` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
+        CHANGE_SQL_MAP.put(97, "ALTER TABLE `module` CHANGE `category` `category` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字'");
     }
 
     /**

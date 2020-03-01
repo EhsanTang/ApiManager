@@ -96,7 +96,11 @@ public class ProjectUserController extends BaseController{
     @AuthPassport
 	public JsonResult delete(@RequestParam String id) throws Exception{
 		ProjectUserPO projectUser = projectUserService.get(id);
-		checkPermission(projectCache.get( projectUser.getProjectId() ));
+        ProjectPO projectPO = projectCache.get(projectUser.getProjectId());
+        checkPermission(projectPO);
+		if (projectUser.getUserId().equals(projectPO.getUserId())){
+		    throw new MyException(MyError.E000077);
+        }
 		projectUserService.delete(projectUser.getId());
 		return new JsonResult(1,null);
 	}

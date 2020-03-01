@@ -259,7 +259,7 @@ public class CrapDebugController extends BaseController {
                 interfaceService.deleteByModuleId(module.getId());
                 moduleService.delete(module.getId());
             } catch (MyException e){
-                log.error("crapDebugController delete module fail:" + e.getErrorCode());
+                log.error("crapDebugController delete module fail:" + module.getId() + "," + e.getErrorCode());
             }
         }
 

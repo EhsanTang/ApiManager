@@ -138,6 +138,7 @@ public class InterfaceController extends BaseController{
         interFace.setInterfaceName(interfaceName);
         interFace.setModuleId(moduleId);
         interFace.setProjectId(project.getId());
+		interFace.setUniKey(null);
 		interfaceService.insert(interFace);
 
         interFace.setId(interFace.getId());

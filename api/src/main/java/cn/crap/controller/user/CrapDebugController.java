@@ -292,7 +292,7 @@ public class CrapDebugController extends BaseController {
         ProjectPO project;
         project = new ProjectPO();
         project.setId(projectId);
-        project.setCover("/resources/images/logo_new.png");
+        project.setCover("/resources/images/postwoman_logo.png");
         project.setLuceneSearch(Byte.valueOf("0"));
         project.setName("默认调试项目");
         project.setStatus(ProjectStatus.COMMON.getStatus());

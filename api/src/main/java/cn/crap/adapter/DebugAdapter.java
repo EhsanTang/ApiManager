@@ -108,6 +108,7 @@ public class DebugAdapter {
 
         model.setHeader(JSON.toJSONString(headerList));
         model.setVersionNum(dto.getVersion());
+        model.setModuleId(module.getId());
         return model;
     }
 

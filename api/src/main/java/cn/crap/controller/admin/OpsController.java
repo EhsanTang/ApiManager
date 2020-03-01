@@ -47,7 +47,7 @@ public class OpsController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
     public JsonResult addDebug() throws Exception {
-        DebugQuery debugQuery = new DebugQuery().setSort(TableField.SORT.ID_ASC).setPageSize(2);
+        DebugQuery debugQuery = new DebugQuery().setSort(TableField.SORT.ID_ASC).setPageSize(20);
         int i = 0;
         while (true) {
             i++;
@@ -57,16 +57,19 @@ public class OpsController extends BaseController {
                 return JsonResult.of();
             }
 
-
             for (Debug d : debugs) {
                 try {
                     ModulePO module = moduleService.get(d.getModuleId());
                     InterfaceWithBLOBs interfaceWithBLOBs = InterfaceAdapter.getInit();
                     interfaceWithBLOBs.setProjectId(module.getProjectId());
+
                     DebugDto debugDto = new DebugDto();
                     BeanUtils.copyProperties(d, debugDto);
+
                     if (interfaceService.getById(d.getId()) == null) {
-                        interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debugDto));
+                        InterfaceWithBLOBs interfaceByDebug = DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debugDto);
+                        interfaceByDebug.setId(d.getId());
+                        interfaceService.insert(interfaceByDebug);
                     }
                 } catch (Exception e){
                     System.out.println("---add-error---" + d.getId() + "----" + d.getUrl());

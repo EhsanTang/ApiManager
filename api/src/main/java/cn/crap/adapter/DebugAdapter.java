@@ -86,12 +86,14 @@ public class DebugAdapter {
         model.setStatus(dto.getStatus());
         model.setSequence(dto.getSequence());
         model.setMethod(dto.getMethod());
-        model.setFullUrl(dto.getUrl());
-        model.setUrl(dto.getUrl());
+        // 大于500，可能参数过长，去除参数
+        String url = (dto.getUrl() != null && dto.getUrl().length() > 500 ? dto.getUrl().split("\\?")[0] : dto.getUrl());
+        model.setFullUrl(url);
+        model.setUrl(url);
 
         // 替换项目前缀
         if (module != null && MyString.isNotEmptyOrNUll(module.getUrl())){
-            model.setUrl(dto.getUrl().replaceFirst(module.getUrl(), ""));
+            model.setUrl(url.replaceFirst(module.getUrl(), ""));
         }
 
         if (MyString.isEmpty(dto.getParamType()) || dto.getParamType().equalsIgnoreCase(IConst.C_FORM_DATA_TYPE)){

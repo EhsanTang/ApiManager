@@ -217,6 +217,9 @@ public class SystemService {
                 " SELECT p.id,1,unix_timestamp(now())*1000,now(),p.id,p.userId,u.email,u.userName,',modInter,addInter,modModule,addModule,modError,addError,modArticle,addArticle,modDict,addDict,modBug,addBug,delBug,modSource,addSource,modEnv,addEnv,delEnv,',1 " +
                 " FROM project p join user u on p.userId=u.id ON DUPLICATE KEY UPDATE type=1");
 
+        CHANGE_SQL_MAP.put(91, "ALTER TABLE `interface` CHANGE `url` `url` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT 'api链接'");
+
+
 
 
     }

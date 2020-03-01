@@ -86,7 +86,7 @@ public class DebugAdapter {
         model.setStatus(dto.getStatus());
         model.setSequence(dto.getSequence());
         model.setMethod(dto.getMethod());
-        // 大于500，可能参数过长，去除参数
+        // TODO 测试 大于500，可能参数过长，去除参数
         String url = (dto.getUrl() != null && dto.getUrl().length() > 500 ? dto.getUrl().split("\\?")[0] : dto.getUrl());
         model.setFullUrl(url);
         model.setUrl(url);
@@ -96,7 +96,7 @@ public class DebugAdapter {
             model.setUrl(url.replaceFirst(module.getUrl(), ""));
         }
 
-        if (MyString.isEmpty(dto.getParamType()) || dto.getParamType().equalsIgnoreCase(IConst.C_FORM_DATA_TYPE)){
+        if (MyString.isEmpty(dto.getParamType()) || dto.getParamType().toLowerCase().contains(IConst.C_FORM_DATA_TYPE.toLowerCase())){
             model.setParam(IConst.C_PARAM_FORM_PRE + JSON.toJSONString(getJson(model.getParam(), dto.getParams())));
         } else {
             model.setParam(dto.getParams());

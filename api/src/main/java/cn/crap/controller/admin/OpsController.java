@@ -69,9 +69,16 @@ public class OpsController extends BaseController {
                     if (interfaceService.getById(d.getId()) == null) {
                         InterfaceWithBLOBs interfaceByDebug = DebugAdapter.getInterfaceByDebug(module, interfaceWithBLOBs, debugDto);
                         interfaceByDebug.setId(d.getId());
+
+                        if (d.getId().lastIndexOf("-") > 0){
+                            interfaceByDebug.setUniKey(d.getId().substring(0, d.getId().lastIndexOf("-")));
+                        } else {
+                            interfaceByDebug.setUniKey(d.getId());
+                        }
                         interfaceService.insert(interfaceByDebug);
                     }
                 } catch (Exception e){
+                    e.printStackTrace();
                     System.out.println("---add-error---" + d.getId() + "----" + d.getUrl());
                 }
             }

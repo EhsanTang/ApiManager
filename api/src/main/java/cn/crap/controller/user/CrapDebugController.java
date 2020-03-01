@@ -117,7 +117,7 @@ public class CrapDebugController extends BaseController {
 
             // 更新接口
             totalNum = addDebug(projectId, modulePOMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
-            if (totalNum > 200) {
+            if (totalNum > 120) {
                 log.error("sync addDebug error, totalNum:" + totalNum);
                 return new JsonResult(MyError.E000058);
             }

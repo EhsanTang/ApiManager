@@ -218,9 +218,8 @@ public class SystemService {
                 " FROM project p join user u on p.userId=u.id ON DUPLICATE KEY UPDATE type=1");
 
         CHANGE_SQL_MAP.put(91, "ALTER TABLE `interface` CHANGE `url` `url` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT 'api链接'");
-
-
-
+        CHANGE_SQL_MAP.put(92, "ALTER TABLE `interface` DROP INDEX `Index_fullUrl`");
+        CHANGE_SQL_MAP.put(93, "ALTER TABLE `interface` CHANGE `fullUrl` `fullUrl` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
 
     }
 

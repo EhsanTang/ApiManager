@@ -118,6 +118,7 @@ public class CrapDebugController extends BaseController {
             // 更新接口
             totalNum = addDebug(projectId, modulePOMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
             if (totalNum > 100) {
+                log.error("sync addDebug error, totalNum:" + totalNum);
                 return new JsonResult(MyError.E000058);
             }
         }
@@ -193,8 +194,6 @@ public class CrapDebugController extends BaseController {
                 }
 
                 String uniKey = debug.getUniKey() == null ? debug.getId() : debug.getUniKey();
-                log.error("addDebug name:" + debug.getName() + ",uniKey" + uniKey);
-
                 InterfaceWithBLOBs old = interfaceService.getByUniKey(moduleId, uniKey);
                 if (old != null){
                     if (old.getVersionNum() >= debug.getVersion()){
@@ -204,6 +203,7 @@ public class CrapDebugController extends BaseController {
 
                     debug.setStatus(old.getStatus());
                     debug.setUid(user.getId());
+                    log.error("updateDebug id:" + debug.getId() + ",uniKey:" + uniKey);
                     interfaceService.update(DebugAdapter.getInterfaceByDebug(module, old, debug));
                     continue;
                 }
@@ -212,6 +212,7 @@ public class CrapDebugController extends BaseController {
                 old.setModuleId(moduleId);
                 old.setUniKey(uniKey);
 
+                log.error("addDebug id:" + debug.getId() + ",uniKey:" + uniKey);
                 interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, old, debug));
                 totalNum = totalNum + 1;
             } catch (Exception e) {

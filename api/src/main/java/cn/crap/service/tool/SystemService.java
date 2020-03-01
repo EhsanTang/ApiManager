@@ -206,6 +206,8 @@ public class SystemService {
         CHANGE_SQL_MAP.put(80, "ALTER TABLE `interface` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
         CHANGE_SQL_MAP.put(81, "update interface set uniKey=id");
         CHANGE_SQL_MAP.put(82, "ALTER TABLE `interface` ADD UNIQUE INDEX `uk_module_key` (`moduleId`, `uniKey`)");
+        CHANGE_SQL_MAP.put(83, "update module set uniKey=substring_index(id,'-', 3) where id like '%-%' and  projectId like '%-debug'");
+
         CHANGE_SQL_MAP.put(84, "ALTER TABLE `module` CHANGE `version` `versionNum` INT(11)  NOT NULL  DEFAULT '0'");
 
         CHANGE_SQL_MAP.put(85, "ALTER TABLE `project_user` ADD `type` TINYINT  NOT NULL  DEFAULT '2'  COMMENT '1管理员or创建人，2成员'");

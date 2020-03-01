@@ -1,7 +1,7 @@
 package cn.crap.service.tool;
 
 import cn.crap.beans.Config;
-import cn.crap.model.Module;
+import cn.crap.model.ModulePO;
 import cn.crap.service.ModuleService;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service("moduleCache")
 public class ModuleCache{
-	private static Cache<String, Module> cache;
+	private static Cache<String, ModulePO> cache;
 	public static final String CACHE_PREFIX = "module:";
 
 	@Autowired
 	private ModuleService moduleService;
 
-	public Cache<String, Module> getCache(){
+	public Cache<String, ModulePO> getCache(){
 		if (cache == null) {
 			cache = CacheBuilder.newBuilder()
 					.initialCapacity(10)
@@ -31,29 +31,29 @@ public class ModuleCache{
 		return cache;
 	}
 	
-	public Module get(String moduleId){
+	public ModulePO get(String moduleId){
 		if(MyString.isEmpty(moduleId)){
-			Module module = new Module();
+			ModulePO module = new ModulePO();
 			module.setUrl("");
 			return module;
 		}
 
 		String cacheKey = assembleKey(moduleId);
-		Module module = getCache().getIfPresent(cacheKey);
+		ModulePO module = getCache().getIfPresent(cacheKey);
 		if(module != null){
 			return module;
 		}
 
-		module = moduleService.getById(moduleId);
+		module = moduleService.get(moduleId);
 		if(module == null) {
-			module = new Module();
+			module = new ModulePO();
 			module.setUrl("");
 			return module;
 		}
 
 		getCache().put(cacheKey, module);
 		//内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
-		Module p = new Module();
+		ModulePO p = new ModulePO();
 		BeanUtils.copyProperties(module, p);
 		return p;
 	}

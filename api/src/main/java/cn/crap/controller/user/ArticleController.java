@@ -10,8 +10,8 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ArticleQuery;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
@@ -52,8 +52,8 @@ public class ArticleController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException {
-		Project project = getProject(query);
-		Module module = getModule(query);
+		ProjectPO project = getProject(query);
+		ModulePO module = getModule(query);
 		checkPermission(project, ProjectPermissionEnum.READ);
 
 		Page page = new Page(query);
@@ -69,8 +69,8 @@ public class ArticleController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, @ModelAttribute ArticleQuery query) throws MyException {
-		Project project = getProject(query);
-		Module module = getModule(query);
+		ProjectPO project = getProject(query);
+		ModulePO module = getModule(query);
 		ArticleWithBLOBs article = new ArticleWithBLOBs();
 		if (id != null) {
 			article = articleService.getById(id);
@@ -100,7 +100,7 @@ public class ArticleController extends BaseController {
 
 		String id = dto.getId();
 		String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
-		Project newProject = projectCache.get(newProjectId);
+		ProjectPO newProject = projectCache.get(newProjectId);
 		dto.setProjectId(newProjectId);
 
 		ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
@@ -161,7 +161,7 @@ public class ArticleController extends BaseController {
 				continue;
 			}
 			Article model = articleService.getById(tempId);
-			Project project = projectCache.get(model.getProjectId());
+			ProjectPO project = projectCache.get(model.getProjectId());
 			checkPermission(project, model.getType().equals(ArticleType.ARTICLE.name()) ? ProjectPermissionEnum.DEL_ARTICLE : ProjectPermissionEnum.DEL_DICT);
 
 			if (model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)) {
@@ -197,7 +197,7 @@ public class ArticleController extends BaseController {
 		} else {
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
-		Module module = moduleCache.get(moduleId);
+		ModulePO module = moduleCache.get(moduleId);
 		checkPermission(projectCache.get(module.getProjectId()), ProjectPermissionEnum.READ);
 
 		article.setProjectId(module.getProjectId());

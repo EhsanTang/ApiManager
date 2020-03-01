@@ -5,8 +5,8 @@ import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.BaseQuery;
 import cn.crap.query.ProjectUserQuery;
@@ -46,12 +46,12 @@ public abstract class BaseController implements IConst, ISetting {
     @Resource(name = "objectCache")
     protected ObjectCache objectCache;
 
-    protected Project getProject(BaseQuery query){
+    protected ProjectPO getProject(BaseQuery query){
         Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
                 || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
         if (MyString.isNotEmptyOrNUll(query.getModuleId())){
-            Module module = moduleCache.get(query.getModuleId());
+            ModulePO module = moduleCache.get(query.getModuleId());
             return projectCache.get(module.getProjectId());
         }
 
@@ -72,7 +72,7 @@ public abstract class BaseController implements IConst, ISetting {
         return projectId;
     }
 
-    protected Project getProject(String projectId, String moduleId){
+    protected ProjectPO getProject(String projectId, String moduleId){
         Assert.isTrue(MyString.isNotEmptyOrNUll(projectId)
                 || MyString.isNotEmptyOrNUll(moduleId), "projectId、moduleId不能同时为空");
 
@@ -82,9 +82,9 @@ public abstract class BaseController implements IConst, ISetting {
         return projectCache.get(projectId);
     }
 
-    protected Module getModule(BaseQuery query){
+    protected ModulePO getModule(BaseQuery query){
         if (query.getModuleId() != null){
-            Module module = moduleCache.get(query.getModuleId());
+            ModulePO module = moduleCache.get(query.getModuleId());
             return module.getId() == null ? null : module;
         }
         return null;
@@ -196,11 +196,11 @@ public abstract class BaseController implements IConst, ISetting {
      * @param project
      * @throws MyException
      */
-    protected void checkPermission(Project project) throws MyException {
+    protected void checkPermission(ProjectPO project) throws MyException {
         PermissionUtil.checkPermission(project, ProjectPermissionEnum.MY_DATE);
     }
 
-    protected void checkPermission(Project project, ProjectPermissionEnum type) throws MyException {
+    protected void checkPermission(ProjectPO project, ProjectPermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(project, type);
     }
 
@@ -285,7 +285,7 @@ public abstract class BaseController implements IConst, ISetting {
      * @param project
      * @throws MyException
      */
-    protected void checkFrontPermission(String inputPassword, String visitCode, Project project) throws MyException {
+    protected void checkFrontPermission(String inputPassword, String visitCode, ProjectPO project) throws MyException {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         if (project.getType() == ProjectType.PRIVATE.getType()) {
             LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);

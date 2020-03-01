@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import cn.crap.beans.Config;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
@@ -192,6 +191,42 @@ public class SystemService {
 
         CHANGE_SQL_MAP.put(69, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '登陆背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'LOGINBG';");
         CHANGE_SQL_MAP.put(70, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '头部标题搜索背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'TITLEBG';");
+        CHANGE_SQL_MAP.put(71, "ALTER TABLE `interface` ADD INDEX `index_pro` (`projectId`)");
+        CHANGE_SQL_MAP.put(72, "ALTER TABLE `article` ADD INDEX `index_pro` (`projectId`)");
+        CHANGE_SQL_MAP.put(73, "ALTER TABLE `interface` ADD `versionNum` INT  UNSIGNED  NOT NULL  COMMENT '版本'  AFTER `contentType`");
+
+        CHANGE_SQL_MAP.put(74, "ALTER TABLE `project` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(75, "update project set uniKey=id");
+        CHANGE_SQL_MAP.put(76, "ALTER TABLE `project` ADD UNIQUE INDEX `uk_user_key` (`userId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(77, "ALTER TABLE `module` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(78, "update module set uniKey=id");
+        CHANGE_SQL_MAP.put(79, "ALTER TABLE `module` ADD UNIQUE INDEX `uk_project_key` (`projectId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(80, "ALTER TABLE `interface` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(81, "update interface set uniKey=id");
+        CHANGE_SQL_MAP.put(82, "ALTER TABLE `interface` ADD UNIQUE INDEX `uk_module_key` (`moduleId`, `uniKey`)");
+        CHANGE_SQL_MAP.put(83, "update module set uniKey=substring_index(id,'-', 3) where id like '%-%' and  projectId like '%-debug'");
+
+        CHANGE_SQL_MAP.put(84, "ALTER TABLE `module` CHANGE `version` `versionNum` INT(11)  NOT NULL  DEFAULT '0'");
+
+        CHANGE_SQL_MAP.put(85, "ALTER TABLE `project_user` ADD `type` TINYINT  NOT NULL  DEFAULT '2'  COMMENT '1管理员or创建人，2成员'");
+        CHANGE_SQL_MAP.put(86, "ALTER TABLE `project_user` ADD INDEX `idx_uid_type_seq` (`userId`, `type`, `sequence`)");
+        CHANGE_SQL_MAP.put(87, "ALTER TABLE `project_user` DROP INDEX `index_uid_seq_time`");
+        CHANGE_SQL_MAP.put(88, "ALTER TABLE `project_user` ADD INDEX `idx_uid_seq` (`userId`, `sequence`)");
+        CHANGE_SQL_MAP.put(89, "ALTER TABLE `project_user` ADD UNIQUE INDEX `uk_pro_uid` (`projectId`, `userId`)");
+        CHANGE_SQL_MAP.put(90, "INSERT INTO project_user(id,status,sequence,createTime,projectId,userId,userEmail,userName,permission,type) " +
+                " SELECT p.id,1,unix_timestamp(now())*1000,now(),p.id,p.userId,u.email,u.userName,',modInter,addInter,modModule,addModule,modError,addError,modArticle,addArticle,modDict,addDict,modBug,addBug,delBug,modSource,addSource,modEnv,addEnv,delEnv,',1 " +
+                " FROM project p join user u on p.userId=u.id ON DUPLICATE KEY UPDATE type=1");
+
+        CHANGE_SQL_MAP.put(91, "ALTER TABLE `interface` CHANGE `url` `url` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT 'api链接'");
+        CHANGE_SQL_MAP.put(92, "ALTER TABLE `interface` DROP INDEX `Index_fullUrl`");
+        CHANGE_SQL_MAP.put(93, "ALTER TABLE `interface` CHANGE `fullUrl` `fullUrl` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
+        CHANGE_SQL_MAP.put(94, "ALTER TABLE `project` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
+
+        CHANGE_SQL_MAP.put(95, "ALTER TABLE `module` CHANGE `url` `url` VARCHAR(100)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '模块地址'");
+        CHANGE_SQL_MAP.put(96, "ALTER TABLE `module` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
+        CHANGE_SQL_MAP.put(97, "ALTER TABLE `module` CHANGE `category` `category` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字'");
     }
 
     /**

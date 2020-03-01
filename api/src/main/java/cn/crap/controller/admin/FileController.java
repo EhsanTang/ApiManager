@@ -118,10 +118,10 @@ public class FileController extends BaseController{
     @RequestMapping(value="/user/file/uploadAllToAliyun.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
-    public void updateAllFileToAliyun(){
+    public void updateAllFileToAliyun(String path){
         OSSClient client = null;
         try {
-            String basePath = Tools.getServicePath() + "resources/upload";
+            String basePath = Tools.getServicePath() + "resources/" + path;
             ClientConfiguration conf = new ClientConfiguration();
             conf.setConnectionTimeout(1000);
             conf.setSocketTimeout(1000);

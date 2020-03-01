@@ -106,9 +106,19 @@
     <c:forEach items="${menuList}" var="menuDto" varStatus="id">
         <c:if test="${menuDto.menu.type=='FUNCTION'}">
             <div class="col-xs-3 tc h200 f20 mt10">
-                <div class="h80 lh80 C555 f30 adorn-color">${menuDto.menu.iconRemark}</div>
-                <!--href="${menuDto.menu.menuUrl}"-->
-                <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
+                <c:if test="${menuDto.menu.menuUrl!=null && menuDto.menu.menuUrl !=''}">
+                    <div class="h80 lh80 C555 f30 adorn-color">
+                        <a class="adorn-color" target="_blank" href="${menuDto.menu.menuUrl}">${menuDto.menu.iconRemark}</a>
+                    </div>
+                    <a target="_blank" href="${menuDto.menu.menuUrl}" class="f14 C000 lh26 p15 tc break-word fw200">${menuDto.menu.menuName}</a>
+                </c:if>
+
+                <c:if test="${menuDto.menu.menuUrl==null || menuDto.menu.menuUrl ==''}">
+                    <div class="h80 lh80 C555 f30 adorn-color">
+                        ${menuDto.menu.iconRemark}
+                    </div>
+                    <span class="f14 C000 lh26 p15 tc break-word fw200" >${menuDto.menu.menuName}</span>
+                </c:if>
             </div>
         </c:if>
     </c:forEach>
@@ -139,16 +149,18 @@
     <div class="container p0">
         <div class="row p0">
             <div class="col-xs-8">
-                <img src="${imgPrefix}resources/images/transparent.png" id="example-pic2"
-                     imgSrc="${imgPrefix}resources/images/example2.jpg" class="w shadow mb20">
+                <a class="adorn-color" target="_blank" href="http://api.crap.cn/index.do#/article/detail?projectId=help&moduleId=155032424248009000006&type=ARTICLE&id=155037947655301000051">
+                    <img src="${imgPrefix}resources/images/transparent.png" id="example-pic2"
+                         imgSrc="${imgPrefix}resources/images/example2.jpg" class="w shadow mb20">
+                </a>
             </div>
             <div class="col-xs-4">
                 <div class="tc f20 mb20 mt30 fw400">
                     <a class="adorn-color" target="_blank" href="http://api.crap.cn/index.do#/article/detail?projectId=help&moduleId=155032424248009000006&type=ARTICLE&id=155037947655301000051">接口调试插件</a>
                 </div>
                 <div class="tc mt30 f12 C555 lh30">
-                    谷歌浏览器调试插件，支持post、get、put、自定义json调试<br/>
-                    支持调试数据保存，支持历史记录查看
+                    谷歌浏览器插件，支持post、get、put、自定义json调试<br/>
+                    支持调试数据保存，支持历史记录查看，中英双语
                 </div>
             </div>
         </div>

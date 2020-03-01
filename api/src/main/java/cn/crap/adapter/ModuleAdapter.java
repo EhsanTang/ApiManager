@@ -1,9 +1,9 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ModuleDto;
+import cn.crap.dto.ModuleDTO;
 import cn.crap.model.Interface;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.Tools;
@@ -20,12 +20,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ModuleAdapter {
-    public static ModuleDto getDto(Module model, Project project, Interface templeteInterface){
+    public static ModuleDTO getDto(ModulePO model, ProjectPO project, Interface templeteInterface){
         if (model == null){
             return null;
         }
 
-        ModuleDto dto = new ModuleDto();
+        ModuleDTO dto = new ModuleDTO();
         BeanUtil.copyProperties(model, dto);
 
         if (model.getCreateTime() != null) {
@@ -46,11 +46,11 @@ public class ModuleAdapter {
         return dto;
     }
 
-    public static Module getModel(ModuleDto dto){
+    public static ModulePO getModel(ModuleDTO dto){
         if (dto == null){
             return null;
         }
-        Module model = new Module();
+        ModulePO model = new ModulePO();
         model.setId(dto.getId());
 		model.setName(dto.getName());
 		model.setSequence(dto.getSequence());
@@ -61,12 +61,12 @@ public class ModuleAdapter {
         return model;
     }
 
-    public static List<ModuleDto> getDto(List<Module> models, Project project){
+    public static List<ModuleDTO> getDto(List<ModulePO> models, ProjectPO project){
         if (CollectionUtils.isEmpty(models)){
             return new ArrayList<>();
         }
-        List<ModuleDto> dtos = new ArrayList<>();
-        for (Module model : models){
+        List<ModuleDTO> dtos = new ArrayList<>();
+        for (ModulePO model : models){
             dtos.add(getDto(model, project, null));
         }
         return dtos;

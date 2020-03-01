@@ -37,7 +37,7 @@
     </sql>
 
     <!-- 新增 -->
-    <insert id="insert" parameterType="cn.crap.model.ProjectUserPO">
+    <insert id="insert" parameterType="cn.crap.model.ProjectMetaPO">
         insert into project_meta (
         <include refid="baseColumn"/>
         )
@@ -51,7 +51,7 @@
 
 
     <!-- 更新 -->
-    <update id="update" parameterType="cn.crap.model.ProjectUserPO">
+    <update id="update" parameterType="cn.crap.model.ProjectMetaPO">
         update project_meta
         <set>
             <if test="attributes != null">

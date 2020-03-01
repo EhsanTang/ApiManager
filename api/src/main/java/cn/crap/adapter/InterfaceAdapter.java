@@ -6,8 +6,8 @@ import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.model.Interface;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
@@ -38,7 +38,7 @@ public class InterfaceAdapter {
         model.setSequence(System.currentTimeMillis());
         return model;
     }
-    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, Module module, Project project, boolean escape){
+    public static InterfaceDto getDtoWithBLOBs(InterfaceWithBLOBs model, ModulePO module, ProjectPO project, boolean escape){
         if (model == null){
             return null;
         }
@@ -95,7 +95,7 @@ public class InterfaceAdapter {
         return dto;
     }
 
-	public static InterfaceDto getDto(Interface model, Module module, Project project, boolean escape){
+	public static InterfaceDto getDto(Interface model, ModulePO module, ProjectPO project, boolean escape){
 		if (model == null){
 			return null;
 		}
@@ -181,7 +181,7 @@ public class InterfaceAdapter {
         return dtos;
     }
 
-	public static List<InterfaceDto> getDtoWithBLOBs(List<InterfaceWithBLOBs> models, Module module, Project project){
+	public static List<InterfaceDto> getDtoWithBLOBs(List<InterfaceWithBLOBs> models, ModulePO module, ProjectPO project){
 		if (models == null){
 			return new ArrayList<>();
 		}
@@ -191,7 +191,7 @@ public class InterfaceAdapter {
 		}
 		return dtos;
 	}
-	public static List<InterfaceDto> getDto(List<Interface> models, Module module, Project project){
+	public static List<InterfaceDto> getDto(List<Interface> models, ModulePO module, ProjectPO project){
 		if (models == null){
 			return new ArrayList<>();
 		}
@@ -218,7 +218,7 @@ public class InterfaceAdapter {
 	}
 
 	public static SearchDto getSearchDto(InterfaceWithBLOBs model){
-		Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+		ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
 		boolean open = false;
 		if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
 			open = true;

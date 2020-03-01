@@ -1,26 +1,31 @@
 package cn.crap.query;
 
-import cn.crap.framework.MyException;
-import cn.crap.utils.SafetyUtil;
+import lombok.Getter;
 
 /**
  * @author Ehsan
  * @date 2018/6/30 14:17
  */
 public class ProjectUserQuery extends BaseQuery<ProjectUserQuery>{
+    @Getter
     private String userId;
+
+    @Getter
+    private Byte type;
 
     @Override
     public ProjectUserQuery getQuery(){
         return this;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public ProjectUserQuery setUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    public ProjectUserQuery setType(Byte type) {
+        this.type = type;
         return this;
     }
 }

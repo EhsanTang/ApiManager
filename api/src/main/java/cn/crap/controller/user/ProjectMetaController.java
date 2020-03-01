@@ -8,8 +8,8 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectMetaPO;
 import cn.crap.query.ProjectMetaQuery;
 import cn.crap.service.ProjectMetaService;
@@ -60,8 +60,8 @@ public class ProjectMetaController extends BaseController{
     @AuthPassport
 	public JsonResult detail(String id, @ModelAttribute ProjectMetaQuery query) throws MyException{
         ProjectMetaPO projectMeta;
-        Project project;
-        Module module = null;
+        ProjectPO project;
+        ModulePO module = null;
         if (id != null) {
             projectMeta = projectMetaService.get(id);
             project = projectCache.get(projectMeta.getProjectId());

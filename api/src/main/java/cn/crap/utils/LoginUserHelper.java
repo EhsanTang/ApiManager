@@ -5,7 +5,7 @@ import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.service.tool.UserCache;
 import org.springframework.util.Assert;
 
@@ -117,7 +117,7 @@ public class LoginUserHelper implements IConst{
      * @return
      * @throws MyException
      */
-    public static boolean isAdminOrProjectOwner(Project project) throws MyException {
+    public static boolean isAdminOrProjectOwner(ProjectPO project) throws MyException {
         Assert.notNull(project);
         LoginInfoDto user = LoginUserHelper.getUser(MyError.E000003);
         if( user != null && (","+user.getAuthStr()).indexOf(","+ C_SUPER +",")>=0){

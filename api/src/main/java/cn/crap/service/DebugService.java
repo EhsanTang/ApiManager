@@ -73,6 +73,10 @@ public class DebugService extends BaseService<Debug, DebugDao> {
         if (query.getUserId() != null){
             criteria.andUidEqualTo(query.getUserId());
         }
+
+        Page page = new Page(query);
+        example.setLimitStart(page.getStart());
+        example.setMaxResults(page.getSize());
         return example;
     }
 

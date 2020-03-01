@@ -1,18 +1,14 @@
 package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
-import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomProjectDao;
 import cn.crap.dao.mybatis.ProjectDao;
-import cn.crap.dto.ProjectDto;
-import cn.crap.enu.LogType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.SettingEnum;
-import cn.crap.enu.TableId;
+import cn.crap.dto.ProjectDTO;
+import cn.crap.enu.*;
+import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
-import cn.crap.model.Project;
-import cn.crap.model.ProjectCriteria;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.tool.SettingCache;
 import cn.crap.utils.*;
@@ -25,7 +21,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class ProjectService extends BaseService<Project, ProjectDao> implements ILogConst, IConst {
+public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> implements ILogConst, IConst {
     @Autowired
     private LogService logService;
     @Autowired
@@ -42,17 +38,28 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
 
     /**
      * 添加
-     *
      * @param project
      * @return
      */
     @Override
-    public boolean insert(Project project) throws MyException{
+    public boolean insert(ProjectPO project) throws Exception{
         if (project == null) {
             return false;
         }
         if (MyString.isNotEmpty(project.getPassword())) {
             project.setPassword(MD5.encrytMD5(project.getPassword(), project.getId()));
+        }
+
+        if (project.getStatus() == null){
+            project.setStatus(ProjectStatus.COMMON.getStatus());
+        }
+
+        if (project.getType() == null){
+            project.setType(ProjectType.PRIVATE.getByteType());
+        }
+
+        if (project.getUniKey() == null){
+            project.setUniKey(IdGenerator.getId(TableId.PROJECT));
         }
 
         if (MyString.isEmpty(project.getCover())){
@@ -65,9 +72,9 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
      * 记录日志，再更新
      * @param project
      */
-    public boolean update(Project project, boolean needAddLog) throws MyException{
+    public boolean update(ProjectPO project, boolean needAddLog) throws MyException{
         if (needAddLog) {
-            Project dbModel = super.getById(project.getId());
+            ProjectPO dbModel = super.get(project.getId());
             Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.UPDATE, dbModel.getClass(), dbModel);
             logService.insert(log);
         }
@@ -90,7 +97,7 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
     @Override
     public boolean delete(String id) throws MyException{
         Assert.notNull(id);
-        Project dbModel = super.getById(id);
+        ProjectPO dbModel = super.get(id);
 
         Log log = Adapter.getLog(dbModel.getId(), L_PROJECT_CHINESE, dbModel.getName(), LogType.DELTET, dbModel.getClass(), dbModel);
         logService.insert(log);
@@ -98,60 +105,8 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
         return super.delete(id);
     }
 
-    /**
-     * 查询项目
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public List<Project> query(ProjectQuery query) throws MyException {
-        Assert.notNull(query);
 
-        Page page = new Page(query);
-        ProjectCriteria example = getProjectCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-        example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
-
-        return projectDao.selectByExample(example);
-    }
-
-    /**
-     * 查询项目数量
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public int count(ProjectQuery query) throws MyException {
-        Assert.notNull(query);
-
-        ProjectCriteria example = getProjectCriteria(query);
-        return projectDao.countByExample(example);
-    }
-
-    private ProjectCriteria getProjectCriteria(ProjectQuery query) throws MyException {
-        ProjectCriteria example = new ProjectCriteria();
-        ProjectCriteria.Criteria criteria = example.createCriteria();
-        if (query.getName() != null) {
-            criteria.andNameLike("%" + query.getName() + "%");
-        }
-        if (query.getStatus() != null) {
-            criteria.andStatusEqualTo(query.getStatus());
-        }
-        if (query.getUserId() != null) {
-            criteria.andUserIdEqualTo(query.getUserId());
-        }
-        return example;
-    }
-
-    /**
-     * 根据用户ID查询所有该用户加入的项目、创建的项目
-     */
-//    public List<String> queryMyProjectIdByUserId(String userId) {
-//        Assert.notNull(userId, "userId can't be null");
-//        return customMapper.queryProjectIdByUserId(userId);
-//    }
-    public List<Project> query(String userId, boolean onlyJoin, String name, Page page) {
+    public List<ProjectPO> query(String userId, boolean onlyJoin, String name, Page page) {
         Assert.notNull(userId, "userId can't be null");
         return customMapper.queryProjectByUserId(userId, onlyJoin, name, page);
     }
@@ -161,13 +116,12 @@ public class ProjectService extends BaseService<Project, ProjectDao> implements 
         return customMapper.countProjectByUserId(userId, onlyJoin, name);
     }
 
-
     /**
      * 获取邀请将入的链接
      * @param projectDto
      * @return
      */
-    public String getInviteUrl(ProjectDto projectDto) throws MyException {
+    public String getInviteUrl(ProjectDTO projectDto) throws MyException {
         Assert.notNull(projectDto);
         if (LoginUserHelper.getUser().getId().equals(projectDto.getUserId())) {
             return settingCache.getDomain() + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());

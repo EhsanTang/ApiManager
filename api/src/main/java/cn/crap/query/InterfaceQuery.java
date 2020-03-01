@@ -14,6 +14,7 @@ public class InterfaceQuery extends BaseQuery<InterfaceQuery>{
     private String equalFullUrl;
     private String exceptVersion;
     private String equalInterfaceName;
+    private String uniKey;
 
     @Override
     public InterfaceQuery getQuery(){
@@ -72,6 +73,15 @@ public class InterfaceQuery extends BaseQuery<InterfaceQuery>{
 
     public InterfaceQuery setEqualInterfaceName(String equalInterfaceName) {
         this.equalInterfaceName = equalInterfaceName;
+        return this;
+    }
+
+    public String getUniKey() {
+        return uniKey;
+    }
+
+    public InterfaceQuery setUniKey(String uniKey) {
+        this.uniKey = uniKey;
         return this;
     }
 }

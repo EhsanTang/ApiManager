@@ -4,8 +4,8 @@ import cn.crap.dto.BugDTO;
 import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.model.BugPO;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
@@ -23,7 +23,7 @@ import java.util.Optional;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class BugAdapter {
-    public static BugDTO getDto(BugPO model, Module module, Project project){
+    public static BugDTO getDto(BugPO model, ModulePO module, ProjectPO project){
         if (model == null){
             return null;
         }
@@ -56,7 +56,7 @@ public class BugAdapter {
     }
 
 
-    public static BugDTO getDTO(Project project, Module module){
+    public static BugDTO getDTO(ProjectPO project, ModulePO module){
         Assert.notNull(project, "project 不能为空");
         BugPO bugPO = new BugPO();
         bugPO.setType(BugType.FUNCTION.getByteValue());
@@ -110,7 +110,7 @@ public class BugAdapter {
     }
 
     public static SearchDto getSearchDto(BugPO model){
-        Project project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+        ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
         boolean open = false;
         if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
             open = true;

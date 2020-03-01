@@ -5,8 +5,8 @@ import cn.crap.dto.SourceDto;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.Source;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.SourceService;
@@ -31,7 +31,7 @@ public class SourceController extends BaseController {
     @ResponseBody
     public JsonResult webDetail(String id, String password, String visitCode) throws MyException {
         Source model = sourceService.getById(id);
-        Project project = projectCache.get(model.getProjectId());
+        ProjectPO project = projectCache.get(model.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
         return new JsonResult(1, model);
@@ -40,8 +40,8 @@ public class SourceController extends BaseController {
     @RequestMapping("/list.do")
     @ResponseBody
     public JsonResult webList(@ModelAttribute SourceQuery query, String password, String visitCode) throws MyException {
-        Module module = moduleCache.get(query.getModuleId());
-        Project project = projectCache.get(module.getProjectId());
+        ModulePO module = moduleCache.get(query.getModuleId());
+        ProjectPO project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
 

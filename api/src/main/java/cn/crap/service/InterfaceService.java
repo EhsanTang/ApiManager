@@ -7,6 +7,7 @@ import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enu.LogType;
 import cn.crap.enu.TableId;
+import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
@@ -20,6 +21,7 @@ import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -45,10 +47,27 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         super.setBaseDao(interfaceDao, TableId.INTERFACE);
     }
 
+    public InterfaceWithBLOBs getByUniKey(String moduleId, String uniKey) throws Exception{
+        Assert.notNull(moduleId, "moduleId");
+        Assert.notNull(uniKey, "uniKey");
+
+        List<InterfaceWithBLOBs> interfaces = queryAll(new InterfaceQuery().setModuleId(moduleId).setUniKey(uniKey));
+        return CollectionUtils.isEmpty(interfaces) ? null : interfaces.get(0);
+    }
+
     @Override
     public boolean insert(InterfaceWithBLOBs model) throws MyException{
         if (model == null) {
             return false;
+        }
+
+        // TODO 提取到公共内
+        if (model.getVersionNum() == null){
+            model.setVersionNum(0);
+        }
+
+        if (model.getUniKey() == null){
+            model.setUniKey(IdGenerator.getId(TableId.INTERFACE));
         }
 
         if (model.getIsTemplate() == null){
@@ -141,6 +160,9 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (query.getExceptVersion() != null) {
             criteria.andVersionNotEqualTo(query.getExceptVersion());
         }
+        if (query.getUniKey() != null) {
+            criteria.andUniKeyEqualTo(query.getUniKey());
+        }
 
         return example;
     }
@@ -151,7 +173,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      * @param escape 是否需要处理字符内容
      * @return
      */
-    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, Module module, boolean escape, boolean isPdf) {
+    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, ModulePO module, boolean escape, boolean isPdf) {
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, escape));
 
@@ -237,7 +259,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
-
+        model.setVersionNum(dbModel.getVersionNum() + 1);
         super.update(model);
     }
 
@@ -270,7 +292,16 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     public void  deleteTemplateByModuleId(String moduleId){
         Assert.notNull(moduleId);
         customInterfaceMapper.deleteTemplateByModuleId(moduleId);
+    }
 
+    public void  deleteByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteByModuleId(moduleId);
+    }
+
+    public void  deleteByModuleId(String moduleId, List<String> uniKeyList){
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteByModuleId(moduleId, uniKeyList);
     }
 
     @Override

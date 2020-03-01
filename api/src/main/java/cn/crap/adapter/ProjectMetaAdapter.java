@@ -2,7 +2,7 @@ package cn.crap.adapter;
 
 import cn.crap.dto.ProjectMetaDTO;
 import cn.crap.enu.ProjectMetaType;
-import cn.crap.model.Module;
+import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectMetaPO;
 import cn.crap.utils.AttributeUtils;
 import cn.crap.utils.BeanUtil;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 public class ProjectMetaAdapter {
-    public static ProjectMetaDTO getDto(ProjectMetaPO po, Module module){
+    public static ProjectMetaDTO getDto(ProjectMetaPO po, ModulePO module){
         if (po == null){
             return null;
         }

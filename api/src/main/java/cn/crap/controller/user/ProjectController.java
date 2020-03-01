@@ -1,21 +1,19 @@
 package cn.crap.controller.user;
 
+import cn.crap.ability.ProjectAbility;
 import cn.crap.adapter.ProjectAdapter;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ProjectDto;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.*;
 import cn.crap.service.*;
-import cn.crap.utils.LoginUserHelper;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -49,18 +47,22 @@ public class ProjectController extends BaseController {
     private ArticleService articleService;
     @Autowired
     private SourceService sourceService;
+    @Autowired
+    private ProjectAbility projectAbility;
 
     @RequestMapping("/list.do")
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute ProjectQuery query,
                            @RequestParam(defaultValue = "3") Integer projectShowType) throws MyException {
+        query.setPageSize(12);
         Page page = new Page(query);
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
-        List<Project> models;
+        List<ProjectPO> models;
 
         // 我创建 & 加入的项目
+        query.setSort(TableField.SORT.SEQUENCE_DESC);
         if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
             page.setAllRow(projectService.count(userId, false, query.getName()));
             models = projectService.query(userId, false, query.getName(), page);
@@ -75,14 +77,14 @@ public class ProjectController extends BaseController {
         // 管理员查看所有项目
         else if(ProjectShowType.ALL.getType() == projectShowType && user.getType() == UserType.ADMIN.getType()){
             page.setAllRow(projectService.count(query));
-            models = projectService.query(query);
+            models = projectService.select(query);
         }
 
         // 我创建的项目
         else {
             query.setUserId(userId);
             page.setAllRow(projectService.count(query));
-            models = projectService.query(query);
+            models = projectService.select(query);
         }
 
         return new JsonResult().page(page).data(ProjectAdapter.getDto(models, userService));
@@ -93,7 +95,7 @@ public class ProjectController extends BaseController {
     @AuthPassport
     public JsonResult detail(String id) throws MyException {
         if (MyString.isEmpty(id)) {
-            Project projectPO = new Project();
+            ProjectPO projectPO = new ProjectPO();
             projectPO.setType(ProjectType.PRIVATE.getByteType());
             projectPO.setStatus(ProjectStatus.COMMON.getStatus());
             projectPO.setLuceneSearch(CommonEnum.FALSE.getByteValue());
@@ -101,8 +103,8 @@ public class ProjectController extends BaseController {
             return new JsonResult(1, ProjectAdapter.getDto(projectPO, null));
         }
 
-        Project projectPO = projectService.getById(id);
-        ProjectDto dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
+        ProjectPO projectPO = projectService.get(id);
+        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();
@@ -145,12 +147,10 @@ public class ProjectController extends BaseController {
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult addOrUpdate(@ModelAttribute ProjectDto project) throws Exception {
+    public JsonResult addOrUpdate(@ModelAttribute ProjectDTO project) throws Exception {
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
         String projectId = project.getId();
-
-        checkCrapDebug(userId, projectId);
 
         // 私有项目不能建立索引
         if (project.getType() == ProjectType.PRIVATE.getType()) {
@@ -159,7 +159,7 @@ public class ProjectController extends BaseController {
 
         // 修改
         if (!MyString.isEmpty(projectId)) {
-            Project dbProject = projectCache.get(projectId);
+            ProjectPO dbProject = projectCache.get(projectId);
             checkPermission(dbProject);
 
             // 普通用户不能推荐项目，将项目类型修改为原有类型
@@ -183,14 +183,14 @@ public class ProjectController extends BaseController {
                 throw new MyException(MyError.E000068, maxProject + "");
             }
 
-            Project model = ProjectAdapter.getModel(project);
+            ProjectPO model = ProjectAdapter.getModel(project);
             model.setUserId(userId);
             model.setPassword(project.getPassword());
             // 普通用户不能推荐项目
-            if (LoginUserHelper.getUser().getType() == UserType.USER.getType()) {
+            if (user.getType() == UserType.USER.getType()) {
                 project.setStatus(Byte.valueOf(ProjectStatus.COMMON.getStatus() + ""));
             }
-            projectService.insert(model);
+            projectAbility.addProject(model, user);
         }
 
         // 清楚缓存
@@ -202,14 +202,13 @@ public class ProjectController extends BaseController {
     @RequestMapping("/delete.do")
     @ResponseBody
     @AuthPassport
-    public JsonResult delete(@ModelAttribute Project project) throws Exception {
+    public JsonResult delete(@ModelAttribute ProjectPO project) throws Exception {
         // 系统数据，不允许删除
         if (project.getId().equals("web")) {
             throw new MyException(MyError.E000009);
         }
-        checkCrapDebug(LoginUserHelper.getUser().getId(), project.getId());
 
-        Project model = projectCache.get(project.getId());
+        ProjectPO model = projectCache.get(project.getId());
         checkPermission(model);
 
 
@@ -237,8 +236,8 @@ public class ProjectController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult changeSequence(@RequestParam String id, @RequestParam String changeId) throws MyException {
-        Project change = projectCache.get(changeId);
-        Project model = projectCache.get(id);
+        ProjectPO change = projectCache.get(changeId);
+        ProjectPO model = projectCache.get(id);
 
         checkPermission(change);
         checkPermission(model);
@@ -257,7 +256,7 @@ public class ProjectController extends BaseController {
     @RequestMapping("/rebuildIndex.do")
     @AuthPassport
     public JsonResult rebuildIndex(@RequestParam String projectId) throws Exception {
-        Project model = projectCache.get(projectId);
+        ProjectPO model = projectCache.get(projectId);
         checkPermission(model);
         return new JsonResult(1, luceneService.rebuildByProjectId(projectId));
     }

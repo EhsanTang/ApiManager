@@ -1,5 +1,6 @@
 package cn.crap.dao.custom;
 
+import cn.crap.utils.SafetyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class CustomInterfaceDao {
 		jdbcTemplate.update("delete from interface where moduleId=?", moduleId);
 	}
 
-    public void deleteByModuleId(String moduleId, List<String> nuiKey){
+    public void deleteByModuleId(String moduleId, List<String> nuiKey) throws Exception{
         Assert.notNull(moduleId);
         if (CollectionUtils.isEmpty(nuiKey)){
         	return;
@@ -40,12 +41,15 @@ public class CustomInterfaceDao {
 		StringBuffer buf= new StringBuffer("delete from interface where moduleId=? and nuiKey in (");
 
 		for (int i=0; i< nuiKey.size(); i++) {
+			SafetyUtil.checkSqlParam(nuiKey.get(i));
+
 			if (i!=0) buf.append(",");
-			buf.append("?");
+
+			buf.append("'" + nuiKey.get(i) + "'");
 		}
 		buf.append(")");
 
-        jdbcTemplate.update(buf.toString(), moduleId, nuiKey);
+        jdbcTemplate.update(buf.toString(), moduleId);
     }
 
 }

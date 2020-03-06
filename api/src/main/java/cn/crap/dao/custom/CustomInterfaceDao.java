@@ -32,20 +32,20 @@ public class CustomInterfaceDao {
 		jdbcTemplate.update("delete from interface where moduleId=?", moduleId);
 	}
 
-    public void deleteByModuleId(String moduleId, List<String> nuiKey) throws Exception{
+    public void deleteByModuleId(String moduleId, List<String> uniKeys) throws Exception{
         Assert.notNull(moduleId);
-        if (CollectionUtils.isEmpty(nuiKey)){
+        if (CollectionUtils.isEmpty(uniKeys)){
         	return;
 		}
 
-		StringBuffer buf= new StringBuffer("delete from interface where moduleId=? and nuiKey in (");
+		StringBuffer buf= new StringBuffer("delete from interface where moduleId=? and uniKey in (");
 
-		for (int i=0; i< nuiKey.size(); i++) {
-			SafetyUtil.checkSqlParam(nuiKey.get(i));
+		for (int i=0; i< uniKeys.size(); i++) {
+			SafetyUtil.checkSqlParam(uniKeys.get(i));
 
 			if (i!=0) buf.append(",");
 
-			buf.append("'" + nuiKey.get(i) + "'");
+			buf.append("'" + uniKeys.get(i) + "'");
 		}
 		buf.append(")");
 

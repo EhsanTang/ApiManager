@@ -299,7 +299,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         customInterfaceMapper.deleteByModuleId(moduleId);
     }
 
-    public void  deleteByModuleId(String moduleId, List<String> uniKeyList){
+    public void  deleteByModuleId(String moduleId, List<String> uniKeyList) throws Exception{
         Assert.notNull(moduleId);
         customInterfaceMapper.deleteByModuleId(moduleId, uniKeyList);
     }

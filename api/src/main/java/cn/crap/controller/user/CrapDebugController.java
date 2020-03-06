@@ -224,7 +224,7 @@ public class CrapDebugController extends BaseController {
     }
 
 
-    private void deleteDebug(ModulePO module, DebugInterfaceParamDto moduleDTO) {
+    private void deleteDebug(ModulePO module, DebugInterfaceParamDto moduleDTO) throws Exception{
         Assert.notNull(module, "deleteDebug module is null");
         if (moduleDTO.getStatus() == -1) {
             return;

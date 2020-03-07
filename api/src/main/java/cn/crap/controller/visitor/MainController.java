@@ -90,6 +90,17 @@ public class MainController extends BaseController{
 	 * @return
 	 * @throws MyException
 	 */
+	@RequestMapping(value = "postwomanAdvert.htm")
+	public String postwomanAdvert(){
+		return "WEB-INF/views/postwomanAdvert.jsp";
+	}
+
+	/**
+	 * 插件首页
+	 * @param modelMap
+	 * @return
+	 * @throws MyException
+	 */
 	@RequestMapping(value = "plugDashboard.htm")
 	public String plugDashboard(ModelMap modelMap) throws MyException{
 		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();

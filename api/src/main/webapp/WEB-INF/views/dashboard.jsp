@@ -79,7 +79,7 @@
                             ${forkNum} Forks
                         </a>
                     </div>
-                    <div class="fr ml20">10k+ Users</div>
+                    <div class="fr ml20">10万+ Users</div>
                 </div>
             </div>
         </div>

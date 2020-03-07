@@ -47,14 +47,6 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         super.setBaseDao(interfaceDao, TableId.INTERFACE);
     }
 
-    public InterfaceWithBLOBs getByUniKey(String moduleId, String uniKey) throws Exception{
-        Assert.notNull(moduleId, "moduleId");
-        Assert.notNull(uniKey, "uniKey");
-
-        List<InterfaceWithBLOBs> interfaces = queryAll(new InterfaceQuery().setModuleId(moduleId).setUniKey(uniKey));
-        return CollectionUtils.isEmpty(interfaces) ? null : interfaces.get(0);
-    }
-
     @Override
     public boolean insert(InterfaceWithBLOBs model) throws MyException{
         if (model == null) {

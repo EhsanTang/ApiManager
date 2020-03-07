@@ -94,6 +94,7 @@ public class CrapDebugController extends BaseController {
                 continue;
             }
 
+            // TODO 批量查询
             ModulePO module = moduleService.getByUniKey(projectId, moduleUniKey);
             log.error("sync moduleUniKey:" + moduleUniKey);
 
@@ -169,7 +170,7 @@ public class CrapDebugController extends BaseController {
         return MD5.encrytMD5(user.getId(), "").substring(0, 20) + "-debug";
     }
 
-    private int addDebug(String projectId, ModulePO module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) {
+    private int addDebug(String projectId, ModulePO module, LoginInfoDto user, DebugInterfaceParamDto moduleDTO, int totalNum) throws MyException {
         if (module == null){
             return totalNum;
         }
@@ -180,6 +181,10 @@ public class CrapDebugController extends BaseController {
 
         String moduleId = module.getId();
         long debugSequence = System.currentTimeMillis();
+
+        Map<String, InterfaceWithBLOBs> interfaceMap = interfaceService.queryAll(new InterfaceQuery().setModuleId(moduleId))
+                .stream().collect(Collectors.toMap(InterfaceWithBLOBs::getUniKey, a -> a, (k1, k2) -> k1));
+
         for (DebugDto debug : moduleDTO.getDebugs()) {
             debugSequence = debugSequence - 1;
             debug.setSequence(debugSequence);
@@ -194,10 +199,10 @@ public class CrapDebugController extends BaseController {
                 }
 
                 String uniKey = debug.getUniKey() == null ? debug.getId() : debug.getUniKey();
-                InterfaceWithBLOBs old = interfaceService.getByUniKey(moduleId, uniKey);
+                InterfaceWithBLOBs old = interfaceMap.get(uniKey);
                 if (old != null){
                     if (old.getVersionNum() >= debug.getVersion()){
-                        log.error("addDebug ignore error name:" + debug.getName());
+                        log.error("addDebug ignore name:" + debug.getName());
                         continue;
                     }
 

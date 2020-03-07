@@ -86,7 +86,6 @@ public class MainController extends BaseController{
 
 	/**
 	 * 插件首页
-	 * @param modelMap
 	 * @return
 	 * @throws MyException
 	 */

@@ -10,9 +10,9 @@
     <meta name="description" content="postwoman 接口调试"/>
     <title>postwoman 接口调试</title>
 </head>
-<body>
+<body style="margin: 0px!important;">
 
-<div class="container BGFFF mb100 pb20">
+<div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- 首页广告 -->
     <ins class="adsbygoogle"

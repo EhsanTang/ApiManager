@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  */
 public class DebugAdapter {
     public static DebugDto getDtoFromInterface(ProjectPO project, Map<String, ModulePO> moduleMap, InterfaceWithBLOBs model){
-        if (model == null || moduleMap.get(model.getModuleId()) == null){
+        ModulePO modulePO = moduleMap.get(model.getModuleId());
+        if (model == null || modulePO == null){
             return null;
         }
 
@@ -70,11 +71,18 @@ public class DebugAdapter {
         dto.setUrl(model.getFullUrl());
         dto.setVersion(model.getVersionNum());
         dto.setName(model.getInterfaceName());
+
         dto.setId(model.getUniKey());
-        dto.setModuleId(moduleMap.get(model.getModuleId()).getUniKey());
-        dto.setModuleUniKey(moduleMap.get(model.getModuleId()).getUniKey());
+        dto.setModuleUniKey(modulePO.getUniKey());
+        dto.setModuleId(dto.getModuleUniKey());
         dto.setProjectUniKey(project.getUniKey());
+
         dto.setUid(project.getUserId());
+
+        dto.setWebId(model.getId());
+        dto.setWebModuleId(model.getModuleId());
+        dto.setWebProjectId(model.getProjectId());
+
         return dto;
     }
 

@@ -86,6 +86,16 @@ public class MainController extends BaseController{
 
 	/**
 	 * 插件首页
+	 * @return
+	 * @throws MyException
+	 */
+	@RequestMapping(value = "postwomanAdvert.htm")
+	public String postwomanAdvert(){
+		return "WEB-INF/views/postwomanAdvert.jsp";
+	}
+
+	/**
+	 * 插件首页
 	 * @param modelMap
 	 * @return
 	 * @throws MyException

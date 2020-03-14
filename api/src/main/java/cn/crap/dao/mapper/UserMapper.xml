@@ -127,6 +127,10 @@
       <if test="status != null">
         status = #{status},
       </if>
+      <if test="passwordSalt != null">
+        passwordSalt = #{passwordSalt},
+      </if>
+
     </set>
     where id=#{id}
   </update>

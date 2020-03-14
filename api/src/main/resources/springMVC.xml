@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:aop="http://www.springframework.org/schema/aop"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:mvc="http://www.springframework.org/schema/mvc"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	   xsi:schemaLocation="http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--	   xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--	   xmlns:context="http://www.springframework.org/schema/context"-->
+<!--	   xmlns:mvc="http://www.springframework.org/schema/mvc"-->
+<!--	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"-->
+<!--	   xsi:schemaLocation="http://www.springframework.org/schema/aop-->
+<!--        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd-->
+<!--        http://www.springframework.org/schema/beans-->
+<!--        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd-->
+<!--        http://www.springframework.org/schema/context-->
+<!--        http://www.springframework.org/schema/context/spring-context-3.0.xsd-->
+<!--        http://www.springframework.org/schema/mvc-->
+<!--        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd-->
 
 
-        http://www.springframework.org/schema/util 
-        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+<!--        http://www.springframework.org/schema/util-->
+<!--        http://www.springframework.org/schema/util/spring-util-3.0.xsd">-->
 	<!--注解扫描范围 -->
-	<context:annotation-config />
-	<mvc:annotation-driven/>
-	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+<!--	<context:annotation-config />-->
+<!--	<mvc:annotation-driven/>-->
+<!--	<aop:aspectj-autoproxy proxy-target-class="true"/> -->
 	<!-- 采用注解的方式配置，在部分操作系统或tomcat中由于初始化顺序不一致，会报错 -->
 	<!-- 必须放在component-scan之上，优先创建该bean -->
 	<bean class="cn.crap.framework.SpringContextHolder" />
-	<context:component-scan base-package="cn.crap" />
+<!--	<context:component-scan base-package="cn.crap" />-->
 	<!-- 定时任务
 	<import resource="monitor.xml" /> -->
 	<!-- <import resource="mongo.xml" /> -->
 	<import resource="mybatis-dao.xml" />
 	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<value>classpath:config.properties</value>
-		</property>
-		<property name="fileEncoding" value="utf-8"/>
-	</bean>
+<!--	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+<!--		<property name="locations">-->
+<!--			<value>classpath:config.properties</value>-->
+<!--		</property>-->
+<!--		<property name="fileEncoding" value="utf-8"/>-->
+<!--	</bean>-->
 
 	
-	<mvc:interceptors>
-		<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
-		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
-		<!-- 如果不定义 mvc:mapping path 将拦截所有的URL请求 -->
-		<bean class="cn.crap.framework.interceptor.AuthInterceptor"></bean>
-	</mvc:interceptors>
-	
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+<!--	<mvc:interceptors>-->
+<!--		&lt;!&ndash; 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 &ndash;&gt;-->
+<!--		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />-->
+<!--		&lt;!&ndash; 如果不定义 mvc:mapping path 将拦截所有的URL请求 &ndash;&gt;-->
+<!--		<bean class="cn.crap.framework.interceptor.AuthInterceptor"></bean>-->
+<!--	</mvc:interceptors>-->
+<!--	-->
+	<!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -61,12 +67,12 @@
 				<value>text/html;charset=UTF-8</value>
 			</list>
 		</property>
-	</bean>
+	</bean>-->
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"></property>
-		<!-- <property name="suffix" value=".jsp"></property> -->
-	</bean> 
+<!--	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+<!--		<property name="prefix" value="/"></property>-->
+<!--		&lt;!&ndash; <property name="suffix" value=".jsp"></property> &ndash;&gt;-->
+<!--	</bean> -->
 
  	<!-- 支持上传文件 -->  
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>

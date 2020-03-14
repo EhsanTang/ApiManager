@@ -1,0 +1,52 @@
+
+<blockquote>
+	<span class="pl10 C000 f18 fb">找回密码</span>
+</blockquote>
+<form class="form-horizontal p15 pb5 mt10" id="findPwd_form">
+	<div class="input-wrapper">
+		<input type="text" autocomplete="off" name="email" placeholder="请输入邮箱"
+			required>
+	</div>
+	<div class="input-wrapper">
+		<input type="text" autocomplete="off" name="imgCode"
+			placeholder="图形验证码" required>
+
+		<div class="imgCode" title="看不清楚？换一张" alt="看不清楚？换一张"
+			data-toggle="tooltip">
+			<img id="imgCode" width="80" height="30"
+				onclick="changeimg('imgCode','verificationCode')"
+				src="getImgCode.do">
+		</div>
+	</div>
+	<div class="form-group mt10 mb0">
+		<button type="submit" class="btn btn-block btn-default r5"
+		onclick="callAjaxByName('iUrl=user/findPwd/sendEmail.do|iFormId=findPwd_form|iLoading=TIPFLOAT邮件发送中...');">
+			1. 发送邮箱验证码<i class='iconfont mt-1 pl10 f16'>&#xe634;</i>
+		</button>
+	</div>
+
+	<div class="input-wrapper">
+		<input type="text" autocomplete="off" name="code" placeholder="请输入收到的邮箱验证码"
+			>
+	</div>
+	<div class="input-wrapper">
+		<input type="text" autocomplete="off" onfocus="this.type='password'" name="newPwd" placeholder="请输入新密码（不少于6位）" >
+	</div>
+	<div class="form-group mt30 mb10">
+		<button type="submit"
+			onclick="callAjaxByName('iUrl=user/findPwd/reset.do|iFormId=findPwd_form|iLoading=TIPFLOAT重置密码中...');"
+			class="btn btn-block btn-main r5">
+			2. 重置密码<i class='iconfont mt-1 pl10 f16'>&#xe82b;</i>
+		</button>
+	</div>
+
+	<div class="form-group mb0 f12 C555 tr" id="remberPwd">
+		<div class="fl lab">
+			<a href="/" class="cursor">回首页</a>
+		</div>
+
+		<div class="fl lab">
+			<a href="#/login">登录 →</a>
+		</div>
+	</div>
+</form>

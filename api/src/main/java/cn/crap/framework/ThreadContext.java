@@ -2,9 +2,11 @@ package cn.crap.framework;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@WebFilter(filterName = "myThreadFilter", urlPatterns = "/*")
+@Order(1) //测试好像这个参数不生效，实际生效的是Filter扫描到的顺序（所以起名很重要）
 public class ThreadContext implements Filter {
-
     protected Logger log = Logger.getLogger(getClass());
 
     private static final String SEPARATOR_COMMA = ",";
-    private static final String CONFIG_IGNORE_SUFFIXES = "ignoreSuffixes";
     private static List<String> IGNORE_SUFFIXES;
     private static ThreadLocal<ThreadObject> THREAD_OBJECT = new ThreadLocal<ThreadObject>();
 
@@ -29,7 +31,6 @@ public class ThreadContext implements Filter {
     final public void init(FilterConfig filterConfig) throws ServletException {
         this.IGNORE_SUFFIXES = initIgnoreSuffix(filterConfig);
         log.info("ThreadContext:初始化..........");
-
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ThreadContext implements Filter {
      * @return
      */
     protected List<String> initIgnoreSuffix(FilterConfig filterConfig) {
-        String ignoreSuffixStr = filterConfig.getInitParameter(CONFIG_IGNORE_SUFFIXES);
+        String ignoreSuffixStr = ".jpg,.png,.html,.js,.css,.jpeg,.doc,.pdf,.ignore";
         if (ignoreSuffixStr == null || StringUtils.isBlank(ignoreSuffixStr)) {
             return new ArrayList<String>(0);
         }

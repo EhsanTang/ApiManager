@@ -1,0 +1,90 @@
+<div class="r0 p0 col-xs-12"  ng-init="queryModuleList()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+            <a type="button" class="btn btn-default" id="refresh" ng-click="queryModuleList(list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+            <a type="button" class="btn btn-default btn-sm"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('addModule')]"
+               ng-click="detail('新增模块',700,'user/module/detail.do?id=NULL&projectId='+$stateParams.projectId)">
+                <i class="iconfont mt-3">&#xe604;</i>&nbsp;新增模块
+            </a>
+        </div>
+
+        <div class="form-group w200 fl mb0">
+            <label class="sr-only">名称</label>
+            <div class="input-group btn-group-xs">
+                <div class="input-group-addon main-bg CFFF b0 f12">名称</div>
+                <input type="text" autocomplete="off" class="form-control input-sm dis-in-blo w120 bl0" placeholder="模块名称"
+                       ng-model="$stateParams.name">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-adorn btn-sm fl ml10" ng-click="queryModuleList(1);">
+            <i class="iconfont mt-3">&#xe6ac;</i>&nbsp;查询
+        </button>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td>名称</td>
+                    <td class="w200">Url前缀</td>
+                    <td class="w150">创建时间</td>
+                    <td class="w350">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr ng-repeat="item in modules" class="cursor"
+                    ng-click="go('user/interface/list?dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectName=' +
+                    item.projectName + '&projectId=' + item.projectId + '&moduleId=' + item.id + '&moduleName=' + item.name)"> -->
+                <tr ng-repeat="item in modules">
+                    <td>{{item.name}}</td>
+                    <td>{{item.url}}</td>
+                    <td>{{item.createTimeStr}}</td>
+                    <td class="f12">
+                        <a class="mr5 cursor btn btn-xs btn-default"
+                           ng-class="{true: 'mr5 cursor btn btn-xs btn-default', false:'mr5 btn btn-xs btn-default disabled'}[isProjectUser('modModule')]"
+                           ng-click="detail('编辑【'+item.name+'】',700,'user/module/detail.do?id='+item.id);stopPropagation($event);">
+                            <i class="iconfont f12">&#xe69e;</i>
+                        </a>
+
+                        <a class="mr5 cursor btn btn-xs btn-info"
+                           ng-href="#/user/log/list?identy={{item.id}}&menu_a=menu-project&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont">&#xe6bb;</i>
+                        </a>
+                        <a class="mr10 cursor btn btn-xs btn-default"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=true"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont f12">&#xe714; pdf</i>
+                        </a>
+                        <a class="mr10 cursor btn btn-xs btn-default"
+                           ng-href="visitor/interface/download/pdf.do?moduleId={{item.id}}&pdf=false"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont f12">&#xe714; word</i>
+                        </a>
+
+                        <a ng-class="{true: 'f12 btn btn-xs btn-danger mr5 cursor', false:'f12 btn btn-xs btn-danger mr5 disabled'}[isProjectUser('delModule')]"
+                           ng-click="del('user/module/delete.do?id='+item.id,item.name);stopPropagation($event);">
+                            <i class="iconfont f12">&#xe69d;</i>
+                        </a>
+
+                        <a class="mr10 cursor main-color" ng-if="item.hasStaticize"
+                           ng-href="static/{{item.projectId}}/{{item.id}}-articleList--1.html" target="_blank"
+                           ng-click="stopPropagation($event);">
+                            <i class="iconfont f12">&#xe6f7;静态化地址</i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'queryModuleList';  modelKey='modules';"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

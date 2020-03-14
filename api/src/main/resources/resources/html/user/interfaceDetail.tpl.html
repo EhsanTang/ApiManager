@@ -1,0 +1,163 @@
+<div class="p0 col-xs-12" ng-init="getInterfaceDetail()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <button class="btn btn-default" ng-click="goBack()" type="button">
+                <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
+            </button>
+
+            <a class="btn btn-default btn-sm" ng-href="visitor/interface/download/pdf.do?id={{model.id}}&pdf=true"><i
+                    class="iconfont f12 mt-3">&#xe714; PDF</i></a>
+            <a class="btn btn-default btn-sm" ng-href="visitor/interface/download/pdf.do?id={{model.id}}&pdf=false"><i
+                    class="iconfont f12 mt-3">&#xe714; WORD</i></a>
+
+            <a ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('myData')]"
+               ng-href="#/user/log/list?pageName=接口日志&dataType=interface&menu_b=menu_interface&menu_a=menu-project&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}&identy={{model.id}}">
+                <i class="iconfont f12 mt-3">&#xe6bb;&nbsp;</i>日志
+            </a>
+
+            <a ng-href="#/user/interface/debug?pageName=接口调试&dataType=interface&menu_b=menu_interface&menu_a=menu-project&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}&id={{model.id}}" class="f12 btn btn-default btn-xs">
+                <i class="iconfont f12 mt-3">&#xe613;&nbsp;</i>调试
+            </a>
+
+            <a type="button"
+               ng-class="{true: 'btn btn-default btn-sm', false:'btn btn-default btn-sm disabled'}[isProjectUser('modInter')]"
+               ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
+            </a>
+        </div>
+    </div>
+
+	<div class="col-xs-12 p20">
+        <div class="col-xs-12 BGFFF p20 pt10 lh40 mt50">
+            <button class="btn btn-xs btn-default btn-inter-{{model.status}}">{{model.statusName}}</button>
+            <button class="btn btn-xs btn-default btn-{{model.method|removeLast:','}}">{{model.method|removeLast:','}}</button>
+            <button class="btn btn-xs btn-default">版本：{{model.version}}</button>
+            <button class="btn btn-xs btn-default">返回类型：{{model.contentType}}</button>
+
+            <div class="C000 f16 fb">接口：{{model.interfaceName}}</div>
+
+            <div class="f16 C000">地址：{{model.moduleUrl}}{{model.url}}</div>
+
+            <div class="lh26 C999 f12 pl20" ng-bind-html="model.remark|trustHtml" class="w-e-text"></div>
+
+        </div>
+
+        <div class="col-xs-12 BGFFF p20 pt10 lh26 mt20 C555">
+            <h4 class="mt20 mb20 C000">请求头</h4>
+            <div class="pl20" ng-if="model.crShowHeaderList == null || model.crShowHeaderList.length==0" >
+			    无
+		    </div>
+            <table class="table table-bordered ml20" ng-if="model.crShowHeaderList!=null && model.crShowHeaderList.length>0" >
+                <thead>
+                <tr class="BGEEE C000">
+                    <th>名称</th>
+                    <th class="tc w100">类型</th>
+                    <th class="tc w50">必填</th>
+                    <th class="tc w100">默认值</th>
+                    <th class="tc w200">备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in model.crShowHeaderList">
+                    <td class="tl">
+                        <span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
+                    </td>
+                    <td class="tc C000">{{item.type}}</td>
+                    <td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
+                    <td class="tc C000">{{item.def}}</td>
+                    <td class="tc C000">{{item.remark}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h4 class="mt20 mb20 C000">请求参数</h4>
+            <div class="code pl20" ng-if="model.paramType == 'RAW'">
+                <div class="bb1 mt0 pt0">自定义参数（RAW）</div>
+                <pre>{{model.param}}</pre>
+            </div>
+
+
+            <table class="table table-bordered ml20" ng-if="model.paramType == 'FORM' && model.crShowParamList.length>0" >
+                <thead>
+                <tr class="BGEEE C000">
+                    <th class="tc">名称</th>
+                    <th class="tc w100">类型</th>
+                    <th class="tc w50">必填</th>
+                    <th class="tc w100">参数位置</th>
+                    <th class="tc w100">默认值</th>
+                    <th class="tc w200">备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in model.crShowParamList" class="tc C000">
+                    <td class="tl">
+                        <span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
+                    </td>
+                    <td>{{item.type}}</td>
+                    <td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
+                    <td ng-if="item.inUrl && item.inUrl=='true'">请求URL</td>
+                    <td ng-if="!item.inUrl || item.inUrl!='true'">普通参数</td>
+                    <td>{{item.def}}</td>
+                    <td>{{item.remark}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h4 class="mt20 mb20 C000">返回参数</h4>
+            <table class="table table-bordered ml20" ng-if="model.crShowResponseParamList.length>0">
+                <thead>
+                <tr class="BGEEE C000">
+                    <th>名称</th>
+                    <th class="tc w100">类型</th>
+                    <th class="tc w50">必须</th>
+                    <th class="tc w200">备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in model.crShowResponseParamList" class="tc C000">
+                    <td class="tl">
+                        <span style="padding-left:{{(item.deep-1)*15 + 'px'}}">{{item.realName}}</span>
+                    </td>
+                    <td>{{item.type}}</td>
+                    <td ng-class="{true: 'bg-danger', false:''}[item.necessary == 'true']">{{item.necessary}}</td>
+                    <td>{{item.remark}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-xs-12 BGFFF p20 lh26 mt20 C555">
+            <h4 class="mt20 mb20 C000">正确返回示例</h4>
+            <a class="pl20" ng-href="{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}" target="_blank">{{settings.DOMAIN}}/mock/trueExam.do?id={{model.id}}</a>
+            <div class="code pl20" ng-if="model.trueExam">
+                <pre>{{model.trueExam}}</pre>
+            </div>
+
+            <h4 class="mt20 mb20 C000">错误返回示例</h4>
+            <a class="pl20" ng-href="{{settings.DOMAIN}}/mock/falseExam.do?id={{model.id}}" target="_blank">{{settings.DOMAIN}}/mock/falseExam.do?id={{model.id}}</a>
+            <div class="code pl20" ng-if="model.falseExam">
+                <pre>{{model.falseExam}}</pre>
+            </div>
+
+            <h4 class="mt20 mb20 C000">状态码</h4>
+            <table class="table table-bordered ml20" ng-if="errors!= null && errors.length>0">
+                <thead>
+                <tr class="BGEEE C000">
+                    <th class="tc w200">Code</th>
+                    <th class="tc">Msg</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in errors">
+                    <td class="tc fb C000">{{item.errorCode}}</td>
+                    <td class="tc C000">{{item.errorMsg}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<div class="cb"></div>
+
+

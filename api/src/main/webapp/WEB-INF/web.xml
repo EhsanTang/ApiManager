@@ -78,9 +78,9 @@
         <!--filter不拦截-->
         <url-pattern>*.ignore</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- 加载spring配置文件 -->
-	<display-name>CrapApi</display-name>  
+	<display-name>CrapApi</display-name>
 	 <welcome-file-list>
 	    <welcome-file>home.do</welcome-file>
 	 </welcome-file-list>

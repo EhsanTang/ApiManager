@@ -5,7 +5,7 @@ import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectStatus;
 import cn.crap.enu.ProjectType;
 import cn.crap.model.ProjectPO;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
@@ -21,7 +21,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDTO getDto(ProjectPO model, User user){
+    public static ProjectDTO getDto(ProjectPO model, UserPO user){
         if (model == null){
             return null;
         }

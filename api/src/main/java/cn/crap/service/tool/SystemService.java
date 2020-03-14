@@ -227,6 +227,7 @@ public class SystemService {
         CHANGE_SQL_MAP.put(95, "ALTER TABLE `module` CHANGE `url` `url` VARCHAR(100)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '模块地址'");
         CHANGE_SQL_MAP.put(96, "ALTER TABLE `module` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
         CHANGE_SQL_MAP.put(97, "ALTER TABLE `module` CHANGE `category` `category` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字'");
+        CHANGE_SQL_MAP.put(98, "ALTER TABLE `user` ADD `attributes` VARCHAR(512)  NULL  DEFAULT NULL  COMMENT '属性'");
     }
 
     /**

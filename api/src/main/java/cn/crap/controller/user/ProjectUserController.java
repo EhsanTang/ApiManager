@@ -10,7 +10,7 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.service.ProjectUserService;
@@ -76,7 +76,7 @@ public class ProjectUserController extends BaseController{
         ProjectUserPO old = projectUserService.get(projectUser.getId());
         checkPermission(old.getProjectId());
 
-        User user = userService.getById(old.getUserId());
+        UserPO user = userService.getById(old.getUserId());
         projectUser.setUserEmail(user.getEmail());
 		projectUser.setUserName(user.getUserName());
 

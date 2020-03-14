@@ -41,7 +41,7 @@ public class CustomProjectDao {
 
 		List <Object> params = new ArrayList<>();
         params.add(userId);
-		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where");
+		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status, uniKey from project where");
 		if (onlyJoin){
 			sb.append(" id in (select projectId from project_user where userId=? and type=2)");
 		} else {
@@ -69,6 +69,7 @@ public class CustomProjectDao {
 				project.setCover(rs.getString(7));
 				project.setSequence(rs.getLong(8));
 				project.setStatus(rs.getByte(9));
+				project.setUniKey(rs.getString(10));
 				return project;
 			}
 		});

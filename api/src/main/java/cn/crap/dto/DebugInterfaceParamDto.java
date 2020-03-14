@@ -15,6 +15,7 @@ public class DebugInterfaceParamDto {
 	private String moduleName;
 	private Integer version;
 	private Byte status;
+	@Deprecated
 	private String projectUniKey;
 
 }

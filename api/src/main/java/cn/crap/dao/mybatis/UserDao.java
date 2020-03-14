@@ -1,31 +1,31 @@
 package cn.crap.dao.mybatis;
 
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.model.UserCriteria;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface UserDao extends BaseDao<User>{
+public interface UserDao extends BaseDao<UserPO>{
     int countByExample(UserCriteria example);
 
     int deleteByExample(UserCriteria example);
 
     int deleteByPrimaryKey(String id);
 
-    int insert(User record);
+    int insert(UserPO record);
 
-    int insertSelective(User record);
+    int insertSelective(UserPO record);
 
-    List<User> selectByExample(UserCriteria example);
+    List<UserPO> selectByExample(UserCriteria example);
 
-    User selectByPrimaryKey(String id);
+    UserPO selectByPrimaryKey(String id);
 
-    int updateByExampleSelective(@Param("record") User record, @Param("example") UserCriteria example);
+    int updateByExampleSelective(@Param("record") UserPO record, @Param("example") UserCriteria example);
 
-    int updateByExample(@Param("record") User record, @Param("example") UserCriteria example);
+    int updateByExample(@Param("record") UserPO record, @Param("example") UserCriteria example);
 
-    int updateByPrimaryKeySelective(User record);
+    int updateByPrimaryKeySelective(UserPO record);
 
-    int updateByPrimaryKey(User record);
+    int updateByPrimaryKey(UserPO record);
 }

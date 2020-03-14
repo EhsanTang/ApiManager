@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.crap.dao.mybatis.UserDao" >
-  <resultMap id="BaseResultMap" type="cn.crap.model.User" >
+  <resultMap id="BaseResultMap" type="cn.crap.model.UserPO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="userName" property="userName" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -120,7 +120,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.crap.model.User" >
+  <insert id="insert" parameterType="cn.crap.model.UserPO" >
     insert into user (id, userName, password,
     trueName, roleId, roleName,
     auth, authName, createTime,
@@ -134,7 +134,7 @@
     #{email,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{loginType,jdbcType=INTEGER},
     #{thirdlyId,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.crap.model.User" >
+  <insert id="insertSelective" parameterType="cn.crap.model.UserPO" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       id,
@@ -327,7 +327,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.User" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.crap.model.UserPO" >
     update user
     <set >
       <if test="userName != null" >
@@ -381,7 +381,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.crap.model.User" >
+  <update id="updateByPrimaryKey" parameterType="cn.crap.model.UserPO" >
     update user
     set userName = #{userName,jdbcType=VARCHAR},
     password = #{password,jdbcType=VARCHAR},

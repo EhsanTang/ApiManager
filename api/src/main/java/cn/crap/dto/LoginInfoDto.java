@@ -1,7 +1,7 @@
 package cn.crap.dto;
 
 import cn.crap.enu.UserType;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class LoginInfoDto implements Serializable{
 	private String email;
 	private String avatarUrl;
 
-	public LoginInfoDto(User user){
+	public LoginInfoDto(UserPO user){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.id = user.getId();

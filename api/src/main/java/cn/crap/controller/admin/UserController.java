@@ -11,7 +11,7 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.model.UserCriteria;
 import cn.crap.query.UserQuery;
 import cn.crap.service.ProjectService;
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
     public JsonResult detail(String id) {
-        User user = new User();
+        UserPO user = new UserPO();
         if (id != null) {
             user = userService.getById(id);
         }
@@ -68,7 +68,7 @@ public class UserController extends BaseController {
             throw new MyException(MyError.E000032);
         }
 
-        User user = UserAdapter.getModel(userDto);
+        UserPO user = UserAdapter.getModel(userDto);
         if (MyString.isNotEmpty(password)){
             user.setPassword(password);
         }
@@ -80,7 +80,7 @@ public class UserController extends BaseController {
             }
             return addUser(user);
         }else{
-            User dbUser = userService.getById(user.getId());
+            UserPO dbUser = userService.getById(user.getId());
             if(!dbUser.getEmail().equalsIgnoreCase(userDto.getEmail()) && userService.count(query) > 0){
                 throw new MyException(MyError.E000065, "邮箱已经注册");
             }
@@ -88,7 +88,7 @@ public class UserController extends BaseController {
         }
     }
 
-    private JsonResult addUser(@ModelAttribute User user) throws MyException {
+    private JsonResult addUser(@ModelAttribute UserPO user) throws MyException {
         if (user.getUserName().isEmpty() || !Tools.checkUserName(user.getUserName()) || ADMIN.equals(user.getUserName())) {
             throw new MyException(MyError.E000028);
         }
@@ -120,7 +120,7 @@ public class UserController extends BaseController {
         return new JsonResult(1, UserAdapter.getDto(user));
     }
 
-    private JsonResult updateUser(@ModelAttribute User user) throws MyException {
+    private JsonResult updateUser(@ModelAttribute UserPO user) throws MyException {
         Assert.notNull(user,"user不能为空");
         Assert.notNull(user.getId(), "user.id不能为空");
         // 判断是否重名
@@ -133,7 +133,7 @@ public class UserController extends BaseController {
             throw new MyException(MyError.E000028);
         }
 
-        User dbUser = userService.getById(user.getId());
+        UserPO dbUser = userService.getById(user.getId());
         if (dbUser == null) {
             throw new MyException(MyError.E000013);
         }

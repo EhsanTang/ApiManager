@@ -5,7 +5,7 @@ import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.model.UserCriteria;
 import cn.crap.query.UserQuery;
 import cn.crap.service.tool.UserCache;
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class UserService extends BaseService<User, UserDao> {
+public class UserService extends BaseService<UserPO, UserDao> {
     @Autowired
     private UserCache userCache;
     @Autowired
@@ -34,7 +34,7 @@ public class UserService extends BaseService<User, UserDao> {
         super.setBaseDao(userDao, TableId.USER);
     }
 
-    public boolean insert(User user) throws MyException{
+    public boolean insert(UserPO user) throws MyException{
         if (user == null) {
             return false;
         }
@@ -50,7 +50,7 @@ public class UserService extends BaseService<User, UserDao> {
      * @return
      * @throws MyException
      */
-    public List<User> query(UserQuery query) throws MyException {
+    public List<UserPO> query(UserQuery query) throws MyException {
         Assert.notNull(query);
 
         Page page = new Page(query);
@@ -106,7 +106,7 @@ public class UserService extends BaseService<User, UserDao> {
         return example;
     }
 
-    public void login(LoginDto loginDto, User user) throws MyException{
+    public void login(LoginDto loginDto, UserPO user) throws MyException{
         String token  = Aes.encrypt(user.getId());
         MyCookie.addCookie(IConst.COOKIE_TOKEN, token);
         // 将用户信息存入缓存
@@ -139,7 +139,7 @@ public class UserService extends BaseService<User, UserDao> {
         return userDao.countByExample(userCriteria);
     }
 
-    public List<User> selectByExample(UserCriteria userExample){
+    public List<UserPO> selectByExample(UserCriteria userExample){
         return userDao.selectByExample(userExample);
     }
 

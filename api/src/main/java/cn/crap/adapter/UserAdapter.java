@@ -1,7 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.UserDto;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * 避免暴露敏感数据和修改不允许修改得数据
  */
 public class UserAdapter {
-    public static UserDto getDto(User user){
+    public static UserDto getDto(UserPO user){
         if (user == null){
             return null;
         }
@@ -29,12 +29,12 @@ public class UserAdapter {
         return userDto;
     }
 
-    public static List<UserDto> getDto(List<User> users){
+    public static List<UserDto> getDto(List<UserPO> users){
         if (users == null){
             return new ArrayList<>();
         }
         List<UserDto> userDtos = new ArrayList<>();
-        for (User user : users){
+        for (UserPO user : users){
             userDtos.add(getDto(user));
         }
         return userDtos;
@@ -45,11 +45,11 @@ public class UserAdapter {
      * @param userDto
      * @return
      */
-    public static User getModel(UserDto userDto){
+    public static UserPO getModel(UserDto userDto){
         if (userDto == null){
             return null;
         }
-        User user = new User();
+        UserPO user = new UserPO();
         user.setId(userDto.getId());
         user.setAuth(userDto.getAuth());
         user.setAuthName(userDto.getAuthName());

@@ -13,7 +13,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.IEmailService;
 import cn.crap.service.ProjectService;
@@ -111,7 +111,7 @@ public class LoginController extends BaseController{
 		if(code == null || !code.equals(IConst.REGISTER)){
 			ThreadContext.request().setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
 		}else{
-			User user = userService.getById(id);
+			UserPO user = userService.getById(id);
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
@@ -160,7 +160,7 @@ public class LoginController extends BaseController{
 
 		UserQuery query = new UserQuery().setEqualEmail(email).setLoginType(LoginType.COMMON.getValue());
 
-		List<User> user = userService.query(query);
+		List<UserPO> user = userService.query(query);
 		if(user.size()!=1){
 			throw new MyException(MyError.E000030);
 		}
@@ -188,11 +188,11 @@ public class LoginController extends BaseController{
 
         UserQuery query = new UserQuery().setEqualEmail(findPwdDto.getEmail()).setLoginType(LoginType.COMMON.getValue());
 
-		List<User> users = userService.query(query);
+		List<UserPO> users = userService.query(query);
 		if(users.size()!=1){
 			throw new MyException(MyError.E000030);
 		}
-		User user = users.get(0);
+		UserPO user = users.get(0);
 		user.setPasswordSalt(Tools.getChar(20));
 		user.setPassword( MD5.encrytMD5(findPwdDto.getNewPwd(), user.getPasswordSalt()));
 		userService.update(user);
@@ -227,7 +227,7 @@ public class LoginController extends BaseController{
             throw new MyException(MyError.E000065, "邮箱已经注册");
 		}
 		
-		User user = new User();
+		UserPO user = new UserPO();
         user.setUserName(loginDto.getEmail().split("@")[0]);
         // 判断用户名是否重名，重名则修改昵称
         query = new UserQuery().setEqualUserName(user.getUserName());
@@ -274,7 +274,7 @@ public class LoginController extends BaseController{
 			}
 
 			// 只允许普通账号方式登录，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登录
-			List<User> users = null;
+			List<UserPO> users = null;
 			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登录
 				UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
 				users = userService.query(query);
@@ -284,7 +284,7 @@ public class LoginController extends BaseController{
 			}
 			
 			if (users.size() == 1) {
-				User user = users.get(0);
+				UserPO user = users.get(0);
 				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
 					customUserService.login(model, user);
 					return new JsonResult().success();
@@ -302,7 +302,7 @@ public class LoginController extends BaseController{
 	    if (MyString.isEmpty(userId) || !LoginUserHelper.isSuperAdmin()){
             userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
         }
-        User user = userService.getById(userId);
+        UserPO user = userService.getById(userId);
         if (user == null){
             HttpServletRequest request = ThreadContext.request();
             request.setAttribute("title", "抱歉，系统不允许未登录试用！");

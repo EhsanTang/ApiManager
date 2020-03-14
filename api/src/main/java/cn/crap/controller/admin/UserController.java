@@ -2,7 +2,7 @@ package cn.crap.controller.admin;
 
 import cn.crap.adapter.UserAdapter;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.UserDTO;
+import cn.crap.dto.UserDTO44;
 import cn.crap.enu.LoginType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.UserStatus;
@@ -61,7 +61,7 @@ public class UserController extends BaseController {
     @RequestMapping("/addOrUpdate.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_USER)
-    public JsonResult add(@ModelAttribute UserDTO userDto, String password) throws MyException {
+    public JsonResult add(@ModelAttribute UserDTO44 userDto, String password) throws MyException {
         // 邮箱错误
         if (MyString.isEmpty(userDto.getEmail()) || !Tools.checkEmail(userDto.getEmail())) {
             throw new MyException(MyError.E000032);

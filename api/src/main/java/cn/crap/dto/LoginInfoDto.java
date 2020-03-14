@@ -2,6 +2,7 @@ package cn.crap.dto;
 
 import cn.crap.enu.UserType;
 import cn.crap.model.UserPO;
+import lombok.Getter;
 
 import java.io.Serializable;
 
@@ -15,6 +16,9 @@ public class LoginInfoDto implements Serializable{
 	private byte type;
 	private String email;
 	private String avatarUrl;
+	@Getter
+	public String attributes;
+
 
 	public LoginInfoDto(UserPO user){
 		this.userName = user.getUserName();
@@ -24,6 +28,7 @@ public class LoginInfoDto implements Serializable{
 		this.email = user.getEmail();
 		this.avatarUrl = user.getAvatarUrl();
 		this.authStr = user.getAuth();
+		this.attributes = user.getAttributes();
 		
 		StringBuilder sb = new StringBuilder(",");
 		if( type == UserType.ADMIN.getType() ){

@@ -104,7 +104,7 @@ public class CommentController extends BaseController {
 		// 发送邮件通知
 		CommentPO dbComment = commentService.get(commentDto.getId());
 		if (MyString.isNotEmpty(dbComment.getUserId())){
-			UserPO user = userService.getById(dbComment.getUserId());
+			UserPO user = userService.get(dbComment.getUserId());
 			if (MyString.isNotEmpty(user.getEmail())){
 				String context = "问题【" + dbComment.getContent() + "】收到回复，【" + comment.getReply() + "】";
 				emailService.sendMail(dbComment.getContent(), user.getEmail(), context);

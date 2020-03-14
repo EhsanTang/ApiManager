@@ -49,7 +49,7 @@ public class ModuleService extends NewBaseService<ModulePO, ModuleQuery>  implem
        return CollectionUtils.isEmpty(modulePOS) ? null : modulePOS.get(0);
     }
 
-    public boolean insert(ModulePO po) throws Exception{
+    public boolean insert(ModulePO po) throws MyException{
         Assert.notNull(po, "ModuleService insert po is null");
 
         if (po.getUniKey() == null){

@@ -64,7 +64,7 @@ public class GitHubController extends BaseController {
             throw new MyException(MyError.E000074);
         }
 
-        List<UserPO> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));
+        List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));
 
         if (users.size() == 0) {
             user = new UserPO();
@@ -74,7 +74,7 @@ public class GitHubController extends BaseController {
             // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(gitHubUser.getEmail())) {
                 String email = gitHubUser.getEmail();
-                List<UserPO> existUser = userService.query(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
+                List<UserPO> existUser = userService.select(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
 
                 if (existUser == null || existUser.size() == 0) {
                     user.setEmail(gitHubUser.getEmail());

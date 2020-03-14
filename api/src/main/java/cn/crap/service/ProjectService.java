@@ -50,7 +50,7 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
      * @return
      */
     @Override
-    public boolean insert(ProjectPO project) throws Exception{
+    public boolean insert(ProjectPO project) throws MyException{
         if (project == null) {
             return false;
         }

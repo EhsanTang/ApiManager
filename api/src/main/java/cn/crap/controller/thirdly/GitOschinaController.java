@@ -62,7 +62,7 @@ public class GitOschinaController extends BaseController {
             throw new MyException(MyError.E000075);
         }
 
-        List<UserPO> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
+        List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
         if (users.size() == 0) {
             user = new UserPO();
             user.setUserName(Tools.handleUserName(oschinaUser.getLogin()));
@@ -70,7 +70,7 @@ public class GitOschinaController extends BaseController {
 
             // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(oschinaUser.getEmail())) {
-                List<UserPO> existUser = userService.query(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
+                List<UserPO> existUser = userService.select(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
                 if (existUser == null || existUser.size() == 0) {
                     user.setEmail(oschinaUser.getEmail());
                 }

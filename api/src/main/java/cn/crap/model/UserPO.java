@@ -38,8 +38,6 @@ public class UserPO extends BasePO {
 
     private String passwordSalt;
 
-    private static final long serialVersionUID = 1L;
-
     public String getUserName() {
         return userName;
     }

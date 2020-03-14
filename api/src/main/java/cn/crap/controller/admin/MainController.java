@@ -141,6 +141,7 @@ public class MainController extends BaseController {
         returnMap.put("sessionAdminName", user.getUserName());
         returnMap.put("adminPermission", user.getAuthStr());
         returnMap.put("sessionAdminId", user.getId());
+        returnMap.put("attributes", user.getAttributes());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
 
         return new JsonResult(1, returnMap);

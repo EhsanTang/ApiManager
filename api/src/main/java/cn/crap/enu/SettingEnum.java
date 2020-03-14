@@ -36,7 +36,8 @@ public enum SettingEnum {
     MAX_PROJECT("MAX_PROJECT", SettingStatus.HIDDEN, SettingType.TEXT, 50, null, "最大允许创建的项目数"),
 	MAX_ERROR("MAX_ERROR", SettingStatus.HIDDEN, SettingType.TEXT, 200, null, "项目下最大允许的错误码数量，最大不能超过1000"),
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, null, "crapApiKey", "秘钥，用于cookie加密等"),
-	POST_WOMAN_PROJECT_NUM("POST_WOMAN_PROJECT_NUM", SettingStatus.COMMON, SettingType.TEXT, 10, null, "postwoman插件最大允许的项目数"),
+	POST_WOMAN_PROJECT_NUM("PLUG_MAX_PRO_NUM", SettingStatus.COMMON, SettingType.TEXT, 10, null, "postwoman插件最大允许的项目数"),
+	POST_WOMAN_VIP_PROJECT_NUM("VIP_PLUG_PRO_NUM", SettingStatus.COMMON, SettingType.TEXT, 50, null, "vip 用户 postwoman插件最大允许的项目数"),
 	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, null, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开");
 
 

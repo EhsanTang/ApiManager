@@ -3,6 +3,7 @@ package cn.crap.service;
 import cn.crap.dao.mybatis.BugLogDao;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.TableId;
+import cn.crap.framework.MyException;
 import cn.crap.model.BugLogPO;
 import cn.crap.query.BugLogQuery;
 import cn.crap.service.tool.ModuleCache;
@@ -42,7 +43,7 @@ public class BugLogService extends NewBaseService<BugLogPO, BugLogQuery> impleme
      * @return
      */
     @Override
-    public boolean insert(BugLogPO bugLog) throws Exception{
+    public boolean insert(BugLogPO bugLog) throws MyException {
         Assert.notNull(bugLog);
         Assert.notNull(bugLog.getBugId());
         Assert.notNull(bugLog.getProjectId());

@@ -135,9 +135,9 @@ public class ArticleController extends BaseController {
 		 */
 		if (ArticleType.ARTICLE.name().equals(dto.getType())) {
 			if (dto.getUseMarkdown() != null && dto.getUseMarkdown()) {
-				articleService.updateAttribute(id, IAttributeConst.MARK_DOWN, IAttributeConst.TRUE);
+				articleService.updateAttribute(id, AttributeEnum.MARK_DOWN);
 			} else {
-				articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
+				articleService.deleteAttribute(id, AttributeEnum.MARK_DOWN);
 			}
 		}
 

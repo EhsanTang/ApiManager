@@ -6,19 +6,16 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.TableId;
 import cn.crap.framework.MyException;
 import cn.crap.model.UserPO;
-import cn.crap.model.UserCriteria;
 import cn.crap.query.UserQuery;
 import cn.crap.service.tool.UserCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service
-public class UserService extends BaseService<UserPO, UserDao> {
+public class UserService extends NewBaseService<UserPO, UserQuery> implements ILogConst, IConst {
     @Autowired
     private UserCache userCache;
     @Autowired
@@ -34,6 +31,7 @@ public class UserService extends BaseService<UserPO, UserDao> {
         super.setBaseDao(userDao, TableId.USER);
     }
 
+    @Override
     public boolean insert(UserPO user) throws MyException{
         if (user == null) {
             return false;
@@ -44,67 +42,6 @@ public class UserService extends BaseService<UserPO, UserDao> {
         return super.insert(user);
     }
 
-    /**
-     * 查询用户
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public List<UserPO> query(UserQuery query) throws MyException {
-        Assert.notNull(query);
-
-        Page page = new Page(query);
-        UserCriteria example = getUserCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-        example.setOrderByClause(query.getSort() == null ? TableField.SORT.CREATE_TIME_DES : query.getSort());
-
-        return userDao.selectByExample(example);
-    }
-
-    /**
-     * 查询用户数量
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public int count(UserQuery query) throws MyException {
-        Assert.notNull(query);
-
-        UserCriteria example = getUserCriteria(query);
-        return userDao.countByExample(example);
-    }
-
-    private UserCriteria getUserCriteria(UserQuery query) throws MyException {
-        UserCriteria example = new UserCriteria();
-        UserCriteria.Criteria criteria = example.createCriteria();
-
-        if (query.getStatus() != null) {
-            criteria.andStatusEqualTo(query.getStatus());
-        }
-        if (query.getThirdlyId() != null){
-            criteria.andThirdlyIdEqualTo(query.getThirdlyId());
-        }
-        if (query.getEqualEmail() != null){
-            criteria.andEmailEqualTo(query.getEqualEmail());
-        }
-        if (query.getEqualUserName() != null){
-            criteria.andUserNameEqualTo(query.getEqualUserName());
-        }
-        if (query.getEmail() != null){
-            criteria.andEmailLike("%" + query.getEmail() + "%");
-        }
-        if (query.getUserName() != null){
-            criteria.andUserNameLike("%" + query.getUserName() + "%");
-        }
-        if (query.getTrueName() != null){
-            criteria.andTrueNameLike("%" + query.getTrueName() + "%");
-        }
-        if (query.getLoginType() != null){
-            criteria.andLoginTypeEqualTo(query.getLoginType());
-        }
-        return example;
-    }
 
     public void login(LoginDto loginDto, UserPO user) throws MyException{
         String token  = Aes.encrypt(user.getId());
@@ -122,6 +59,7 @@ public class UserService extends BaseService<UserPO, UserDao> {
             MyCookie.deleteCookie(IConst.COOKIE_PASSWORD);
         }
         loginDto.setSessionAdminName(loginDto.getUserName());
+        loginDto.setAttributes(user.getAttributes());
     }
 
     /**
@@ -131,19 +69,7 @@ public class UserService extends BaseService<UserPO, UserDao> {
      * @return
      */
     public int countByNameExceptUserId(String name, String expectUserId){
-        UserCriteria userCriteria = new UserCriteria();
-        UserCriteria.Criteria criteria = userCriteria.createCriteria().andUserNameEqualTo(name);
-        if (MyString.isNotEmpty(expectUserId)){
-            criteria.andIdNotEqualTo(expectUserId);
-        }
-        return userDao.countByExample(userCriteria);
-    }
-
-    public List<UserPO> selectByExample(UserCriteria userExample){
-        return userDao.selectByExample(userExample);
-    }
-
-    public int countByExample(UserCriteria userExample){
-        return userDao.countByExample(userExample);
+        UserQuery query = new UserQuery().setEqualUserName(name).setNotEqualId(expectUserId);
+        return userDao.count(query);
     }
 }

@@ -66,6 +66,10 @@ public class ProjectController extends BaseController {
         query.setSort(TableField.SORT.SEQUENCE_DESC);
         if (isPlug){
             query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_PROJECT_NUM));
+            if (AttributeUtils.hasAttr(user.getAttributes(), AttributeEnum.VIP_POST_WOMAN)){
+                query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_VIP_PROJECT_NUM));
+            }
+
             page = new Page(query);
             models = projectService.query(userId, false, null, page);
         }
@@ -111,7 +115,7 @@ public class ProjectController extends BaseController {
         }
 
         ProjectPO projectPO = projectService.get(id);
-        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
+        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.get(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();

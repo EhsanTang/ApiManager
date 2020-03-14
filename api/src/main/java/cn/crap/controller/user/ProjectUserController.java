@@ -76,7 +76,7 @@ public class ProjectUserController extends BaseController{
         ProjectUserPO old = projectUserService.get(projectUser.getId());
         checkPermission(old.getProjectId());
 
-        UserPO user = userService.getById(old.getUserId());
+        UserPO user = userService.get(old.getUserId());
         projectUser.setUserEmail(user.getEmail());
 		projectUser.setUserName(user.getUserName());
 

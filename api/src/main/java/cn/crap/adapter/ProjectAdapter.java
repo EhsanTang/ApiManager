@@ -76,7 +76,7 @@ public class ProjectAdapter {
         }
         List<ProjectDTO> dtos = new ArrayList<>();
         for (ProjectPO model : models){
-            dtos.add(getDto(model, userService == null? null : userService.getById(model.getUserId())));
+            dtos.add(getDto(model, userService == null? null : userService.get(model.getUserId())));
         }
         return dtos;
     }

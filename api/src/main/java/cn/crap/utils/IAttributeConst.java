@@ -7,6 +7,8 @@ package cn.crap.utils;
 public interface IAttributeConst {
     String TRUE = "1";
     String MARK_DOWN = "markdown";
+    String VIP_POST_WOMAN = "vipPostWoman";
+
     /**
      * 项目环境
      */

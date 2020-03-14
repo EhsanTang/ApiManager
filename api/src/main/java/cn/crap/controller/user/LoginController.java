@@ -111,7 +111,7 @@ public class LoginController extends BaseController{
 		if(code == null || !code.equals(IConst.REGISTER)){
 			ThreadContext.request().setAttribute("result", "抱歉，验证邮件已过期，请重新发送！");
 		}else{
-			UserPO user = userService.getById(id);
+			UserPO user = userService.get(id);
 			if(user.getId() != null){
 				user.setStatus( Byte.valueOf("2") );
 				userService.update(user);
@@ -160,7 +160,7 @@ public class LoginController extends BaseController{
 
 		UserQuery query = new UserQuery().setEqualEmail(email).setLoginType(LoginType.COMMON.getValue());
 
-		List<UserPO> user = userService.query(query);
+		List<UserPO> user = userService.select(query);
 		if(user.size()!=1){
 			throw new MyException(MyError.E000030);
 		}
@@ -188,7 +188,7 @@ public class LoginController extends BaseController{
 
         UserQuery query = new UserQuery().setEqualEmail(findPwdDto.getEmail()).setLoginType(LoginType.COMMON.getValue());
 
-		List<UserPO> users = userService.query(query);
+		List<UserPO> users = userService.select(query);
 		if(users.size()!=1){
 			throw new MyException(MyError.E000030);
 		}
@@ -277,10 +277,10 @@ public class LoginController extends BaseController{
 			List<UserPO> users = null;
 			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登录
 				UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
-				users = userService.query(query);
+				users = userService.select(query);
 			}else{
 				UserQuery query = new UserQuery().setEqualUserName(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
-				users =  userService.query(query);
+				users =  userService.select(query);
 			}
 			
 			if (users.size() == 1) {
@@ -302,7 +302,7 @@ public class LoginController extends BaseController{
 	    if (MyString.isEmpty(userId) || !LoginUserHelper.isSuperAdmin()){
             userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
         }
-        UserPO user = userService.getById(userId);
+        UserPO user = userService.get(userId);
         if (user == null){
             HttpServletRequest request = ThreadContext.request();
             request.setAttribute("title", "抱歉，系统不允许未登录试用！");

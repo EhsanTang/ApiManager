@@ -34,7 +34,7 @@ public class NewBaseService<PO extends BasePO, Query extends BaseQuery> {
         return newBaseDao.get(id);
     }
 
-    public boolean insert(PO po) throws Exception{
+    public boolean insert(PO po) throws MyException{
         Assert.notNull(po);
 
         if (MyString.isEmpty(po.getId())){

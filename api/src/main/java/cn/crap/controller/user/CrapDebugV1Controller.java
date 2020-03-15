@@ -19,7 +19,6 @@ import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectPO;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.query.ProjectQuery;
 import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
@@ -28,7 +27,6 @@ import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,42 +95,43 @@ public class CrapDebugV1Controller extends BaseController {
          * 2.处理模块+接口
          */
         long moduleSequence = System.currentTimeMillis();
-        Map<String, ModulePO> modulePOMap = Maps.newHashMap();
+        Map<String, ModulePO> moduleUniKeyMap = moduleService.select(new ModuleQuery().setProjectId(projectId).setQueryAll(true)
+                .setUserId(userId)).stream().collect(Collectors.toMap(ModulePO::getUniKey, a -> a,(k1, k2)->k1));
+
         for (DebugInterfaceParamDto debutModuleDTO : list) {
 
             /**
              * 2.1 模块处理
              */
-            String moduleUniKey = debutModuleDTO.getModuleUniKey() == null ? debutModuleDTO.getModuleId() : debutModuleDTO.getModuleUniKey();
+            String moduleUniKey = debutModuleDTO.getModuleUniKey();
             if (debutModuleDTO == null || MyString.isEmpty(moduleUniKey)) {
                 log.error("sync moduleUniKey is null:" + userId + ",moduleName:" + debutModuleDTO.getModuleName());
                 continue;
             }
 
-            // TODO 批量查询
-            ModulePO module = moduleService.getByUniKey(projectId, moduleUniKey);
-            log.error("sync moduleUniKey:" + moduleUniKey);
+            ModulePO modulePO = moduleUniKeyMap.get(moduleUniKey);
 
             // 处理模块：删除、更新、添加，处理异常
-            module = handelModule(user, project, module, moduleSequence, debutModuleDTO);
+            modulePO = handelModule(user, project, modulePO, moduleSequence, debutModuleDTO);
             moduleSequence = moduleSequence - 1;
-            if (module == null){
+            if (modulePO == null){
                 continue;
             }
-            modulePOMap.put(moduleUniKey, module);
+
+            moduleUniKeyMap.put(moduleUniKey, modulePO);
 
             // 先删除需要删除的接口
-            deleteDebug(module, debutModuleDTO);
+            deleteDebug(modulePO, debutModuleDTO);
         }
 
         // 每个用户的最大接口数量不能超过100
         int totalNum = interfaceService.count(new InterfaceQuery().setProjectId(projectId));
 
         for (DebugInterfaceParamDto debutModuleDTO : list) {
-            String moduleUniKey = debutModuleDTO.getModuleUniKey() == null ? debutModuleDTO.getModuleId() : debutModuleDTO.getModuleUniKey();
+            String moduleUniKey = debutModuleDTO.getModuleUniKey();
 
             // 更新接口
-            totalNum = addDebug(projectId, modulePOMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
+            totalNum = addDebug(projectId, moduleUniKeyMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
             if (totalNum > 120) {
                 log.error("sync addDebug error, totalNum:" + totalNum);
                 return new JsonResult(MyError.E000058);
@@ -259,13 +258,13 @@ public class CrapDebugV1Controller extends BaseController {
         String moduleId = module.getId();
         List<String> uniKeyList = Lists.newArrayList();
         for (DebugDto debug : moduleDTO.getDebugs()) {
-            if (MyString.isEmpty(debug.getId()) && MyString.isEmpty(debug.getUniKey())) {
+            if (MyString.isEmpty(debug.getUniKey())) {
                 log.error("deleteDebug error debugId is null:" + debug.getName());
                 continue;
             }
 
             if (debug.getStatus() == -1) {
-                uniKeyList.add(debug.getUniKey() == null ? debug.getId() : debug.getUniKey());
+                uniKeyList.add(debug.getUniKey());
             }
         }
         interfaceService.deleteByModuleId(moduleId, uniKeyList);

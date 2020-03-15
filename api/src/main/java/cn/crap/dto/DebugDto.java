@@ -31,4 +31,8 @@ public class DebugDto{
 	private String webModuleId;
 	private String webProjectId;
 	private String webId;
+
+	public String getUniKey(){
+		return uniKey == null ? id : uniKey;
+	}
 }

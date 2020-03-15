@@ -109,9 +109,13 @@
     <if test="query.sort != null">
       order by ${query.sort}
     </if>
-    <if test="query.start != null and query.pageSize != null">
-      limit #{query.start},#{query.pageSize}
+
+    <if test="query.queryAll == null or query.queryAll == false">
+      <if test="query.start != null and query.pageSize != null">
+        limit #{query.start},#{query.pageSize}
+      </if>
     </if>
+
   </select>
 
 

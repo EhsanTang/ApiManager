@@ -18,4 +18,7 @@ public class DebugInterfaceParamDto {
 	@Deprecated
 	private String projectUniKey;
 
+	public String getModuleUniKey(){
+		return moduleUniKey == null ? moduleId : moduleUniKey;
+	}
 }

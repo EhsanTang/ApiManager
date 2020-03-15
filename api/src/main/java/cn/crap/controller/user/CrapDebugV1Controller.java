@@ -148,17 +148,26 @@ public class CrapDebugV1Controller extends BaseController {
         List<InterfaceWithBLOBs> debugs = interfaceService.queryAll(new InterfaceQuery().setProjectId(projectId));
         Map<String, List<DebugDto>> mapDebugs = new HashMap<>();
         for (InterfaceWithBLOBs d : debugs) {
-            String moduleId = d.getModuleId();
-            List<DebugDto> moduleDebugs = mapDebugs.get(moduleId);
-            if (moduleDebugs == null) {
-                moduleDebugs = new ArrayList<>();
-                mapDebugs.put(moduleId, moduleDebugs);
+            try {
+                String moduleId = d.getModuleId();
+                List<DebugDto> moduleDebugs = mapDebugs.get(moduleId);
+                if (moduleDebugs == null) {
+                    moduleDebugs = new ArrayList<>();
+                    mapDebugs.put(moduleId, moduleDebugs);
+                }
+                DebugDto dtoFromInterface = DebugAdapter.getDtoFromInterface(project, moduleMap, d);
+                if (dtoFromInterface == null) {
+                    continue;
+                }
+                moduleDebugs.add(dtoFromInterface);
+            } catch (Throwable e){
+                e.printStackTrace();
+                try {
+                    log.error("getDtoFromInterface error:" + JSON.toJSONString(d));
+                } catch (Throwable e2){
+                    e2.printStackTrace();
+                }
             }
-            DebugDto dtoFromInterface = DebugAdapter.getDtoFromInterface(project, moduleMap, d);
-            if (dtoFromInterface == null){
-                continue;
-            }
-            moduleDebugs.add(dtoFromInterface);
         }
 
         List<DebugInterfaceParamDto> returnList = new ArrayList<>();
@@ -175,6 +184,11 @@ public class CrapDebugV1Controller extends BaseController {
                 returnList.add(debugDto);
             } catch (Exception e) {
                 e.printStackTrace();
+                try {
+                    log.error("returnList error:" + JSON.toJSONString(m));
+                } catch (Throwable e2){
+                    e2.printStackTrace();
+                }
             }
         }
         PostwomanResDTO postwomanResDTO = new PostwomanResDTO();
@@ -240,7 +254,12 @@ public class CrapDebugV1Controller extends BaseController {
                 log.error("addDebug id:" + debug.getId() + ",uniKey:" + uniKey);
                 interfaceService.insert(DebugAdapter.getInterfaceByDebug(module, old, debug));
                 totalNum = totalNum + 1;
-            } catch (Exception e) {
+            } catch (Throwable e) {
+                try {
+                    log.error("addDebug error:" + JSON.toJSONString(debug));
+                } catch (Throwable e2){
+                    e2.printStackTrace();
+                }
                 e.printStackTrace();
                 continue;
             }

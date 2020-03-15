@@ -10,9 +10,11 @@ import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
+import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -75,8 +77,19 @@ public class ProjectAdapter {
             return new ArrayList<>();
         }
         List<ProjectDTO> dtos = new ArrayList<>();
+        Map<String , UserPO> userPOMAP = Maps.newHashMap();
+
         for (ProjectPO model : models){
-            dtos.add(getDTO(model, userService == null? null : userService.get(model.getUserId())));
+            String userId = model.getUserId();
+            UserPO userPO = userPOMAP.get(userId);
+
+            if (userPO == null && userService != null){
+                userPO = userService.get(userId);
+                if (userPO != null){
+                    userPOMAP.put(userId, userPO);
+                }
+            }
+            dtos.add(getDTO(model, userPO));
         }
         return dtos;
     }

@@ -222,7 +222,7 @@ public class CrapDebugV1Controller extends BaseController {
                 InterfaceWithBLOBs old = interfaceMap.get(uniKey);
                 if (old != null){
                     if (old.getVersionNum() >= debug.getVersion()){
-                        log.error("addDebug ignore name:" + debug.getName());
+                        log.error("addDebug ignore name:" + debug.getId());
                         continue;
                     }
 

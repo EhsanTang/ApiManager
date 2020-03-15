@@ -21,7 +21,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDTO getDto(ProjectPO model, UserPO user){
+    public static ProjectDTO getDTO(ProjectPO model, UserPO user){
         if (model == null){
             return null;
         }
@@ -70,13 +70,13 @@ public class ProjectAdapter {
         return model;
     }
 
-    public static List<ProjectDTO> getDto(List<ProjectPO> models, UserService userService){
+    public static List<ProjectDTO> getDTOS(List<ProjectPO> models, UserService userService){
         if (models == null){
             return new ArrayList<>();
         }
         List<ProjectDTO> dtos = new ArrayList<>();
         for (ProjectPO model : models){
-            dtos.add(getDto(model, userService == null? null : userService.get(model.getUserId())));
+            dtos.add(getDTO(model, userService == null? null : userService.get(model.getUserId())));
         }
         return dtos;
     }

@@ -91,18 +91,6 @@ public abstract class BaseController implements IConst, ISetting {
     }
 
     /**
-     * 检查是否是crapDebug的项目，crapDebug插件的项目不允许修改、删除
-     * @param userId
-     * @param projectId
-     * @throws MyException
-     */
-    protected void checkCrapDebug(String userId, String projectId) throws MyException{
-        String debugProjectId = MD5.encrytMD5(userId, "").substring(0, 20) + "-debug";
-        if (debugProjectId.equals(projectId)){
-            throw new MyException(MyError.E000067);
-        }
-    }
-    /**
      * @param param 待校验参数
      * @param tip 前端提示文案
      * @param myError
@@ -130,10 +118,10 @@ public abstract class BaseController implements IConst, ISetting {
         }
 
         if (ex instanceof NullPointerException) {
-            log.error("异常, params:" + getAllStrParam(request), ex);
+            log.error("空指针异常," + request.getRequestURI() + ",params:" + getAllStrParam(request), ex);
             return new JsonResult(new MyException(MyError.E000051));
         } else {
-            log.error("异常, params:" + getAllStrParam(request), ex);
+            log.error("异常," + request.getRequestURI() + ",params:" + getAllStrParam(request), ex);
             ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
             ex.printStackTrace(new PrintStream(outPutStream));
             String errorStackTrace = outPutStream.toString();

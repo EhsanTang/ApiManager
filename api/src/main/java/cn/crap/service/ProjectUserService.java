@@ -19,4 +19,15 @@ public class ProjectUserService extends NewBaseService<ProjectUserPO, ProjectUse
         this.projectUserDao = projectUserDao;
         super.setBaseDao(projectUserDao, TableId.PROJECT_USER);
     }
+
+    public boolean batchUpdateByProjectId(String projectId, Long sequence, String projectName){
+        if (projectId == null || sequence == null){
+            return false;
+        }
+        ProjectUserPO userPO = new ProjectUserPO();
+        userPO.setSequence(sequence);
+        userPO.setProjectId(projectId);
+        userPO.setProjectName(projectName);
+        return projectUserDao.batchUpdateByProjectId(userPO) > 0;
+    }
 }

@@ -179,12 +179,15 @@ public class ProjectController extends BaseController {
             }
             projectService.update(ProjectAdapter.getModel(project), true);
 
+            // 更新项目用户排序
+            projectUserService.batchUpdateByProjectId(project.getId(), project.getSequence(), project.getName());
             // 需要重建索引
             projectCache.del(projectId);
             if (!project.getType().equals(dbProject.getType())
                     || !project.getLuceneSearch().equals(dbProject.getLuceneSearch())) {
                 luceneService.rebuildByProjectId(projectId);
             }
+
         }
         // 新增
         else {

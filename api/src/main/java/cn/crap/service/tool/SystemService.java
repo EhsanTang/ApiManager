@@ -228,6 +228,8 @@ public class SystemService {
         CHANGE_SQL_MAP.put(96, "ALTER TABLE `module` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
         CHANGE_SQL_MAP.put(97, "ALTER TABLE `module` CHANGE `category` `category` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字'");
         CHANGE_SQL_MAP.put(98, "ALTER TABLE `user` ADD `attributes` VARCHAR(512)  NULL  DEFAULT NULL  COMMENT '属性'");
+        CHANGE_SQL_MAP.put(99, "ALTER TABLE `project_user` ADD `projectName` VARCHAR(100)  NULL  DEFAULT NULL  COMMENT '项目名称'");
+        CHANGE_SQL_MAP.put(100, "UPDATE project_user u INNER JOIN (SELECT id,name,sequence FROM project) p ON p.id=u.projectId SET u.projectName=p.name, u.sequence=p.sequence");
     }
 
     /**

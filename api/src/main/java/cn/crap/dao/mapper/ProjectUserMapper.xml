@@ -12,11 +12,12 @@
       <result column="permission" property="permission"/>
       <result column="status" property="status"/>
       <result column="type" property="type"/>
+      <result column="projectName" property="projectName"/>
   </resultMap>
 
   <!-- 基本的字段，供其他查询引用-->
   <sql id="baseColumn">
-        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type
+        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type,projectName
   </sql>
   <sql id="querySql">
     <where>
@@ -37,7 +38,7 @@
     insert into project_user (
       <include refid="baseColumn"/>
     )
-    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type})
+    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type},#{projectName})
   </insert>
 
   <!-- 删除 -->
@@ -64,6 +65,12 @@
       </if>
     </set>
     where id=#{id}
+  </update>
+
+  <!-- 更新 -->
+  <update id="batchUpdateByProjectId" parameterType="cn.crap.model.ProjectUserPO">
+    update project_user set sequence=#{sequence}, projectName=#{projectName}
+    where projectId=#{projectId}
   </update>
 
 

@@ -149,6 +149,8 @@ public class ProjectUserController extends BaseController{
         }
 
         ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(projectId, loginInfoDto);
+        projectUser.setSequence(project.getSequence());
+        projectUser.setProjectName(project.getName());
         projectUserService.insert(projectUser);
         request.setAttribute("title", "操作成功");
         request.setAttribute("result", "加入成功");

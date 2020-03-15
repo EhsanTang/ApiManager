@@ -34,6 +34,8 @@ public class ProjectAbility {
         if (projectService.insert(project)) {
             ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(project.getId(), user);
             projectUser.setType(ProjectUserType.CREATOR.getByteType());
+            projectUser.setSequence(project.getSequence());
+            projectUser.setProjectName(project.getName());
             return projectUserService.insert(projectUser);
         }
         return false;

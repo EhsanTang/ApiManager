@@ -114,7 +114,7 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
     }
 
 
-    public List<ProjectPO> query(String userId, boolean onlyJoin, String name, Page page) {
+    public List<ProjectPO> query(String userId, boolean onlyJoin, String name, Page page) throws MyException{
         Assert.notNull(userId, "userId can't be null");
         return customMapper.queryProjectByUserId(userId, onlyJoin, name, page);
     }

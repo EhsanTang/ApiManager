@@ -10,7 +10,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.CommentPO;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
 import cn.crap.service.BugService;
@@ -104,7 +104,7 @@ public class CommentController extends BaseController {
 		// 发送邮件通知
 		CommentPO dbComment = commentService.get(commentDto.getId());
 		if (MyString.isNotEmpty(dbComment.getUserId())){
-			User user = userService.getById(dbComment.getUserId());
+			UserPO user = userService.get(dbComment.getUserId());
 			if (MyString.isNotEmpty(user.getEmail())){
 				String context = "问题【" + dbComment.getContent() + "】收到回复，【" + comment.getReply() + "】";
 				emailService.sendMail(dbComment.getContent(), user.getEmail(), context);

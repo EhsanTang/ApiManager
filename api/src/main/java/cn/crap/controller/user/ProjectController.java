@@ -54,7 +54,8 @@ public class ProjectController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute ProjectQuery query,
-                           @RequestParam(defaultValue = "3") Integer projectShowType) throws MyException {
+                           @RequestParam(defaultValue = "3") Integer projectShowType,
+                           @RequestParam(defaultValue = "false") Boolean isPlug) throws MyException {
         query.setPageSize(12);
         Page page = new Page(query);
         LoginInfoDto user = LoginUserHelper.getUser();
@@ -63,7 +64,17 @@ public class ProjectController extends BaseController {
 
         // 我创建 & 加入的项目
         query.setSort(TableField.SORT.SEQUENCE_DESC);
-        if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
+        if (isPlug){
+            query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_PROJECT_NUM));
+            if (AttributeUtils.hasAttr(user.getAttributes(), AttributeEnum.VIP_POST_WOMAN)){
+                query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_VIP_PROJECT_NUM));
+            }
+
+            page = new Page(query);
+            models = projectService.query(userId, false, null, page);
+        }
+
+        else if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
             page.setAllRow(projectService.count(userId, false, query.getName()));
             models = projectService.query(userId, false, query.getName(), page);
         }
@@ -104,7 +115,7 @@ public class ProjectController extends BaseController {
         }
 
         ProjectPO projectPO = projectService.get(id);
-        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.getById(projectPO.getUserId()));
+        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.get(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();

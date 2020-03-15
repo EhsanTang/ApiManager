@@ -15,6 +15,7 @@ import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nullable;
 import javax.annotation.Resource;
@@ -36,13 +37,20 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
         super.setBaseDao(projectDao, TableId.PROJECT);
     }
 
+    public ProjectPO getByUniKey(String userId, String projectUniKey) throws MyException{
+        List<ProjectPO> projectPOS = this.select(new ProjectQuery().setUserId(userId).setUniKey(projectUniKey));
+        if (CollectionUtils.isEmpty(projectPOS)){
+            return null;
+        }
+        return projectPOS.get(0);
+    }
     /**
      * 添加
      * @param project
      * @return
      */
     @Override
-    public boolean insert(ProjectPO project) throws Exception{
+    public boolean insert(ProjectPO project) throws MyException{
         if (project == null) {
             return false;
         }

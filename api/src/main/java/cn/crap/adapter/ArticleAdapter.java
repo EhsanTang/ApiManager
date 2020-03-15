@@ -51,7 +51,7 @@ public class ArticleAdapter {
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
         dto.setUseMarkdown(false);
-		if (AttributeUtils.getAttributeMap(model.getAttributes()).containsKey(IAttributeConst.MARK_DOWN)){
+		if (AttributeUtils.containAttr(model.getAttributes(), AttributeEnum.MARK_DOWN)){
             dto.setUseMarkdown(true);
         }
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));

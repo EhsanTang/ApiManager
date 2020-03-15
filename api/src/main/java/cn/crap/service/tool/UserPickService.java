@@ -8,10 +8,7 @@ import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Error;
 import cn.crap.model.*;
-import cn.crap.query.ErrorQuery;
-import cn.crap.query.ModuleQuery;
-import cn.crap.query.ProjectMetaQuery;
-import cn.crap.query.ProjectUserQuery;
+import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,13 +132,13 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                User creator = userService.getById(projectService.get(key).getUserId());
+                UserPO creator = userService.get(projectService.get(key).getUserId());
                 pick = new PickDto(creator.getId(), MyString.isEmpty(creator.getTrueName()) ? creator.getUserName() : creator.getTrueName());
                 picks.add(pick);
 
                 // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
                 for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key))) {
-                    User projectUser = userService.getById(m.getUserId());
+                    UserPO projectUser = userService.get(m.getUserId());
                     if (projectUser == null || projectUser.getId().equals(creator.getId())){
                         continue;
                     }
@@ -158,15 +155,9 @@ public class UserPickService implements IPickService{
                 key = "%" + key + "%";
                 Set<String> userIds = new TreeSet<>();
 
-                UserCriteria userExample = new UserCriteria();
-                userExample.createCriteria().andEmailLike(key);
 
-                userExample.or(userExample.createCriteria().andUserNameLike(key));
-                userExample.or(userExample.createCriteria().andTrueNameLike(key));
-
-                userExample.setMaxResults(20);
-
-                for (User u : userService.selectByExample(userExample)) {
+                UserQuery userQuery = new UserQuery().setOrEmail(key).setOrUserName(key).setOrTrueName(key).setPageSize(20);
+                for (UserPO u : userService.select(userQuery)) {
                     if (!userIds.contains(u.getId())) {
                         pick = new PickDto(u.getId(), u.getUserName());
                         picks.add(pick);

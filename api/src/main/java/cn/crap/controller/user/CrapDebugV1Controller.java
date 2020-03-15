@@ -6,6 +6,7 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.DebugDto;
 import cn.crap.dto.DebugInterfaceParamDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.PostwomanResDTO;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectStatus;
 import cn.crap.enu.ProjectType;
@@ -18,6 +19,7 @@ import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectPO;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
+import cn.crap.query.ProjectQuery;
 import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
@@ -43,8 +45,8 @@ import java.util.stream.Collectors;
  * TODO 待解决问题：路径参数问题
  */
 @Controller
-@RequestMapping("/user/crapDebug")
-public class CrapDebugController extends BaseController {
+@RequestMapping("/user/crapDebug/v1")
+public class CrapDebugV1Controller extends BaseController {
     protected Logger log = Logger.getLogger(getClass());
 
     @Autowired
@@ -60,10 +62,11 @@ public class CrapDebugController extends BaseController {
     @ResponseBody
     @AuthPassport
     @Transactional
-    public JsonResult synch(@RequestBody String body) throws Exception {
+    public JsonResult synch(@RequestBody String body, String projectUniKey, String defProjectName) throws Exception {
         List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
         LoginInfoDto user = LoginUserHelper.getUser();
         String userId = user.getId();
+        log.error("sync projectUniKey:" + projectUniKey);
 
         /**
          * 1. 处理项目
@@ -71,12 +74,24 @@ public class CrapDebugController extends BaseController {
          * TODO 后续要支持多项目切换：如果项目ID存在，且用户为当前用户则可直接使用，否者新建项目（使用当前项目名称）
          * 调试项目ID唯一，根据用户ID生成，不在CrapApi网站显示
          */
-        String projectId = generateProjectId(user);
-        ProjectPO project = projectService.get(projectId);
+        ProjectPO project = null;
+        if (MyString.isNotEmptyOrNUll(projectUniKey)){
+            project = projectService.getByUniKey(userId, projectUniKey);
+        }
+
+        if (project == null){
+            project = projectService.get(generateProjectId(user));
+        }
+
         if (project == null) {
-            project = buildProject(user, projectId);
+            project = buildProject(user, generateProjectId(user));
+            project.setName(MyString.isNotEmptyOrNUll(defProjectName) ? defProjectName : project.getName());
             projectAbility.addProject(project, user);
         }
+
+        String projectId = project.getId();
+        projectUniKey = project.getUniKey();
+        String projectName = project.getName();
 
         /**
          * 2.处理模块+接口
@@ -157,13 +172,19 @@ public class CrapDebugController extends BaseController {
                 debugDto.setVersion(m.getVersionNum());
                 debugDto.setStatus(m.getStatus());
                 debugDto.setDebugs(mapDebugs.get(m.getId()) == null ? new ArrayList<>() : mapDebugs.get(m.getId()));
-                debugDto.setProjectUniKey(project.getUniKey());
+                debugDto.setProjectUniKey(projectUniKey);
                 returnList.add(debugDto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return new JsonResult(1, returnList);
+        PostwomanResDTO postwomanResDTO = new PostwomanResDTO();
+        postwomanResDTO.setProjectName(projectName);
+        postwomanResDTO.setProjectUniKey(projectUniKey);
+        postwomanResDTO.setProjectCover(project.getCover());
+
+        postwomanResDTO.setModuleList(returnList);
+        return new JsonResult(1, postwomanResDTO);
     }
 
     private String generateProjectId(LoginInfoDto user) {
@@ -306,7 +327,7 @@ public class CrapDebugController extends BaseController {
         project.setType(ProjectType.PRIVATE.getByteType());
         project.setUserId(user.getId());
         project.setCreateTime(new Date());
-        project.setRemark("该项目是系统自动创建的PostWoman/ApiDebug插件项目，请勿删除！！！！");
+        project.setRemark("Project auto create for postwoman「该项目是系统自动创建的PostWoman/ApiDebug插件项目」");
         return project;
     }
 

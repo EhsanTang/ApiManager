@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.ProjectMetaDTO;
+import cn.crap.enu.AttributeEnum;
 import cn.crap.enu.ProjectMetaType;
 import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectMetaPO;
@@ -26,7 +27,7 @@ public class ProjectMetaAdapter {
         if (po.getCreateTime() != null) {
             dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(po.getCreateTime().getTime()));
         }
-        dto.setEnvUrl(AttributeUtils.getAttributeMap(po.getAttributes()).get(IAttributeConst.ENV_URL));
+        dto.setEnvUrl(AttributeUtils.getAttr(po.getAttributes(), AttributeEnum.ENV_URL));
         if (module != null){
             dto.setModuleName(module.getName());
         }
@@ -57,7 +58,7 @@ public class ProjectMetaAdapter {
         BeanUtil.copyProperties(dto, po);
 
         Map<String, String> attributeMap = new HashMap();
-        attributeMap.put(IAttributeConst.ENV_URL, dto.getEnvUrl());
+        attributeMap.put(AttributeEnum.ENV_URL.getKey(), dto.getEnvUrl());
 
         po.setAttributes(AttributeUtils.getAttributeStr(attributeMap));
         return po;

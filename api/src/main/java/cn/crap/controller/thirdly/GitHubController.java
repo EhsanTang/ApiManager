@@ -10,7 +10,7 @@ import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.UserService;
 import cn.crap.service.thirdly.GitHubService;
@@ -56,7 +56,7 @@ public class GitHubController extends BaseController {
 
     @RequestMapping("/github/login.ignore")
     public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = null;
+        UserPO user = null;
         GitHubUser gitHubUser = null;
         try {
             gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
@@ -64,17 +64,17 @@ public class GitHubController extends BaseController {
             throw new MyException(MyError.E000074);
         }
 
-        List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));
+        List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));
 
         if (users.size() == 0) {
-            user = new User();
+            user = new UserPO();
             user.setUserName(Tools.handleUserName(gitHubUser.getLogin()));
             user.setTrueName(gitHubUser.getName());
 
             // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(gitHubUser.getEmail())) {
                 String email = gitHubUser.getEmail();
-                List<User> existUser = userService.query(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
+                List<UserPO> existUser = userService.select(new UserQuery().setLoginType(LoginType.GITHUB.getValue()).setEqualEmail(email));
 
                 if (existUser == null || existUser.size() == 0) {
                     user.setEmail(gitHubUser.getEmail());

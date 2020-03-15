@@ -10,7 +10,7 @@ import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.UserService;
 import cn.crap.service.thirdly.OschinaService;
@@ -54,7 +54,7 @@ public class GitOschinaController extends BaseController {
 
     @RequestMapping("/oschina/login.ignore")
     public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = null;
+        UserPO user = null;
         GitHubUser oschinaUser = null;
         try {
             oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
@@ -62,15 +62,15 @@ public class GitOschinaController extends BaseController {
             throw new MyException(MyError.E000075);
         }
 
-        List<User> users = userService.query(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
+        List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
         if (users.size() == 0) {
-            user = new User();
+            user = new UserPO();
             user.setUserName(Tools.handleUserName(oschinaUser.getLogin()));
             user.setTrueName(oschinaUser.getName());
 
             // 登录用户类型&邮箱有唯一约束，同一个邮箱在同一个登录类型下不允许绑定两个账号
             if (!MyString.isEmpty(oschinaUser.getEmail())) {
-                List<User> existUser = userService.query(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
+                List<UserPO> existUser = userService.select(new UserQuery().setEqualEmail(oschinaUser.getEmail()).setLoginType(LoginType.GITHUB.getValue()));
                 if (existUser == null || existUser.size() == 0) {
                     user.setEmail(oschinaUser.getEmail());
                 }

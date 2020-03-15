@@ -1,5 +1,6 @@
 package cn.crap.utils;
 
+import cn.crap.enu.AttributeEnum;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
@@ -20,6 +21,46 @@ public class AttributeUtils {
     private static final String SPLITTER  = ";";
     private static final String KEY_SPLITTER  = ":";
 
+    public static boolean hasAttr(String attributesStr, AttributeEnum attributeEnum){
+        if (MyString.isEmpty(attributesStr) || attributeEnum == null){
+            return false;
+        }
+        String value = getAttributeMap(attributesStr).get(attributeEnum.getKey());
+        if (attributeEnum.getValue().equals(value)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean containAttr(String attributesStr, AttributeEnum attributeEnum){
+        if (MyString.isEmpty(attributesStr) || attributeEnum == null){
+            return false;
+        }
+        String value = getAttributeMap(attributesStr).get(attributeEnum.getKey());
+        if (value != null){
+            return true;
+        }
+        return false;
+    }
+
+    public static Integer getAttr(String attributesStr, AttributeEnum attributeEnum, Integer def){
+        String value = getAttr(attributesStr, attributeEnum);
+        if (MyString.isEmpty(value)){
+            return def;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e){
+            return def;
+        }
+    }
+
+    public static String getAttr(String attributesStr, AttributeEnum attributeEnum){
+        if (MyString.isEmpty(attributesStr) || attributeEnum == null){
+            return null;
+        }
+        return getAttributeMap(attributesStr).get(attributeEnum.getKey());
+    }
     /**
      * 根据字符串获取所有的map
      * @param attributesStr

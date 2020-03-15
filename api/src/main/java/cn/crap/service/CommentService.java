@@ -4,6 +4,7 @@ import cn.crap.dao.mybatis.CommentDao;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.BugStatus;
 import cn.crap.enu.TableId;
+import cn.crap.framework.MyException;
 import cn.crap.model.CommentPO;
 import cn.crap.query.CommentQuery;
 import cn.crap.utils.IConst;
@@ -30,7 +31,7 @@ public class CommentService extends NewBaseService<CommentPO, CommentQuery> impl
     }
 
     @Override
-    public boolean insert(CommentPO commentPO) throws Exception{
+    public boolean insert(CommentPO commentPO) throws MyException {
         Assert.notNull(commentPO, "commentPO 不能为空");
         Assert.notNull(commentPO.getTargetId(), "targetId 不能为空");
         Assert.notNull(commentPO.getType(), "type 不能为空");

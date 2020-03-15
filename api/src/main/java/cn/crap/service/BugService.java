@@ -9,7 +9,7 @@ import cn.crap.framework.MyException;
 import cn.crap.model.BugLogPO;
 import cn.crap.model.BugPO;
 import cn.crap.model.ModulePO;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
 import cn.crap.query.BugQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
@@ -52,7 +52,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
      * @return
      */
     @Override
-    public boolean insert(BugPO bug) throws Exception{
+    public boolean insert(BugPO bug) throws MyException{
         Assert.notNull(bug);
         Assert.notNull(bug.getProjectId());
         if (bug == null) {
@@ -120,7 +120,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
             bugLogPO.setNewValue(module.getName());
         } else if (PickCode.EXECUTOR.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setExecutor(user.getId());
             bug.setExecutorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
@@ -132,7 +132,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
             bugLogPO.setNewValue(bug.getExecutorStr());
         } else if (PickCode.TESTER.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setTester(user.getId());
             bug.setTesterStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
@@ -144,7 +144,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuce
             bugLogPO.setNewValue(bug.getTesterStr());
         } else if (PickCode.TRACER.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setTracer(user.getId());
             bug.setTracerStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());

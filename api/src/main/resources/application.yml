@@ -1,0 +1,37 @@
+# Server settings
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+#log
+logging:
+  level:
+     ROOT: info
+  file: api.log
+
+spring:
+    servlet:
+        multipart:
+          max-request-size: 100MB
+          max-file-size: 100MB
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/apidev?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: apidev
+      password: apidev
+      mvc:
+        view:
+          prefix: /WEB-INF/views
+          suffix: .jsp
+    mail:
+      jndi-name: xxx
+      host: smtp.qq.com
+      username: 1111@qq.com
+      password: 3423535
+      port: 587
+      protocol: smtp
+      default-encoding: UTF-8
+
+mybatis:
+  mapper-locations: mapper/*.xml

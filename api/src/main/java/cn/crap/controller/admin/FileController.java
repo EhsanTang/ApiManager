@@ -112,7 +112,7 @@ public class FileController extends BaseController{
             }
         }
 
-        return result;
+        return Tools.getRequest().getContextPath() + result;
     }
 
     @RequestMapping(value="/user/file/uploadAllToAliyun.do")

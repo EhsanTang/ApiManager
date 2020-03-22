@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * @author James
  */
-@Configuration
 public class FilterConfig {
 
     public static Map<String, String> initParameters = new HashMap<String, String>(){

@@ -1,16 +1,18 @@
 package cn.crap;
 
+import cn.crap.config.FilterConfig;
+import cn.crap.config.InterceptorConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author James
  */
 @SpringBootApplication
-@EnableSwagger2
 @MapperScan(basePackages = {"cn.crap.dao"})
+@Import(value = {FilterConfig.class, InterceptorConfig.class})
 public class BootMain {
 
     public static void main(String[] args) {

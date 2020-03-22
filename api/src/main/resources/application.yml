@@ -4,6 +4,9 @@ server:
   servlet:
     context-path: /
 
+swagger:
+  enable: false
+
 #log
 logging:
   level:
@@ -35,3 +38,5 @@ spring:
 
 mybatis:
   mapper-locations: mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -7,6 +7,8 @@ import cn.crap.framework.ThreadContext;
 import cn.crap.service.tool.UserCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,6 +23,7 @@ import java.net.InetAddress;
  * @author 
  *
  */
+@Component
 public class AuthInterceptor extends HandlerInterceptorAdapter{
 	@Autowired
 	private UserCache userCache;

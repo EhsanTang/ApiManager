@@ -23,10 +23,10 @@ spring:
       url: jdbc:mysql://localhost:3306/apidev?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
       username: apidev
       password: apidev
-      mvc:
-        view:
-          prefix: /WEB-INF/views
-          suffix: .jsp
+    mvc:
+      view:
+        prefix: /
+#        suffix: .jsp
     mail:
       jndi-name: xxx
       host: smtp.qq.com

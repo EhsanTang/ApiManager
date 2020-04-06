@@ -13,16 +13,20 @@
       <result column="status" property="status"/>
       <result column="type" property="type"/>
       <result column="projectName" property="projectName"/>
+      <result column="projectUniKey" property="projectUniKey"/>
   </resultMap>
 
   <!-- 基本的字段，供其他查询引用-->
   <sql id="baseColumn">
-        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type,projectName
+        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type,projectName,projectUniKey
   </sql>
   <sql id="querySql">
     <where>
       <if test="query.projectId != null">
         and projectId=#{query.projectId}
+      </if>
+      <if test="query.projectUniKey != null">
+        and projectUniKey=#{query.projectUniKey}
       </if>
       <if test="query.userId != null">
         and userId=#{query.userId}
@@ -38,7 +42,7 @@
     insert into project_user (
       <include refid="baseColumn"/>
     )
-    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type},#{projectName})
+    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type},#{projectName},#{projectUniKey})
   </insert>
 
   <!-- 删除 -->

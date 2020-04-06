@@ -148,7 +148,7 @@ public class ProjectUserController extends BaseController{
             return ERROR_VIEW;
         }
 
-        ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(projectId, loginInfoDto);
+        ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(project, loginInfoDto);
         projectUser.setSequence(project.getSequence());
         projectUser.setProjectName(project.getName());
         projectUserService.insert(projectUser);

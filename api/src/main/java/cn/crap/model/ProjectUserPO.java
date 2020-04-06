@@ -11,5 +11,6 @@ public class ProjectUserPO extends BasePO {
     private Byte status;
     private String projectId;
     private String projectName;
+    private String projectUniKey;
     private Byte type;
 }

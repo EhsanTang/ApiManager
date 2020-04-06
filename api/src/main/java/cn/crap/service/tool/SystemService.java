@@ -230,6 +230,11 @@ public class SystemService {
         CHANGE_SQL_MAP.put(98, "ALTER TABLE `user` ADD `attributes` VARCHAR(512)  NULL  DEFAULT NULL  COMMENT '属性'");
         CHANGE_SQL_MAP.put(99, "ALTER TABLE `project_user` ADD `projectName` VARCHAR(100)  NULL  DEFAULT NULL  COMMENT '项目名称'");
         CHANGE_SQL_MAP.put(100, "UPDATE project_user u INNER JOIN (SELECT id,name,sequence FROM project) p ON p.id=u.projectId SET u.projectName=p.name, u.sequence=p.sequence");
+        CHANGE_SQL_MAP.put(101, "ALTER TABLE `project_user` ADD `projectUniKey` VARCHAR(50)  NULL  DEFAULT NULL  COMMENT '项目唯一编码' AFTER `projectName`;");
+        CHANGE_SQL_MAP.put(102, "UPDATE project_user u INNER JOIN (SELECT id,uniKey FROM project) p ON p.id=u.projectId SET u.projectUniKey=p.uniKey");
+        CHANGE_SQL_MAP.put(103, "ALTER TABLE `project_user` CHANGE `projectUniKey` `projectUniKey` VARCHAR(50)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT '项目唯一编码'");
+        CHANGE_SQL_MAP.put(104, "UPDATE module m INNER JOIN (SELECT id,userId FROM project) p ON p.id=m.projectId SET m.userId=p.userId");
+        CHANGE_SQL_MAP.put(105, "ALTER TABLE `project_user` ADD INDEX `idx_prounikey_userid` (`projectUniKey`, `userId`)");
     }
 
     /**

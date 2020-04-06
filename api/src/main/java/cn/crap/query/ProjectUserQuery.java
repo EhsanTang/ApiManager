@@ -13,6 +13,9 @@ public class ProjectUserQuery extends BaseQuery<ProjectUserQuery>{
     @Getter
     private Byte type;
 
+    @Getter
+    private String projectUniKey;
+
     @Override
     public ProjectUserQuery getQuery(){
         return this;
@@ -26,6 +29,11 @@ public class ProjectUserQuery extends BaseQuery<ProjectUserQuery>{
 
     public ProjectUserQuery setType(Byte type) {
         this.type = type;
+        return this;
+    }
+
+    public ProjectUserQuery setProjectUniKey(String projectUniKey) {
+        this.projectUniKey = projectUniKey;
         return this;
     }
 }

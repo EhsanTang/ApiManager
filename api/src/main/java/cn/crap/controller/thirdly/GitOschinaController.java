@@ -103,7 +103,7 @@ public class GitOschinaController extends BaseController {
             ThreadContext.clear();
         }
 
-        response.sendRedirect("../admin.do");
+        response.sendRedirect(request.getContextPath() + "/admin.do");
         return null;
     }
 

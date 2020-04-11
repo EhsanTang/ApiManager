@@ -133,7 +133,7 @@ public class ProjectUserController extends BaseController{
 
         LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
         if (loginInfoDto == null){
-            response.sendRedirect("/loginOrRegister.do#/login");
+            response.sendRedirect(request.getContextPath() + "/loginOrRegister.do#/login");
             return null;
         }
 

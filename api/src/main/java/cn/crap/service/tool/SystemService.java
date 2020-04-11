@@ -235,6 +235,8 @@ public class SystemService {
         CHANGE_SQL_MAP.put(103, "ALTER TABLE `project_user` CHANGE `projectUniKey` `projectUniKey` VARCHAR(50)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT '项目唯一编码'");
         CHANGE_SQL_MAP.put(104, "UPDATE module m INNER JOIN (SELECT id,userId FROM project) p ON p.id=m.projectId SET m.userId=p.userId");
         CHANGE_SQL_MAP.put(105, "ALTER TABLE `project_user` ADD INDEX `idx_prounikey_userid` (`projectUniKey`, `userId`)");
+        CHANGE_SQL_MAP.put(106, "update setting set status=1 where status=0");
+
     }
 
     /**

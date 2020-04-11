@@ -26,7 +26,6 @@ public enum SettingEnum {
                     "知乎字体|\"Helvetica Neue\",Helvetica,Arial,sans-serif;"
 
             }),
-	DOMAIN("DOMAIN", SettingStatus.COMMON, SettingType.TEXT, null, "http://localhost:8080", "系统访问地址/域名/IP"),
 	// 后端
 	DATABASE_CHANGE_LOG("DATABASE_CHANGE_LOG", SettingStatus.HIDDEN, SettingType.TEXT, 0, null, "数据库自动更新记录：记录最后一条sql的序号，更新版本后系统会自动修改，请勿修改"),
 	NO_NEED_LOGIN_USER("NO_NEED_LOGIN_USER", SettingStatus.HIDDEN, SettingType.TEXT, null, "0", "不需要登录直接模拟的用户，快速试用，0表示不开放试用功能"),

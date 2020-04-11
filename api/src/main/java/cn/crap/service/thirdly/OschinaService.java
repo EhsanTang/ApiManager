@@ -27,7 +27,7 @@ public class OschinaService {
 			String oschinaAuthUrl = "https://gitee.com/oauth/token";
 
 	        Map<String,String> params = Tools.getStrMap("grant_type", "authorization_code", "client_id", Config.oschinaClientID,
-	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri", settingCache.getDomain() +"/oschina/login.ignore");
+	        		"client_secret", Config.oschinaClientSecret,"code",code,"redirect_uri", Tools.getUrlPath() +"/oschina/login.ignore");
 	        
 	        String rs = HttpPostGet.post(oschinaAuthUrl, params, Tools.getStrMap("Accept","application/json"), 6000);
 	        System.out.println(rs);

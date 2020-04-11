@@ -136,7 +136,7 @@ public class InterfaceController extends BaseController {
         checkFrontPermission("", "", project);
         if (pdf) {
             String secretKey = settingCache.get(S_SECRETKEY).getValue();
-            String fileName = Html2Pdf.createPdf(req, settingCache.getDomain(), id, moduleId, secretKey);
+            String fileName = Html2Pdf.createPdf(req, Tools.getUrlPath(), id, moduleId, secretKey);
             DownloadUtils.downloadWord(response, new File(fileName), downloadName, true);
         }else{
             Map<String, Object> map = new HashMap<>();

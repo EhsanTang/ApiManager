@@ -332,7 +332,7 @@ public class SystemService {
             String value = s.getValue();
             if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
                 if (!value.startsWith("http://") && !value.startsWith("https://")) {
-                    value = settingCache.getDomain() + "/" + value;
+                    value = Tools.getUrlPath() + "/" + value;
                 }
             }
             cssContent = cssContent.replace("[" + s.getMkey() + "]", value);

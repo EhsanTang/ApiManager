@@ -49,7 +49,7 @@ public class GitOschinaController extends BaseController {
     @RequestMapping("/oschina/authorize.ignore")
     public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String authorizeUrl = "https://gitee.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
-        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, settingCache.getDomain() + "/oschina/login.ignore"));
+        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, Tools.getUrlPath() + "/oschina/login.ignore"));
     }
 
     @RequestMapping("/oschina/login.ignore")
@@ -57,7 +57,7 @@ public class GitOschinaController extends BaseController {
         UserPO user = null;
         GitHubUser oschinaUser = null;
         try {
-            oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
+            oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, Tools.getUrlPath()).getAccess_token());
         } catch (ConnectTimeoutException e){
             throw new MyException(MyError.E000075);
         }

@@ -132,7 +132,7 @@ public class ProjectService extends NewBaseService<ProjectPO, ProjectQuery> impl
     public String getInviteUrl(ProjectDTO projectDto) throws MyException {
         Assert.notNull(projectDto);
         if (LoginUserHelper.getUser().getId().equals(projectDto.getUserId())) {
-            return settingCache.getDomain() + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());
+            return Tools.getUrlPath() + "/user/projectUser/invite.do?code=" + Aes.encrypt(projectDto.getId() + SEPARATOR + System.currentTimeMillis());
         }
         return null;
     }

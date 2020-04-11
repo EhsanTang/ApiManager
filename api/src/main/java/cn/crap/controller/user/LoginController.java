@@ -69,11 +69,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/preLogin.do")
 	@ResponseBody
 	public JsonResult preLogin() {
-		Map<String, String> settingMap = new HashMap<>();
-		for (SettingDto setting : settingCache.getAll()) {
-			settingMap.put(setting.getKey(), setting.getValue());
-		}
-		LoginDto model = new LoginDto();
+        LoginDto model = new LoginDto();
 		model.setUserName(MyCookie.getCookie(IConst.COOKIE_USERNAME));
 		model.setRemberPwd(MyCookie.getCookie(IConst.COOKIE_REMBER_PWD));
 		if(!model.getRemberPwd().equalsIgnoreCase("no")){

@@ -3,10 +3,8 @@ package cn.crap.controller.admin;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.SearchDto;
-import cn.crap.dto.SettingDto;
 import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
-import cn.crap.enu.SettingStatus;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
@@ -62,7 +60,7 @@ public class MainController extends BaseController {
     public JsonResult property() throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
         Map<String, Object> properties = new HashMap<>();
-        properties.put("domain", settingCache.getDomain());
+        properties.put("domain", Tools.getUrlPath());
         properties.put("openRegister", Config.openRegister);
         properties.put("luceneSearchNeedLogin", Config.luceneSearchNeedLogin);
         properties.put("openRegister", Config.openRegister);
@@ -128,15 +126,8 @@ public class MainController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult init(HttpServletRequest request) throws Exception {
-        Map<String, String> settingMap = new HashMap<>();
-        for (SettingDto setting : settingCache.getAll()) {
-            if (SettingStatus.COMMON.getStatus().equals(setting.getStatus())) {
-                settingMap.put(setting.getKey(), setting.getValue());
-            }
-        }
-
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        returnMap.put("settingMap", settingMap);
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("settingMap", settingCache.getCommonMap());
         LoginInfoDto user = LoginUserHelper.getUser();
         returnMap.put("sessionAdminName", user.getUserName());
         returnMap.put("adminPermission", user.getAuthStr());

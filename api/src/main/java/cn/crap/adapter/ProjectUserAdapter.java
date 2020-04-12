@@ -17,9 +17,10 @@ import java.util.List;
 
 public class ProjectUserAdapter {
 
-    public static ProjectUserPO getInitProjectUserPO(String projectId, LoginInfoDto loginInfoDto) {
+    public static ProjectUserPO getInitProjectUserPO(ProjectPO project, LoginInfoDto loginInfoDto) {
         ProjectUserPO projectUser = new ProjectUserPO();
-        projectUser.setProjectId(projectId);
+        projectUser.setProjectId(project.getId());
+        projectUser.setProjectUniKey(project.getUniKey());
         projectUser.setUserId(loginInfoDto.getId());
         projectUser.setStatus(ProjectUserStatus.NORMAL.getStatus());
         projectUser.setUserEmail(loginInfoDto.getEmail());

@@ -105,7 +105,7 @@ public class GitHubController extends BaseController {
         }finally {
             ThreadContext.clear();
         }
-        response.sendRedirect("../admin.do");
+        response.sendRedirect(request.getContextPath() + "/admin.do");
         return null;
     }
 

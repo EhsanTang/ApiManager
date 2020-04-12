@@ -74,10 +74,6 @@ public class Config{
         return "git.oschina.clientSecret";
     }
 
-    private static String getConfigDomain() {
-        return "web.domain";
-    }
-
     private static String getConfigCacheTime() {
         return "web.cacheTime";
     }

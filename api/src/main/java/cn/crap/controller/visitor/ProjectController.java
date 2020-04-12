@@ -47,7 +47,7 @@ public class ProjectController extends BaseController{
 			models = projectService.query(userId, true, query.getName(), page);
 		}
 
-        List<ProjectDTO> projectDtos = ProjectAdapter.getDto(models, null);
+        List<ProjectDTO> projectDtos = ProjectAdapter.getDTOS(models, null);
         page.setAllRow(projectService.count(query));
 
         return new JsonResult().data(projectDtos).page(page);

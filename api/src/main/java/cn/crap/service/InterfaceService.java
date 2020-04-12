@@ -13,10 +13,7 @@ import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.SettingCache;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -186,8 +183,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             interfaceDTO.setRemark(interfaceDTO.getRemark().replaceAll("<w:br/>", "<br/>"));
         }
 
-        interDto.setTrueMockUrl(settingCache.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
-        interDto.setFalseMockUrl(settingCache.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
+        interDto.setTrueMockUrl(Tools.getUrlPath()+"/mock/trueExam.do?id="+interFace.getId());
+        interDto.setFalseMockUrl(Tools.getUrlPath()+"/mock/falseExam.do?id="+interFace.getId());
         List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
 

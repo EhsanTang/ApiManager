@@ -69,11 +69,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/preLogin.do")
 	@ResponseBody
 	public JsonResult preLogin() {
-		Map<String, String> settingMap = new HashMap<>();
-		for (SettingDto setting : settingCache.getAll()) {
-			settingMap.put(setting.getKey(), setting.getValue());
-		}
-		LoginDto model = new LoginDto();
+        LoginDto model = new LoginDto();
 		model.setUserName(MyCookie.getCookie(IConst.COOKIE_USERNAME));
 		model.setRemberPwd(MyCookie.getCookie(IConst.COOKIE_REMBER_PWD));
 		if(!model.getRemberPwd().equalsIgnoreCase("no")){
@@ -297,14 +293,13 @@ public class LoginController extends BaseController{
 
 
 	@RequestMapping("/mock.do")
-	public String mock(HttpServletResponse response, String userId) throws Exception{
+	public String mock(HttpServletRequest request, HttpServletResponse response, String userId) throws Exception{
 	    // 最高管理员能模拟所有用户
 	    if (MyString.isEmpty(userId) || !LoginUserHelper.isSuperAdmin()){
             userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
         }
         UserPO user = userService.get(userId);
         if (user == null){
-            HttpServletRequest request = ThreadContext.request();
             request.setAttribute("title", "抱歉，系统不允许未登录试用！");
             request.setAttribute("result", "抱歉，系统不允许未登录试用！");
             return "WEB-INF/views/result.jsp";
@@ -313,7 +308,7 @@ public class LoginController extends BaseController{
         loginDto.setRemberPwd("NO");
         loginDto.setUserName(user.getUserName());
         customUserService.login(loginDto, user);
-        response.sendRedirect("/admin.do");
+        response.sendRedirect(request.getContextPath() + "/admin.do");
         return null;
 	}
 }

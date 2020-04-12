@@ -25,6 +25,29 @@ import java.util.zip.ZipOutputStream;
 
 
 public class Tools {
+//    public static String getDomain(){
+//        HttpServletRequest request = Tools.getRequest();
+//        String uri = request.getRequestURI();//返回请求行中的资源名称
+//        String url = request.getRequestURL().toString();//获得客户端发送请求的完整url
+//        return url.substring(0, url.length() - uri.length());
+//    }
+
+    /**
+     * 获取系统部署的url
+     * @return
+     */
+    public static String getUrlPath(){
+        try {
+            HttpServletRequest request = Tools.getRequest();
+            String uri = request.getRequestURI();//返回请求行中的资源名称
+            String url = request.getRequestURL().toString();//获得客户端发送请求的完整url
+            return url.substring(0, url.length() - uri.length()) + request.getContextPath();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void staticize(String html, String filePath) throws MyException, IOException {
         if (html == null) {
             throw new MyException(MyError.E000045);

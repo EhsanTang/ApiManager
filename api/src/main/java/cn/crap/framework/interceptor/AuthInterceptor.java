@@ -73,7 +73,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             LoginInfoDto user = LoginUserHelper.tryGetUser();
             if (user == null) {
                 if (request.getRequestURI().endsWith("admin.do")) {
-                    response.sendRedirect("loginOrRegister.do#/login");
+                    response.sendRedirect(request.getContextPath() + "/loginOrRegister.do#/login");
                     return false;
                 } else {
                     throw new MyException(MyError.E000021);

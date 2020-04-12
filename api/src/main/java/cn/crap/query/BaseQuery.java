@@ -27,10 +27,17 @@ public abstract class BaseQuery<T> {
     private Integer pageSize;
     private Integer currentPage;
     private Integer allRow;
+    @Getter
+    private Boolean queryAll;
 
 
 
     abstract T getQuery();
+
+    public T setQueryAll(boolean queryAll) {
+        this.queryAll = queryAll;
+        return getQuery();
+    }
 
     @Override
     public String toString(){

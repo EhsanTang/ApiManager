@@ -98,7 +98,7 @@ public class ProjectController extends BaseController {
             models = projectService.select(query);
         }
 
-        return new JsonResult().page(page).data(ProjectAdapter.getDto(models, userService));
+        return new JsonResult().page(page).data(ProjectAdapter.getDTOS(models, userService));
     }
 
     @RequestMapping("/detail.do")
@@ -111,11 +111,11 @@ public class ProjectController extends BaseController {
             projectPO.setStatus(ProjectStatus.COMMON.getStatus());
             projectPO.setLuceneSearch(CommonEnum.FALSE.getByteValue());
             projectPO.setSequence(System.currentTimeMillis());
-            return new JsonResult(1, ProjectAdapter.getDto(projectPO, null));
+            return new JsonResult(1, ProjectAdapter.getDTO(projectPO, null));
         }
 
         ProjectPO projectPO = projectService.get(id);
-        ProjectDTO dto = ProjectAdapter.getDto(projectPO, userService.get(projectPO.getUserId()));
+        ProjectDTO dto = ProjectAdapter.getDTO(projectPO, userService.get(projectPO.getUserId()));
         dto.setInviteUrl(projectService.getInviteUrl(dto));
 
         LoginInfoDto user = LoginUserHelper.getUser();
@@ -179,12 +179,15 @@ public class ProjectController extends BaseController {
             }
             projectService.update(ProjectAdapter.getModel(project), true);
 
+            // 更新项目用户排序
+            projectUserService.batchUpdateByProjectId(project.getId(), project.getSequence(), project.getName());
             // 需要重建索引
             projectCache.del(projectId);
             if (!project.getType().equals(dbProject.getType())
                     || !project.getLuceneSearch().equals(dbProject.getLuceneSearch())) {
                 luceneService.rebuildByProjectId(projectId);
             }
+
         }
         // 新增
         else {

@@ -101,8 +101,9 @@ public class ModuleController extends BaseController implements ILogConst{
 		}
 
         ModulePO module = ModuleAdapter.getModel(moduleDto);
+		ProjectPO projectPO = projectCache.get(moduleDto.getProjectId());
 		if(id != null){
-			checkPermission(moduleDto.getProjectId(), ProjectPermissionEnum.MOD_MODULE);
+			checkPermission(projectPO, ProjectPermissionEnum.MOD_MODULE);
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
@@ -113,8 +114,8 @@ public class ModuleController extends BaseController implements ILogConst{
                 throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());
-			checkPermission(module.getProjectId(), ProjectPermissionEnum.ADD_MODULE);
-			module.setUserId(LoginUserHelper.getUser().getId());
+			checkPermission(projectPO, ProjectPermissionEnum.ADD_MODULE);
+			module.setUserId(projectPO.getUserId());
 			module.setVersionNum(0);
 			moduleService.insert(module);
 		}

@@ -53,7 +53,7 @@ public class ModuleController extends BaseController{
 
 		return new JsonResult().data(moduleDtoList).page(page).others(
 				Tools.getMap("crumbs", Tools.getCrumbs( project.getName(), "void"),
-						"project", ProjectAdapter.getDto(project, null)) );
+						"project", ProjectAdapter.getDTO(project, null)) );
 	}
 
 	@RequestMapping("/menu.do")
@@ -79,6 +79,6 @@ public class ModuleController extends BaseController{
 		}
 
 		List<ModuleDTO> moduleDtoList = ModuleAdapter.getDto(moduleService.select(new ModuleQuery().setProjectId(projectId).setPageSize(10)), null);
-		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDto(project, null)) );
+		return new JsonResult(1, moduleDtoList, null, Tools.getMap("project",  ProjectAdapter.getDTO(project, null)) );
 	}	
 }

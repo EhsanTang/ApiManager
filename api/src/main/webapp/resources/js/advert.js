@@ -1,9 +1,17 @@
 /********* http *******/
 var ADVERT_ID = "i-advert-id";
 function getProjectAdvert(){
+    var protocolStr = document.location.protocol;
+    var url = "";
+    if(protocolStr == "http:"){
+        url = "http://api.crap.cn/mock/trueExam.do?id=158667944751412000176&cache=true";
+    } else{
+        url = "https://api.crap.cn/mock/trueExam.do?id=158667944751412000176&cache=true";
+    }
+
     $.ajax({
         type: "POST",
-        url: "http://api.crap.cn/mock/trueExam.do?id=158667944751412000176&cache=true",
+        url: url,
         async: true,
         data: true,
         timeout: 3000,
@@ -17,7 +25,7 @@ function getProjectAdvert(){
                     if (advert.imgUrl){
                         $("#" + ADVERT_ID).append("<div class='p5 BGFFF'><a target='_blank' href='" + advert.httpUrl+ "'><img class='w' src='" + advert.imgUrl + "'/></a></div>");
                     } else {
-                        $("#" + ADVERT_ID).append("<div class='p5 BGFFF C000'><a target='_blank' class='no_unl' href='\" + advert.httpUrl+ \"'><div class='BGEEE f16 p5 pl10 adorn-color'> " + advert.title + "<div class='f12 C999 fw200'>" + advert.subTitle+ "</div></div></a></div>");
+                        $("#" + ADVERT_ID).append("<div class='p5 BGFFF C000'><a target='_blank' class='no_unl' href='" + advert.httpUrl+ "'><div class='BGEEE f16 p5 pl10 adorn-color'> " + advert.title + "<div class='f12 C999 fw200'>" + advert.subTitle+ "</div></div></a></div>");
                     }
                 }
             }

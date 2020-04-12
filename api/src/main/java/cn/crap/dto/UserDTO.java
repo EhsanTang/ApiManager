@@ -23,6 +23,7 @@ public class UserDTO implements Serializable{
 	private String email;
 	private String avatarUrl;
 	private Integer loginType;
+	private String loginTypeStr;
 	private String thirdlyId;
 	private Byte status;
 	private Long sequence;
@@ -37,5 +38,4 @@ public class UserDTO implements Serializable{
 		}
 		return UserType.getNameByValue(type);
 	}
-
 }

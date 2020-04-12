@@ -14,7 +14,7 @@ function getProjectAdvert(){
 
                 for(var i=0 ;i<adverts.length; i++){
                     var advert = adverts[i];
-                    $("#" + ADVERT_ID).append("<div><a target='_blank' href='" + advert.httpUrl+ "'><img class='w' src='" + advert.imgUrl + "'/></a></div>");
+                    $("#" + ADVERT_ID).append("<div class='p5'><a target='_blank' href='" + advert.httpUrl+ "'><img class='w' src='" + advert.imgUrl + "'/></a></div>");
                 }
             }
         }

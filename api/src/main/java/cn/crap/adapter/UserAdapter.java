@@ -1,6 +1,7 @@
 package cn.crap.adapter;
 
 import cn.crap.dto.UserDTO;
+import cn.crap.enu.LoginType;
 import cn.crap.model.UserPO;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
@@ -23,6 +24,7 @@ public class UserAdapter {
         BeanUtil.copyProperties(user, userDto);
         userDto.setAuthName(user.getAuthName());
         userDto.setRoleName(user.getRoleName());
+        userDto.setLoginTypeStr(LoginType.getName(user.getLoginType()));
         if (user.getCreateTime() != null) {
             userDto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(user.getCreateTime().getTime()));
         }

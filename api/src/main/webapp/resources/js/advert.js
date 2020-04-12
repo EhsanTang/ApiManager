@@ -14,7 +14,11 @@ function getProjectAdvert(){
 
                 for(var i=0 ;i<adverts.length; i++){
                     var advert = adverts[i];
-                    $("#" + ADVERT_ID).append("<div class='p5'><a target='_blank' href='" + advert.httpUrl+ "'><img class='w' src='" + advert.imgUrl + "'/></a></div>");
+                    if (advert.imgUrl){
+                        $("#" + ADVERT_ID).append("<div class='p5 BGFFF'><a target='_blank' href='" + advert.httpUrl+ "'><img class='w' src='" + advert.imgUrl + "'/></a></div>");
+                    } else {
+                        $("#" + ADVERT_ID).append("<div class='p5 BGFFF C000'><a target='_blank' class='no_unl' href='\" + advert.httpUrl+ \"'><div class='BGEEE f16 p5 pl10 adorn-color'> " + advert.title + "<div class='f12 C999 fw200'>" + advert.subTitle+ "</div></div></a></div>");
+                    }
                 }
             }
         }

@@ -48,15 +48,17 @@ public class GitOschinaController extends BaseController {
     }
 
     @RequestMapping("/oschina/login.ignore")
-    public String login(@RequestParam String code, String domain, HttpServletResponse response) throws Exception {
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        @RequestParam String code, String domain) throws Exception {
         UserPO user;
         GitHubUser oschinaUser;
 
         try {
             // callbackUrl 必须与授权时的callbackUrl一致
             oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
-        } catch (ConnectTimeoutException e){
-            throw new MyException(MyError.E000075);
+        } catch (Throwable e){
+            request.setAttribute("result", "授权失败，请重试！");
+            return ERROR_VIEW;
         }
 
         List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));

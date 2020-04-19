@@ -6,7 +6,8 @@ import lombok.Getter;
  * 属性字段
  */
 public enum AttributeEnum {
-	MARK_DOWN("markdown", "1", "文章是否是markdown模式"), ENV_URL("envUrl", "", ""), VIP_POST_WOMAN("vipPostWoman", "1", "插件VIP用户");
+	MARK_DOWN("markdown", "1", "文章是否是markdown模式"), ENV_URL("envUrl", "", ""), VIP_POST_WOMAN("vipPostWoman", "1", "插件VIP用户"),
+	LOGIN_AUTH_CODE("loginAuthCode", "", "通过第三方平台登录授权码");
 
 	@Getter
 	private final String value;

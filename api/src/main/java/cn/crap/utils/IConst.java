@@ -69,4 +69,6 @@ public interface IConst {
 	//系统设置
 	String SETTING_OPEN_REGISTER = "openRegister";
 	String SETTING_GITHUB_ID = "githubClientID";
+	String SETTING_GITEE_ID = "giteeClientID";
+
 }

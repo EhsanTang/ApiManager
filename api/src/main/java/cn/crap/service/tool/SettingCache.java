@@ -106,7 +106,9 @@ public class SettingCache{
         commonMap.put(ISetting.S_DOMAIN, Tools.getUrlPath());
         commonMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
         commonMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
-        return commonMap;
+		commonMap.put(IConst.SETTING_GITEE_ID, MyString.isEmpty( Config.oschinaClientID )? "false":"true");
+
+		return commonMap;
     }
 
     private String assembleKey(String key) {

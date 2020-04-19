@@ -30,10 +30,10 @@
 	</div>
 	<div class="form-group mt10 mb10 C999">
 		你也可以利用以下方式进行登录 <br/>
-		<a href="github/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a href="{{settings.CALLBACK_DOMAIN}}github/authorize.ignore?domain={{settings.DOMAIN}}" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
 			<i class="iconfont f30">&#xe631;</i> 
 		</a> 
-		<a href="oschina/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a ng-href="{{settings.CALLBACK_DOMAIN}}oschina/authorize.ignore?domain={{settings.DOMAIN}}" class="cursor p10" target="_self" ng-if="settings.giteeClientID=='true'">
 			<i class="iconfont f30">&#xe646;</i> 
 		</a>  
 		

@@ -16,9 +16,8 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.IEmailService;
-import cn.crap.service.ProjectService;
-import cn.crap.service.ProjectUserService;
 import cn.crap.service.UserService;
+import cn.crap.service.tool.StringCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,9 +43,7 @@ public class LoginController extends BaseController{
 	@Autowired
 	private UserService customUserService;
 	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private ProjectUserService projectUserService;
+	private StringCache stringCache;
 
 	/**
 	 * 退出登录
@@ -257,36 +254,44 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping("/login.do")
 	@ResponseBody
-	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws IOException, MyException {
+	public JsonResult JsonResult(@ModelAttribute LoginDto model) throws MyException {
+		String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
+
+		// 已经错过一次，则需要输入密码
+		if (stringCache.get(IConst.C_NEED_VERIFICATION_IMG + uuid) != null){
 			if (settingCache.get(S_VERIFICATIONCODE).getValue().equals("true")) {
 				if(MyString.isEmpty(model.getVerificationCode()) ){
-                    throw new MyException(MyError.E000065, "验证码有误");
+					throw new MyException(MyError.E000065, "验证码有误");
 				}
 				if (!model.getVerificationCode().equals(Tools.getImgCode())) {
-                    throw new MyException(MyError.E000065, "验证码有误");
+					throw new MyException(MyError.E000065, "验证码有误");
 				}
 			}
+		}
 
-			// 只允许普通账号方式登录，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登录
-			List<UserPO> users = null;
-			if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登录
-				UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
-				users = userService.select(query);
-			}else{
-				UserQuery query = new UserQuery().setEqualUserName(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
-				users =  userService.select(query);
+
+		// 只允许普通账号方式登录，第三方绑定必须通过设置密码，并且没有重复的账号、邮箱才能登录
+		List<UserPO> users = null;
+		if(model.getUserName().indexOf("@")>0){ // 用户名中不允许有@符号，有@符号代表邮箱登录
+			UserQuery query = new UserQuery().setEqualEmail(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
+			users = userService.select(query);
+		}else{
+			UserQuery query = new UserQuery().setEqualUserName(model.getUserName()).setLoginType(LoginType.COMMON.getValue());
+			users =  userService.select(query);
+		}
+
+		if (users.size() == 1) {
+			UserPO user = users.get(0);
+			if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
+				customUserService.login(model, user);
+				return new JsonResult().success();
 			}
-			
-			if (users.size() == 1) {
-				UserPO user = users.get(0);
-				if (!MyString.isEmpty(user.getPassword()) && MD5.encrytMD5(model.getPassword(), user.getPasswordSalt()).equals(user.getPassword()) ) {
-					customUserService.login(model, user);
-					return new JsonResult().success();
-				}
-                throw new MyException(MyError.E000014);
-			}else{
-                throw new MyException(MyError.E000013);
-			}
+            stringCache.add(IConst.C_NEED_VERIFICATION_IMG + uuid, "true");
+			throw new MyException(MyError.E000014);
+		}else{
+            stringCache.add(IConst.C_NEED_VERIFICATION_IMG + uuid, "true");
+            throw new MyException(MyError.E000013);
+		}
 	}
 
 

@@ -32,6 +32,7 @@ public interface IConst {
 	String C_STRING = "string";
 	String C_CONTENT_TYPE_TIP = "指定参数类型为";
 	String C_FORM_DATA_TYPE= "application/x-www-form-urlencoded;charset=UTF-8";
+	String C_NEED_VERIFICATION_IMG = "needVerification";
 
 
 

@@ -7,10 +7,7 @@ import cn.crap.enu.SettingEnum;
 import cn.crap.enu.SettingStatus;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.ISetting;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,8 @@ public class SettingCache{
 
 	@Autowired
 	private SettingService customSettingService;
+	@Autowired
+    private StringCache stringCache;
 
 	public Cache<String, SettingDto> getCache(){
 	    if (cache == null) {
@@ -107,8 +106,13 @@ public class SettingCache{
         commonMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
         commonMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
 		commonMap.put(IConst.SETTING_GITEE_ID, MyString.isEmpty( Config.oschinaClientID )? "false":"true");
+		commonMap.put(ISetting.S_LOGIN_VERIFICATION_CODE, "false");
 
-		return commonMap;
+        String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
+        if (MyString.isNotEmpty(stringCache.get(IConst.C_NEED_VERIFICATION_IMG + uuid))){
+            commonMap.put(ISetting.S_LOGIN_VERIFICATION_CODE, "true");
+        }
+        return commonMap;
     }
 
     private String assembleKey(String key) {

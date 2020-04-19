@@ -11,7 +11,7 @@
 		<input type="text" autocomplete="off" id="login-password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
 	</div>
 	<div class="input-wrapper"
-		ng-if="settings.VERIFICATIONCODE=='true'">
+		ng-if="settings.VERIFICATIONCODE=='true' && settings.LOGIN_VERIFICATION_CODE=='true'">
 		<input type="text" autocomplete="off" ng-model="model.verificationCode" name="verificationCode"
 			placeholder="图形验证码" required>
 

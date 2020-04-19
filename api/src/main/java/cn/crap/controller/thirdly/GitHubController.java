@@ -3,10 +3,7 @@ package cn.crap.controller.thirdly;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
-import cn.crap.enu.LoginType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.UserStatus;
-import cn.crap.enu.UserType;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
@@ -93,6 +90,7 @@ public class GitHubController extends BaseController {
         // 跳转至访问的域名
         domain = URLDecoder.decode(domain, "utf-8");
         String authCode = Aes.encrypt(user.getId() + "|" + DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+        userService.updateAttribute(user.getId(), AttributeEnum.LOGIN_AUTH_CODE.getKey(), authCode, new UserPO());
         response.sendRedirect(domain + "/user/mock.do?authCode=" + authCode);
         return null;
     }

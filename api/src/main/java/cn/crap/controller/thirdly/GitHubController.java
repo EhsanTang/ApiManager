@@ -55,8 +55,9 @@ public class GitHubController extends BaseController {
         GitHubUser gitHubUser;
         try {
             gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
-        } catch (ConnectTimeoutException e){
-            throw new MyException(MyError.E000074);
+        } catch (Throwable e){
+            request.setAttribute("result", "授权失败，请重试！");
+            return ERROR_VIEW;
         }
 
         List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(gitHubUser)));

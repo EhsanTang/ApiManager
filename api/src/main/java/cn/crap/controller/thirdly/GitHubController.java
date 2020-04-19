@@ -3,10 +3,7 @@ package cn.crap.controller.thirdly;
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
-import cn.crap.enu.LoginType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.UserStatus;
-import cn.crap.enu.UserType;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
@@ -14,9 +11,7 @@ import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.UserService;
 import cn.crap.service.thirdly.GitHubService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -39,8 +36,7 @@ public class GitHubController extends BaseController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserService customUserService;
-
+    private static final String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s&redirect_uri=%s";
 
     /**
      * gitHub授权
@@ -48,18 +44,17 @@ public class GitHubController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/github/authorize.ignore")
-    public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String authorizeUrl = "https://github.com/login/oauth/authorize?client_id=%s&state=%s";
+    public void authorize(HttpServletResponse response, String domain) throws Exception {
         String state = Tools.getChar(20);
-        response.sendRedirect(String.format(authorizeUrl, Config.clientID, state));
+        response.sendRedirect(String.format(authorizeUrl, Config.clientID, state, getCallBackUrl(domain)));
     }
 
     @RequestMapping("/github/login.ignore")
-    public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        UserPO user = null;
-        GitHubUser gitHubUser = null;
+    public String login(@RequestParam String code, String domain, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        UserPO user;
+        GitHubUser gitHubUser;
         try {
-            gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, "").getAccess_token());
+            gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
         } catch (ConnectTimeoutException e){
             throw new MyException(MyError.E000074);
         }
@@ -92,24 +87,19 @@ public class GitHubController extends BaseController {
             user = users.get(0);
         }
 
-        // 登录
-        LoginDto model = new LoginDto();
-        model.setUserName(user.getUserName());
-        model.setRemberPwd("NO");
-
-        ThreadContext.set(request, response);
-        try {
-            customUserService.login(model, user);
-        }catch (Exception e){
-            throw e;
-        }finally {
-            ThreadContext.clear();
-        }
-        response.sendRedirect(request.getContextPath() + "/admin.do");
+        // 跳转至访问的域名
+        domain = URLDecoder.decode(domain, "utf-8");
+        String authCode = Aes.encrypt(user.getId() + "|" + DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+        userService.updateAttribute(user.getId(), AttributeEnum.LOGIN_AUTH_CODE.getKey(), authCode, new UserPO());
+        response.sendRedirect(domain + "/user/mock.do?authCode=" + authCode);
         return null;
     }
 
     private String getThirdlyId(GitHubUser gitHubUser) {
         return IConst.GITHUB + gitHubUser.getId();
+    }
+
+    private String getCallBackUrl(String callDomain) throws Exception{
+        return URLEncoder.encode(Tools.getUrlPath() + "/github/login.ignore?domain=" + URLEncoder.encode(callDomain, "utf-8"), "utf-8");
     }
 }

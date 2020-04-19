@@ -4,7 +4,7 @@ import cn.crap.beans.Config;
 import cn.crap.dto.FindPwdDto;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.SettingDto;
+import cn.crap.enu.AttributeEnum;
 import cn.crap.enu.LoginType;
 import cn.crap.enu.MyError;
 import cn.crap.enu.SettingEnum;
@@ -32,9 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -118,7 +116,7 @@ public class LoginController extends BaseController{
 				request.setAttribute("result", "抱歉，账号不存在！");
 			}
 		}
-		return "WEB-INF/views/result.jsp";
+		return ERROR_VIEW;
 	}
 	
 
@@ -292,23 +290,60 @@ public class LoginController extends BaseController{
 	}
 
 
+	/**
+	 * @param request
+	 * @param response
+	 * @param userId
+	 * @param authCode 免登秘钥
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/mock.do")
-	public String mock(HttpServletRequest request, HttpServletResponse response, String userId) throws Exception{
-	    // 最高管理员能模拟所有用户
-	    if (MyString.isEmpty(userId) || !LoginUserHelper.isSuperAdmin()){
-            userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
-        }
-        UserPO user = userService.get(userId);
-        if (user == null){
-            request.setAttribute("title", "抱歉，系统不允许未登录试用！");
-            request.setAttribute("result", "抱歉，系统不允许未登录试用！");
-            return "WEB-INF/views/result.jsp";
-        }
-        LoginDto loginDto = new LoginDto();
-        loginDto.setRemberPwd("NO");
-        loginDto.setUserName(user.getUserName());
-        customUserService.login(loginDto, user);
-        response.sendRedirect(request.getContextPath() + "/admin.do");
-        return null;
+	public String mock(HttpServletRequest request, HttpServletResponse response, String userId, String authCode) throws Exception{
+		// authCode免登陆：有效时间1分钟，解决多域名授权问题
+		if (MyString.isNotEmpty(authCode)){
+			String desAuthCode = Aes.desEncrypt(authCode);
+			userId = desAuthCode.split("\\|")[0];
+			String dateStr = desAuthCode.split("\\|")[1];
+
+            UserPO user = userService.get(userId);
+            String attr = AttributeUtils.getAttr(user.getAttributes(), AttributeEnum.LOGIN_AUTH_CODE);
+
+            if (!authCode.equals(attr)){
+                request.setAttribute("result", "非法请求，授权码无效！");
+                return ERROR_VIEW;
+            }
+
+            if (DateFormartUtil.getCurrentTimeMillis(dateStr) + 5 * 60 *1000 > System.currentTimeMillis()){
+				return mockUser(request, response, user);
+			} else {
+				request.setAttribute("result", "抱歉，授权码失效，请重试！");
+				return ERROR_VIEW;
+			}
+		}
+
+		// 最高管理员能模拟所有用户
+		if (MyString.isNotEmpty(userId) && LoginUserHelper.isSuperAdmin()){
+			return mockUser(request, response, userService.get(userId));
+		}
+
+		// 普通用户只能免登陆指定测试用户
+		userId = settingCache.get(SettingEnum.NO_NEED_LOGIN_USER.getKey()).getValue();
+		return mockUser(request, response, userService.get(userId));
+	}
+
+	private String mockUser(HttpServletRequest request, HttpServletResponse response,UserPO user) throws MyException, IOException {
+		if (user == null){
+			request.setAttribute("title", "抱歉，系统不允许未登录试用！");
+			request.setAttribute("result", "抱歉，系统不允许未登录试用！");
+			return ERROR_VIEW;
+		}
+
+		LoginDto loginDto = new LoginDto();
+		loginDto.setRemberPwd("NO");
+		loginDto.setUserName(user.getUserName());
+		customUserService.login(loginDto, user);
+		response.sendRedirect(request.getContextPath() + "/admin.do");
+		return null;
 	}
 }

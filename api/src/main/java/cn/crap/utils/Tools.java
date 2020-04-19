@@ -34,6 +34,7 @@ public class Tools {
 
     /**
      * 获取系统部署的url
+     * 如：http://localhost:8080/api
      * @return
      */
     public static String getUrlPath(){

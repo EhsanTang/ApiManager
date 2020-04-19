@@ -43,6 +43,10 @@ public class MyCookie {
 	 * @param time 单位 s
 	 */
 	public static void addCookie(String key,String value,boolean jiaMi, int time){
+	    if (ThreadContext.response() == null){
+	        return;
+        }
+
 		if( MyString.isEmpty(key) || MyString.isEmpty(value)){
 			return;
 		}
@@ -61,6 +65,10 @@ public class MyCookie {
 		return getCookie(key,false);
 	}
 	public static String getCookie(String key,boolean jiaMi){
+		if (ThreadContext.request() == null){
+			return "";
+		}
+
 		Cookie allCookie[]= ThreadContext.request().getCookies();
 		if(allCookie!=null&&allCookie.length!=0)
 		 {

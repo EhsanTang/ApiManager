@@ -247,7 +247,7 @@ public class HttpPostGet {
         HttpResponse response = client.execute(method);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
-            throw new ClientProtocolException("Path:" + method.getURI() + "- Unexpected response status: " + status);
+            throw new ClientProtocolException("Path:" + method.getURI() + " - Unexpected response status: " + status);
         }
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");

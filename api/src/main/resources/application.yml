@@ -9,9 +9,7 @@ swagger:
 
 #log
 logging:
-  level:
-     ROOT: info
-  file: api.log
+  config: classpath:logback-boot.xml
 
 spring:
     servlet:
@@ -30,8 +28,8 @@ spring:
     mail:
       jndi-name: xxx
       host: smtp.qq.com
-      username: 1111@qq.com
-      password: 3423535
+      username: 3281328128@qq.com
+      password: ukkrwqdflbgzcjbj
       port: 587
       protocol: smtp
       default-encoding: UTF-8
@@ -39,4 +37,4 @@ spring:
 mybatis:
   mapper-locations: mapper/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl

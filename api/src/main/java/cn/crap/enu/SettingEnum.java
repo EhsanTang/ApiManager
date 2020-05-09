@@ -12,8 +12,11 @@ public enum SettingEnum {
     NAV_BG_COLOR("NAV_BG_COLOR", SettingStatus.COMMON, SettingType.COLOR, null,"#233050", "网站顶部、底部导航背景颜色"),
     NAV_COLOR("NAV_COLOR", SettingStatus.COMMON, SettingType.COLOR, null, "#a9a9a9", "前端顶部、导航字体颜色 #a9a9a9"),
     MINI_LOGO("MINI_LOGO", SettingStatus.COMMON, SettingType.IMAGE, null, "resources/images/logo.png", "网站小logo"),
+	DOMAIN("DOMAIN", SettingStatus.DELETE, SettingType.TEXT, null, "http://127.0.0.1:8080", "网站域名：废弃"),
+	CALLBACK_DOMAIN("CALLBACK_DOMAIN", SettingStatus.COMMON, SettingType.TEXT, null, "http://127.0.0.1:8080/api/", "网站域名，第三方登陆回调使用，如：http://127.0.0.1:8080/api/"),
 
-    ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, null, "//at.alicdn.com/t/font_860205_v11qvy4n2m", "系统图标",
+
+	ICONFONT("ICONFONT", SettingStatus.COMMON, SettingType.SELECT, null, "//at.alicdn.com/t/font_860205_v11qvy4n2m", "系统图标",
             new String[]{"本地图标地址（服务器不能连接外网时使用）|iconfont", "阿里CDN图标库地址|//at.alicdn.com/t/font_860205_v11qvy4n2m"}),
     MAX_WIDTH("MAX_WIDTH", SettingStatus.COMMON, SettingType.TEXT, 1200, null, "前端显示最大宽度（数字，建议：900-1200）"),
 
@@ -26,7 +29,6 @@ public enum SettingEnum {
                     "知乎字体|\"Helvetica Neue\",Helvetica,Arial,sans-serif;"
 
             }),
-	DOMAIN("DOMAIN", SettingStatus.COMMON, SettingType.TEXT, null, "http://localhost:8080", "系统访问地址/域名/IP"),
 	// 后端
 	DATABASE_CHANGE_LOG("DATABASE_CHANGE_LOG", SettingStatus.HIDDEN, SettingType.TEXT, 0, null, "数据库自动更新记录：记录最后一条sql的序号，更新版本后系统会自动修改，请勿修改"),
 	NO_NEED_LOGIN_USER("NO_NEED_LOGIN_USER", SettingStatus.HIDDEN, SettingType.TEXT, null, "0", "不需要登录直接模拟的用户，快速试用，0表示不开放试用功能"),

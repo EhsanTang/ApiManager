@@ -1,22 +1,16 @@
 package cn.crap.controller.thirdly;
 
 import cn.crap.beans.Config;
-import cn.crap.dto.LoginDto;
 import cn.crap.dto.thirdly.GitHubUser;
-import cn.crap.enu.LoginType;
-import cn.crap.enu.MyError;
-import cn.crap.enu.UserStatus;
-import cn.crap.enu.UserType;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
-import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
+import cn.crap.service.SettingService;
 import cn.crap.service.UserService;
 import cn.crap.service.thirdly.OschinaService;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Tools;
+import cn.crap.utils.*;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -38,8 +34,8 @@ public class GitOschinaController extends BaseController {
     private OschinaService oschinaService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserService customUserService;
+
+    private static final String authorizeUrl = "https://gitee.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
 
     /**
      * gitHub授权
@@ -47,19 +43,22 @@ public class GitOschinaController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/oschina/authorize.ignore")
-    public void authorize(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String authorizeUrl = "https://gitee.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s";
-        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, settingCache.getDomain() + "/oschina/login.ignore"));
+    public void authorize(HttpServletResponse response, String domain) throws Exception {
+        response.sendRedirect(String.format(authorizeUrl, Config.oschinaClientID, getCallBackUrl(domain)));
     }
 
     @RequestMapping("/oschina/login.ignore")
-    public String login(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        UserPO user = null;
-        GitHubUser oschinaUser = null;
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        @RequestParam String code, String domain) throws Exception {
+        UserPO user;
+        GitHubUser oschinaUser;
+
         try {
-            oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, settingCache.getDomain()).getAccess_token());
-        } catch (ConnectTimeoutException e){
-            throw new MyException(MyError.E000075);
+            // callbackUrl 必须与授权时的callbackUrl一致
+            oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
+        } catch (Throwable e){
+            request.setAttribute("result", "授权失败，请重试！");
+            return ERROR_VIEW;
         }
 
         List<UserPO> users = userService.select(new UserQuery().setThirdlyId(getThirdlyId(oschinaUser)));
@@ -75,6 +74,7 @@ public class GitOschinaController extends BaseController {
                     user.setEmail(oschinaUser.getEmail());
                 }
             }
+
             user.setPassword("");
             user.setStatus(UserStatus.INVALID.getType());
             user.setType(UserType.USER.getType());
@@ -90,24 +90,19 @@ public class GitOschinaController extends BaseController {
             user = users.get(0);
         }
 
-        // 登录
-        LoginDto model = new LoginDto();
-        model.setUserName(user.getUserName());
-        model.setRemberPwd("NO");
-        ThreadContext.set(request, response);
-        try {
-            customUserService.login(model, user);
-        }catch (Exception e){
-            throw e;
-        }finally {
-            ThreadContext.clear();
-        }
-
-        response.sendRedirect("../admin.do");
+        // 跳转至访问的域名
+        domain = URLDecoder.decode(domain, "utf-8");
+        String authCode = Aes.encrypt(user.getId() + "|" + DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM_DD_HH_mm_ss));
+        userService.updateAttribute(user.getId(), AttributeEnum.LOGIN_AUTH_CODE.getKey(), authCode, new UserPO());
+        response.sendRedirect(domain + "/user/mock.do?authCode=" + authCode);
         return null;
     }
 
     private String getThirdlyId(GitHubUser oschinaUser) {
         return IConst.OSCHINA + oschinaUser.getId();
+    }
+
+    private String getCallBackUrl(String callDomain) throws Exception{
+        return URLEncoder.encode(Tools.getUrlPath() + "/oschina/login.ignore?domain=" + URLEncoder.encode(callDomain, "utf-8"), "utf-8");
     }
 }

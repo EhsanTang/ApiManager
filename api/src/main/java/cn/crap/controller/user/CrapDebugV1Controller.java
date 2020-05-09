@@ -17,11 +17,13 @@ import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.InterfaceWithBLOBs;
 import cn.crap.model.ModulePO;
 import cn.crap.model.ProjectPO;
+import cn.crap.model.ProjectUserPO;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
 import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
 import cn.crap.service.ProjectService;
+import cn.crap.service.ProjectUserService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
@@ -55,6 +57,8 @@ public class CrapDebugV1Controller extends BaseController {
     private ModuleService moduleService;
     @Autowired
     private ProjectAbility projectAbility;
+    @Autowired
+    private ProjectUserService projectUserService;
 
     @RequestMapping("/synch.do")
     @ResponseBody
@@ -63,7 +67,6 @@ public class CrapDebugV1Controller extends BaseController {
     public JsonResult synch(@RequestBody String body, String projectUniKey, String defProjectName) throws Exception {
         List<DebugInterfaceParamDto> list = JSON.parseArray(body, DebugInterfaceParamDto.class);
         LoginInfoDto user = LoginUserHelper.getUser();
-        String userId = user.getId();
         log.error("sync projectUniKey:" + projectUniKey);
 
         /**
@@ -74,7 +77,10 @@ public class CrapDebugV1Controller extends BaseController {
          */
         ProjectPO project = null;
         if (MyString.isNotEmptyOrNUll(projectUniKey)){
-            project = projectService.getByUniKey(userId, projectUniKey);
+            ProjectUserPO projectUserPO = projectUserService.getByProjectUniKey(user.getId(), projectUniKey);
+            if (projectUserPO != null){
+                project = projectService.get(projectUserPO.getProjectId());
+            }
         }
 
         if (project == null){
@@ -90,13 +96,13 @@ public class CrapDebugV1Controller extends BaseController {
         String projectId = project.getId();
         projectUniKey = project.getUniKey();
         String projectName = project.getName();
+        String userId = project.getUserId();
 
         /**
          * 2.处理模块+接口
          */
         long moduleSequence = System.currentTimeMillis();
-        Map<String, ModulePO> moduleUniKeyMap = moduleService.select(new ModuleQuery().setProjectId(projectId).setQueryAll(true)
-                .setUserId(userId)).stream().collect(Collectors.toMap(ModulePO::getUniKey, a -> a,(k1, k2)->k1));
+        Map<String, ModulePO> moduleUniKeyMap = moduleService.select(new ModuleQuery().setProjectId(projectId).setQueryAll(true)).stream().collect(Collectors.toMap(ModulePO::getUniKey, a -> a,(k1, k2)->k1));
 
         for (DebugInterfaceParamDto debutModuleDTO : list) {
 
@@ -293,7 +299,7 @@ public class CrapDebugV1Controller extends BaseController {
 
         // 新增模块
         if (module == null && moduleDTO.getStatus() != -1) {
-            module = buildModule(user, project, moduleSequence, moduleDTO);
+            module = buildModule(project, moduleSequence, moduleDTO);
             moduleService.insert(module);
         }
 
@@ -318,13 +324,13 @@ public class CrapDebugV1Controller extends BaseController {
         return module;
     }
 
-    private ModulePO buildModule(LoginInfoDto user, ProjectPO project, long moduleSequence, DebugInterfaceParamDto d) {
+    private ModulePO buildModule( ProjectPO project, long moduleSequence, DebugInterfaceParamDto d) {
         ModulePO module = new ModulePO();
         module.setName(d.getModuleName());
         module.setCreateTime(new Date());
         module.setSequence(moduleSequence);
         module.setProjectId(project.getId());
-        module.setUserId(user.getId());
+        module.setUserId(project.getUserId());
         module.setRemark("");
         module.setUrl("");
         module.setCategory("");

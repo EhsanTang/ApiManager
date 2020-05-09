@@ -61,7 +61,8 @@
                 <tr class="BGEEE">
                     <th class="tc w100 b0">用户名</th>
                     <th class="tc w100 b0">真实名称/昵称</th>
-                    <th class="tc b0">类型</th>
+                    <th class="tc b0 w100">登陆方式</th>
+                    <th class="tc b0 w100">类型</th>
                     <th class="tc b0">权限</th>
                     <th class="tc w150 b0">创建时间</th>
                     <th class="w100 tc b0">操作</th>
@@ -71,6 +72,7 @@
                 <tr ng-repeat="item in users">
                     <td class="tc w100">{{item.userName}}</td>
                     <td class="tc w100">{{item.trueName}}</td>
+                    <td class="tc w100">{{item.loginTypeStr}}</td>
                     <td class="tc w100" ng-bind="item.type==100?'管理员':'普通用户'"></td>
                     <td class="tc">{{item.authName}}</td>
                     <td class="tc">{{item.createTimeStr}}</td>

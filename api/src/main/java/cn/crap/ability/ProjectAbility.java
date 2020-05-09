@@ -32,7 +32,7 @@ public class ProjectAbility {
      */
     public boolean addProject(ProjectPO project, LoginInfoDto user) throws Exception{
         if (projectService.insert(project)) {
-            ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(project.getId(), user);
+            ProjectUserPO projectUser = ProjectUserAdapter.getInitProjectUserPO(project, user);
             projectUser.setType(ProjectUserType.CREATOR.getByteType());
             projectUser.setSequence(project.getSequence());
             projectUser.setProjectName(project.getName());

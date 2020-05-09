@@ -11,7 +11,7 @@
 		<input type="text" autocomplete="off" id="login-password" ng-model="model.password" name="password" placeholder="密码（不少于6位）" required/>
 	</div>
 	<div class="input-wrapper"
-		ng-if="settings.VERIFICATIONCODE=='true'">
+		ng-if="settings.VERIFICATIONCODE=='true' && settings.LOGIN_VERIFICATION_CODE=='true'">
 		<input type="text" autocomplete="off" ng-model="model.verificationCode" name="verificationCode"
 			placeholder="图形验证码" required>
 
@@ -30,10 +30,10 @@
 	</div>
 	<div class="form-group mt10 mb10 C999">
 		你也可以利用以下方式进行登录 <br/>
-		<a href="github/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a href="{{settings.CALLBACK_DOMAIN}}github/authorize.ignore?domain={{settings.DOMAIN}}" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
 			<i class="iconfont f30">&#xe631;</i> 
 		</a> 
-		<a href="oschina/authorize.ignore" class="cursor p10" target="_self" ng-if="settings.githubClientID=='true'">
+		<a ng-href="{{settings.CALLBACK_DOMAIN}}oschina/authorize.ignore?domain={{settings.DOMAIN}}" class="cursor p10" target="_self" ng-if="settings.giteeClientID=='true'">
 			<i class="iconfont f30">&#xe646;</i> 
 		</a>  
 		

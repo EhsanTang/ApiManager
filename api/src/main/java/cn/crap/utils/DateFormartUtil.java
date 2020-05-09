@@ -1,6 +1,5 @@
 package cn.crap.utils;
 
-import javax.management.ObjectName;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,9 +11,7 @@ import java.util.Date;
  *
  */
 public class DateFormartUtil {
-	//yyyyMMddHHmmSS
-	//S毫秒
-	//s秒
+	//yyyyMMddHHmmSS //S毫秒 //s秒
 	public static String YYYY_MM = "yyyy-MM";
 	public static String YYYY_MM_DD = "yyyy-MM-dd";
 	public static String DDHH="ddHH";
@@ -49,6 +46,7 @@ public class DateFormartUtil {
 	{
 		return getDateByFormat(new Date(),YYYY_MM_DD);
 	}
+
 	public static String getDateByFormatAddOneHour()
 	{
 		Calendar c = Calendar.getInstance();
@@ -70,6 +68,7 @@ public class DateFormartUtil {
 		c.add(Calendar.DAY_OF_MONTH, 1);
 		return getDateByFormat(c.getTime(),YYYY_MM_DD);
 	}
+
 	public static long getCurrentTimeMillis(String date,String format)
 	{
 		SimpleDateFormat dateFormat1 = new SimpleDateFormat(format);
@@ -165,9 +164,11 @@ public class DateFormartUtil {
 	public static String getDateByFormat(String daf){
 		return getDateByFormat(new Date(),daf);
 	}
+
 	public static String getDateByFormat(SimpleDateFormat daf){
 		return   getDateByFormat(new Date(),daf);
 	}
+
 	public static String getDateByFormat(Date date,String daf){
 		SimpleDateFormat dafe=new SimpleDateFormat(daf);
 		return getDateByFormat(date,dafe);

@@ -34,6 +34,7 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
             var isSuccess = httpSuccess(result,'iLoading=FLOAT');
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
                 $rootScope.error = isSuccess.replace('[ERROR]', '');
+                $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
             } else if(result.success==1){
                 if (result.data) {
                     $rootScope.model = result.data;
@@ -42,9 +43,11 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
                     callBack();
                 }
             } else {
+                $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
                 $rootScope.error = result.error.message;
             }
         }).error(function(result) {
+            $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
             $rootScope.error = "未知异常，请联系开发人员查看日志";
         });
     }

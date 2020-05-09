@@ -14,7 +14,10 @@ import cn.crap.schedule.OpenSourceInfoTask;
 import cn.crap.schedule.TaskUtil;
 import cn.crap.service.*;
 import cn.crap.service.tool.LuceneSearchService;
-import cn.crap.utils.*;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -232,24 +235,8 @@ public class MainController extends BaseController{
 	@RequestMapping("/visitor/init.do")
 	@ResponseBody
 	public JsonResult visitorInit(HttpServletRequest request) throws Exception {
-		Map<String, String> settingMap = new HashMap<String, String>();
-		for (SettingDto setting : settingCache.getAll()) {
-			if (SettingStatus.COMMON.getStatus().equals(setting.getStatus())) {
-				settingMap.put(setting.getKey(), setting.getValue());
-			}
-			settingMap.put(setting.getKey(), setting.getValue());
-		}
-		settingMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
-		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
-
-		// 新增加且没有写入数据库的配置
-		for (SettingEnum settingEnum : SettingEnum.values()){
-			if (!settingMap.containsKey(settingEnum.getKey())){
-				settingMap.put(settingEnum.getKey(), settingEnum.getValue());
-			}
-		}
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		returnMap.put("settingMap", settingMap);
+		Map<String,Object> returnMap = new HashMap<>();
+		returnMap.put("settingMap", settingCache.getCommonMap());
 
 		// 从缓存中获取菜单
 		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);

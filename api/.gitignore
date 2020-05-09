@@ -9,3 +9,4 @@
 .settings
 .classpath
 **/*.DS_Store
+*.log

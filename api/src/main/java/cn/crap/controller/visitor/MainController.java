@@ -24,6 +24,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
@@ -65,7 +66,7 @@ public class MainController extends BaseController{
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping("/home.do")
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletResponse response, ModelMap modelMap) throws Exception {
 		SettingDto indexUrl = settingCache.get(S_INDEX_PAGE);
 		if (indexUrl != null && !MyString.isEmpty(indexUrl.getValue())
@@ -163,9 +164,9 @@ public class MainController extends BaseController{
         modelMap.addAttribute("menuList", menuList);
 
         // fork & star 数量
-		TaskUtil.execute(new OpenSourceInfoTask());
-		modelMap.addAttribute(FORK_NUM, OpenSourceInfoTask.forNumStr);
-		modelMap.addAttribute(STAR_NUM, OpenSourceInfoTask.starNumStr);
+//		TaskUtil.execute(new OpenSourceInfoTask());
+//		modelMap.addAttribute(FORK_NUM, OpenSourceInfoTask.forNumStr);
+//		modelMap.addAttribute(STAR_NUM, OpenSourceInfoTask.starNumStr);
 
         return "WEB-INF/views/dashboard.jsp";
     }

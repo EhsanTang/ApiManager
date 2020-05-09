@@ -1,0 +1,40 @@
+# Server settings
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+swagger:
+  enable: false
+
+#log
+logging:
+  config: classpath:logback-boot.xml
+
+spring:
+    servlet:
+        multipart:
+          max-request-size: 100MB
+          max-file-size: 100MB
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/apidev?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: apidev
+      password: apidev
+    mvc:
+      view:
+        prefix: /
+#        suffix: .jsp
+    mail:
+      jndi-name: xxx
+      host: smtp.qq.com
+      username: 3281328128@qq.com
+      password: ukkrwqdflbgzcjbj
+      port: 587
+      protocol: smtp
+      default-encoding: UTF-8
+
+mybatis:
+  mapper-locations: mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl

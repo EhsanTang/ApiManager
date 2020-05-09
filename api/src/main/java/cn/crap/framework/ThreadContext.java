@@ -27,7 +27,7 @@ public class ThreadContext implements Filter {
      */
     @Override
     final public void init(FilterConfig filterConfig) throws ServletException {
-        this.IGNORE_SUFFIXES = initIgnoreSuffix(filterConfig);
+        IGNORE_SUFFIXES = initIgnoreSuffix(filterConfig);
         log.info("ThreadContext:初始化..........");
 
     }

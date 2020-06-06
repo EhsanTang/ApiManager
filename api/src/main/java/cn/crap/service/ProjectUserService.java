@@ -41,4 +41,12 @@ public class ProjectUserService extends NewBaseService<ProjectUserPO, ProjectUse
         userPO.setProjectName(projectName);
         return projectUserDao.batchUpdateByProjectId(userPO) > 0;
     }
+
+    public boolean deleteByProjectId(String projectId){
+        if (projectId == null){
+            return false;
+        }
+        return projectUserDao.deleteByProjectId(projectId) > 0;
+    }
+
 }

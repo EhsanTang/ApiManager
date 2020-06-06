@@ -236,13 +236,9 @@ public class ProjectController extends BaseController {
             throw new MyException(MyError.E000033);
         }
 
-        // 只有项目成员数量为0，才允许删除项目
-        if (projectUserService.count(new ProjectUserQuery().setProjectId(model.getId())) > 0) {
-            throw new MyException(MyError.E000038);
-        }
-
         projectCache.del(project.getId());
         projectService.delete(project.getId());
+        projectUserService.deleteByProjectId(project.getId());
         return new JsonResult(1, null);
     }
 

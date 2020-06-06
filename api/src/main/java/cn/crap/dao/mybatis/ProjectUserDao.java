@@ -2,6 +2,7 @@ package cn.crap.dao.mybatis;
 
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.ProjectUserQuery;
+import org.apache.ibatis.annotations.Param;
 
 public interface ProjectUserDao extends NewBaseDao<ProjectUserPO, ProjectUserQuery> {
 
@@ -11,5 +12,12 @@ public interface ProjectUserDao extends NewBaseDao<ProjectUserPO, ProjectUserQue
      * @return
      */
     int batchUpdateByProjectId(ProjectUserPO po);
+
+    /**
+     * 根据项目ID删除用户
+     * @param projectId
+     * @return
+     */
+    int deleteByProjectId(@Param("projectId") String projectId);
 
 }

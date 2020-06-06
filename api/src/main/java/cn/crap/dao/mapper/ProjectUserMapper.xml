@@ -50,6 +50,10 @@
         delete from project_user where id=#{id}
     </delete>
 
+  <delete id="deleteByProjectId">
+        delete from project_user where projectId=#{projectId}
+    </delete>
+
 
   <!-- 更新 -->
   <update id="update" parameterType="cn.crap.model.ProjectUserPO">

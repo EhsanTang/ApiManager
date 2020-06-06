@@ -80,8 +80,10 @@ public class UserController extends BaseController {
             return addUser(user);
         }else{
             UserPO dbUser = userService.get(user.getId());
-            if(!dbUser.getEmail().equalsIgnoreCase(userDto.getEmail()) && userService.count(query) > 0){
-                throw new MyException(MyError.E000065, "邮箱已经注册");
+            if(dbUser.getEmail() == null || !dbUser.getEmail().equalsIgnoreCase(userDto.getEmail())){
+                if (userService.count(query) > 0){
+                    throw new MyException(MyError.E000065, "邮箱已经注册");
+                }
             }
             return updateUser(user, userDto.getAttrKey(), userDto.getAttrVal());
         }

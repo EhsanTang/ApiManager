@@ -144,7 +144,7 @@ public class FileController extends BaseController{
                 conf.setConnectionTimeout(1000);
                 conf.setSocketTimeout(1000);
                 client = new OSSClient(Config.endPoint, Config.accessKeyId, Config.accessKeySecret, conf);
-                client.putObject(Config.bucketName, dir, file.getInputStream());
+                client.putObject(Config.bucketName, dir.substring(1), file.getInputStream());
             }catch (Exception e){
                 e.printStackTrace();
             }finally {

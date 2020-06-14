@@ -105,7 +105,7 @@ public class FileController extends BaseController{
 
                 File targetFile = new File(destDir+saveUrl,realFileName);
                 file.transferTo(targetFile);
-                result = saveUrl+realFileName;
+                result = Config.imgPrefix + saveUrl + realFileName;
             } catch (Exception e) {
                 e.printStackTrace();
                 result = "[ERROR]上传失败";

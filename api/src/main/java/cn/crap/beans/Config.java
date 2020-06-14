@@ -54,6 +54,9 @@ public class Config{
             Config.endPoint = properties.getProperty(Config.getConfigEndPoint());
             Config.bucketName = properties.getProperty(Config.getConfigBucketName());
             Config.imgPrefix = properties.getProperty(Config.getConfigImgPrefix());
+            if (Config.imgPrefix == null || Config.imgPrefix.equals("")){
+                Config.imgPrefix = "";
+            }
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -105,7 +105,7 @@ public class FileController extends BaseController{
 
                 File targetFile = new File(destDir+saveUrl,realFileName);
                 file.transferTo(targetFile);
-                if (Config.imgPrefix.startsWith("/")){
+                if (Config.imgPrefix.endsWith("/")){
                     result = Config.imgPrefix.substring(0, Config.imgPrefix.length() - 1) + saveUrl + realFileName;
                 } else {
                     result = Config.imgPrefix + saveUrl + realFileName;

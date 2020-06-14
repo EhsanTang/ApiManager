@@ -41,7 +41,7 @@ public class MockController extends BaseController{
         response.addHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("Access-Control-Allow-Headers",
                 "Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,X-Requested-With");
-        response.addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE");
+        response.addHeader("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE");
         response.addHeader("Access-Control-Allow-Origin", "*");
         String mockKey = getMockKey(id, isTrueExam);
         String contentTypeKey = getMockKey(id, null);

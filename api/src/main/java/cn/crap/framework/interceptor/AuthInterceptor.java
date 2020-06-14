@@ -7,6 +7,7 @@ import cn.crap.framework.ThreadContext;
 import cn.crap.service.tool.UserCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -29,8 +30,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean threadHasRequest = true;
         try {
+
             if (!handler.getClass().isAssignableFrom(HandlerMethod.class)) {
                 return true;
+            }
+
+            if (RequestMethod.OPTIONS.name().equals(request.getMethod())){
+                return false;
             }
 
             if (ThreadContext.request() == null) {

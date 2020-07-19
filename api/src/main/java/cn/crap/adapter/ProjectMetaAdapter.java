@@ -8,7 +8,6 @@ import cn.crap.model.ProjectMetaPO;
 import cn.crap.utils.AttributeUtils;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.IAttributeConst;
 
 import java.util.ArrayList;
 import java.util.HashMap;

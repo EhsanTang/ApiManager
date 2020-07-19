@@ -40,6 +40,10 @@ public enum SettingEnum {
 	SECRETKEY("SECRETKEY", SettingStatus.HIDDEN, SettingType.TEXT, null, "crapApiKey", "秘钥，用于cookie加密等"),
 	POST_WOMAN_PROJECT_NUM("PLUG_MAX_PRO_NUM", SettingStatus.COMMON, SettingType.TEXT, 10, null, "postwoman插件最大允许的项目数"),
 	POST_WOMAN_VIP_PROJECT_NUM("VIP_PLUG_PRO_NUM", SettingStatus.COMMON, SettingType.TEXT, 50, null, "vip 用户 postwoman插件最大允许的项目数"),
+
+	POST_WOMAN_INTER_NUM("PLUG_MAX_INTER_NUM", SettingStatus.COMMON, SettingType.TEXT, 120, null, "postwoman插件最大允许的接口数"),
+	POST_WOMAN_VIP_INTER_NUM("VIP_PLUG_INTER_NUM", SettingStatus.COMMON, SettingType.TEXT, 200, null, "vip 用户 postwoman插件最大允许的接口数"),
+
 	OPEN_ALIYUN("OPEN_ALIYUN", SettingStatus.HIDDEN, SettingType.TEXT, null, "false", "是否开启阿里云图片存储，开通后图片、文件将通过云端读写，true表示打开");
 
 

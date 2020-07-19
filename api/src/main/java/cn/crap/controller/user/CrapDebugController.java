@@ -24,6 +24,7 @@ import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MD5;
 import cn.crap.utils.MyString;
+import cn.crap.utils.VipUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -118,9 +119,11 @@ public class CrapDebugController extends BaseController {
 
             // 更新接口
             totalNum = addDebug(projectId, modulePOMap.get(moduleUniKey), user, debutModuleDTO, totalNum);
-            if (totalNum > 120) {
-                log.error("sync addDebug error, totalNum:" + totalNum);
-                return new JsonResult(MyError.E000058);
+
+            int maxInterNum = VipUtil.getPostWomanPlugInterNum(settingCache, user);
+            if (totalNum > maxInterNum) {
+                log.error("sync addDebug error, totalNum:" + maxInterNum + ",userId:" + userId);
+                return new JsonResult(0, null , MyError.E000058.name(), "最多允许同步" + maxInterNum + "个接口，请删除部分接口再试，或联系管理员修改数量！");
             }
         }
 

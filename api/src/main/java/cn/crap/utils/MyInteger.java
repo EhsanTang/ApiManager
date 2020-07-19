@@ -19,4 +19,26 @@ public class MyInteger {
             return defValue;
         }
     }
+
+    public static int getInt(String valueStr, int defValue, int min, int max){
+        if (valueStr == null){
+            return defValue;
+        }
+
+        try{
+            int value =  Integer.parseInt(valueStr);
+            if (value < min){
+                return min;
+            }
+
+            if (value > max){
+                return max;
+            }
+
+            return value;
+        }catch (Exception e){
+            e.printStackTrace();
+            return defValue;
+        }
+    }
 }

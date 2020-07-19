@@ -62,14 +62,10 @@ public class ProjectController extends BaseController {
         String userId = user.getId();
         List<ProjectPO> models;
 
-        // 我创建 & 加入的项目
         query.setSort(TableField.SORT.SEQUENCE_DESC);
-        if (isPlug){
-            query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_PROJECT_NUM));
-            if (AttributeUtils.hasAttr(user.getAttributes(), AttributeEnum.VIP_POST_WOMAN)){
-                query.setPageSize(settingCache.getInt(SettingEnum.POST_WOMAN_VIP_PROJECT_NUM));
-            }
 
+        if (isPlug){
+            query.setPageSize(VipUtil.getPostWomanPlugProjectNum(settingCache, user));
             page = new Page(query);
             models = projectService.query(userId, false, null, page);
         }

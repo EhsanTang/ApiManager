@@ -1,7 +1,9 @@
 package cn.crap.dto;
 
+import cn.crap.enu.AttributeEnum;
 import cn.crap.enu.UserType;
 import cn.crap.model.UserPO;
+import cn.crap.utils.AttributeUtils;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -46,9 +48,7 @@ public class LoginInfoDto implements Serializable{
 	}
 
 	public String getAuthStr() {
-		if(authStr == null)
-			return "";
-		return authStr;
+		return authStr == null ? "" : authStr;
 	}
 
 	public String getId(){
@@ -73,6 +73,10 @@ public class LoginInfoDto implements Serializable{
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+
+	public String getAttribute(AttributeEnum attributeEnum){
+		return AttributeUtils.getAttr(this.attributes, attributeEnum);
 	}
 
 }

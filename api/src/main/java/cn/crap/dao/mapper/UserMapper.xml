@@ -133,7 +133,7 @@
         passwordSalt = #{passwordSalt},
       </if>
       <if test="loginTime != null">
-        loginTime = #{loginTime},
+        loginTime = NOW(),
       </if>
 
     </set>

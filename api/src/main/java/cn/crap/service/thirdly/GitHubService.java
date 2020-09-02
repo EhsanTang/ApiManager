@@ -19,7 +19,7 @@ public class GitHubService {
 	        Map<String,String> params = Tools.getStrMap("client_id",Config.clientID,
 	        		"client_secret",Config.clientSecret,"code",code,"redirect_uri",redirect_uri);
 	        
-	        String rs = HttpPostGet.post(url, params, Tools.getStrMap("Accept","application/json"), 6000);
+	        String rs = HttpPostGet.post(url, params, Tools.getStrMap("Accept","application/json"), 8000);
 	        GitHubAccessToken accessToken = JSON.parseObject(rs,GitHubAccessToken.class);
 	        if(accessToken == null || accessToken.getAccess_token() == null)
 	            throw new MyException(MyError.E000026);
@@ -28,7 +28,7 @@ public class GitHubService {
 
 	    public GitHubUser getUser(String accessToken) throws Exception{
 	        String url = "https://api.github.com/user?access_token="+accessToken;
-	        String rs = HttpPostGet.get(url, null, null, 6000);
+	        String rs = HttpPostGet.get(url, null, null, 8000);
 	        if(rs.contains("message")){
 	        	throw new MyException(MyError.E000026, rs);
 			}

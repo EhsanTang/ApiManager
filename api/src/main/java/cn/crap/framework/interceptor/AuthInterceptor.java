@@ -25,6 +25,7 @@ import java.net.InetAddress;
 public class AuthInterceptor extends HandlerInterceptorAdapter{
 	@Autowired
 	private UserCache userCache;
+	private static String serviceIp = "null";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -56,11 +57,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             }
 
             try {
-                // 返回服务器ip
-                response.setHeader("serviceIp", InetAddress.getLocalHost().getHostAddress());
+                if (serviceIp == null){serviceIp = InetAddress.getLocalHost().getHostAddress();}
+                response.setHeader("serviceIp", serviceIp);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.setHeader("serviceIp", "服务器配置异常，无法获取服务器IP");
+                serviceIp = "can not get service ip";
+                response.setHeader("serviceIp", serviceIp);
             }
 
             /**

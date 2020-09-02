@@ -3,6 +3,8 @@ package cn.crap.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 public class UserPO extends BasePO {
     private String userName;
 
@@ -37,6 +39,10 @@ public class UserPO extends BasePO {
     private String thirdlyId;
 
     private String passwordSalt;
+
+    @Getter
+    @Setter
+    private Date loginTime;
 
     public String getUserName() {
         return userName;

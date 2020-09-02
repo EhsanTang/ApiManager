@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Service
 public class UserService extends NewBaseService<UserPO, UserQuery> implements ILogConst, IConst {
@@ -62,6 +63,8 @@ public class UserService extends NewBaseService<UserPO, UserQuery> implements IL
         if (user.getLoginType() == null){
             user.setLoginType(LoginType.COMMON.getValue());
         }
+
+        user.setLoginTime(new Date());
         return super.insert(user);
     }
 
@@ -83,6 +86,11 @@ public class UserService extends NewBaseService<UserPO, UserQuery> implements IL
         }
         loginDto.setSessionAdminName(loginDto.getUserName());
         loginDto.setAttributes(user.getAttributes());
+
+        UserPO updateLoginTimeUser = new UserPO();
+        updateLoginTimeUser.setId(user.getId());
+        updateLoginTimeUser.setLoginTime(new Date());
+        super.update(updateLoginTimeUser);
     }
 
     /**

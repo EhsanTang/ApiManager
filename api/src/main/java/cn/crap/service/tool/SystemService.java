@@ -236,6 +236,9 @@ public class SystemService {
         CHANGE_SQL_MAP.put(104, "UPDATE module m INNER JOIN (SELECT id,userId FROM project) p ON p.id=m.projectId SET m.userId=p.userId");
         CHANGE_SQL_MAP.put(105, "ALTER TABLE `project_user` ADD INDEX `idx_prounikey_userid` (`projectUniKey`, `userId`)");
         CHANGE_SQL_MAP.put(106, "update setting set status=1 where status=0");
+        CHANGE_SQL_MAP.put(107, "ALTER TABLE `user` ADD `loginTime` TIMESTAMP  NULL  DEFAULT CURRENT_TIMESTAMP  COMMENT '最后登录时间'  AFTER `attributes`");
+
+
 
     }
 

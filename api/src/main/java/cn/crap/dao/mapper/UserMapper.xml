@@ -20,11 +20,13 @@
     <result column="auth" property="auth"/>
     <result column="sequence" property="sequence"/>
     <result column="status" property="status"/>
+    <result column="loginTime" property="loginTime"/>
+
   </resultMap>
 
   <!-- 基本的字段，供其他查询引用-->
   <sql id="baseColumn">
-        id,createTime,userName,email,thirdlyId,type,passwordSalt,authName,avatarUrl,attributes,roleName,loginType,roleId,trueName,password,auth,sequence,status
+        id,createTime,userName,email,thirdlyId,type,passwordSalt,authName,avatarUrl,attributes,roleName,loginType,roleId,trueName,password,auth,sequence,status,loginTime
   </sql>
 
 
@@ -74,7 +76,7 @@
     insert into user (
     <include refid="baseColumn"/>
     )
-    values (#{id},#{createTime},#{userName},#{email},#{thirdlyId},#{type},#{passwordSalt},#{authName},#{avatarUrl},#{attributes},#{roleName},#{loginType},#{roleId},#{trueName},#{password},#{auth},#{sequence},#{status})  </insert>
+    values (#{id},#{createTime},#{userName},#{email},#{thirdlyId},#{type},#{passwordSalt},#{authName},#{avatarUrl},#{attributes},#{roleName},#{loginType},#{roleId},#{trueName},#{password},#{auth},#{sequence},#{status},#{loginTime})  </insert>
 
   <!-- 删除 -->
   <delete id="delete">
@@ -129,6 +131,9 @@
       </if>
       <if test="passwordSalt != null">
         passwordSalt = #{passwordSalt},
+      </if>
+      <if test="loginTime != null">
+        loginTime = #{loginTime},
       </if>
 
     </set>

@@ -135,6 +135,9 @@
       <if test="loginTime != null">
         loginTime = NOW(),
       </if>
+      <if test="loginType != null">
+        loginType=#{loginType},
+      </if>
 
     </set>
     where id=#{id}

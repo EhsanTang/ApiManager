@@ -57,6 +57,7 @@ public class GitOschinaController extends BaseController {
             // callbackUrl 必须与授权时的callbackUrl一致
             oschinaUser = oschinaService.getUser(oschinaService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
         } catch (Throwable e){
+            e.printStackTrace();
             request.setAttribute("result", "授权失败，请重试！");
             return ERROR_VIEW;
         }

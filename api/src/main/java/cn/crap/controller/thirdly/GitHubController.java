@@ -56,6 +56,7 @@ public class GitHubController extends BaseController {
         try {
             gitHubUser = githHubService.getUser(githHubService.getAccessToken(code, getCallBackUrl(domain)).getAccess_token());
         } catch (Throwable e){
+            e.printStackTrace();
             request.setAttribute("result", "授权失败，请重试！");
             return ERROR_VIEW;
         }

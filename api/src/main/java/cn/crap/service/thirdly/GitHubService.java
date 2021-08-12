@@ -3,6 +3,7 @@ package cn.crap.service.thirdly;
 import java.util.Map;
 
 import cn.crap.enu.MyError;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import cn.crap.dto.thirdly.GitHubAccessToken;
@@ -28,7 +29,9 @@ public class GitHubService {
 
 	    public GitHubUser getUser(String accessToken) throws Exception{
 	        String url = "https://api.github.com/user?access_token="+accessToken;
-	        String rs = HttpPostGet.get(url, null, null, 8000);
+	        Map<String, String> headerMap = Maps.newHashMap();
+			headerMap.put("Authorization", "token " + accessToken);
+	        String rs = HttpPostGet.get(url, null, headerMap, 8000);
 	        if(rs.contains("message")){
 	        	throw new MyException(MyError.E000026, rs);
 			}

@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class HotSearch extends BasePo{
+public class HotSearch extends BasePO {
     private String id;
 
     private Integer times;

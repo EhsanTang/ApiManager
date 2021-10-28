@@ -9,12 +9,13 @@ import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.Source;
 import cn.crap.query.SourceQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.SourceService;
+import cn.crap.utils.GetTextFromFile;
 import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute SourceQuery query) throws MyException{
-        Project project = getProject(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
 
 		Page page= new Page(query);
@@ -59,8 +60,8 @@ public class SourceController extends BaseController{
 	@AuthPassport
 	public JsonResult detail(@ModelAttribute Source source) throws MyException{
 		Source model;
-        Module module;
-        Project project;
+        ModulePO module;
+        ProjectPO project;
 		if(!MyString.isEmpty(source.getId())){
 			model = sourceService.getById(source.getId());
             module = moduleCache.get(model.getModuleId());
@@ -84,14 +85,12 @@ public class SourceController extends BaseController{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult addOrUpdate(@ModelAttribute SourceDto dto) throws Exception{
-        Assert.notNull(dto.getProjectId(), "projectId can't be null");
         Assert.notNull(dto.getFilePath(), MyError.E000016.getMessage());
 
         String id = dto.getId();
         String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         dto.setProjectId(newProjectId);
         Source source = SourceAdapter.getModel(dto);
-
         // 判断版本号是否正确 .CAV.文件标识.版本号
         if( !source.getFilePath().contains(".CAV.") ){
             throw new MyException(MyError.E000017);
@@ -109,7 +108,12 @@ public class SourceController extends BaseController{
             throw new MyException(MyError.E000017);
         }
 
-        if(id != null){
+		String docContent = GetTextFromFile.getText(source.getFilePath());
+        if (MyString.isEmpty(source.getRemark())){
+        	source.setRemark(docContent.length() > 2500 ? docContent.substring(0, 2500) : docContent);
+		}
+
+		if(id != null){
             Source oldSource = sourceService.getById(source.getId());
             String oldVsesions[]  = oldSource.getFilePath().split("\\.");
             if( !oldVsesions[oldVsesions.length-3].equals(vsesions[vsesions.length-3])){

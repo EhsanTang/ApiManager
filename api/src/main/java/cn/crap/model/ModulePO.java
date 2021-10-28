@@ -1,12 +1,19 @@
 package cn.crap.model;
 
-public class Module extends BasePo{
+import lombok.Getter;
+import lombok.Setter;
+
+public class ModulePO extends BasePO {
     private String name;
 
+    @Getter
+    @Setter
     private Byte status;
 
     private String url;
 
+    @Getter
+    @Setter
     private Byte canDelete;
 
     private String remark;
@@ -17,11 +24,15 @@ public class Module extends BasePo{
 
     private String templateId;
 
-    private Integer version;
+    @Getter
+    @Setter
+    private Integer versionNum;
 
     private String category;
 
-    private static final long serialVersionUID = 1L;
+    @Getter
+    @Setter
+    private String uniKey;
 
     public String getName() {
         return name;
@@ -31,13 +42,6 @@ public class Module extends BasePo{
         this.name = name == null ? null : name.trim();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
 
     public String getUrl() {
         return url;
@@ -45,14 +49,6 @@ public class Module extends BasePo{
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
-    }
-
-    public Byte getCanDelete() {
-        return canDelete;
-    }
-
-    public void setCanDelete(Byte canDelete) {
-        this.canDelete = canDelete;
     }
 
     public String getRemark() {
@@ -85,14 +81,6 @@ public class Module extends BasePo{
 
     public void setTemplateId(String templateId) {
         this.templateId = templateId == null ? null : templateId.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCategory() {

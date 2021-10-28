@@ -2,7 +2,7 @@
 			<div class="container p0">
 				<div class="row p0 m0">
 			<div class="col-xs-12 f12 p0 mb5 tl mt50 mb50">
-				©crap.cn&nbsp;版本号 [V8.1.2]
+				©crap.cn&nbsp;版本号 [V8.1.5]
 				<ul class="dis-in-tab">
 					<li class="dis-in-tab mr20"><a href='https://gitee.com/CrapApi/CrapApi/stargazers' target="_blank"><img src='https://gitee.com/CrapApi/CrapApi/badge/star.svg?theme=dark' alt='star'></img></a></li>
 					<li class="dis-in-tab mr20"><a target="_blank"
@@ -40,15 +40,19 @@
 		class="cursor">
 		<i class="iconfont f20" style="color: #FFF;">&#xe617;</i>
 	</div>
+
 	<!-- 提示窗口 -->
 	<div id="lookUp" class="look-up shadow">
 		<div id="lookUpContent" class="look-up-content f12 tc">加载中....</div>
 		<i class="iconfont i-close" onclick="iClose('lookUp')">&#xe69a;</i>
 	</div>
+
 	<div class="tip-div" id="tip-div"></div>
+
 	<div id="fade"></div>
+
 	<div id="passwordDiv" class="look-up shadow">
-		<div id="lookUpContent" class="look-up-content f12 tc p30 BGFFF">
+		<div class="look-up-content f12 tc p30 BGFFF">
 			<form onsubmit="$('#refresh').click();closeMyDialog('passwordDiv');">
 				<blockquote style="margin-left: -15px;">
 					<p>&nbsp;加密项目，请输入访问密码</p>
@@ -70,6 +74,7 @@
 		</div>
 		<i class="iconfont i-close" onclick="closeMyDialog('passwordDiv')">&#xe69a;</i>
 	</div>
+
 	<div id="float" class="folat">
 		<div><i class="iconfont float-close" onclick="showMessage('float','false',false,0);floatTimes=0;">&#xe6b7;</i></div>
 		<div class="sk-wave">

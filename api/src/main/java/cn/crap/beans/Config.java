@@ -19,7 +19,7 @@ public class Config{
 	public static String fileType;
 	public static boolean openRegister;
 	public static boolean luceneSearchNeedLogin;
-	public static String baidu;
+	// public static String baidu;
 	public static boolean canRepeatUrl;
 	public static String mail;
 	public static String accessKeyId;
@@ -47,13 +47,16 @@ public class Config{
             Config.openRegister = MyString.getBoolean(properties.getProperty(Config.getConfigOpenRegister()), true);
             Config.luceneSearchNeedLogin = MyString.getBoolean(properties.getProperty(Config.getConfigLuceneSearchNeedLogin()), true);
             Config.canRepeatUrl = MyString.getBoolean(properties.getProperty(Config.getCanCanRepeatUrl()), true);
-            Config.baidu = properties.getProperty(Config.getConfigBaidu());
+            // Config.baidu = properties.getProperty(Config.getConfigBaidu());
             Config.mail = properties.getProperty(Config.getConfigMail());
             Config.accessKeyId = properties.getProperty(Config.getConfigAccessKeyId());
             Config.accessKeySecret = properties.getProperty(Config.getConfigAccessKeySecret());
             Config.endPoint = properties.getProperty(Config.getConfigEndPoint());
             Config.bucketName = properties.getProperty(Config.getConfigBucketName());
             Config.imgPrefix = properties.getProperty(Config.getConfigImgPrefix());
+            if (Config.imgPrefix == null || Config.imgPrefix.equals("")){
+                Config.imgPrefix = "";
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -72,10 +75,6 @@ public class Config{
 
     private static String getConfigOschinaClientSecret() {
         return "git.oschina.clientSecret";
-    }
-
-    private static String getConfigDomain() {
-        return "web.domain";
     }
 
     private static String getConfigCacheTime() {

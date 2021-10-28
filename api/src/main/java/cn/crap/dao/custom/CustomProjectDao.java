@@ -1,7 +1,10 @@
 package cn.crap.dao.custom;
 
-import cn.crap.model.Project;
+import cn.crap.framework.MyException;
+import cn.crap.model.ProjectPO;
+import cn.crap.utils.MyString;
 import cn.crap.utils.Page;
+import cn.crap.utils.SafetyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,32 +38,34 @@ public class CustomProjectDao {
 	}
 
 
-	public List<Project> queryProjectByUserId(String userId, boolean onlyJoin, String name, final Page page){
+	public List<ProjectPO> queryProjectByUserId(String userId, boolean onlyJoin, String name, final Page page) throws MyException {
 		Assert.notNull(userId);
 		Assert.notNull(page);
+        SafetyUtil.checkSqlParam(name);
 
 		List <Object> params = new ArrayList<>();
         params.add(userId);
-        params.add(userId);
-		StringBuilder sb = new StringBuilder("select id, name, type, remark, userId, createTime, cover, sequence, status from project where");
+
+
+		StringBuilder sb = new StringBuilder("select p.id, p.name, p.type, p.remark, p.userId, p.createTime, p.cover, p.sequence, p.status, p.uniKey from project p ");
+        sb.append(" left join project_user u on p.id=u.projectId ");
+        sb.append(" where u.userId=? ");
 		if (onlyJoin){
-			sb.append(" userId !=? and id in (select projectId from project_user where userId=?)");
-		}else {
-			sb.append(" (userId= ? or id in (select projectId from project_user where userId=?))");
+			sb.append(" and u.type=2 ");
 		}
 
-		if (name != null){
-			sb.append(" and name like ? ");
+		if (MyString.isNotEmpty(name)){
+			sb.append(" and u.projectName like ? ");
 			params.add("%" + name + "%");
 		}
 
-		sb.append(" order by sequence desc");
+		sb.append(" order by u.sequence desc");
 		sb.append(" limit " + page.getStart() + "," + page.getSize());
 
-		return jdbcTemplate.query(sb.toString(), params.toArray(), new RowMapper<Project>() {
+		return jdbcTemplate.query(sb.toString(), params.toArray(), new RowMapper<ProjectPO>() {
 			@Override
-			public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Project project = new Project();
+			public ProjectPO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectPO project = new ProjectPO();
 				project.setId(rs.getString(1));
 				project.setName(rs.getString(2));
 				project.setType(rs.getByte(3));
@@ -70,6 +75,7 @@ public class CustomProjectDao {
 				project.setCover(rs.getString(7));
 				project.setSequence(rs.getLong(8));
 				project.setStatus(rs.getByte(9));
+				project.setUniKey(rs.getString(10));
 				return project;
 			}
 		});
@@ -80,16 +86,13 @@ public class CustomProjectDao {
 
 		List <Object> params = new ArrayList<>();
         params.add(userId);
-        params.add(userId);
-        StringBuilder sb = new StringBuilder("select count(0) from project where ");
+        StringBuilder sb = new StringBuilder("select count(0) from project_user where userId=? ");
         if (onlyJoin){
-            sb.append(" userId != ? and id in (select projectId from project_user where userId=?)");
-        }else {
-            sb.append(" (userId= ? or id in (select projectId from project_user where userId=?))");
+            sb.append(" and type=2 ");
         }
 
         if (name != null){
-            sb.append(" and name like ?");
+            sb.append(" and projectName like ?");
             params.add("%" + name + "%");
         }
 

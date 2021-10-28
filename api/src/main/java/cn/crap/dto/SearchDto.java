@@ -1,130 +1,106 @@
 package cn.crap.dto;
 
-import java.io.Serializable;
+import cn.crap.enu.TableId;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
-public class SearchDto implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String id;// 主键，不参与分词搜索
-	private String title;
-	private String type;// 接口，文档等，不参与分词
-	private String url;// 相对路径：#/font/interfaceDetail，不参与分词搜索
-	private String content;// 参与搜索的类容：简介、备注、参数等的组合 或 搜索到的结果（高亮显示）
-	private String version;// 不参与分词搜索
-	private String moduleName;
-	private Date createTime;// 时间，不参与分词搜索
-	private boolean needCreateIndex = true; // 是否需要建立索引
-	private String href;//接口、文档的地址，不需要分词，需要建立索引
-	private String projectId; // 不参与分词
-	private String filePath;
+public class SearchDto{
 
-	public SearchDto(){};
-	public SearchDto(String id, String title, String type, String url, String content, String version, String moduleName, Date createTime){
-			this.id = id;
-			this.title = title;
-			this.type = type;
-			this.url = url;
-			this.content = content;
-			this.version = version;
-			this.moduleName = moduleName;
-			this.createTime = createTime;
+    @Getter
+    @Setter
+    private String id;
+
+    @Getter
+    @Setter
+    private String moduleId;
+
+    @Getter
+    @Setter
+    private String projectId;
+
+	@Setter
+	private String title; // 标题，参与分词
+
+    @Setter
+	private String content;// 参与搜索的类容：简介、备注、参数等的组合 或 搜索到的结果（高亮显示）
+
+    @Getter
+    @Setter
+	private boolean open = true; // 是否开放搜索，false表示只能登录才能搜索
+
+    @Setter
+	private String custom; // 接口url，文件url等，不需要分词，需要建立索引，各个类型自定义数据
+
+    @Getter
+    @Setter
+    private Date createTime;// 时间，不参与分词搜索
+
+    // 数据类型 接口，文档等，不参与分词
+    @Getter
+    @Setter
+    private String tableId;
+
+	/**
+	 * 不存储至索引文件中
+     * href: 前端页面地址
+     * userHref: 用户登陆后的后端地址
+	 * createTimeStr: 时间
+     * projectName: 项目名称
+	 */
+
+    @Getter
+    @Setter
+    private String projectName;
+
+
+    @Getter
+    @Setter
+	private String href;
+
+    @Getter
+    @Setter
+	private String createTimeStr;
+
+    @Getter
+    @Setter
+	private String userHref;
+
+    public SearchDto(){}
+	public SearchDto(String projectId, String moduleId, String id, String title, TableId tableId,
+                     String content, String custom, boolean open, Date createTime){
+        this.id = id;
+        this.projectId = projectId;
+        this.moduleId = moduleId;
+        this.tableId = tableId.getId();
+        this.title = title;
+        this.content = content;
+        this.createTime = createTime;
+        this.custom = custom;
+        this.open = open;
 	}
 	public SearchDto(String id){
-		this.id = id;
+        this.id = id;
 	}
 	
-	public String getId() {
-		if(id == null)
-			return "";
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getTitle() {
-		if(title == null)
-			return "";
-		return title;
+		return (title == null ? "" : title);
 	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getType() {
-		if(type == null)
-			return "";
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getUrl() {
-		if(url == null)
-			return "";
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+
 	public String getContent() {
-		if(content == null)
-			return "";
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public String getVersion() {
-		if(version == null)
-			return "";
-		return version;
-	}
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	
-	public String getModuleName() {
-		if(moduleName == null)
-			return "";
-		return moduleName;
-	}
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
-	public Date getCreateTime() {
-		if(createTime == null)
-			return null;
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	public boolean isNeedCreateIndex() {
-		return needCreateIndex;
-	}
-	public void setNeedCreateIndex(boolean needCreateIndex) {
-		this.needCreateIndex = needCreateIndex;
-	}
-	public String getHref() {
-		return href;
-	}
-	public void setHref(String href) {
-		this.href = href;
-	}
-	public String getProjectId() {
-		return projectId;
-	}
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+        return (content == null ? "" : content);
+    }
+
+	public String getModuleId() {
+        return (moduleId == null ? "" : moduleId);
 	}
 
-	public String getFilePath() {
-		return filePath;
+	public String getCustom() {
+        return (custom == null ? "" : custom);
 	}
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
+	public String getTableName(){
+        return TableId.getByValue(getTableId()).getTableName();
+    }
 }

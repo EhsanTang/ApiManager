@@ -1,0 +1,45 @@
+<div class="r0 p10 pt0 col-xs-12" ng-controller="detailCtrl">
+	<div class="col-xs-12 p0">
+		<form ng-submit="submitForm('user/projectMeta/addOrUpdate.do')">
+			<table class="table table-bordered">
+				<tr>
+					<td class="w100 tc">名称</td>
+					<td class="tc" colspan="3">
+						<input class="form-control"  type="text" autocomplete="off" ng-model="model.name" required placeholder="模块名">
+					</td>
+				</tr>
+
+                <!--<td class="tc">模块</td>
+                <td class="tl">
+                    <input class="form-control cursor" type="text" autocomplete="off" id="moduleName" ng-model="model.moduleName"
+                           readonly
+                           ng-click="loadPickByName('iwidth=220|iheight=250|tagName=moduleName|tag=moduleId|code=MY_MODULE|def='+model.moduleId+'|params=&key='+model.projectId,$event)">
+                </td>-->
+
+				<tr>
+					<td class="tc">待替换的URL</td>
+					<td class="tc" colspan="3">
+                        <input  class="form-control" type="text" autocomplete="off" ng-model="model.envUrl" placeholder="">
+					</td>
+				</tr>
+                <tr>
+                    <td class="tc">URL替换为</td>
+                    <td class="tc" colspan="3">
+                        <input  class="form-control" type="text" autocomplete="off" ng-model="model.value" placeholder="">
+                    </td>
+                </tr>
+
+				<tr>
+					<td class="tc">排序</td>
+					<td class="tl" colspan="3">
+					<input class="form-control" min="0"  type="number" ng-model="model.sequence"></td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-success fr">提交</button>
+		</form>
+
+		
+	</div>
+</div>
+<div class="cb"></div>
+

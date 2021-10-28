@@ -1,7 +1,7 @@
 package cn.crap.service.tool;
 
-import cn.crap.model.Project;
 import cn.crap.beans.Config;
+import cn.crap.model.ProjectPO;
 import cn.crap.service.ProjectService;
 import cn.crap.utils.MyString;
 import com.google.common.cache.Cache;
@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service("projectCache")
 public class ProjectCache{
-	private static Cache<String, Project> cache;
+	private static Cache<String, ProjectPO> cache;
 	public static final String CACHE_PREFIX = "project:";
 
 	@Autowired
 	private ProjectService projectService;
 
-    public Cache<String, Project> getCache(){
+    public Cache<String, ProjectPO> getCache(){
         if (cache == null) {
             cache = CacheBuilder.newBuilder()
                     .initialCapacity(10)
@@ -30,23 +30,38 @@ public class ProjectCache{
         }
         return cache;
     }
-	
-	
-	public Project get(String projectId){
+
+	public String getName(String projectId){
 		if(MyString.isEmpty(projectId)){
-			return new Project();
+			return "";
 		}
 		String cacheKey = assembleKey(projectId);
-		Project project = getCache().getIfPresent(cacheKey);
+		ProjectPO project = getCache().getIfPresent(cacheKey);
 		if(project == null){
-			project = projectService.getById(projectId);
+			project = projectService.get(projectId);
 			if(project == null) {
-				project = new Project();
+				return "";
+			}
+			getCache().put(cacheKey, project);
+		}
+		return project.getName();
+	}
+	
+	public ProjectPO get(String projectId){
+		if(MyString.isEmpty(projectId)){
+			return new ProjectPO();
+		}
+		String cacheKey = assembleKey(projectId);
+		ProjectPO project = getCache().getIfPresent(cacheKey);
+		if(project == null){
+			project = projectService.get(projectId);
+			if(project == null) {
+				project = new ProjectPO();
 			}
 			getCache().put(cacheKey, project);
 		}
 		//内存缓存时拷贝对象，防止在Controller中将密码修改为空时导致问题
-		Project p = new Project();
+		ProjectPO p = new ProjectPO();
 		BeanUtils.copyProperties(project, p);
 		return p;
 	}

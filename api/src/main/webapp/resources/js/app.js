@@ -1,9 +1,11 @@
-var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule','commentModule', 'visitorModule']);
+var app = angular.module('app', [ 'ui.router', 'adminModule', 'userModule', 'bugModule', 'projectMetaModule', 'commonModule', 'commentModule', 'visitorModule']);
 var visitorModule = angular.module("visitorModule", []);
 var userModule = angular.module("userModule", []);
 var adminModule = angular.module("adminModule", []);
 var commentModule = angular.module("commentModule", []);
 var bugModule = angular.module("bugModule", []);
+var projectMetaModule = angular.module("projectMetaModule", []);
+var commonModule = angular.module("commonModule", []);
 
 
 var NEED_PASSWORD_CODE = "E000007";
@@ -98,10 +100,28 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         location.reload();
     }
 
+    /**
+     * 带前缀的跳转会失败，如：index.do#/user....
+     * @param href
+     */
     $rootScope.go = function (href) {
         var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
         $location.url(href);
     }
+
+    $rootScope.goAbsoluteUrl = function (href) {
+        var href = replaceParamFromUrl(href, 'timestamp', new Date().getTime());
+        location.href=href;
+    }
+
+    /***
+	 * 废弃，采用对象
+	 * @deprecated
+     * @param params
+     * @param event
+     * @param iCallBack
+     * @param iCallBackParam
+     */
 	$rootScope.loadPickByName = function loadPick(params,event,iCallBack,iCallBackParam) { 
 		var iwidth = getValue(params,'iwidth');
 		var iheight = getValue(params,'iheight');
@@ -118,15 +138,19 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 	}
 	$rootScope.loadPick = function loadPick(event,iwidth,iheight,radio,tag,code,type,def,params,showType,iCallBack,iCallBackParam,tagName,iUrl) { 
 		/***********加载选择对话框********************/
-		if(!iUrl)
-			iUrl = "pick.do";
-		if(!params)
-			params='';
-		if(!tagName)
-			tagName='';
+		if(!iUrl) {
+            iUrl = "pick.do";
+        }
+		if(!params) {
+            params = '';
+        }
+		if(!tagName) {
+            tagName = '';
+        }
 		if(showType!='0'){
-			if(!showType||showType=='')
-				showType=5;
+			if(!showType||showType=='') {
+                showType = 5;
+            }
 		}
 		$("#pickContent").html(loadText);
 		//事件，宽度，高度，是否为单选，html元素id，查询的code，查询的type，默认值，其他参数，回调函数，回调参数
@@ -139,6 +163,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
         }
 		showMessage('lookUp','false',false,-1);
 	}
+
 	$rootScope.getBaseData = function($scope,$http,params,page) {
 		if(page) {
             params += "&currentPage=" + page;
@@ -163,6 +188,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 
 		});;
     };
+
     $rootScope.getBaseDataToDataKey = function($scope,$http,params,page,dataKey,callBack) {
         if(!page) {
             page = 1;
@@ -325,26 +351,7 @@ app.run(function($rootScope, $state, $stateParams, $location, $http, $timeout,ht
 			 
 		});
 	}
-	$rootScope.changeSequence = function(url,id,changeId){
-		var params = "iUrl="+url+"|iLoading=FLOAT|iPost=POST|iParams=&id="+id+"&changeId="+changeId;
-		httpService.callHttpMethod($http,params).success(function(result) {
-			var isSuccess = httpSuccess(result,'iLoading=FLOAT')
-			if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
-				 $rootScope.error = isSuccess.replace('[ERROR]', '');
-			 }else if(result.success==1){
-				 $rootScope.error = null;
-				 //关闭编辑对话框
-				 $timeout(function() {
-					 $("#refresh").click();
-                 })
-			 }
-		}).error(function(result) {
-			lookUp('lookUp','',100,300,3);
-			closeTip('[ERROR]未知异常，请联系开发人员查看日志', 'iLoading=PROPUP_FLOAT', 3);
-			$rootScope.error = result;
-			 
-		});
-	}
+
 	/**
 	 * 发送请求工具方法
 	 */

@@ -7,6 +7,7 @@ public class TableField {
     public final static String SEQUENCE = "sequence";
 
     public static class SORT {
+        public final static String ID_ASC = "id asc";
         public final static String SEQUENCE_DESC = "sequence desc";
         public final static String ERROR_CODE_ASC = "errorCode asc";
         public final static String CREATE_TIME_DES = "createTime desc";

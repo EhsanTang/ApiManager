@@ -34,6 +34,7 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
             var isSuccess = httpSuccess(result,'iLoading=FLOAT');
             if(!isJson(result)||isSuccess.indexOf('[ERROR]') >= 0){
                 $rootScope.error = isSuccess.replace('[ERROR]', '');
+                $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
             } else if(result.success==1){
                 if (result.data) {
                     $rootScope.model = result.data;
@@ -42,9 +43,11 @@ userModule.controller('loginOrRegisterCtrl', function($rootScope, $scope, $http,
                     callBack();
                 }
             } else {
+                $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
                 $rootScope.error = result.error.message;
             }
         }).error(function(result) {
+            $rootScope.settings.LOGIN_VERIFICATION_CODE = 'true';
             $rootScope.error = "未知异常，请联系开发人员查看日志";
         });
     }
@@ -216,13 +219,15 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
     $scope.getInterfaceDetail = function (isEdit, isDebug) {
         $rootScope.debugShowParam = true;
         $rootScope.interfaceDialog = 'header';
-        var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id + "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId;
+        var params = "iUrl=user/interface/detail.do|iLoading=FLOAT|iPost=POST|iParams=&id=" + $stateParams.id +
+            "&projectId=" + $stateParams.projectId + "&moduleId=" + $stateParams.moduleId +
+            "&envId=" + $.cookie('projectEnv:' + $stateParams.projectId);
         $rootScope.getBaseDataToDataKey($scope,$http,params,null,'model', function () {
             if (isEdit) {
                 createWangEditor("interface-editor", $rootScope.model.remark, initInterfaceEditor, 150);
             }
             $rootScope.errors = eval("("+$rootScope.model.errors+")")
-            $rootScope.model.fullUrl = $rootScope.model.moduleUrl +  $rootScope.model.url;
+            $rootScope.model.fullUrl = $rootScope.model.fullUrl;
             // $rootScope.paramRemarkList = eval("("+$rootScope.model.paramRemark+")");
             if($rootScope.model.method) {// 调试页面默认显示method中第一个
                 $rootScope.model.debugMethod = $rootScope.model.method.split(",")[0];
@@ -250,6 +255,10 @@ userModule.controller('userCtrl', function($rootScope,$scope, $http, $state,$loc
 
                 addOneDebugTr('editHeaderTable');
                 addOneDebugTr('editParamTable');
+                var envName = $.cookie('projectEnvName:' + $rootScope.model.projectId);
+                if (envName){
+                    $("#env-name").html(envName);
+                }
             }
 
             if (isEdit) {

@@ -1,18 +1,20 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ProjectDto;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectStatus;
 import cn.crap.enu.ProjectType;
-import cn.crap.model.Project;
-import cn.crap.model.User;
+import cn.crap.model.ProjectPO;
+import cn.crap.model.UserPO;
 import cn.crap.service.UserService;
 import cn.crap.utils.BeanUtil;
 import cn.crap.utils.DateFormartUtil;
 import cn.crap.utils.MyString;
+import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,12 +23,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ProjectAdapter {
-    public static ProjectDto getDto(Project model, User user){
+    public static ProjectDTO getDTO(ProjectPO model, UserPO user){
         if (model == null){
             return null;
         }
 
-        ProjectDto dto = new ProjectDto();
+        ProjectDTO dto = new ProjectDTO();
         BeanUtil.copyProperties(model, dto);
 
         if (model.getCreateTime() != null) {
@@ -52,11 +54,11 @@ public class ProjectAdapter {
         return dto;
     }
 
-    public static Project getModel(ProjectDto dto){
+    public static ProjectPO getModel(ProjectDTO dto){
         if (dto == null){
             return null;
         }
-        Project model = new Project();
+        ProjectPO model = new ProjectPO();
         model.setId(dto.getId());
 		model.setName(dto.getName());
 		model.setStatus(dto.getStatus());
@@ -70,13 +72,24 @@ public class ProjectAdapter {
         return model;
     }
 
-    public static List<ProjectDto> getDto(List<Project> models, UserService userService){
+    public static List<ProjectDTO> getDTOS(List<ProjectPO> models, UserService userService){
         if (models == null){
             return new ArrayList<>();
         }
-        List<ProjectDto> dtos = new ArrayList<>();
-        for (Project model : models){
-            dtos.add(getDto(model, userService == null? null : userService.getById(model.getUserId())));
+        List<ProjectDTO> dtos = new ArrayList<>();
+        Map<String , UserPO> userPOMAP = Maps.newHashMap();
+
+        for (ProjectPO model : models){
+            String userId = model.getUserId();
+            UserPO userPO = userPOMAP.get(userId);
+
+            if (userPO == null && userService != null){
+                userPO = userService.get(userId);
+                if (userPO != null){
+                    userPOMAP.put(userId, userPO);
+                }
+            }
+            dtos.add(getDTO(model, userPO));
         }
         return dtos;
     }

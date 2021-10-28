@@ -2,23 +2,30 @@ package cn.crap.controller.admin;
 
 import cn.crap.beans.Config;
 import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.SettingDto;
-import cn.crap.enu.SettingEnum;
-import cn.crap.enu.SettingStatus;
+import cn.crap.dto.SearchDto;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
+import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
+import cn.crap.query.SearchQuery;
 import cn.crap.service.ISearchService;
 import cn.crap.service.tool.SystemService;
-import cn.crap.utils.*;
+import cn.crap.utils.HttpPostGet;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -53,7 +60,7 @@ public class MainController extends BaseController {
     public JsonResult property() throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
         Map<String, Object> properties = new HashMap<>();
-        properties.put("domain", settingCache.getDomain());
+        properties.put("domain", Tools.getUrlPath());
         properties.put("openRegister", Config.openRegister);
         properties.put("luceneSearchNeedLogin", Config.luceneSearchNeedLogin);
         properties.put("openRegister", Config.openRegister);
@@ -119,19 +126,13 @@ public class MainController extends BaseController {
     @ResponseBody
     @AuthPassport
     public JsonResult init(HttpServletRequest request) throws Exception {
-        Map<String, String> settingMap = new HashMap<>();
-        for (SettingDto setting : settingCache.getAll()) {
-            if (SettingStatus.COMMON.getStatus().equals(setting.getStatus())) {
-                settingMap.put(setting.getKey(), setting.getValue());
-            }
-        }
-
-        Map<String, Object> returnMap = new HashMap<String, Object>();
-        returnMap.put("settingMap", settingMap);
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("settingMap", settingCache.getCommonMap());
         LoginInfoDto user = LoginUserHelper.getUser();
         returnMap.put("sessionAdminName", user.getUserName());
         returnMap.put("adminPermission", user.getAuthStr());
         returnMap.put("sessionAdminId", user.getId());
+        returnMap.put("attributes", user.getAttributes());
         returnMap.put("errorTips", stringCache.get(C_CACHE_ERROR_TIP));
 
         return new JsonResult(1, returnMap);
@@ -168,7 +169,11 @@ public class MainController extends BaseController {
     @RequestMapping("/admin/compress.do")
     @AuthPassport(authority = C_SUPER)
     public JsonResult compress() throws Exception{
-        systemService.compressSource();
+        try {
+            systemService.compressSource();
+        } catch (Throwable e){
+            log.error("压缩js、css文件异常", e);
+        }
         systemService.mergeSource();
         return new JsonResult().success();
     }
@@ -181,5 +186,28 @@ public class MainController extends BaseController {
         return new JsonResult().success();
     }
 
+    /**
+     * 搜索目前只支持项目下搜索
+     * 跨项目涉及到用户、成员权限问题，暂不实现
+     * 搜索
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/user/search.do")
+    @AuthPassport
+    public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
+        if (query.getProjectId() == null){
+            throw new MyException(MyError.E000056);
+        }
+        checkPermission(query.getProjectId(), ProjectPermissionEnum.READ);
+
+        String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+        query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
+        
+        List<SearchDto> search = luceneService.search(query);
+        Page page = new Page(query);
+        return new JsonResult().success().data(search).page(page);
+    }
 
 }

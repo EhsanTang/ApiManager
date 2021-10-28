@@ -4,14 +4,13 @@ import cn.crap.adapter.InterfaceAdapter;
 import cn.crap.dto.InterfaceDto;
 import cn.crap.dto.InterfacePDFDto;
 import cn.crap.enu.MyError;
-import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.InterfaceService;
 import cn.crap.service.ModuleService;
@@ -84,7 +83,7 @@ public class InterfaceController extends BaseController {
                     request.setAttribute("result", ERROR_INTERFACE_ID);
                     return ERROR_VIEW;
                 }
-                Module module = moduleCache.get(interFace.getModuleId());
+                ModulePO module = moduleCache.get(interFace.getModuleId());
 
                 InterfacePDFDto interDto = interfaceService.getInterPDFDto(interFace, module, true, true);
 
@@ -97,7 +96,7 @@ public class InterfaceController extends BaseController {
             /**
              * 按模块批量生成pdf接口
              */
-            Module module = moduleService.getById(moduleId);
+            ModulePO module = moduleService.get(moduleId);
             if (module == null) {
                 request.setAttribute("result", ERROR_MODULE_ID);
                 return ERROR_VIEW;
@@ -124,20 +123,20 @@ public class InterfaceController extends BaseController {
         Assert.isTrue(id != null || moduleId != null, MyError.E000029.getMessage());
 
         InterfaceWithBLOBs interFace = null;
-        Module module = moduleCache.get(moduleId);
+        ModulePO module = moduleCache.get(moduleId);
         if (id != null) {
             interFace = interfaceService.getById(id);
             module = moduleCache.get(interFace.getModuleId());
         }
 
-        Project project = getProject(interFace == null ? null : interFace.getProjectId(), module.getId());
+        ProjectPO project = getProject(interFace == null ? null : interFace.getProjectId(), module.getId());
         String downloadName = (interFace == null) ? module.getName() : interFace.getInterfaceName();
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码:使用缓存的密码，不需要验证码
         checkFrontPermission("", "", project);
         if (pdf) {
             String secretKey = settingCache.get(S_SECRETKEY).getValue();
-            String fileName = Html2Pdf.createPdf(req, settingCache.getDomain(), id, moduleId, secretKey);
+            String fileName = Html2Pdf.createPdf(req, Tools.getUrlPath(), id, moduleId, secretKey);
             DownloadUtils.downloadWord(response, new File(fileName), downloadName, true);
         }else{
             Map<String, Object> map = new HashMap<>();
@@ -164,8 +163,8 @@ public class InterfaceController extends BaseController {
             throw new MyException(MyError.E000020);
         }
 
-        Module module = moduleService.getById(moduleId);
-        Project project = projectCache.get(module.getProjectId());
+        ModulePO module = moduleService.get(moduleId);
+        ProjectPO project = projectCache.get(module.getProjectId());
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);
 
@@ -185,8 +184,8 @@ public class InterfaceController extends BaseController {
     public JsonResult webDetail(@ModelAttribute InterfaceWithBLOBs interFace, String password, String visitCode) throws MyException {
         interFace = interfaceService.getById(interFace.getId());
         if (interFace != null) {
-            Module module = moduleCache.get(interFace.getModuleId());
-            Project project = projectCache.get(interFace.getProjectId());
+            ModulePO module = moduleCache.get(interFace.getModuleId());
+            ProjectPO project = projectCache.get(interFace.getProjectId());
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             checkFrontPermission(password, visitCode, project);
 
@@ -194,7 +193,7 @@ public class InterfaceController extends BaseController {
              * 查询相同模块下，相同接口名的其它版本号
              */
             InterfaceQuery query = new InterfaceQuery().setModuleId(interFace.getModuleId()).setEqualInterfaceName(interFace.getInterfaceName())
-                    .setExceptVersion(interFace.getVersion()).setPageSize(ALL_PAGE_SIZE);
+                    .setExceptVersion(interFace.getVersion()).setPageSize(ALL_PAGE_SIZE).setProjectId(interFace.getProjectId());
             List<InterfaceDto> versions = InterfaceAdapter.getDto(interfaceService.query(query), module, null);
 
             return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, false), null,

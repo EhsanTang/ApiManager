@@ -18,13 +18,13 @@
 
 				是否公开：<span class="C000" ng-bind="projectDetail.typeName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('type-tip')" id="type-tip" data-toggle="tooltip" data-placement="right"
-					  title="「私有项目不会建立索引，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
+					  title="「私有项目不开放搜索，站内全文搜索检索不到，私有项目必须登录后才能访问（项目创建者、项目成员可见）、公开项目可通过项目地址直接访问」">
 					<i class="iconfont adorn-color">&#xe6a3;</i>
 				</span>
 
-				是否建立索引：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
+				是否开放搜索：<span class="C000" ng-bind="projectDetail.luceneSearchName"></span>
 				<span class="p0 f14 cursor mr20" onclick="tooltip('lucene-tip')" id="lucene-tip" data-toggle="tooltip" data-placement="right"
-					  title="「私有项目不会创建索引，公开项目且设置为创建索引才会创建索引」">
+					  title="「私有项目不会开放搜索，只能登录后在项目下进行搜索，公开项目且设置为开放搜索才能通过站内搜索查询项目」">
 					<i class="iconfont adorn-color">&#xe6a3;</i>
 				</span>
 				<br/>
@@ -58,7 +58,11 @@
             <i class="iconfont mt-3">&#xe6b8;&nbsp;</i>项目成员<br>
                 <span class="f12 C999">项目成员总数：{{projectMoreInfo.projectUserNum}}</span>
             </a>
-
+            <a class="project-menu lh20 p10"
+               ng-href="#/user/projectMeta/list?pageName=项目环境&type=1&dataType=env&menu_a=menu-project&menu_b=menu_main&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}&moduleId={{$stateParams.moduleId}}">
+                <i class="iconfont mt-3">&#xe619;&nbsp;</i>环境配置<br>
+                <span class="f12 C999">配置总数：{{projectMoreInfo.envNum}}</span>
+            </a>
             <a class="project-menu lh20 p10"
                ng-href="#/user/interface/list?pageName=接口&dataType=interface&menu_a=menu-project&menu_b=menu_interface&projectId={{$stateParams.projectId}}&projectName={{$stateParams.projectName}}">
                 <i class="iconfont mt-3">&#xe648;&nbsp;</i>接口<br>

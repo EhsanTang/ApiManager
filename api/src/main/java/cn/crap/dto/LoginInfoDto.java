@@ -1,12 +1,12 @@
 package cn.crap.dto;
 
+import cn.crap.enu.AttributeEnum;
 import cn.crap.enu.UserType;
-import cn.crap.model.ProjectUserPO;
-import cn.crap.model.User;
+import cn.crap.model.UserPO;
+import cn.crap.utils.AttributeUtils;
+import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginInfoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -18,9 +18,11 @@ public class LoginInfoDto implements Serializable{
 	private byte type;
 	private String email;
 	private String avatarUrl;
-	private Map<String, ProjectUserPO> projects = new HashMap<>();
+	@Getter
+	public String attributes;
 
-	public LoginInfoDto(User user){
+
+	public LoginInfoDto(UserPO user){
 		this.userName = user.getUserName();
 		this.trueName = user.getTrueName();
 		this.id = user.getId();
@@ -28,13 +30,14 @@ public class LoginInfoDto implements Serializable{
 		this.email = user.getEmail();
 		this.avatarUrl = user.getAvatarUrl();
 		this.authStr = user.getAuth();
+		this.attributes = user.getAttributes();
 		
 		StringBuilder sb = new StringBuilder(",");
 		if( type == UserType.ADMIN.getType() ){
 			sb.append(authStr+",ADMIN,");
 		}
 		this.authStr = sb.toString();
-	}
+    }
 
 	public String getUserName() {
 		return userName;
@@ -45,9 +48,7 @@ public class LoginInfoDto implements Serializable{
 	}
 
 	public String getAuthStr() {
-		if(authStr == null)
-			return "";
-		return authStr;
+		return authStr == null ? "" : authStr;
 	}
 
 	public String getId(){
@@ -66,20 +67,16 @@ public class LoginInfoDto implements Serializable{
 		this.email = email;
 	}
 
-	public Map<String, ProjectUserPO> getProjects() {
-		return projects;
-	}
-
-	public void setProjects(Map<String, ProjectUserPO> projects) {
-		this.projects = projects;
-	}
-
 	public String getAvatarUrl() {
 		return avatarUrl;
 	}
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+
+	public String getAttribute(AttributeEnum attributeEnum){
+		return AttributeUtils.getAttr(this.attributes, attributeEnum);
 	}
 
 }

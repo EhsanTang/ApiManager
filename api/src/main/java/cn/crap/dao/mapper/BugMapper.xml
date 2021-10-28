@@ -56,6 +56,10 @@
             <if test="query.name != null">
                 and name like concat(concat('%',#{query.name}),'%')
             </if>
+            <if test="query.idGreatThen != null">
+                and id > #{query.idGreatThen}
+            </if>
+
         </where>
     </sql>
 

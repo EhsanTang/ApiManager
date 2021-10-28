@@ -1,18 +1,12 @@
 package cn.crap.adapter;
 
-import cn.crap.dto.ArticleDto;
+import cn.crap.dto.ArticleDTO;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.ArticleStatus;
-import cn.crap.enu.ArticleType;
-import cn.crap.enu.LuceneSearchType;
-import cn.crap.enu.ProjectType;
-import cn.crap.framework.SpringContextHolder;
+import cn.crap.enu.*;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
-import cn.crap.service.tool.ModuleCache;
-import cn.crap.service.tool.ProjectCache;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.utils.*;
 
 import java.util.ArrayList;
@@ -25,12 +19,12 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class ArticleAdapter {
-    public static ArticleDto getDto(Article model, Module module, Project project){
+    public static ArticleDTO getDto(Article model, ModulePO module, ProjectPO project){
         if (model == null){
             return null;
         }
 
-		ArticleDto dto = new ArticleDto();
+		ArticleDTO dto = new ArticleDTO();
 		BeanUtil.copyProperties(model, dto);
 
 		dto.setCanCommentName(new Byte("1").equals(model.getCanComment()) ? "是" : "否");
@@ -49,15 +43,15 @@ public class ArticleAdapter {
 		return dto;
     }
 
-	public static ArticleDto getDtoWithBLOBs(ArticleWithBLOBs model, Module module, Project project) {
+	public static ArticleDTO getDtoWithBLOBs(ArticleWithBLOBs model, ModulePO module, ProjectPO project) {
 		if (model == null) {
 			return null;
 		}
-		ArticleDto dto = getDto(model, module, project);
+		ArticleDTO dto = getDto(model, module, project);
 		dto.setContent(model.getContent());
 		dto.setMarkdown(model.getMarkdown());
         dto.setUseMarkdown(false);
-		if (AttributeUtils.getAttributeMap(model.getAttributes()).containsKey(IAttributeConst.MARK_DOWN)){
+		if (AttributeUtils.containAttr(model.getAttributes(), AttributeEnum.MARK_DOWN)){
             dto.setUseMarkdown(true);
         }
 		dto.setStatusName(ArticleStatus.getNameByValue(model.getStatus()));
@@ -69,7 +63,7 @@ public class ArticleAdapter {
      * @param dto
      * @return
      */
-    public static ArticleWithBLOBs getModel(ArticleDto dto){
+    public static ArticleWithBLOBs getModel(ArticleDTO dto){
         if (dto == null){
             return null;
         }
@@ -80,22 +74,22 @@ public class ArticleAdapter {
         return model;
     }
 
-    public static List<ArticleDto> getDtoWithBLOBs(List<ArticleWithBLOBs> models, Module module){
+    public static List<ArticleDTO> getDtoWithBLOBs(List<ArticleWithBLOBs> models, ModulePO module){
         if (models == null){
             return new ArrayList<>();
         }
-        List<ArticleDto> dtos = new ArrayList<>();
+        List<ArticleDTO> dtos = new ArrayList<>();
         for (ArticleWithBLOBs model : models){
             dtos.add(getDtoWithBLOBs(model, module, null));
         }
         return dtos;
     }
 
-	public static List<ArticleDto> getDto(List<Article> models, Module module, Project project){
+	public static List<ArticleDTO> getDto(List<Article> models, ModulePO module, ProjectPO project){
 		if (models == null){
 			return new ArrayList<>();
 		}
-		List<ArticleDto> dtos = new ArrayList<>();
+		List<ArticleDTO> dtos = new ArrayList<>();
 		for (Article model : models){
 			dtos.add(getDto(model, module, project));
 		}
@@ -118,31 +112,19 @@ public class ArticleAdapter {
 	}
 
 	public static SearchDto getSearchDto(ArticleWithBLOBs model){
-        ModuleCache moduleCache = SpringContextHolder.getBean("moduleCache", ModuleCache.class);
-        ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
-        Project project = projectCache.get(model.getProjectId());
-        SearchDto dto = new SearchDto();
-		String modelId = model.getId();
-		dto.setId(modelId);
-		dto.setCreateTime(model.getCreateTime());
-		dto.setContent(MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()));
-		dto.setModuleName(moduleCache.get(modelId).getName());
-		dto.setTitle(model.getName());
-		dto.setType("Article");
-		String articleUrl = "#/article/detail?projectId=%s&modelId=%s&type=%s&id=%s";
-		dto.setUrl(String.format(articleUrl, model.getProjectId(), model.getModuleId(), model.getType(), modelId));
-		dto.setVersion("");
-		dto.setProjectId(model.getProjectId());
-
-		dto.setNeedCreateIndex(false);
-        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
-            dto.setNeedCreateIndex(true);
-        }
+		ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+		boolean open = false;
+		if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+			open = true;
+		}
 
 		// 私有项目不能建立索引
 		if(project.getType() == ProjectType.PRIVATE.getType()){
-			dto.setNeedCreateIndex(false);
+			open = false;
 		}
-		return dto;
+
+		return new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(),
+                model.getType().equals(ArticleType.ARTICLE.name()) ? TableId.ARTICLE : TableId.DICTIONARY,
+				MyString.getStr(model.getBrief()) + MyString.getStr(model.getContent()), null,  open, model.getCreateTime());
 	}
 }

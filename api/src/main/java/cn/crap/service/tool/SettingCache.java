@@ -4,8 +4,10 @@ import cn.crap.adapter.SettingAdapter;
 import cn.crap.beans.Config;
 import cn.crap.dto.SettingDto;
 import cn.crap.enu.SettingEnum;
+import cn.crap.enu.SettingStatus;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
+import cn.crap.utils.*;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service("settingCache")
 public class SettingCache{
@@ -23,6 +27,8 @@ public class SettingCache{
 
 	@Autowired
 	private SettingService customSettingService;
+	@Autowired
+    private StringCache stringCache;
 
 	public Cache<String, SettingDto> getCache(){
 	    if (cache == null) {
@@ -33,10 +39,6 @@ public class SettingCache{
                     .build();
         }
         return cache;
-	}
-
-	public String getDomain(){
-		return getStr(SettingEnum.DOMAIN);
 	}
 
 	public Integer getInt(SettingEnum settingEnum){
@@ -90,9 +92,27 @@ public class SettingCache{
             return settingDtos;
         }
 
-        List<Setting> settings= customSettingService.getAll();
-        settingDtos = SettingAdapter.getDto(settings);
+        settingDtos = SettingAdapter.getDto(customSettingService.getAll());
         return settingDtos;
+    }
+
+	public List<SettingDto> getCommonAll(){
+		return getAll().stream().filter(setting -> SettingStatus.COMMON.getStatus().equals(setting.getStatus())).collect(Collectors.toList());
+	}
+
+	public Map<String, String> getCommonMap(){
+        Map<String, String> commonMap = getCommonAll().stream().collect(Collectors.toMap(SettingDto::getKey, SettingDto::getValue));
+        commonMap.put(ISetting.S_DOMAIN, Tools.getUrlPath());
+        commonMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
+        commonMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
+		commonMap.put(IConst.SETTING_GITEE_ID, MyString.isEmpty( Config.oschinaClientID )? "false":"true");
+		commonMap.put(ISetting.S_LOGIN_VERIFICATION_CODE, "false");
+
+        String uuid = MyCookie.getCookie(IConst.COOKIE_UUID);
+        if (MyString.isNotEmpty(stringCache.get(IConst.C_NEED_VERIFICATION_IMG + uuid))){
+            commonMap.put(ISetting.S_LOGIN_VERIFICATION_CODE, "true");
+        }
+        return commonMap;
     }
 
     private String assembleKey(String key) {

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.crap.dao.mybatis.ProjectMetaDao">
+    <resultMap id="resultMap" type="cn.crap.model.ProjectMetaPO">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="createTime" property="createTime"/>
+        <result column="value" property="value"/>
+        <result column="moduleId" property="moduleId"/>
+        <result column="attributes" property="attributes"/>
+        <result column="projectId" property="projectId"/>
+        <result column="name" property="name"/>
+        <result column="sequence" property="sequence"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 基本的字段，供其他查询引用-->
+    <sql id="baseColumn">
+        id,type,createTime,value,moduleId,attributes,projectId,name,sequence,status
+  </sql>
+
+    <sql id="querySql">
+        <where>
+            <if test="query.projectId != null">
+                and projectId=#{query.projectId}
+            </if>
+            <if test="query.moduleId != null">
+                and moduleId=#{query.moduleId}
+            </if>
+            <if test="query.type != null">
+                and type=#{query.type}
+            </if>
+            <if test="query.status != null">
+                and status=#{query.status}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="insert" parameterType="cn.crap.model.ProjectMetaPO">
+        insert into project_meta (
+        <include refid="baseColumn"/>
+        )
+        values (#{id},#{type},NOW(),#{value},#{moduleId},#{attributes},#{projectId},#{name},#{sequence},#{status})
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="delete">
+        delete from project_meta where id=#{id}
+    </delete>
+
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.crap.model.ProjectMetaPO">
+        update project_meta
+        <set>
+            <if test="attributes != null">
+                attributes = #{attributes},
+            </if>
+            <if test="value != null">
+                value = #{value},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sequence != null">
+                sequence = #{sequence},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="moduleId != null">
+                moduleId = #{moduleId},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <!-- 查询 -->
+    <select id="select" resultMap="resultMap">
+        select <include refid="baseColumn"/>
+        from project_meta
+        <include refid="querySql"/>
+        <if test="query.sort != null">
+            order by ${query.sort}
+        </if>
+        <if test="query.start != null and query.pageSize != null">
+            limit #{query.start},#{query.pageSize}
+        </if>
+    </select>
+
+    
+    <!-- 查询 -->
+    <select id="get" resultMap="resultMap">
+        select
+        <include refid="baseColumn"/>
+        from project_meta
+        where id=#{id}
+    </select>
+
+
+    <!-- 查询总数 -->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from project_meta
+        <include refid="querySql"/>
+    </select>
+
+</mapper>

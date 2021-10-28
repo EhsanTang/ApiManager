@@ -1,45 +1,6 @@
 /**
  * 前端controller
  */
-visitorModule.filter("encodeURL",function($sce){
-	 return function (input){ 
-		 if(input){
-		 input = replaceAll(input,"\\/", "CA_FXG");
-		 input = replaceAll(input,"\\+", "CA_ADD");
-		 input = replaceAll(input,"\\-", "CA_DES");
-		 input = replaceAll(input,"\\&", "CA_AND");
-		 input = replaceAll(input,"\\|", "CA_HZ");
-		 input = replaceAll(input,"\\{", "CA_DKHS");
-		 input = replaceAll(input,"\\}", "CA_DKHE");
-		 input = replaceAll(input,"\\?", "CA_WH");
-		 input = replaceAll(input,"\\*", "CA_XH");
-		 input = replaceAll(input,"\\#", "CA_JH");
-		 input = replaceAll(input,"\\:", "CA_MH");
-		 input = replaceAll(input,"\\.", "CA_DH");
-		 }
-		 return input;
-	} ;
-});
-visitorModule.filter("decodeURL",function($sce){
-		 return function (input){
-			 if(input){
-			 input = replaceAll(input, "CA_FXG","\/");
-			 input = replaceAll(input, "CA_ADD","\+");
-			 input = replaceAll(input, "CA_DES","\-");
-			 input = replaceAll(input, "CA_AND","\&");
-			 input = replaceAll(input, "CA_HZ","\|");
-			 input = replaceAll(input, "CA_DKHS","\{");
-			 input = replaceAll(input, "CA_DKHE","\}");
-			 input = replaceAll(input, "CA_WH","\?");
-			 input = replaceAll(input, "CA_XH","\*");
-			 input = replaceAll(input, "CA_JH","\#");
-			 input = replaceAll(input, "CA_MH","\:");
-			 input = replaceAll(input, "CA_DH","\.");
-			}
-		 return input;
-	 } ;
-});
-
 /***
  * 设置一个空的Controller，该Controller下的数据直接调用app.js中$rootScope 中的方法
  * 初始化不需要加载数据
@@ -50,7 +11,7 @@ visitorModule.controller('visitorSearchCtrl', function($rootScope,$scope, $http,
 	$scope.getData = function(page) {
 		if(!$stateParams.keyword)
 			$stateParams.keyword ="";
-		params = "iUrl=visitorSearch.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
+		params = "iUrl=search.do|iPost=POST|iLoading=FLOAT|iParams=&keyword="+ $stateParams.keyword;
 		$rootScope.getBaseData($scope,$http,params,page);
     };
     $scope.getData();

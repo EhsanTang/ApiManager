@@ -1,9 +1,9 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ProjectAdapter;
-import cn.crap.dto.ProjectDto;
+import cn.crap.dto.ProjectDTO;
 import cn.crap.enu.ProjectShowType;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ProjectQuery;
 import cn.crap.service.ProjectService;
 import cn.crap.utils.LoginUserHelper;
@@ -34,7 +34,7 @@ public class ProjectController extends BaseController{
 		Page page= new Page(query);
 		LoginInfoDto user =  LoginUserHelper.getUser();
 		String userId = user.getId();
-		List<Project> models = null;
+		List<ProjectPO> models = null;
 		// 我创建 & 加入的项目
 		if (ProjectShowType.CREATE_JOIN.getType() == projectShowType) {
 			page.setAllRow(projectService.count(userId, false, query.getName()));
@@ -47,7 +47,7 @@ public class ProjectController extends BaseController{
 			models = projectService.query(userId, true, query.getName(), page);
 		}
 
-        List<ProjectDto> projectDtos = ProjectAdapter.getDto(models, null);
+        List<ProjectDTO> projectDtos = ProjectAdapter.getDTOS(models, null);
         page.setAllRow(projectService.count(query));
 
         return new JsonResult().data(projectDtos).page(page);

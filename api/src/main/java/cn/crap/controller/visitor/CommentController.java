@@ -36,6 +36,7 @@ public class CommentController extends BaseController {
 	private CommentService commentService;
 	@Autowired
     private BugService bugService;
+
     // TODO 删除bug需要删除所有评论，bug暂不允许删除
 	@RequestMapping("/add.do")
 	@ResponseBody
@@ -77,9 +78,21 @@ public class CommentController extends BaseController {
         commentDTO.setNeedImgCode(false);
         if (commentDTO.getType().equals(C_BUG)){
             commentDTO.setNeedImgCode(false);
-        } else if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
+        }
+
+        if (anonymousComment != null && !C_TRUE.equals(anonymousComment.getValue())){
             commentDTO.setNeedImgCode(true);
         }
+
+        if (settingCache.get(S_COMMENTCODE).getValue().equals("true")) {
+            commentDTO.setNeedImgCode(true);
+        }
+
+        LoginInfoDto user = LoginUserHelper.tryGetUser();
+        if (user != null) {
+            commentDTO.setNeedImgCode(false);
+        }
+
         return new JsonResult(1, commentDTO);
     }
 
@@ -92,8 +105,9 @@ public class CommentController extends BaseController {
         Assert.notNull(query.getType(), "type 不能为空");
         query.setPageSize(10);
         query.setSort(TableField.SORT.CREATE_TIME_DES);
+
+        List<CommentPO> commentPOList = commentService.select(query);
         Page page = new Page(query);
-        List<CommentPO> commentPOList = commentService.select(query, page);
         page.setAllRow(commentService.count(query));
         return new JsonResult().success().data(CommentAdapter.getDto(commentPOList)).page(page);
     }

@@ -1,13 +1,15 @@
 package cn.crap.service;
 
+import cn.crap.adapter.BugAdapter;
 import cn.crap.dao.mybatis.BugDao;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.BugLogPO;
 import cn.crap.model.BugPO;
-import cn.crap.model.Module;
-import cn.crap.model.User;
+import cn.crap.model.ModulePO;
+import cn.crap.model.UserPO;
 import cn.crap.query.BugQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.ProjectCache;
@@ -17,11 +19,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * 暂时不支持搜索
+ * ILuceneService
+ */
 @Service
-public class BugService extends NewBaseService<BugPO, BugQuery> implements IConst {
+public class BugService extends NewBaseService<BugPO, BugQuery> implements ILuceneService, IConst {
     private BugDao bugDao;
 
     @Autowired
@@ -45,7 +52,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
      * @return
      */
     @Override
-    public boolean insert(BugPO bug) throws Exception{
+    public boolean insert(BugPO bug) throws MyException{
         Assert.notNull(bug);
         Assert.notNull(bug.getProjectId());
         if (bug == null) {
@@ -60,6 +67,13 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         bug.setCreatorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
         bug.setStatus(BugStatus.NEW.getByteValue());
         return super.insert(bug);
+    }
+
+    @Override
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
+        BugQuery bugQuery = new BugQuery().setProjectId(projectId).setPageSize(pageSize).setIdGreatThen(id).setSort(TableField.SORT.ID_ASC);
+        return BugAdapter.getSearchDto(bugDao.select(bugQuery));
     }
 
     public BugPO getChangeBugPO(String id, String type, String value, BugLogPO bugLogPO, BugPO dbBug) throws Exception{
@@ -94,19 +108,19 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bugLogPO.setOriginalValue(BugPriority.getNameByValue(dbBug.getPriority()));
             bugLogPO.setNewValue(BugPriority.getNameByValue(bugPriority.getByteValue()));
         } else if (PickCode.MY_MODULE.getCode().equals(type) || PickCode.PROJECT_MODULES.getCode().equals(type)){
-            Module module = moduleCache.get(value);
+            ModulePO module = moduleCache.get(value);
             Optional.ofNullable(module.getId()).orElseThrow(() -> new MyException(MyError.E000065, "模块有误"));
             bug.setModuleId(module.getId());
             bug.setProjectId(module.getProjectId());
             PermissionUtil.checkPermission(projectCache.get(module.getProjectId()), ProjectPermissionEnum.READ);
 
-            Module originalModule = moduleCache.get(dbBug.getModuleId());
+            ModulePO originalModule = moduleCache.get(dbBug.getModuleId());
             bugLogPO.setType(BugLogType.MODULE.getByteType());
             bugLogPO.setOriginalValue(originalModule.getName());
             bugLogPO.setNewValue(module.getName());
         } else if (PickCode.EXECUTOR.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setExecutor(user.getId());
             bug.setExecutorStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
@@ -118,7 +132,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bugLogPO.setNewValue(bug.getExecutorStr());
         } else if (PickCode.TESTER.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setTester(user.getId());
             bug.setTesterStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
@@ -130,7 +144,7 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
             bugLogPO.setNewValue(bug.getTesterStr());
         } else if (PickCode.TRACER.getCode().equals(type)){
             // TODO 用户是否是项目成员
-            User user = userService.getById(value);
+            UserPO user = userService.get(value);
             Optional.ofNullable(user).orElseThrow(() -> new MyException(MyError.E000065, "用户有误"));
             bug.setTracer(user.getId());
             bug.setTracerStr(MyString.isEmpty(user.getTrueName()) ? user.getUserName() : user.getTrueName());
@@ -162,5 +176,4 @@ public class BugService extends NewBaseService<BugPO, BugQuery> implements ICons
         }
         return bug;
     }
-
 }

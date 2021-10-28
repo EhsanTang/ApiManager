@@ -11,19 +11,28 @@
       <result column="userId" property="userId"/>
       <result column="permission" property="permission"/>
       <result column="status" property="status"/>
+      <result column="type" property="type"/>
+      <result column="projectName" property="projectName"/>
+      <result column="projectUniKey" property="projectUniKey"/>
   </resultMap>
 
   <!-- 基本的字段，供其他查询引用-->
   <sql id="baseColumn">
-        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status
+        id,createTime,userName,sequence,userEmail,projectId,userId,permission,status,type,projectName,projectUniKey
   </sql>
   <sql id="querySql">
     <where>
       <if test="query.projectId != null">
         and projectId=#{query.projectId}
       </if>
+      <if test="query.projectUniKey != null">
+        and projectUniKey=#{query.projectUniKey}
+      </if>
       <if test="query.userId != null">
         and userId=#{query.userId}
+      </if>
+      <if test="query.type != null">
+        and type=#{query.type}
       </if>
     </where>
   </sql>
@@ -33,12 +42,16 @@
     insert into project_user (
       <include refid="baseColumn"/>
     )
-    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status})
+    values (#{id},NOW(),#{userName},#{sequence},#{userEmail},#{projectId},#{userId},#{permission},#{status},#{type},#{projectName},#{projectUniKey})
   </insert>
 
   <!-- 删除 -->
   <delete id="delete">
         delete from project_user where id=#{id}
+    </delete>
+
+  <delete id="deleteByProjectId">
+        delete from project_user where projectId=#{projectId}
     </delete>
 
 
@@ -55,8 +68,17 @@
       <if test="userEmail != null">
         userEmail = #{userEmail},
       </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
     </set>
     where id=#{id}
+  </update>
+
+  <!-- 更新 -->
+  <update id="batchUpdateByProjectId" parameterType="cn.crap.model.ProjectUserPO">
+    update project_user set sequence=#{sequence}, projectName=#{projectName}
+    where projectId=#{projectId}
   </update>
 
 
@@ -65,11 +87,9 @@
     select <include refid="baseColumn"/>
     from project_user
     <include refid="querySql"/>
-    <if test="query.sort != null">
-      order by ${query.sort}
-    </if>
+    order by sequence desc
     <if test="query.start != null and query.pageSize != null">
-      limit ${query.start},${query.pageSize}
+      limit #{query.start},#{query.pageSize}
     </if>
   </select>
 

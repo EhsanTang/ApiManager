@@ -2,26 +2,23 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.InterfaceAdapter;
-import cn.crap.beans.Config;
 import cn.crap.dao.custom.CustomInterfaceDao;
 import cn.crap.dao.mybatis.InterfaceDao;
 import cn.crap.dto.*;
 import cn.crap.enu.LogType;
-import cn.crap.enu.SettingEnum;
 import cn.crap.enu.TableId;
+import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.*;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.tool.ModuleCache;
 import cn.crap.service.tool.SettingCache;
-import cn.crap.utils.IConst;
-import cn.crap.utils.MyString;
-import cn.crap.utils.Page;
-import cn.crap.utils.TableField;
+import cn.crap.utils.*;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -53,6 +50,15 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             return false;
         }
 
+        // TODO 提取到公共内
+        if (model.getVersionNum() == null){
+            model.setVersionNum(0);
+        }
+
+        if (model.getUniKey() == null){
+            model.setUniKey(IdGenerator.getId(TableId.INTERFACE));
+        }
+
         if (model.getIsTemplate() == null){
             model.setIsTemplate(false);
         }
@@ -80,6 +86,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
     public List<Interface> query(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
         Page page = new Page(query);
         InterfaceCriteria example = getInterfaceCriteria(query);
@@ -100,6 +108,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      */
     public int count(InterfaceQuery query) throws MyException {
         Assert.notNull(query);
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
         InterfaceCriteria example = getInterfaceCriteria(query);
         return interfaceDao.countByExample(example);
@@ -117,8 +127,12 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (query.getEqualInterfaceName() != null) {
             criteria.andInterfaceNameEqualTo(query.getEqualInterfaceName());
         }
-        if (query.getModuleId() != null) {
-            criteria.andModuleIdEqualTo(query.getModuleId());
+        if (query.getModuleId() != null ) {
+            if (IConst.NULL.equals(query.getModuleId())){
+                criteria.andModuleIdEqualTo("");
+            } else {
+                criteria.andModuleIdEqualTo(query.getModuleId());
+            }
         }
         if (query.getProjectId() != null) {
             criteria.andProjectIdEqualTo(query.getProjectId());
@@ -135,6 +149,10 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         if (query.getExceptVersion() != null) {
             criteria.andVersionNotEqualTo(query.getExceptVersion());
         }
+        if (query.getUniKey() != null) {
+            criteria.andUniKeyEqualTo(query.getUniKey());
+        }
+
         return example;
     }
     /**
@@ -144,7 +162,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
      * @param escape 是否需要处理字符内容
      * @return
      */
-    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, Module module, boolean escape, boolean isPdf) {
+    public InterfacePDFDto getInterPDFDto(InterfaceWithBLOBs interFace, ModulePO module, boolean escape, boolean isPdf) {
         InterfacePDFDto interDto = new InterfacePDFDto();
         interDto.setModel(InterfaceAdapter.getDtoWithBLOBs(interFace, module, null, escape));
 
@@ -165,8 +183,8 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
             interfaceDTO.setRemark(interfaceDTO.getRemark().replaceAll("<w:br/>", "<br/>"));
         }
 
-        interDto.setTrueMockUrl(settingCache.getDomain()+"/mock/trueExam.do?id="+interFace.getId());
-        interDto.setFalseMockUrl(settingCache.getDomain()+"/mock/falseExam.do?id="+interFace.getId());
+        interDto.setTrueMockUrl(Tools.getUrlPath()+"/mock/trueExam.do?id="+interFace.getId());
+        interDto.setFalseMockUrl(Tools.getUrlPath()+"/mock/falseExam.do?id="+interFace.getId());
         List<ParamDto> headerList = JSONArray.parseArray(interFace.getHeader() == null ? "[]" : interFace.getHeader(), ParamDto.class);
         interDto.setHeaders(InterfaceAdapter.sortParam(null, headerList, null));
 
@@ -216,11 +234,6 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
         interFace.setRequestExam(interFace.getRequestExam()+strHeaders.toString()+strParams.toString());
     }**/
 
-
-    public String getLuceneType() {
-        return "接口";
-    }
-
     /**
      * update article and add update log
      * @param model
@@ -235,7 +248,7 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
 
         Log log = Adapter.getLog(dbModel.getId(), modelName, remark, LogType.UPDATE, dbModel.getClass(), dbModel);
         logService.insert(log);
-
+        model.setVersionNum(dbModel.getVersionNum() + 1);
         super.update(model);
     }
 
@@ -268,17 +281,31 @@ public class InterfaceService extends BaseService<InterfaceWithBLOBs, InterfaceD
     public void  deleteTemplateByModuleId(String moduleId){
         Assert.notNull(moduleId);
         customInterfaceMapper.deleteTemplateByModuleId(moduleId);
-
     }
 
-    public List<SearchDto> getAll() {
-        return InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(new InterfaceCriteria()));
+    public void  deleteByModuleId(String moduleId){
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteByModuleId(moduleId);
+    }
+
+    public void  deleteByModuleId(String moduleId, List<String> uniKeyList) throws Exception{
+        Assert.notNull(moduleId);
+        customInterfaceMapper.deleteByModuleId(moduleId, uniKeyList);
     }
 
     @Override
-    public List<SearchDto> getAllByProjectId(String projectId) {
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         InterfaceCriteria example = new InterfaceCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
-        return  InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(example));
+        InterfaceCriteria.Criteria criteria = example.createCriteria();
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        example.setMaxResults(pageSize);
+        if (id != null){
+            criteria.andIdGreaterThan(id);
+        }
+        example.setOrderByClause(TableField.SORT.ID_ASC);
+        return InterfaceAdapter.getSearchDto(interfaceDao.selectByExampleWithBLOBs(example));
     }
 }

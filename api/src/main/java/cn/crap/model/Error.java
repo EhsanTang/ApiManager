@@ -1,8 +1,6 @@
 package cn.crap.model;
 
-import java.util.Date;
-
-public class Error extends BasePo{
+public class Error extends BasePO {
     private String errorCode;
 
     private String errorMsg;

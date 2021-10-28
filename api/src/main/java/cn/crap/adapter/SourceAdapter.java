@@ -4,15 +4,11 @@ import cn.crap.dto.SearchDto;
 import cn.crap.dto.SourceDto;
 import cn.crap.enu.LuceneSearchType;
 import cn.crap.enu.ProjectType;
-import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.enu.TableId;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.Source;
-import cn.crap.service.tool.ProjectCache;
-import cn.crap.utils.BeanUtil;
-import cn.crap.utils.DateFormartUtil;
-import cn.crap.utils.GetTextFromFile;
-import cn.crap.utils.MyString;
+import cn.crap.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.List;
  * Avoid exposing sensitive data and modifying data that is not allowed to be modified
  */
 public class SourceAdapter {
-    public static SourceDto getDto(Source model, Module module){
+    public static SourceDto getDto(Source model, ModulePO module){
         if (model == null){
             return null;
         }
@@ -84,38 +80,27 @@ public class SourceAdapter {
         return dtos;
     }
 
-    public static SearchDto getSearchDto(Source source){
-        SearchDto dto = new SearchDto();
-        dto.setId(source.getId());
-        dto.setCreateTime(source.getCreateTime());
-        dto.setTitle(source.getName());
-        dto.setType(Source.class.getSimpleName());
-        dto.setUrl("#/source/detail?projectId=" +source.getProjectId()+ "&id=" + source.getId());
-        dto.setVersion("");
-        dto.setProjectId(source.getProjectId());
+    public static SearchDto getSearchDto(Source model){
+        ProjectPO project = ServiceFactory.getInstance().getProjectCache().get(model.getProjectId());
+        boolean open = false;
+        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
+            open = true;
+        }
+
+        // 私有项目不能建立索引
+        if(project.getType() == ProjectType.PRIVATE.getType()){
+            open = false;
+        }
+
+        SearchDto searchDto = new SearchDto(model.getProjectId(), model.getModuleId(), model.getId(), model.getName(), TableId.SOURCE,
+                model.getRemark(), model.getFilePath(), open, model.getCreateTime());
+
         //索引内容 = 备注内容 + 文档内容
-        String docContent = "";
         try {
-            docContent = GetTextFromFile.getText(source.getFilePath());
+            searchDto.setContent(MyString.getStr(model.getRemark()) + GetTextFromFile.getText(model.getFilePath()));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dto.setContent(MyString.getStr(source.getRemark()) + docContent);
-        //如果备注为空，则提取文档内容前2500 个字
-        if( MyString.isEmpty(source.getRemark()) ){
-            source.setRemark( docContent.length() > 2500? docContent.substring(0, 2500) +" ... \r\n..." : docContent);
-        }
-        ProjectCache projectCache = SpringContextHolder.getBean("projectCache", ProjectCache.class);
-        Project project = projectCache.get(source.getProjectId());
-
-        dto.setNeedCreateIndex(false);
-        if(LuceneSearchType.Yes.getByteValue().equals(project.getLuceneSearch())){
-            dto.setNeedCreateIndex(true);
-        }
-        // 私有项目不能建立索引
-        if(project.getType() == ProjectType.PRIVATE.getType()){
-            dto.setNeedCreateIndex(false);
-        }
-        return dto;
+        return searchDto;
     }
 }

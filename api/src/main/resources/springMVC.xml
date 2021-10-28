@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -12,13 +12,10 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+
+
         http://www.springframework.org/schema/util 
-        http://www.springframework.org/schema/util/spring-util-3.0.xsd
-        http://www.springframework.org/schema/task
-    	http://www.springframework.org/schema/task/spring-task-4.0.xsd
-        ">
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	<!--注解扫描范围 -->
 	<context:annotation-config />
 	<mvc:annotation-driven/>
@@ -75,15 +72,32 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
     
     <!-- 邮件类 -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+    <bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="username"><value>${mail.username}</value></property>  
         <property name="password"><value>${mail.password}</value></property>  
-        <property name="host"><value>${mail.host}</value></property>  
+        <property name="host"><value>${mail.host}</value></property>
+		<property name="port"><value>465</value></property>
+
+		<!-- TODO mail.transport.protocol smtp-->
         <property name="javaMailProperties">  
             <props>  
                 <prop key="mail.smtp.auth">false</prop>
-                <prop key="mail.smtp.timeout">3000</prop>
+				<prop key="mail.smtp.writetimeout">3000</prop>
+				<prop key="mail.smtp.timeout">3000</prop>
 				<prop key="mail.smtp.connectiontimeout">3000</prop>
+				<prop key="mail.smtp.port">465</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+
+				<prop key="mail.pop3.writetimeout">3000</prop>
+				<prop key="mail.pop3.timeout">3000</prop>
+				<prop key="mail.pop3.connectiontimeout">3000</prop>
+
+				<prop key="mail.imap.writetimeout">3000</prop>
+				<prop key="mail.imap.timeout">3000</prop>
+				<prop key="mail.imap.connectiontimeout">3000</prop>
+
             </props>  
         </property>  
 	</bean> 

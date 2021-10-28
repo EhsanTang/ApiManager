@@ -42,9 +42,9 @@
 					</tr>
 
 					<tr ng-if="model.type == 2">
-						<td class="tc">是否允许建立索引</td>
+						<td class="tc">是否开放搜索</td>
 						<td class="tl" colspan="3">
-						*允许则能通过站内搜索查询到项目下的接口、文档、文件等信息<br>
+						*允许：任何人均能通过站内搜索查询到项目下的接口、文档、文件等信息，不允许：登录后在项目下可进行搜索<br>
 							<input  class="form-control" readonly id="luceneSearchName" type="text" autocomplete="off" ng-model="model.luceneSearchName" required placeholder="点击选择"
 						ng-focus="loadPickByName('iwidth=180|iheight=200|tagName=luceneSearchName|tag=luceneSearch|code=LUCENE_SEARCH_TYPE|def='+model.luceneSearch,$event)">
 						</td>
@@ -59,7 +59,7 @@
 					<tr>
 						<td class="tc">封面</td>
 						<td class="tc" colspan="3">
-							<input class="form-control" type="text" autocomplete="off" ng-model="model.cover" id="imgUrl" placeholder="封面可输入地址亦可在下方上传">
+							<input class="form-control" type="text" ng-model="model.cover" id="imgUrl" placeholder="封面可输入地址亦可在下方上传">
 						</td>
 					</tr>
 				</table>
@@ -102,7 +102,7 @@
 					<tr>
 						<td class="tc w100">名称</td>
 						<td class="tc" colspan="3">
-							<input  class="form-control"  type="text" autocomplete="off" ng-model="model.name" readonly placeholder="项目名">
+							<input  class="form-control"  type="text" ng-model="model.name" readonly placeholder="项目名">
 						</td>
 					</tr>
 

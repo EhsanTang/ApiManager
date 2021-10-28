@@ -5,10 +5,9 @@ import cn.crap.dto.LoginInfoDto;
 import cn.crap.enu.MyError;
 import cn.crap.framework.MyException;
 import cn.crap.framework.SpringContextHolder;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.service.tool.StringCache;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.util.Assert;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -27,6 +25,30 @@ import java.util.zip.ZipOutputStream;
 
 
 public class Tools {
+//    public static String getDomain(){
+//        HttpServletRequest request = Tools.getRequest();
+//        String uri = request.getRequestURI();//返回请求行中的资源名称
+//        String url = request.getRequestURL().toString();//获得客户端发送请求的完整url
+//        return url.substring(0, url.length() - uri.length());
+//    }
+
+    /**
+     * 获取系统部署的url
+     * 如：http://localhost:8080/api
+     * @return
+     */
+    public static String getUrlPath(){
+        try {
+            HttpServletRequest request = Tools.getRequest();
+            String uri = request.getRequestURI();//返回请求行中的资源名称
+            String url = request.getRequestURL().toString();//获得客户端发送请求的完整url
+            return url.substring(0, url.length() - uri.length()) + request.getContextPath();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void staticize(String html, String filePath) throws MyException, IOException {
         if (html == null) {
             throw new MyException(MyError.E000045);
@@ -241,7 +263,7 @@ public class Tools {
         if (params.length == 0 || params.length % 2 != 0) {
             return null;
         }
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         for (int i = 0; i < params.length; i = i + 2) {
             if (!MyString.isEmpty(params[i + 1]))
                 map.put(params[i].toString(), params[i + 1]);
@@ -281,72 +303,7 @@ public class Tools {
 
     }
 
-    //查询需要添加过滤器status>-1
-    public static String getHql(Map<String, Object> map) {
-        StringBuffer hql = new StringBuffer();
-        if (map == null || map.size() == 0) {
-            return " where status>-1 ";
-        }
-        hql.append(" where ");
-        if (!map.containsKey("status")) {
-            hql.append(" status>-1 and ");
-        }
-        List<String> removes = new ArrayList<String>();
-        for (Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            if (key.indexOf("|") > 0) {
-                String[] keys = key.split("\\|");
-                keys[0] = keys[0].replaceAll("\\.", "_");
-
-                if (keys[1].equals("in")) {
-                    hql.append(keys[0] + " in (:" + keys[0] + "_in) and ");
-                } else if (keys[1].equals(IConst.NULL)) {
-                    hql.append(keys[0] + " =null and ");
-                    removes.add(key);
-                } else if (keys[1].equals(IConst.NOT_NULL)) {
-                    hql.append(keys[0] + "!=null and ");
-                    removes.add(key);
-                } else if (keys[1].equals(IConst.BLANK)) {
-                    hql.append(keys[0] + " ='' and ");
-                    removes.add(key);
-                } else if (keys[1].equals("like")) {
-                    hql.append(keys[0] + " like :" + keys[0] + " and ");
-                } else {
-                    hql.append(keys[0] + " " + keys[1] + ":" + keys[0] + " and ");
-                }
-            } else
-                hql.append(key + "=:" + key.replaceAll("\\.", "_") + " and ");
-        }
-        if (map.size() > 0) {
-            hql.replace(hql.lastIndexOf("and"), hql.length(), "");
-        }
-        for (String remove : removes)
-            map.remove(remove);
-        return hql.toString();
-    }
-
-    //	public static String getConf(String key, String fileName) throws Exception{
-//		return getConf(key,fileName,null);
-//	}
-//	public static String getConf(String key, String fileName, String def) throws Exception{
-//		if(fileName == null)
-//			fileName = "/jdbc.properties";
-//		InputStream in = Tools.class.getResourceAsStream(fileName);
-//		Properties prop = new Properties();
-//		try {
-//			prop.load(in);
-//			return prop.getProperty(key).trim();
-//		} catch (Exception e) {
-//			System.out.println("配置有误，params config have error,"+key+" not exist.");
-//			if(def!=null){
-//				return def;
-//			}else{
-//				e.printStackTrace();
-//				throw new Exception("配置有误，"+key+"不存在");
-//			}
-//		}
-//	}
-    public static String getStaticPath(Project project) {
+    public static String getStaticPath(ProjectPO project) {
         if (project == null){
             return null;
         }
@@ -443,6 +400,8 @@ public class Tools {
         str = str.replaceAll("\r\n", "_CARP_BR_");
         str = str.replaceAll("\n", "_CARP_BR_");
         str = escapeHtml(str);
+        // &nbsp; word不支持
+        str = str.replaceAll("&nbsp;", " ");
         return str.replaceAll("_CARP_BR_", "<w:br/>");
     }
     public static String subString(String str, int length, String suffix) {
@@ -502,23 +461,30 @@ public class Tools {
     }
 
     // 相同ID，不同用户在数据库存储的id与浏览器中存储的不一致，解决项目导出给其他人id一致的问题
-    public static String handleId(LoginInfoDto user, String id) {
+    public static String addUserInfoForId(LoginInfoDto user, String id) {
         if (MyString.isEmpty(id)) {
             return null;
         }
 
-        id = id + "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
-        return id;
+        String userIdMD5 = getUserIdMD5(user);
+        if (id.endsWith(userIdMD5)){
+            return id;
+        }
+
+        // 删除id中其他人的用户MD5信息
+        if (id.lastIndexOf("-") > 0 && id.substring(id.lastIndexOf("-")).length() == 5){
+            id = id.substring(0, id.lastIndexOf("-"));
+        }
+
+        return id + userIdMD5;
     }
 
-    public static String unhandleId(String id) {
-        Assert.notNull(id);
-        Assert.isTrue(id.lastIndexOf("-") > 0);
-
-        id = id.substring(0, id.lastIndexOf("-"));
-        return id;
+    public static String getUserIdMD5(LoginInfoDto user){
+        if (user == null){
+            return "";
+        }
+        return "-" + MD5.encrytMD5(user.getId(), "").substring(0, 5);
     }
-
     public static String getRgba(float opacity, String colorStr) {
 
         try {

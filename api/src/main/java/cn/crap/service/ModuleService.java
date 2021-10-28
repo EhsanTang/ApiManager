@@ -2,17 +2,19 @@ package cn.crap.service;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.dao.mybatis.ModuleDao;
-import cn.crap.enu.LogType;
-import cn.crap.enu.TableId;
+import cn.crap.enu.*;
+import cn.crap.framework.IdGenerator;
 import cn.crap.framework.MyException;
 import cn.crap.model.Log;
-import cn.crap.model.Module;
-import cn.crap.model.ModuleCriteria;
-import cn.crap.query.ModuleQuery;
-import cn.crap.utils.*;
+import cn.crap.model.ModulePO;
+import cn.crap.query.*;
+import cn.crap.utils.IConst;
+import cn.crap.utils.ILogConst;
+import cn.crap.utils.MyString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -20,14 +22,61 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class ModuleService extends BaseService<Module, ModuleDao>  implements ILogConst, IConst{
+public class ModuleService extends NewBaseService<ModulePO, ModuleQuery>  implements ILogConst, IConst{
     @Autowired
     private LogService logService;
+    @Autowired
+    private SourceService sourceService;
+    @Autowired
+    private InterfaceService interfaceService;
+    @Autowired
+    private BugService bugService;
+    @Autowired
+    private ArticleService articleService;
+
     private ModuleDao moduleDao;
     @Resource
     public void ModuleDao(ModuleDao moduleDao) {
         this.moduleDao = moduleDao;
         super.setBaseDao(moduleDao, TableId.MODULE);
+    }
+
+    public ModulePO getByUniKey(String projectId, String uniKey) throws Exception{
+        Assert.notNull(projectId, "projectId");
+        Assert.notNull(uniKey, "uniKey");
+
+        List<ModulePO> modulePOS = super.select(new ModuleQuery().setProjectId(projectId).setUniKey(uniKey));
+       return CollectionUtils.isEmpty(modulePOS) ? null : modulePOS.get(0);
+    }
+
+    public boolean insert(ModulePO po) throws MyException{
+        Assert.notNull(po, "ModuleService insert po is null");
+
+        if (po.getUniKey() == null){
+            po.setUniKey(IdGenerator.getId(TableId.MODULE));
+        }
+
+        if (po.getVersionNum() == null){
+            po.setVersionNum(0);
+        }
+
+        if (po.getUrl() == null){
+            po.setUrl("");
+        }
+
+        if (po.getCanDelete() == null){
+            po.setCanDelete(CanDeleteEnum.CAN.getCanDelete());
+        }
+
+        if (po.getCategory() == null){
+            po.setCategory("");
+        }
+
+        if (po.getStatus() == null){
+            po.setStatus(Byte.valueOf("1"));
+        }
+
+        return super.insert(po);
     }
 
     /**
@@ -36,12 +85,12 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
      * @param needAddLog 是否需要添加日志
      * @return
      */
-    public boolean update(Module model, boolean needAddLog) throws MyException{
+    public boolean update(ModulePO model, boolean needAddLog) throws MyException{
         if (model == null) {
             return false;
         }
         if (needAddLog) {
-            Module dbModule = getById(model.getId());
+            ModulePO dbModule = get(model.getId());
             Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.UPDATE, dbModule.getClass(), dbModule);
             logService.insert(log);
         }
@@ -56,63 +105,33 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
     public boolean delete(String id) throws MyException{
         Assert.notNull(id, "id can't be null");
 
-        Module dbModule = getById(id);
+        if(interfaceService.count(new InterfaceQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000024);
+        }
+
+        if(articleService.count(new ArticleQuery().setModuleId(id).setType(ArticleType.ARTICLE.name())) >0 ){
+            throw new MyException(MyError.E000034);
+        }
+
+        if(sourceService.count(new SourceQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000035);
+        }
+
+        if(articleService.count(new ArticleQuery().setModuleId(id).setType(ArticleType.DICTIONARY.name())) >0 ){
+            throw new MyException(MyError.E000036);
+        }
+
+        if(bugService.count(new BugQuery().setModuleId(id)) >0 ){
+            throw new MyException(MyError.E000076);
+        }
+
+        ModulePO dbModule = get(id);
         Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
         logService.insert(log);
 
         return super.delete(id);
     }
-    /**
-     * 查询模块
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public List<Module> query(ModuleQuery query) throws MyException {
-        Assert.notNull(query);
 
-        Page page = new Page(query);
-        ModuleCriteria example = getModuleCriteria(query);
-        if (page.getSize() != ALL_PAGE_SIZE) {
-            example.setLimitStart(page.getStart());
-            example.setMaxResults(page.getSize());
-        }
-        example.setOrderByClause(query.getSort() == null ? TableField.SORT.SEQUENCE_DESC : query.getSort());
-
-        return moduleDao.selectByExample(example);
-    }
-
-    /**
-     * 查询模块数量
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public int count(ModuleQuery query) throws MyException {
-        Assert.notNull(query);
-
-        ModuleCriteria example = getModuleCriteria(query);
-        return moduleDao.countByExample(example);
-    }
-
-    private ModuleCriteria getModuleCriteria(ModuleQuery query) throws MyException {
-        ModuleCriteria example = new ModuleCriteria();
-        ModuleCriteria.Criteria criteria = example.createCriteria();
-        if (query.getName() != null) {
-            criteria.andNameLike("%" + query.getName() + "%");
-        }
-        if (query.getStatus() != null) {
-            criteria.andStatusEqualTo(query.getStatus());
-        }
-        if (query.getUserId() != null) {
-            criteria.andUserIdEqualTo(query.getUserId());
-        }
-        if (query.getProjectId() != null) {
-            criteria.andProjectIdEqualTo(query.getProjectId());
-        }
-        return example;
-    }
-    
     /**
      * 根据模块id查询分类
      * @param moduleId
@@ -120,7 +139,7 @@ public class ModuleService extends BaseService<Module, ModuleDao>  implements IL
      */
     public List<String> queryCategoryByModuleId(String moduleId){
         Assert.notNull(moduleId);
-        Module module = super.getById(moduleId);
+        ModulePO module = super.get(moduleId);
         if (module == null || MyString.isEmpty(module.getCategory())){
             return new ArrayList<>();
         }

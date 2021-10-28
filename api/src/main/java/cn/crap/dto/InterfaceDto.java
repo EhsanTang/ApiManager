@@ -1,5 +1,8 @@
 package cn.crap.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
@@ -41,6 +44,11 @@ public class InterfaceDto{
 	private String projectId;
 	private String projectName;
 	private String remarkNoHtml;
+
+	@Getter
+	@Setter
+	private String uniKey;
+
 	/**
 	 * 返回类型
 	 */

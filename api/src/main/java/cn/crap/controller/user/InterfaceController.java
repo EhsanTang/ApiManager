@@ -1,26 +1,28 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.InterfaceAdapter;
+import cn.crap.adapter.ProjectMetaAdapter;
 import cn.crap.beans.Config;
 import cn.crap.controller.visitor.MockController;
-import cn.crap.dto.InterfaceDto;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ParamDto;
-import cn.crap.dto.SearchDto;
-import cn.crap.enu.*;
+import cn.crap.dto.*;
+import cn.crap.enu.InterfaceContentType;
+import cn.crap.enu.MonitorType;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Error;
 import cn.crap.model.InterfaceWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ErrorQuery;
 import cn.crap.query.InterfaceQuery;
 import cn.crap.service.ErrorService;
 import cn.crap.service.ISearchService;
 import cn.crap.service.InterfaceService;
+import cn.crap.service.ProjectMetaService;
 import cn.crap.utils.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -49,13 +51,15 @@ public class InterfaceController extends BaseController{
 	private ISearchService luceneService;
 	@Autowired
 	private ErrorService errorService;
+	@Autowired
+	private ProjectMetaService projectMetaService;
 
 	@RequestMapping("/list.do")
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute InterfaceQuery query, String url) throws MyException{
-        Module module = getModule(query);
-        Project project = getProject(query);
+        ModulePO module = getModule(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
 
         InterfaceQuery interfaceQuery = query.setFullUrl(url);
@@ -72,9 +76,9 @@ public class InterfaceController extends BaseController{
 
 	@RequestMapping("/detail.do")
 	@ResponseBody
-	public JsonResult detail(String id, String moduleId, String projectId) throws MyException {
+	public JsonResult detail(String id, String moduleId, String projectId, String envId) throws MyException {
 		InterfaceWithBLOBs model;
-		Module module;
+		ModulePO module;
 		if(id != null){
 			model= interfaceService.getById(id);
 			module = moduleCache.get(model.getModuleId());
@@ -87,12 +91,22 @@ public class InterfaceController extends BaseController{
             if(!MyString.isEmpty(module.getTemplateId())){
 				InterfaceWithBLOBs template = interfaceService.getById(module.getTemplateId());
 				if(template != null){
-				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url", "fulUrl", "sequence");
+				    BeanUtil.copyProperties(template, model, "id", "projectId", "interfaceName", "url",
+                            "fulUrl", "sequence", "isTemplate", "uniKey");
 				}
 			}
 		}
         checkPermission(model.getProjectId(), ProjectPermissionEnum.READ);
-		return new JsonResult(1, InterfaceAdapter.getDtoWithBLOBs(model, module, null, false));
+		InterfaceDto interfaceDto = InterfaceAdapter.getDtoWithBLOBs(model, module, null, false);
+
+		// debug页面环境切换
+		if (envId != null){
+			ProjectMetaDTO dto = ProjectMetaAdapter.getDto(projectMetaService.get(envId), null);
+			if (dto != null && MyString.isNotEmpty(dto.getEnvUrl())){
+				interfaceDto.setFullUrl(interfaceDto.getFullUrl().replaceFirst(dto.getEnvUrl(), dto.getValue()));
+			}
+		}
+		return new JsonResult(1, interfaceDto);
 	}
 	
 	/**
@@ -107,8 +121,8 @@ public class InterfaceController extends BaseController{
 
 		//判断是否拥有原来项目的权限
 		checkPermission(interFace.getProjectId(), ProjectPermissionEnum.READ);
-        Project project = getProject(interFace.getProjectId(), moduleId);
-        Module module = moduleCache.get(moduleId);
+        ProjectPO project = getProject(interFace.getProjectId(), moduleId);
+        ModulePO module = moduleCache.get(moduleId);
 		// 检查新项目的权限
         checkPermission(project, ProjectPermissionEnum.ADD_INTER);
 
@@ -124,6 +138,7 @@ public class InterfaceController extends BaseController{
         interFace.setInterfaceName(interfaceName);
         interFace.setModuleId(moduleId);
         interFace.setProjectId(project.getId());
+		interFace.setUniKey(null);
 		interfaceService.insert(interFace);
 
         interFace.setId(interFace.getId());
@@ -139,33 +154,37 @@ public class InterfaceController extends BaseController{
         Assert.notNull(dto.getUrl(), "url can't be null");
 
         String id = dto.getId();
-        Module module = moduleCache.get(dto.getModuleId());
+        ModulePO module = moduleCache.get(dto.getModuleId());
         String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
         dto.setProjectId(newProjectId);
 		dto.setUrl(dto.getUrl().trim());
-        dto.setFullUrl(module.getUrl() + dto.getUrl());
-
+        dto.setFullUrl(MyString.getStr(module.getUrl()) + dto.getUrl());
 
         List<ParamDto> headerList =JSONArray.parseArray(dto.getHeader() == null ? "[]" : dto.getHeader(), ParamDto.class);
         ParamDto contentTypeDto = Optional.ofNullable(headerList).orElse(Lists.newArrayList()).stream()
                 .filter(tempHeader -> tempHeader.getName() != null && tempHeader.getName().equalsIgnoreCase(IConst.C_CONTENT_TYPE)).findFirst().orElse(null);
+
         if (C_PARAM_FORM.equals(dto.getParamType())){
 		    dto.setParam(C_PARAM_FORM_PRE + dto.getParam());
-            if (contentTypeDto != null){
+			/**
+			 * 普通表单模式不支持content-type设置：除非用户自定义，否者删除
+			 */
+			if (contentTypeDto != null && contentTypeDto.getRemark() != null && contentTypeDto.getRemark().contains(IConst.C_CONTENT_TYPE_TIP)){
                 headerList.remove(contentTypeDto);
             }
         }
+
         /**
          * 自定义参数，下拉添加Content-Type
          */
         else {
             String reqContentType = Optional.ofNullable(dto.getReqContentType()).orElse(InterfaceContentType.JSON.getType());
             if (contentTypeDto == null){
-                ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, "指定参数类型为" + reqContentType);
+                ParamDto paramDto = new ParamDto(C_CONTENT_TYPE, C_TRUE, C_STRING, reqContentType, IConst.C_CONTENT_TYPE_TIP + reqContentType);
                 headerList.add(0, paramDto);
             } else{
-                contentTypeDto.setDef(reqContentType);
-                contentTypeDto.setRemark("指定参数类型为" + reqContentType);
+				contentTypeDto.setDef(reqContentType);
+				contentTypeDto.setRemark(IConst.C_CONTENT_TYPE_TIP + reqContentType);
             }
 		}
         dto.setHeader(JSON.toJSONString(headerList));

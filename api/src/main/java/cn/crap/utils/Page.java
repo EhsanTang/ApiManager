@@ -18,6 +18,7 @@ public class Page implements Serializable{
 
 	public Page(BaseQuery baseQuery){
 		this(baseQuery.getPageSize(), baseQuery.getCurrentPage());
+		this.setAllRow(baseQuery.getAllRow());
 	}
 
 	public Page(Integer size, Integer currentPage){
@@ -25,8 +26,8 @@ public class Page implements Serializable{
 		currentPage = (currentPage <= 0 ? 1 : currentPage);
 
 		size = (size == null ? 20 : size);
-		Assert.isTrue(size <= 1000, "pageSzie 不能大于1000");
-		Assert.notNull(currentPage > 0);
+		size = (size <= 0 ? 20 : size);
+		size = (size > 1000 ? 20 : size);
 
 		this.currentPage = currentPage;
 		this.size = size;
@@ -58,9 +59,10 @@ public class Page implements Serializable{
 	}
 
 	/**
-	 * according to size and currentPage calculate the start row num for databases
+     * 采用 query中的查询条件替换
 	 * @return
 	 */
+	@Deprecated
 	public int getStart(){
 		return  this.getSize() * (this.getCurrentPage() - 1);
 	}

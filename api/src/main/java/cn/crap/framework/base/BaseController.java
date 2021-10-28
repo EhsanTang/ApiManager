@@ -5,15 +5,17 @@ import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.ThreadContext;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.BaseQuery;
+import cn.crap.query.ProjectUserQuery;
 import cn.crap.service.tool.*;
 import cn.crap.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.List;
 
 public abstract class BaseController implements IConst, ISetting {
     protected final static String ERROR_VIEW = "/WEB-INF/views/result.jsp";
@@ -43,11 +46,12 @@ public abstract class BaseController implements IConst, ISetting {
     @Resource(name = "objectCache")
     protected ObjectCache objectCache;
 
-    protected Project getProject(BaseQuery query){
-        Assert.isTrue(query.getProjectId() != null || query.getModuleId() != null, "projectId & moduleId 不能同时为空");
+    protected ProjectPO getProject(BaseQuery query){
+        Assert.isTrue(MyString.isNotEmptyOrNUll(query.getProjectId())
+                || MyString.isNotEmptyOrNUll(query.getModuleId()), "projectId、moduleId不能同时为空");
 
-        if (query.getModuleId() != null){
-            Module module = moduleCache.get(query.getModuleId());
+        if (MyString.isNotEmptyOrNUll(query.getModuleId())){
+            ModulePO module = moduleCache.get(query.getModuleId());
             return projectCache.get(module.getProjectId());
         }
 
@@ -58,42 +62,34 @@ public abstract class BaseController implements IConst, ISetting {
     }
 
     protected String getProjectId(String projectId, String moduleId){
-        Assert.isTrue(projectId != null || moduleId != null, "projectId & moduleId 不能同时为空");
-        if (moduleId != null){
+        Assert.isTrue(MyString.isNotEmptyOrNUll(projectId)
+                || MyString.isNotEmptyOrNUll(moduleId), "projectId、moduleId不能同时为空");
+
+        if (MyString.isNotEmptyOrNUll(moduleId)){
             String moduleProjectId = moduleCache.get(moduleId).getProjectId();
             return moduleProjectId == null ? projectId : moduleProjectId;
         }
         return projectId;
     }
 
-    protected Project getProject(String projectId, String moduleId){
-        Assert.isTrue(projectId != null || moduleId != null, "projectId & moduleId 不能同时为空");
-        if (moduleId != null){
+    protected ProjectPO getProject(String projectId, String moduleId){
+        Assert.isTrue(MyString.isNotEmptyOrNUll(projectId)
+                || MyString.isNotEmptyOrNUll(moduleId), "projectId、moduleId不能同时为空");
+
+        if (MyString.isNotEmptyOrNUll(moduleId)){
             projectId = moduleCache.get(moduleId).getProjectId();
         }
         return projectCache.get(projectId);
     }
 
-    protected Module getModule(BaseQuery query){
+    protected ModulePO getModule(BaseQuery query){
         if (query.getModuleId() != null){
-            Module module = moduleCache.get(query.getModuleId());
+            ModulePO module = moduleCache.get(query.getModuleId());
             return module.getId() == null ? null : module;
         }
         return null;
     }
 
-    /**
-     * 检查是否是crapDebug的项目，crapDebug插件的项目不允许修改、删除
-     * @param userId
-     * @param projectId
-     * @throws MyException
-     */
-    protected void checkCrapDebug(String userId, String projectId) throws MyException{
-        String debugProjectId = MD5.encrytMD5(userId, "").substring(0, 20) + "-debug";
-        if (debugProjectId.equals(projectId)){
-            throw new MyException(MyError.E000067);
-        }
-    }
     /**
      * @param param 待校验参数
      * @param tip 前端提示文案
@@ -121,11 +117,17 @@ public abstract class BaseController implements IConst, ISetting {
             return new JsonResult((MyException) ex);
         }
 
+        String userId = null;
+        LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+        if (loginInfoDto != null){
+            userId = loginInfoDto.getId();
+        }
+
         if (ex instanceof NullPointerException) {
-            log.error("异常, params:" + getAllStrParam(request), ex);
+            log.error("空指针异常," + request.getRequestURI() + ",userId:" + userId + ",params:" + getAllStrParam(request), ex);
             return new JsonResult(new MyException(MyError.E000051));
         } else {
-            log.error("异常, params:" + getAllStrParam(request), ex);
+            log.error("异常," + request.getRequestURI() + ",userId:" + userId + ",params:" + getAllStrParam(request), ex);
             ByteArrayOutputStream outPutStream = new ByteArrayOutputStream();
             ex.printStackTrace(new PrintStream(outPutStream));
             String errorStackTrace = outPutStream.toString();
@@ -188,11 +190,11 @@ public abstract class BaseController implements IConst, ISetting {
      * @param project
      * @throws MyException
      */
-    protected void checkPermission(Project project) throws MyException {
+    protected void checkPermission(ProjectPO project) throws MyException {
         PermissionUtil.checkPermission(project, ProjectPermissionEnum.MY_DATE);
     }
 
-    protected void checkPermission(Project project, ProjectPermissionEnum type) throws MyException {
+    protected void checkPermission(ProjectPO project, ProjectPermissionEnum type) throws MyException {
         PermissionUtil.checkPermission(project, type);
     }
 
@@ -277,7 +279,7 @@ public abstract class BaseController implements IConst, ISetting {
      * @param project
      * @throws MyException
      */
-    protected void checkFrontPermission(String inputPassword, String visitCode, Project project) throws MyException {
+    protected void checkFrontPermission(String inputPassword, String visitCode, ProjectPO project) throws MyException {
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         if (project.getType() == ProjectType.PRIVATE.getType()) {
             LoginInfoDto user = LoginUserHelper.getUser(MyError.E000041);
@@ -293,10 +295,12 @@ public abstract class BaseController implements IConst, ISetting {
             }
 
             // 项目成员
-            ProjectUserPO pu = user.getProjects().get(project.getId());
-            if (pu == null) {
+            List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
+                    new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()));
+            if (CollectionUtils.isEmpty(projectUserPOList)) {
                 throw new MyException(MyError.E000042);
             }
+
         } else {
             String projectPassword = project.getPassword();
             verifyPassword(project.getId(), projectPassword, inputPassword, visitCode);

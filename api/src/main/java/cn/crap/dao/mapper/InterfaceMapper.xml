@@ -20,6 +20,10 @@
     <result column="isTemplate" property="isTemplate" jdbcType="BIT" />
     <result column="projectId" property="projectId" jdbcType="VARCHAR" />
     <result column="contentType" property="contentType" jdbcType="VARCHAR" />
+    <result column="versionNum" jdbcType="INTEGER" property="versionNum" />
+    <result column="uniKey" jdbcType="VARCHAR" property="uniKey" />
+
+
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="cn.crap.model.InterfaceWithBLOBs" extends="BaseResultMap" >
     <result column="param" property="param" jdbcType="LONGVARCHAR" />
@@ -94,7 +98,7 @@
   <sql id="Base_Column_List" >
     id, url, method, status, moduleId, interfaceName, updateBy, updateTime, createTime,
     version, sequence, fullUrl, monitorType, monitorText, monitorEmails, isTemplate,
-    projectId, contentType
+    projectId, contentType, versionNum, uniKey
   </sql>
   <sql id="Blob_Column_List" >
     param, paramRemark, requestExam, responseParam, errorList, trueExam, falseExam, remark,
@@ -177,7 +181,7 @@
     param, paramRemark, requestExam,
     responseParam, errorList, trueExam,
     falseExam, remark, errors,
-    header)
+    header, versionNum, uniKey)
     values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
     #{status,jdbcType=TINYINT}, #{moduleId,jdbcType=VARCHAR}, #{interfaceName,jdbcType=VARCHAR},
     #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
@@ -187,7 +191,7 @@
     #{param,jdbcType=LONGVARCHAR}, #{paramRemark,jdbcType=LONGVARCHAR}, #{requestExam,jdbcType=LONGVARCHAR},
     #{responseParam,jdbcType=LONGVARCHAR}, #{errorList,jdbcType=LONGVARCHAR}, #{trueExam,jdbcType=LONGVARCHAR},
     #{falseExam,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{errors,jdbcType=LONGVARCHAR},
-    #{header,jdbcType=LONGVARCHAR})
+    #{header,jdbcType=LONGVARCHAR}, #{versionNum,jdbcType=INTEGER}, #{uniKey,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.crap.model.InterfaceWithBLOBs" >
 
@@ -277,6 +281,12 @@
       <if test="header != null" >
         header,
       </if>
+      <if test="versionNum != null" >
+        versionNum,
+      </if>
+      <if test="uniKey != null" >
+        uniKey,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       #{id,jdbcType=VARCHAR},
@@ -360,6 +370,12 @@
       </if>
       <if test="header != null" >
         #{header,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="versionNum != null" >
+        #{versionNum,jdbcType=INTEGER},
+      </if>
+      <if test="uniKey != null" >
+        #{uniKey,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -456,6 +472,12 @@
       <if test="record.header != null" >
         header = #{record.header,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.versionNum != null" >
+        versionNum = #{record.versionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.uniKey != null" >
+        uniKey = #{record.uniKey,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -490,7 +512,9 @@
     falseExam = #{record.falseExam,jdbcType=LONGVARCHAR},
     remark = #{record.remark,jdbcType=LONGVARCHAR},
     errors = #{record.errors,jdbcType=LONGVARCHAR},
-    header = #{record.header,jdbcType=LONGVARCHAR}
+    header = #{record.header,jdbcType=LONGVARCHAR},
+    versionNum = #{record.versionNum,jdbcType=INTEGER},
+
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -514,7 +538,9 @@
     monitorEmails = #{record.monitorEmails,jdbcType=VARCHAR},
     isTemplate = #{record.isTemplate,jdbcType=BIT},
     projectId = #{record.projectId,jdbcType=VARCHAR},
-    contentType = #{record.contentType,jdbcType=VARCHAR}
+    contentType = #{record.contentType,jdbcType=VARCHAR},
+    versionNum = #{record.versionNum,jdbcType=INTEGER}
+
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -603,6 +629,10 @@
       <if test="header != null" >
         header = #{header,jdbcType=LONGVARCHAR},
       </if>
+      <if test="versionNum != null" >
+        versionNum = #{versionNum,jdbcType=INTEGER},
+      </if>
+
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -634,7 +664,8 @@
     falseExam = #{falseExam,jdbcType=LONGVARCHAR},
     remark = #{remark,jdbcType=LONGVARCHAR},
     errors = #{errors,jdbcType=LONGVARCHAR},
-    header = #{header,jdbcType=LONGVARCHAR}
+    header = #{header,jdbcType=LONGVARCHAR},
+    versionNum = #{versionNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.crap.model.Interface" >
@@ -655,7 +686,8 @@
       monitorEmails = #{monitorEmails,jdbcType=VARCHAR},
       isTemplate = #{isTemplate,jdbcType=BIT},
       projectId = #{projectId,jdbcType=VARCHAR},
-      contentType = #{contentType,jdbcType=VARCHAR}
+      contentType = #{contentType,jdbcType=VARCHAR},
+      versionNum = #{versionNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -59,8 +59,16 @@ public class MyString {
 		return false;
 	}
 
+	public static boolean isEmptyOrNull(Object object){
+		return  isEmpty(object) || object.toString().equals(IConst.NULL);
+	}
+
 	public static boolean isNotEmpty(Object object){
 		return !isEmpty(object);
+	}
+
+	public static boolean isNotEmptyOrNUll(Object object){
+		return !isEmptyOrNull(object);
 	}
 
 	public static boolean notEquals(String value, String targetValue){

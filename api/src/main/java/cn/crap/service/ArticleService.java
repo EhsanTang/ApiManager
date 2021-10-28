@@ -5,10 +5,7 @@ import cn.crap.adapter.ArticleAdapter;
 import cn.crap.dao.custom.CustomArticleDao;
 import cn.crap.dao.mybatis.ArticleDao;
 import cn.crap.dto.SearchDto;
-import cn.crap.enu.ArticleStatus;
-import cn.crap.enu.CanDeleteEnum;
-import cn.crap.enu.LogType;
-import cn.crap.enu.TableId;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleCriteria;
@@ -161,19 +158,15 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
     /**
      * 更新属性
      * @param id
-     * @param attributeKey
-     * @param attributeValue
+     * @param attributeEnum
      * @throws MyException
      */
-    public void updateAttribute(String id, String attributeKey, String attributeValue) throws MyException{
+    public void updateAttribute(String id, AttributeEnum attributeEnum) throws MyException{
         Assert.notNull(id);
-        Assert.notNull(attributeKey);
-        if (MyString.isEmpty(attributeKey)) {
-            return;
-        }
+        Assert.notNull(attributeEnum);
         Article dbModel = getById(id);
         Map<String, String> attributeMap = AttributeUtils.getAttributeMap(dbModel.getAttributes());
-        attributeMap.put(attributeKey, attributeValue);
+        attributeMap.put(attributeEnum.getKey(), attributeEnum.getValue());
 
         ArticleWithBLOBs model = new ArticleWithBLOBs();
         model.setId(id);
@@ -185,18 +178,15 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
     /**
      * 删除属性值
      * @param id
-     * @param attributeKey
+     * @param attributeEnum
      * @throws MyException
      */
-    public void deleteAttribute(String id, String attributeKey) throws MyException{
+    public void deleteAttribute(String id, AttributeEnum attributeEnum) throws MyException{
         Assert.notNull(id);
-        Assert.notNull(attributeKey);
-        if (MyString.isEmpty(attributeKey)) {
-            return;
-        }
+        Assert.notNull(attributeEnum);
         Article dbModel = getById(id);
         Map<String, String> attributeMap = AttributeUtils.getAttributeMap(dbModel.getAttributes());
-        attributeMap.remove(attributeKey);
+        attributeMap.remove(attributeEnum.getKey());
 
         ArticleWithBLOBs model = new ArticleWithBLOBs();
         model.setId(id);
@@ -217,19 +207,19 @@ public class ArticleService extends BaseService<ArticleWithBLOBs, ArticleDao> im
         logService.insert(log);
     }
 
-    public List<SearchDto> getAll() {
-        return ArticleAdapter.getSearchDto(articleDao.selectByExampleWithBLOBs(new ArticleCriteria()));
-    }
-
     @Override
-    public String getLuceneType() {
-        return "文档&数据库表";
-    }
-
-    @Override
-    public List<SearchDto> getAllByProjectId(String projectId) {
+    public List<SearchDto> selectOrderById(String projectId, String id, int pageSize){
+        Assert.isTrue(pageSize > 0 && pageSize <= 1000);
         ArticleCriteria example = new ArticleCriteria();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        ArticleCriteria.Criteria criteria = example.createCriteria();
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        example.setMaxResults(pageSize);
+        if (id != null){
+            criteria.andIdGreaterThan(id);
+        }
+        example.setOrderByClause(TableField.SORT.ID_ASC);
         return ArticleAdapter.getSearchDto(articleDao.selectByExampleWithBLOBs(example));
     }
 

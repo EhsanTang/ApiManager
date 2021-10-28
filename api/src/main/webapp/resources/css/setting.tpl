@@ -16,7 +16,7 @@ a:hover{color: [ADORN_COLOR];text-decoration: none;}
 input:focus{border-color: [MAIN_COLOR]!important;}
 
 .s-bg-color {background-color: [BG_COLOR]}
-.s-nav-bg-color {background-color: [NAV_BG_COLOR]}
+.s-nav-bg-color {background-color: [NAV_BG_COLOR]!important}
 .s-nav-color {color: [NAV_COLOR]}
 .s-nav-color a {color: [NAV_COLOR]}
 
@@ -54,7 +54,7 @@ input:focus{border-color: [MAIN_COLOR]!important;}
 .look-up-content {border-top: 3px solid[MAIN_COLOR];}
 .sk-wave .sk-rect {background-color: [MAIN_COLOR];}
 .separator {border-bottom: 1px dotted[MAIN_COLOR];color: [MAIN_COLOR]}
-.login-bg{background: url('[LOGINBG]') 50% 50% / cover no-repeat fixed;}
+.login-bg{z-index:2;background: url('[LOGINBG]') 50% 50% / cover no-repeat fixed;}
 .title-bg-img{background-image:url('[TITLEBG]')!important; background-position:center;}
 
 /***remote iconfont*****/

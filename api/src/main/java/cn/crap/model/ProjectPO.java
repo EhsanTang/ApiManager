@@ -1,23 +1,34 @@
 package cn.crap.model;
 
-public class Project extends BasePo{
+import lombok.Getter;
+import lombok.Setter;
+
+public class ProjectPO extends BasePO {
     private String name;
 
+    @Getter
+    @Setter
     private Byte status;
 
     private String remark;
 
     private String userId;
 
+    @Getter
+    @Setter
     private Byte type;
 
     private String password;
 
     private String cover;
 
+    @Getter
+    @Setter
     private Byte luceneSearch;
 
-    private static final long serialVersionUID = 1L;
+    @Getter
+    @Setter
+    private String uniKey;
 
     public String getName() {
         return name;
@@ -25,14 +36,6 @@ public class Project extends BasePo{
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
     }
 
     public String getRemark() {
@@ -51,14 +54,6 @@ public class Project extends BasePo{
         this.userId = userId == null ? null : userId.trim();
     }
 
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -73,13 +68,5 @@ public class Project extends BasePo{
 
     public void setCover(String cover) {
         this.cover = cover == null ? null : cover.trim();
-    }
-
-    public Byte getLuceneSearch() {
-        return luceneSearch;
-    }
-
-    public void setLuceneSearch(Byte luceneSearch) {
-        this.luceneSearch = luceneSearch;
     }
 }

@@ -1,6 +1,11 @@
 package cn.crap.model;
 
-public class User extends BasePo{
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+public class UserPO extends BasePO {
     private String userName;
 
     private String password;
@@ -15,21 +20,29 @@ public class User extends BasePo{
 
     private String authName;
 
+    @Getter
+    @Setter
     private Byte status;
 
+    @Getter
+    @Setter
     private Byte type;
 
     private String email;
 
     private String avatarUrl;
 
+    @Getter
+    @Setter
     private Integer loginType;
 
     private String thirdlyId;
 
     private String passwordSalt;
 
-    private static final long serialVersionUID = 1L;
+    @Getter
+    @Setter
+    private Date loginTime;
 
     public String getUserName() {
         return userName;
@@ -87,22 +100,6 @@ public class User extends BasePo{
         this.authName = authName == null ? null : authName.trim();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -117,14 +114,6 @@ public class User extends BasePo{
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
-    }
-
-    public Integer getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(Integer loginType) {
-        this.loginType = loginType;
     }
 
     public String getThirdlyId() {

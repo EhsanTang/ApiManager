@@ -1,0 +1,41 @@
+<div class="col-xs-12 p0" ng-controller="userCommonCtrl" ng-init="search()">
+    <div class="col-xs-12 main-nav">
+        <div class="btn-group btn-group-sm r3 fl mr10">
+            <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
+                    class="iconfont mt-3">&#xe697;&nbsp;</i>后退</a>
+
+            <a type="button" class="btn btn-default" id="refresh" ng-click="search(null, list.page.currentPage)"><i
+                    class="iconfont mt-3">&#xe6aa;&nbsp;</i>刷新</a>
+        </div>
+    </div>
+
+    <div class="col-xs-12 p20 mt60">
+        <div class="BGFFF p15">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr class="f14 C000 fw500">
+                    <td>项目/ 类型 / 标题 / 简介</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in searchResults">
+                    <td class="cursor" ng-click="go(item.userHref)">
+                        <div class="C000 f14">
+                            <span class="badge f12 fn main-bg o5">{{item.projectName}}</span>
+                            <span class="badge f12 fn o5 bg-{{item.tableId}}">{{item.tableName}}</span>
+                            <span ng-bind-html="item.title|trustHtml"></span>
+                        </div>
+                        <div class="C999 f10 mt5" ng-if="item.content">
+                            <span ng-bind-html="item.content|trustHtml"></span>
+                        </div>
+                        <div class="fr f12 C999">{{item.createTimeStr}}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div ui-view="page" ng-init="callBackMethod = 'search'; modelKey='searchResults'"></div>
+        </div>
+    </div>
+</div>
+<div class="cb"></div>
+

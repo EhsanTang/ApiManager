@@ -11,7 +11,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="resources/framework/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<!-- <link href="resources/framework/bootstrap-3.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" /> -->
-	<link href="resources/css/allCss.css?v=v8.1.2_0211" rel="stylesheet" type="text/css"/>
+	<link href="resources/css/allCss.css?v=V8.2.0_0630" rel="stylesheet" type="text/css"/>
+    <link href="resources/framework/editormd-1.5.0/css/editormd.min.css" rel="stylesheet" type="text/css" />
+    <link href="resources/framework/wang-editor-3.1.1/wangEditor.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<!-- Top -->
@@ -23,10 +25,10 @@
 				</a>
 
                 <div class="fl h50 lh50 pl20 pr20 C555 f14" >
-                    <span ng-if="$stateParams.projectName">
+                    <span ng-if="$stateParams.projectName && $stateParams.projectName!='' && $stateParams.projectName!='undefined'">
                         项目【<span ng-bind="$stateParams.projectName"></span> 】
                     </span>
-                    <span ng-if="!$stateParams.projectName" ng-bind="settings.TITLE"></span>
+                    <span ng-if="!$stateParams.projectName || $stateParams.projectName=='' || $stateParams.projectName=='undefined'" ng-bind="settings.TITLE"></span>
                     <span ng-if="$stateParams.pageName">
                         <i class="iconfont">&#xe6a7;</i>
                         <span ng-bind="$stateParams.pageName"></span>
@@ -41,15 +43,20 @@
                         <span onclick="propUpPasswordDiv(this)" ng-bind="error" ng-if="error.indexOf('CrapApi-400')<0"></span>
                     </button>
                 </div>
-                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="hasError(errorTips,'tip-error')">
+                <div class="f16 lh50 h50 fl ndis" id="tip-error" ng-if="isSupperAdmin() && hasError(errorTips,'tip-error')">
                     <button type="button" class="btn btn-danger btn-xs break-word" ng-bind="errorTips"></button>
-                    <button type="button" class="btn btn-default btn-xs" ng-if="isSupperAdmin()" ng-click="closeErrorTips()">删除提示</button>
+                    <button type="button" class="btn btn-default btn-xs" ng-click="closeErrorTips()">删除提示</button>
                 </div>
 
 				<div class="m0 f14 fr">
-					<a href="#/profile?menu_a=menu-profile&pageName=个人资料" class="hover-main bl1 C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
-					<a href="home.do" class="hover-main C555 h50 lh50 dis fr pl10 pr10" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a>
-					<a href="#/admin/config/properties?menu_a=menu-setting&menu_b=menu-setting&pageName=系统属性" class="hover-main C555 h50 lh50 dis fr pl10 pr10" ng-if="isSupperAdmin()"><i class="iconfont f14 mt-5">&#xe6ae;</i>&nbsp;&nbsp;系统属性</span></a>
+                    <a href="home.do" class="hover-main C555 h50 lh50 dis fr pl10 pr10 bl1" onclick="loginOut()"><i class="iconfont f16 mt-5">&#xe609;</i>&nbsp;&nbsp;注销</a>
+                    <a href="#/profile?menu_a=menu-profile&pageName=个人资料" class="hover-main C555 h50 lh50 dis fr pl10 pr10" ng-click="profile(sessionAdminId)"><i class="iconfont f14 mt-5">&#xe6b8;</i>&nbsp;&nbsp;<span ng-bind="sessionAdminName"></span></a>
+
+                    <div class="pt7 p0 pb10 tr fr mr10" ng-controller="userCommonCtrl" ng-if="$stateParams.projectId">
+                        <input type="text" autocomplete="off" class="form-control input-xs dis-in-blo w200 r20 no-b-s"
+                               ng-keypress="search($event);"
+                               placeholder="输入后点击回车搜索"  ng-model="$stateParams.keyword">
+                    </div>
 				</div>
 	</nav>
 	<!-- End:Top -->
@@ -129,7 +136,9 @@
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap.min.js"></script>
 	<!--<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="resources/framework/bootstrap-3.0.0/js/bootstrap-datetimepicker.zh-CN.js"></script> -->
-    <script src="resources/js/allJs.js?v=v8.1.2_0211"></script>
+    <script src="resources/framework/editormd-1.5.0/editormd.min.js" charset="utf-8" ></script>
+    <script src="resources/framework/wang-editor-3.1.1/wangEditor.min.js" charset="utf-8" ></script>
+    <script src="resources/js/allJs.js?v=V8.2.0_0630"></script>
 
 
 	<!-- 提示窗口 -->

@@ -10,8 +10,8 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.BugLogPO;
 import cn.crap.model.BugPO;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.BugQuery;
 import cn.crap.service.BugLogService;
 import cn.crap.service.BugService;
@@ -87,8 +87,8 @@ public class BugController extends BaseController{
         boolean update = bugService.update(bug);
 
         dbBug = bugService.get(id);
-        Module module = moduleCache.get(dbBug.getModuleId());
-        Project project = projectCache.get(dbBug.getProjectId());
+        ModulePO module = moduleCache.get(dbBug.getModuleId());
+        ProjectPO project = projectCache.get(dbBug.getProjectId());
 
         bugLogPO.setBugId(id);
         bugLogPO.setProjectId(dbBug.getProjectId());
@@ -120,12 +120,12 @@ public class BugController extends BaseController{
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute BugQuery query) throws Exception {
-        Project project = getProject(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
         query.setPageSize(10);
 
+        List<BugPO> bugPOList = bugService.select(query);
         Page page = new Page(query);
-        List<BugPO> bugPOList = bugService.select(query, page);
         page.setAllRow(bugService.count(query));
         List<BugDTO> dtoList = BugAdapter.getDto(bugPOList);
 
@@ -142,8 +142,8 @@ public class BugController extends BaseController{
         dto.setProjectId(getProjectId(dto.getProjectId(), dto.getModuleId()));
         checkPermission(dto.getProjectId(), ProjectPermissionEnum.READ);
 
-        Project project = projectCache.get(dto.getProjectId());
-        Module module = moduleCache.get(dto.getModuleId());
+        ProjectPO project = projectCache.get(dto.getProjectId());
+        ModulePO module = moduleCache.get(dto.getModuleId());
 
         if (id != null) {
             BugPO bugPO = bugService.get(id);

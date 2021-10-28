@@ -1,25 +1,38 @@
 package cn.crap.query;
 
+import lombok.Getter;
+
 /**
  * @author Ehsan
  * @date 2018/6/30 14:17
  */
 public class UserQuery extends BaseQuery<UserQuery>{
+    @Getter
     private String thirdlyId;
+    @Getter
     private String equalEmail;
+    @Getter
     private Integer loginType;
+    @Getter
     private String equalUserName;
+    @Getter
     private String email;
+    @Getter
     private String trueName;
+    @Getter
     private String userName;
+    @Getter
+    private String notEqualId;
+    @Getter
+    private String orEmail;
+    @Getter
+    private String orUserName;
+    @Getter
+    private String orTrueName;
 
     @Override
     public UserQuery getQuery(){
         return this;
-    }
-
-    public String getThirdlyId() {
-        return thirdlyId;
     }
 
     public UserQuery setThirdlyId(String thirdlyId) {
@@ -27,54 +40,56 @@ public class UserQuery extends BaseQuery<UserQuery>{
         return this;
     }
 
-    public String getEqualEmail() {
-        return equalEmail;
+    public UserQuery setNotEqualId(String notEqualId) {
+        this.notEqualId = notEqualId;
+        return this;
     }
+
+    public UserQuery setOrEmail(String orEmail) {
+        this.orEmail = orEmail;
+        return this;
+    }
+
+    public UserQuery setOrTrueName(String orTrueName) {
+        this.orTrueName = orTrueName;
+        return this;
+    }
+
+    public UserQuery setOrUserName(String orUserName) {
+        this.orUserName = orUserName;
+        return this;
+    }
+
 
     public UserQuery setEqualEmail(String equalEmail) {
         this.equalEmail = equalEmail;
         return this;
     }
 
-    public Integer getLoginType() {
-        return loginType;
-    }
 
     public UserQuery setLoginType(Integer loginType) {
         this.loginType = loginType;
         return this;
     }
 
-    public String getEqualUserName() {
-        return equalUserName;
-    }
 
     public UserQuery setEqualUserName(String equalUserName) {
         this.equalUserName = equalUserName;
         return this;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
     public UserQuery setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public String getTrueName() {
-        return trueName;
-    }
 
     public UserQuery setTrueName(String trueName) {
         this.trueName = trueName;
         return this;
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
     public UserQuery setUserName(String userName) {
         this.userName = userName;

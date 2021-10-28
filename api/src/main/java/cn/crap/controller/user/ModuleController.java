@@ -2,19 +2,20 @@ package cn.crap.controller.user;
 
 import cn.crap.adapter.Adapter;
 import cn.crap.adapter.ModuleAdapter;
-import cn.crap.dto.LoginInfoDto;
-import cn.crap.dto.ModuleDto;
-import cn.crap.enu.*;
+import cn.crap.dto.ModuleDTO;
+import cn.crap.enu.LogType;
+import cn.crap.enu.MyError;
+import cn.crap.enu.ProjectPermissionEnum;
+import cn.crap.enu.SettingEnum;
 import cn.crap.framework.JsonResult;
 import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.*;
-import cn.crap.query.ArticleQuery;
-import cn.crap.query.InterfaceQuery;
 import cn.crap.query.ModuleQuery;
-import cn.crap.query.SourceQuery;
-import cn.crap.service.*;
+import cn.crap.service.InterfaceService;
+import cn.crap.service.LogService;
+import cn.crap.service.ModuleService;
 import cn.crap.utils.ILogConst;
 import cn.crap.utils.LoginUserHelper;
 import cn.crap.utils.MyString;
@@ -34,22 +35,12 @@ import java.util.List;
 public class ModuleController extends BaseController implements ILogConst{
 
 	@Autowired
-	private ArticleService articleService;
-	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private ProjectUserService projectUserService;
-	@Autowired
-	private SourceService sourceService;
-	@Autowired
-	private UserService userService;
-	@Autowired
 	private ModuleService moduleService;
 	@Autowired
 	private LogService logService;
 	@Autowired
 	private InterfaceService interfaceService;
-	
+
 	
 	@RequestMapping("/list.do")
 	@ResponseBody
@@ -57,10 +48,10 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult list(@ModelAttribute ModuleQuery query) throws MyException{
 			throwExceptionWhenIsNull(query.getProjectId(), "projectId");
 			Page page= new Page(query);
-			Project project = projectCache.get(query.getProjectId());
+			ProjectPO project = projectCache.get(query.getProjectId());
 			checkPermission(project, ProjectPermissionEnum.READ);
 
-            List<ModuleDto> moduleDtos = ModuleAdapter.getDto(moduleService.query(query), project);
+            List<ModuleDTO> moduleDtos = ModuleAdapter.getDto(moduleService.select(query), project);
             page.setAllRow(moduleService.count(query));
             return new JsonResult().data(moduleDtos).page(page);
 		}
@@ -69,11 +60,11 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, String projectId) throws MyException{
-		Module module;
-        Project project;
+		ModulePO module;
+        ProjectPO project;
 		Interface templeteInterface = null;
 		if(id != null){
-			module= moduleService.getById(id);
+			module= moduleService.get(id);
 			project = projectCache.get(module.getProjectId());
 			checkPermission(project, ProjectPermissionEnum.READ);
 
@@ -83,7 +74,7 @@ public class ModuleController extends BaseController implements ILogConst{
 		}else{
 		    project = projectCache.get(projectId);
 			checkPermission(project, ProjectPermissionEnum.READ);
-			module=new Module();
+			module=new ModulePO();
 			module.setStatus(Byte.valueOf("1"));
 			module.setProjectId(projectId);
 			module.setSequence(System.currentTimeMillis());
@@ -100,12 +91,8 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult addOrUpdate(@ModelAttribute ModuleDto moduleDto) throws Exception{
+	public JsonResult addOrUpdate(@ModelAttribute ModuleDTO moduleDto) throws Exception{
 		Assert.notNull(moduleDto.getProjectId());
-		LoginInfoDto user = LoginUserHelper.getUser();
-
-		checkCrapDebug(user.getId(), moduleDto.getProjectId());
-
 		// 系统数据，不允许修改名称等
 		String id = moduleDto.getId();
 
@@ -113,9 +100,10 @@ public class ModuleController extends BaseController implements ILogConst{
             moduleDto.setCategory("默认分类");
 		}
 
-        Module module = ModuleAdapter.getModel(moduleDto);
+        ModulePO module = ModuleAdapter.getModel(moduleDto);
+		ProjectPO projectPO = projectCache.get(moduleDto.getProjectId());
 		if(id != null){
-			checkPermission(moduleDto.getProjectId(), ProjectPermissionEnum.MOD_MODULE);
+			checkPermission(projectPO, ProjectPermissionEnum.MOD_MODULE);
             moduleService.update(module, true);
             // 更新该模块下的所有接口的fullUrl
 			interfaceService.updateFullUrlByModuleId(module.getUrl(), id);
@@ -126,9 +114,9 @@ public class ModuleController extends BaseController implements ILogConst{
                 throw new MyException(MyError.E000071, maxModule + "");
             }
 			module.setProjectId(moduleDto.getProjectId());
-			checkPermission(module.getProjectId(), ProjectPermissionEnum.ADD_MODULE);
-			module.setUserId(LoginUserHelper.getUser().getId());
-			module.setVersion(0);
+			checkPermission(projectPO, ProjectPermissionEnum.ADD_MODULE);
+			module.setUserId(projectPO.getUserId());
+			module.setVersionNum(0);
 			moduleService.insert(module);
 		}
 		moduleCache.del(module.getId());
@@ -147,7 +135,7 @@ public class ModuleController extends BaseController implements ILogConst{
 	public JsonResult setTemplate(String id) throws Exception{
 		InterfaceWithBLOBs inter = interfaceService.getById(id);
 		
-		Module module = moduleService.getById(inter.getModuleId());
+		ModulePO module = moduleService.get(inter.getModuleId());
 		checkPermission(projectCache.get( inter.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		if (module == null){
 			throw new MyException(MyError.E000073);
@@ -170,38 +158,20 @@ public class ModuleController extends BaseController implements ILogConst{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult delete(@ModelAttribute Module module) throws Exception{
+	public JsonResult delete(@ModelAttribute ModulePO module) throws Exception{
 		// 系统数据，不允许删除
 		if(module.getId().equals("web")) {
             throw new MyException(MyError.E000009);
         }
 
-        Module dbModule = moduleCache.get(module.getId());
-        LoginInfoDto user = LoginUserHelper.getUser();
-        checkCrapDebug(user.getId(), dbModule.getProjectId());
+        ModulePO dbModule = moduleCache.get(module.getId());
 		checkPermission(projectCache.get( dbModule.getProjectId() ), ProjectPermissionEnum.DEL_MODULE);
-		
-		if(interfaceService.count(new InterfaceQuery().setModuleId(dbModule.getId())) >0 ){
-			throw new MyException(MyError.E000024);
-		}
-		
-		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.ARTICLE.name())) >0 ){
-			throw new MyException(MyError.E000034);
-		}
-		
-		if(sourceService.count(new SourceQuery().setModuleId(dbModule.getId())) >0 ){
-			throw new MyException(MyError.E000035);
-		}
-		
-		if(articleService.count(new ArticleQuery().setModuleId(dbModule.getId()).setType(ArticleType.DICTIONARY.name())) >0 ){
-			throw new MyException(MyError.E000036);
-		}
 
-        Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
-        logService.insert(log);
-
-		moduleCache.del(module.getId());
 		moduleService.delete(module.getId());
+		moduleCache.del(module.getId());
+		Log log = Adapter.getLog(dbModule.getId(), L_MODULE_CHINESE, dbModule.getName(), LogType.DELTET, dbModule.getClass(), dbModule);
+		logService.insert(log);
+
 
 		return new JsonResult(1,null);
 	}
@@ -210,8 +180,8 @@ public class ModuleController extends BaseController implements ILogConst{
 	@ResponseBody
 	@AuthPassport
 	public JsonResult changeSequence(@RequestParam String id,@RequestParam String changeId) throws MyException {
-		Module change = moduleService.getById(changeId);
-		Module model = moduleService.getById(id);
+		ModulePO change = moduleService.get(changeId);
+		ModulePO model = moduleService.get(id);
 		
 		checkPermission(projectCache.get( change.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);
 		checkPermission(projectCache.get( model.getProjectId() ), ProjectPermissionEnum.MOD_MODULE);

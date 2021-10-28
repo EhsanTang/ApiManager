@@ -30,6 +30,9 @@ public interface IConst {
     String C_BUG= "BUG";
     String C_CONTENT_TYPE = "Content-Type";
 	String C_STRING = "string";
+	String C_CONTENT_TYPE_TIP = "指定参数类型为";
+	String C_FORM_DATA_TYPE= "application/x-www-form-urlencoded;charset=UTF-8";
+	String C_NEED_VERIFICATION_IMG = "needVerification";
 
 
 
@@ -67,4 +70,6 @@ public interface IConst {
 	//系统设置
 	String SETTING_OPEN_REGISTER = "openRegister";
 	String SETTING_GITHUB_ID = "githubClientID";
+	String SETTING_GITEE_ID = "giteeClientID";
+
 }

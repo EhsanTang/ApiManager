@@ -1,6 +1,6 @@
 <div class="p0 col-xs-12" ng-init="getInterfaceDetail(false, true);">
     <div id="check-crap-debug-plug"></div>
-    <div class="col-xs-12 main-nav">
+    <div class="main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <button class="btn btn-default" ng-click="goBack()" type="button">
                 <i class="iconfont mt-3">&#xe697;&nbsp;</i>返回
@@ -10,20 +10,31 @@
                ng-href="#/user/interface/edit?pageName=编辑接口&dataType=interface&id={{model.id}}&menu_a=menu-project&menu_b=menu_interface&projectName={{model.projectName}}&projectId={{model.projectId}}&moduleId={{$stateParams.moduleId}}">
                 <i class="iconfont f12 mt-3">&#xe69e; 编辑</i>
             </a>
+
+            <a class="btn btn-default btn-sm" type="button" id="refresh"
+               ng-click="getInterfaceDetail(false, true);">
+                <i class="iconfont mt-3">&#xe6aa;&nbsp; 刷新</i>
+            </a>
+        </div>
+        <div class="fr mr10 btn btn-sm bug-priority-4 maw400" id="change-env"
+             crap-project-id="{{$stateParams.projectId}}"
+             onclick="loadEnvPick(this, event)">
+            <span><i class="iconfont mt-3">&#xe619;&nbsp;</i></span>
+            <span id="env-name">切换环境</span>
         </div>
     </div>
 
     <div class="col-xs-12 p20 mt50">
         <div class="col-xs-12 BGFFF p10">
             <div class="text-error b0 mb20 tl pl10" id="no-plug">
-                如需调试本地接口，或支持host配置，请
+                将采用代理运行，如需调试本地接口，或支持host配置，请
                 <a target="_blank" href="index.do#/article/detail?projectId=help&amp;moduleId=help&amp;type=ARTICLE&amp;id=153908629593401000133">
                 下载接口调试增强插件
                 </a>
             </div>
 
             <div class="text-success b0 mb20 tl pl10 none" id="has-plug">
-                检测到已安装调试插件，将采用本地调试模式。小提示：通过插件页面调试接口，能获取更多调试信息
+                检测到已安装调试插件，将采用直接调试模式。小提示：点击右上角插件调试接口，能获取更多调试信息
             </div>
 
 
@@ -121,7 +132,8 @@
             </div>
         </div>
         <div class="code BGFFF mt20 p20 shadow none" id="crap-debug-result-div">
-            <pre id="crap-debug-result"></pre>
+            <pre id="crap-debug-headers"></pre>
+            <textarea id="crap-debug-result" class="form-control no-resize" rows="20" readonly></textarea>
         </div>
         <div class="code BGFFF mt20 p20 shadow" ng-if="debugResult">
             <pre>{{debugResult}}</pre>
@@ -131,4 +143,29 @@
 </div>
 <div class="cb"></div>
 
+<script type="text/javascript">
+    function loadEnvPick($this, e) {
+        var obj = $($this);
+        var config = {async: true, url:'newPick.do', type:'POST', timeout: 3000, loading:'PROP_UP', loadingText: '加载中...',
+            tipTime:3, width:150, height:200, position: 5, tag: 'change-env'};
+        showTipNew(config, e);
+        callAjaxNew(config, {
+            tag: 'change-env',
+            code: 'PROJECT_ENV',
+            key : obj.attr('crap-project-id'),
+            iCallBack : 'changeProjectEnv'
+        });
+    }
+
+    /**
+     * 切换环境，存cookie中
+     * @param data
+     */
+    function changeProjectEnv(result) {
+        $("#env-name").html(result.name)
+        $.cookie('projectEnv:' + result.value, result.id);
+        $.cookie('projectEnvName:' + result.value, result.name);
+        $("#refresh").click()
+    }
+</script>
 

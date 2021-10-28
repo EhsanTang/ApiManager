@@ -1,8 +1,7 @@
 package cn.crap.controller.visitor;
 
 import cn.crap.adapter.ArticleAdapter;
-import cn.crap.adapter.CommentAdapter;
-import cn.crap.dto.ArticleDto;
+import cn.crap.dto.ArticleDTO;
 import cn.crap.dto.CrumbDto;
 import cn.crap.enu.ArticleStatus;
 import cn.crap.enu.ArticleType;
@@ -12,7 +11,6 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.*;
 import cn.crap.query.ArticleQuery;
-import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
 import cn.crap.service.CommentService;
 import cn.crap.service.ModuleService;
@@ -54,8 +52,8 @@ public class ArticleController extends BaseController {
                            String visitCode) throws MyException {
 
         query.setType(ArticleType.DICTIONARY.name());
-        Module module = moduleCache.get(query.getModuleId());
-        Project project = projectCache.get(module.getProjectId());
+        ModulePO module = moduleCache.get(query.getModuleId());
+        ProjectPO project = projectCache.get(module.getProjectId());
 
         checkFrontPermission(password, visitCode, project);
 
@@ -76,8 +74,8 @@ public class ArticleController extends BaseController {
                            String visitCode) throws MyException {
         Page page = new Page(query);
         if (query.getStatus() == null || !query.getStatus().equals(ArticleStatus.RECOMMEND.getStatus())){
-            Module module = moduleCache.get(query.getModuleId());
-            Project project = projectCache.get(module.getProjectId());
+            ModulePO module = moduleCache.get(query.getModuleId());
+            ProjectPO project = projectCache.get(module.getProjectId());
 
             // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
             checkFrontPermission(password, visitCode, project);
@@ -86,7 +84,7 @@ public class ArticleController extends BaseController {
 
             List<Article> articles = articleService.query(query);
             page.setAllRow(articleService.count(query));
-            List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, module, null);
+            List<ArticleDTO> articleDtos = ArticleAdapter.getDto(articles, module, null);
 
             Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
                     .put("category", query.getCategory())
@@ -100,7 +98,7 @@ public class ArticleController extends BaseController {
         List<String> categories = articleService.queryTop10RecommendCategory();
         query.setModuleId(null).setName(null).setProjectId(null);
         List<Article> articles = articleService.query(query);
-        List<ArticleDto> articleDtos = ArticleAdapter.getDto(articles, null, null);
+        List<ArticleDTO> articleDtos = ArticleAdapter.getDto(articles, null, null);
 
         page.setAllRow(articleService.count(query));
         Map<String, Object> others = MyHashMap.getMap("type", ArticleType.valueOf(query.getType()).getName())
@@ -134,8 +132,8 @@ public class ArticleController extends BaseController {
         }
         id = article.getId();
 
-        Module module = moduleCache.get(article.getModuleId());
-        Project project = projectCache.get(getProjectId(article.getProjectId(), module.getId()));
+        ModulePO module = moduleCache.get(article.getModuleId());
+        ProjectPO project = projectCache.get(getProjectId(article.getProjectId(), module.getId()));
 
         // 如果是私有项目，必须登录才能访问，公开项目需要查看是否需要密码
         checkFrontPermission(password, visitCode, project);

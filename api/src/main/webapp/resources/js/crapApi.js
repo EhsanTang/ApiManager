@@ -32,6 +32,22 @@ function propUpPasswordDiv(obj){
 //       $tr.next().after($tr);
 // }
 /****************End****************/
+function startLoadImg(){
+    $('.img-lazy').not('[data-isLoading]').each(function () {
+    	loadImg($(this));
+    })
+}
+// 加载图片的函数，就是把自定义属性data-src 存储的真正的图片地址，赋值给src
+function loadImg($img){
+    if ($img == null){
+        return;
+    }
+    $img.attr('src', $img.attr('img-src'));
+
+    // 已经加载的图片，我给它设置一个属性，值为1，作为标识
+    // 弄这个的初衷是因为，每次滚动的时候，所有的图片都会遍历一遍，这样有点浪费，所以做个标识，滚动的时候只遍历哪些还没有加载的图片
+    $img.attr('data-isLoading',1);
+}
 
 function unescapeAndDecode(name){
 	var value = $.cookie(name);

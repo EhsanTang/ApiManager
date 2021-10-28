@@ -3,22 +3,22 @@ package cn.crap.service;
 import cn.crap.dao.mybatis.UserDao;
 import cn.crap.dto.LoginDto;
 import cn.crap.dto.LoginInfoDto;
+import cn.crap.enu.LoginType;
 import cn.crap.enu.TableId;
+import cn.crap.enu.UserStatus;
 import cn.crap.framework.MyException;
-import cn.crap.model.User;
-import cn.crap.model.UserCriteria;
+import cn.crap.model.UserPO;
 import cn.crap.query.UserQuery;
 import cn.crap.service.tool.UserCache;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Date;
 
 @Service
-public class UserService extends BaseService<User, UserDao> {
+public class UserService extends NewBaseService<UserPO, UserQuery> implements ILogConst, IConst {
     @Autowired
     private UserCache userCache;
     @Autowired
@@ -34,79 +34,42 @@ public class UserService extends BaseService<User, UserDao> {
         super.setBaseDao(userDao, TableId.USER);
     }
 
-    public boolean insert(User user) throws MyException{
+    @Override
+    public boolean insert(UserPO user) throws MyException{
         if (user == null) {
             return false;
         }
         if (user.getAvatarUrl() == null){
             user.setAvatarUrl(Tools.getAvatar());
         }
+        if (user.getAuthName() == null){
+            user.setAuthName("");
+        }
+        if (user.getAuth() == null){
+            user.setAuth("");
+        }
+        if (user.getRoleId() == null){
+            user.setRoleId("");
+        }
+        if (user.getRoleName() == null){
+            user.setRoleName("");
+        }
+        if (user.getTrueName() == null){
+            user.setTrueName("");
+        }
+        if (user.getStatus() == null){
+            user.setStatus(UserStatus.INVALID.getType());
+        }
+        if (user.getLoginType() == null){
+            user.setLoginType(LoginType.COMMON.getValue());
+        }
+
+        user.setLoginTime(new Date());
         return super.insert(user);
     }
 
-    /**
-     * 查询用户
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public List<User> query(UserQuery query) throws MyException {
-        Assert.notNull(query);
 
-        Page page = new Page(query);
-        UserCriteria example = getUserCriteria(query);
-        example.setLimitStart(page.getStart());
-        example.setMaxResults(page.getSize());
-        example.setOrderByClause(query.getSort() == null ? TableField.SORT.CREATE_TIME_DES : query.getSort());
-
-        return userDao.selectByExample(example);
-    }
-
-    /**
-     * 查询用户数量
-     * @param query
-     * @return
-     * @throws MyException
-     */
-    public int count(UserQuery query) throws MyException {
-        Assert.notNull(query);
-
-        UserCriteria example = getUserCriteria(query);
-        return userDao.countByExample(example);
-    }
-
-    private UserCriteria getUserCriteria(UserQuery query) throws MyException {
-        UserCriteria example = new UserCriteria();
-        UserCriteria.Criteria criteria = example.createCriteria();
-
-        if (query.getStatus() != null) {
-            criteria.andStatusEqualTo(query.getStatus());
-        }
-        if (query.getThirdlyId() != null){
-            criteria.andThirdlyIdEqualTo(query.getThirdlyId());
-        }
-        if (query.getEqualEmail() != null){
-            criteria.andEmailEqualTo(query.getEqualEmail());
-        }
-        if (query.getEqualUserName() != null){
-            criteria.andUserNameEqualTo(query.getEqualUserName());
-        }
-        if (query.getEmail() != null){
-            criteria.andEmailLike("%" + query.getEmail() + "%");
-        }
-        if (query.getUserName() != null){
-            criteria.andUserNameLike("%" + query.getUserName() + "%");
-        }
-        if (query.getTrueName() != null){
-            criteria.andTrueNameLike("%" + query.getTrueName() + "%");
-        }
-        if (query.getLoginType() != null){
-            criteria.andLoginTypeEqualTo(query.getLoginType());
-        }
-        return example;
-    }
-
-    public void login(LoginDto loginDto, User user) throws MyException{
+    public void login(LoginDto loginDto, UserPO user) throws MyException{
         String token  = Aes.encrypt(user.getId());
         MyCookie.addCookie(IConst.COOKIE_TOKEN, token);
         // 将用户信息存入缓存
@@ -122,6 +85,12 @@ public class UserService extends BaseService<User, UserDao> {
             MyCookie.deleteCookie(IConst.COOKIE_PASSWORD);
         }
         loginDto.setSessionAdminName(loginDto.getUserName());
+        loginDto.setAttributes(user.getAttributes());
+
+        UserPO updateLoginTimeUser = new UserPO();
+        updateLoginTimeUser.setId(user.getId());
+        updateLoginTimeUser.setLoginTime(new Date());
+        super.update(updateLoginTimeUser);
     }
 
     /**
@@ -131,19 +100,7 @@ public class UserService extends BaseService<User, UserDao> {
      * @return
      */
     public int countByNameExceptUserId(String name, String expectUserId){
-        UserCriteria userCriteria = new UserCriteria();
-        UserCriteria.Criteria criteria = userCriteria.createCriteria().andUserNameEqualTo(name);
-        if (MyString.isNotEmpty(expectUserId)){
-            criteria.andIdNotEqualTo(expectUserId);
-        }
-        return userDao.countByExample(userCriteria);
-    }
-
-    public List<User> selectByExample(UserCriteria userExample){
-        return userDao.selectByExample(userExample);
-    }
-
-    public int countByExample(UserCriteria userExample){
-        return userDao.countByExample(userExample);
+        UserQuery query = new UserQuery().setEqualUserName(name).setNotEqualId(expectUserId);
+        return userDao.count(query);
     }
 }

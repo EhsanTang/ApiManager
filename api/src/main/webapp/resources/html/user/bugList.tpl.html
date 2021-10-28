@@ -1,4 +1,4 @@
-<div class="col-xs-12 p0" ng-controller="userBugCtrl" ng-init="queryBugList(1)" >
+<div class="col-xs-12 p0" ng-controller="userBugCtrl" ng-init="queryBugList()" >
     <div class="col-xs-12 main-nav">
         <div class="btn-group btn-group-sm r3 fl mr10">
             <a type="button" class="btn btn-default" onclick="history.back(-1);"><i
@@ -57,7 +57,7 @@
                         <i class="iconfont">&#xe614;</i>
                     </span>
 
-                    <a ng-href="#/user/bug/edit?id={{item.id}}&type=BUG&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project">
+                    <a ng-href="#/user/bug/edit?id={{item.id}}&type=BUG&dataType=bug&menu_b=menu_bug&projectName={{$stateParams.projectName}}&projectId={{$stateParams.projectId}}&moduleId={{$stateParams.moduleId}}&menu_a=menu-project&pageName=缺陷详情">
                         {{item.name| cut:true:60:' ...'}}
                     </a>
                     <div class="fr f12">

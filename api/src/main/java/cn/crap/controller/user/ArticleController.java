@@ -1,7 +1,7 @@
 package cn.crap.controller.user;
 
 import cn.crap.adapter.ArticleAdapter;
-import cn.crap.dto.ArticleDto;
+import cn.crap.dto.ArticleDTO;
 import cn.crap.dto.SearchDto;
 import cn.crap.enu.*;
 import cn.crap.framework.JsonResult;
@@ -10,8 +10,8 @@ import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Article;
 import cn.crap.model.ArticleWithBLOBs;
-import cn.crap.model.Module;
-import cn.crap.model.Project;
+import cn.crap.model.ModulePO;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ArticleQuery;
 import cn.crap.query.CommentQuery;
 import cn.crap.service.ArticleService;
@@ -52,14 +52,14 @@ public class ArticleController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult list(@ModelAttribute ArticleQuery query) throws MyException {
-		Project project = getProject(query);
-		Module module = getModule(query);
+		ProjectPO project = getProject(query);
+		ModulePO module = getModule(query);
 		checkPermission(project, ProjectPermissionEnum.READ);
 
 		Page page = new Page(query);
 		page.setAllRow(articleService.count(query));
 		List<Article> models = articleService.query(query);
-		List<ArticleDto> dtos = ArticleAdapter.getDto(models, module, project);
+		List<ArticleDTO> dtos = ArticleAdapter.getDto(models, module, project);
 
 		return new JsonResult().success().data(dtos).page(page)
 				.others(Tools.getMap("type", ArticleType.getByEnumName(query.getType()), "category", query.getCategory()));
@@ -69,8 +69,8 @@ public class ArticleController extends BaseController {
 	@ResponseBody
 	@AuthPassport
 	public JsonResult detail(String id, @ModelAttribute ArticleQuery query) throws MyException {
-		Project project = getProject(query);
-		Module module = getModule(query);
+		ProjectPO project = getProject(query);
+		ModulePO module = getModule(query);
 		ArticleWithBLOBs article = new ArticleWithBLOBs();
 		if (id != null) {
 			article = articleService.getById(id);
@@ -92,7 +92,7 @@ public class ArticleController extends BaseController {
 
 	@RequestMapping("/addOrUpdate.do")
 	@ResponseBody
-	public JsonResult addOrUpdate(@ModelAttribute ArticleDto dto) throws Exception {
+	public JsonResult addOrUpdate(@ModelAttribute ArticleDTO dto) throws Exception {
 		Assert.notNull(dto.getProjectId(), "projectId can't be null");
 		if (ArticleStatus.PAGE.getStatus().equals(dto.getStatus()) && MyString.isEmpty(dto.getMkey())) {
 			throw new MyException(MyError.E000066);
@@ -100,7 +100,7 @@ public class ArticleController extends BaseController {
 
 		String id = dto.getId();
 		String newProjectId = getProjectId(dto.getProjectId(), dto.getModuleId());
-		Project newProject = projectCache.get(newProjectId);
+		ProjectPO newProject = projectCache.get(newProjectId);
 		dto.setProjectId(newProjectId);
 
 		ArticleWithBLOBs article = ArticleAdapter.getModel(dto);
@@ -135,9 +135,9 @@ public class ArticleController extends BaseController {
 		 */
 		if (ArticleType.ARTICLE.name().equals(dto.getType())) {
 			if (dto.getUseMarkdown() != null && dto.getUseMarkdown()) {
-				articleService.updateAttribute(id, IAttributeConst.MARK_DOWN, IAttributeConst.TRUE);
+				articleService.updateAttribute(id, AttributeEnum.MARK_DOWN);
 			} else {
-				articleService.deleteAttribute(id, IAttributeConst.MARK_DOWN);
+				articleService.deleteAttribute(id, AttributeEnum.MARK_DOWN);
 			}
 		}
 
@@ -161,7 +161,7 @@ public class ArticleController extends BaseController {
 				continue;
 			}
 			Article model = articleService.getById(tempId);
-			Project project = projectCache.get(model.getProjectId());
+			ProjectPO project = projectCache.get(model.getProjectId());
 			checkPermission(project, model.getType().equals(ArticleType.ARTICLE.name()) ? ProjectPermissionEnum.DEL_ARTICLE : ProjectPermissionEnum.DEL_DICT);
 
 			if (model.getCanDelete().equals(CanDeleteEnum.CAN_NOT.getCanDelete()) && !LoginUserHelper.isAdminOrProjectOwner(project)) {
@@ -186,15 +186,18 @@ public class ArticleController extends BaseController {
 	@RequestMapping("/dictionary/importFromSql.do")
 	@ResponseBody
 	@AuthPassport
-	public JsonResult importFromSql(@RequestParam String sql, @RequestParam(defaultValue = "") String brief, @RequestParam String moduleId, String name,
+	public JsonResult importFromSql(String sql, @RequestParam(defaultValue = "") String brief, String moduleId, String name,
 									@RequestParam(defaultValue = "") boolean isMysql) throws MyException {
+		throwExceptionWhenIsNull(moduleId, "模块不能为空");
+		throwExceptionWhenIsNull(sql, "SQL不能为空");
+
 		ArticleWithBLOBs article = null;
 		if (isMysql) {
 			article = SqlToDictionaryUtil.mysqlToDictionary(sql, brief, moduleId, name);
 		} else {
 			article = SqlToDictionaryUtil.sqlserviceToDictionary(sql, brief, moduleId, name);
 		}
-		Module module = moduleCache.get(moduleId);
+		ModulePO module = moduleCache.get(moduleId);
 		checkPermission(projectCache.get(module.getProjectId()), ProjectPermissionEnum.READ);
 
 		article.setProjectId(module.getProjectId());

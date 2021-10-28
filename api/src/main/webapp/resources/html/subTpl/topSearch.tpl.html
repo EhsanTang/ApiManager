@@ -1,5 +1,13 @@
-<div class="def-bg main-bg h120 mb20 title-bg-img w">
-		<div class="container p0">
+<div class="def-bg s-nav-bg-color h120 mb20 title-bg-img w rel of-h">
+	<div class="circular circular-1"></div>
+	<div class="circular circular-2"></div>
+	<div class="circular circular-3"></div>
+	<div class="circular circular-4"></div>
+	<div class="circular circular-5"></div>
+	<div class="circular circular-6"></div>
+
+
+	<div class="container p0">
 			<div class="row p0 m0">
 				<div class="col-xs-7">
 					<div class="pt30 CFFF"><h3>站内导航</h3></div>
@@ -19,7 +27,7 @@
 							ng-model="$stateParams.keyword" placeholder="全文检索 | 接口、文档"
 							ng-focus="loadPickByName('iwidth=265|iUrl=searchList.do|iheight=260|tag=searchInput',$event)"
 							onkeypress="iClose('lookUp');if(event.keyCode==13) {luceneSearch.click();return false;}">
-							<a ng-href="#/visitorSearch?keyword={{$stateParams.keyword|encodeURL}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
+							<a ng-href="#/visitorSearch?keyword={{$stateParams.keyword}}" id="luceneSearch"  ng-click="iClose('lookUp');getData()"
 								class="input-group-addon no-radius o3 b0 search-button cursor">
 									<i class="iconfont C000">&#xe6ac;</i>
 							</a>

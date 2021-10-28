@@ -1,6 +1,9 @@
 package cn.crap.service.tool;
 
 import cn.crap.dto.SearchDto;
+import cn.crap.enu.MyError;
+import cn.crap.framework.MyException;
+import cn.crap.query.SearchQuery;
 import cn.crap.service.ILuceneService;
 import cn.crap.service.ISearchService;
 import cn.crap.utils.*;
@@ -15,14 +18,13 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.search.highlight.Scorer;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +33,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * TODO 待解决的问题
+ * debug 前端搜索没有展示页
+ * 搜索地址尚未调试
+ */
 @Service("luceneSearch")
 public class LuceneSearchService implements ISearchService {
 	protected Logger log = Logger.getLogger(getClass());
@@ -39,43 +46,86 @@ public class LuceneSearchService implements ISearchService {
 	private SettingCache settingCache;
 	@Autowired
 	private StringCache stringCache;
-
+	@Autowired
+    private ProjectCache projectCache;
 	/**
 	 * 在默认情况下使用 @Autowired 注释进行自动注入时，Spring 容器中匹配的候选 Bean 数目必须有且仅有一个
 	 * @Autowired(required = false)，这等于告诉 Spring：在找不到匹配 Bean 时也不报错
 	 */
-	@SuppressWarnings("rawtypes")
 	@Autowired(required=false)
-	private cn.crap.service.ILuceneService[] luceneServices;
+	private ILuceneService[] luceneServices;
 
+	private final static String TITLE = "title";
+	private final static String PROJECT_ID = "projectId";
+	private final static String MODULE_ID = "moduleId";
+	private final static String ID = "id";
+	private final static String TABLE_ID = "tableID";
+	private final static String CONTENT = "content";
+	private final static String OPEN = "open";
+	private final static String CUSTOM = "custom";
+	private final static String CREATE_TIME = "createTime";
+
+	/**
+	 * h_开头表示高亮
+	 */
+	private final static String HIGH_LIGHT_PRE = "h_";
+	private final static String H_CONTENT = HIGH_LIGHT_PRE + CONTENT;
+	private final static String H_TITLE = HIGH_LIGHT_PRE + TITLE;
+
+	private final int PAGE_SIZE = 200;
 
 	@Override
-	public List<SearchDto> search(String keyword, Page page) throws Exception {
-		keyword = handleHref(keyword);
-		if (MyString.isEmpty(keyword))
-			return new ArrayList<SearchDto>();
+	public List<SearchDto> search(SearchQuery searchQuery) throws Exception {
+		String keyword = handleHref(searchQuery.getKeyword());
+		if (MyString.isEmpty(keyword)) {
+			return new ArrayList<>();
+		}
+
 		IndexReader reader = null;
 		try {
-			reader = DirectoryReader
-					.open(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())));
+			reader = DirectoryReader.open(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())));
 			IndexSearcher searcher = new IndexSearcher(reader);
 			Analyzer analyzer = new StandardAnalyzer();
-			String[] fields = { "id", "url", "contents", "modelName", "title","href"};
+			String[] fields = {ID, CUSTOM, CONTENT, TITLE};
+
 			QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
-			Query query = parser.parse(keyword);
+			Query keywordQuery = parser.parse(keyword);
 
 			// Sort sort = new Sort();
 			// sortField = "relativeScore";
 			// if(!sortField.equals(Constant.RELATIVE_SCORE)){
 			// sort.setSort(new SortField(sortField,false)); // 默认为升序，修改为降序
 			// }
-			TopDocs topDocs = searcher.search(query, 1000);
+            BooleanClause keywordClause = new BooleanClause(keywordQuery, BooleanClause.Occur.MUST);
+            BooleanQuery.Builder boolBuilder = new BooleanQuery.Builder().add(keywordClause);
 
-			List<SearchDto> searchDtos = new ArrayList<SearchDto>();
+			/**
+			 * TODO 一期暂时只能支持项目下、或公开项目搜索
+             * null: 代表查询有所有开放的，或有权限的：暂不支持
+			 * true : 表示只能查询开放搜索的项目
+			 * false : 代表查询有所有有权限的
+			 */
+            Boolean open = searchQuery.getOpen();
+            // 查询全部、或有权限的数据，同时项目ID为空，则必须校验权限
+            if ( (open == null || !open) && searchQuery.getProjectId() == null){
+				throw new MyException(MyError.E000056);
+            }
+
+			if (open != null){
+				boolBuilder.add(new BooleanClause(new TermQuery(new Term(OPEN, open + "")), BooleanClause.Occur.MUST));
+			}
+			if (searchQuery.getProjectId() != null){
+				boolBuilder.add(new BooleanClause(new TermQuery(new Term(PROJECT_ID, searchQuery.getProjectId())), BooleanClause.Occur.MUST));
+			}
+
+
+            BooleanQuery query = boolBuilder.build();
+            TopDocs topDocs = searcher.search(query, 1000);
+			List<SearchDto> searchDtos = new ArrayList<>();
 
 			// ============== 准备高亮器
 			Formatter formatter = new SimpleHTMLFormatter("<font color='red'>", "</font>");
-			Scorer scorer = new QueryScorer(query);
+			Scorer scorer = new QueryScorer(keywordQuery);
 			Highlighter highlighter = new Highlighter(formatter, scorer);
 
 			// 设置最长的 读取数量
@@ -83,35 +133,33 @@ public class LuceneSearchService implements ISearchService {
 			highlighter.setTextFragmenter(fragmenter);
 
 			// 取出当前页的数据
-			page.setAllRow(topDocs.totalHits);
-			if (page.getCurrentPage() > page.getTotalPage()){
+			searchQuery.setAllRow(topDocs.totalHits);
+			if (searchQuery.getCurrentPage() > searchQuery.getTotalPage()){
 			    return new ArrayList<>();
             }
 
-			int end = Math.min(page.getStart() + page.getSize(), topDocs.totalHits);
-			for (int i = page.getStart(); i < end; i++) {
+			int end = Math.min(searchQuery.getStart() + searchQuery.getPageSize(), topDocs.totalHits);
+			for (int i = searchQuery.getStart(); i < end; i++) {
 				ScoreDoc scoreDoc = topDocs.scoreDocs[i];
 				float relativeScore = scoreDoc.score;
 				int docSn = scoreDoc.doc; // 文档内部编号
 				Document doc = searcher.doc(docSn); // 根据编号取出相应的文档
 				doc.add(new StringField("relativeScore", relativeScore + "", Field.Store.NO));
 
-				addHighterField(highlighter, doc, "title");
-				addHighterField(highlighter, doc, "contents");
-				addHighterField(highlighter, doc, "moduleName");
+				addHighLightField(highlighter, doc, TITLE);
+				addHighLightField(highlighter, doc, CONTENT);
 
 				searchDtos.add(docToDto(doc));
 			}
 			return searchDtos;
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO 消息时间需要修改为12小时
-			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene搜索异常，请联系管理员查看日志，错误信息：" + e.getMessage());
 		} finally {
 			if (reader != null)
 				reader.close();
 		}
-		return new ArrayList<SearchDto>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -120,12 +168,11 @@ public class LuceneSearchService implements ISearchService {
 		try {
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
-			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
-			writer.deleteDocuments(new Term("id", searchDto.getId()));
+			writer = new IndexWriter(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
+			writer.deleteDocuments(new Term(ID, searchDto.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息（消息将保留10分钟，请及时处理）：" + e.getMessage());
+			stringCache.add(IConst.C_CACHE_ERROR_TIP, "Lucene删除异常，请联系管理员查看日志，错误信息：" + e.getMessage());
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -135,20 +182,24 @@ public class LuceneSearchService implements ISearchService {
 	}
 
 
-	private static SearchDto docToDto(Document doc) {
+
+	private SearchDto docToDto(Document doc) {
 		SearchDto dto = new SearchDto();
 		// 高亮处理的搜索结果
-		dto.setContent(doc.get("r_contents"));
-		dto.setCreateTime(doc.get("createTime") == null? null : new Date(Long.parseLong(doc.get("createTime"))));
+		dto.setContent(doc.get(H_CONTENT));
+		dto.setCreateTime(doc.get(CREATE_TIME) == null? null : new Date(Long.parseLong(doc.get(CREATE_TIME))));
 		// 恢复反斜杠
-		dto.setUrl(unHandleHref(doc.get("url")));
-		dto.setId(doc.get("id"));
-		dto.setModuleName(doc.get("r_moduleName"));
-		dto.setTitle(doc.get("r_title"));
-		dto.setType(doc.get("type"));
-		dto.setVersion(doc.get("version"));
-		dto.setProjectId(doc.get("projectId"));
-
+		dto.setCustom(unHandleHref(doc.get(CUSTOM)));
+		dto.setId(doc.get(ID));
+		dto.setTitle(doc.get(H_TITLE));
+		dto.setTableId(doc.get(TABLE_ID));
+		dto.setProjectId(doc.get(PROJECT_ID));
+		dto.setModuleId(doc.get(MODULE_ID));
+		dto.setOpen(Boolean.parseBoolean(doc.get(OPEN)));
+        dto.setProjectName(projectCache.getName(dto.getProjectId()));
+        dto.setUserHref(UseHrefUtil.getUserHref(dto));
+        dto.setHref(UseHrefUtil.getHref(dto));
+        dto.setCreateTimeStr(DateFormartUtil.getDateByTimeMillis(dto.getCreateTime()));
 		return dto;
 	}
 
@@ -159,17 +210,16 @@ public class LuceneSearchService implements ISearchService {
 		// field that is indexed (i.e. searchable), but don't tokenize
 		// the field into separate words and don't index term frequency
 		// or positional information:
-		doc.add(new StringField("id", dto.getId(), Field.Store.YES));
-		doc.add(new StringField("url", handleHref(dto.getUrl()), Field.Store.YES));
-		doc.add(new StringField("version", dto.getVersion(), Field.Store.YES));
-		doc.add(new StringField("createTime", dto.getCreateTime() == null ? System.currentTimeMillis() + "" : dto.getCreateTime().getTime() + "", Field.Store.YES));
-		doc.add(new TextField("contents", Tools.removeHtml(dto.getContent()), Field.Store.YES));
-		doc.add(new TextField("moduleName", dto.getModuleName(), Field.Store.YES));
-		doc.add(new TextField("title", dto.getTitle(), Field.Store.YES));
-		doc.add(new TextField("type", dto.getType(), Field.Store.YES));
-		doc.add(new StringField("projectId", dto.getProjectId(), Field.Store.YES));
-		// 将反斜杠替换
-		doc.add(new TextField("href", handleHref(dto.getHref()) , Field.Store.YES));
+		doc.add(new StringField(ID, dto.getId(), Field.Store.YES));
+		doc.add(new StringField(CREATE_TIME, dto.getCreateTime() == null ? System.currentTimeMillis() + "" : dto.getCreateTime().getTime() + "", Field.Store.YES));
+		doc.add(new StringField(PROJECT_ID, dto.getProjectId(), Field.Store.YES));
+		doc.add(new StringField(MODULE_ID, dto.getModuleId(), Field.Store.YES));
+		doc.add(new StringField(TABLE_ID, dto.getTableId(), Field.Store.YES));
+		doc.add(new StringField((OPEN), dto.isOpen() + "", Field.Store.YES));
+		doc.add(new TextField(CONTENT, Tools.removeHtml(dto.getContent()), Field.Store.YES));
+		doc.add(new TextField(TITLE, dto.getTitle(), Field.Store.YES));
+		// doc.add(new StringField(CUSTOM, handleHref(dto.getCustom()), Field.Store.YES));
+		doc.add(new TextField(CUSTOM, dto.getCustom(), Field.Store.YES));
 
 		return doc;
 	}
@@ -185,35 +235,30 @@ public class LuceneSearchService implements ISearchService {
 	 *            属性名字
 	 * @throws Exception
 	 */
-	private static void addHighterField(Highlighter highlighter, Document doc, String fieldName) throws Exception {
-		String hc = doc.get(fieldName);
-		if (hc != null)
-			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName, doc.get(fieldName));
+	private static void addHighLightField(Highlighter highlighter, Document doc, String fieldName) throws Exception {
+		String fieldValue = doc.get(fieldName);
+		String hc = null;
+		if (fieldValue != null) {
+			hc = highlighter.getBestFragment(new StandardAnalyzer(), fieldName,  fieldValue.length() > 200 ? fieldValue.substring(0, 200) + "..." : fieldValue);
+		}
 
 		if (hc == null) {
-			String content = doc.get(fieldName);
-			if (content != null) {
-				hc = content.substring(0, Math.min(50, content.length()));
+			if (fieldValue != null) {
+				hc = fieldValue.substring(0, Math.min(50, fieldValue.length()));
 			} else {
 				hc = "";
 			}
 		}
-		doc.add(new StringField("r_" + fieldName, hc, Field.Store.YES));
+		doc.add(new StringField(HIGH_LIGHT_PRE + fieldName, hc, Field.Store.YES));
 	}
 
 	@Override
 	public boolean add(SearchDto searchDto){
 		IndexWriter writer = null;
 		try {
-			if(!searchDto.isNeedCreateIndex()){
-				delete(searchDto);
-				return true;
-			}
-
 			IndexWriterConfig conf = new IndexWriterConfig(new StandardAnalyzer());
 			conf.setOpenMode(OpenMode.CREATE_OR_APPEND);
-			writer = new IndexWriter(
-					FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
+			writer = new IndexWriter(FSDirectory.open(Paths.get(settingCache.get(ISetting.S_LUCENE_DIR).getValue())), conf);
 			writer.updateDocument(new Term("id", searchDto.getId()), dtoToDoc(searchDto));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -235,44 +280,63 @@ public class LuceneSearchService implements ISearchService {
 		return add(searchDto);
 	}
 
-	private boolean isRebuild = false;
+	private static volatile boolean isRebuild = false;
+
 	/**
 	 * 重建系统索引
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean rebuild(){
+	public boolean rebuildByProjectId(String projectId){
 		if(isRebuild){
 			return true;
 		}
 		synchronized (LuceneSearchService.this) {
 			try{
 				isRebuild = true;
-				File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
-				File[] tempList = file.listFiles();
-			    for (int i = 0; i < tempList.length; i++) {
-			    	tempList[i].delete();
-			    }
+                /**
+                 * 全部重建时需要删除原来的索引文件
+                 */
+				if (projectId == null){
+                    File file = new File(settingCache.get(ISetting.S_LUCENE_DIR).getValue());
+                    File[] tempList = file.listFiles();
+                    for (int i = 0; i < tempList.length; i++) {
+                        tempList[i].delete();
+                    }
+                }
 
 			    for(ILuceneService service:luceneServices){
-					log.error("正在创建索引：" + service.getLuceneType());
+					log.error("正在创建索引--------------" + service.getClass());
 			    	int i = 0;
-			    	List<SearchDto> dtos= service.getAll();
-			    	for (SearchDto dto : dtos) {
-			    		i++;
-						stringCache.add(IConst.C_CACHE_ERROR_TIP, "当前正在创建【"+service.getLuceneType()+"】索引，共"+dtos.size()+"，正在创建第"+i+"条记录");
-						// 避免占用太大的系统资源
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						add(dto);
-					}
-                    log.error("建索引创建完成：" + service.getLuceneType());
+			    	String id = null;
+
+			    	while (true){
+                        List<SearchDto> dtos= service.selectOrderById(projectId, id, PAGE_SIZE);
+                        for (SearchDto dto : dtos) {
+                            i++;
+                            if (projectId == null){
+                                stringCache.add(IConst.C_CACHE_ERROR_TIP, service.getClass() + "当前正在创建第"+i+"条记录");
+                            }
+                            // 避免占用太大的系统资源
+                            try {
+                                Thread.sleep(50);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            add(dto);
+                            id = dto.getId();
+                        }
+                        if (CollectionUtils.isEmpty(dtos) || dtos.size() != PAGE_SIZE){
+                            break;
+                        }
+                    }
+                    log.error("建索引创建完成-----------" + service.getClass());
 			    }
-			    stringCache.add(IConst.C_CACHE_ERROR_TIP,"重建索引成功！");
-			}catch(Exception e){
+                if (projectId == null) {
+                    stringCache.add(IConst.C_CACHE_ERROR_TIP, "重建索引成功！");
+                }
+			}catch(Throwable e){
+				log.error("建索引创建异常----------", e);
 				e.printStackTrace();
 			}finally{
 				isRebuild = false;
@@ -284,36 +348,34 @@ public class LuceneSearchService implements ISearchService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean rebuildByProjectId(String projectId){
-		for (ILuceneService service : luceneServices) {
-			List<SearchDto> dtos = service.getAllByProjectId(projectId);
-			for (SearchDto dto : dtos) {
-				// 避免占用太大的系统资源
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				add(dto);
-			}
-		}
-		return true;
+	public boolean rebuild(){
+		return rebuildByProjectId(null);
 	}
 
 	public static String handleHref(String href){
-		if(href == null)
+		if(href == null) {
 			return "";
+		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("\\/", "CA_FXG").replaceAll("\\+", "CA_ADD").replaceAll("\\-", "CA_DES").replaceAll("\\&", "CA_AND")
-				.replaceAll("\\|", "CA_HZ").replaceAll("\\{", "CA_DKHS").replaceAll("\\}", "CA_DKHE").replaceAll("\\?", "CA_WH")
-				.replaceAll("\\*", "CA_XH").replaceAll("\\#", "CA_JH").replaceAll("\\:", "CA_MH").replaceAll("\\.", "CA_DH");
+//		return href.replaceAll("\\/", "ca_xg").replaceAll("\\+", "ca_add")
+//                .replaceAll("\\-", "ca_des").replaceAll("\\&", "ca_and")
+//				.replaceAll("\\|", "ca_xhx").replaceAll("\\{", "ca_dkhs")
+//                .replaceAll("\\}", "ca_dkhe").replaceAll("\\?", "ca_wh")
+//				.replaceAll("\\*", "ca_xh").replaceAll("\\@", "ca_at")
+//                .replaceAll("\\:", "ca_mh").replaceAll("\\.", "ca_dh");
+        return href;
 	}
 	public static String unHandleHref(String href){
-		if(href == null)
+		if(href == null) {
 			return "";
+		}
 		// + – && || ! ( ) { } [ ] ^ ” ~ * ? : /
-		return href.replaceAll("CA_FXG", "\\/").replaceAll( "CA_ADD","\\+").replaceAll( "CA_DES", "\\-").replaceAll( "CA_AND","\\&")
-				.replaceAll("CA_HZ", "\\|").replaceAll("CA_DKHS", "\\{").replaceAll("CA_DKHE","\\}").replaceAll( "CA_WH","\\?")
-				.replaceAll("CA_XH", "\\*").replaceAll("CA_JH", "\\#").replaceAll("CA_MH", "\\:").replaceAll("CA_DH", "\\.");
+//		return href.replaceAll("ca_xg", "\\/").replaceAll( "ca_add","\\+")
+//                .replaceAll( "ca_des", "\\-").replaceAll( "ca_and","\\&")
+//				.replaceAll("ca_xhx", "\\|").replaceAll("ca_dkhs", "\\{")
+//                .replaceAll("ca_dkhe","\\}").replaceAll( "ca_wh","\\?")
+//				.replaceAll("ca_xh", "\\*").replaceAll("ca_at", "\\@")
+//                .replaceAll("ca_mh", "\\:").replaceAll("ca_dh", "\\.");
+        return href;
 	}
 }

@@ -123,10 +123,10 @@ public class HttpPostGet {
         return getResponse(method, headers);
     }
 
-    public static String post(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+    public static String post(String path, Map<String, String> params, Map<String, String> headers, int timeout) throws Exception {
         HttpPost method = new HttpPost(path);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(3000).setConnectTimeout(3000)
-                .setConnectionRequestTimeout(3000).setStaleConnectionCheckEnabled(true).build();
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).setStaleConnectionCheckEnabled(true).build();
         // 请求的参数信息传递
         List<NameValuePair> pairs = buildPairs(params);
         if (pairs.size() > 0) {
@@ -137,10 +137,23 @@ public class HttpPostGet {
         return getResponse(method, headers);
     }
 
+    public static String post(String path, Map<String, String> params, Map<String, String> headers) throws Exception {
+        return post(path, params, headers, 3000);
+    }
+
     public static String postBody(String url, String body, Map<String, String> headers) throws Exception {
+       return postBody(url, body, headers, 3000);
+    }
+
+
+    public static String postBody(String url, String body, Map<String, String> headers, int timeout) throws Exception {
         HttpClient client = buildHttpClient(url);
         HttpPost httppost = new HttpPost(url);
         httppost.setHeader("charset", "utf-8");
+
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).setStaleConnectionCheckEnabled(true).build();
+        httppost.setConfig(requestConfig);
         buildHeader(headers, httppost);
 
         BasicHttpEntity requestBody = new BasicHttpEntity();
@@ -234,7 +247,7 @@ public class HttpPostGet {
         HttpResponse response = client.execute(method);
         int status = response.getStatusLine().getStatusCode();
         if (status < 200 || status >= 300) {
-            throw new ClientProtocolException("Path:" + method.getURI() + "- Unexpected response status: " + status);
+            throw new ClientProtocolException("Path:" + method.getURI() + " - Unexpected response status: " + status);
         }
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");

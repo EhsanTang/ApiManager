@@ -74,9 +74,9 @@ public class FileController extends BaseController{
         }else{
             //检查扩展名
             if( Config.imageType.indexOf(suffix)>=0 ){
-                saveUrl +="resources/upload/images";
+                saveUrl +="/resources/upload/images";
             }else{
-                saveUrl +="resources/upload/files";
+                saveUrl +="/resources/upload/files";
             }
             saveUrl +="/"+ DateFormartUtil.getDateByFormat(DateFormartUtil.YYYY_MM)+"/";
             String version = ".CAV."+Tools.getChar(6)+".1";
@@ -105,23 +105,27 @@ public class FileController extends BaseController{
 
                 File targetFile = new File(destDir+saveUrl,realFileName);
                 file.transferTo(targetFile);
-                result = saveUrl+realFileName;
+                if (Config.imgPrefix.endsWith("/")){
+                    result = Config.imgPrefix.substring(0, Config.imgPrefix.length() - 1) + saveUrl + realFileName;
+                } else {
+                    result = Config.imgPrefix + saveUrl + realFileName;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 result = "[ERROR]上传失败";
             }
         }
 
-        return result;
+        return Tools.getRequest().getContextPath() + result;
     }
 
     @RequestMapping(value="/user/file/uploadAllToAliyun.do")
     @ResponseBody
     @AuthPassport(authority = C_AUTH_SETTING)
-    public void updateAllFileToAliyun(){
+    public void updateAllFileToAliyun(String path){
         OSSClient client = null;
         try {
-            String basePath = Tools.getServicePath() + "resources/upload";
+            String basePath = Tools.getServicePath() + "resources/" + path;
             ClientConfiguration conf = new ClientConfiguration();
             conf.setConnectionTimeout(1000);
             conf.setSocketTimeout(1000);
@@ -144,7 +148,7 @@ public class FileController extends BaseController{
                 conf.setConnectionTimeout(1000);
                 conf.setSocketTimeout(1000);
                 client = new OSSClient(Config.endPoint, Config.accessKeyId, Config.accessKeySecret, conf);
-                client.putObject(Config.bucketName, dir, file.getInputStream());
+                client.putObject(Config.bucketName, dir.substring(1), file.getInputStream());
             }catch (Exception e){
                 e.printStackTrace();
             }finally {

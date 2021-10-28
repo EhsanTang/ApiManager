@@ -1,7 +1,7 @@
 package cn.crap.enu;
 
 public enum ProjectStatus {
-	COMMON("普通项目", 1),RECOMMEND("推荐项目", 2);
+	PLUG("插件项目", -1),COMMON("普通项目", 1),RECOMMEND("推荐项目", 2);
 	private final int status;
 	private final String name;
 	

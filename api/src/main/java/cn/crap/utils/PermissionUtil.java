@@ -7,7 +7,7 @@ import cn.crap.enu.MyError;
 import cn.crap.enu.ProjectPermissionEnum;
 import cn.crap.enu.UserType;
 import cn.crap.framework.MyException;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.model.ProjectUserPO;
 import cn.crap.query.ProjectUserQuery;
 import com.google.common.base.Splitter;
@@ -29,7 +29,7 @@ public class PermissionUtil implements IConst{
      * @param project
      * @throws MyException
      */
-    public static void checkPermission(Project project, ProjectPermissionEnum needPermission) throws MyException {
+    public static void checkPermission(ProjectPO project, ProjectPermissionEnum needPermission) throws MyException {
         if (project == null || project.getId() == null){
             throw new MyException(MyError.E000022, "项目有误，没有查询到该项目");
         }
@@ -67,7 +67,7 @@ public class PermissionUtil implements IConst{
 
         // 项目成员
         List<ProjectUserPO> projectUserPOList = ServiceFactory.getInstance().getProjectUserService().select(
-                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()), null);
+                new ProjectUserQuery().setProjectId(project.getId()).setUserId(user.getId()));
 
         if (CollectionUtils.isEmpty(projectUserPOList)) {
             throw new MyException(MyError.E000022, needPermission.getDesc());

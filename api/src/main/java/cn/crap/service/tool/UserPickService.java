@@ -1,17 +1,14 @@
 package cn.crap.service.tool;
 
+import cn.crap.adapter.ProjectMetaAdapter;
 import cn.crap.dto.LoginInfoDto;
 import cn.crap.dto.PickDto;
-import cn.crap.enu.IconfontCode;
-import cn.crap.enu.MyError;
-import cn.crap.enu.PickCode;
-import cn.crap.enu.SettingEnum;
+import cn.crap.dto.ProjectMetaDTO;
+import cn.crap.enu.*;
 import cn.crap.framework.MyException;
 import cn.crap.model.Error;
 import cn.crap.model.*;
-import cn.crap.query.ErrorQuery;
-import cn.crap.query.ModuleQuery;
-import cn.crap.query.ProjectUserQuery;
+import cn.crap.query.*;
 import cn.crap.service.*;
 import cn.crap.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,8 @@ public class UserPickService implements IPickService{
     private ModuleService moduleService;
     @Resource(name = "adminPickService")
     private IPickService adminPickService;
+    @Resource
+    private ProjectMetaService projectMetaService;
 
     @Override
     public List<PickDto> getPickList(String code, String key) throws MyException {
@@ -73,7 +72,7 @@ public class UserPickService implements IPickService{
                 pick = new PickDto("icon_null", IConst.NULL, "不使用图标");
                 picks.add(pick);
                 for (IconfontCode iconfontCode : IconfontCode.values()) {
-                    pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
+                    pick = new PickDto(iconfontCode.name(), "<i class=\"iconfont fw200\">" + iconfontCode.getValue() + "</i>", iconfontCode.getName());
                     picks.add(pick);
                 }
                 return picks;
@@ -93,27 +92,34 @@ public class UserPickService implements IPickService{
              * 拷贝接口时使用
              */
             case MY_MODULE:
-                for (Project p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
+                for (ProjectPO p : projectService.query(user.getId(), false, null, new Page(100, 1))) {
                     pick = new PickDto(IConst.C_SEPARATOR, p.getName());
                     picks.add(pick);
-                    List<Module> moduleList = moduleService.query(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
+                    List<ModulePO> moduleList = moduleService.select(new ModuleQuery().setProjectId(p.getId()).setPageSize(100));
                     if (CollectionUtils.isEmpty(moduleList)){
                         pick = new PickDto(System.currentTimeMillis() + Tools.getChar(20), null,"项目下尚未创建模块");
                         picks.add(pick);
                         continue;
                     }
-                    for (Module m : moduleList) {
+                    for (ModulePO m : moduleList) {
                         pick = new PickDto(m.getId(), m.getName());
                         picks.add(pick);
                     }
                 }
                 return picks;
-
+            case PROJECT_ENV:
+                List<ProjectMetaPO> envList = projectMetaService.select(new ProjectMetaQuery().setType(ProjectMetaType.ENV.getType()).setProjectId(key));
+                for (ProjectMetaPO envPO : envList) {
+                    ProjectMetaDTO envDTO = ProjectMetaAdapter.getDto(envPO, null);
+                    pick = new PickDto(envDTO.getId(), envDTO.getProjectId(), envDTO.getName());
+                    picks.add(pick);
+                }
+                return picks;
             case PROJECT_MODULES:
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                for (Module m : moduleService.query(new ModuleQuery().setProjectId(key).setPageSize(100))) {
+                for (ModulePO m : moduleService.select(new ModuleQuery().setProjectId(key).setPageSize(100))) {
                     pick = new PickDto(m.getId(), m.getName());
                     picks.add(pick);
                 }
@@ -126,13 +132,13 @@ public class UserPickService implements IPickService{
                 if (MyString.isEmpty(key)) {
                     throw new MyException(MyError.E000065, "key（项目ID）不能为空");
                 }
-                User creator = userService.getById(projectService.getById(key).getUserId());
+                UserPO creator = userService.get(projectService.get(key).getUserId());
                 pick = new PickDto(creator.getId(), MyString.isEmpty(creator.getTrueName()) ? creator.getUserName() : creator.getTrueName());
                 picks.add(pick);
 
                 // TODO 项目允许的最大成员数，项目成员中需要更新用户真实姓名
-                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key), null)) {
-                    User projectUser = userService.getById(m.getUserId());
+                for (ProjectUserPO m : projectUserService.select(new ProjectUserQuery().setProjectId(key))) {
+                    UserPO projectUser = userService.get(m.getUserId());
                     if (projectUser == null || projectUser.getId().equals(creator.getId())){
                         continue;
                     }
@@ -149,15 +155,9 @@ public class UserPickService implements IPickService{
                 key = "%" + key + "%";
                 Set<String> userIds = new TreeSet<>();
 
-                UserCriteria userExample = new UserCriteria();
-                userExample.createCriteria().andEmailLike(key);
 
-                userExample.or(userExample.createCriteria().andUserNameLike(key));
-                userExample.or(userExample.createCriteria().andTrueNameLike(key));
-
-                userExample.setMaxResults(20);
-
-                for (User u : userService.selectByExample(userExample)) {
+                UserQuery userQuery = new UserQuery().setOrEmail(key).setOrUserName(key).setOrTrueName(key).setPageSize(20);
+                for (UserPO u : userService.select(userQuery)) {
                     if (!userIds.contains(u.getId())) {
                         pick = new PickDto(u.getId(), u.getUserName());
                         picks.add(pick);

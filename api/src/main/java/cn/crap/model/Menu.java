@@ -2,7 +2,7 @@ package cn.crap.model;
 
 import java.util.Date;
 
-public class Menu extends BasePo{
+public class Menu extends BasePO {
     private String menuName;
 
     private String menuUrl;

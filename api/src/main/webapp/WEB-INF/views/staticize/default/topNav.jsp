@@ -22,7 +22,14 @@
 		</div>
 	</nav>
 	
-<div class="def-bg main-bg h120 mb20 title-bg-img w p0">
+<div class="def-bg s-nav-bg-color h120 mb20 title-bg-img w p0 rel of-h">
+	<div class="circular circular-1"></div>
+	<div class="circular circular-2"></div>
+	<div class="circular circular-3"></div>
+	<div class="circular circular-4"></div>
+	<div class="circular circular-5"></div>
+	<div class="circular circular-6"></div>
+
 		<div class="container p0">
 			<div class="row p0 m0">
 				<div class="col-xs-12">

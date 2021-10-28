@@ -9,17 +9,21 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.model.HotSearch;
 import cn.crap.query.ArticleQuery;
+import cn.crap.query.SearchQuery;
 import cn.crap.schedule.OpenSourceInfoTask;
 import cn.crap.schedule.TaskUtil;
 import cn.crap.service.*;
 import cn.crap.service.tool.LuceneSearchService;
-import cn.crap.utils.*;
+import cn.crap.utils.LoginUserHelper;
+import cn.crap.utils.MyString;
+import cn.crap.utils.Page;
+import cn.crap.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
@@ -83,6 +87,47 @@ public class MainController extends BaseController{
 		return "resources/html/visitor/indexNew.html";
 	}
 
+	/**
+	 * 插件首页
+	 * @return
+	 * @throws MyException
+	 */
+	@RequestMapping(value = "postwomanAdvert.htm")
+	public String postwomanAdvert(){
+		return "WEB-INF/views/postwomanAdvert.jsp";
+	}
+
+	/**
+	 * 插件首页
+	 * @param modelMap
+	 * @return
+	 * @throws MyException
+	 */
+	@RequestMapping(value = "plugDashboard.htm")
+	public String plugDashboard(ModelMap modelMap) throws MyException{
+		LoginInfoDto loginInfoDto = LoginUserHelper.tryGetUser();
+		modelMap.addAttribute("login", loginInfoDto != null);
+		modelMap.addAttribute("avatarUrl", loginInfoDto != null ? loginInfoDto.getAvatarUrl() : "resources/images/logo_new.png");
+		modelMap.addAttribute("title", settingCache.get(S_TITLE).getValue());
+		modelMap.addAttribute("keywords", settingCache.get(S_KEYWORDS).getValue());
+		modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
+		modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
+		modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+
+		// 从缓存中获取菜单
+		List<MenuWithSubMenuDto> menuList = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);
+		if(menuList == null){
+			menuList = customMenuService.getMenu();
+			objectCache.add(C_CACHE_MENU, menuList);
+		}
+		modelMap.addAttribute("menuList", menuList);
+
+		// fork & star 数量
+		modelMap.addAttribute(FORK_NUM, OpenSourceInfoTask.forNumStr);
+		modelMap.addAttribute(STAR_NUM, OpenSourceInfoTask.starNumStr);
+		return "WEB-INF/views/plugDashboard.jsp";
+	}
+
 	@RequestMapping(value = "dashboard.htm")
 	public String dashboard(ModelMap modelMap) throws MyException{
 
@@ -94,8 +139,13 @@ public class MainController extends BaseController{
         modelMap.addAttribute("description", settingCache.get(S_DESCRIPTION).getValue());
         modelMap.addAttribute("icon", settingCache.get(S_ICON).getValue());
         modelMap.addAttribute("logo", settingCache.get(S_LOGO).getValue());
+		modelMap.addAttribute("imgPrefix", "");
 
-        List<ArticleDto> articleList = (List<ArticleDto>) objectCache.get(ARTICLE_LIST);
+		if (settingCache.equalse(SettingEnum.OPEN_ALIYUN, "true")) {
+			modelMap.addAttribute("imgPrefix", MyString.isNotEmpty(Config.imgPrefix) ? Config.imgPrefix : "");
+		}
+
+        List<ArticleDTO> articleList = (List<ArticleDTO>) objectCache.get(ARTICLE_LIST);
         if (CollectionUtils.isEmpty(articleList)){
         	ArticleQuery query = new ArticleQuery().setStatus(ArticleStatus.RECOMMEND.getStatus()).setType(ArticleType.ARTICLE.name())
 					.setPageSize(5);
@@ -184,24 +234,8 @@ public class MainController extends BaseController{
 	@RequestMapping("/visitor/init.do")
 	@ResponseBody
 	public JsonResult visitorInit(HttpServletRequest request) throws Exception {
-		Map<String, String> settingMap = new HashMap<String, String>();
-		for (SettingDto setting : settingCache.getAll()) {
-			if (SettingStatus.COMMON.getStatus().equals(setting.getStatus())) {
-				settingMap.put(setting.getKey(), setting.getValue());
-			}
-			settingMap.put(setting.getKey(), setting.getValue());
-		}
-		settingMap.put(IConst.SETTING_OPEN_REGISTER, Config.openRegister+"");
-		settingMap.put(IConst.SETTING_GITHUB_ID, MyString.isEmpty( Config.clientID )? "false":"true");
-
-		// 新增加且没有写入数据库的配置
-		for (SettingEnum settingEnum : SettingEnum.values()){
-			if (!settingMap.containsKey(settingEnum.getKey())){
-				settingMap.put(settingEnum.getKey(), settingEnum.getValue());
-			}
-		}
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		returnMap.put("settingMap", settingMap);
+		Map<String,Object> returnMap = new HashMap<>();
+		returnMap.put("settingMap", settingCache.getCommonMap());
 
 		// 从缓存中获取菜单
 		List<MenuWithSubMenuDto> menus = (List<MenuWithSubMenuDto>)objectCache.get(C_CACHE_MENU);
@@ -218,22 +252,24 @@ public class MainController extends BaseController{
 	}
 	
 
-	@RequestMapping("/visitorSearch.do")
+	@RequestMapping("/search.do")
 	@ResponseBody
-	public JsonResult visitorSearch(@RequestParam(defaultValue="") String keyword, Integer currentPage) throws Exception{
+	public JsonResult search(@ModelAttribute SearchQuery query) throws Exception{
 		if(Config.luceneSearchNeedLogin){
-			LoginInfoDto user = LoginUserHelper.getUser(MyError.E000043);
+			LoginUserHelper.getUser(MyError.E000043);
 		}
-		keyword = keyword.trim();
-        if (keyword.length() > 200){
-            keyword = keyword.substring(0, 200);
-        }
 
-		Page page= new Page(currentPage);
-		List<SearchDto> searchResults = luceneService.search(keyword, page);
-		Map<String,Object> returnMap = new HashMap<String,Object>();
+		String keyword = (query.getKeyword() == null ? "" : query.getKeyword().trim());
+		/**
+		 * 前端搜索只能搜索公开的项目
+		 */
+		query.setOpen(true);
+		query.setKeyword(keyword.length() > 200 ? keyword.substring(0, 200) : keyword.trim());
+		keyword = query.getKeyword();
+
+		List<SearchDto> searchResults = luceneService.search(query);
+		Map<String,Object> returnMap = new HashMap<>();
 		returnMap.put("searchResults", searchResults);
-
 
 		// 将搜索的内容记入数据库
 		if(MyString.isNotEmpty(keyword)){
@@ -257,8 +293,9 @@ public class MainController extends BaseController{
                 hotSearchService.update(hotSearch);
             }
         }
-		
+
+        Page page = new Page(query);
 		return new JsonResult(1, returnMap, page, 
-				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+keyword,"void")));
+				Tools.getMap("crumbs", Tools.getCrumbs("搜索关键词:"+ keyword,"void")));
 	}
 }

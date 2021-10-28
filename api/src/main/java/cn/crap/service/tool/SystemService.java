@@ -1,6 +1,5 @@
 package cn.crap.service.tool;
 
-import cn.crap.beans.Config;
 import cn.crap.enu.SettingEnum;
 import cn.crap.model.Setting;
 import cn.crap.service.SettingService;
@@ -36,14 +35,14 @@ public class SystemService {
     // TODO 按文件夹合并
     private final static String CSS_FILE_URLS[] = new String[]{"base.css", "crapApi.css", "setting.css", "admin.css", "bug.css", "index.css"};
     private final static String JS_FILE_URLS[] = new String[]{"app.js", "const.js", "services.js", "userRouter.js", "router.js",
-            "userCtrls.js", "userBugCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "global.js", "validateAndRefresh.js",
+            "userCtrls.js", "userBugCtrl.js", "userProjectMetaCtrl.js", "userCommonCtrl.js", "commentCtrl.js", "visitorControllers.js", "visitorRouter.js", "core.js", "coreNew.js", "global.js", "validateAndRefresh.js",
             "crapApi.js", "json.js", "editor.js"};
-    private final static String JS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
-    private final static String CSS_COMPRESS_URL = "http://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
+    private final static String JS_COMPRESS_URL = "https://tool.oschina.net/action/jscompress/js_compress?munge=0&linebreakpos=5000";
+    private final static String CSS_COMPRESS_URL = "https://tool.oschina.net/action/jscompress/css_compress?linebreakpos=5000";
 
     private static final LinkedHashMap<Integer, String> CHANGE_SQL_MAP = Maps.newLinkedHashMap();
     static {
-        // v8.0.5 修改，允许模块为空，2018-11-17
+        // V8.2.0_0630 修改，允许模块为空，2018-11-17
         CHANGE_SQL_MAP.put(1, "ALTER TABLE `interface` CHANGE `moduleId` `moduleId` VARCHAR(50) NULL  DEFAULT ''  COMMENT '所属模块ID'");
         CHANGE_SQL_MAP.put(2, "ALTER TABLE `log` CHANGE `content` `content` LONGTEXT NOT NULL");
         CHANGE_SQL_MAP.put(3, "ALTER TABLE `interface` CHANGE `version` `version` VARCHAR(20)  NULL  DEFAULT '1.0'  COMMENT '版本号'");
@@ -173,7 +172,74 @@ public class SystemService {
         CHANGE_SQL_MAP.put(66, "ALTER TABLE `project_user` DROP INDEX `project_user`");
         CHANGE_SQL_MAP.put(67, "ALTER TABLE `project_user` ADD INDEX `idx_project_seq` (`projectId`, `sequence`)");
 
-        // sequence 修改为long
+        CHANGE_SQL_MAP.put(68, "CREATE TABLE `project_meta` (\n" +
+                "  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '主键',\n" +
+                "  `projectId` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '项目ID',\n" +
+                "  `moduleId` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '模块ID',\n" +
+                "  `attributes` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '属性，使用;:分割',\n" +
+                "  `sequence` bigint(20) DEFAULT NULL,\n" +
+                "  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n" +
+                "  `status` tinyint(11) NOT NULL DEFAULT '0' COMMENT '状态，1:正常',\n" +
+                "  `type` tinyint(4) NOT NULL COMMENT '数据类型，0:环境',\n" +
+                "  `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '名称',\n" +
+                "  `value` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '值',\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                "  KEY `idx_project_type` (`projectId`,`type`),\n" +
+                "  KEY `idx_project_module_type` (`projectId`,`moduleId`,`type`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+
+
+        CHANGE_SQL_MAP.put(69, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '登陆背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'LOGINBG';");
+        CHANGE_SQL_MAP.put(70, "UPDATE `setting` SET `value` = 'resources/images/transparent.png',`remark` = '头部标题搜索背景图\\n默认图片：resources/images/bg_web.jpg\\n透明：resources/images/transparent.png' WHERE `mkey` = 'TITLEBG';");
+        CHANGE_SQL_MAP.put(71, "ALTER TABLE `interface` ADD INDEX `index_pro` (`projectId`)");
+        CHANGE_SQL_MAP.put(72, "ALTER TABLE `article` ADD INDEX `index_pro` (`projectId`)");
+        CHANGE_SQL_MAP.put(73, "ALTER TABLE `interface` ADD `versionNum` INT  UNSIGNED  NOT NULL  COMMENT '版本'  AFTER `contentType`");
+
+        CHANGE_SQL_MAP.put(74, "ALTER TABLE `project` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(75, "update project set uniKey=id");
+        CHANGE_SQL_MAP.put(76, "ALTER TABLE `project` ADD UNIQUE INDEX `uk_user_key` (`userId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(77, "ALTER TABLE `module` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(78, "update module set uniKey=id");
+        CHANGE_SQL_MAP.put(79, "ALTER TABLE `module` ADD UNIQUE INDEX `uk_project_key` (`projectId`, `uniKey`)");
+
+        CHANGE_SQL_MAP.put(80, "ALTER TABLE `interface` ADD `uniKey` VARCHAR(50)  NULL  DEFAULT NULL COMMENT '用户唯一键'");
+        CHANGE_SQL_MAP.put(81, "update interface set uniKey=id");
+        CHANGE_SQL_MAP.put(82, "ALTER TABLE `interface` ADD UNIQUE INDEX `uk_module_key` (`moduleId`, `uniKey`)");
+        CHANGE_SQL_MAP.put(83, "update module set uniKey=substring_index(id,'-', 3) where id like '%-%' and  projectId like '%-debug'");
+
+        CHANGE_SQL_MAP.put(84, "ALTER TABLE `module` CHANGE `version` `versionNum` INT(11)  NOT NULL  DEFAULT '0'");
+
+        CHANGE_SQL_MAP.put(85, "ALTER TABLE `project_user` ADD `type` TINYINT  NOT NULL  DEFAULT '2'  COMMENT '1管理员or创建人，2成员'");
+        CHANGE_SQL_MAP.put(86, "ALTER TABLE `project_user` ADD INDEX `idx_uid_type_seq` (`userId`, `type`, `sequence`)");
+        CHANGE_SQL_MAP.put(87, "ALTER TABLE `project_user` DROP INDEX `index_uid_seq_time`");
+        CHANGE_SQL_MAP.put(88, "ALTER TABLE `project_user` ADD INDEX `idx_uid_seq` (`userId`, `sequence`)");
+        CHANGE_SQL_MAP.put(89, "ALTER TABLE `project_user` ADD UNIQUE INDEX `uk_pro_uid` (`projectId`, `userId`)");
+        CHANGE_SQL_MAP.put(90, "INSERT INTO project_user(id,status,sequence,createTime,projectId,userId,userEmail,userName,permission,type) " +
+                " SELECT p.id,1,unix_timestamp(now())*1000,now(),p.id,p.userId,u.email,u.userName,',modInter,addInter,modModule,addModule,modError,addError,modArticle,addArticle,modDict,addDict,modBug,addBug,delBug,modSource,addSource,modEnv,addEnv,delEnv,',1 " +
+                " FROM project p join user u on p.userId=u.id ON DUPLICATE KEY UPDATE type=1");
+
+        CHANGE_SQL_MAP.put(91, "ALTER TABLE `interface` CHANGE `url` `url` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT 'api链接'");
+        CHANGE_SQL_MAP.put(92, "ALTER TABLE `interface` DROP INDEX `Index_fullUrl`");
+        CHANGE_SQL_MAP.put(93, "ALTER TABLE `interface` CHANGE `fullUrl` `fullUrl` VARCHAR(512)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''");
+        CHANGE_SQL_MAP.put(94, "ALTER TABLE `project` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
+
+        CHANGE_SQL_MAP.put(95, "ALTER TABLE `module` CHANGE `url` `url` VARCHAR(100)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '模块地址'");
+        CHANGE_SQL_MAP.put(96, "ALTER TABLE `module` CHANGE `remark` `remark` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '备注'");
+        CHANGE_SQL_MAP.put(97, "ALTER TABLE `module` CHANGE `category` `category` VARCHAR(200)  CHARACTER SET utf8  COLLATE utf8_general_ci  NULL  DEFAULT ''  COMMENT '文章分类，多个分类以逗号分割，每个分类最多10个字'");
+        CHANGE_SQL_MAP.put(98, "ALTER TABLE `user` ADD `attributes` VARCHAR(512)  NULL  DEFAULT NULL  COMMENT '属性'");
+        CHANGE_SQL_MAP.put(99, "ALTER TABLE `project_user` ADD `projectName` VARCHAR(100)  NULL  DEFAULT NULL  COMMENT '项目名称'");
+        CHANGE_SQL_MAP.put(100, "UPDATE project_user u INNER JOIN (SELECT id,name,sequence FROM project) p ON p.id=u.projectId SET u.projectName=p.name, u.sequence=p.sequence");
+        CHANGE_SQL_MAP.put(101, "ALTER TABLE `project_user` ADD `projectUniKey` VARCHAR(50)  NULL  DEFAULT NULL  COMMENT '项目唯一编码' AFTER `projectName`;");
+        CHANGE_SQL_MAP.put(102, "UPDATE project_user u INNER JOIN (SELECT id,uniKey FROM project) p ON p.id=u.projectId SET u.projectUniKey=p.uniKey");
+        CHANGE_SQL_MAP.put(103, "ALTER TABLE `project_user` CHANGE `projectUniKey` `projectUniKey` VARCHAR(50)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT ''  COMMENT '项目唯一编码'");
+        CHANGE_SQL_MAP.put(104, "UPDATE module m INNER JOIN (SELECT id,userId FROM project) p ON p.id=m.projectId SET m.userId=p.userId");
+        CHANGE_SQL_MAP.put(105, "ALTER TABLE `project_user` ADD INDEX `idx_prounikey_userid` (`projectUniKey`, `userId`)");
+        CHANGE_SQL_MAP.put(106, "update setting set status=1 where status=0");
+        CHANGE_SQL_MAP.put(107, "ALTER TABLE `user` ADD `loginTime` TIMESTAMP  NULL  DEFAULT CURRENT_TIMESTAMP  COMMENT '最后登录时间'  AFTER `attributes`");
+
+
+
     }
 
     /**
@@ -271,7 +337,7 @@ public class SystemService {
             String value = s.getValue();
             if (value != null && (value.toLowerCase().endsWith(".jpg") || value.toLowerCase().endsWith(".png"))) {
                 if (!value.startsWith("http://") && !value.startsWith("https://")) {
-                    value = settingCache.getDomain() + "/" + value;
+                    value = Tools.getUrlPath() + "/" + value;
                 }
             }
             cssContent = cssContent.replace("[" + s.getMkey() + "]", value);
@@ -283,11 +349,18 @@ public class SystemService {
     }
 
     private String compress(String compressUrl, String baseFileUrl, String fileUrl) throws Exception {
-        String cssSource = Tools.readFile(baseFileUrl + fileUrl);
-        String compressText = HttpPostGet.postBody(compressUrl, cssSource, null);
-        JSONObject jsonObject = JSONObject.fromObject(compressText);
-        String compressResult = jsonObject.getString("result");
-        Tools.staticize(compressResult, baseFileUrl + fileUrl);
+        String compressText = null;
+        String compressResult = null;
+        try {
+            String cssSource = Tools.readFile(baseFileUrl + fileUrl);
+            compressText = HttpPostGet.postBody(compressUrl, cssSource, null, 5000);
+            JSONObject jsonObject = JSONObject.fromObject(compressText);
+            compressResult = jsonObject.getString("result");
+            Tools.staticize(compressResult, baseFileUrl + fileUrl);
+        } catch (Throwable e){
+            log.error("压缩js、css异常,compressText:" + compressText,  e);
+            throw e;
+        }
         return compressResult;
     }
 }

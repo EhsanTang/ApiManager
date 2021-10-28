@@ -10,7 +10,7 @@ import cn.crap.framework.MyException;
 import cn.crap.framework.base.BaseController;
 import cn.crap.framework.interceptor.AuthPassport;
 import cn.crap.model.Error;
-import cn.crap.model.Project;
+import cn.crap.model.ProjectPO;
 import cn.crap.query.ErrorQuery;
 import cn.crap.service.ErrorService;
 import cn.crap.utils.MyString;
@@ -40,7 +40,7 @@ public class ErrorController extends BaseController{
     @ResponseBody
     @AuthPassport
     public JsonResult list(@ModelAttribute ErrorQuery query) throws MyException {
-        Project project = getProject(query);
+        ProjectPO project = getProject(query);
         checkPermission(project, ProjectPermissionEnum.READ);
 
         Page page = new Page(query);

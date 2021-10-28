@@ -42,7 +42,9 @@ public class InitSystem {
         initConfig();
         initSetting();
         mergeSource();
-        updatDataBase();
+        updateDataBase();
+        // updateDataBase，需要重新加载setting
+        settingCache.flushDB();
     }
 
     /**
@@ -108,7 +110,7 @@ public class InitSystem {
         }
     }
 
-    public void updatDataBase(){
+    public void updateDataBase(){
         try{
             log.info("更新数据库结构....");
             systemService.updateDataBase();

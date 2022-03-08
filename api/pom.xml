@@ -243,7 +243,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-scratchpad</artifactId>
-			<version>3.10-FINAL</version>
+			<version>5.2.1</version>
 		</dependency>
 		<!-- End:get text from doc -->
 		<!-- get text from excel -->
